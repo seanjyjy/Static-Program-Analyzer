@@ -18,7 +18,7 @@
 Item | Version
 -|-
 OS | Windows 10
-Toolchain | Microsoft Visual Studio Enterprise 2019 Version 16.11.0
+Toolchain | Cross-platform Startup SPA Solution
 C++ Standard | C++17
 
 ### Additional Build Instructions
@@ -29,4 +29,4 @@ No additional instructions required.
 
 Name | Mobile | Email | Development OS/Toolchain
 -:|:-:|:-|-|
-John Doe | 99887766 | john@doe.com | Windows 10/Visual Studio 2019
+Choi Min Suk | 92277054 | e0310270@u.nus.edu | Windows 10/CLion
