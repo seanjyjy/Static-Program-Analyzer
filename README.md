@@ -1,4 +1,4 @@
-# Team 00
+# Team 41
 
 > Please fill in this Readme with the required information, and delete this box.
 > 
@@ -30,3 +30,4 @@ No additional instructions required.
 Name | Mobile | Email | Development OS/Toolchain
 -:|:-:|:-|-|
 Choi Min Suk | 92277054 | e0310270@u.nus.edu | Windows 10/CLion
+Hardy Shein | 97578119 | e0311086@u.nus.edu | Windows 10/CLion
