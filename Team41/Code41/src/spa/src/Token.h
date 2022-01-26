@@ -30,6 +30,7 @@ enum class TokenType {
     times,
     div,
     mod,
+    procedure,
     readOp,
     printOp,
     callOp,
@@ -52,6 +53,8 @@ public:
     const string &getVal() const;
     const pair<int, int> &getStart() const;
     const pair<int, int> &getEnd() const;
+    const string toString() const;
+    static string typeToString(TokenType type);
 };
 
 #endif //SPA_TOKEN_H

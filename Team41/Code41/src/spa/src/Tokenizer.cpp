@@ -8,9 +8,10 @@
 #include <cctype>
 #include <stdexcept>
 #include <cassert>
+#include <iostream>
 
 // member initialization
-Tokenizer::Tokenizer(string s): input(std::move(s)), idx(0), row(0), col(0) {
+Tokenizer::Tokenizer(string s): input(s), idx(0), row(0), col(0) {
     if (s.empty()) throw invalid_argument("input to tokenizer must be nonempty");
     currToken = s[0];
 }
@@ -22,6 +23,11 @@ void Tokenizer::advance() {
         return;
     }
     advancePosition();
+    if (idx >= input.size()) {
+        currToken = '\0';
+    } else {
+        currToken = input[idx];
+    }
 }
 
 void Tokenizer::advancePosition() {
@@ -46,37 +52,36 @@ Token Tokenizer::eatN(TokenType type, int n) {
     if (n > (input.size() - idx)) throw length_error("eating too many characters: " + to_string(n));
 
     pair<int, int> start = { row, col };
-    string val = string(1, currToken);
-    n--;
-    for (int i = 0; i < n; i++) {
+    string val;
+    for (int i = 0; !eof() && i < n; i++) {
+        val += currToken;
         advance();
-        if (!eof()) val += currToken;
     }
     pair<int, int> end = { row, col };
     return Token{type, val, start, end};
 }
 
-Token Tokenizer::eatOpeningBrace() { return eatN(TokenType::openingBrace, 1); }
-Token Tokenizer::eatClosingBrace() { return eatN(TokenType::closingBrace, 1); }
-void Tokenizer::eatWhitespace() { advance(); }
-Token Tokenizer::eatOpeningBracket() { return eatN(TokenType::openingBracket, 1); }
-Token Tokenizer::eatClosingBracket() { return eatN(TokenType::closingBracket, 1); }
-Token Tokenizer::eatSemicolon() { return eatN(TokenType::semicolon, 1); }
-Token Tokenizer::eatPlus() { return eatN(TokenType::plus, 1); }
-Token Tokenizer::eatMinus() { return eatN(TokenType::minus, 1); }
-Token Tokenizer::eatTimes() { return eatN(TokenType::times, 1); }
-Token Tokenizer::eatDiv() { return eatN(TokenType::div, 1); }
-Token Tokenizer::eatMod() { return eatN(TokenType::mod, 1); }
-Token Tokenizer::eatAnd() { return eatN(TokenType::andOp, 2); }
-Token Tokenizer::eatOr() { return eatN(TokenType::orOp, 2); }
-Token Tokenizer::eatGe() { return eatN(TokenType::ge, 2); }
-Token Tokenizer::eatGt() { return eatN(TokenType::gt, 1); }
-Token Tokenizer::eatLe() { return eatN(TokenType::le, 2); }
-Token Tokenizer::eatLt() { return eatN(TokenType::lt, 1); }
-Token Tokenizer::eatEq() { return eatN(TokenType::eq, 2); }
-Token Tokenizer::eatAssign() { return eatN(TokenType::assign, 1); }
-Token Tokenizer::eatNe() { return eatN(TokenType::ne, 2); }
-Token Tokenizer::eatNot() { return eatN(TokenType::notOp, 1); }
+Token Tokenizer::eatOpeningBrace() { assert(currToken == '{'); return eatN(TokenType::openingBrace, 1); }
+Token Tokenizer::eatClosingBrace() { assert(currToken == '}'); return eatN(TokenType::closingBrace, 1); }
+void Tokenizer::eatWhitespace() { assert(isspace(currToken)); advance(); }
+Token Tokenizer::eatOpeningBracket() { assert(currToken == '('); return eatN(TokenType::openingBracket, 1); }
+Token Tokenizer::eatClosingBracket() { assert(currToken == ')'); return eatN(TokenType::closingBracket, 1); }
+Token Tokenizer::eatSemicolon() { assert(currToken == ';'); return eatN(TokenType::semicolon, 1); }
+Token Tokenizer::eatPlus() { assert(currToken == '+'); return eatN(TokenType::plus, 1); }
+Token Tokenizer::eatMinus() { assert(currToken == '-'); return eatN(TokenType::minus, 1); }
+Token Tokenizer::eatTimes() { assert(currToken == '*'); return eatN(TokenType::times, 1); }
+Token Tokenizer::eatDiv() { assert(currToken == '/'); return eatN(TokenType::div, 1); }
+Token Tokenizer::eatMod() { assert(currToken == '%'); return eatN(TokenType::mod, 1); }
+Token Tokenizer::eatAnd() { assert(currToken == '&'); return eatN(TokenType::andOp, 2); }
+Token Tokenizer::eatOr() { assert(currToken == '|'); return eatN(TokenType::orOp, 2); }
+Token Tokenizer::eatGe() { assert(currToken == '>'); return eatN(TokenType::ge, 2); }
+Token Tokenizer::eatGt() { assert(currToken == '>'); return eatN(TokenType::gt, 1); }
+Token Tokenizer::eatLe() { assert(currToken == '<'); return eatN(TokenType::le, 2); }
+Token Tokenizer::eatLt() { assert(currToken == '<'); return eatN(TokenType::lt, 1); }
+Token Tokenizer::eatEq() { assert(currToken == '='); return eatN(TokenType::eq, 2); }
+Token Tokenizer::eatAssign() { assert(currToken == '='); return eatN(TokenType::assign, 1); }
+Token Tokenizer::eatNe() { assert(currToken == '!'); return eatN(TokenType::ne, 2); }
+Token Tokenizer::eatNot() { assert(currToken == '!'); return eatN(TokenType::notOp, 1); }
 Token Tokenizer::eatName() {
     assert(isalpha(currToken));
     pair<int, int> start = { row, col };
@@ -91,6 +96,7 @@ Token Tokenizer::eatName() {
     return Token{TokenType::name, val, start, end};
 }
 Token Tokenizer::eatInteger() {
+    assert(isdigit(currToken));
     pair<int, int> start = { row, col };
 
     string val;
@@ -108,13 +114,15 @@ Token Tokenizer::eatInteger() {
 vector<Token> Tokenizer::tokenize() {
     vector<Token> tokens;
 
-    size_t inputLen = input.size();
     while (currToken != '\0') {
         Token tok;
 
         if (isspace(currToken)) {
             eatWhitespace(); // no token
-        } else if (currToken == '{') {
+            continue;
+        }
+
+        if (currToken == '{') {
             tok = eatOpeningBrace();
         } else if (currToken == '}') {
             tok = eatClosingBrace();
@@ -156,13 +164,16 @@ vector<Token> Tokenizer::tokenize() {
             tok = eatNot();
         } else if (isalpha(currToken)) {
             tok = eatName();
-            if (tok.getVal() == "read") tok = Token{TokenType::readOp, tok.getVal(), tok.getStart(), tok.getEnd()};
-            if (tok.getVal() == "print") tok = Token{TokenType::printOp, tok.getVal(), tok.getStart(), tok.getEnd()};
-            if (tok.getVal() == "call") tok = Token{TokenType::callOp, tok.getVal(), tok.getStart(), tok.getEnd()};
-            if (tok.getVal() == "while") tok = Token{TokenType::whileOp, tok.getVal(), tok.getStart(), tok.getEnd()};
-            if (tok.getVal() == "if") tok = Token{TokenType::ifOp, tok.getVal(), tok.getStart(), tok.getEnd()};
+            if (tok.getVal() == "procedure") tok = Token{TokenType::procedure, tok.getVal(), tok.getStart(), tok.getEnd()};
+            else if (tok.getVal() == "read") tok = Token{TokenType::readOp, tok.getVal(), tok.getStart(), tok.getEnd()};
+            else if (tok.getVal() == "print") tok = Token{TokenType::printOp, tok.getVal(), tok.getStart(), tok.getEnd()};
+            else if (tok.getVal() == "call") tok = Token{TokenType::callOp, tok.getVal(), tok.getStart(), tok.getEnd()};
+            else if (tok.getVal() == "while") tok = Token{TokenType::whileOp, tok.getVal(), tok.getStart(), tok.getEnd()};
+            else if (tok.getVal() == "if") tok = Token{TokenType::ifOp, tok.getVal(), tok.getStart(), tok.getEnd()};
         } else if (isdigit(currToken)) {
             tok = eatInteger();
+        } else {
+            throw runtime_error("unknown token " + string(1, currToken) + " at row " + to_string(row) + " col " + to_string(col));
         }
 
         tokens.push_back(tok);
@@ -170,6 +181,4 @@ vector<Token> Tokenizer::tokenize() {
 
     return tokens;
 }
-
-
 

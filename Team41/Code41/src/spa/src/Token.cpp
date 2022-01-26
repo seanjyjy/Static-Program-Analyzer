@@ -5,6 +5,7 @@
 #include "Token.h"
 
 #include <utility>
+#include <stdexcept>
 
 Token::Token() = default;
 
@@ -25,3 +26,42 @@ const pair<int, int> &Token::getStart() const {
 const pair<int, int> &Token::getEnd() const {
     return end;
 }
+
+const string Token::toString() const {
+    return string("Token{" + typeToString(type) + ", '" + val + "'}");
+}
+
+string Token::typeToString(TokenType type) {
+    switch (type) {
+        case TokenType::openingBrace: return "openingBrace";
+        case TokenType::closingBrace: return "closingBrace";
+        case TokenType::openingBracket : return "openingBracket";
+        case TokenType::closingBracket : return "closingBracket";
+        case TokenType::assign : return "assign";
+        case TokenType::semicolon : return "semicolon";
+        case TokenType::notOp : return "notOp";
+        case TokenType::andOp : return "andOp";
+        case TokenType::orOp : return "orOp";
+        case TokenType::gt : return "gt";
+        case TokenType::ge : return "ge";
+        case TokenType::lt : return "lt";
+        case TokenType::le : return "le";
+        case TokenType::eq : return "eq";
+        case TokenType::ne : return "ne";
+        case TokenType::plus : return "plus";
+        case TokenType::minus : return "minus";
+        case TokenType::times : return "times";
+        case TokenType::div : return "div";
+        case TokenType::mod : return "mod";
+        case TokenType::procedure : return "procedure";
+        case TokenType::readOp : return "readOp";
+        case TokenType::printOp : return "printOp";
+        case TokenType::callOp : return "callOp";
+        case TokenType::whileOp : return "whileOp";
+        case TokenType::ifOp : return "ifOp";
+        case TokenType::name : return "name";
+        case TokenType::integer : return "integer";
+        default: throw runtime_error("unknown token type");
+    }
+}
+
