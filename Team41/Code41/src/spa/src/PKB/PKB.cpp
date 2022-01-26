@@ -1,17 +1,28 @@
-#include<stdio.h>
-#include <iostream>
-#include <string>
+#include <utility>
 #include <vector>
 
 using namespace std;
 
 #include "PKB.h"
+#include "StmtTable.h"
 #include "TNode.h"
 
-int PKB::setProcToAST(PROC p, TNode* r) {
-	return 0;
+PKB::PKB() {
+    stmtTable = new StmtTable();
 }
 
-TNode* PKB::getRootAST (PROC p){
-	return nullptr;
+set<string> PKB::getStatements(StmtType type) {
+    return stmtTable->getAllStmtsByType(type);
+}
+
+StmtType PKB::getStatementType(string stmtNumber) {
+    return stmtTable->getStmtType(std::move(stmtNumber));
+}
+
+void PKB::setStatement(string stmtNum, StmtType type) {
+    return stmtTable->setStmt(std::move(stmtNum), type);
+}
+
+int PKB::getStatementCount() {
+    return stmtTable->getStmtCount();
 }
