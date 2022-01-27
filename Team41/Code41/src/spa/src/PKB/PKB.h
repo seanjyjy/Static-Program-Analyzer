@@ -2,20 +2,24 @@
 
 #include <string>
 #include <set>
-#include "StmtType.h"
 
 using namespace std;
 
 class StmtTable;  // no need to #include "StmtTable.h" as all I need is pointer
 class EntityTable;  // no need to #include "EntityTable.h" as all I need is pointer
+class UsesTable;  // no need to #include "UsesTable.h" as all I need is pointer
 
 class PKB {
 public:
     PKB();
+
     ~PKB();
 
     StmtTable *stmtTable;
     EntityTable *entityTable;
+    UsesTable *usesTable;
+
+    //======================================== Statement ==================================================
 
     set<string> getAssigns();// Gets list of assign statement
     set<string> getWhiles();// Gets list of while statement
@@ -23,9 +27,6 @@ public:
     set<string> getReads();// Gets list of read statement
     set<string> getPrints();// Gets list of print statement
     set<string> getCalls();// Gets list of call statement
-    set<string> getVariables();// Gets list of variables
-    set<string> getConstants();// Gets list of constants
-    set<string> getProcedures();// Gets list of procedure names
 
     /**
      * Registers a assign statement to PKB
@@ -63,10 +64,6 @@ public:
      */
     void registerCall(string stmtNum);
 
-    void registerVariable(string varName);// Registers a variable to PKB
-    void registerConstant(string constVal);// Registers a constant to PKB
-    void registerProcedure(string procName);// Registers a procedure to PKB
-
     bool isAssignStmt(string stmtNum);// Checks if statement is an assignment
     bool isWhileStmt(string stmtNum);// Checks if statement is a while statement
     bool isIfStmt(string stmtNum);// Checks if statement is an if statement
@@ -80,4 +77,28 @@ public:
      * @return set of statement numbers
      */
     int getStatementCount();
+
+    //======================================== Entities ==================================================
+
+    set<string> getVariables();// Gets list of variables
+    set<string> getConstants();// Gets list of constants
+    set<string> getProcedures();// Gets list of procedure names
+
+    void registerVariable(string varName);// Registers a variable to PKB
+    void registerConstant(string constVal);// Registers a constant to PKB
+    void registerProcedure(string procName);// Registers a procedure to PKB
+
+    //=========================================== Uses ===================================================
+
+    void registerUsesS(string stmtNum, string varName);// Registers to PKB that the specified stmt uses specified var
+    bool isUses(string stmtNum, string varName);// Checks if specified statement uses specified variable
+    set<string> getUsesByVar(string varName);// Gets list of statements that uses specified variable
+    set<string> getUsesByStmt(string stmtNum);// Gets list of variables that is used by specified statement
+    set<pair<string, string>> getAllUses();// Gets list of stmt-var pair where stmt uses var
+
+    void registerUsesP(string procName, string varName);// Registers to PKB that the specified proc uses specified var
+    bool isUsesP(string procName, string varName);// Checks if specified procedure uses specified variable
+    set<string> getUsesPByVar(string varName);// Gets list of procedures that uses specified variable
+    set<string> getUsesByProc(string procName);// Gets list of variables that is used by specified procedure
+    set<pair<string, string>> getAllUsesP();// Gets list of proc-var pair where stmt uses var
 };
