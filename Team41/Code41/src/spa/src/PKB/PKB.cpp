@@ -13,6 +13,10 @@ PKB::PKB() {
     stmtTable = new StmtTable();
     entityTable = new EntityTable();
 }
+PKB::~PKB() {
+    delete stmtTable;
+    delete entityTable;
+}
 
 // metadata register/get/query methods
 set<string> PKB::getAssigns() { return stmtTable->getAllStmtsByType(ASSIGN); }

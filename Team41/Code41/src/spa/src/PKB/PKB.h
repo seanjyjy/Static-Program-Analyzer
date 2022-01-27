@@ -12,6 +12,7 @@ class EntityTable;  // no need to #include "EntityTable.h" as all I need is poin
 class PKB {
 public:
     PKB();
+    ~PKB();
 
     StmtTable *stmtTable;
     EntityTable *entityTable;
