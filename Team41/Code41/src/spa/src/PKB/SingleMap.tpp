@@ -37,7 +37,7 @@ bool SingleMap<K, V>::hasKeyValue(K key, V val) {
 
 template<class K, class V>
 bool SingleMap<K, V>::hasKey(K targetKey) {
-    return keySet.find(targetKey) != keySet.end();;
+    return keySet.find(targetKey) != keySet.end();
 }
 
 template<class K, class V>
