@@ -1,9 +1,10 @@
 //
 // Created by JinHao on 26/1/22.
 //
+#pragma once
 
-#ifndef SPA_ONETOONE_H
-#define SPA_ONETOONE_H
+#ifndef SPA_MULTIMAP_H
+#define SPA_MULTIMAP_H
 
 #include <map>
 #include <set>
@@ -11,20 +12,26 @@
 
 using namespace std;
 
-template <typename K, typename V>
-class OneToOne {
+/**
+ * Mapping of a unique key to a set of values
+ *
+ * @tparam K the key of the relation
+ * @tparam V the val of the relation
+ */
+template<typename K, typename V>
+class MultiMap {
 private:
-    map<K, V> mapping;
+    map<K, set<V>> mapping;
     set<K> keySet;
 
 public:
     /**
-     * Get the one-to-one relationship by key
+     * Get many relationships by key
      *
      * @param key the key to query by
-     * @return the value that is mapped to specified key
+     * @return the set of values that are related to key
      */
-    V get(K key);
+    set<V> get(K key);
 
     /**
      * Get the set of keys used in table
@@ -47,6 +54,7 @@ public:
      * @return true if exists, false otherwise
      */
     bool hasKey(K targetKey);
+
     /**
      * Checks if key-value pair exists in table
      *
@@ -57,12 +65,22 @@ public:
     bool hasKeyValue(K key, V val);
 
     /**
-     * Puts the key-value pair into table
+     * Add value into one-to-many relationship
+     *
+     * @param key the key that the value belongs to
+     * @param val The value to add in
+     */
+    void add(K key, V val);
+
+    /**
+     * Puts the one-to-many relation for the specified key or replace if relation exists
      *
      * @param key the target key
-     * @param values the value that is mapped to target key
+     * @param values the set of values to add into the table
      */
-    void put(K key, V val);
+    void put(K key, set<V> values);
 };
 
-#endif //SPA_ONETOONE_H
+#include "MultiMap.tpp"
+
+#endif //SPA_MULTIMAP_H

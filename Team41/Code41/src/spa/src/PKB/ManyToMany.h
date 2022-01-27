@@ -1,35 +1,26 @@
 //
-// Created by JinHao on 26/1/22.
+// Created by JinHao on 27/1/22.
 //
-#pragma once
 
-#ifndef SPA_ONETOMANY_H
-#define SPA_ONETOMANY_H
-
-#include "MultiMap.h"
-#include "SingleMap.h"
+#ifndef SPA_MANYTOMANY_H
+#define SPA_MANYTOMANY_H
 
 #include <map>
 #include <set>
 #include <string>
 
+#include "MultiMap.h"
+
 using namespace std;
 
-/**
- * A K key can have multiple V value but
- * each V value can only have one K key
- *
- * @tparam K the key of the relation
- * @tparam V the val of the relation
- */
 template<typename K, typename V>
-class OneToMany {
+class ManyToMany {
 private:
     string relationName;
     MultiMap<K, V> keyToValues;
-    SingleMap<V, K> valuesToKey;
+    MultiMap<V, K> valuesToKey;
 public:
-    explicit OneToMany(const string &relationName);
+    explicit ManyToMany(const string &relationName);
 
     /**
      * Gets set of values that belongs to the specified key
@@ -39,14 +30,13 @@ public:
      */
     set<V> getValuesFromKey(K key);
 
-
     /**
-     * Gets the key that the value belong to
+     * Gets set of keys that the value belong to
      *
      * @param value the value to query by
      * @return the key that value belongs to
      */
-    K getKeyFromValue(V value);
+    set<K> getKeyFromValue(V value);
 
     /**
      * Checks if key exists in table
@@ -65,7 +55,7 @@ public:
     bool hasVal(V targetVal);
 
     /**
-     * Checks if the mapping exists in one-to-many relation
+     * Checks if the mapping exists in many-to-many relation
      *
      * @param key the key to query
      * @param val the value to query
@@ -75,11 +65,9 @@ public:
 
     /**
      * Adds the key-value mapping into the table
-     * Checks if mapping does not violate one-to-many constraints
      *
      * @param key the key value to set
      * @param val the value mapped to specified key
-     * @throws error if insertion results in val having multiple keys
      */
     void addMapping(K key, V val);
 
@@ -112,6 +100,6 @@ public:
     int valSize();
 };
 
-#include "OneToMany.tpp"
+#include "ManyToMany.tpp"
 
-#endif //SPA_ONETOMANY_H
+#endif //SPA_MANYTOMANY_H
