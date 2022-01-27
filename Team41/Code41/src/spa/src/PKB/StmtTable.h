@@ -5,26 +5,14 @@
 #ifndef SPA_STMTTABLE_H
 #define SPA_STMTTABLE_H
 
-#include <PKB/OneToMany.cpp>
-#include <PKB/OneToOne.cpp>
+#include "OneToMany.h"
 
-/**
- * The types of SIMPLE statements
- */
-enum StmtType {
-    ASSIGN,
-    WHILE,
-    IF,
-    READ,
-    PRINT,
-    CALL
-};
+#include "StmtType.h"
 
 using namespace std;
 class StmtTable {
 private:
-    OneToMany<StmtType, string> typesToStmts;
-    OneToOne<string, StmtType> stmtToType;
+    OneToMany<StmtType, string> mapping;
 public:
     StmtTable();
 
@@ -58,7 +46,7 @@ public:
      *
      * @param stmtNum the statement number in string
      * @param type the type of the statement
-     * @throws runtime_error if type of stmtNumber is already set
+     * @throws error if type of stmtNumber is already set
      */
     void setStmt(string stmtNum, StmtType type);
 

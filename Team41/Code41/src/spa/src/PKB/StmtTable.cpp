@@ -1,43 +1,38 @@
 //
 // Created by JinHao on 26/1/22.
 //
-#include <stdexcept>
 #include <string>
 
 #include "StmtTable.h"
 
 using namespace std;
 
-StmtTable::StmtTable() = default;
+StmtTable::StmtTable():mapping("StmtTable") {}
 
 set<string> StmtTable::getAllStmtsByType(StmtType type) {
-    return typesToStmts.get(type);
+    return mapping.getValuesFromKey(type);
 }
 
 StmtType StmtTable::getStmtType(string stmtNumber) {
-    return stmtToType.get(stmtNumber);
+    return mapping.getKeyFromValue(stmtNumber);
 }
 
 bool StmtTable::isStmtType(string stmtNumber, StmtType type) {
-    return stmtToType.hasKeyValue(stmtNumber, type);
+    return mapping.hasMapping(type, stmtNumber);
 }
 
 void StmtTable::setStmt(string stmtNum, StmtType type) {
-    if (stmtToType.hasKey(stmtNum) && !stmtToType.hasKeyValue(stmtNum, type)) {
-        throw runtime_error("[PKB][StmtTable] Multiple statement types detected in statement: " + stmtNum);
-    }
-    stmtToType.put(stmtNum, type);
-    typesToStmts.add(type, stmtNum);
+    return mapping.addMapping(type, stmtNum);
 }
 
 int StmtTable::getStmtCount() {
-    return stmtToType.keySize();
+    return mapping.valSize();
 }
 
 set<string> StmtTable::getAllStmts() {
-    return stmtToType.keys();
+    return mapping.getValues();
 }
 
 set<StmtType> StmtTable::getAllTypes() {
-    return typesToStmts.keys();
+    return mapping.getKeys();
 }
