@@ -1,6 +1,7 @@
 //
 // Created by JinHao on 26/1/22.
 //
+#pragma once
 
 #ifndef SPA_STMTTABLE_H
 #define SPA_STMTTABLE_H

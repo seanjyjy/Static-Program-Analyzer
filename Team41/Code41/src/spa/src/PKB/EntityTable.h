@@ -1,6 +1,7 @@
 //
 // Created by JinHao on 27/1/22.
 //
+#pragma once
 
 #ifndef SPA_ENTITYTABLE_H
 #define SPA_ENTITYTABLE_H

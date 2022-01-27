@@ -1,6 +1,7 @@
 //
 // Created by JinHao on 27/1/22.
 //
+#pragma once
 
 #ifndef SPA_STMTTYPE_H
 #define SPA_STMTTYPE_H
