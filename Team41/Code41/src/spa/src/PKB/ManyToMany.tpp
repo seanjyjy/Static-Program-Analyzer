@@ -56,6 +56,10 @@ set<V> ManyToMany<K, V>::getValues() {
     return valuesToKey.keys();
 }
 
+template<typename K, typename V>
+set<pair<K, V>> ManyToMany<K, V>::getEntries() {
+    return keyToValues.entries();
+}
 
 template<class K, class V>
 int ManyToMany<K, V>::keySize() {

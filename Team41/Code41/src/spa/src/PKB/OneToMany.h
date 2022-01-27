@@ -98,6 +98,13 @@ public:
     set<V> getValues();
 
     /**
+     * Gets all entries in the relation table
+     *
+     * @return set of key-value pair
+     */
+    set<pair<K, V>> getEntries();
+
+    /**
      * Gets the number of keys stored in table
      *
      * @return number of keys

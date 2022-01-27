@@ -16,6 +16,15 @@ set<K> SingleMap<K, V>::keys() {
 }
 
 template<class K, class V>
+set<pair<K, V>> SingleMap<K, V>::entries() {
+    set<pair<K, V>> resultSet;
+    for (pair<K, V> element : mapping) {
+        resultSet.insert(element);
+    }
+    return resultSet;
+}
+
+template<class K, class V>
 int SingleMap<K, V>::keySize() {
     return keySet.size();
 }

@@ -59,15 +59,22 @@ TEST_CASE("SingleMap: adding values") {
 TEST_CASE("SingleMap: set equivalence") {
     SingleMap<TestKeys, TestValues> table;
     set<TestKeys> comparisonSet;
+    set<pair<TestKeys, TestValues>> entrySet;
     REQUIRE(table.keys() == comparisonSet);
+    REQUIRE(table.entries() == entrySet);
 
     // populating table
     table.put(TestKeys::TEST_KEY_1, TestValues::TEST_VALUE_1);
     comparisonSet.insert(TestKeys::TEST_KEY_1);
+    entrySet.insert(make_pair(TestKeys::TEST_KEY_1, TestValues::TEST_VALUE_1));
     REQUIRE(table.keys() == comparisonSet);
+    REQUIRE(table.entries() == entrySet);
 
     table.put(TestKeys::TEST_KEY_2, TestValues::TEST_VALUE_1);
     REQUIRE_FALSE(table.keys() == comparisonSet);
+    REQUIRE_FALSE(table.entries() == entrySet);
     comparisonSet.insert(TestKeys::TEST_KEY_2);
+    entrySet.insert(make_pair(TestKeys::TEST_KEY_2, TestValues::TEST_VALUE_1));
     REQUIRE(table.keys() == comparisonSet);
+    REQUIRE(table.entries() == entrySet);
 }

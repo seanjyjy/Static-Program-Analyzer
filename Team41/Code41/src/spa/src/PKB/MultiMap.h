@@ -41,6 +41,13 @@ public:
     set<K> keys();
 
     /**
+     * Gets all entries used in the table
+     *
+     * @return set of key-value pair
+     */
+    set<pair<K, V>> entries();
+
+    /**
      * Get the number of keys in table
      *
      * @return number of keys

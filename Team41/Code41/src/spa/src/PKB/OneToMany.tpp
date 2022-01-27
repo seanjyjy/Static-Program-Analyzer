@@ -57,6 +57,11 @@ set<V> OneToMany<K, V>::getValues() {
     return valuesToKey.keys();
 }
 
+template<typename K, typename V>
+set<pair<K, V>> OneToMany<K, V>::getEntries() {
+    return keyToValues.entries();
+}
+
 template<class K, class V>
 int OneToMany<K, V>::keySize() {
     return keyToValues.keySize();

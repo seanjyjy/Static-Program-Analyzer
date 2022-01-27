@@ -16,6 +16,18 @@ set<K> MultiMap<K, V>::keys() {
 }
 
 template<class K, class V>
+set<pair<K, V>> MultiMap<K, V>::entries() {
+    set<pair<K, V>> resultSet;
+    for (pair<K, set<V>> element : mapping) {
+        for(V val : element.second) {
+            pair<K, V> newPair = make_pair(element.first, val);
+            resultSet.insert(newPair);
+        }
+    }
+    return resultSet;
+}
+
+template<class K, class V>
 int MultiMap<K, V>::keySize() {
     return keySet.size();
 }
