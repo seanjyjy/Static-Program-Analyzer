@@ -163,3 +163,51 @@ TEST_CASE("PKB: statements") {
         REQUIRE(pkbManager.getStatementCount() == 4);
     }
 }
+
+TEST_CASE("PKB: uses abstraction") {
+    set<string> varList;
+    set<pair<string, string>> entryList;
+    string var[] = {"v1", "v2"};
+
+    PKB pkbManager;
+
+    SECTION("UsesS") {
+        set<string> stmtList;
+        string stmt[] = {"1", "2"};
+
+        REQUIRE(pkbManager.getAllUses() == entryList);
+        REQUIRE(pkbManager.getUsesByStmt(stmt[0]) == varList);
+        REQUIRE(pkbManager.getUsesByVar(var[0]) == stmtList);
+        REQUIRE_FALSE(pkbManager.isUses(stmt[0], var[0]));
+
+        pkbManager.registerUsesS(stmt[0], var[0]);
+        entryList.insert(make_pair(stmt[0], var[0]));
+        varList.insert(var[0]);
+        stmtList.insert(stmt[0]);
+
+        REQUIRE(pkbManager.isUses(stmt[0], var[0]));
+        REQUIRE(pkbManager.getUsesByStmt(stmt[0]) == varList);
+        REQUIRE(pkbManager.getUsesByVar(var[0]) == stmtList);
+        REQUIRE(pkbManager.getAllUses() == entryList);
+    }
+
+    SECTION("UsesP") {
+        set<string> procList;
+        string proc[] = {"p1", "p2"};
+
+        REQUIRE(pkbManager.getAllUsesP() == entryList);
+        REQUIRE(pkbManager.getUsesPByVar(var[0]) == procList);
+        REQUIRE(pkbManager.getUsesByProc(proc[0]) == varList);
+        REQUIRE_FALSE(pkbManager.isUsesP(proc[0], var[0]));
+
+        pkbManager.registerUsesP(proc[0], var[0]);
+        entryList.insert(make_pair(proc[0], var[0]));
+        varList.insert(var[0]);
+        procList.insert(proc[0]);
+
+        REQUIRE(pkbManager.isUsesP(proc[0], var[0]));
+        REQUIRE(pkbManager.getUsesByProc(proc[0]) == varList);
+        REQUIRE(pkbManager.getUsesPByVar(var[0]) == procList);
+        REQUIRE(pkbManager.getAllUsesP() == entryList);
+    }
+}
