@@ -2,7 +2,6 @@
 // Created by JinHao on 26/1/22.
 //
 
-#include "iostream"
 #include "catch.hpp"
 #include "PKB/PKB.h"
 
@@ -175,20 +174,20 @@ TEST_CASE("PKB: uses abstraction") {
         set<string> stmtList;
         string stmt[] = {"1", "2"};
 
-        REQUIRE(pkbManager.getAllUses() == entryList);
+        REQUIRE(pkbManager.getAllUsesS() == entryList);
         REQUIRE(pkbManager.getUsesByStmt(stmt[0]) == varList);
-        REQUIRE(pkbManager.getUsesByVar(var[0]) == stmtList);
-        REQUIRE_FALSE(pkbManager.isUses(stmt[0], var[0]));
+        REQUIRE(pkbManager.getUsesSByVar(var[0]) == stmtList);
+        REQUIRE_FALSE(pkbManager.isUsesS(stmt[0], var[0]));
 
         pkbManager.registerUsesS(stmt[0], var[0]);
         entryList.insert(make_pair(stmt[0], var[0]));
         varList.insert(var[0]);
         stmtList.insert(stmt[0]);
 
-        REQUIRE(pkbManager.isUses(stmt[0], var[0]));
+        REQUIRE(pkbManager.isUsesS(stmt[0], var[0]));
         REQUIRE(pkbManager.getUsesByStmt(stmt[0]) == varList);
-        REQUIRE(pkbManager.getUsesByVar(var[0]) == stmtList);
-        REQUIRE(pkbManager.getAllUses() == entryList);
+        REQUIRE(pkbManager.getUsesSByVar(var[0]) == stmtList);
+        REQUIRE(pkbManager.getAllUsesS() == entryList);
     }
 
     SECTION("UsesP") {
@@ -209,5 +208,53 @@ TEST_CASE("PKB: uses abstraction") {
         REQUIRE(pkbManager.getUsesByProc(proc[0]) == varList);
         REQUIRE(pkbManager.getUsesPByVar(var[0]) == procList);
         REQUIRE(pkbManager.getAllUsesP() == entryList);
+    }
+}
+
+TEST_CASE("PKB: modifies abstraction") {
+    set<string> varList;
+    set<pair<string, string>> entryList;
+    string var[] = {"v1", "v2"};
+
+    PKB pkbManager;
+
+    SECTION("ModifiesS") {
+        set<string> stmtList;
+        string stmt[] = {"1", "2"};
+
+        REQUIRE(pkbManager.getAllModifiesS() == entryList);
+        REQUIRE(pkbManager.getModifiesByStmt(stmt[0]) == varList);
+        REQUIRE(pkbManager.getModifiesSByVar(var[0]) == stmtList);
+        REQUIRE_FALSE(pkbManager.isModifiesS(stmt[0], var[0]));
+
+        pkbManager.registerModifiesS(stmt[0], var[0]);
+        entryList.insert(make_pair(stmt[0], var[0]));
+        varList.insert(var[0]);
+        stmtList.insert(stmt[0]);
+
+        REQUIRE(pkbManager.isModifiesS(stmt[0], var[0]));
+        REQUIRE(pkbManager.getModifiesByStmt(stmt[0]) == varList);
+        REQUIRE(pkbManager.getModifiesSByVar(var[0]) == stmtList);
+        REQUIRE(pkbManager.getAllModifiesS() == entryList);
+    }
+
+    SECTION("ModifiesP") {
+        set<string> procList;
+        string proc[] = {"p1", "p2"};
+
+        REQUIRE(pkbManager.getAllModifiesP() == entryList);
+        REQUIRE(pkbManager.getModifiesPByVar(var[0]) == procList);
+        REQUIRE(pkbManager.getModifiesByProc(proc[0]) == varList);
+        REQUIRE_FALSE(pkbManager.isModifiesP(proc[0], var[0]));
+
+        pkbManager.registerModifiesP(proc[0], var[0]);
+        entryList.insert(make_pair(proc[0], var[0]));
+        varList.insert(var[0]);
+        procList.insert(proc[0]);
+
+        REQUIRE(pkbManager.isModifiesP(proc[0], var[0]));
+        REQUIRE(pkbManager.getModifiesByProc(proc[0]) == varList);
+        REQUIRE(pkbManager.getModifiesPByVar(var[0]) == procList);
+        REQUIRE(pkbManager.getAllModifiesP() == entryList);
     }
 }
