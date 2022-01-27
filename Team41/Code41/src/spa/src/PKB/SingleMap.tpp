@@ -31,7 +31,7 @@ int SingleMap<K, V>::keySize() {
 
 template<class K, class V>
 bool SingleMap<K, V>::hasKeyValue(K key, V val) {
-    typename std::map<K, V>::iterator it = mapping.find(key);
+    typename map<K, V>::iterator it = mapping.find(key);
     return it != mapping.end() && it->second == val;
 }
 
