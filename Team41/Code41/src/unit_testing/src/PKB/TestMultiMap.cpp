@@ -2,7 +2,7 @@
 // Created by JinHao on 26/1/22.
 //
 
-#include <PKB/OneToMany.cpp>
+#include "PKB/MultiMap.h"
 
 #include "catch.hpp"
 
@@ -18,8 +18,8 @@ enum TestValues {
     TEST_VALUE_2,
 };
 
-TEST_CASE("OneToMany: empty table") {
-    OneToMany<TestKeys, TestValues> table;
+TEST_CASE("MultiMap: empty table") {
+    MultiMap<TestKeys, TestValues> table;
 
     // Before adding key values
     REQUIRE_FALSE(table.hasKey(TestKeys::TEST_KEY_1));
@@ -29,8 +29,8 @@ TEST_CASE("OneToMany: empty table") {
     REQUIRE(table.keySize() == 0);
 }
 
-TEST_CASE("OneToMany: adding values") {
-    OneToMany<TestKeys, TestValues> table;
+TEST_CASE("MultiMap: adding values") {
+    MultiMap<TestKeys, TestValues> table;
 
     // Adding one key-value
     table.add(TestKeys::TEST_KEY_1, TestValues::TEST_VALUE_1);
@@ -65,8 +65,8 @@ TEST_CASE("OneToMany: adding values") {
     REQUIRE(table.keySize() == 2);
 }
 
-TEST_CASE("OneToMany: set equivalence") {
-    OneToMany<TestKeys, TestValues> table;
+TEST_CASE("MultiMap: set equivalence") {
+    MultiMap<TestKeys, TestValues> table;
     set<TestKeys> comparisonSet;
     REQUIRE(table.keys() == comparisonSet);
 

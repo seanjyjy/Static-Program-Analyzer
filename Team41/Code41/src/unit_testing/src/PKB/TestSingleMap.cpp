@@ -2,7 +2,7 @@
 // Created by JinHao on 26/1/22.
 //
 
-#include <PKB/OneToOne.cpp>
+#include "PKB/SingleMap.h"
 
 #include "TNode.h"
 #include "catch.hpp"
@@ -19,8 +19,8 @@ enum TestValues {
     TEST_VALUE_2,
 };
 
-TEST_CASE("OneToOne: empty table") {
-    OneToOne<TestKeys, TestValues> table;
+TEST_CASE("SingleMap: empty table") {
+    SingleMap<TestKeys, TestValues> table;
 
     // Before adding key values
     REQUIRE_FALSE(table.hasKey(TestKeys::TEST_KEY_1));
@@ -28,8 +28,8 @@ TEST_CASE("OneToOne: empty table") {
     REQUIRE(table.keySize() == 0);
 }
 
-TEST_CASE("OneToOne: adding values") {
-    OneToOne<TestKeys, TestValues> table;
+TEST_CASE("SingleMap: adding values") {
+    SingleMap<TestKeys, TestValues> table;
 
     // Adding one key-value
     table.put(TestKeys::TEST_KEY_1, TestValues::TEST_VALUE_1);
@@ -56,8 +56,8 @@ TEST_CASE("OneToOne: adding values") {
     REQUIRE(table.keySize() == 2);
 }
 
-TEST_CASE("OneToOne: set equivalence") {
-    OneToOne<TestKeys, TestValues> table;
+TEST_CASE("SingleMap: set equivalence") {
+    SingleMap<TestKeys, TestValues> table;
     set<TestKeys> comparisonSet;
     REQUIRE(table.keys() == comparisonSet);
 
