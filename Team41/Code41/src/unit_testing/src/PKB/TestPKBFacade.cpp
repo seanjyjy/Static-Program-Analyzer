@@ -26,13 +26,17 @@ TEST_CASE("PKB: entities") {
         REQUIRE(pkbManager.getVariables() == FILLED_SET_2);
         // check that other table are not affected
         REQUIRE(pkbManager.getConstants() == EMPTY_SET);
-    }SECTION("add constants") {
+    }
+
+    SECTION("add constants") {
         REQUIRE(pkbManager.getConstants() == EMPTY_SET);
         REQUIRE_NOTHROW(pkbManager.registerConstant(entity[0]));
         REQUIRE(pkbManager.getConstants() == FILLED_SET_1);
         REQUIRE_NOTHROW(pkbManager.registerConstant(entity[1]));
         REQUIRE(pkbManager.getConstants() == FILLED_SET_2);
-    }SECTION("add procedure") {
+    }
+
+    SECTION("add procedure") {
         REQUIRE(pkbManager.getProcedures() == EMPTY_SET);
         REQUIRE_NOTHROW(pkbManager.registerProcedure(entity[0]));
         REQUIRE(pkbManager.getProcedures() == FILLED_SET_1);

@@ -7,88 +7,79 @@
 
 using namespace std;
 
-set<string> EMPTY_SET;
-
-TEST_CASE("EntityTable: constant") {
+TEST_CASE("EntityTable") {
     EntityTable table;
+    set<string> EMPTY_SET;
 
-    set<string> expectedConstant;
-    // Before adding
-    REQUIRE(table.getConstants() == expectedConstant);
-    REQUIRE(table.getVariables() == EMPTY_SET);
-    REQUIRE(table.getProcedures() == EMPTY_SET);
+    SECTION("empty state") {
+        REQUIRE(table.getConstants() == EMPTY_SET);
+        REQUIRE(table.getVariables() == EMPTY_SET);
+        REQUIRE(table.getProcedures() == EMPTY_SET);
+    }
 
-    // add 1 value
-    REQUIRE_NOTHROW(table.addConstant("abc"));
-    expectedConstant.insert("abc");
-    REQUIRE(table.getConstants() == expectedConstant);
+    SECTION("adding constant") {
+        set<string> expectedConstant;
 
-    // add repeated value
-    REQUIRE_NOTHROW(table.addConstant("abc"));
-    REQUIRE(table.getConstants() == expectedConstant);
+        // add 1 value
+        REQUIRE_NOTHROW(table.addConstant("abc"));
+        expectedConstant.insert("abc");
+        REQUIRE(table.getConstants() == expectedConstant);
 
-    // add another value
-    REQUIRE_NOTHROW(table.addConstant("ABC"));
-    expectedConstant.insert("ABC");
-    REQUIRE(table.getConstants() == expectedConstant);
+        // add repeated value
+        REQUIRE_NOTHROW(table.addConstant("abc"));
+        REQUIRE(table.getConstants() == expectedConstant);
 
-    // other entities not affected
-    REQUIRE(table.getVariables() == EMPTY_SET);
-    REQUIRE(table.getProcedures() == EMPTY_SET);
-}
+        // add another value
+        REQUIRE_NOTHROW(table.addConstant("ABC"));
+        expectedConstant.insert("ABC");
+        REQUIRE(table.getConstants() == expectedConstant);
 
-TEST_CASE("EntityTable: adding variables") {
-    EntityTable table;
+        // other entities not affected
+        REQUIRE(table.getVariables() == EMPTY_SET);
+        REQUIRE(table.getProcedures() == EMPTY_SET);
+    }
 
-    set<string> expectedVariable;
-    // Before adding
-    REQUIRE(table.getConstants() == EMPTY_SET);
-    REQUIRE(table.getVariables() == expectedVariable);
-    REQUIRE(table.getProcedures() == EMPTY_SET);
+    SECTION("adding variables") {
+        set<string> expectedVariable;
 
-    // add 1 value
-    REQUIRE_NOTHROW(table.addVariable("abc"));
-    expectedVariable.insert("abc");
-    REQUIRE(table.getVariables() == expectedVariable);
+        // add 1 value
+        REQUIRE_NOTHROW(table.addVariable("abc"));
+        expectedVariable.insert("abc");
+        REQUIRE(table.getVariables() == expectedVariable);
 
-    // add repeated value
-    REQUIRE_NOTHROW(table.addVariable("abc"));
-    REQUIRE(table.getVariables() == expectedVariable);
+        // add repeated value
+        REQUIRE_NOTHROW(table.addVariable("abc"));
+        REQUIRE(table.getVariables() == expectedVariable);
 
-    // add another value
-    REQUIRE_NOTHROW(table.addVariable("ABC"));
-    expectedVariable.insert("ABC");
-    REQUIRE(table.getVariables() == expectedVariable);
+        // add another value
+        REQUIRE_NOTHROW(table.addVariable("ABC"));
+        expectedVariable.insert("ABC");
+        REQUIRE(table.getVariables() == expectedVariable);
 
-    // other entities not affected
-    REQUIRE(table.getConstants() == EMPTY_SET);
-    REQUIRE(table.getProcedures() == EMPTY_SET);
-}
+        // other entities not affected
+        REQUIRE(table.getConstants() == EMPTY_SET);
+        REQUIRE(table.getProcedures() == EMPTY_SET);
+    }
 
-TEST_CASE("EntityTable: adding procedures") {
-    EntityTable table;
+    SECTION("adding procedures") {
+        set<string> expectedProcedure;
 
-    set<string> expectedProcedure;
-    // Before adding
-    REQUIRE(table.getConstants() == EMPTY_SET);
-    REQUIRE(table.getVariables() == EMPTY_SET);
-    REQUIRE(table.getProcedures() == expectedProcedure);
+        // add 1 value
+        REQUIRE_NOTHROW(table.addProcedure("abc"));
+        expectedProcedure.insert("abc");
+        REQUIRE(table.getProcedures() == expectedProcedure);
 
-    // add 1 value
-    REQUIRE_NOTHROW(table.addProcedure("abc"));
-    expectedProcedure.insert("abc");
-    REQUIRE(table.getProcedures() == expectedProcedure);
+        // add repeated value
+        REQUIRE_NOTHROW(table.addProcedure("abc"));
+        REQUIRE(table.getProcedures() == expectedProcedure);
 
-    // add repeated value
-    REQUIRE_NOTHROW(table.addProcedure("abc"));
-    REQUIRE(table.getProcedures() == expectedProcedure);
+        // add another value
+        REQUIRE_NOTHROW(table.addProcedure("ABC"));
+        expectedProcedure.insert("ABC");
+        REQUIRE(table.getProcedures() == expectedProcedure);
 
-    // add another value
-    REQUIRE_NOTHROW(table.addProcedure("ABC"));
-    expectedProcedure.insert("ABC");
-    REQUIRE(table.getProcedures() == expectedProcedure);
-
-    // other entities not affected
-    REQUIRE(table.getConstants() == EMPTY_SET);
-    REQUIRE(table.getVariables() == EMPTY_SET);
+        // other entities not affected
+        REQUIRE(table.getConstants() == EMPTY_SET);
+        REQUIRE(table.getVariables() == EMPTY_SET);
+    }
 }
