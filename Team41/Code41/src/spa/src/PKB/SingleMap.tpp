@@ -18,8 +18,8 @@ set<K> SingleMap<K, V>::keys() {
 template<class K, class V>
 set<pair<K, V>> SingleMap<K, V>::entries() {
     set<pair<K, V>> resultSet;
-    for (pair<K, V> element : mapping) {
-        resultSet.insert(element);
+    for (K key : keySet) {
+        resultSet.insert(make_pair(key, mapping[key]));
     }
     return resultSet;
 }

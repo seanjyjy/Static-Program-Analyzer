@@ -18,9 +18,9 @@ set<K> MultiMap<K, V>::keys() {
 template<class K, class V>
 set<pair<K, V>> MultiMap<K, V>::entries() {
     set<pair<K, V>> resultSet;
-    for (pair<K, set<V>> element : mapping) {
-        for(V val : element.second) {
-            pair<K, V> newPair = make_pair(element.first, val);
+    for (K key : keySet) {
+        for(V val : mapping[key]) {
+            pair<K, V> newPair = make_pair(key, val);
             resultSet.insert(newPair);
         }
     }
