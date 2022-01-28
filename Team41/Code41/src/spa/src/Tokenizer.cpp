@@ -1,14 +1,9 @@
-//
-// Created by Kendrick on 26/1/2022.
-//
-
 #include "Tokenizer.h"
 
 #include <utility>
 #include <cctype>
 #include <stdexcept>
 #include <cassert>
-#include <iostream>
 
 // member initialization
 Tokenizer::Tokenizer(string s): input(s), idx(0), row(0), col(0) {
@@ -39,6 +34,7 @@ void Tokenizer::advancePosition() {
     }
 }
 
+// returns n consecutive characters from the current index, or less than n if insufficient chars remain.
 string Tokenizer::peek(int n) {
     return input.substr(idx, n);
 }
@@ -48,7 +44,6 @@ bool Tokenizer::eof() {
 }
 
 Token Tokenizer::eatN(TokenType type, int n) {
-    // TODO: can we upgrade to C++20 so I can use #include <format>
     if (n > (input.size() - idx)) throw length_error("eating too many characters: " + to_string(n));
 
     pair<int, int> start = { row, col };

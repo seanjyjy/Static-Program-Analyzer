@@ -15,20 +15,20 @@ TokenType Token::getType() const {
     return type;
 }
 
-const string &Token::getVal() const {
+const string Token::getVal() const {
     return val;
 }
 
-const pair<int, int> &Token::getStart() const {
+const pair<int, int> Token::getStart() const {
     return start;
 }
 
-const pair<int, int> &Token::getEnd() const {
+const pair<int, int> Token::getEnd() const {
     return end;
 }
 
 const string Token::toString() const {
-    return string("Token{" + typeToString(type) + ", '" + val + "'}");
+    return "Token{" + typeToString(type) + ", '" + val + "'}";
 }
 
 string Token::typeToString(TokenType type) {

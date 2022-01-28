@@ -1,9 +1,4 @@
-//
-// Created by Kendrick on 26/1/2022.
-//
-
-#ifndef SPA_TOKENIZER_H
-#define SPA_TOKENIZER_H
+#pragma once
 
 #include <string>
 #include <vector>

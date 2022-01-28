@@ -1,9 +1,4 @@
-//
-// Created by Kendrick on 26/1/2022.
-//
-
-#ifndef SPA_TOKEN_H
-#define SPA_TOKEN_H
+#pragma once
 
 #include <string>
 
@@ -50,9 +45,9 @@ public:
     Token();
     Token(TokenType type, string val, pair<int, int> start, pair<int, int> end);
     TokenType getType() const;
-    const string &getVal() const;
-    const pair<int, int> &getStart() const;
-    const pair<int, int> &getEnd() const;
+    const string getVal() const;
+    const pair<int, int> getStart() const;
+    const pair<int, int> getEnd() const;
     const string toString() const;
     static string typeToString(TokenType type);
 };
