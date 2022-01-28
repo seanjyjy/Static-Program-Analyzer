@@ -1,8 +1,9 @@
 #pragma once
 
-#include <map>
-#include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -15,8 +16,8 @@ using namespace std;
 template<typename K, typename V>
 class MultiMap {
 private:
-    map<K, set<V>> mapping;
-    set<K> keySet;
+    unordered_map<K, unordered_set<V>> mapping;
+    unordered_set<K> keySet;
 
 public:
     /**
@@ -25,21 +26,21 @@ public:
      * @param key the key to query by
      * @return the set of values that are related to key
      */
-    set<V> get(K key);
+    unordered_set<V> get(K key);
 
     /**
      * Get the set of keys used in table
      *
      * @return set of keys
      */
-    set<K> keys();
+    unordered_set<K> keys();
 
     /**
-     * Gets all entries used in the table
+     * Gets all unique entries used in the table
      *
-     * @return set of key-value pair
+     * @return list of key-value pair
      */
-    set<pair<K, V>> entries();
+    vector<pair<K, V>> entries();
 
     /**
      * Get the number of keys in table
@@ -79,7 +80,7 @@ public:
      * @param key the target key
      * @param values the set of values to add into the table
      */
-    void put(K key, set<V> values);
+    void put(K key, unordered_set<V> values);
 };
 
 #include "MultiMap.tpp"

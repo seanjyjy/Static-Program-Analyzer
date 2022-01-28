@@ -6,15 +6,15 @@ void UsesTable::setVarUsedInStmt(string stmtNum, string varName) {
     usesStmtRelation.addMapping(stmtNum, varName);
 }
 
-set<string> UsesTable::getVarsUsedInStmt(string stmtNum) {
+unordered_set<string> UsesTable::getVarsUsedInStmt(string stmtNum) {
     return usesStmtRelation.getValuesFromKey(stmtNum);
 }
 
-set<string> UsesTable::getStmtsUsingVar(string varName) {
+unordered_set<string> UsesTable::getStmtsUsingVar(string varName) {
     return usesStmtRelation.getKeysFromValue(varName);
 }
 
-set<pair<string, string>> UsesTable::getStmtsVarEntries() {
+vector<pair<string, string>> UsesTable::getStmtsVarEntries() {
     return usesStmtRelation.getEntries();
 }
 
@@ -26,15 +26,15 @@ void UsesTable::setVarUsedInProc(string procName, string varName) {
     usesProcRelation.addMapping(procName, varName);
 }
 
-set<string> UsesTable::getVarsUsedInProc(string procName) {
+unordered_set<string> UsesTable::getVarsUsedInProc(string procName) {
     return usesProcRelation.getValuesFromKey(procName);
 }
 
-set<string> UsesTable::getProcsUsingVar(string varName) {
+unordered_set<string> UsesTable::getProcsUsingVar(string varName) {
     return usesProcRelation.getKeysFromValue(varName);
 }
 
-set<pair<string, string>> UsesTable::getProcVarEntries() {
+vector<pair<string, string>> UsesTable::getProcVarEntries() {
     return usesProcRelation.getEntries();
 }
 

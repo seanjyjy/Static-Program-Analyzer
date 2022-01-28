@@ -5,7 +5,7 @@ using namespace std;
 
 TEST_CASE("EntityTable") {
     EntityTable table;
-    set<string> EMPTY_SET;
+    unordered_set<string> EMPTY_SET;
 
     SECTION("empty state") {
         REQUIRE(table.getConstants() == EMPTY_SET);
@@ -14,7 +14,7 @@ TEST_CASE("EntityTable") {
     }
 
     SECTION("adding constant") {
-        set<string> expectedConstant;
+        unordered_set<string> expectedConstant;
 
         // add 1 value
         REQUIRE_NOTHROW(table.addConstant("abc"));
@@ -36,7 +36,7 @@ TEST_CASE("EntityTable") {
     }
 
     SECTION("adding variables") {
-        set<string> expectedVariable;
+        unordered_set<string> expectedVariable;
 
         // add 1 value
         REQUIRE_NOTHROW(table.addVariable("abc"));
@@ -58,7 +58,7 @@ TEST_CASE("EntityTable") {
     }
 
     SECTION("adding procedures") {
-        set<string> expectedProcedure;
+        unordered_set<string> expectedProcedure;
 
         // add 1 value
         REQUIRE_NOTHROW(table.addProcedure("abc"));

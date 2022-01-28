@@ -1,6 +1,8 @@
 #include "PKB/SingleMap.h"
 
 #include "catch.hpp"
+#include "../UnitTestUtility.h"
+#include <unordered_set>
 
 using namespace std;
 
@@ -51,24 +53,25 @@ TEST_CASE("SingleMap") {
     }
 
     SECTION("set equivalence") {
-        set<TestKeys> comparisonSet;
-        set<pair<TestKeys, TestValues>> entrySet;
+        unordered_set<TestKeys> comparisonSet;
+        vector<pair<TestKeys, TestValues>> entrySet;
+        entrySet.reserve(10);
         REQUIRE(table.keys() == comparisonSet);
-        REQUIRE(table.entries() == entrySet);
+        REQUIRE(compareVectors(table.entries(), entrySet));
 
         // populating table
         table.put(TestKeys::TEST_KEY_1, TestValues::TEST_VALUE_1);
         comparisonSet.insert(TestKeys::TEST_KEY_1);
-        entrySet.insert(make_pair(TestKeys::TEST_KEY_1, TestValues::TEST_VALUE_1));
+        entrySet.push_back(make_pair(TestKeys::TEST_KEY_1, TestValues::TEST_VALUE_1));
         REQUIRE(table.keys() == comparisonSet);
-        REQUIRE(table.entries() == entrySet);
+        REQUIRE(compareVectors(table.entries(), entrySet));
 
         table.put(TestKeys::TEST_KEY_2, TestValues::TEST_VALUE_1);
         REQUIRE_FALSE(table.keys() == comparisonSet);
-        REQUIRE_FALSE(table.entries() == entrySet);
+        REQUIRE_FALSE(compareVectors(table.entries(), entrySet));
         comparisonSet.insert(TestKeys::TEST_KEY_2);
-        entrySet.insert(make_pair(TestKeys::TEST_KEY_2, TestValues::TEST_VALUE_1));
+        entrySet.push_back(make_pair(TestKeys::TEST_KEY_2, TestValues::TEST_VALUE_1));
         REQUIRE(table.keys() == comparisonSet);
-        REQUIRE(table.entries() == entrySet);
+        REQUIRE(compareVectors(table.entries(), entrySet));
     }
 }

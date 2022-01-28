@@ -6,7 +6,7 @@ using namespace std;
 
 StmtTable::StmtTable():mapping("StmtTable") {}
 
-set<string> StmtTable::getAllStmtsByType(StmtType type) {
+unordered_set<string> StmtTable::getAllStmtsByType(StmtType type) {
     return mapping.getValuesFromKey(type);
 }
 
@@ -26,10 +26,10 @@ int StmtTable::getStmtCount() {
     return mapping.valSize();
 }
 
-set<string> StmtTable::getAllStmts() {
+unordered_set<string> StmtTable::getAllStmts() {
     return mapping.getValues();
 }
 
-set<StmtType> StmtTable::getAllTypes() {
+unordered_set<StmtType> StmtTable::getAllTypes() {
     return mapping.getKeys();
 }

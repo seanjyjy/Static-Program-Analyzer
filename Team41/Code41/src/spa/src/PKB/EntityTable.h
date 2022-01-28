@@ -24,8 +24,8 @@ public:
     void addConstant(string numStr);
     void addVariable(string varName);
     void addProcedure(string procName);
-    set<string> getConstants();
-    set<string> getVariables();
-    set<string> getProcedures();
+    unordered_set<string> getConstants();
+    unordered_set<string> getVariables();
+    unordered_set<string> getProcedures();
 };
 

@@ -6,15 +6,15 @@ void ModifiesTable::setVarModifiedInStmt(string stmtNum, string varName) {
     modifyStmtRelation.addMapping(stmtNum, varName);
 }
 
-set<string> ModifiesTable::getVarsModifiedInStmt(string stmtNum) {
+unordered_set<string> ModifiesTable::getVarsModifiedInStmt(string stmtNum) {
     return modifyStmtRelation.getValuesFromKey(stmtNum);
 }
 
-set<string> ModifiesTable::getStmtsModifyingVar(string varName) {
+unordered_set<string> ModifiesTable::getStmtsModifyingVar(string varName) {
     return modifyStmtRelation.getKeysFromValue(varName);
 }
 
-set<pair<string, string>> ModifiesTable::getStmtsVarEntries() {
+vector<pair<string, string>> ModifiesTable::getStmtsVarEntries() {
     return modifyStmtRelation.getEntries();
 }
 
@@ -26,15 +26,15 @@ void ModifiesTable::setVarModifiedInProc(string procName, string varName) {
     modifyProcRelation.addMapping(procName, varName);
 }
 
-set<string> ModifiesTable::getVarsModifiedInProc(string procName) {
+unordered_set<string> ModifiesTable::getVarsModifiedInProc(string procName) {
     return modifyProcRelation.getValuesFromKey(procName);
 }
 
-set<string> ModifiesTable::getProcsModifyingVar(string varName) {
+unordered_set<string> ModifiesTable::getProcsModifyingVar(string varName) {
     return modifyProcRelation.getKeysFromValue(varName);
 }
 
-set<pair<string, string>> ModifiesTable::getProcVarEntries() {
+vector<pair<string, string>> ModifiesTable::getProcVarEntries() {
     return modifyProcRelation.getEntries();
 }
 

@@ -15,14 +15,14 @@ public:
     UsesTable();
 
     void setVarUsedInStmt(string stmtNum, string varName);
-    set<string> getVarsUsedInStmt(string stmtNum);
-    set<string> getStmtsUsingVar(string varName);
-    set<pair<string, string>> getStmtsVarEntries();
+    unordered_set<string> getVarsUsedInStmt(string stmtNum);
+    unordered_set<string> getStmtsUsingVar(string varName);
+    vector<pair<string, string>> getStmtsVarEntries();
     bool isUsesS(string stmtNum, string varName);
 
     void setVarUsedInProc(string procName, string varName);
-    set<string> getVarsUsedInProc(string procName);
-    set<string> getProcsUsingVar(string varName);
-    set<pair<string, string>> getProcVarEntries();
+    unordered_set<string> getVarsUsedInProc(string procName);
+    unordered_set<string> getProcsUsingVar(string varName);
+    vector<pair<string, string>> getProcVarEntries();
     bool isUsesP(string procName, string varName);
 };

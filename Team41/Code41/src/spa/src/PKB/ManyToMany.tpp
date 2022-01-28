@@ -1,28 +1,24 @@
 #include "ManyToMany.h"
 
 template<class K, class V>
- ManyToMany<K, V>::ManyToMany(const string &relationName) {
+ManyToMany<K, V>::ManyToMany(const string &relationName) {
     this->relationName = relationName;
 }
 
-
 template<class K, class V>
-set<V> ManyToMany<K, V>::getValuesFromKey(K key) {
+unordered_set<V> ManyToMany<K, V>::getValuesFromKey(K key) {
     return keyToValues.get(key);
 }
 
-
 template<class K, class V>
-set<K> ManyToMany<K, V>::getKeysFromValue(V value) {
+unordered_set<K> ManyToMany<K, V>::getKeysFromValue(V value) {
     return valuesToKey.get(value);
 }
-
 
 template<class K, class V>
 bool ManyToMany<K, V>::hasKey(K targetKey) {
     return keyToValues.hasKey(targetKey);
 }
-
 
 template<class K, class V>
 bool ManyToMany<K, V>::hasVal(V targetVal) {
@@ -42,18 +38,18 @@ void ManyToMany<K, V>::addMapping(K key, V val) {
 }
 
 template<class K, class V>
-set<K> ManyToMany<K, V>::getKeys() {
+unordered_set<K> ManyToMany<K, V>::getKeys() {
     return keyToValues.keys();
 }
 
 
 template<class K, class V>
-set<V> ManyToMany<K, V>::getValues() {
+unordered_set<V> ManyToMany<K, V>::getValues() {
     return valuesToKey.keys();
 }
 
 template<typename K, typename V>
-set<pair<K, V>> ManyToMany<K, V>::getEntries() {
+vector<pair<K, V>> ManyToMany<K, V>::getEntries() {
     return keyToValues.entries();
 }
 
@@ -61,7 +57,6 @@ template<class K, class V>
 int ManyToMany<K, V>::keySize() {
     return keyToValues.keySize();
 }
-
 
 template<class K, class V>
 int ManyToMany<K, V>::valSize() {

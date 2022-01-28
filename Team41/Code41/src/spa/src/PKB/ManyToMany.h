@@ -1,14 +1,12 @@
 #pragma once
 
-#include <map>
-#include <set>
 #include <string>
 
 #include "MultiMap.h"
 
 using namespace std;
 
-template<typename K, typename V>
+template<class K, class V>
 class ManyToMany {
 private:
     string relationName;
@@ -23,7 +21,7 @@ public:
      * @param key the target key
      * @return the set of values
      */
-    set<V> getValuesFromKey(K key);
+    unordered_set<V> getValuesFromKey(K key);
 
     /**
      * Gets set of keys that the value belong to
@@ -31,7 +29,7 @@ public:
      * @param value the value to query by
      * @return the key that value belongs to
      */
-    set<K> getKeysFromValue(V value);
+    unordered_set<K> getKeysFromValue(V value);
 
     /**
      * Checks if key exists in table
@@ -71,21 +69,21 @@ public:
      *
      * @return set of keys
      */
-    set<K> getKeys();
+    unordered_set<K> getKeys();
 
     /**
      * Gets all values added to the relation table
      *
      * @return set of values
      */
-    set<V> getValues();
+    unordered_set<V> getValues();
 
     /**
      * Gets all entries in the relation table
      *
-     * @return set of key-value pair
+     * @return list of key-value pair
      */
-    set<pair<K, V>> getEntries();
+    vector<pair<K, V>> getEntries();
 
     /**
      * Gets the number of keys stored in table

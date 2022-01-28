@@ -12,15 +12,15 @@ TEST_CASE("StmtTable") {
     SECTION("empty table") {
         // Before adding
         REQUIRE(table.getStmtCount() == 0);
-        REQUIRE(table.getAllStmtsByType(ASSIGN) == set<string>());
-        REQUIRE(table.getAllStmts() == set<string>());
-        REQUIRE(table.getAllTypes() == set<StmtType>());
+        REQUIRE(table.getAllStmtsByType(ASSIGN) == unordered_set<string>());
+        REQUIRE(table.getAllStmts() == unordered_set<string>());
+        REQUIRE(table.getAllTypes() == unordered_set<StmtType>());
         REQUIRE_FALSE(table.isStmtType(lines[0], ASSIGN));
     }
 
     SECTION("adding statements") {
         // Adding key-values
-        set<StmtType> stmtSet;
+        unordered_set<StmtType> stmtSet;
         int i = 0;
         for (StmtType t: types) {
             table.setStmt(lines[i], t);
@@ -29,7 +29,7 @@ TEST_CASE("StmtTable") {
         }
         REQUIRE(table.getAllTypes() == stmtSet);
 
-        set<string> stmtNumbers;
+        unordered_set<string> stmtNumbers;
         for (string l: lines) {
             stmtNumbers.insert(l);
         }
@@ -49,7 +49,7 @@ TEST_CASE("StmtTable") {
         // assign --> {"1", "7"}
         REQUIRE_NOTHROW(table.setStmt("7", ASSIGN));
         REQUIRE(table.getAllStmtsByType(ASSIGN).size() == 2);
-        set<string> assignSet;
+        unordered_set<string> assignSet;
         assignSet.insert("1");
         assignSet.insert("7");
         REQUIRE(table.getAllStmtsByType(ASSIGN) == assignSet);

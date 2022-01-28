@@ -8,7 +8,7 @@ OneToMany<K, V>::OneToMany(const string &relationName) {
 }
 
 template<class K, class V>
-set<V> OneToMany<K, V>::getValuesFromKey(K key) {
+unordered_set<V> OneToMany<K, V>::getValuesFromKey(K key) {
     return keyToValues.get(key);
 }
 
@@ -50,17 +50,17 @@ void OneToMany<K, V>::addMapping(K key, V val) {
 }
 
 template<class K, class V>
-set<K> OneToMany<K, V>::getKeys() {
+unordered_set<K> OneToMany<K, V>::getKeys() {
     return keyToValues.keys();
 }
 
 template<class K, class V>
-set<V> OneToMany<K, V>::getValues() {
+unordered_set<V> OneToMany<K, V>::getValues() {
     return valuesToKey.keys();
 }
 
 template<typename K, typename V>
-set<pair<K, V>> OneToMany<K, V>::getEntries() {
+vector<pair<K, V>> OneToMany<K, V>::getEntries() {
     return keyToValues.entries();
 }
 

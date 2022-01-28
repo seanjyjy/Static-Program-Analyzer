@@ -15,14 +15,14 @@ public:
     ModifiesTable();
 
     void setVarModifiedInStmt(string stmtNum, string varName);
-    set<string> getVarsModifiedInStmt(string stmtNum);
-    set<string> getStmtsModifyingVar(string varName);
-    set<pair<string, string>> getStmtsVarEntries();
+    unordered_set<string> getVarsModifiedInStmt(string stmtNum);
+    unordered_set<string> getStmtsModifyingVar(string varName);
+    vector<pair<string, string>> getStmtsVarEntries();
     bool isModifiesS(string stmtNum, string varName);
 
     void setVarModifiedInProc(string procName, string varName);
-    set<string> getVarsModifiedInProc(string procName);
-    set<string> getProcsModifyingVar(string varName);
-    set<pair<string, string>> getProcVarEntries();
+    unordered_set<string> getVarsModifiedInProc(string procName);
+    unordered_set<string> getProcsModifyingVar(string varName);
+    vector<pair<string, string>> getProcVarEntries();
     bool isModifiesP(string procName, string varName);
 };

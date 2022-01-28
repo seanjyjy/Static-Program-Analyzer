@@ -3,8 +3,8 @@
 #include "MultiMap.h"
 #include "SingleMap.h"
 
-#include <map>
-#include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <string>
 
 using namespace std;
@@ -31,7 +31,7 @@ public:
      * @param key the target key
      * @return the set of values
      */
-    set<V> getValuesFromKey(K key);
+    unordered_set<V> getValuesFromKey(K key);
 
 
     /**
@@ -82,21 +82,21 @@ public:
      *
      * @return set of keys
      */
-    set<K> getKeys();
+    unordered_set<K> getKeys();
 
     /**
      * Gets all values added to the relation table
      *
      * @return set of values
      */
-    set<V> getValues();
+    unordered_set<V> getValues();
 
     /**
      * Gets all entries in the relation table
      *
-     * @return set of key-value pair
+     * @return list of key-value pair
      */
-    set<pair<K, V>> getEntries();
+    vector<pair<K, V>> getEntries();
 
     /**
      * Gets the number of keys stored in table

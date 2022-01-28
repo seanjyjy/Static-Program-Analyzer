@@ -17,7 +17,7 @@ public:
      * @param type the target SIMPLE statement type
      * @return the set of numeric string representing the stmt numbers
      */
-    set<string> getAllStmtsByType(StmtType type);
+    unordered_set<string> getAllStmtsByType(StmtType type);
 
     /**
      * Gets all the statement type of the specified statement number
@@ -57,12 +57,12 @@ public:
      *
      * @return set of statement numbers
      */
-    set<string> getAllStmts();
+    unordered_set<string> getAllStmts();
 
     /**
      * Gets all statement types added to the table
      *
      * @return set of statement types
      */
-    set<StmtType> getAllTypes();
+    unordered_set<StmtType> getAllTypes();
 };

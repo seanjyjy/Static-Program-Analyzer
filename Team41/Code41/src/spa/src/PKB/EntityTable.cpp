@@ -2,15 +2,15 @@
 
 EntityTable::EntityTable() = default;
 
-set<string> EntityTable::getConstants() {
+unordered_set<string> EntityTable::getConstants() {
     return mapping.get(CONST);
 }
 
-set<string> EntityTable::getProcedures() {
+unordered_set<string> EntityTable::getProcedures() {
     return mapping.get(PROC);
 }
 
-set<string> EntityTable::getVariables() {
+unordered_set<string> EntityTable::getVariables() {
     return mapping.get(VAR);
 }
 

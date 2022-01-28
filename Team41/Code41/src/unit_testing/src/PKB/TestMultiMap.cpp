@@ -1,4 +1,5 @@
 #include "PKB/MultiMap.h"
+#include "../UnitTestUtility.h"
 #include "catch.hpp"
 
 using namespace std;
@@ -60,13 +61,14 @@ TEST_CASE("MultiMap") {
     }
 
     SECTION("set equivalence") {
-        set<TestKeys> comparisonSet;
-        set<pair<TestKeys, TestValues>> entrySet;
+        unordered_set<TestKeys> comparisonSet;
+        vector<pair<TestKeys, TestValues>> entrySet;
+        entrySet.reserve(10);
         REQUIRE(table.keys() == comparisonSet);
-        REQUIRE(table.entries() == entrySet);
+        REQUIRE(compareVectors(table.entries(),entrySet));
 
         // populating table
-        set<TestValues> valueSet_1;
+        unordered_set<TestValues> valueSet_1;
         valueSet_1.insert(TEST_VALUE_1);
         valueSet_1.insert(TEST_VALUE_2);
         table.put(TEST_KEY_1, valueSet_1);
@@ -75,20 +77,20 @@ TEST_CASE("MultiMap") {
         // correct keys set
         comparisonSet.insert(TEST_KEY_1);
         comparisonSet.insert(TEST_KEY_2);
-        entrySet.insert(make_pair(TEST_KEY_1, TEST_VALUE_1));
-        entrySet.insert(make_pair(TEST_KEY_1, TEST_VALUE_2));
-        entrySet.insert(make_pair(TEST_KEY_2, TEST_VALUE_1));
+        entrySet.push_back(make_pair(TEST_KEY_1, TEST_VALUE_1));
+        entrySet.push_back(make_pair(TEST_KEY_1, TEST_VALUE_2));
+        entrySet.push_back(make_pair(TEST_KEY_2, TEST_VALUE_1));
         REQUIRE(table.keys() == comparisonSet);
-        REQUIRE(table.entries() == entrySet);
+        REQUIRE(compareVectors(table.entries(),entrySet));
 
         // correct values set
-        set<TestValues> valueSet_2;
+        unordered_set<TestValues> valueSet_2;
         valueSet_2.insert(TEST_VALUE_1);
         REQUIRE(table.get(TEST_KEY_1) == valueSet_1);
         REQUIRE(table.get(TEST_KEY_2) == valueSet_2);
 
         // overriding works
-        table.put(TEST_KEY_1, std::set<TestValues>());
+        table.put(TEST_KEY_1, unordered_set<TestValues>());
         REQUIRE_FALSE(table.get(TEST_KEY_1) == valueSet_1);
     }
 }

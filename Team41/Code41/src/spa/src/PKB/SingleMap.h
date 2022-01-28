@@ -1,8 +1,9 @@
 #pragma once
 
-#include <map>
-#include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -15,8 +16,8 @@ using namespace std;
 template<typename K, typename V>
 class SingleMap {
 private:
-    map<K, V> mapping;
-    set<K> keySet;
+    unordered_map<K, V> mapping;
+    unordered_set<K> keySet;
 
 public:
     /**
@@ -32,14 +33,14 @@ public:
      *
      * @return set of keys
      */
-    set<K> keys();
+    unordered_set<K> keys();
 
     /**
      * Gets all entries used in the table
      *
-     * @return set of key-value pair
+     * @return list of key-value pair
      */
-    set<pair<K, V>> entries();
+    vector<pair<K, V>> entries();
 
     /**
      * Get the number of keys in table

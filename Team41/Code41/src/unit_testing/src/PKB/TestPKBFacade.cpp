@@ -1,14 +1,15 @@
 #include "catch.hpp"
 #include "PKB/PKB.h"
+#include "../UnitTestUtility.h"
 
 using namespace std;
 
 TEST_CASE("PKB: entities") {
-    set<string> EMPTY_SET;
+    unordered_set<string> EMPTY_SET;
     string entity[] = {"abc", "def"};
-    set<string> FILLED_SET_1;
+    unordered_set<string> FILLED_SET_1;
     FILLED_SET_1.insert(entity[0]);
-    set<string> FILLED_SET_2;
+    unordered_set<string> FILLED_SET_2;
     FILLED_SET_2.insert(entity[0]);
     FILLED_SET_2.insert(entity[1]);
 
@@ -42,11 +43,11 @@ TEST_CASE("PKB: entities") {
 }
 
 TEST_CASE("PKB: statements") {
-    set<string> EMPTY_SET;
+    unordered_set<string> EMPTY_SET;
     string stmt[] = {"1", "2", "3", "4"};
-    set<string> FILLED_SET_1;
+    unordered_set<string> FILLED_SET_1;
     FILLED_SET_1.insert(stmt[0]);
-    set<string> FILLED_SET_2;
+    unordered_set<string> FILLED_SET_2;
     FILLED_SET_2.insert(stmt[0]);
     FILLED_SET_2.insert(stmt[1]);
 
@@ -128,9 +129,6 @@ TEST_CASE("PKB: statements") {
     }
 
     SECTION("prevents duplicate") {
-        Catch::Matchers::Impl::MatchAllOf<std::basic_string<char>> matcher =
-                Catch::Contains("[PKB]") && Catch::Contains("StmtTable") && Catch::Contains("Multiple keys");
-
         REQUIRE_NOTHROW(pkbManager.registerRead(stmt[0]));
 
         REQUIRE_THROWS(pkbManager.registerAssign(stmt[0]));
@@ -164,97 +162,97 @@ TEST_CASE("PKB: statements") {
 }
 
 TEST_CASE("PKB: uses abstraction") {
-    set<string> varList;
-    set<pair<string, string>> entryList;
+    unordered_set<string> varList;
+    vector<pair<string, string>> entryList;
     string var[] = {"v1", "v2"};
 
     PKB pkbManager;
 
     SECTION("UsesS") {
-        set<string> stmtList;
+        unordered_set<string> stmtList;
         string stmt[] = {"1", "2"};
 
-        REQUIRE(pkbManager.getAllUsesS() == entryList);
+        REQUIRE(compareVectors(pkbManager.getAllUsesS(), entryList));
         REQUIRE(pkbManager.getUsesByStmt(stmt[0]) == varList);
         REQUIRE(pkbManager.getUsesSByVar(var[0]) == stmtList);
         REQUIRE_FALSE(pkbManager.isUsesS(stmt[0], var[0]));
 
         pkbManager.registerUsesS(stmt[0], var[0]);
-        entryList.insert(make_pair(stmt[0], var[0]));
+        entryList.push_back(make_pair(stmt[0], var[0]));
         varList.insert(var[0]);
         stmtList.insert(stmt[0]);
 
         REQUIRE(pkbManager.isUsesS(stmt[0], var[0]));
         REQUIRE(pkbManager.getUsesByStmt(stmt[0]) == varList);
         REQUIRE(pkbManager.getUsesSByVar(var[0]) == stmtList);
-        REQUIRE(pkbManager.getAllUsesS() == entryList);
+        REQUIRE(compareVectors(pkbManager.getAllUsesS(), entryList));
     }
 
     SECTION("UsesP") {
-        set<string> procList;
+        unordered_set<string> procList;
         string proc[] = {"p1", "p2"};
 
-        REQUIRE(pkbManager.getAllUsesP() == entryList);
+        REQUIRE(compareVectors(pkbManager.getAllUsesP(), entryList));
         REQUIRE(pkbManager.getUsesPByVar(var[0]) == procList);
         REQUIRE(pkbManager.getUsesByProc(proc[0]) == varList);
         REQUIRE_FALSE(pkbManager.isUsesP(proc[0], var[0]));
 
         pkbManager.registerUsesP(proc[0], var[0]);
-        entryList.insert(make_pair(proc[0], var[0]));
+        entryList.push_back(make_pair(proc[0], var[0]));
         varList.insert(var[0]);
         procList.insert(proc[0]);
 
         REQUIRE(pkbManager.isUsesP(proc[0], var[0]));
         REQUIRE(pkbManager.getUsesByProc(proc[0]) == varList);
         REQUIRE(pkbManager.getUsesPByVar(var[0]) == procList);
-        REQUIRE(pkbManager.getAllUsesP() == entryList);
+        REQUIRE(compareVectors(pkbManager.getAllUsesP(), entryList));
     }
 }
 
 TEST_CASE("PKB: modifies abstraction") {
-    set<string> varList;
-    set<pair<string, string>> entryList;
+    unordered_set<string> varList;
+    vector<pair<string, string>> entryList;
     string var[] = {"v1", "v2"};
 
     PKB pkbManager;
 
     SECTION("ModifiesS") {
-        set<string> stmtList;
+        unordered_set<string> stmtList;
         string stmt[] = {"1", "2"};
 
-        REQUIRE(pkbManager.getAllModifiesS() == entryList);
+        REQUIRE(compareVectors(pkbManager.getAllModifiesS(), entryList));
         REQUIRE(pkbManager.getModifiesByStmt(stmt[0]) == varList);
         REQUIRE(pkbManager.getModifiesSByVar(var[0]) == stmtList);
         REQUIRE_FALSE(pkbManager.isModifiesS(stmt[0], var[0]));
 
         pkbManager.registerModifiesS(stmt[0], var[0]);
-        entryList.insert(make_pair(stmt[0], var[0]));
+        entryList.push_back(make_pair(stmt[0], var[0]));
         varList.insert(var[0]);
         stmtList.insert(stmt[0]);
 
         REQUIRE(pkbManager.isModifiesS(stmt[0], var[0]));
         REQUIRE(pkbManager.getModifiesByStmt(stmt[0]) == varList);
         REQUIRE(pkbManager.getModifiesSByVar(var[0]) == stmtList);
-        REQUIRE(pkbManager.getAllModifiesS() == entryList);
+        REQUIRE(compareVectors(pkbManager.getAllModifiesS(), entryList));
     }
 
     SECTION("ModifiesP") {
-        set<string> procList;
+        unordered_set<string> procList;
         string proc[] = {"p1", "p2"};
 
-        REQUIRE(pkbManager.getAllModifiesP() == entryList);
+        REQUIRE(compareVectors(pkbManager.getAllModifiesP(), entryList));
         REQUIRE(pkbManager.getModifiesPByVar(var[0]) == procList);
         REQUIRE(pkbManager.getModifiesByProc(proc[0]) == varList);
         REQUIRE_FALSE(pkbManager.isModifiesP(proc[0], var[0]));
 
         pkbManager.registerModifiesP(proc[0], var[0]);
-        entryList.insert(make_pair(proc[0], var[0]));
+        entryList.push_back(make_pair(proc[0], var[0]));
         varList.insert(var[0]);
         procList.insert(proc[0]);
 
         REQUIRE(pkbManager.isModifiesP(proc[0], var[0]));
         REQUIRE(pkbManager.getModifiesByProc(proc[0]) == varList);
         REQUIRE(pkbManager.getModifiesPByVar(var[0]) == procList);
-        REQUIRE(pkbManager.getAllModifiesP() == entryList);
+        REQUIRE(compareVectors(pkbManager.getAllModifiesP(), entryList));
     }
 }

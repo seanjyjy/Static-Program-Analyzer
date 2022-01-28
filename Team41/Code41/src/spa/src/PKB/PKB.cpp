@@ -4,12 +4,6 @@
 using namespace std;
 
 #include "PKB.h"
-#include "StmtType.h"
-#include "StmtTable.h"
-#include "EntityTable.h"
-#include "UsesTable.h"
-#include "ModifiesTable.h"
-#include "TNode.h"
 
 PKB::PKB() {
     stmtTable = new StmtTable();
@@ -27,17 +21,17 @@ PKB::~PKB() {
 
 //======================================== Statements ==================================================
 
-set<string> PKB::getAssigns() { return stmtTable->getAllStmtsByType(ASSIGN); }
+unordered_set<string> PKB::getAssigns() { return stmtTable->getAllStmtsByType(ASSIGN); }
 
-set<string> PKB::getWhiles() { return stmtTable->getAllStmtsByType(WHILE); }
+unordered_set<string> PKB::getWhiles() { return stmtTable->getAllStmtsByType(WHILE); }
 
-set<string> PKB::getIfs() { return stmtTable->getAllStmtsByType(IF); }
+unordered_set<string> PKB::getIfs() { return stmtTable->getAllStmtsByType(IF); }
 
-set<string> PKB::getReads() { return stmtTable->getAllStmtsByType(READ); }
+unordered_set<string> PKB::getReads() { return stmtTable->getAllStmtsByType(READ); }
 
-set<string> PKB::getPrints() { return stmtTable->getAllStmtsByType(PRINT); }
+unordered_set<string> PKB::getPrints() { return stmtTable->getAllStmtsByType(PRINT); }
 
-set<string> PKB::getCalls() { return stmtTable->getAllStmtsByType(CALL); }
+unordered_set<string> PKB::getCalls() { return stmtTable->getAllStmtsByType(CALL); }
 
 void PKB::registerAssign(string stmtNum) { return stmtTable->setStmt(move(stmtNum), ASSIGN); }
 
@@ -68,11 +62,11 @@ int PKB::getStatementCount() { return stmtTable->getStmtCount(); }
 
 //======================================== Entities ==================================================
 
-set<string> PKB::getVariables() { return entityTable->getVariables(); }
+unordered_set<string> PKB::getVariables() { return entityTable->getVariables(); }
 
-set<string> PKB::getConstants() { return entityTable->getConstants(); }
+unordered_set<string> PKB::getConstants() { return entityTable->getConstants(); }
 
-set<string> PKB::getProcedures() { return entityTable->getProcedures(); }
+unordered_set<string> PKB::getProcedures() { return entityTable->getProcedures(); }
 
 void PKB::registerVariable(string varName) { return entityTable->addVariable(move(varName)); }
 
@@ -87,11 +81,11 @@ bool PKB::isUsesS(string stmtNum, string varName) {
     return usesTable->isUsesS(move(stmtNum), move(varName));
 }
 
-set<string> PKB::getUsesSByVar(string varName) { return usesTable->getStmtsUsingVar(move(varName)); }
+unordered_set<string> PKB::getUsesSByVar(string varName) { return usesTable->getStmtsUsingVar(move(varName)); }
 
-set<string> PKB::getUsesByStmt(string stmtNum) { return usesTable->getVarsUsedInStmt(move(stmtNum)); }
+unordered_set<string> PKB::getUsesByStmt(string stmtNum) { return usesTable->getVarsUsedInStmt(move(stmtNum)); }
 
-set<pair<string, string>> PKB::getAllUsesS() { return usesTable->getStmtsVarEntries(); }
+vector<pair<string, string>> PKB::getAllUsesS() { return usesTable->getStmtsVarEntries(); }
 
 void PKB::registerUsesS(string stmtNum, string varName) {
     return usesTable->setVarUsedInStmt(move(stmtNum), move(varName));
@@ -101,11 +95,11 @@ bool PKB::isUsesP(string procName, string varName) {
     return usesTable->isUsesP(move(procName), move(varName));
 }
 
-set<string> PKB::getUsesPByVar(string varName) { return usesTable->getProcsUsingVar(move(varName)); }
+unordered_set<string> PKB::getUsesPByVar(string varName) { return usesTable->getProcsUsingVar(move(varName)); }
 
-set<string> PKB::getUsesByProc(string procName) { return usesTable->getVarsUsedInProc(move(procName)); }
+unordered_set<string> PKB::getUsesByProc(string procName) { return usesTable->getVarsUsedInProc(move(procName)); }
 
-set<pair<string, string>> PKB::getAllUsesP() { return usesTable->getProcVarEntries(); }
+vector<pair<string, string>> PKB::getAllUsesP() { return usesTable->getProcVarEntries(); }
 
 void PKB::registerUsesP(string procName, string varName) {
     return usesTable->setVarUsedInProc(move(procName), move(varName));
@@ -118,11 +112,11 @@ bool PKB::isModifiesS(string stmtNum, string varName) {
     return modifiesTable->isModifiesS(move(stmtNum), move(varName));
 }
 
-set<string> PKB::getModifiesSByVar(string varName) { return modifiesTable->getStmtsModifyingVar(move(varName)); }
+unordered_set<string> PKB::getModifiesSByVar(string varName) { return modifiesTable->getStmtsModifyingVar(move(varName)); }
 
-set<string> PKB::getModifiesByStmt(string stmtNum) { return modifiesTable->getVarsModifiedInStmt(move(stmtNum)); }
+unordered_set<string> PKB::getModifiesByStmt(string stmtNum) { return modifiesTable->getVarsModifiedInStmt(move(stmtNum)); }
 
-set<pair<string, string>> PKB::getAllModifiesS() { return modifiesTable->getStmtsVarEntries(); }
+vector<pair<string, string>> PKB::getAllModifiesS() { return modifiesTable->getStmtsVarEntries(); }
 
 void PKB::registerModifiesS(string stmtNum, string varName) {
     return modifiesTable->setVarModifiedInStmt(move(stmtNum), move(varName));
@@ -132,11 +126,11 @@ bool PKB::isModifiesP(string procName, string varName) {
     return modifiesTable->isModifiesP(move(procName), move(varName));
 }
 
-set<string> PKB::getModifiesPByVar(string varName) { return modifiesTable->getProcsModifyingVar(move(varName)); }
+unordered_set<string> PKB::getModifiesPByVar(string varName) { return modifiesTable->getProcsModifyingVar(move(varName)); }
 
-set<string> PKB::getModifiesByProc(string procName) { return modifiesTable->getVarsModifiedInProc(move(procName)); }
+unordered_set<string> PKB::getModifiesByProc(string procName) { return modifiesTable->getVarsModifiedInProc(move(procName)); }
 
-set<pair<string, string>> PKB::getAllModifiesP() { return modifiesTable->getProcVarEntries(); }
+vector<pair<string, string>> PKB::getAllModifiesP() { return modifiesTable->getProcVarEntries(); }
 
 void PKB::registerModifiesP(string procName, string varName) {
     return modifiesTable->setVarModifiedInProc(move(procName), move(varName));

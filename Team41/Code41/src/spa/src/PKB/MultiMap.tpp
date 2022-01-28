@@ -1,24 +1,26 @@
 #include "MultiMap.h"
+#include "vector"
 
 using namespace std;
 
 template<class K, class V>
-set<V> MultiMap<K, V>::get(K key) {
+unordered_set<V> MultiMap<K, V>::get(K key) {
     return mapping[key];
 }
 
 template<class K, class V>
-set<K> MultiMap<K, V>::keys() {
+unordered_set<K> MultiMap<K, V>::keys() {
     return keySet;
 }
 
 template<class K, class V>
-set<pair<K, V>> MultiMap<K, V>::entries() {
-    set<pair<K, V>> resultSet;
-    for (K key : keySet) {
-        for(V val : mapping[key]) {
-            pair<K, V> newPair = make_pair(key, val);
-            resultSet.insert(newPair);
+vector<pair<K, V>> MultiMap<K, V>::entries() {
+    vector<pair<K, V>> resultSet;
+    resultSet.reserve(mapping.size());
+    for (auto &it: mapping) {
+        K key = it.first;
+        for (V val: it.second) {
+            resultSet.push_back(make_pair(key, val));
         }
     }
     return resultSet;
@@ -36,19 +38,19 @@ bool MultiMap<K, V>::hasKey(K targetKey) {
 
 template<class K, class V>
 bool MultiMap<K, V>::hasKeyValue(K key, V val) {
-    set<V> values = mapping[key];
+    unordered_set<V> values = mapping[key];
     return values.find(val) != values.end();
 }
 
 template<class K, class V>
 void MultiMap<K, V>::add(K key, V val) {
-    set<V> *values = &mapping[key];
+    unordered_set<V> *values = &mapping[key];
     values->insert(val);
     keySet.insert(key);
 }
 
 template<class K, class V>
-void MultiMap<K, V>::put(K key, set<V> values) {
+void MultiMap<K, V>::put(K key, unordered_set<V> values) {
     this->mapping[key] = values;
     keySet.insert(key);
 }

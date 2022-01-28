@@ -1,5 +1,6 @@
 #include "catch.hpp"
 #include "PKB/ManyToMany.h"
+#include "../UnitTestUtility.h"
 
 using namespace std;
 
@@ -25,10 +26,10 @@ TEST_CASE("ManyToMany") {
         // Before adding
         REQUIRE(table.keySize() == 0);
         REQUIRE(table.valSize() == 0);
-        REQUIRE(table.getKeys() == set<TestKeys>());
-        REQUIRE(table.getValues() == set<TestValues>());
-        REQUIRE(table.getValuesFromKey(TEST_KEY_1) == set<TestValues>());
-        REQUIRE(table.getKeysFromValue(TEST_VALUE_1) == set<TestKeys>());
+        REQUIRE(table.getKeys() == unordered_set<TestKeys>());
+        REQUIRE(table.getValues() == unordered_set<TestValues>());
+        REQUIRE(table.getValuesFromKey(TEST_KEY_1) == unordered_set<TestValues>());
+        REQUIRE(table.getKeysFromValue(TEST_VALUE_1) == unordered_set<TestKeys>());
         REQUIRE_FALSE(table.hasKey(TEST_KEY_1));
         REQUIRE_FALSE(table.hasVal(TEST_VALUE_1));
         REQUIRE_FALSE(table.hasMapping(TEST_KEY_1, TEST_VALUE_1));
@@ -37,17 +38,21 @@ TEST_CASE("ManyToMany") {
     SECTION("adding relation") {
         TestKeys testKeys[] = {TEST_KEY_1, TEST_KEY_2, TEST_KEY_3};
         TestValues testValues[] = {TEST_VALUE_1, TEST_VALUE_2, TEST_VALUE_3};
-        set<TestKeys> keySet;
-        set<TestValues> valueSet;
+        unordered_set<TestKeys> keySet;
+        unordered_set<TestValues> valueSet;
+        vector<pair<TestKeys, TestValues>> entrySet;
         int i = 0;
         for (TestKeys key: testKeys) {
-            table.addMapping(key, testValues[i]);
+            TestValues val = testValues[i];
+            table.addMapping(key, val);
             keySet.insert(key);
-            valueSet.insert(testValues[i]);
+            valueSet.insert(val);
+            entrySet.push_back(make_pair(key, val));
             i++;
         }
         REQUIRE(table.getKeys() == keySet);
         REQUIRE(table.getValues() == valueSet);
+        REQUIRE(compareVectors(table.getEntries(), entrySet));
 
         // no error thrown if mapping already exists
         REQUIRE_NOTHROW(table.addMapping(TEST_KEY_1, TEST_VALUE_1));
@@ -64,10 +69,10 @@ TEST_CASE("ManyToMany") {
         REQUIRE(table.valSize() == 3);
         REQUIRE(table.keySize() == 3);
 
-        set<TestValues> assignValSet;
+        unordered_set<TestValues> assignValSet;
         assignValSet.insert(TEST_VALUE_2);
         assignValSet.insert(TEST_VALUE_4);
-        set<TestKeys> assignKeySet;
+        unordered_set<TestKeys> assignKeySet;
         assignKeySet.insert(TEST_KEY_2);
 
         // TEST_KEY_2 --> {TEST_VALUE_1, TEST_VALUE_4}
@@ -77,9 +82,9 @@ TEST_CASE("ManyToMany") {
         REQUIRE(table.valSize() == 4);
         REQUIRE(table.keySize() == 3);
 
-        set<TestValues> assignValSet2;
+        unordered_set<TestValues> assignValSet2;
         assignValSet2.insert(TEST_VALUE_4);
-        set<TestKeys> assignKeySet2;
+        unordered_set<TestKeys> assignKeySet2;
         assignKeySet2.insert(TEST_KEY_2);
         assignKeySet2.insert(TEST_KEY_4);
 
@@ -92,24 +97,24 @@ TEST_CASE("ManyToMany") {
     }
 
     SECTION("immutability") {
-        REQUIRE(table.getValuesFromKey(TEST_KEY_1) == set<TestValues>());
+        REQUIRE(table.getValuesFromKey(TEST_KEY_1) == unordered_set<TestValues>());
         table.getValuesFromKey(TEST_KEY_1).insert(TEST_VALUE_1);
-        REQUIRE(table.getValuesFromKey(TEST_KEY_1) == set<TestValues>());
+        REQUIRE(table.getValuesFromKey(TEST_KEY_1) == unordered_set<TestValues>());
 
-        REQUIRE(table.getKeysFromValue(TEST_VALUE_1) == set<TestKeys>());
+        REQUIRE(table.getKeysFromValue(TEST_VALUE_1) == unordered_set<TestKeys>());
         table.getKeysFromValue(TEST_VALUE_1).insert(TEST_KEY_1);
-        REQUIRE(table.getKeysFromValue(TEST_VALUE_1) == set<TestKeys>());
+        REQUIRE(table.getKeysFromValue(TEST_VALUE_1) == unordered_set<TestKeys>());
 
-        REQUIRE(table.getKeys() == set<TestKeys>());
+        REQUIRE(table.getKeys() == unordered_set<TestKeys>());
         table.getKeys().insert(TEST_KEY_1);
-        REQUIRE(table.getKeys() == set<TestKeys>());
+        REQUIRE(table.getKeys() == unordered_set<TestKeys>());
 
-        REQUIRE(table.getValues() == set<TestValues>());
+        REQUIRE(table.getValues() == unordered_set<TestValues>());
         table.getValues().insert(TEST_VALUE_1);
-        REQUIRE(table.getValues() == set<TestValues>());
+        REQUIRE(table.getValues() == unordered_set<TestValues>());
 
-        REQUIRE(table.getEntries() == set<pair<TestKeys,  TestValues>>());
-        table.getEntries().insert(make_pair(TEST_KEY_1, TEST_VALUE_1));
-        REQUIRE(table.getEntries() == set<pair<TestKeys,  TestValues>>());
+        REQUIRE(compareVectors(table.getEntries(), vector<pair<TestKeys,  TestValues>>()));
+        table.getEntries().push_back(make_pair(TEST_KEY_1, TEST_VALUE_1));
+        REQUIRE(compareVectors(table.getEntries(), vector<pair<TestKeys,  TestValues>>()));
     }
 }

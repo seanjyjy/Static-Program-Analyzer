@@ -8,15 +8,16 @@ V SingleMap<K, V>::get(K key) {
 }
 
 template<class K, class V>
-set<K> SingleMap<K, V>::keys() {
+unordered_set<K> SingleMap<K, V>::keys() {
     return keySet;
 }
 
 template<class K, class V>
-set<pair<K, V>> SingleMap<K, V>::entries() {
-    set<pair<K, V>> resultSet;
+vector<pair<K, V>> SingleMap<K, V>::entries() {
+    vector<pair<K, V>> resultSet;
+    resultSet.reserve(mapping.size());
     for (K key : keySet) {
-        resultSet.insert(make_pair(key, mapping[key]));
+        resultSet.push_back(make_pair(key, mapping[key]));
     }
     return resultSet;
 }
@@ -28,7 +29,7 @@ int SingleMap<K, V>::keySize() {
 
 template<class K, class V>
 bool SingleMap<K, V>::hasKeyValue(K key, V val) {
-    typename map<K, V>::iterator it = mapping.find(key);
+    auto it = mapping.find(key);
     return it != mapping.end() && it->second == val;
 }
 
