@@ -15,7 +15,7 @@ set<string> UsesTable::getVarsUsedInStmt(string stmtNum) {
 }
 
 set<string> UsesTable::getStmtsUsingVar(string varName) {
-    return usesStmtRelation.getKeyFromValue(varName);
+    return usesStmtRelation.getKeysFromValue(varName);
 }
 
 set<pair<string, string>> UsesTable::getStmtsVarEntries() {
@@ -35,7 +35,7 @@ set<string> UsesTable::getVarsUsedInProc(string procName) {
 }
 
 set<string> UsesTable::getProcsUsingVar(string varName) {
-    return usesProcRelation.getKeyFromValue(varName);
+    return usesProcRelation.getKeysFromValue(varName);
 }
 
 set<pair<string, string>> UsesTable::getProcVarEntries() {

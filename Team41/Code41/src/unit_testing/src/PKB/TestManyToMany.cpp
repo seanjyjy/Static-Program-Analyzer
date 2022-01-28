@@ -30,7 +30,7 @@ TEST_CASE("ManyToMany: empty table") {
     REQUIRE(table.getKeys() == set<TestKeys>());
     REQUIRE(table.getValues() == set<TestValues>());
     REQUIRE(table.getValuesFromKey(TEST_KEY_1) == set<TestValues>());
-    REQUIRE(table.getKeyFromValue(TEST_VALUE_1) == set<TestKeys>());
+    REQUIRE(table.getKeysFromValue(TEST_VALUE_1) == set<TestKeys>());
     REQUIRE_FALSE(table.hasKey(TEST_KEY_1));
     REQUIRE_FALSE(table.hasVal(TEST_VALUE_1));
     REQUIRE_FALSE(table.hasMapping(TEST_KEY_1, TEST_VALUE_1));
@@ -79,7 +79,7 @@ TEST_CASE("ManyToMany: adding relation") {
     // TEST_KEY_2 --> {TEST_VALUE_1, TEST_VALUE_4}
     REQUIRE_NOTHROW(table.addMapping(TEST_KEY_2, TEST_VALUE_4));
     REQUIRE(table.getValuesFromKey(TEST_KEY_2) == assignValSet);
-    REQUIRE(table.getKeyFromValue(TEST_VALUE_4) == assignKeySet);
+    REQUIRE(table.getKeysFromValue(TEST_VALUE_4) == assignKeySet);
     REQUIRE(table.valSize() == 4);
     REQUIRE(table.keySize() == 3);
 
@@ -92,7 +92,7 @@ TEST_CASE("ManyToMany: adding relation") {
     // {TEST_KEY_2, TEST_KEY_4} <-- TEST_VALUE_4
     REQUIRE_NOTHROW(table.addMapping(TEST_KEY_4, TEST_VALUE_4));
     REQUIRE(table.getValuesFromKey(TEST_KEY_4) == assignValSet2);
-    REQUIRE(table.getKeyFromValue(TEST_VALUE_4) == assignKeySet2);
+    REQUIRE(table.getKeysFromValue(TEST_VALUE_4) == assignKeySet2);
     REQUIRE(table.valSize() == 4);
     REQUIRE(table.keySize() == 4);
 }

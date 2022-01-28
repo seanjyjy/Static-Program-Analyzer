@@ -17,7 +17,7 @@ set<V> ManyToMany<K, V>::getValuesFromKey(K key) {
 
 
 template<class K, class V>
-set<K> ManyToMany<K, V>::getKeyFromValue(V value) {
+set<K> ManyToMany<K, V>::getKeysFromValue(V value) {
     return valuesToKey.get(value);
 }
 

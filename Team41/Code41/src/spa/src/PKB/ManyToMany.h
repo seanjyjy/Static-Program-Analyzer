@@ -37,7 +37,7 @@ public:
      * @param value the value to query by
      * @return the key that value belongs to
      */
-    set<K> getKeyFromValue(V value);
+    set<K> getKeysFromValue(V value);
 
     /**
      * Checks if key exists in table

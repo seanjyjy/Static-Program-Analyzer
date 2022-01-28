@@ -15,7 +15,7 @@ set<string> ModifiesTable::getVarsModifiedInStmt(string stmtNum) {
 }
 
 set<string> ModifiesTable::getStmtsModifyingVar(string varName) {
-    return modifyStmtRelation.getKeyFromValue(varName);
+    return modifyStmtRelation.getKeysFromValue(varName);
 }
 
 set<pair<string, string>> ModifiesTable::getStmtsVarEntries() {
@@ -35,7 +35,7 @@ set<string> ModifiesTable::getVarsModifiedInProc(string procName) {
 }
 
 set<string> ModifiesTable::getProcsModifyingVar(string varName) {
-    return modifyProcRelation.getKeyFromValue(varName);
+    return modifyProcRelation.getKeysFromValue(varName);
 }
 
 set<pair<string, string>> ModifiesTable::getProcVarEntries() {
