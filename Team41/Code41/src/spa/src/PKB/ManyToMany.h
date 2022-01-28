@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "MultiMap.h"
+#include "SetMultiMap.h"
 
 using namespace std;
 
@@ -10,8 +10,8 @@ template<class K, class V>
 class ManyToMany {
 private:
     string relationName;
-    MultiMap<K, V> keyToValues;
-    MultiMap<V, K> valuesToKey;
+    SetMultiMap<K, V> keyToValues;
+    SetMultiMap<V, K> valuesToKey;
 public:
     explicit ManyToMany(const string &relationName);
 

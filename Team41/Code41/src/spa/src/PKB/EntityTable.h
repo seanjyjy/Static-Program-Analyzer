@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "MultiMap.h"
+#include "SetMultiMap.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ enum EntityType {
  */
 class EntityTable {
 private:
-    MultiMap<EntityType, string> mapping;
+    SetMultiMap<EntityType, string> mapping;
 public:
     EntityTable();
     void addConstant(string numStr);

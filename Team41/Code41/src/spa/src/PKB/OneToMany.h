@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MultiMap.h"
+#include "SetMultiMap.h"
 #include "SingleMap.h"
 
 #include <unordered_map>
@@ -20,7 +20,7 @@ template<typename K, typename V>
 class OneToMany {
 private:
     string relationName;
-    MultiMap<K, V> keyToValues;
+    SetMultiMap<K, V> keyToValues;
     SingleMap<V, K> valuesToKey;
 public:
     explicit OneToMany(const string &relationName);

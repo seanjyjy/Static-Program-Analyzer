@@ -14,7 +14,7 @@ using namespace std;
  * @tparam V the val of the relation
  */
 template<typename K, typename V>
-class MultiMap {
+class SetMultiMap {
 private:
     unordered_map<K, unordered_set<V>> mapping;
     unordered_set<K> keySet;
@@ -83,4 +83,4 @@ public:
     void put(K key, unordered_set<V> values);
 };
 
-#include "MultiMap.tpp"
+#include "SetMultiMap.tpp"

@@ -1,4 +1,4 @@
-#include "PKB/MultiMap.h"
+#include "PKB/SetMultiMap.h"
 #include "../UnitTestUtility.h"
 #include "catch.hpp"
 
@@ -15,7 +15,7 @@ enum TestValues {
 };
 
 TEST_CASE("MultiMap") {
-    MultiMap<TestKeys, TestValues> table;
+    SetMultiMap<TestKeys, TestValues> table;
 
     SECTION("empty table") {
         // Before adding key values
