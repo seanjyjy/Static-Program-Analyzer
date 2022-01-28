@@ -17,9 +17,8 @@ template<class K, class V>
 vector<pair<K, V>> SetMultiMap<K, V>::entries() {
     vector<pair<K, V>> resultSet;
     resultSet.reserve(mapping.size());
-    for (auto &it: mapping) {
-        K key = it.first;
-        for (V val: it.second) {
+    for (K key: keySet) {
+        for (V val: mapping[key]) {
             resultSet.push_back(make_pair(key, val));
         }
     }
