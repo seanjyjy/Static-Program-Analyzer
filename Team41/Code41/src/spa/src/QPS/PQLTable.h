@@ -25,6 +25,8 @@ private:
     // Determine row equality based on common header
     bool isEqual(const Row* rowA, const Row* rowB, const Header& commonHeader);
     const Row* combineRow(const Row* rowA, const Row* rowB) const;
+    // Checks if each column of the row matches the header defined
+    bool checkRowMatchesHeader(const Row* row) const;
 public:
     explicit PQLTable(Header header);
     bool isEmpty();
@@ -38,7 +40,6 @@ public:
     // merge the two table based on sort-merge join algorithm
     PQLTable* mergeJoin(PQLTable* intermediatePQLTable);
 
-    // Checks if each column of the row matches the header defined
-    bool checkRowMatchesHeader(const Row* row) const;
+    vector<const Row *> getRows();
 };
 

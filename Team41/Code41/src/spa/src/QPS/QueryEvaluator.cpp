@@ -27,7 +27,8 @@ std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
         }
     }
 
-    // copy result from resultTable to result here
+    // copy result from resultTable to result here when can think of based on queryObject schema
+    // auto rows = resultTable->getRows();
 
     return result;
 }

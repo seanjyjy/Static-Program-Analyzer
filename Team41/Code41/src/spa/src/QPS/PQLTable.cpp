@@ -100,13 +100,7 @@ const Row* PQLTable::combineRow(const Row* rowA, const Row* rowB) const {
 void PQLTable::sort(PQLTable* table, const Header& commonHeader) {
     std::sort(table->rows.begin(), table->rows.end(), [commonHeader](const Row* left, const Row* right){
         for (auto const& headerField : commonHeader) {
-            if (left->getValueAtColumn(headerField) < right->getValueAtColumn(headerField)) {
-                return true;
-            }
-
-            if (left->getValueAtColumn(headerField) > right->getValueAtColumn(headerField)) {
-                return false;
-            }
+            return left->getValueAtColumn(headerField) <= right->getValueAtColumn(headerField);
         }
         return true;
     });
@@ -116,6 +110,7 @@ Header PQLTable::getCommonHeader(PQLTable *leftTable, PQLTable *rightTable) {
     Header leftTableHeader = leftTable->getHeader();
     Header rightTableHeader = rightTable->getHeader();
     Header commonHeader;
+
     for (auto const& leftHeader : leftTableHeader) {
         if (rightTableHeader.find(leftHeader) != rightTableHeader.end()) {
             commonHeader.insert(leftHeader);
@@ -210,6 +205,10 @@ size_t PQLTable::size() {
 // Constructor
 PQLTable::PQLTable(Header header) {
     this->header = std::move(header);
+}
+
+vector<const Row *> PQLTable::getRows() {
+    return this->rows;
 }
 
 
