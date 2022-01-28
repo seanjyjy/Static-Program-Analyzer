@@ -1,23 +1,9 @@
-//
-// Created by lum jian yang sean on 26/1/22.
-//
 #include <stdexcept>
 #include "QueryEvaluator.h"
-#include "Evaluator.h"
+#include "QPS/Evaluator.h"
 
-/*
- Refer to stub in QueryEvaluator.h (not real or chosen design just temp)
-
- Assuming QueryProject provides
- 1. A field that determines if this is a synthetically and semantically correct query / or ideally a way to know if the current query is ok
- 2. A field contains all the declarations
- 3. A field that contains all the clauses
-    3.1 perhaps clauses can be an object that provides the type? // some ENUM?
-    3.2 and also provide lhs and rhs variable? (should apply to all clauses right)
- */
 std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     std::set<std::string> result;
-    // not sure if it is better to create this or empty from result
     std::set<std::string> emptyResult;
 
     PQLTable* resultTable = nullptr;
@@ -34,7 +20,7 @@ std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             return emptyResult;
         }
 
-        resultTable->intersect(intermediateTable);
+        resultTable = resultTable->mergeJoin(intermediateTable);
 
         if (resultTable->isEmpty()) {
             return emptyResult;
@@ -69,5 +55,4 @@ Evaluator *QueryEvaluator::getEvaluator(const std::string& clause) {
        } else {
            throw std::runtime_error("unknown clause of type " + clause);
        }
-    }
 }

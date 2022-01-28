@@ -1,12 +1,9 @@
-//
-// Created by lum jian yang sean on 26/1/22.
-//
 #pragma once
 
 #include <set>
 #include <string>
 #include <vector>
-#include "Evaluator.h"
+#include "QPS/Evaluator.h"
 
 // just a stub
 class QueryObject{
