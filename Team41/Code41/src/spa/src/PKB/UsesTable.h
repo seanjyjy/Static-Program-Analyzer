@@ -3,9 +3,6 @@
 //
 #pragma once
 
-#ifndef SPA_USESTABLE_H
-#define SPA_USESTABLE_H
-
 #include "ManyToMany.h"
 #include <string>
 
@@ -32,6 +29,3 @@ public:
     set<pair<string, string>> getProcVarEntries();
     bool isUsesP(string procName, string varName);
 };
-
-
-#endif //SPA_USESTABLE_H

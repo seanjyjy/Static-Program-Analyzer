@@ -3,9 +3,6 @@
 //
 #pragma once
 
-#ifndef SPA_MODIFIESTABLE_H
-#define SPA_MODIFIESTABLE_H
-
 #include "ManyToMany.h"
 #include <string>
 
@@ -32,6 +29,3 @@ public:
     set<pair<string, string>> getProcVarEntries();
     bool isModifiesP(string procName, string varName);
 };
-
-
-#endif //SPA_MODIFIESTABLE_H

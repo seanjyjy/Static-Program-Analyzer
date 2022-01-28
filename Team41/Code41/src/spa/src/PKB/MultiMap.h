@@ -3,9 +3,6 @@
 //
 #pragma once
 
-#ifndef SPA_MULTIMAP_H
-#define SPA_MULTIMAP_H
-
 #include <map>
 #include <set>
 #include <string>
@@ -89,5 +86,3 @@ public:
 };
 
 #include "MultiMap.tpp"
-
-#endif //SPA_MULTIMAP_H

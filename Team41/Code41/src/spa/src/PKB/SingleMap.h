@@ -3,9 +3,6 @@
 //
 #pragma once
 
-#ifndef SPA_SINGLEMAP_H
-#define SPA_SINGLEMAP_H
-
 #include <map>
 #include <set>
 #include <string>
@@ -79,6 +76,6 @@ public:
      */
     void put(K key, V val);
 };
+
 #include "SingleMap.tpp"
 
-#endif //SPA_SINGLEMAP_H

@@ -3,9 +3,6 @@
 //
 #pragma once
 
-#ifndef SPA_MANYTOMANY_H
-#define SPA_MANYTOMANY_H
-
 #include <map>
 #include <set>
 #include <string>
@@ -109,5 +106,3 @@ public:
 };
 
 #include "ManyToMany.tpp"
-
-#endif //SPA_MANYTOMANY_H

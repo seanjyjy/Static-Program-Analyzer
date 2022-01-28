@@ -3,9 +3,6 @@
 //
 #pragma once
 
-#ifndef SPA_ONETOMANY_H
-#define SPA_ONETOMANY_H
-
 #include "MultiMap.h"
 #include "SingleMap.h"
 
@@ -121,4 +118,3 @@ public:
 
 #include "OneToMany.tpp"
 
-#endif //SPA_ONETOMANY_H

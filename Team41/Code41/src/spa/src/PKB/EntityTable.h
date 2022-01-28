@@ -3,9 +3,6 @@
 //
 #pragma once
 
-#ifndef SPA_ENTITYTABLE_H
-#define SPA_ENTITYTABLE_H
-
 #include <string>
 
 #include "MultiMap.h"
@@ -35,5 +32,3 @@ public:
     set<string> getProcedures();
 };
 
-
-#endif //SPA_ENTITYTABLE_H

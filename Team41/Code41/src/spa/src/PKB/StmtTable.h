@@ -3,9 +3,6 @@
 //
 #pragma once
 
-#ifndef SPA_STMTTABLE_H
-#define SPA_STMTTABLE_H
-
 #include "OneToMany.h"
 
 #include "StmtType.h"
@@ -72,6 +69,3 @@ public:
      */
     set<StmtType> getAllTypes();
 };
-
-
-#endif //SPA_STMTTABLE_H

@@ -3,9 +3,6 @@
 //
 #pragma once
 
-#ifndef SPA_STMTTYPE_H
-#define SPA_STMTTYPE_H
-
 /**
  * The types of SIMPLE statements
  */
@@ -19,4 +16,3 @@ enum StmtType {
     CALL
 };
 
-#endif //SPA_STMTTYPE_H
