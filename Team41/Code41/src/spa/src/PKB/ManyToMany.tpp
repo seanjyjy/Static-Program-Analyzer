@@ -1,7 +1,3 @@
-//
-// Created by JinHao on 27/1/22.
-//
-
 #include "ManyToMany.h"
 
 template<class K, class V>

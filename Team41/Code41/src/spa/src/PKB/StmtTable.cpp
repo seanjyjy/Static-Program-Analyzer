@@ -1,6 +1,3 @@
-//
-// Created by JinHao on 26/1/22.
-//
 #include <string>
 
 #include "StmtTable.h"

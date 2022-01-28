@@ -1,7 +1,3 @@
-//
-// Created by JinHao on 27/1/22.
-//
-
 #include "UsesTable.h"
 
 UsesTable::UsesTable() : usesStmtRelation("UsesS"), usesProcRelation("UsesP") {}

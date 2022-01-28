@@ -1,7 +1,3 @@
-//
-// Created by JinHao on 26/1/22.
-//
-
 #include "catch.hpp"
 #include "PKB/StmtTable.h"
 

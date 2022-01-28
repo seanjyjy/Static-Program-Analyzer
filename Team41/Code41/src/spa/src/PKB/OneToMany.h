@@ -1,6 +1,3 @@
-//
-// Created by JinHao on 26/1/22.
-//
 #pragma once
 
 #include "MultiMap.h"

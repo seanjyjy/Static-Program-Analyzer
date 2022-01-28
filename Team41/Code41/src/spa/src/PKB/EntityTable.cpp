@@ -1,7 +1,3 @@
-//
-// Created by JinHao on 27/1/22.
-//
-
 #include "EntityTable.h"
 
 EntityTable::EntityTable() = default;

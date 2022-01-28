@@ -1,10 +1,5 @@
-//
-// Created by JinHao on 26/1/22.
-//
-
 #include "PKB/SingleMap.h"
 
-#include "TNode.h"
 #include "catch.hpp"
 
 using namespace std;

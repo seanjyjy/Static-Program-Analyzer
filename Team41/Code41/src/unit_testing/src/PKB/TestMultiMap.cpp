@@ -1,9 +1,4 @@
-//
-// Created by JinHao on 26/1/22.
-//
-
 #include "PKB/MultiMap.h"
-
 #include "catch.hpp"
 
 using namespace std;
