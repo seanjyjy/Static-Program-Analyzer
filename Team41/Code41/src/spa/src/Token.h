@@ -5,34 +5,34 @@
 using namespace std;
 
 enum class TokenType {
-    openingBrace,
-    closingBrace,
-    openingBracket,
-    closingBracket,
-    assign,
-    semicolon,
-    notOp,
-    andOp,
-    orOp,
-    gt,
-    ge,
-    lt,
-    le,
-    eq,
-    ne,
-    plus,
-    minus,
-    times,
-    div,
-    mod,
-    procedure,
-    readOp,
-    printOp,
-    callOp,
-    whileOp,
-    ifOp,
-    name,
-    integer,
+    openingBrace, // {
+    closingBrace, // }
+    openingBracket, // (
+    closingBracket, // )
+    assign, // =
+    semicolon, // ;
+    notOp, // !
+    andOp, // &&
+    orOp, // ||
+    gt, // >
+    ge, // >=
+    lt, // <
+    le, // <=
+    eq, // ==
+    ne, // !=
+    plus, // +
+    minus, // -
+    times, // *
+    div, // /
+    mod, // %
+    procedure, // 'procedure'
+    readOp, // 'read'
+    printOp, // 'print'
+    callOp, // 'call'
+    whileOp, // 'while'
+    ifOp, // 'if'
+    name, // LETTER (LETTER|DIGIT)*
+    integer, // DIGIT+
 };
 
 class Token {
