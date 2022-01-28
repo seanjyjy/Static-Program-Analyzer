@@ -39,10 +39,16 @@ bool OneToMany<K, V>::hasMapping(K key, V val) {
 
 template<class K, class V>
 void OneToMany<K, V>::addMapping(K key, V val) {
+    // already mapped
+    if (this->hasMapping(key, val)) {
+        return;
+    }
+
     // checks that if val exists in table, make sure that it is only mapped from one unique key
-    if (valuesToKey.hasKey(val) && !valuesToKey.hasKeyValue(val, key)) {
+    if (this->hasVal(val)) {
         throw runtime_error("[PKB][" + relationName + "][One-Many] Multiple keys detected for specified val");
     }
+
     keyToValues.add(key, val);
     valuesToKey.put(val, key);
 }
