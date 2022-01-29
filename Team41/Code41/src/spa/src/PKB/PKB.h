@@ -88,6 +88,10 @@ public:
     void registerConstant(string constVal);// Registers a constant to PKB
     void registerProcedure(string procName);// Registers a procedure to PKB
 
+    bool isConstant(string constVal);// Checks if specified variable is registered
+    bool isProcedure(string procName);// Checks if specified constant is registered
+    bool isVariable(string varName);// Checks if specified procedure is registered
+
     //=========================================== Uses ===================================================
 
     void registerUsesS(string stmtNum, string varName);// Registers to PKB that the specified stmt uses specified var
@@ -104,17 +108,16 @@ public:
 
     //=========================================== Modifies ===================================================
 
-    void
-    registerModifiesS(string stmtNum, string varName);// Registers to PKB that the specified stmt modifies specified var
+    void registerModifiesS(string stmtNum, string varName); // Registers to PKB that the stmt modifies specified var
     bool isModifiesS(string stmtNum, string varName);// Checks if specified statement modifies specified variable
     unordered_set<string> getModifiesSByVar(string varName);// Gets list of statements that modifies specified variable
-    unordered_set<string> getModifiesByStmt(string stmtNum);// Gets list of variables that is modified by specified statement
+    unordered_set<string> getModifiesByStmt(string stmtNum);// Gets list of variables that is modified by statement
     vector<pair<string, string>> getAllModifiesS();// Gets list of stmt-var pair where stmt modifies var
 
-    void registerModifiesP(string procName,
-                           string varName);// Registers to PKB that the specified proc modifies specified var
+    void registerModifiesP(string procName, string varName);// Registers to PKB that the proc modifies specified var
     bool isModifiesP(string procName, string varName);// Checks if specified procedure modifies specified variable
     unordered_set<string> getModifiesPByVar(string varName);// Gets list of procedures that modifies specified variable
-    unordered_set<string> getModifiesByProc(string procName);// Gets list of variables that is modified by specified procedure
+    unordered_set<string> getModifiesByProc(string procName);// Gets list of variables that is modified by procedure
     vector<pair<string, string>> getAllModifiesP();// Gets list of proc-var pair where stmt modifies var
+
 };

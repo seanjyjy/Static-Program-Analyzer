@@ -27,5 +27,8 @@ public:
     unordered_set<string> getConstants();
     unordered_set<string> getVariables();
     unordered_set<string> getProcedures();
+    bool isConstant(string constVal);
+    bool isProcedure(string procName);
+    bool isVariable(string varName);
 };
 

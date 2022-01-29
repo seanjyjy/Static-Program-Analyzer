@@ -74,6 +74,11 @@ void PKB::registerConstant(string constVal) { return entityTable->addConstant(mo
 
 void PKB::registerProcedure(string procName) { return entityTable->addProcedure(move(procName)); }
 
+bool PKB::isConstant(string constVal) { return entityTable->isConstant(move(constVal)); };
+
+bool PKB::isProcedure(string procName) { return entityTable->isProcedure(move(procName)); }
+
+bool PKB::isVariable(string varName) { return entityTable->isVariable(move(varName)); }
 
 //======================================== Uses ==================================================
 
@@ -112,9 +117,13 @@ bool PKB::isModifiesS(string stmtNum, string varName) {
     return modifiesTable->isModifiesS(move(stmtNum), move(varName));
 }
 
-unordered_set<string> PKB::getModifiesSByVar(string varName) { return modifiesTable->getStmtsModifyingVar(move(varName)); }
+unordered_set<string> PKB::getModifiesSByVar(string varName) {
+    return modifiesTable->getStmtsModifyingVar(move(varName));
+}
 
-unordered_set<string> PKB::getModifiesByStmt(string stmtNum) { return modifiesTable->getVarsModifiedInStmt(move(stmtNum)); }
+unordered_set<string> PKB::getModifiesByStmt(string stmtNum) {
+    return modifiesTable->getVarsModifiedInStmt(move(stmtNum));
+}
 
 vector<pair<string, string>> PKB::getAllModifiesS() { return modifiesTable->getStmtsVarEntries(); }
 
@@ -126,9 +135,13 @@ bool PKB::isModifiesP(string procName, string varName) {
     return modifiesTable->isModifiesP(move(procName), move(varName));
 }
 
-unordered_set<string> PKB::getModifiesPByVar(string varName) { return modifiesTable->getProcsModifyingVar(move(varName)); }
+unordered_set<string> PKB::getModifiesPByVar(string varName) {
+    return modifiesTable->getProcsModifyingVar(move(varName));
+}
 
-unordered_set<string> PKB::getModifiesByProc(string procName) { return modifiesTable->getVarsModifiedInProc(move(procName)); }
+unordered_set<string> PKB::getModifiesByProc(string procName) {
+    return modifiesTable->getVarsModifiedInProc(move(procName));
+}
 
 vector<pair<string, string>> PKB::getAllModifiesP() { return modifiesTable->getProcVarEntries(); }
 

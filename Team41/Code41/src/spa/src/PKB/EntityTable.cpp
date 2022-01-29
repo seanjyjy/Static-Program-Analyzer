@@ -19,9 +19,24 @@ void EntityTable::addConstant(string numStr) {
 }
 
 void EntityTable::addProcedure(string procName) {
-    mapping.add(PROC, procName);
+    if (mapping.hasKeyValue(PROC, procName)) {
+        throw runtime_error("[PKB][EntityTable] Procedure name already declared");
+    }
+    return mapping.add(PROC, procName);
 }
 
 void EntityTable::addVariable(string varName) {
     mapping.add(VAR, varName);
+}
+
+bool EntityTable::isConstant(string constVal) {
+    return mapping.hasKeyValue(CONST, constVal);
+}
+
+bool EntityTable::isProcedure(string procName) {
+    return mapping.hasKeyValue(PROC, procName);
+}
+
+bool EntityTable::isVariable(string varName) {
+    return mapping.hasKeyValue(VAR, varName);
 }

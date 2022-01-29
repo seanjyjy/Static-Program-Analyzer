@@ -66,7 +66,9 @@ TEST_CASE("EntityTable") {
         REQUIRE(table.getProcedures() == expectedProcedure);
 
         // add repeated value
-        REQUIRE_NOTHROW(table.addProcedure("abc"));
+        REQUIRE_THROWS(table.addProcedure("abc"),
+                       Catch::Contains("[PKB]") && Catch::Contains("[EntityTable]") &&
+                       Catch::Contains("Procedure name already declared"));
         REQUIRE(table.getProcedures() == expectedProcedure);
 
         // add another value
