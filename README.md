@@ -1,5 +1,18 @@
 # Team 41
 
+## Local Testing
+If you need a main function with access to the `spa` library but want to bypass autotester, use the `src/local_testing` project.
+1. Create `main.cpp` in directory `src/local_testing/src`
+2. Create a main function in `main.cpp`, for example:
+```c++
+#include <iostream>
+using namespace std;
+int main() {
+    cout << "hello world!" << endl;
+}
+```
+3. Click the green run arrow next to "int main" (Clion only)
+
 ## Target Environment
 
 Item | Version
