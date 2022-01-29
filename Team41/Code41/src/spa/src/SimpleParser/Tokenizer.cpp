@@ -8,7 +8,7 @@
 #include <unordered_set>
 
 // member initialization
-Tokenizer::Tokenizer(string s): input(s), idx(0), row(0), col(0) {
+Tokenizer::Tokenizer(string s) : input(s), idx(0), row(0), col(0) {
     if (s.empty()) throw invalid_argument("input to tokenizer must be nonempty");
     currToken = s[0];
 }
@@ -52,40 +52,124 @@ bool Tokenizer::isKeyword(string s) {
 Token Tokenizer::eatN(TokenType type, int n) {
     if (n > (input.size() - idx)) throw length_error("eating too many characters: " + to_string(n));
 
-    pair<int, int> start = { row, col };
+    pair<int, int> start = {row, col};
     string val;
     for (int i = 0; !isEof() && i < n; i++) {
         val += currToken;
         advance();
     }
-    pair<int, int> end = { row, col };
+    pair<int, int> end = {row, col};
     return Token{type, val, start, end};
 }
 
-Token Tokenizer::eatOpeningBrace() { assert(currToken == '{'); return eatN(TokenType::openingBrace, 1); }
-Token Tokenizer::eatClosingBrace() { assert(currToken == '}'); return eatN(TokenType::closingBrace, 1); }
-void Tokenizer::eatWhitespace() { assert(isspace(currToken)); advance(); }
-Token Tokenizer::eatOpeningBracket() { assert(currToken == '('); return eatN(TokenType::openingBracket, 1); }
-Token Tokenizer::eatClosingBracket() { assert(currToken == ')'); return eatN(TokenType::closingBracket, 1); }
-Token Tokenizer::eatSemicolon() { assert(currToken == ';'); return eatN(TokenType::semicolon, 1); }
-Token Tokenizer::eatPlus() { assert(currToken == '+'); return eatN(TokenType::plus, 1); }
-Token Tokenizer::eatMinus() { assert(currToken == '-'); return eatN(TokenType::minus, 1); }
-Token Tokenizer::eatTimes() { assert(currToken == '*'); return eatN(TokenType::times, 1); }
-Token Tokenizer::eatDiv() { assert(currToken == '/'); return eatN(TokenType::div, 1); }
-Token Tokenizer::eatMod() { assert(currToken == '%'); return eatN(TokenType::mod, 1); }
-Token Tokenizer::eatAnd() { assert(currToken == '&'); return eatN(TokenType::andOp, 2); }
-Token Tokenizer::eatOr() { assert(currToken == '|'); return eatN(TokenType::orOp, 2); }
-Token Tokenizer::eatGe() { assert(currToken == '>'); return eatN(TokenType::ge, 2); }
-Token Tokenizer::eatGt() { assert(currToken == '>'); return eatN(TokenType::gt, 1); }
-Token Tokenizer::eatLe() { assert(currToken == '<'); return eatN(TokenType::le, 2); }
-Token Tokenizer::eatLt() { assert(currToken == '<'); return eatN(TokenType::lt, 1); }
-Token Tokenizer::eatEq() { assert(currToken == '='); return eatN(TokenType::eq, 2); }
-Token Tokenizer::eatAssign() { assert(currToken == '='); return eatN(TokenType::assign, 1); }
-Token Tokenizer::eatNe() { assert(currToken == '!'); return eatN(TokenType::ne, 2); }
-Token Tokenizer::eatNot() { assert(currToken == '!'); return eatN(TokenType::notOp, 1); }
+Token Tokenizer::eatOpeningBrace() {
+    assert(currToken == '{');
+    return eatN(TokenType::openingBrace, 1);
+}
+
+Token Tokenizer::eatClosingBrace() {
+    assert(currToken == '}');
+    return eatN(TokenType::closingBrace, 1);
+}
+
+void Tokenizer::eatWhitespace() {
+    assert(isspace(currToken));
+    advance();
+}
+
+Token Tokenizer::eatOpeningBracket() {
+    assert(currToken == '(');
+    return eatN(TokenType::openingBracket, 1);
+}
+
+Token Tokenizer::eatClosingBracket() {
+    assert(currToken == ')');
+    return eatN(TokenType::closingBracket, 1);
+}
+
+Token Tokenizer::eatSemicolon() {
+    assert(currToken == ';');
+    return eatN(TokenType::semicolon, 1);
+}
+
+Token Tokenizer::eatPlus() {
+    assert(currToken == '+');
+    return eatN(TokenType::plus, 1);
+}
+
+Token Tokenizer::eatMinus() {
+    assert(currToken == '-');
+    return eatN(TokenType::minus, 1);
+}
+
+Token Tokenizer::eatTimes() {
+    assert(currToken == '*');
+    return eatN(TokenType::times, 1);
+}
+
+Token Tokenizer::eatDiv() {
+    assert(currToken == '/');
+    return eatN(TokenType::div, 1);
+}
+
+Token Tokenizer::eatMod() {
+    assert(currToken == '%');
+    return eatN(TokenType::mod, 1);
+}
+
+Token Tokenizer::eatAnd() {
+    assert(currToken == '&');
+    return eatN(TokenType::andOp, 2);
+}
+
+Token Tokenizer::eatOr() {
+    assert(currToken == '|');
+    return eatN(TokenType::orOp, 2);
+}
+
+Token Tokenizer::eatGe() {
+    assert(currToken == '>');
+    return eatN(TokenType::ge, 2);
+}
+
+Token Tokenizer::eatGt() {
+    assert(currToken == '>');
+    return eatN(TokenType::gt, 1);
+}
+
+Token Tokenizer::eatLe() {
+    assert(currToken == '<');
+    return eatN(TokenType::le, 2);
+}
+
+Token Tokenizer::eatLt() {
+    assert(currToken == '<');
+    return eatN(TokenType::lt, 1);
+}
+
+Token Tokenizer::eatEq() {
+    assert(currToken == '=');
+    return eatN(TokenType::eq, 2);
+}
+
+Token Tokenizer::eatAssign() {
+    assert(currToken == '=');
+    return eatN(TokenType::assign, 1);
+}
+
+Token Tokenizer::eatNe() {
+    assert(currToken == '!');
+    return eatN(TokenType::ne, 2);
+}
+
+Token Tokenizer::eatNot() {
+    assert(currToken == '!');
+    return eatN(TokenType::notOp, 1);
+}
+
 Token Tokenizer::eatName() {
     assert(isalpha(currToken));
-    pair<int, int> start = { row, col };
+    pair<int, int> start = {row, col};
 
     string val;
     do {
@@ -93,12 +177,13 @@ Token Tokenizer::eatName() {
         advance();
     } while (!isEof() && isalnum(currToken));
 
-    pair<int, int> end = { row, col };
+    pair<int, int> end = {row, col};
     return Token{TokenType::name, val, start, end};
 }
+
 Token Tokenizer::eatInteger() {
     assert(isdigit(currToken));
-    pair<int, int> start = { row, col };
+    pair<int, int> start = {row, col};
 
     string val;
     while (isdigit(currToken)) {
@@ -106,10 +191,9 @@ Token Tokenizer::eatInteger() {
         advance();
     }
 
-    pair<int, int> end = { row, col };
+    pair<int, int> end = {row, col};
     return Token{TokenType::integer, val, start, end};
 }
-
 
 // public functions
 Tokens Tokenizer::tokenize() {
@@ -169,13 +253,14 @@ Tokens Tokenizer::tokenize() {
         } else if (isdigit(currToken)) {
             tok = eatInteger();
         } else {
-            throw runtime_error("unknown token " + string(1, currToken) + " at row " + to_string(row) + " col " + to_string(col));
+            throw runtime_error(
+                    "unknown token " + string(1, currToken) + " at row " + to_string(row) + " col " + to_string(col));
         }
 
         tokens.add(tok);
     }
 
-    Token eof = Token{TokenType::eof, "", {-1,-1}, {-1,-1}};
+    Token eof = Token{TokenType::eof, "", {-1, -1}, {-1, -1}};
     tokens.add(eof);
     return tokens;
 }

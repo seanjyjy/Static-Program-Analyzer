@@ -4,5 +4,5 @@
 
 class TreeUtils {
 public:
-    static bool isEqual(TNode* n1, TNode* n2);
+    static bool isEqual(TNode *n1, TNode *n2);
 };
