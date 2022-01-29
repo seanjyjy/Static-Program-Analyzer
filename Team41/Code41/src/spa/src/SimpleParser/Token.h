@@ -51,5 +51,3 @@ public:
     const string toString() const;
     static string typeToString(TokenType type);
 };
-
-#endif //SPA_TOKEN_H
