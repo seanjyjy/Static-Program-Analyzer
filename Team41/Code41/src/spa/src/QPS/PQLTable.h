@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "Row.h"
+#include <unordered_set>
 
 using namespace std;
 
@@ -29,6 +30,7 @@ private:
     bool checkRowMatchesHeader(const Row* row) const;
 public:
     explicit PQLTable(Header header);
+    ~PQLTable();
     bool isEmpty();
     bool hasColumn(const string& column);
     // This is just used in testing so its runtime doesn't matter

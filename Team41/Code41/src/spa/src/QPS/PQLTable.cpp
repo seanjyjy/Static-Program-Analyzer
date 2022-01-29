@@ -210,5 +210,3 @@ PQLTable::PQLTable(Header header) {
 vector<const Row *> PQLTable::getRows() {
     return this->rows;
 }
-
-

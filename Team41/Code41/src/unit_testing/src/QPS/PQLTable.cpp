@@ -104,19 +104,19 @@ TEST_CASE() {
          * 4 | x
          * 3 | y
          */
-        PQLTable* table4 = new PQLTable(header4);
+        auto* table4 = new PQLTable(header4);
         Row* row1z = new Row();
         Row* row4x = new Row();
         Row* row3y = new Row();
         REQUIRE_NOTHROW(row1z->addEntry("a", "1"));
-        REQUIRE_NOTHROW(row1z->addEntry("v", "z"));
+        REQUIRE_NOTHROW(row1z->addEntry("d", "z"));
         REQUIRE_NOTHROW(row4x->addEntry("a", "4"));
-        REQUIRE_NOTHROW(row4x->addEntry("v", "x"));
+        REQUIRE_NOTHROW(row4x->addEntry("d", "x"));
         REQUIRE_NOTHROW(row3y->addEntry("a", "3"));
-        REQUIRE_NOTHROW(row3y->addEntry("v", "y"));
-        REQUIRE_NOTHROW(table2.addRow(row1z));
-        REQUIRE_NOTHROW(table2.addRow(row4x));
-        REQUIRE_NOTHROW(table2.addRow(row3y));
+        REQUIRE_NOTHROW(row3y->addEntry("d", "y"));
+        REQUIRE_NOTHROW(table4->addRow(row1z));
+        REQUIRE_NOTHROW(table4->addRow(row4x));
+        REQUIRE_NOTHROW(table4->addRow(row3y));
 
         /*
          * a | v | d
@@ -124,8 +124,9 @@ TEST_CASE() {
          * 1 | b | z
          */
         PQLTable* newTable2 = table2.mergeJoin(table4);
-        REQUIRE(newTable->getHeader() == header2);
-        REQUIRE(newTable->size() == 2);
+        Header header5({"a", "d", "v"});
+        REQUIRE(newTable2->getHeader() == header5);
+        REQUIRE(newTable2->size() == 2);
 
         Row* row1az = new Row();
         REQUIRE_NOTHROW(row1az->addEntry("a", "1"));
@@ -135,7 +136,7 @@ TEST_CASE() {
         REQUIRE_NOTHROW(row1bz->addEntry("a", "1"));
         REQUIRE_NOTHROW(row1bz->addEntry("v", "b"));
         REQUIRE_NOTHROW(row1bz->addEntry("d", "z"));
-        REQUIRE(newTable->hasRow(row1az));
-        REQUIRE(newTable->hasRow(row1bz));
+        REQUIRE(newTable2->hasRow(row1az));
+        REQUIRE(newTable2->hasRow(row1bz));
     }
 }
