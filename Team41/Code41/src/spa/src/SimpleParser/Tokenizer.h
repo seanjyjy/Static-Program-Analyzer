@@ -48,6 +48,3 @@ public:
     Tokenizer(string s);
     vector<Token> tokenize();
 };
-
-
-#endif //SPA_TOKENIZER_H
