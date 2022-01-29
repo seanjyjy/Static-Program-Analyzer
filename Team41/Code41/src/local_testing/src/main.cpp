@@ -6,7 +6,7 @@ using namespace std;
 int main() {
     string s = "procedure main {\n"
                "    read x;\n"
-               "    print x;\n"
+               "    printRecursive x;\n"
                "    read x;\n"
                "}";
     Parser p = Parser(s);

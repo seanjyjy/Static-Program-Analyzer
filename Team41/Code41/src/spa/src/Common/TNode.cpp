@@ -2,6 +2,7 @@
 #include <stack>
 #include <stdexcept>
 #include <algorithm>
+#include <iostream>
 
 #include "SimpleParser/Token.h"
 #include "TNode.h"
@@ -54,6 +55,10 @@ string TNode::toStringRecursive() {
     return ret;
 }
 
+void TNode::printRecursive() {
+    cout << toStringRecursive() << endl;
+}
+
 TNode *TNode::makeProgram(TNode *procedure) { return new TNode(TNodeType::program, nullptr, { procedure }); }
 TNode *TNode::makeProcedure(Token* name, TNode *stmtLst) { return new TNode(TNodeType::procedure, name, { stmtLst }); }
 TNode *TNode::makeStmtLst(vector<TNode*> stmts) { return new TNode(TNodeType::stmtLst, nullptr, move(stmts)); }
@@ -88,7 +93,7 @@ string TNode::typeToString(TNodeType type) {
         case TNodeType::procedure : return "procedure";
         case TNodeType::stmtLst : return "stmtLst";
         case TNodeType::readStmt : return "read";
-        case TNodeType::printStmt : return "print";
+        case TNodeType::printStmt : return "printRecursive";
         case TNodeType::callStmt : return "call";
         case TNodeType::whileStmt : return "while";
         case TNodeType::ifStmt : return "if";
@@ -115,5 +120,21 @@ string TNode::typeToString(TNodeType type) {
     }
 }
 
+bool TNode::operator==(TNode &other) {
+    // base case: if children are different sizes, not equal
+    if (children.size() != other.children.size()) return false;
+    // otherwise first compare type and underlying token value (if any)
+    bool isEq = true;
+    if (val == nullptr && other.val == nullptr) {
+        isEq = isEq && (type == other.type);
+    } else {
+        isEq = isEq && (type == other.type) && (val->getVal() == other.val->getVal());
+    }
+    // then compare children equality
+    for (int i = 0; i < children.size(); i++) {
+        isEq = isEq && (*children[i] == *other.children[i]);
+    }
+    return isEq;
+}
 
 

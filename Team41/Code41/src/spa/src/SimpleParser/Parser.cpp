@@ -10,7 +10,7 @@ using namespace std;
 #include <string>
 
 #include "Token.h"
-#include "PKB.h"
+#include "PKB/PKB.h"
 #include "Common/TNode.h"
 #include "Parser.h"
 #include "Tokenizer.h"
@@ -120,10 +120,10 @@ TNode *Parser::eatStmtLst() {
     return TNode::makeStmtLst(stmts);
 }
 
-// stmt -> read | print | call | while | if | assign
+// stmt -> read | printRecursive | call | while | if | assign
 TNode *Parser::eatStmt() {
     if (peekMatchTypeVal(TokenType::keyword, "read")) return eatStmtRead();
-    if (peekMatchTypeVal(TokenType::keyword, "print")) return eatStmtPrint();
+    if (peekMatchTypeVal(TokenType::keyword, "printRecursive")) return eatStmtPrint();
     if (peekMatchTypeVal(TokenType::keyword, "call")) return eatStmtCall();
     if (peekMatchTypeVal(TokenType::keyword, "while")) return eatStmtWhile();
     if (peekMatchTypeVal(TokenType::keyword, "if")) return eatStmtIf();
@@ -139,9 +139,9 @@ TNode *Parser::eatStmtRead() {
     return TNode::makeReadStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
-// print -> 'print' var_name ';'
+// print -> 'printRecursive' var_name ';'
 TNode *Parser::eatStmtPrint() {
-    checkAndAdvance(TokenType::keyword, "print");
+    checkAndAdvance(TokenType::keyword, "printRecursive");
     Token* tokenBeforeAdv = checkAndAdvance(TokenType::name);
     checkAndAdvance(TokenType::semicolon);
     return TNode::makePrintStmt(TNode::makeVarName(tokenBeforeAdv));

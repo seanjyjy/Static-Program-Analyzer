@@ -13,7 +13,7 @@ TEST_CASE("Tokenizer: 1st Test") {
                "    two = 0;\n"
                "\n"
                "    read x;\n"
-               "    print x;\n"
+               "    printRecursive x;\n"
                "\n"
                "    while (!(1 > 2) && (3 >= 4)) {\n"
                "        one = 1;\n"

@@ -23,7 +23,13 @@ public:
     TNode* getParent();
     vector<TNode*> getChildren();
     void setParent(TNode* parent);
+
+    // mainly for debugging purposes
     string toString();
+    void printRecursive();
+
+    // mainly for testing purposes, recursive ==
+    bool operator==(TNode &other);
 
     static TNode* makeProgram(TNode* procedure);
     static TNode* makeProcedure(Token* name, TNode* stmtLst);
