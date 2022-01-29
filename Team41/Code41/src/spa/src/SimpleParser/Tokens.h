@@ -13,4 +13,7 @@ public:
     size_t size();
     bool empty();
     Token &operator[](int idx);
+
+    // debugging purposes
+    void print();
 };

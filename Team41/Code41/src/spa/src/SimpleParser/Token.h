@@ -20,5 +20,6 @@ public:
     const pair<int, int> getStart() const;
     const pair<int, int> getEnd() const;
     const string toString() const;
+    Token* copy() const;
     static string typeToString(TokenType type);
 };

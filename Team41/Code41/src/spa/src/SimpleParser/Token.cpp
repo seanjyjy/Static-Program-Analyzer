@@ -23,6 +23,10 @@ const pair<int, int> Token::getEnd() const {
     return end;
 }
 
+Token* Token::copy() const {
+    return new Token(getType(), getVal(), getStart(), getEnd());
+}
+
 const string Token::toString() const {
     return "Token{" + typeToString(type) + ", '" + val + "'}";
 }
@@ -49,15 +53,8 @@ string Token::typeToString(TokenType type) {
         case TokenType::times : return "times";
         case TokenType::div : return "div";
         case TokenType::mod : return "mod";
-        case TokenType::procedure : return "procedure";
-        case TokenType::readOp : return "readOp";
-        case TokenType::printOp : return "printOp";
-        case TokenType::callOp : return "callOp";
-        case TokenType::whileOp : return "whileOp";
-        case TokenType::ifOp : return "ifOp";
         case TokenType::name : return "name";
         case TokenType::integer : return "integer";
         default: throw runtime_error("unknown token type");
     }
 }
-

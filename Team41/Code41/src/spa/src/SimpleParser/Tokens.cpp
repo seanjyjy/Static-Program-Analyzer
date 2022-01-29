@@ -5,6 +5,7 @@
 #include "Token.h"
 
 #include <stdexcept>
+#include <iostream>
 
 using namespace std;
 
@@ -25,6 +26,12 @@ Token &Tokens::operator[](int idx) {
 
 size_t Tokens::size() {
     return tokens.size();
+}
+
+void Tokens::print() {
+    for (const Token &t: tokens) {
+        cout << t.toString() << endl;
+    }
 }
 
 
