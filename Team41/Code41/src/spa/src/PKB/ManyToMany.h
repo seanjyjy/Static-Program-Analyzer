@@ -90,14 +90,14 @@ public:
      *
      * @return number of keys
      */
-    int keySize();
+    size_t keySize();
 
     /**
      * Gets the number of values stored in table
      *
      * @return number of vals
      */
-    int valSize();
+    size_t valSize();
 };
 
 #include "ManyToMany.tpp"

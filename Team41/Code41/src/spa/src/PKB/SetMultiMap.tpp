@@ -26,7 +26,7 @@ vector<pair<K, V>> SetMultiMap<K, V>::entries() {
 }
 
 template<class K, class V>
-int SetMultiMap<K, V>::keySize() {
+size_t SetMultiMap<K, V>::keySize() {
     return keySet.size();
 }
 

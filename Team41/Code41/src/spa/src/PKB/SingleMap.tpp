@@ -23,7 +23,7 @@ vector<pair<K, V>> SingleMap<K, V>::entries() {
 }
 
 template<class K, class V>
-int SingleMap<K, V>::keySize() {
+size_t SingleMap<K, V>::keySize() {
     return keySet.size();
 }
 

@@ -47,7 +47,7 @@ public:
      *
      * @return number of keys
      */
-    int keySize();
+    size_t keySize();
 
     /**
      * Checks if key exists in table

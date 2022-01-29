@@ -54,12 +54,12 @@ vector<pair<K, V>> ManyToMany<K, V>::getEntries() {
 }
 
 template<class K, class V>
-int ManyToMany<K, V>::keySize() {
+size_t ManyToMany<K, V>::keySize() {
     return keyToValues.keySize();
 }
 
 template<class K, class V>
-int ManyToMany<K, V>::valSize() {
+size_t ManyToMany<K, V>::valSize() {
     return valuesToKey.keySize();
 }
 
