@@ -5,6 +5,7 @@
 #include "EntityTable.h"
 #include "UsesTable.h"
 #include "ModifiesTable.h"
+#include "FollowsTable.h"
 
 using namespace std;
 
@@ -18,6 +19,7 @@ public:
     EntityTable *entityTable;
     UsesTable *usesTable;
     ModifiesTable *modifiesTable;
+    FollowsTable *followsTable;
 
     //======================================== Statement ==================================================
 
@@ -91,6 +93,30 @@ public:
     bool isConstant(string constVal);// Checks if specified variable is registered
     bool isProcedure(string procName);// Checks if specified constant is registered
     bool isVariable(string varName);// Checks if specified procedure is registered
+
+    //=========================================== Follows ===================================================
+
+    /**
+     * Registers to PKB that the specified stmt1 follows specified stmt2
+     *
+     * @param stmt1 the follower statement
+     * @param stmt2 the followed statement
+     * @throws key_map_err if stmt1 is already following some other statement
+     * @throws val_map_err if stmt2 is already followed by some other statement
+     * @throws cyclic_err if the registration creates a cycle in the follow graph
+     * @throws self_err if statement attempts to follow itself
+     */
+    void registerFollows(string stmt1, string stmt2);
+
+    bool isFollows(string stmt1, string stmt2); // Checks if stmt1 follows stmt2
+    string getStmtFollowing(string stmtNum);// Gets the stmt that follows the specified stmt
+    string getStmtFollowedBy(string stmtNum);// Gets the stmt that are follows by the specified stmt
+    vector<pair<string, string>> getAllFollows(); // Gets list of stmt1-stmt2 pair where stmt1 follows stmt2
+
+    bool isFollowsT(string stmt1, string stmt2); // Checks if stmt1 followsT stmt2
+    unordered_set<string> getAllStmtsFollowingT(string stmtNum);// Gets list of stmts that followsT the specified stmt
+    unordered_set<string> getAllStmtsFollowedTBy(string stmtNum);// Gets list of stmts that is followedT by given stmt
+    vector<pair<string, string>> getAllFollowsT(); // Gets list of stmt1-stmt2 pair where stmt1 followsT stmt2
 
     //=========================================== Uses ===================================================
 

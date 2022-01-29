@@ -10,6 +10,7 @@ PKB::PKB() {
     entityTable = new EntityTable();
     usesTable = new UsesTable();
     modifiesTable = new ModifiesTable();
+    followsTable = new FollowsTable();
 }
 
 PKB::~PKB() {
@@ -17,6 +18,7 @@ PKB::~PKB() {
     delete entityTable;
     delete usesTable;
     delete modifiesTable;
+    delete followsTable;
 }
 
 //======================================== Statements ==================================================
@@ -79,6 +81,30 @@ bool PKB::isConstant(string constVal) { return entityTable->isConstant(move(cons
 bool PKB::isProcedure(string procName) { return entityTable->isProcedure(move(procName)); }
 
 bool PKB::isVariable(string varName) { return entityTable->isVariable(move(varName)); }
+
+//======================================== Follows ==================================================
+
+void PKB::registerFollows(string stmt1, string stmt2) { return followsTable->setFollows(move(stmt1), move(stmt2)); }
+
+bool PKB::isFollows(string stmt1, string stmt2) { return followsTable->isFollows(move(stmt1), move(stmt2)); }
+
+string PKB::getStmtFollowing(string stmtNum) { return followsTable->getStmtFollowing(move(stmtNum)); }
+
+string PKB::getStmtFollowedBy(string stmtNum) { return followsTable->getStmtFollowedBy(move(stmtNum)); }
+
+vector<pair<string, string>> PKB::getAllFollows() { return followsTable->getFollowEntries(); }
+
+bool PKB::isFollowsT(string stmt1, string stmt2) { return followsTable->isFollowsT(move(stmt1), move(stmt2)); }
+
+unordered_set<string> PKB::getAllStmtsFollowingT(string stmtNum) {
+    return followsTable->getStmtsFollowingT(move(stmtNum));
+}
+
+unordered_set<string> PKB::getAllStmtsFollowedTBy(string stmtNum) {
+    return followsTable->getStmtsFollowedTBy(move(stmtNum));
+}
+
+vector<pair<string, string>> PKB::getAllFollowsT() { return followsTable->getFollowTEntries(); }
 
 //======================================== Uses ==================================================
 
