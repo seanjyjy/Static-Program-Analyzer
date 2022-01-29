@@ -1,9 +1,11 @@
 #include "Tokenizer.h"
+#include "Tokens.h"
 
 #include <utility>
 #include <cctype>
 #include <stdexcept>
 #include <cassert>
+#include <unordered_set>
 
 // member initialization
 Tokenizer::Tokenizer(string s): input(s), idx(0), row(0), col(0) {
@@ -39,8 +41,12 @@ string Tokenizer::peek(int n) {
     return input.substr(idx, n);
 }
 
-bool Tokenizer::eof() {
+bool Tokenizer::isEof() {
     return currToken == '\0';
+}
+
+bool Tokenizer::isKeyword(string s) {
+    return keywords.find(s) != keywords.end();
 }
 
 Token Tokenizer::eatN(TokenType type, int n) {
@@ -48,7 +54,7 @@ Token Tokenizer::eatN(TokenType type, int n) {
 
     pair<int, int> start = { row, col };
     string val;
-    for (int i = 0; !eof() && i < n; i++) {
+    for (int i = 0; !isEof() && i < n; i++) {
         val += currToken;
         advance();
     }
@@ -85,7 +91,7 @@ Token Tokenizer::eatName() {
     do {
         val += currToken; // first token is
         advance();
-    } while (!eof() && isalnum(currToken));
+    } while (!isEof() && isalnum(currToken));
 
     pair<int, int> end = { row, col };
     return Token{TokenType::name, val, start, end};
@@ -106,8 +112,8 @@ Token Tokenizer::eatInteger() {
 
 
 // public functions
-vector<Token> Tokenizer::tokenize() {
-    vector<Token> tokens;
+Tokens Tokenizer::tokenize() {
+    Tokens tokens;
 
     while (currToken != '\0') {
         Token tok;
@@ -159,21 +165,18 @@ vector<Token> Tokenizer::tokenize() {
             tok = eatNot();
         } else if (isalpha(currToken)) {
             tok = eatName();
-            if (tok.getVal() == "procedure") tok = Token{TokenType::procedure, tok.getVal(), tok.getStart(), tok.getEnd()};
-            else if (tok.getVal() == "read") tok = Token{TokenType::readOp, tok.getVal(), tok.getStart(), tok.getEnd()};
-            else if (tok.getVal() == "print") tok = Token{TokenType::printOp, tok.getVal(), tok.getStart(), tok.getEnd()};
-            else if (tok.getVal() == "call") tok = Token{TokenType::callOp, tok.getVal(), tok.getStart(), tok.getEnd()};
-            else if (tok.getVal() == "while") tok = Token{TokenType::whileOp, tok.getVal(), tok.getStart(), tok.getEnd()};
-            else if (tok.getVal() == "if") tok = Token{TokenType::ifOp, tok.getVal(), tok.getStart(), tok.getEnd()};
+            if (isKeyword(tok.getVal())) tok = Token{TokenType::keyword, tok.getVal(), tok.getStart(), tok.getEnd()};
         } else if (isdigit(currToken)) {
             tok = eatInteger();
         } else {
             throw runtime_error("unknown token " + string(1, currToken) + " at row " + to_string(row) + " col " + to_string(col));
         }
 
-        tokens.push_back(tok);
+        tokens.add(tok);
     }
 
+    Token eof = Token{TokenType::eof, "", {-1,-1}, {-1,-1}};
+    tokens.add(eof);
     return tokens;
 }
 
