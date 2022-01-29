@@ -7,10 +7,8 @@
 using namespace std;
 
 #include <stdexcept>
-#include <string>
 
 #include "Token.h"
-#include "PKB/PKB.h"
 #include "Common/TNode.h"
 #include "Parser.h"
 #include "Tokenizer.h"
@@ -35,19 +33,23 @@ void Parser::backtrack(int to) {
 
 void Parser::expect(TokenType type) {
     if (currToken.getType() != type) {
+        string expectedType = Token::typeToString(type);
+        string gotType = Token::typeToString(currToken.getType());
         auto [startRow, startCol] = currToken.getStart();
-        string msg = "expected " + Token::typeToString(type) + " at row " + to_string(startRow) +
-                ", col " + to_string(startCol) + ", got " + Token::typeToString(type);
+        string msg = "expected " + expectedType + " at row " + to_string(startRow) +
+                ", col " + to_string(startCol) + ", got " + gotType;
         throw runtime_error(msg);
     }
 }
 
 void Parser::expect(TokenType type, string s) {
     if (currToken.getType() != type || currToken.getVal() != s) {
+        string expectedType = Token::typeToString(type);
+        string gotType = Token::typeToString(currToken.getType());
         auto [startRow, startCol] = currToken.getStart();
-        string msg = "expected " + Token::typeToString(type) + " " + currToken.getVal() +
+        string msg = "expected " + expectedType + " " + s +
                      " at row " + to_string(startRow) + ", col " + to_string(startCol) +
-                     ", got " + Token::typeToString(type);
+                     ", got " + gotType + currToken.getVal();
         throw runtime_error(msg);
     }
 }
@@ -88,7 +90,7 @@ Token* Parser::checkAndAdvance(TokenType type, string val) {
 }
 
 TNode *Parser::eatProgram() {
-    return eatProcedure();
+    return TNode::makeProgram(eatProcedure());
 }
 
 // procedure -> 'procedure' proc_name '{' stmtLst '}'
@@ -120,10 +122,10 @@ TNode *Parser::eatStmtLst() {
     return TNode::makeStmtLst(stmts);
 }
 
-// stmt -> read | printRecursive | call | while | if | assign
+// stmt -> read | print | call | while | if | assign
 TNode *Parser::eatStmt() {
     if (peekMatchTypeVal(TokenType::keyword, "read")) return eatStmtRead();
-    if (peekMatchTypeVal(TokenType::keyword, "printRecursive")) return eatStmtPrint();
+    if (peekMatchTypeVal(TokenType::keyword, "print")) return eatStmtPrint();
     if (peekMatchTypeVal(TokenType::keyword, "call")) return eatStmtCall();
     if (peekMatchTypeVal(TokenType::keyword, "while")) return eatStmtWhile();
     if (peekMatchTypeVal(TokenType::keyword, "if")) return eatStmtIf();
@@ -139,9 +141,9 @@ TNode *Parser::eatStmtRead() {
     return TNode::makeReadStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
-// print -> 'printRecursive' var_name ';'
+// print -> 'print' var_name ';'
 TNode *Parser::eatStmtPrint() {
-    checkAndAdvance(TokenType::keyword, "printRecursive");
+    checkAndAdvance(TokenType::keyword, "print");
     Token* tokenBeforeAdv = checkAndAdvance(TokenType::name);
     checkAndAdvance(TokenType::semicolon);
     return TNode::makePrintStmt(TNode::makeVarName(tokenBeforeAdv));
@@ -160,6 +162,7 @@ TNode *Parser::eatStmtWhile() {
     checkAndAdvance(TokenType::keyword, "while");
     checkAndAdvance(TokenType::openingBracket);
     TNode* condExpr = eatCondExpr();
+    checkAndAdvance(TokenType::closingBracket);
     checkAndAdvance(TokenType::openingBrace);
     TNode* stmtLst = eatStmtLst();
     checkAndAdvance(TokenType::closingBrace);
@@ -458,6 +461,8 @@ TNode* Parser::parse() {
     try {
         TNode* ast = eatProgram();
         if (!peekMatchType(TokenType::eof)) throw runtime_error("invalid syntax");
+        // success, now set all parent pointers
+        ast->setAllParents();
         return ast;
     } catch (exception &e) {
         cout << e.what() << endl;

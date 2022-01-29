@@ -1947,7 +1947,7 @@ namespace Catch {
         static std::string convert(const std::tuple<Types...>& tuple) {
             ReusableStringStream rss;
             rss << '{';
-            Detail::TupleElementPrinter<std::tuple<Types...>>::printRecursive(tuple, rss.get());
+            Detail::TupleElementPrinter<std::tuple<Types...>>::print(tuple, rss.get());
             rss << " }";
             return rss.str();
         }

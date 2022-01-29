@@ -25,7 +25,7 @@ public:
     unordered_set<string> getWhiles();// Gets list of while statement
     unordered_set<string> getIfs();// Gets list of if statement
     unordered_set<string> getReads();// Gets list of read statement
-    unordered_set<string> getPrints();// Gets list of printRecursive statement
+    unordered_set<string> getPrints();// Gets list of print statement
     unordered_set<string> getCalls();// Gets list of call statement
 
     /**
@@ -53,7 +53,7 @@ public:
     void registerRead(string stmtNum);
 
     /**
-     * Registers a printRecursive statement to PKB
+     * Registers a print statement to PKB
      * @throws error if statement already has a type
      */
     void registerPrint(string stmtNum);
@@ -68,7 +68,7 @@ public:
     bool isWhileStmt(string stmtNum);// Checks if statement is a while statement
     bool isIfStmt(string stmtNum);// Checks if statement is an if statement
     bool isReadStmt(string stmtNum);// Checks if statement is a read statement
-    bool isPrintStmt(string stmtNum);// Checks if statement is a printRecursive statement
+    bool isPrintStmt(string stmtNum);// Checks if statement is a print statement
     bool isCallStmt(string stmtNum);// Checks if statement is a call statement
 
     /**

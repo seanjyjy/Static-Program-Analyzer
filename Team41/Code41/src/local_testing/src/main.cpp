@@ -4,14 +4,14 @@
 using namespace std;
 
 int main() {
-    string s = "procedure main {\n"
-               "    read x;\n"
-               "    printRecursive x;\n"
-               "    read x;\n"
+    string s = "procedure main {"
+               "x = 1 * 2 + 3 / 4;"
                "}";
-    Parser p = Parser(s);
+
+    Parser p = Parser{s};
     TNode* ast = p.parse();
     if (ast != nullptr) {
-        cout << ast->toStringRecursive() << endl;
+        ast->printRecursive();
+
     }
 }

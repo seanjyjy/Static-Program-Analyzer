@@ -5,7 +5,7 @@ enum class TNodeType {
     procedure,
     stmtLst,
     readStmt, // read x
-    printStmt, // printRecursive x
+    printStmt, // print x
     callStmt, // call "main"
     whileStmt, // while
     ifStmt, // if then else

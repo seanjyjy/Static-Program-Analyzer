@@ -11,25 +11,26 @@ using namespace std;
 class TNode {
 private:
     TNodeType type;
-    Token* val; // only leaf nodes have val
+    Token* val = nullptr; // only leaf nodes have val
     vector<TNode*> children;
-    TNode *parent;
+    TNode *parent = nullptr;
 public:
     TNode(TNodeType type, Token* val, vector<TNode*> children);
     void addChild(TNode* child);
     void setLeftChild(TNode *child);
-    string toStringRecursive();
+    void setAllParents();
 
+    // getters and setters
+    TNodeType getType();
+    Token* getVal();
     TNode* getParent();
     vector<TNode*> getChildren();
     void setParent(TNode* parent);
 
     // mainly for debugging purposes
     string toString();
+    string toStringRecursive();
     void printRecursive();
-
-    // mainly for testing purposes, recursive ==
-    bool operator==(TNode &other);
 
     static TNode* makeProgram(TNode* procedure);
     static TNode* makeProcedure(Token* name, TNode* stmtLst);

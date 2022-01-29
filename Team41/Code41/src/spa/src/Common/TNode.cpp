@@ -3,13 +3,14 @@
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
+#include <cassert>
 
 #include "SimpleParser/Token.h"
 #include "TNode.h"
 
 using namespace std;
 
-TNode::TNode(TNodeType type, Token* val, vector<TNode *> children): type(type), val(val), children(move(children)) {}
+TNode::TNode(TNodeType type, Token* val, vector<TNode *> children): type(type), val(val), children(move(children)), parent(nullptr) {}
 
 void TNode::addChild(TNode *child) {
     children.push_back(child);
@@ -23,12 +24,30 @@ vector<TNode *> TNode::getChildren() {
     return children;
 }
 
+Token *TNode::getVal() {
+    return val;
+}
+
+TNodeType TNode::getType() {
+    return type;
+}
+
 void TNode::setParent(TNode *par) {
     parent = par;
 }
 
 void TNode::setLeftChild(TNode *child) {
-    children.insert(children.begin(), child);
+    assert(!children.empty());
+    children[0] = child;
+}
+
+// dfs while setting parent pointers for all nodes
+void TNode::setAllParents() {
+    if (children.empty()) return;
+    for (TNode* child: children) {
+        child->setParent(this);
+        child->setAllParents();
+    }
 }
 
 string TNode::toString() {
@@ -93,7 +112,7 @@ string TNode::typeToString(TNodeType type) {
         case TNodeType::procedure : return "procedure";
         case TNodeType::stmtLst : return "stmtLst";
         case TNodeType::readStmt : return "read";
-        case TNodeType::printStmt : return "printRecursive";
+        case TNodeType::printStmt : return "print";
         case TNodeType::callStmt : return "call";
         case TNodeType::whileStmt : return "while";
         case TNodeType::ifStmt : return "if";
@@ -119,22 +138,3 @@ string TNode::typeToString(TNodeType type) {
         default: throw runtime_error("unknown TNode token type");
     }
 }
-
-bool TNode::operator==(TNode &other) {
-    // base case: if children are different sizes, not equal
-    if (children.size() != other.children.size()) return false;
-    // otherwise first compare type and underlying token value (if any)
-    bool isEq = true;
-    if (val == nullptr && other.val == nullptr) {
-        isEq = isEq && (type == other.type);
-    } else {
-        isEq = isEq && (type == other.type) && (val->getVal() == other.val->getVal());
-    }
-    // then compare children equality
-    for (int i = 0; i < children.size(); i++) {
-        isEq = isEq && (*children[i] == *other.children[i]);
-    }
-    return isEq;
-}
-
-
