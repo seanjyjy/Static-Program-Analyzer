@@ -1,7 +1,3 @@
-//
-// Created by Kendrick on 26/1/2022.
-//
-
 #include "Token.h"
 
 #include <utility>

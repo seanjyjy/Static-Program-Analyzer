@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Common/TNode.h"
-#include "Parser/Tokenizer.h"
+#include "SimpleParser/Tokenizer.h"
 #include "catch.hpp"
 
 using namespace std;
