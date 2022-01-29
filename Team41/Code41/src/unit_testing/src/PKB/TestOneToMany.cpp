@@ -5,6 +5,7 @@
 using namespace std;
 
 enum TestKeys {
+    DEFAULT_KEY,
     TEST_KEY_1,
     TEST_KEY_2,
     TEST_KEY_3,
@@ -12,6 +13,7 @@ enum TestKeys {
 };
 
 enum TestValues {
+    DEFAULT_VALUE,
     TEST_VALUE_1,
     TEST_VALUE_2,
     TEST_VALUE_3,
@@ -33,9 +35,7 @@ TEST_CASE("OneToMany") {
         REQUIRE_FALSE(table.hasVal(TEST_VALUE_1));
         REQUIRE_FALSE(table.hasMapping(TEST_KEY_1, TEST_VALUE_1));
 
-        REQUIRE_THROWS_WITH(table.getKeyFromValue(TEST_VALUE_1),
-                            Catch::Contains("[PKB]") && Catch::Contains(tableName) &&
-                            Catch::Contains("[One-Many]") && Catch::Contains("Value does not exist"));
+        REQUIRE(table.getKeyFromValue(TEST_VALUE_1) == DEFAULT_KEY);
     }
 
     SECTION("adding relation") {

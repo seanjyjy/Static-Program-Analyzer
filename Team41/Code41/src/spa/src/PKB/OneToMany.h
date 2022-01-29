@@ -39,7 +39,6 @@ public:
      *
      * @param value the value to query by
      * @return the key that value belongs to
-     * @throws error if value does not exist
      */
     K getKeyFromValue(V value);
 
