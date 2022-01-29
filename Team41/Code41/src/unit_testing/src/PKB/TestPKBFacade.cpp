@@ -172,7 +172,7 @@ TEST_CASE("PKB: uses abstraction") {
         unordered_set<string> stmtList;
         string stmt[] = {"1", "2"};
 
-        REQUIRE(compareVectors(pkbManager.getAllUsesS(), entryList));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllUsesS(), entryList));
         REQUIRE(pkbManager.getUsesByStmt(stmt[0]) == varList);
         REQUIRE(pkbManager.getUsesSByVar(var[0]) == stmtList);
         REQUIRE_FALSE(pkbManager.isUsesS(stmt[0], var[0]));
@@ -185,14 +185,14 @@ TEST_CASE("PKB: uses abstraction") {
         REQUIRE(pkbManager.isUsesS(stmt[0], var[0]));
         REQUIRE(pkbManager.getUsesByStmt(stmt[0]) == varList);
         REQUIRE(pkbManager.getUsesSByVar(var[0]) == stmtList);
-        REQUIRE(compareVectors(pkbManager.getAllUsesS(), entryList));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllUsesS(), entryList));
     }
 
     SECTION("UsesP") {
         unordered_set<string> procList;
         string proc[] = {"p1", "p2"};
 
-        REQUIRE(compareVectors(pkbManager.getAllUsesP(), entryList));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllUsesP(), entryList));
         REQUIRE(pkbManager.getUsesPByVar(var[0]) == procList);
         REQUIRE(pkbManager.getUsesByProc(proc[0]) == varList);
         REQUIRE_FALSE(pkbManager.isUsesP(proc[0], var[0]));
@@ -205,7 +205,7 @@ TEST_CASE("PKB: uses abstraction") {
         REQUIRE(pkbManager.isUsesP(proc[0], var[0]));
         REQUIRE(pkbManager.getUsesByProc(proc[0]) == varList);
         REQUIRE(pkbManager.getUsesPByVar(var[0]) == procList);
-        REQUIRE(compareVectors(pkbManager.getAllUsesP(), entryList));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllUsesP(), entryList));
     }
 }
 
@@ -220,7 +220,7 @@ TEST_CASE("PKB: modifies abstraction") {
         unordered_set<string> stmtList;
         string stmt[] = {"1", "2"};
 
-        REQUIRE(compareVectors(pkbManager.getAllModifiesS(), entryList));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllModifiesS(), entryList));
         REQUIRE(pkbManager.getModifiesByStmt(stmt[0]) == varList);
         REQUIRE(pkbManager.getModifiesSByVar(var[0]) == stmtList);
         REQUIRE_FALSE(pkbManager.isModifiesS(stmt[0], var[0]));
@@ -233,14 +233,14 @@ TEST_CASE("PKB: modifies abstraction") {
         REQUIRE(pkbManager.isModifiesS(stmt[0], var[0]));
         REQUIRE(pkbManager.getModifiesByStmt(stmt[0]) == varList);
         REQUIRE(pkbManager.getModifiesSByVar(var[0]) == stmtList);
-        REQUIRE(compareVectors(pkbManager.getAllModifiesS(), entryList));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllModifiesS(), entryList));
     }
 
     SECTION("ModifiesP") {
         unordered_set<string> procList;
         string proc[] = {"p1", "p2"};
 
-        REQUIRE(compareVectors(pkbManager.getAllModifiesP(), entryList));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllModifiesP(), entryList));
         REQUIRE(pkbManager.getModifiesPByVar(var[0]) == procList);
         REQUIRE(pkbManager.getModifiesByProc(proc[0]) == varList);
         REQUIRE_FALSE(pkbManager.isModifiesP(proc[0], var[0]));
@@ -253,6 +253,6 @@ TEST_CASE("PKB: modifies abstraction") {
         REQUIRE(pkbManager.isModifiesP(proc[0], var[0]));
         REQUIRE(pkbManager.getModifiesByProc(proc[0]) == varList);
         REQUIRE(pkbManager.getModifiesPByVar(var[0]) == procList);
-        REQUIRE(compareVectors(pkbManager.getAllModifiesP(), entryList));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllModifiesP(), entryList));
     }
 }

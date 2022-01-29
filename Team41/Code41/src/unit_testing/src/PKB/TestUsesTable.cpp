@@ -30,7 +30,7 @@ TEST_CASE("UsesTable") {
             varList.insert(vars[0]);
             REQUIRE(table.getVarsUsedInStmt(lines[0]) == varList);
             REQUIRE(table.getStmtsUsingVar(vars[0]) == stmtList);
-            REQUIRE(compareVectors(table.getStmtsVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getStmtsVarEntries(), entryList));
             REQUIRE(table.isUsesS(lines[0], vars[0]));
 
             REQUIRE_NOTHROW(table.setVarUsedInStmt(lines[0], vars[1]));
@@ -38,7 +38,7 @@ TEST_CASE("UsesTable") {
             varList.insert(vars[1]);
             REQUIRE(table.getVarsUsedInStmt(lines[0]) == varList);
             REQUIRE(table.getStmtsUsingVar(vars[1]) == stmtList);
-            REQUIRE(compareVectors(table.getStmtsVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getStmtsVarEntries(), entryList));
             REQUIRE(table.isUsesS(lines[0], vars[1]));
 
             REQUIRE_NOTHROW(table.setVarUsedInStmt(lines[1], vars[1]));
@@ -48,7 +48,7 @@ TEST_CASE("UsesTable") {
             varList.insert(vars[1]);
             REQUIRE(table.getVarsUsedInStmt(lines[1]) == varList);
             REQUIRE(table.getStmtsUsingVar(vars[1]) == stmtList);
-            REQUIRE(compareVectors(table.getStmtsVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getStmtsVarEntries(), entryList));
             REQUIRE(table.isUsesS(lines[1], vars[1]));
         }
     }
@@ -73,7 +73,7 @@ TEST_CASE("UsesTable") {
             varList.insert(vars[0]);
             REQUIRE(table.getVarsUsedInProc(proc[0]) == varList);
             REQUIRE(table.getProcsUsingVar(vars[0]) == procList);
-            REQUIRE(compareVectors(table.getProcVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getProcVarEntries(), entryList));
             REQUIRE(table.isUsesP(proc[0], vars[0]));
 
             REQUIRE_NOTHROW(table.setVarUsedInProc(proc[0], vars[1]));
@@ -81,7 +81,7 @@ TEST_CASE("UsesTable") {
             varList.insert(vars[1]);
             REQUIRE(table.getVarsUsedInProc(proc[0]) == varList);
             REQUIRE(table.getProcsUsingVar(vars[1]) == procList);
-            REQUIRE(compareVectors(table.getProcVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getProcVarEntries(), entryList));
             REQUIRE(table.isUsesP(proc[0], vars[1]));
 
             REQUIRE_NOTHROW(table.setVarUsedInProc(proc[1], vars[1]));
@@ -91,7 +91,7 @@ TEST_CASE("UsesTable") {
             varList.insert(vars[1]);
             REQUIRE(table.getVarsUsedInProc(proc[1]) == varList);
             REQUIRE(table.getProcsUsingVar(vars[1]) == procList);
-            REQUIRE(compareVectors(table.getProcVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getProcVarEntries(), entryList));
             REQUIRE(table.isUsesP(proc[1], vars[1]));
         }
     }

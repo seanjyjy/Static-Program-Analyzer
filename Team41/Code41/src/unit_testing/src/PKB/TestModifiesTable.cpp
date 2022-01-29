@@ -30,7 +30,7 @@ TEST_CASE("ModifiesTable") {
             varList.insert(vars[0]);
             REQUIRE(table.getVarsModifiedInStmt(lines[0]) == varList);
             REQUIRE(table.getStmtsModifyingVar(vars[0]) == stmtList);
-            REQUIRE(compareVectors(table.getStmtsVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getStmtsVarEntries(), entryList));
             REQUIRE(table.isModifiesS(lines[0], vars[0]));
 
             REQUIRE_NOTHROW(table.setVarModifiedInStmt(lines[0], vars[1]));
@@ -38,7 +38,7 @@ TEST_CASE("ModifiesTable") {
             varList.insert(vars[1]);
             REQUIRE(table.getVarsModifiedInStmt(lines[0]) == varList);
             REQUIRE(table.getStmtsModifyingVar(vars[1]) == stmtList);
-            REQUIRE(compareVectors(table.getStmtsVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getStmtsVarEntries(), entryList));
             REQUIRE(table.isModifiesS(lines[0], vars[1]));
 
             REQUIRE_NOTHROW(table.setVarModifiedInStmt(lines[1], vars[1]));
@@ -48,7 +48,7 @@ TEST_CASE("ModifiesTable") {
             varList.insert(vars[1]);
             REQUIRE(table.getVarsModifiedInStmt(lines[1]) == varList);
             REQUIRE(table.getStmtsModifyingVar(vars[1]) == stmtList);
-            REQUIRE(compareVectors(table.getStmtsVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getStmtsVarEntries(), entryList));
             REQUIRE(table.isModifiesS(lines[1], vars[1]));
         }
     }
@@ -73,7 +73,7 @@ TEST_CASE("ModifiesTable") {
             varList.insert(vars[0]);
             REQUIRE(table.getVarsModifiedInProc(proc[0]) == varList);
             REQUIRE(table.getProcsModifyingVar(vars[0]) == procList);
-            REQUIRE(compareVectors(table.getProcVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getProcVarEntries(), entryList));
             REQUIRE(table.isModifiesP(proc[0], vars[0]));
 
             REQUIRE_NOTHROW(table.setVarModifiedInProc(proc[0], vars[1]));
@@ -81,7 +81,7 @@ TEST_CASE("ModifiesTable") {
             varList.insert(vars[1]);
             REQUIRE(table.getVarsModifiedInProc(proc[0]) == varList);
             REQUIRE(table.getProcsModifyingVar(vars[1]) == procList);
-            REQUIRE(compareVectors(table.getProcVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getProcVarEntries(), entryList));
             REQUIRE(table.isModifiesP(proc[0], vars[1]));
 
             REQUIRE_NOTHROW(table.setVarModifiedInProc(proc[1], vars[1]));
@@ -91,7 +91,7 @@ TEST_CASE("ModifiesTable") {
             varList.insert(vars[1]);
             REQUIRE(table.getVarsModifiedInProc(proc[1]) == varList);
             REQUIRE(table.getProcsModifyingVar(vars[1]) == procList);
-            REQUIRE(compareVectors(table.getProcVarEntries(), entryList));
+            REQUIRE(sortAndCompareVectors(table.getProcVarEntries(), entryList));
             REQUIRE(table.isModifiesP(proc[1], vars[1]));
         }
     }

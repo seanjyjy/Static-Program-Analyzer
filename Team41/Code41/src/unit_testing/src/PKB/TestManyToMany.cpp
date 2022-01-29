@@ -52,7 +52,7 @@ TEST_CASE("ManyToMany") {
         }
         REQUIRE(table.getKeys() == keySet);
         REQUIRE(table.getValues() == valueSet);
-        REQUIRE(compareVectors(table.getEntries(), entrySet));
+        REQUIRE(sortAndCompareVectors(table.getEntries(), entrySet));
 
         // no error thrown if mapping already exists
         REQUIRE_NOTHROW(table.addMapping(TEST_KEY_1, TEST_VALUE_1));
@@ -113,8 +113,8 @@ TEST_CASE("ManyToMany") {
         table.getValues().insert(TEST_VALUE_1);
         REQUIRE(table.getValues() == unordered_set<TestValues>());
 
-        REQUIRE(compareVectors(table.getEntries(), vector<pair<TestKeys,  TestValues>>()));
+        REQUIRE(sortAndCompareVectors(table.getEntries(), vector<pair<TestKeys,  TestValues>>()));
         table.getEntries().push_back(make_pair(TEST_KEY_1, TEST_VALUE_1));
-        REQUIRE(compareVectors(table.getEntries(), vector<pair<TestKeys,  TestValues>>()));
+        REQUIRE(sortAndCompareVectors(table.getEntries(), vector<pair<TestKeys,  TestValues>>()));
     }
 }

@@ -56,7 +56,7 @@ TEST_CASE("OneToMany") {
         }
         REQUIRE(table.getKeys() == keySet);
         REQUIRE(table.getValues() == valueSet);
-        REQUIRE(compareVectors(table.getEntries(), entrySet));
+        REQUIRE(sortAndCompareVectors(table.getEntries(), entrySet));
 
         // throw error if a value have multiple key
         REQUIRE_THROWS_WITH(table.addMapping(TEST_KEY_2, TEST_VALUE_1),
@@ -105,8 +105,8 @@ TEST_CASE("OneToMany") {
         table.getValues().insert(TEST_VALUE_1);
         REQUIRE(table.getValues() == unordered_set<TestValues>());
 
-        REQUIRE(compareVectors(table.getEntries(), vector<pair<TestKeys, TestValues>>()));
+        REQUIRE(sortAndCompareVectors(table.getEntries(), vector<pair<TestKeys, TestValues>>()));
         table.getEntries().push_back(make_pair(TEST_KEY_1, TEST_VALUE_1));
-        REQUIRE(compareVectors(table.getEntries(), vector<pair<TestKeys, TestValues>>()));
+        REQUIRE(sortAndCompareVectors(table.getEntries(), vector<pair<TestKeys, TestValues>>()));
     }
 }
