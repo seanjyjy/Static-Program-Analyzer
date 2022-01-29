@@ -32,6 +32,10 @@ TEST_CASE("OneToMany") {
         REQUIRE_FALSE(table.hasKey(TEST_KEY_1));
         REQUIRE_FALSE(table.hasVal(TEST_VALUE_1));
         REQUIRE_FALSE(table.hasMapping(TEST_KEY_1, TEST_VALUE_1));
+
+        REQUIRE_THROWS_WITH(table.getKeyFromValue(TEST_VALUE_1),
+                            Catch::Contains("[PKB]") && Catch::Contains(tableName) &&
+                            Catch::Contains("[One-Many]") && Catch::Contains("Value does not exist"));
     }
 
     SECTION("adding relation") {
@@ -56,9 +60,11 @@ TEST_CASE("OneToMany") {
 
         // throw error if a value have multiple key
         REQUIRE_THROWS_WITH(table.addMapping(TEST_KEY_2, TEST_VALUE_1),
-                            Catch::Contains("[PKB]") && Catch::Contains(tableName) && Catch::Contains("Multiple keys"));
+                            Catch::Contains("[PKB]") && Catch::Contains(tableName) &&
+                            Catch::Contains("[One-Many]") && Catch::Contains("Multiple keys"));
         REQUIRE_THROWS_WITH(table.addMapping(TEST_KEY_4, TEST_VALUE_1),
-                            Catch::Contains("[PKB]") && Catch::Contains(tableName) && Catch::Contains("Multiple keys"));
+                            Catch::Contains("[PKB]") && Catch::Contains(tableName) &&
+                            Catch::Contains("[One-Many]") && Catch::Contains("Multiple keys"));
         // don't throw if mapping already exists
         REQUIRE_NOTHROW(table.addMapping(TEST_KEY_1, TEST_VALUE_1));
 
@@ -99,8 +105,8 @@ TEST_CASE("OneToMany") {
         table.getValues().insert(TEST_VALUE_1);
         REQUIRE(table.getValues() == unordered_set<TestValues>());
 
-        REQUIRE(compareVectors(table.getEntries(), vector<pair<TestKeys,  TestValues>>()));
+        REQUIRE(compareVectors(table.getEntries(), vector<pair<TestKeys, TestValues>>()));
         table.getEntries().push_back(make_pair(TEST_KEY_1, TEST_VALUE_1));
-        REQUIRE(compareVectors(table.getEntries(), vector<pair<TestKeys,  TestValues>>()));
+        REQUIRE(compareVectors(table.getEntries(), vector<pair<TestKeys, TestValues>>()));
     }
 }

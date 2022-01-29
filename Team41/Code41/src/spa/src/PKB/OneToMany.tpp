@@ -14,6 +14,9 @@ unordered_set<V> OneToMany<K, V>::getValuesFromKey(K key) {
 
 template<class K, class V>
 K OneToMany<K, V>::getKeyFromValue(V value) {
+    if (!hasVal(value)) {
+        throw runtime_error("[PKB][" + relationName + "][One-Many] Value does not exist!");
+    }
     return valuesToKey.get(value);
 }
 

@@ -24,6 +24,7 @@ public:
      *
      * @param stmtNumber the target statement number in string
      * @return the statement type
+     * @throws err if stmtNumber does not exist in table
      */
     StmtType getStmtType(string stmtNumber);
 

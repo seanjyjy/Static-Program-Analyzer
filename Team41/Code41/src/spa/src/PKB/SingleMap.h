@@ -25,6 +25,7 @@ public:
      *
      * @param key the key to query by
      * @return the value that is mapped to specified key
+     * @throws error if key does not exist
      */
     V get(K key);
 
