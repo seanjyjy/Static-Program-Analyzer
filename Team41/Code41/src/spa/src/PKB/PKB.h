@@ -1,13 +1,16 @@
 #pragma once
 
 #include <string>
-#include "StmtTable.h"
-#include "EntityTable.h"
-#include "UsesTable.h"
-#include "ModifiesTable.h"
-#include "FollowsTable.h"
+#include <unordered_set>
 
 using namespace std;
+
+class StmtTable;
+class EntityTable;
+class UsesTable;
+class ModifiesTable;
+class FollowsTable;
+class CallsTable;
 
 class PKB {
 public:

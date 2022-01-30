@@ -1,5 +1,11 @@
 #include <utility>
 #include <vector>
+#include <iostream>
+#include "StmtTable.h"
+#include "EntityTable.h"
+#include "UsesTable.h"
+#include "ModifiesTable.h"
+#include "FollowsTable.h"
 
 using namespace std;
 
@@ -61,7 +67,6 @@ bool PKB::isCallStmt(string stmtNum) { return stmtTable->isStmtType(move(stmtNum
 
 int PKB::getStatementCount() { return stmtTable->getStmtCount(); }
 
-
 //======================================== Entities ==================================================
 
 unordered_set<string> PKB::getVariables() { return entityTable->getVariables(); }
@@ -119,6 +124,12 @@ unordered_set<string> PKB::getUsesByStmt(string stmtNum) { return usesTable->get
 vector<pair<string, string>> PKB::getAllUsesS() { return usesTable->getStmtsVarEntries(); }
 
 void PKB::registerUsesS(string stmtNum, string varName) {
+    if (!(isVariable(varName))) {
+        cout << "Warning: " << "[PKB][registerUsesS] Used variable is not registered" << endl;
+    }
+    if (!isAssignStmt(stmtNum) && !isPrintStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum)) {
+        cout << "Warning: " << "[PKB][registerUsesS] Statement is not of type assign/print/if/while" << endl;
+    }
     return usesTable->setVarUsedInStmt(move(stmtNum), move(varName));
 }
 
@@ -133,9 +144,14 @@ unordered_set<string> PKB::getUsesByProc(string procName) { return usesTable->ge
 vector<pair<string, string>> PKB::getAllUsesP() { return usesTable->getProcVarEntries(); }
 
 void PKB::registerUsesP(string procName, string varName) {
+    if (!(isVariable(varName))) {
+        cout << "Warning: " << "[PKB][registerUsesP] Used variable is not registered" << endl;
+    }
+    if (!(isProcedure(procName))) {
+        cout << "Warning: " << "[PKB][registerUsesP] Procedure is not registered" << endl;
+    }
     return usesTable->setVarUsedInProc(move(procName), move(varName));
 }
-
 
 //======================================== Modifies ==================================================
 
@@ -154,6 +170,12 @@ unordered_set<string> PKB::getModifiesByStmt(string stmtNum) {
 vector<pair<string, string>> PKB::getAllModifiesS() { return modifiesTable->getStmtsVarEntries(); }
 
 void PKB::registerModifiesS(string stmtNum, string varName) {
+    if (!(isVariable(varName))) {
+        cout << "Warning: " << "[PKB][registerModifiesS] Used variable is not registered" << endl;
+    }
+    if (!isAssignStmt(stmtNum) && !isReadStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum)) {
+        cout << "Warning: " << "[PKB][registerModifiesS] Statement is not of type assign/read/if/while" << endl;
+    }
     return modifiesTable->setVarModifiedInStmt(move(stmtNum), move(varName));
 }
 
@@ -172,5 +194,11 @@ unordered_set<string> PKB::getModifiesByProc(string procName) {
 vector<pair<string, string>> PKB::getAllModifiesP() { return modifiesTable->getProcVarEntries(); }
 
 void PKB::registerModifiesP(string procName, string varName) {
+    if (!(isVariable(varName))) {
+        cout << "Warning: " << "[PKB][registerModifiesP] Used variable is not registered" << endl;
+    }
+    if (!(isProcedure(procName))) {
+        cout << "Warning: " << "[PKB][registerModifiesP] Procedure is not registered" << endl;
+    }
     return modifiesTable->setVarModifiedInProc(move(procName), move(varName));
 }
