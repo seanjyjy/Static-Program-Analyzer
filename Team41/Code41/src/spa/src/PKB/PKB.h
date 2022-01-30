@@ -103,6 +103,7 @@ public:
 
     /**
      * Registers to PKB that the specified stmt1 follows specified stmt2
+     * Recursively update any indirect follow relationship between statements as required
      *
      * @param stmt1 the follower statement
      * @param stmt2 the followed statement
@@ -126,7 +127,8 @@ public:
     //=========================================== Parent ===================================================
 
     /**
-     * Registers to PKB that the specified stmt1 is parent of specified stmt2
+     * Registers to PKB that the specified stmt1 is parent of specified stmt2.
+     * Recursively update any ancestor-descendant relationship as required
      *
      * @param parentStmt the parent statement
      * @param childStmt the child statement
