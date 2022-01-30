@@ -23,6 +23,7 @@ PQLTable* PQLTable::mergeJoin(PQLTable* intermediatePQLTable) {
 
     // Merge Tables
     mergeTable(this, intermediatePQLTable, newTable, commonHeader);
+    delete intermediatePQLTable;
 
     return newTable;
 }
@@ -209,4 +210,10 @@ PQLTable::PQLTable(Header header) {
 
 vector<const Row *> PQLTable::getRows() {
     return this->rows;
+}
+
+PQLTable::~PQLTable() {
+    for(auto r : rows) {
+        delete r;
+    }
 }

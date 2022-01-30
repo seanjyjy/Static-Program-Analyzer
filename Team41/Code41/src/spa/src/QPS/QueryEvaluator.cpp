@@ -20,7 +20,10 @@ std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             return emptyResult;
         }
 
+        // The original table is not mutated but rather a new table is created
+        PQLTable* temp = resultTable;
         resultTable = resultTable->mergeJoin(intermediateTable);
+        delete temp;
 
         if (resultTable->isEmpty()) {
             return emptyResult;
