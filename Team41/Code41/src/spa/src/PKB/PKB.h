@@ -11,6 +11,7 @@ class UsesTable;
 class ModifiesTable;
 class FollowsTable;
 class CallsTable;
+class ParentTable;
 
 class PKB {
 public:
@@ -23,6 +24,7 @@ public:
     UsesTable *usesTable;
     ModifiesTable *modifiesTable;
     FollowsTable *followsTable;
+    ParentTable *parentTable;
 
     //======================================== Statement ==================================================
 
@@ -120,6 +122,29 @@ public:
     unordered_set<string> getAllStmtsFollowingT(string stmtNum);// Gets list of stmts that followsT the specified stmt
     unordered_set<string> getAllStmtsFollowedTBy(string stmtNum);// Gets list of stmts that is followedT by given stmt
     vector<pair<string, string>> getAllFollowsT(); // Gets list of stmt1-stmt2 pair where stmt1 followsT stmt2
+
+    //=========================================== Parent ===================================================
+
+    /**
+     * Registers to PKB that the specified stmt1 is parent of specified stmt2
+     *
+     * @param parentStmt the parent statement
+     * @param childStmt the child statement
+     * @throws val_map_err if stmt2 is already direct child of some other statement
+     * @throws cyclic_err if the registration creates a cycle in the follow graph
+     * @throws self_err if statement attempts to parent itself
+     */
+    void registerParent(string parentStmt, string childStmt);
+
+    bool isParent(string stmt1, string stmt2); // Checks if stmt1 is parent of stmt2
+    unordered_set<string> getChildStmtsOf(string parentStmt);// Gets the stmts that are direct child of parentStmt
+    string getParentOf(string childStmt);// Gets the stmt that is parent of childStmt
+    vector<pair<string, string>> getAllParent(); // Gets list of parent-child pair where stmt1 is parent of stmt2
+
+    bool isParentT(string stmt1, string stmt2); // Checks if stmt1 is parent of stmt2
+    unordered_set<string> getDescendantStmtsOf(string parentStmt);// Gets the stmts that are descendants of parentStmt
+    unordered_set<string> getAncestorStmtsOf(string childStmt);// Gets the stmt that is ancestors of childStmt
+    vector<pair<string, string>> getAllParentT(); // Gets list of parent-child pair where stmt1 is ancestor of stmt2
 
     //=========================================== Uses ===================================================
 

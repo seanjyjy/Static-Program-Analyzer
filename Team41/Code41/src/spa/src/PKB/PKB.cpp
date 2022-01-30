@@ -6,6 +6,7 @@
 #include "UsesTable.h"
 #include "ModifiesTable.h"
 #include "FollowsTable.h"
+#include "ParentTable.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ PKB::PKB() {
     usesTable = new UsesTable();
     modifiesTable = new ModifiesTable();
     followsTable = new FollowsTable();
+    parentTable = new ParentTable();
 }
 
 PKB::~PKB() {
@@ -25,6 +27,7 @@ PKB::~PKB() {
     delete usesTable;
     delete modifiesTable;
     delete followsTable;
+    delete parentTable;
 }
 
 //======================================== Statements ==================================================
@@ -110,6 +113,34 @@ unordered_set<string> PKB::getAllStmtsFollowedTBy(string stmtNum) {
 }
 
 vector<pair<string, string>> PKB::getAllFollowsT() { return followsTable->getFollowTEntries(); }
+
+//======================================== Parent ==================================================
+
+void PKB::registerParent(string parentStmt, string childStmt) {
+    return parentTable->setParent(move(parentStmt), move(childStmt));
+}
+
+bool PKB::isParent(string stmt1, string stmt2) { return parentTable->isParent(move(stmt1), move(stmt2)); }
+
+unordered_set<string> PKB::getChildStmtsOf(string parentStmt) {
+    return parentTable->getAllChildrenOf(move(parentStmt));
+}
+
+string PKB::getParentOf(string childStmt) { return parentTable->getParentOf(move(childStmt)); }
+
+vector<pair<string, string>> PKB::getAllParent() { return parentTable->getParentEntries(); }
+
+bool PKB::isParentT(string stmt1, string stmt2) { return parentTable->isParentT(move(stmt1), stmt2); }
+
+unordered_set<string> PKB::getDescendantStmtsOf(string parentStmt) {
+    return parentTable->getAllDescendantsOf(move(parentStmt));
+}
+
+unordered_set<string> PKB::getAncestorStmtsOf(string childStmt) {
+    return parentTable->getAllAncestorsOf(move(childStmt));
+}
+
+vector<pair<string, string>> PKB::getAllParentT() { return parentTable->getParentTEntries(); }
 
 //======================================== Uses ==================================================
 
