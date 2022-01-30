@@ -262,7 +262,6 @@ TNode *Parser::eatCondExpr() {
  */
 TNode *Parser::eatRelExpr() {
     TNode *rf1 = eatRelFactor();
-    if (rf1 == nullptr) return nullptr;
     if (peekMatchType(TokenType::gt)) {
         checkAndAdvance(TokenType::gt);
         TNode *rf2 = eatRelFactor();
