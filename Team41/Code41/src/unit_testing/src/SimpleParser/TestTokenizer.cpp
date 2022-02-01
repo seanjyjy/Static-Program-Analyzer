@@ -408,8 +408,11 @@ TEST_CASE("Tokenizer: integer") {
 }
 
 TEST_CASE("Tokenizer: whitespace") {
-    string s = "    \t   \n   \r   \f   \v   ";
-    Tokenizer tokenizer(s);
-    Tokens tokens = tokenizer.tokenize();
-    REQUIRE(tokens.empty());
+    SECTION("correct") {
+        string s = "    \t   \n   \r   \f   \v   ";
+        vector<pair<TokenType, string>> expected = {
+                {TokenType::eof, ""},
+        };
+        TestTokenizerUtils::tokenizeAndCompare(s, expected);
+    }
 }
