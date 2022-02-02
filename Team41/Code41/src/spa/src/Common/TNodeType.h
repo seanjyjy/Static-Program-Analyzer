@@ -31,7 +31,7 @@ enum class TNodeType {
     dummy, // for parsing to ast
 };
 
-bool isStatement(TNodeType type) {
+static bool isStatement(TNodeType type) {
     switch (type) {
         case TNodeType::readStmt:
             return true;
