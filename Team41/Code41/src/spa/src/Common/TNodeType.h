@@ -49,3 +49,45 @@ static bool isStatement(TNodeType type) {
             return false;
     }
 }
+
+static bool isCondExpr(TNodeType type) {
+    switch (type) {
+        case TNodeType::notOp:
+            return true;
+        case TNodeType::andOp:
+            return true;
+        case TNodeType::orOp:
+            return true;
+        case TNodeType::gt:
+            return true;
+        case TNodeType::ge:
+            return true;
+        case TNodeType::lt:
+            return true;
+        case TNodeType::le:
+            return true;
+        case TNodeType::eq:
+            return true;
+        case TNodeType::ne:
+            return true;
+        default:
+            return false;
+    }
+}
+
+static bool isOp(TNodeType type) {
+    switch (type) {
+        case TNodeType::plus:
+            return true;
+        case TNodeType::minus:
+            return true;
+        case TNodeType::times:
+            return true;
+        case TNodeType::div:
+            return true;
+        case TNodeType::mod:
+            return true;
+        default:
+            return false;
+    }
+}
