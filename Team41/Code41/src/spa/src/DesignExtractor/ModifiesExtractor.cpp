@@ -22,7 +22,7 @@ void ModifiesExtractor::dfs(TNode *node, list<TNode *> &modifiesLst) {
     list<TNode *> modifiesLstChild;
     TNodeType type = node->getType();
     if (type == TNodeType::procedure) {
-        dfs(node->getChildren()[0], modifiesLstChild);
+        dfs(node->getChildren()[0], modifiesLstChild); // only 1 child stmtLst
         modifiesLst.splice(modifiesLst.end(), modifiesLstChild);
         registerModifies(node, modifiesLst);
     } else if (type == TNodeType::stmtLst) {
@@ -33,10 +33,10 @@ void ModifiesExtractor::dfs(TNode *node, list<TNode *> &modifiesLst) {
             modifiesLstChild.clear();
         }
     } else if (type == TNodeType::readStmt || type == TNodeType::assignStmt) {
-        modifiesLst = {node->getChildren()[0]};
+        modifiesLst = {node->getChildren()[0]}; // left child varName
         registerModifies(node, modifiesLst);
     } else if (type == TNodeType::whileStmt) {
-        dfs(node->getChildren()[1], modifiesLstChild);
+        dfs(node->getChildren()[1], modifiesLstChild); // right child stmtLst
         modifiesLst.splice(modifiesLst.end(), modifiesLstChild);
         registerModifies(node, modifiesLst);
     } else if (type == TNodeType::ifStmt) {
