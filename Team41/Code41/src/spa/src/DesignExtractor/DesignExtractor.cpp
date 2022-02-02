@@ -9,6 +9,7 @@ using namespace std;
 #include "DesignExtractor.h"
 #include "Common/TNodeType.h"
 #include "ModifiesExtractor.h"
+#include "UsesExtractor.h"
 
 DesignExtractor::DesignExtractor(TNode *ast, PKB *pkb) : ast(ast), pkb(pkb) {}
 
@@ -66,6 +67,8 @@ void DesignExtractor::extractDesign() {
     registerEntities();
     ModifiesExtractor me = ModifiesExtractor{ast, pkb, nodeToStmtNumMap};
     me.extractRelationship();
+    UsesExtractor ue = UsesExtractor{ast, pkb, nodeToStmtNumMap};
+    ue.extractRelationship();
 }
 
 void DesignExtractor::printStmtNums() {
