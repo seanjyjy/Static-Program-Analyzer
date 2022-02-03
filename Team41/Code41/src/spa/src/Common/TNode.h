@@ -11,7 +11,7 @@ using namespace std;
 class TNode {
 private:
     TNodeType type;
-    Token *val = nullptr; // only leaf nodes have val
+    Token *val = nullptr; // only leaf nodes and procedure have val
     vector<TNode *> children;
     TNode *parent = nullptr;
 public:
