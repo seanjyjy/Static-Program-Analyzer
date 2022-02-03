@@ -38,10 +38,6 @@ void DesignExtractor::registerEntity(TNode *node, int &stmtNum) {
         switch (type) {
             case TNodeType::varName:
                 pkb->registerVariable(node->getVal()->getVal()); break;
-            case TNodeType::procName:
-                pkb->registerProcedure(node->getVal()->getVal()); break;
-            case TNodeType::procedure:
-                pkb->registerProcedure(node->getVal()->getVal()); break;
             case TNodeType::constValue:
                 pkb->registerConstant(node->getVal()->getVal()); break;
         }
@@ -63,7 +59,15 @@ void DesignExtractor::registerEntities() { // todo register P calls P
     }
 }
 
+void DesignExtractor::registerProcedures() {
+    vector<TNode *> procNodes = ast->getChildren();
+    for (TNode *procNode : procNodes) {
+        pkb->registerProcedure(procNode->getVal()->getVal());
+    }
+}
+
 void DesignExtractor::extractDesign() {
+    registerProcedures();
     registerEntities();
     ModifiesExtractor me = ModifiesExtractor{ast, pkb, nodeToStmtNumMap};
     me.extractRelationship();

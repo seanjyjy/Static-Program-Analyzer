@@ -11,6 +11,7 @@ private:
 
     void registerEntity(TNode *node, int &stmtNum);
     void registerEntities(); // statement number, register entities
+    void registerProcedures();
 
 public:
     DesignExtractor(TNode *ast, PKB *pkb);
