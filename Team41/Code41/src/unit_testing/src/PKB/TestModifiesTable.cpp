@@ -50,6 +50,9 @@ TEST_CASE("ModifiesTable") {
             REQUIRE(table.getStmtsModifyingVar(vars[1]) == stmtList);
             REQUIRE(sortAndCompareVectors(table.getStmtsVarEntries(), entryList));
             REQUIRE(table.isModifiesS(lines[1], vars[1]));
+
+            REQUIRE(table.getStmtsModifyingSomeVar() == unordered_set<string>({lines[0], lines[1]}));
+            REQUIRE(table.getVarsModifiedInSomeStmt() == unordered_set<string>({vars[0], vars[1]}));
         }
     }
     SECTION("ModifiesP") {
@@ -93,6 +96,9 @@ TEST_CASE("ModifiesTable") {
             REQUIRE(table.getProcsModifyingVar(vars[1]) == procList);
             REQUIRE(sortAndCompareVectors(table.getProcVarEntries(), entryList));
             REQUIRE(table.isModifiesP(proc[1], vars[1]));
+
+            REQUIRE(table.getProcsModifyingSomeVar() == unordered_set<string>({proc[0], proc[1]}));
+            REQUIRE(table.getVarsModifiedInSomeProc() == unordered_set<string>({vars[0], vars[1]}));
         }
     }
 }

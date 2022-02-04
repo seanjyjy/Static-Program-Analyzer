@@ -95,12 +95,16 @@ public:
     unordered_set<string> getUsesSByVar(string varName);// Gets list of statements that uses specified variable
     unordered_set<string> getUsesByStmt(string stmtNum);// Gets list of variables that is used by specified statement
     vector<pair<string, string>> getAllUsesS();// Gets list of stmt-var pair where stmt uses var
+    unordered_set<string> getAllStmtsUsingSomeVar();// Gets list of stmt where stmt uses some var
+    unordered_set<string> getAllVarsUsedInSomeStmt();// Gets list of var where some stmt uses the var
 
     void registerUsesP(string procName, string varName);// Registers to PKB that the specified proc uses specified var
     bool isUsesP(string procName, string varName);// Checks if specified procedure uses specified variable
     unordered_set<string> getUsesPByVar(string varName);// Gets list of procedures that uses specified variable
     unordered_set<string> getUsesByProc(string procName);// Gets list of variables that is used by specified procedure
     vector<pair<string, string>> getAllUsesP();// Gets list of proc-var pair where stmt uses var
+    unordered_set<string> getAllProcsUsingSomeVar();// Gets list of proc where proc uses some var
+    unordered_set<string> getAllVarsUsedInSomeProc();// Gets list of var where some proc uses the var
 
     //=========================================== Modifies ===================================================
 
@@ -110,6 +114,8 @@ public:
     unordered_set<string> getModifiesSByVar(string varName);// Gets list of statements that modifies specified variable
     unordered_set<string> getModifiesByStmt(string stmtNum);// Gets list of variables that is modified by specified statement
     vector<pair<string, string>> getAllModifiesS();// Gets list of stmt-var pair where stmt modifies var
+    unordered_set<string> getAllStmtsModifyingSomeVar();// Gets list of stmt where stmt modifies some var
+    unordered_set<string> getAllVarsModifiedInSomeStmt();// Gets list of var where some stmt modifies the var
 
     void registerModifiesP(string procName,
                            string varName);// Registers to PKB that the specified proc modifies specified var
@@ -117,4 +123,6 @@ public:
     unordered_set<string> getModifiesPByVar(string varName);// Gets list of procedures that modifies specified variable
     unordered_set<string> getModifiesByProc(string procName);// Gets list of variables that is modified by specified procedure
     vector<pair<string, string>> getAllModifiesP();// Gets list of proc-var pair where stmt modifies var
+    unordered_set<string> getAllProcsModifyingSomeVar();// Gets list of proc where proc modifies some var
+    unordered_set<string> getAllVarsModifiedInSomeProc();// Gets list of var where some proc modifies the var
 };
