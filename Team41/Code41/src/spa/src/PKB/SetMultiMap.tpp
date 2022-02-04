@@ -5,7 +5,7 @@ using namespace std;
 
 template<class K, class V>
 unordered_set<V> SetMultiMap<K, V>::get(K key) {
-    return mapping[key];
+    return hasKey(key) ? mapping[key] : unordered_set<V>();
 }
 
 template<class K, class V>
@@ -37,6 +37,7 @@ bool SetMultiMap<K, V>::hasKey(K targetKey) {
 
 template<class K, class V>
 bool SetMultiMap<K, V>::hasKeyValue(K key, V val) {
+    if (!hasKey(key)) return false;
     unordered_set<V> values = mapping[key];
     return values.find(val) != values.end();
 }

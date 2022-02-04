@@ -187,7 +187,6 @@ TEST_CASE("PKB: uses abstraction") {
         REQUIRE(pkbManager.getUsesSByVar(var[0]) == stmtList);
         REQUIRE(sortAndCompareVectors(pkbManager.getAllUsesS(), entryList));
 
-        REQUIRE(pkbManager.getAllStmtsUsingSomeVar() == unordered_set<string>({stmt[0]}));
         REQUIRE(pkbManager.getAllVarsUsedInSomeStmt() == unordered_set<string>({var[0]}));
     }
 
@@ -211,7 +210,6 @@ TEST_CASE("PKB: uses abstraction") {
         REQUIRE(sortAndCompareVectors(pkbManager.getAllUsesP(), entryList));
 
         REQUIRE(pkbManager.getAllVarsUsedInSomeProc() == unordered_set<string>({var[0]}));
-        REQUIRE(pkbManager.getAllProcsUsingSomeVar() == unordered_set<string>({proc[0]}));
     }
 }
 
@@ -241,7 +239,6 @@ TEST_CASE("PKB: modifies abstraction") {
         REQUIRE(pkbManager.getModifiesSByVar(var[0]) == stmtList);
         REQUIRE(sortAndCompareVectors(pkbManager.getAllModifiesS(), entryList));
 
-        REQUIRE(pkbManager.getAllStmtsModifyingSomeVar() == unordered_set<string>({stmt[0]}));
         REQUIRE(pkbManager.getAllVarsModifiedInSomeStmt() == unordered_set<string>({var[0]}));
     }
 
@@ -265,6 +262,109 @@ TEST_CASE("PKB: modifies abstraction") {
         REQUIRE(sortAndCompareVectors(pkbManager.getAllModifiesP(), entryList));
 
         REQUIRE(pkbManager.getAllVarsModifiedInSomeProc() == unordered_set<string>({var[0]}));
-        REQUIRE(pkbManager.getAllProcsModifyingSomeVar() == unordered_set<string>({proc[0]}));
+    }
+}
+
+TEST_CASE("PKB: follows abstraction") {
+    unordered_set<string> EMPTY_LIST;
+    vector<pair<string, string>> entryList;
+    string stmt[] = {"1", "2", "3"};
+
+    PKB pkbManager;
+
+    SECTION("Follows") {
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllFollows(), entryList));
+        REQUIRE(pkbManager.getStmtFollowing(stmt[0]) == "");
+        REQUIRE(pkbManager.getStmtFollowedBy(stmt[0]) == "");
+        REQUIRE_FALSE(pkbManager.isFollows(stmt[0], stmt[1]));
+
+        pkbManager.registerFollows(stmt[0], stmt[1]);
+        entryList.push_back(make_pair(stmt[0], stmt[1]));
+
+        REQUIRE(pkbManager.isFollows(stmt[0], stmt[1]));
+        REQUIRE(pkbManager.getStmtFollowedBy(stmt[0]) == stmt[1]);
+        REQUIRE(pkbManager.getStmtFollowing(stmt[1]) == stmt[0]);
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllFollows(), entryList));
+    }
+
+    SECTION("FollowsT") {
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllFollowsT(), entryList));
+        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[0]) == EMPTY_LIST);
+        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[0]) == EMPTY_LIST);
+        REQUIRE_FALSE(pkbManager.isFollowsT(stmt[0], stmt[1]));
+
+        // 0 -> 1
+        // 1 -> 2
+        pkbManager.registerFollows(stmt[0], stmt[1]);
+        pkbManager.registerFollows(stmt[1], stmt[2]);
+        entryList.push_back(make_pair(stmt[0], stmt[1]));
+        entryList.push_back(make_pair(stmt[0], stmt[2]));
+        entryList.push_back(make_pair(stmt[1], stmt[2]));
+
+        REQUIRE(pkbManager.isFollowsT(stmt[0], stmt[1]));
+        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[0]) == unordered_set<string>({stmt[1], stmt[2]}));
+        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[1]) == unordered_set<string>({stmt[2]}));
+        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[2]) == unordered_set<string>());
+        REQUIRE(pkbManager.getAllStmtsFollowingT(stmt[0]) == unordered_set<string>());
+        REQUIRE(pkbManager.getAllStmtsFollowingT(stmt[1]) == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getAllStmtsFollowingT(stmt[2]) == unordered_set<string>({stmt[0], stmt[1]}));
+        REQUIRE(pkbManager.isFollowsT(stmt[0], stmt[2]));
+    }
+}
+
+TEST_CASE("PKB: parent abstraction") {
+    unordered_set<string> EMPTY_LIST;
+    vector<pair<string, string>> entryList;
+    string stmt[] = {"1", "2", "3", "4"};
+
+    PKB pkbManager;
+
+    SECTION("Parent") {
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllParent(), entryList));
+        REQUIRE(pkbManager.getChildStmtsOf(stmt[0]) == EMPTY_LIST);
+        REQUIRE(pkbManager.getParentOf(stmt[0]) == "");
+        REQUIRE_FALSE(pkbManager.isParent(stmt[0], stmt[1]));
+
+        // 0 -> {1, 2}
+        pkbManager.registerParent(stmt[0], stmt[1]);
+        pkbManager.registerParent(stmt[0], stmt[2]);
+        entryList.push_back(make_pair(stmt[0], stmt[1]));
+        entryList.push_back(make_pair(stmt[0], stmt[2]));
+
+        REQUIRE(pkbManager.isParent(stmt[0], stmt[1]));
+        REQUIRE(pkbManager.getChildStmtsOf(stmt[0]) == unordered_set<string>({stmt[1], stmt[2]}));
+        REQUIRE(pkbManager.getParentOf(stmt[1]) == stmt[0]);
+        REQUIRE(pkbManager.getParentOf(stmt[2]) == stmt[0]);
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllParent(), entryList));
+    }
+
+    SECTION("ParentT") {
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllParentT(), entryList));
+        REQUIRE(pkbManager.getAncestorStmtsOf(stmt[0]) == EMPTY_LIST);
+        REQUIRE(pkbManager.getDescendantStmtsOf(stmt[0]) == EMPTY_LIST);
+        REQUIRE_FALSE(pkbManager.isParentT(stmt[0], stmt[1]));
+
+        // 0 -> {1, 2}
+        // 1 -> {3}
+        pkbManager.registerParent(stmt[0], stmt[1]);
+        pkbManager.registerParent(stmt[0], stmt[2]);
+        pkbManager.registerParent(stmt[1], stmt[3]);
+        entryList.push_back(make_pair(stmt[0], stmt[1]));
+        entryList.push_back(make_pair(stmt[0], stmt[2]));
+        entryList.push_back(make_pair(stmt[0], stmt[3]));
+        entryList.push_back(make_pair(stmt[1], stmt[3]));
+
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllParentT(), entryList));
+        REQUIRE(pkbManager.getAncestorStmtsOf(stmt[3]) == unordered_set<string>({stmt[0], stmt[1]}));
+        REQUIRE(pkbManager.getAncestorStmtsOf(stmt[2]) == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getAncestorStmtsOf(stmt[1]) == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getAncestorStmtsOf(stmt[0]) == unordered_set<string>());
+
+        REQUIRE(pkbManager.getDescendantStmtsOf(stmt[0]) == unordered_set<string>({stmt[1], stmt[2], stmt[3]}));
+        REQUIRE(pkbManager.getDescendantStmtsOf(stmt[1]) == unordered_set<string>({stmt[3]}));
+        REQUIRE(pkbManager.getDescendantStmtsOf(stmt[2]) == unordered_set<string>());
+
+        REQUIRE(pkbManager.isParentT(stmt[0], stmt[3]));
+        REQUIRE_FALSE(pkbManager.isParentT(stmt[2], stmt[3]));
     }
 }

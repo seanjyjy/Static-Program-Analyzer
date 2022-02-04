@@ -4,7 +4,7 @@ using namespace std;
 
 template<class K, class V>
 V SingleMap<K, V>::get(K key) {
-    return mapping[key];
+    return hasKey(key) ? mapping[key] : V();
 }
 
 template<class K, class V>

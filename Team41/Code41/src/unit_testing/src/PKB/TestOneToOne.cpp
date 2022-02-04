@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "PKB/OneToMany.h"
+#include "PKB/OneToOne.h"
 #include "../UnitTestUtility.h"
 
 using namespace std;
@@ -20,31 +20,31 @@ enum TestValues {
     TEST_VALUE_4,
 };
 
-TEST_CASE("OneToMany") {
+TEST_CASE("OneToOne") {
     const string tableName = "TestTable";
-    OneToMany<TestKeys, TestValues> table("TestTable");
+    OneToOne<TestKeys, TestValues> table(tableName);
 
-    SECTION("empty state") {
+    SECTION("empty table") {
         // Before adding
         REQUIRE(table.keySize() == 0);
         REQUIRE(table.valSize() == 0);
         REQUIRE(table.getKeys() == unordered_set<TestKeys>());
         REQUIRE(table.getValues() == unordered_set<TestValues>());
-        REQUIRE(table.getValuesFromKey(TEST_KEY_1) == unordered_set<TestValues>());
         REQUIRE_FALSE(table.hasKey(TEST_KEY_1));
         REQUIRE_FALSE(table.hasVal(TEST_VALUE_1));
         REQUIRE_FALSE(table.hasMapping(TEST_KEY_1, TEST_VALUE_1));
 
+        REQUIRE(table.getValFromKey(TEST_KEY_1) == DEFAULT_VALUE);
         REQUIRE(table.getKeyFromValue(TEST_VALUE_1) == DEFAULT_KEY);
     }
 
     SECTION("adding relation") {
         // Adding key-values
-        TestKeys testKeys[] = {TEST_KEY_1, TEST_KEY_2, TEST_KEY_3};
-        TestValues testValues[] = {TEST_VALUE_1, TEST_VALUE_2, TEST_VALUE_3};
         unordered_set<TestKeys> keySet;
         unordered_set<TestValues> valueSet;
         vector<pair<TestKeys, TestValues>> entrySet;
+        TestKeys testKeys[] = {TEST_KEY_1, TEST_KEY_2};
+        TestValues testValues[] = {TEST_VALUE_1, TEST_VALUE_2};
         int i = 0;
         for (TestKeys key: testKeys) {
             TestValues val = testValues[i];
@@ -58,45 +58,44 @@ TEST_CASE("OneToMany") {
         REQUIRE(table.getValues() == valueSet);
         REQUIRE(sortAndCompareVectors(table.getEntries(), entrySet));
 
-        // throw error if a value have multiple key
-        REQUIRE_THROWS_WITH(table.addMapping(TEST_KEY_2, TEST_VALUE_1),
-                            Catch::Contains("[PKB]") && Catch::Contains(tableName) &&
-                            Catch::Contains("[One-Many]") && Catch::Contains("Multiple keys"));
-        REQUIRE_THROWS_WITH(table.addMapping(TEST_KEY_4, TEST_VALUE_1),
-                            Catch::Contains("[PKB]") && Catch::Contains(tableName) &&
-                            Catch::Contains("[One-Many]") && Catch::Contains("Multiple keys"));
-        // don't throw if mapping already exists
-        REQUIRE_NOTHROW(table.addMapping(TEST_KEY_1, TEST_VALUE_1));
-
         // query
         REQUIRE(table.hasKey(TEST_KEY_1));
         REQUIRE(table.hasVal(TEST_VALUE_1));
         REQUIRE_FALSE(table.hasKey(TEST_KEY_4));
         REQUIRE_FALSE(table.hasVal(TEST_VALUE_4));
         REQUIRE(table.hasMapping(TEST_KEY_1, TEST_VALUE_1));
-        REQUIRE(table.hasMapping(TEST_KEY_3, TEST_VALUE_3));
-        REQUIRE_FALSE(table.hasMapping(TEST_KEY_2, TEST_VALUE_3));
+        REQUIRE(table.hasMapping(TEST_KEY_2, TEST_VALUE_2));
+        REQUIRE_FALSE(table.hasMapping(TEST_KEY_1, TEST_VALUE_2));
         REQUIRE_FALSE(table.hasMapping(TEST_KEY_4, TEST_VALUE_4));
-        REQUIRE(table.valSize() == 3);
-        REQUIRE(table.keySize() == 3);
+        REQUIRE(table.valSize() == 2);
+        REQUIRE(table.keySize() == 2);
 
-        unordered_set<TestValues> assignValSet;
-        assignValSet.insert(TEST_VALUE_2);
-        assignValSet.insert(TEST_VALUE_4);
+        REQUIRE(table.getValFromKey(TEST_KEY_2) == TEST_VALUE_2);
+        REQUIRE(table.getValFromKey(TEST_KEY_1) == TEST_VALUE_1);
+        REQUIRE(table.getKeyFromValue(TEST_VALUE_2) == TEST_KEY_2);
+    }
 
-        // TEST_KEY_2 --> {TEST_VALUE_1, TEST_VALUE_4}
-        REQUIRE_NOTHROW(table.addMapping(TEST_KEY_2, TEST_VALUE_4));
-        REQUIRE(table.getValuesFromKey(TEST_KEY_2) == assignValSet);
-        REQUIRE(table.getKeyFromValue(TEST_VALUE_4) == TEST_KEY_2);
-        REQUIRE(table.valSize() == 4);
-        REQUIRE(table.keySize() == 3);
+    SECTION("edge cases") {
+        REQUIRE_NOTHROW(table.addMapping(TEST_KEY_1, TEST_VALUE_1));
+
+        // throw error if mapping a mapped key to another variable
+        REQUIRE_THROWS_WITH(table.addMapping(TEST_KEY_1, TEST_VALUE_2),
+                            Catch::Contains("[PKB]") && Catch::Contains(tableName) &&
+                            Catch::Contains("[One-One]") && Catch::Contains("Key already mapped"));
+
+        // throw error if mapping a key to a mapped value
+        REQUIRE_THROWS_WITH(table.addMapping(TEST_KEY_2, TEST_VALUE_1),
+                            Catch::Contains("[PKB]") && Catch::Contains(tableName) &&
+                            Catch::Contains("[One-One]") && Catch::Contains("Value already mapped"));
+
+        // don't throw for valid mapping
+        REQUIRE_NOTHROW(table.addMapping(TEST_KEY_2, TEST_VALUE_2));
+
+        // don't throw if mapping already exists
+        REQUIRE_NOTHROW(table.addMapping(TEST_KEY_1, TEST_VALUE_1));
     }
 
     SECTION("immutability") {
-        REQUIRE(table.getValuesFromKey(TEST_KEY_1) == unordered_set<TestValues>());
-        table.getValuesFromKey(TEST_KEY_1).insert(TEST_VALUE_1);
-        REQUIRE(table.getValuesFromKey(TEST_KEY_1) == unordered_set<TestValues>());
-
         REQUIRE(table.getKeys() == unordered_set<TestKeys>());
         table.getKeys().insert(TEST_KEY_1);
         REQUIRE(table.getKeys() == unordered_set<TestKeys>());

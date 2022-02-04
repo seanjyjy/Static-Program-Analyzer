@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SetMultiMap.h"
+#include "SingleMap.h"
 #include "SingleMap.h"
 
 #include <unordered_map>
@@ -10,28 +10,29 @@
 using namespace std;
 
 /**
- * A K key can have multiple V value but
+ * A K key can have only one V value and
  * each V value can only have one K key
  *
  * @tparam K the key of the relation
  * @tparam V the val of the relation
  */
 template<typename K, typename V>
-class OneToMany {
+class OneToOne {
 private:
     string relationName;
-    SetMultiMap<K, V> keyToValues;
-    SingleMap<V, K> valuesToKey;
+    SingleMap<K, V> keyToVal;
+    SingleMap<V, K> valToKey;
 public:
-    explicit OneToMany(const string &relationName);
+    explicit OneToOne(const string &relationName);
 
     /**
-     * Gets set of values that belongs to the specified key
+     * Gets the value that belongs to the specified key
      *
      * @param key the target key
-     * @return the set of values
+     * @return the val mapped to key
+     * @throws error if key does not exist
      */
-    unordered_set<V> getValuesFromKey(K key);
+    V getValFromKey(K key);
 
 
     /**
@@ -59,7 +60,7 @@ public:
     bool hasVal(V targetVal);
 
     /**
-     * Checks if the mapping exists in one-to-many relation
+     * Checks if the mapping exists in one-to-one relation
      *
      * @param key the key to query
      * @param val the value to query
@@ -69,11 +70,14 @@ public:
 
     /**
      * Adds the key-value mapping into the table
-     * Checks if mapping does not violate one-to-many constraints
+     * Checks if mapping does not violate one-to-one constraints
+     *
+     * Note: invalid insertion will result in the key->val, val->key relation not being upheld,
+     * hence error is thrown
      *
      * @param key the key value to set
      * @param val the value mapped to specified key
-     * @throws error if insertion results in val having multiple keys
+     * @throws error if insertion results in val having multiple keys or key having multiple values
      */
     void addMapping(K key, V val);
 
@@ -94,7 +98,7 @@ public:
     /**
      * Gets all entries in the relation table
      *
-     * @return list of key-value pair
+     * @return set of key-value pair
      */
     vector<pair<K, V>> getEntries();
 
@@ -113,5 +117,5 @@ public:
     size_t valSize();
 };
 
-#include "OneToMany.tpp"
+#include "OneToOne.tpp"
 
