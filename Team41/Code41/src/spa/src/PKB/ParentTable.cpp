@@ -57,3 +57,11 @@ vector<pair<string, string>> ParentTable::getParentTEntries() {
 bool ParentTable::isParentT(string parentStmt, string childStmt) {
     return ancestorRelation.hasMapping(parentStmt, childStmt);
 }
+
+unordered_set<string> ParentTable::getStmtsParentOfSomeStmt() {
+    return parentRelation.getKeys();
+}
+
+unordered_set<string> ParentTable::getStmtsChildOfSomeStmt() {
+    return parentRelation.getValues();
+}

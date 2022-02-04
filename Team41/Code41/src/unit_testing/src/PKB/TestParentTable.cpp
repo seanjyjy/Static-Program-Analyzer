@@ -49,6 +49,8 @@ TEST_CASE("ParentTable") {
 
             REQUIRE(table.isParent(stmt[0], stmt[1]));
             REQUIRE_FALSE(table.isParent(stmt[0], stmt[5]));
+            REQUIRE(table.getStmtsParentOfSomeStmt() == unordered_set<string>({stmt[0], stmt[1]}));
+            REQUIRE(table.getStmtsChildOfSomeStmt() == unordered_set<string>({stmt[1], stmt[2], stmt[5]}));
         }
 
             // domain specific edge cases
@@ -131,6 +133,8 @@ TEST_CASE("ParentTable") {
             REQUIRE(sortAndCompareVectors(table.getParentTEntries(), entryList));
             REQUIRE(table.isParentT(stmt[0], stmt[5]));
             REQUIRE_FALSE(table.isParentT(stmt[1], stmt[5]));
+            REQUIRE(table.getStmtsParentOfSomeStmt() == unordered_set<string>({stmt[0], stmt[2], stmt[3]}));
+            REQUIRE(table.getStmtsChildOfSomeStmt() == unordered_set<string>({stmt[1], stmt[2], stmt[3], stmt[4], stmt[5]}));
         }
 
             // domain specific edge cases

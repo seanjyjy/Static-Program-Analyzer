@@ -146,6 +146,10 @@ unordered_set<string> PKB::getAncestorStmtsOf(string childStmt) {
 
 vector<pair<string, string>> PKB::getAllParentT() { return parentTable->getParentTEntries(); }
 
+unordered_set<string> PKB::getAllStmtsParentOfSomeStmt() { return parentTable->getStmtsParentOfSomeStmt(); }
+
+unordered_set<string> PKB::getAllStmtsChildOfBySomeStmt() { return parentTable->getStmtsChildOfSomeStmt(); }
+
 //======================================== Uses ==================================================
 
 bool PKB::isUsesS(string stmtNum, string varName) {

@@ -151,6 +151,9 @@ public:
     unordered_set<string> getAncestorStmtsOf(string childStmt);// Gets the stmt that is ancestors of childStmt
     vector<pair<string, string>> getAllParentT(); // Gets list of parent-child pair where stmt1 is ancestor of stmt2
 
+    unordered_set<string> getAllStmtsParentOfSomeStmt(); // get list of stmt parent of some stmt
+    unordered_set<string> getAllStmtsChildOfBySomeStmt(); // get list of stmt parented by some stmt
+
     //=========================================== Uses ===================================================
 
     void registerUsesS(string stmtNum, string varName);// Registers to PKB that the specified stmt uses specified var

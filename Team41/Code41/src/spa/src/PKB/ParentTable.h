@@ -26,4 +26,7 @@ public:
     unordered_set<string> getAllAncestorsOf(string childStmt);
     vector<pair<string, string>> getParentTEntries();
     bool isParentT(string parentStmt, string childStmt);
+
+    unordered_set<string> getStmtsParentOfSomeStmt();
+    unordered_set<string> getStmtsChildOfSomeStmt();
 };
