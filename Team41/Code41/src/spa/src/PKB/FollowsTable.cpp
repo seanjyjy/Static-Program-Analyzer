@@ -57,3 +57,11 @@ vector<pair<string, string>> FollowsTable::getFollowTEntries() {
 bool FollowsTable::isFollowsT(string follower, string followed) {
     return followsTRelation.hasMapping(follower, followed);
 }
+
+unordered_set<string> FollowsTable::getStmtsFollowedBySomeStmt() {
+    return followsRelation.getValues();
+}
+
+unordered_set<string> FollowsTable::getStmtsFollowingSomeStmt() {
+    return followsRelation.getKeys();
+}

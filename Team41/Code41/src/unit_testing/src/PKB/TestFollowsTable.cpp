@@ -47,6 +47,9 @@ TEST_CASE("FollowsTable") {
 
             REQUIRE(table.isFollows(stmt[0], stmt[1]));
             REQUIRE_FALSE(table.isFollows(stmt[0], stmt[5]));
+
+            REQUIRE(table.getStmtsFollowingSomeStmt() == unordered_set<string>({stmt[0], stmt[1], stmt[2]}));
+            REQUIRE(table.getStmtsFollowedBySomeStmt() == unordered_set<string>({stmt[1], stmt[2], stmt[5]}));
         }
 
             // domain specific edge cases
@@ -123,6 +126,9 @@ TEST_CASE("FollowsTable") {
             REQUIRE(table.isFollowsT(stmt[0], stmt[3]));
             REQUIRE(table.isFollowsT(stmt[0], stmt[2]));
             REQUIRE(table.isFollowsT(stmt[1], stmt[3]));
+
+            REQUIRE(table.getStmtsFollowingSomeStmt() == unordered_set<string>({stmt[0], stmt[1], stmt[2]}));
+            REQUIRE(table.getStmtsFollowedBySomeStmt() == unordered_set<string>({stmt[1], stmt[2], stmt[3]}));
         }
 
             // domain specific edge cases

@@ -26,4 +26,7 @@ public:
     unordered_set<string> getStmtsFollowingT(string followed);
     vector<pair<string, string>> getFollowTEntries();
     bool isFollowsT(string follower, string followed);
+
+    unordered_set<string> getStmtsFollowingSomeStmt();
+    unordered_set<string> getStmtsFollowedBySomeStmt();
 };

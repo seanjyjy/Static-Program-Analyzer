@@ -114,6 +114,10 @@ unordered_set<string> PKB::getAllStmtsFollowedTBy(string stmtNum) {
 
 vector<pair<string, string>> PKB::getAllFollowsT() { return followsTable->getFollowTEntries(); }
 
+unordered_set<string> PKB::getAllStmtsFollowingSomeStmt() { return followsTable->getStmtsFollowingSomeStmt(); }
+
+unordered_set<string> PKB::getAllStmtsFollowedBySomeStmt() { return followsTable->getStmtsFollowedBySomeStmt(); }
+
 //======================================== Parent ==================================================
 
 void PKB::registerParent(string parentStmt, string childStmt) {

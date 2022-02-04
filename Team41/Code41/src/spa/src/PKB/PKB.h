@@ -124,6 +124,9 @@ public:
     unordered_set<string> getAllStmtsFollowedTBy(string stmtNum);// Gets list of stmts that is followedT by given stmt
     vector<pair<string, string>> getAllFollowsT(); // Gets list of stmt1-stmt2 pair where stmt1 followsT stmt2
 
+    unordered_set<string> getAllStmtsFollowingSomeStmt(); // get list of stmt following some stmt
+    unordered_set<string> getAllStmtsFollowedBySomeStmt(); // get list of stmt followed by some stmt
+
     //=========================================== Parent ===================================================
 
     /**
