@@ -50,6 +50,9 @@ TEST_CASE("UsesTable") {
             REQUIRE(table.getStmtsUsingVar(vars[1]) == stmtList);
             REQUIRE(sortAndCompareVectors(table.getStmtsVarEntries(), entryList));
             REQUIRE(table.isUsesS(lines[1], vars[1]));
+
+            REQUIRE(table.getStmtsUsingSomeVar() == unordered_set<string>({lines[0], lines[1]}));
+            REQUIRE(table.getVarsUsedInSomeStmt() == unordered_set<string>({vars[0], vars[1]}));
         }
     }
     SECTION("UsesP") {
@@ -93,6 +96,9 @@ TEST_CASE("UsesTable") {
             REQUIRE(table.getProcsUsingVar(vars[1]) == procList);
             REQUIRE(sortAndCompareVectors(table.getProcVarEntries(), entryList));
             REQUIRE(table.isUsesP(proc[1], vars[1]));
+
+            REQUIRE(table.getProcsUsingSomeVar() == unordered_set<string>({proc[0], proc[1]}));
+            REQUIRE(table.getVarsUsedInSomeProc() == unordered_set<string>({vars[0], vars[1]}));
         }
     }
 }

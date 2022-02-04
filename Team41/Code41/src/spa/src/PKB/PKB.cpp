@@ -87,6 +87,10 @@ unordered_set<string> PKB::getUsesByStmt(string stmtNum) { return usesTable->get
 
 vector<pair<string, string>> PKB::getAllUsesS() { return usesTable->getStmtsVarEntries(); }
 
+unordered_set<string> PKB::getAllStmtsUsingSomeVar() { return usesTable->getStmtsUsingSomeVar(); }
+
+unordered_set<string> PKB::getAllVarsUsedInSomeStmt() { return usesTable->getVarsUsedInSomeStmt(); }
+
 void PKB::registerUsesS(string stmtNum, string varName) {
     return usesTable->setVarUsedInStmt(move(stmtNum), move(varName));
 }
@@ -100,6 +104,10 @@ unordered_set<string> PKB::getUsesPByVar(string varName) { return usesTable->get
 unordered_set<string> PKB::getUsesByProc(string procName) { return usesTable->getVarsUsedInProc(move(procName)); }
 
 vector<pair<string, string>> PKB::getAllUsesP() { return usesTable->getProcVarEntries(); }
+
+unordered_set<string> PKB::getAllProcsUsingSomeVar() { return usesTable->getProcsUsingSomeVar(); }
+
+unordered_set<string> PKB::getAllVarsUsedInSomeProc() { return usesTable->getVarsUsedInSomeProc(); }
 
 void PKB::registerUsesP(string procName, string varName) {
     return usesTable->setVarUsedInProc(move(procName), move(varName));

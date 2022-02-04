@@ -186,6 +186,9 @@ TEST_CASE("PKB: uses abstraction") {
         REQUIRE(pkbManager.getUsesByStmt(stmt[0]) == varList);
         REQUIRE(pkbManager.getUsesSByVar(var[0]) == stmtList);
         REQUIRE(sortAndCompareVectors(pkbManager.getAllUsesS(), entryList));
+
+        REQUIRE(pkbManager.getAllStmtsUsingSomeVar() == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getAllVarsUsedInSomeStmt() == unordered_set<string>({var[0]}));
     }
 
     SECTION("UsesP") {
@@ -206,6 +209,9 @@ TEST_CASE("PKB: uses abstraction") {
         REQUIRE(pkbManager.getUsesByProc(proc[0]) == varList);
         REQUIRE(pkbManager.getUsesPByVar(var[0]) == procList);
         REQUIRE(sortAndCompareVectors(pkbManager.getAllUsesP(), entryList));
+
+        REQUIRE(pkbManager.getAllVarsUsedInSomeProc() == unordered_set<string>({var[0]}));
+        REQUIRE(pkbManager.getAllProcsUsingSomeVar() == unordered_set<string>({proc[0]}));
     }
 }
 

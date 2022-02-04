@@ -18,6 +18,14 @@ vector<pair<string, string>> UsesTable::getStmtsVarEntries() {
     return usesStmtRelation.getEntries();
 }
 
+unordered_set<string> UsesTable::getVarsUsedInSomeStmt() {
+    return usesStmtRelation.getValues();
+}
+
+unordered_set<string> UsesTable::getStmtsUsingSomeVar() {
+    return usesStmtRelation.getKeys();
+}
+
 bool UsesTable::isUsesS(string stmtNum, string varName) {
     return usesStmtRelation.hasMapping(stmtNum, varName);
 }
@@ -36,6 +44,14 @@ unordered_set<string> UsesTable::getProcsUsingVar(string varName) {
 
 vector<pair<string, string>> UsesTable::getProcVarEntries() {
     return usesProcRelation.getEntries();
+}
+
+unordered_set<string> UsesTable::getVarsUsedInSomeProc() {
+    return usesProcRelation.getValues();
+}
+
+unordered_set<string> UsesTable::getProcsUsingSomeVar() {
+    return usesProcRelation.getKeys();
 }
 
 bool UsesTable::isUsesP(string procName, string varName) {

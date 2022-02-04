@@ -18,11 +18,15 @@ public:
     unordered_set<string> getVarsUsedInStmt(string stmtNum);
     unordered_set<string> getStmtsUsingVar(string varName);
     vector<pair<string, string>> getStmtsVarEntries();
+    unordered_set<string> getVarsUsedInSomeStmt();
+    unordered_set<string> getStmtsUsingSomeVar();
     bool isUsesS(string stmtNum, string varName);
 
     void setVarUsedInProc(string procName, string varName);
     unordered_set<string> getVarsUsedInProc(string procName);
     unordered_set<string> getProcsUsingVar(string varName);
     vector<pair<string, string>> getProcVarEntries();
+    unordered_set<string> getVarsUsedInSomeProc();
+    unordered_set<string> getProcsUsingSomeVar();
     bool isUsesP(string procName, string varName);
 };
