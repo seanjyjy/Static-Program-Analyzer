@@ -1,6 +1,6 @@
 #include "UsesSEvaluator.h"
 
-Table* Evaluator::evaluate(string clause, PKB *pkb) {
+Table* UsesSEvaluator::evaluate(string clause, PKB *pkb) {
     // Get first argument
     // Get second argument
 

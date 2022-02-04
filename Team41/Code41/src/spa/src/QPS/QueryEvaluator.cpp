@@ -16,7 +16,7 @@ std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
     for (const auto& clause : queryObject->clauses) {
         // Ignore warning for now
-        Table* intermediateTable = this->evaluate(clause, this->pkb); // false table is return it should be empty?
+        Table* intermediateTable = this->evaluate(clause); // false table is return it should be empty?
 
         if (intermediateTable->isEmpty()) {
             return emptyResult;
@@ -39,7 +39,7 @@ std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     return result;
 }
 
-Table *QueryEvaluator::evaluate(string clause, PKB *pkb) {
+Table *QueryEvaluator::evaluate(string clause) {
     if (clause == "FOLLOWS") {
         return nullptr;
     } else if (clause == "FOLLOWS_T") {
@@ -49,9 +49,9 @@ Table *QueryEvaluator::evaluate(string clause, PKB *pkb) {
     } else if (clause == "PARENT_T") {
         return nullptr;
     } else if (clause == "USES_S") {
-        return nullptr;
+        return UsesSEvaluator::evaluate(clause, this->pkb);
     } else if (clause == "USES_P") {
-        return nullptr;
+        return UsesPEvaluator::evaluate(clause, this->pkb);
     } else if (clause == "MODIFIES_S") {
         return nullptr;
     } else if (clause == "MODIFIES_P") {

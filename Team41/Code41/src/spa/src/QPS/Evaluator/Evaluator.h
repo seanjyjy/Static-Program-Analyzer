@@ -11,5 +11,5 @@ using namespace std;
 class Evaluator {
 public:
     // string to be changed once a clause side is created
-    Table* evaluate(string clause, PKB *pkb);
+    virtual Table* evaluate(string clause, PKB *pkb) = 0;
 };
