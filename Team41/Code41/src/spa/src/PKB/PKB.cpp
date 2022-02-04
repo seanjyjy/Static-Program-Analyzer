@@ -154,6 +154,10 @@ unordered_set<string> PKB::getUsesByStmt(string stmtNum) { return usesTable->get
 
 vector<pair<string, string>> PKB::getAllUsesS() { return usesTable->getStmtsVarEntries(); }
 
+unordered_set<string> PKB::getAllStmtsUsingSomeVar() { return usesTable->getStmtsUsingSomeVar(); }
+
+unordered_set<string> PKB::getAllVarsUsedInSomeStmt() { return usesTable->getVarsUsedInSomeStmt(); }
+
 void PKB::registerUsesS(string stmtNum, string varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerUsesS] Used variable is not registered" << endl;
@@ -173,6 +177,10 @@ unordered_set<string> PKB::getUsesPByVar(string varName) { return usesTable->get
 unordered_set<string> PKB::getUsesByProc(string procName) { return usesTable->getVarsUsedInProc(move(procName)); }
 
 vector<pair<string, string>> PKB::getAllUsesP() { return usesTable->getProcVarEntries(); }
+
+unordered_set<string> PKB::getAllProcsUsingSomeVar() { return usesTable->getProcsUsingSomeVar(); }
+
+unordered_set<string> PKB::getAllVarsUsedInSomeProc() { return usesTable->getVarsUsedInSomeProc(); }
 
 void PKB::registerUsesP(string procName, string varName) {
     if (!(isVariable(varName))) {
@@ -200,6 +208,10 @@ unordered_set<string> PKB::getModifiesByStmt(string stmtNum) {
 
 vector<pair<string, string>> PKB::getAllModifiesS() { return modifiesTable->getStmtsVarEntries(); }
 
+unordered_set<string> PKB::getAllStmtsModifyingSomeVar() { return modifiesTable->getStmtsModifyingSomeVar(); }
+
+unordered_set<string> PKB::getAllVarsModifiedInSomeStmt() { return modifiesTable->getVarsModifiedInSomeStmt(); }
+
 void PKB::registerModifiesS(string stmtNum, string varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerModifiesS] Used variable is not registered" << endl;
@@ -223,6 +235,10 @@ unordered_set<string> PKB::getModifiesByProc(string procName) {
 }
 
 vector<pair<string, string>> PKB::getAllModifiesP() { return modifiesTable->getProcVarEntries(); }
+
+unordered_set<string> PKB::getAllProcsModifyingSomeVar() { return modifiesTable->getProcsModifyingSomeVar(); }
+
+unordered_set<string> PKB::getAllVarsModifiedInSomeProc() { return modifiesTable->getVarsModifiedInSomeProc(); }
 
 void PKB::registerModifiesP(string procName, string varName) {
     if (!(isVariable(varName))) {

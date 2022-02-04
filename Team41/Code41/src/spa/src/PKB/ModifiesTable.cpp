@@ -18,6 +18,14 @@ vector<pair<string, string>> ModifiesTable::getStmtsVarEntries() {
     return modifyStmtRelation.getEntries();
 }
 
+unordered_set<string> ModifiesTable::getVarsModifiedInSomeStmt() {
+    return modifyStmtRelation.getValues();
+}
+
+unordered_set<string> ModifiesTable::getStmtsModifyingSomeVar() {
+    return modifyStmtRelation.getKeys();
+}
+
 bool ModifiesTable::isModifiesS(string stmtNum, string varName) {
     return modifyStmtRelation.hasMapping(stmtNum, varName);
 }
@@ -36,6 +44,14 @@ unordered_set<string> ModifiesTable::getProcsModifyingVar(string varName) {
 
 vector<pair<string, string>> ModifiesTable::getProcVarEntries() {
     return modifyProcRelation.getEntries();
+}
+
+unordered_set<string> ModifiesTable::getVarsModifiedInSomeProc() {
+    return modifyProcRelation.getValues();
+}
+
+unordered_set<string> ModifiesTable::getProcsModifyingSomeVar() {
+    return modifyProcRelation.getKeys();
 }
 
 bool ModifiesTable::isModifiesP(string procName, string varName) {
