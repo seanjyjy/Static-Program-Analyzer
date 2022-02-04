@@ -1,11 +1,4 @@
-#include "Evaluator.h"
-
-Table* evaluateUsesIdentifierIdentifier(PKB);
-Table* evaluateUsesIdentifierSynonym(PKB);
-Table* evaluateUsesIdentifierWildCard(PKB);
-Table* evaluateUsesSynonymIdentifier(PKB);
-Table* evaluateSynonymSynonym(PKB);
-Table* evaluateSynonymWildCard(PKB);
+#include "UsesPEvaluator.h"
 
 Table* Evaluator::evaluate(string clause, PKB* pkb) {
     // Get first argument
@@ -28,17 +21,17 @@ Table* Evaluator::evaluate(string clause, PKB* pkb) {
     }
 
     if (firstArgument.isSynonym() && secondArgument.isSynonym()) {
-        return evaluateSynonymSynonym(pkb, firstArgument, secondArgument);
+        return evaluateUsesSynonymSynonym(pkb, firstArgument, secondArgument);
     }
 
     if (firstArgument.isSynonym() && secondArgument.isWildCard()) {
-        return evaluateSynonymWildCard(pkb, firstArgument);
+        return evaluateUsesSynonymWildCard(pkb, firstArgument);
     }
 
     return new FalseTable();
 }
 
-Table* evaluateUsesIdentifierIdentifier(PKB* pkb, firstArgument, secondArgument) {
+Table* UsesPEvaluator::evaluateUsesIdentifierIdentifier(PKB* pkb, firstArgument, secondArgument) {
     bool isUsesP = pkb->isUsesP(firstArgument->getIdentifier(), secondArgument->getIdentifier());
 
     if (isUsesP) {
@@ -48,7 +41,7 @@ Table* evaluateUsesIdentifierIdentifier(PKB* pkb, firstArgument, secondArgument)
     return new FalseTable();
 }
 
-Table* evaluateUsesIdentifierSynonym(PKB* pkb, firstArgument, secondArgument) {
+Table* UsesPEvaluator::evaluateUsesIdentifierSynonym(PKB* pkb, firstArgument, secondArgument) {
     unordered_set<string> setOfVariables = pkb->getUsesByProc(firstArgument->getIdentifier());
 
     string column = secondArgument->getSynonym();
@@ -63,7 +56,7 @@ Table* evaluateUsesIdentifierSynonym(PKB* pkb, firstArgument, secondArgument) {
     return result;
 }
 
-Table* evaluateUsesIdentifierWildCard(PKB* pkb, firstArgument) {
+Table* UsesPEvaluator::evaluateUsesIdentifierWildCard(PKB* pkb, firstArgument) {
     unordered_set<string> setOfVariables = pkb->getUsesByProc(firstArgument->getIdentifier());
 
     if (setOfVariables.empty()) {
@@ -73,7 +66,7 @@ Table* evaluateUsesIdentifierWildCard(PKB* pkb, firstArgument) {
     return new TrueTable();
 }
 
-Table* evaluateUsesSynonymIdentifier(PKB* pkb, firstArgument, secondArgument) {
+Table* UsesPEvaluator::evaluateUsesSynonymIdentifier(PKB* pkb, firstArgument, secondArgument) {
     unordered_set<string> setOfProcedures = pkb->getUsesPByVar(secondArgument->getIdentifier());
 
     string column = firstArgument->getSynonym();
@@ -88,7 +81,7 @@ Table* evaluateUsesSynonymIdentifier(PKB* pkb, firstArgument, secondArgument) {
     return result;
 }
 
-Table* evaluateSynonymSynonym(PKB* pkb, firstArgument, secondArgument) {
+Table* UsesPEvaluator::evaluateUsesSynonymSynonym(PKB* pkb, firstArgument, secondArgument) {
     vector<pair<string, string>> listOfProcedureToVariable =  pkb->getAllUsesP();
 
     string firstColumn = firstArgument->getSynonym();
@@ -106,7 +99,7 @@ Table* evaluateSynonymSynonym(PKB* pkb, firstArgument, secondArgument) {
     return result;
 }
 
-Table* evaluateSynonymWildCard(PKB* pkb, firstArgument) {
+Table* UsesPEvaluator::evaluateUsesSynonymWildCard(PKB* pkb, firstArgument) {
     vector<pair<string, string>> listOfProcedureToVariable =  pkb->getAllUsesP();
 
     string column = firstArgument->getSynonym();
