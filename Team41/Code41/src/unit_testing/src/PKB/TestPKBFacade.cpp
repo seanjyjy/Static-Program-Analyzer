@@ -240,6 +240,9 @@ TEST_CASE("PKB: modifies abstraction") {
         REQUIRE(pkbManager.getModifiesByStmt(stmt[0]) == varList);
         REQUIRE(pkbManager.getModifiesSByVar(var[0]) == stmtList);
         REQUIRE(sortAndCompareVectors(pkbManager.getAllModifiesS(), entryList));
+
+        REQUIRE(pkbManager.getAllStmtsModifyingSomeVar() == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getAllVarsModifiedInSomeStmt() == unordered_set<string>({var[0]}));
     }
 
     SECTION("ModifiesP") {
@@ -260,5 +263,8 @@ TEST_CASE("PKB: modifies abstraction") {
         REQUIRE(pkbManager.getModifiesByProc(proc[0]) == varList);
         REQUIRE(pkbManager.getModifiesPByVar(var[0]) == procList);
         REQUIRE(sortAndCompareVectors(pkbManager.getAllModifiesP(), entryList));
+
+        REQUIRE(pkbManager.getAllVarsModifiedInSomeProc() == unordered_set<string>({var[0]}));
+        REQUIRE(pkbManager.getAllProcsModifyingSomeVar() == unordered_set<string>({proc[0]}));
     }
 }

@@ -126,6 +126,10 @@ unordered_set<string> PKB::getModifiesByStmt(string stmtNum) { return modifiesTa
 
 vector<pair<string, string>> PKB::getAllModifiesS() { return modifiesTable->getStmtsVarEntries(); }
 
+unordered_set<string> PKB::getAllStmtsModifyingSomeVar() { return modifiesTable->getStmtsModifyingSomeVar(); }
+
+unordered_set<string> PKB::getAllVarsModifiedInSomeStmt() { return modifiesTable->getVarsModifiedInSomeStmt(); }
+
 void PKB::registerModifiesS(string stmtNum, string varName) {
     return modifiesTable->setVarModifiedInStmt(move(stmtNum), move(varName));
 }
@@ -139,6 +143,10 @@ unordered_set<string> PKB::getModifiesPByVar(string varName) { return modifiesTa
 unordered_set<string> PKB::getModifiesByProc(string procName) { return modifiesTable->getVarsModifiedInProc(move(procName)); }
 
 vector<pair<string, string>> PKB::getAllModifiesP() { return modifiesTable->getProcVarEntries(); }
+
+unordered_set<string> PKB::getAllProcsModifyingSomeVar() { return modifiesTable->getProcsModifyingSomeVar(); }
+
+unordered_set<string> PKB::getAllVarsModifiedInSomeProc() { return modifiesTable->getVarsModifiedInSomeProc(); }
 
 void PKB::registerModifiesP(string procName, string varName) {
     return modifiesTable->setVarModifiedInProc(move(procName), move(varName));

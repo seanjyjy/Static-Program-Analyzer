@@ -18,11 +18,15 @@ public:
     unordered_set<string> getVarsModifiedInStmt(string stmtNum);
     unordered_set<string> getStmtsModifyingVar(string varName);
     vector<pair<string, string>> getStmtsVarEntries();
+    unordered_set<string> getVarsModifiedInSomeStmt();
+    unordered_set<string> getStmtsModifyingSomeVar();
     bool isModifiesS(string stmtNum, string varName);
 
     void setVarModifiedInProc(string procName, string varName);
     unordered_set<string> getVarsModifiedInProc(string procName);
     unordered_set<string> getProcsModifyingVar(string varName);
     vector<pair<string, string>> getProcVarEntries();
+    unordered_set<string> getVarsModifiedInSomeProc();
+    unordered_set<string> getProcsModifyingSomeVar();
     bool isModifiesP(string procName, string varName);
 };
