@@ -1,6 +1,6 @@
 #include "catch.hpp"
-#include "QPS/PQLTable.h"
-#include "QPS/Row.h"
+#include "QPS/Table/PQLTable.h"
+#include "QPS/Table/Row.h"
 
 using namespace std;
 
@@ -78,7 +78,6 @@ TEST_CASE() {
         Row* a1 = new Row();
         Row* a4 = new Row();
         Row* a3 = new Row();
-
         REQUIRE_NOTHROW(a1->addEntry("a", "1"));
         REQUIRE_NOTHROW(a4->addEntry("a", "4"));
         REQUIRE_NOTHROW(a3->addEntry("a", "3"));
@@ -91,7 +90,7 @@ TEST_CASE() {
          * 1 | a
          * 1 | b
          */
-        PQLTable* newTable = table2.mergeJoin(table3);
+        Table* newTable = table2.mergeJoin(table3);
         REQUIRE(newTable->getHeader() == header2);
         REQUIRE(newTable->size() == 2);
         REQUIRE(newTable->hasRow(row1a));
@@ -123,7 +122,7 @@ TEST_CASE() {
          * 1 | a | z
          * 1 | b | z
          */
-        PQLTable* newTable2 = table2.mergeJoin(table4);
+        Table* newTable2 = table2.mergeJoin(table4);
         Header header5({"a", "d", "v"});
         REQUIRE(newTable2->getHeader() == header5);
         REQUIRE(newTable2->size() == 2);

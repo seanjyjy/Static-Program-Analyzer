@@ -8,32 +8,37 @@ bool PQLTable::isEmpty() {
     return size() == 0;
 }
 
-PQLTable* PQLTable::mergeJoin(PQLTable* intermediatePQLTable) {
+Table* PQLTable::mergeJoin(Table* intermediatePQLTable) {
+
     if (intermediatePQLTable == nullptr) {
         throw runtime_error("PQLTable provided is null!");
     }
 
     Header commonHeader = getCommonHeader(this, intermediatePQLTable);
     Header combinedHeader = getCombinedHeader(this, intermediatePQLTable);
-    auto* newTable = new PQLTable(combinedHeader);
+    Table* newTable = new PQLTable(combinedHeader);
 
     // Sort Tables
-    sort(this, commonHeader);
+    sort(dynamic_cast<Table*>(this), commonHeader);
     sort(intermediatePQLTable, commonHeader);
 
     // Merge Tables
-    mergeTable(this, intermediatePQLTable, newTable, commonHeader);
+    mergeTable(dynamic_cast<Table*>(this), intermediatePQLTable, newTable, commonHeader);
+    // TODO figure out the destructor lol
     delete intermediatePQLTable;
 
     return newTable;
 }
 
-void PQLTable::mergeTable(PQLTable *leftTable, PQLTable *rightTable, PQLTable *newTable, const Header& commonHeader) {
-    auto leftTableIndex = leftTable->rows.begin();
-    auto leftTableEnd = leftTable->rows.end();
-    auto rightTableIndex = rightTable->rows.begin();
-    auto rightTableEnd = rightTable->rows.end();
+void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, const Header& commonHeader) {
+    auto leftTableRow = leftTable->getRows();
+    auto rightTableRow = rightTable->getRows();
 
+    // have to separate else have warning: object backing the pointer will be destroyed at the end of the full-expression
+    auto leftTableIndex = leftTableRow.begin();
+    auto leftTableEnd = leftTableRow.end();
+    auto rightTableIndex = rightTableRow.begin();
+    auto rightTableEnd = rightTableRow.end();
 
     while (leftTableIndex != leftTableEnd && rightTableIndex != rightTableEnd) {
         int result = compareRow(*leftTableIndex, *rightTableIndex, commonHeader);
@@ -98,8 +103,10 @@ const Row* PQLTable::combineRow(const Row* rowA, const Row* rowB) const {
     return row;
 }
 
-void PQLTable::sort(PQLTable* table, const Header& commonHeader) {
-    std::sort(table->rows.begin(), table->rows.end(), [commonHeader](const Row* left, const Row* right){
+void PQLTable::sort(Table* table, const Header& commonHeader) {
+    auto tableRows = table->getRows();
+
+    std::sort(tableRows.begin(), tableRows.end(), [commonHeader](const Row* left, const Row* right){
         for (auto const& headerField : commonHeader) {
             return left->getValueAtColumn(headerField) <= right->getValueAtColumn(headerField);
         }
@@ -107,7 +114,7 @@ void PQLTable::sort(PQLTable* table, const Header& commonHeader) {
     });
 }
 
-Header PQLTable::getCommonHeader(PQLTable *leftTable, PQLTable *rightTable) {
+Header PQLTable::getCommonHeader(Table *leftTable, Table *rightTable) {
     Header leftTableHeader = leftTable->getHeader();
     Header rightTableHeader = rightTable->getHeader();
     Header commonHeader;
@@ -121,7 +128,7 @@ Header PQLTable::getCommonHeader(PQLTable *leftTable, PQLTable *rightTable) {
     return commonHeader;
 }
 
-Header PQLTable::getCombinedHeader(PQLTable *leftTable, PQLTable *rightTable) {
+Header PQLTable::getCombinedHeader(Table *leftTable, Table *rightTable) {
     Header leftTableHeader = leftTable->getHeader();
     Header rightTableHeader = rightTable->getHeader();
     Header combinedHeader;
