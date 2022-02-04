@@ -100,14 +100,14 @@ Table* UsesPEvaluator::evaluateUsesSynonymSynonym(PKB* pkb, firstArgument, secon
 }
 
 Table* UsesPEvaluator::evaluateUsesSynonymWildCard(PKB* pkb, firstArgument) {
-    vector<pair<string, string>> listOfProcedureToVariable =  pkb->getAllUsesP();
+    unordered_set<string> setOfProcedures =  pkb->getAllProcsUsingSomeVar();
 
     string column = firstArgument->getSynonym();
     Header header = Header({column});
     Table* result = new PQLTable(header);
 
-    for (auto& procedureToVariable : listOfProcedureToVariable) {
-        Row* row = new Row(column, procedureToVariable.first);
+    for (auto& procedure : setOfProcedures) {
+        Row* row = new Row(column, procedure);
         result->addRow(row);
     }
 
