@@ -124,9 +124,10 @@ bool QueryParser::parsePatternClause() {
 QueryParser::QueryParser(string &input) : input(input) {}
 
 QueryObject *QueryParser::parse() {
-    vector<QueryDeclaration> declarations;
-    vector<QueryClause> clauses;
-    queryObject = new QueryObject(declarations, clauses, false);
+//    vector<QueryDeclaration> declarations;
+//    vector<QueryClause> clauses;
+//    QueryDeclaration selectSyn = new selectSyn();
+//    queryObject = new QueryObject(declarations, clauses, false);
 
     parseDeclarations();
     parseSelectSynonym();
