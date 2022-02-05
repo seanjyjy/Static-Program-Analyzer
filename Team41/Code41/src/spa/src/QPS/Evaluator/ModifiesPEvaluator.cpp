@@ -1,11 +1,11 @@
-#include "ModfiesPEvaluator.h"
+#include "ModifiesPEvaluator.h"
 
 Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
 
-    if (leftVariable.isIdentifier() && rightVariable.isIdentifer()) {
+    if (leftVariable.isIdentifier() && rightVariable.isIdentifier()) {
         return evaluateIdentifierIdentifier(pkb, leftVariable, rightVariable);
     }
 
@@ -17,7 +17,7 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
         return evaluateIdentifierWildCard(pkb, leftVariable);
     }
 
-    if (leftVariable.isSynonym() && rightVariable.isIdentifer()) {
+    if (leftVariable.isSynonym() && rightVariable.isIdentifier()) {
         return evaluateSynonymIdentifier(pkb, leftVariable, rightVariable);
     }
 
@@ -33,7 +33,7 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
 }
 
  Table* ModifiesPEvaluator::evaluateIdentifierIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
-    bool isModifiesP = pkb->isModifiesP(left->getLabel(), right->getLabel());
+    bool isModifiesP = pkb->isModifiesP(left.getLabel(), right.getLabel());
 
     if (isModifiesP) {
         return new TrueTable();
@@ -43,9 +43,9 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
 }
 
  Table* ModifiesPEvaluator::evaluateIdentifierSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
-    unordered_set<string> setOfVariables = pkb->getModifiesByProc(left->getLabel());
+    unordered_set<string> setOfVariables = pkb->getModifiesByProc(left.getLabel());
 
-    string column = right->getLabel();
+    string column = right.getLabel();
     Header header = Header({column});
     Table* result = new PQLTable(header);
 
@@ -58,7 +58,7 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
 }
 
  Table* ModifiesPEvaluator::evaluateIdentifierWildCard(PKB* pkb, ClauseVariable left) {
-    unordered_set<string> setOfVariables = pkb->getModifiesByProc(left->getLabel());
+    unordered_set<string> setOfVariables = pkb->getModifiesByProc(left.getLabel());
 
     if (setOfVariables.empty()) {
         return new FalseTable();
@@ -68,9 +68,9 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
 }
 
  Table* ModifiesPEvaluator::evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
-    unordered_set<string> setOfStatements = pkb->getModifiesPByVar(right->getLabel());
+    unordered_set<string> setOfStatements = pkb->getModifiesPByVar(right.getLabel());
 
-    string column = left->getLabel();
+    string column = left.getLabel();
     Header header = Header({column});
     Table* result = new PQLTable(header);
 
@@ -85,8 +85,8 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
 Table* ModifiesPEvaluator::evaluateSynonymSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
     vector<pair<string, string>> listOfStatementToVariable = pkb->getAllModifiesP();
 
-    string firstColumn = left->getLabel();
-    string secondColumn = right->getLabel();
+    string firstColumn = left.getLabel();
+    string secondColumn = right.getLabel();
     Header header = Header({firstColumn, secondColumn});
     Table* result = new PQLTable(header);
 
@@ -101,16 +101,16 @@ Table* ModifiesPEvaluator::evaluateSynonymSynonym(PKB* pkb, ClauseVariable left,
 }
 
 Table* ModifiesPEvaluator::evaluateSynonymWildCard(PKB* pkb, ClauseVariable left) {
-    unordered_set<string> setOfStatements = pkb->getAllProcsModifyingSomeVar();
+//    unordered_set<string> setOfStatements = pkb->getAllProcsModifyingSomeVar();
 
-    string column = left->getLabel();
+    string column = left.getLabel();
     Header header = Header({column});
     Table* result = new PQLTable(header);
 
-    for (auto& statement : setOfStatements) {
-        Row* row = new Row(column, statement);
-        result->addRow(row);
-    }
+//    for (auto& statement : setOfStatements) {
+//        Row* row = new Row(column, statement);
+//        result->addRow(row);
+//    }
 
     return result;
 }

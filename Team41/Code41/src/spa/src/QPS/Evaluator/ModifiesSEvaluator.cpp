@@ -32,7 +32,7 @@ Table* ModifiesSEvaluator::evaluate(QueryClause clause, PKB *pkb) {
 }
 
 Table* ModifiesSEvaluator::evaluateIntegerIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
-    bool isUsesS = pkb->isModifiesS(left->getLabel(), right->getLabel());
+    bool isUsesS = pkb->isModifiesS(left.getLabel(), right.getLabel());
 
     if (isUsesS) {
         return new TrueTable();
@@ -42,9 +42,9 @@ Table* ModifiesSEvaluator::evaluateIntegerIdentifier(PKB* pkb, ClauseVariable le
 }
 
 Table* ModifiesSEvaluator::evaluateIntegerSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
-    unordered_set<string> setOfVariables = pkb->getModifiesByStmt(left->getLabel());
+    unordered_set<string> setOfVariables = pkb->getModifiesByStmt(left.getLabel());
 
-    string column = right->getLabel();
+    string column = right.getLabel();
     Header header = Header({column});
     Table* result = new PQLTable(header);
 
@@ -57,7 +57,7 @@ Table* ModifiesSEvaluator::evaluateIntegerSynonym(PKB* pkb, ClauseVariable left,
 }
 
 Table* ModifiesSEvaluator::evaluateIntegerWildCard(PKB* pkb, ClauseVariable left) {
-    unordered_set<string> setOfVariables = pkb->getModifiesByStmt(left->getLabel());
+    unordered_set<string> setOfVariables = pkb->getModifiesByStmt(left.getLabel());
 
     if (setOfVariables.empty()) {
         return new FalseTable();
@@ -67,9 +67,9 @@ Table* ModifiesSEvaluator::evaluateIntegerWildCard(PKB* pkb, ClauseVariable left
 }
 
 Table* ModifiesSEvaluator::evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
-    unordered_set<string> setOfStatements =  pkb->getModifiesSByVar(right->getLabel());
+    unordered_set<string> setOfStatements =  pkb->getModifiesSByVar(right.getLabel());
 
-    string column = left->getLabel();
+    string column = left.getLabel();
     Header header = Header({column});
     Table* result = new PQLTable(header);
 
@@ -84,8 +84,8 @@ Table* ModifiesSEvaluator::evaluateSynonymIdentifier(PKB* pkb, ClauseVariable le
 Table* ModifiesSEvaluator::evaluateSynonymSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
     vector<pair<string, string>> listOfStatementToVariable =  pkb->getAllModifiesS();
 
-    string firstColumn = left->getLabel();
-    string secondColumn = right->getLabel();
+    string firstColumn = left.getLabel();
+    string secondColumn = right.getLabel();
     Header header = Header({firstColumn, secondColumn});
     Table* result = new PQLTable(header);
 
@@ -100,16 +100,16 @@ Table* ModifiesSEvaluator::evaluateSynonymSynonym(PKB* pkb, ClauseVariable left,
 }
 
 Table* ModifiesSEvaluator::evaluateSynonymWildCard(PKB* pkb, ClauseVariable left) {
-    unordered_set<string> setOfStatements = pkb->getAllStmtsModifyingSomeVar();
+//    unordered_set<string> setOfStatements = pkb->getAllStmtsModifyingSomeVar();
 
-    string column = left->getLabel();
+    string column = left.getLabel();
     Header header = Header({column});
     Table* result = new PQLTable(header);
 
-    for (auto& statement : setOfStatements) {
-        Row* row = new Row(column, statement);
-        result->addRow(row);
-    }
+//    for (auto& statement : setOfStatements) {
+//        Row* row = new Row(column, statement);
+//        result->addRow(row);
+//    }
 
     return result;
 }

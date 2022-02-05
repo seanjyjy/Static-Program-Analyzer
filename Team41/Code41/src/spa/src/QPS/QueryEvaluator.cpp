@@ -14,7 +14,7 @@ std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
         return emptyResult;
     }
 
-    for (const auto& clause : queryObject->clauses) {
+    for (auto& clause : queryObject->clauses) {
         // Ignore warning for now
         Table* intermediateTable = this->evaluate(clause); // false table is return it should be empty?
 
@@ -39,27 +39,28 @@ std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     return result;
 }
 
-Table *QueryEvaluator::evaluate(string clause) {
-    if (clause == "FOLLOWS") {
-        return nullptr;
-    } else if (clause == "FOLLOWS_T") {
-        return nullptr;
-    } else if (clause == "PARENT") {
-        return nullptr;
-    } else if (clause == "PARENT_T") {
-        return nullptr;
-    } else if (clause == "USES_S") {
-        return UsesSEvaluator::evaluate(clause, this->pkb);
-    } else if (clause == "USES_P") {
-        return UsesPEvaluator::evaluate(clause, this->pkb);
-    } else if (clause == "MODIFIES_S") {
-        return nullptr;
-    } else if (clause == "MODIFIES_P") {
-        return nullptr;
-    } else if (clause == "PATTERN") {
-        return nullptr;
-    } else {
-        throw std::runtime_error("unknown clause of type " + clause);
+Table *QueryEvaluator::evaluate(QueryClause& clause) {
+    switch(clause.type) {
+        case QueryClause::clause_type::follows:
+            return nullptr;
+        case QueryClause::clause_type::followsT:
+            return nullptr;
+        case QueryClause::clause_type::parent:
+            return nullptr;
+        case QueryClause::clause_type::parentT:
+            return nullptr;
+        case QueryClause::clause_type::usesS:
+            return UsesSEvaluator::evaluate(clause, this->pkb);
+        case QueryClause::clause_type::usesP:
+            return UsesPEvaluator::evaluate(clause, this->pkb);
+        case QueryClause::clause_type::modifiesS:
+            return ModifiesSEvaluator::evaluate(clause, this->pkb);
+        case QueryClause::clause_type::modifiesP:
+            return ModifiesPEvaluator::evaluate(clause, this->pkb);
+        case QueryClause::clause_type::pattern:
+            return nullptr;
+        default:
+            throw std::runtime_error("unknown clause of type " + to_string(clause.type));
     }
 }
 
