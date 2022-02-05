@@ -5,15 +5,18 @@
 using namespace std;
 
 class ClauseVariable {
-public:
-    enum variableType {
-        identifier, wildcard, synonym
+private:
+    enum variable_type {
+        identifier, wildcard, synonym, integer
     };
-    variableType type;
     string &label;
-
+    variable_type type;
+public:
+    variable_type getType();
+    string &getLabel();
     bool isIdentifier();
     bool isWildCard();
     bool isSynonym();
-    ClauseVariable(variableType type, string &label);
+    bool isInteger();
+    ClauseVariable(variable_type type, string &label);
 };

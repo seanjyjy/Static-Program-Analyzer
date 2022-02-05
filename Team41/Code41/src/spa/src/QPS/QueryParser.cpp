@@ -16,7 +16,7 @@ string &QueryParser::readType() {
     index++; // Skip over space.
 
     // If we stumble upon the "Select" keyword, no more declarations.
-    declarationEndFound = type.compare("Select") == 0;
+    declarationEndFound = type == "Select";
 
     return type;
 }
@@ -48,7 +48,7 @@ int QueryParser::skipToNearestChar() {
 bool QueryParser::skipSuchThat() {
     int st_length = 9;
     string s = input.substr(index, st_length);
-    if (s.compare("such that") == 0) {
+    if (s == "such that") {
         index += st_length;
     }
 }

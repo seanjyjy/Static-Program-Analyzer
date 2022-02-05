@@ -7,7 +7,7 @@ using namespace std;
 class QueryDeclaration {
 public:
     enum design_entity_type {
-        stmt, read, print, call, _while, _if, assign, variable, constant, procedure
+        STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN, VARIABLE, CONSTANT, PROCEDURE
     };
     design_entity_type type;
     string synonym;
