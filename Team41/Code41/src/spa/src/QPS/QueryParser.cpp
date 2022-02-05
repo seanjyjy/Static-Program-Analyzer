@@ -86,6 +86,41 @@ bool QueryParser::parseSelectSynonym() {
     // todo: populate the QueryObject's select synonym. As a QueryDeclaration?
 }
 
+bool QueryParser::parseClause() {
+    string clause, var1, var2 = "";
+    do {
+        currChar = input.at(index);
+        clause.push_back(currChar);
+        index++;
+    } while (input.at(index) != '(');
+
+    // todo: handle malformed inputs. What if no '(' even show up.
+    index++; // go over '('
+    do {
+        currChar = input.at(index);
+        var1.push_back(currChar);
+        index++;
+    } while (input.at(index) != ',');
+    index++; // go over ','
+    skipToNearestChar();
+    do {
+        currChar = input.at(index);
+        var2.push_back(currChar);
+        index++;
+    } while (input.at(index) != ')');
+    index++; // go over ')'
+
+    printf("<%s> <%s> <%s>\n", clause.c_str(), var1.c_str(), var2.c_str());
+
+    // todo: populate the QueryObject's Clause Object
+
+    return true;
+}
+
+bool QueryParser::parsePatternClause() {
+    return true;
+}
+
 QueryParser::QueryParser(string &input) : input(input) {}
 
 QueryObject *QueryParser::parse() {
@@ -99,13 +134,13 @@ QueryObject *QueryParser::parse() {
     // todo: Note that queries can end here. Check if ended
 
     skipSuchThat();
+    skipToNearestChar();
+    parseClause();
 
+    // todo: Note that queries can end here. Check if ended
 
-    // string &post_declarations = parseDeclarations(input, out);
-
-
-
-    // Select clause
+    parsePatternClause();
 }
 
-// todo: There's is some repeated code patterns here and there. Try to optimize later.
+// todo: There's some repeated code patterns here and there. Try to optimize later.
+// todo: implementation is not proofed against malformed inputs yet.

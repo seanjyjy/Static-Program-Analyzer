@@ -12,5 +12,5 @@ public:
     design_entity_type type;
     string synonym;
 
-    QueryDeclaration(design_entity_type type, string synonym);
+    QueryDeclaration(design_entity_type type, string &synonym);
 };

@@ -13,7 +13,7 @@ std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     }
 
     for (const auto& clause : queryObject->clauses) {
-        Evaluator* evaluator = getEvaluator(clause.left.synonym);
+        Evaluator* evaluator = getEvaluator(clause.left.label);
         PQLTable* intermediateTable = evaluator->evaluate();
 
         if (intermediateTable->isEmpty()) {

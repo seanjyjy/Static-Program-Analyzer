@@ -25,6 +25,8 @@ private:
     bool skipSuchThat();
     bool parseDeclarations();
     bool parseSelectSynonym();
+    bool parseClause();
+    bool parsePatternClause();
 public:
     QueryParser(string &input);
     QueryObject *parse();
