@@ -13,7 +13,7 @@ std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     }
 
     for (const auto& clause : queryObject->clauses) {
-        Evaluator* evaluator = getEvaluator(clause);
+        Evaluator* evaluator = getEvaluator(clause.getLeftClauseVariable().label); // todo: change placeholder param
         PQLTable* intermediateTable = evaluator->evaluate();
 
         if (intermediateTable->isEmpty()) {
