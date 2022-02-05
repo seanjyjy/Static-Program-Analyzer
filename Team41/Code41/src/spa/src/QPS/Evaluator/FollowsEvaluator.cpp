@@ -1,6 +1,6 @@
 #include "Evaluator.h"
 
-Table* Evaluator::evaluate(string clause, PKB *pkb) {
+Table* Evaluator::evaluate(QueryClause clause, PKB *pkb) {
 //    PQLTable* table = new PQLTable();
     Table* table = nullptr;
     return table;

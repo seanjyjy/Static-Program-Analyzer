@@ -5,12 +5,12 @@
 // TODO: to change when i know what is the clause type
 class ModifiesSEvaluator {
 private:
-    static Table* evaluateModifiesIntegerIdentifier(PKB* pkb);
-    static Table* evaluateModifiesIntegerSynonym(PKB* pkb);
-    static Table* evaluateModifiesIntegerWildCard(PKB* pkb);
-    static Table* evaluateModifiesSynonymIdentifier(PKB* pkb);
-    static Table* evaluateModifiesSynonymSynonym(PKB* pkb);
-    static Table* evaluateModifiesSynonymWildCard(PKB* pkb);
+    static Table* evaluateIntegerIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateIntegerSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateIntegerWildCard(PKB* pkb, ClauseVariable left);
+    static Table* evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateSynonymSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateSynonymWildCard(PKB* pkb, ClauseVariable left);
 public:
-    static Table* evaluate(string clause, PKB *pkb);
+    static Table* evaluate(QueryClause clause, PKB *pkb);
 };
