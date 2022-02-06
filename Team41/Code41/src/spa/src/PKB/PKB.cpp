@@ -78,6 +78,8 @@ unordered_set<string> PKB::getConstants() { return entityTable->getConstants(); 
 
 unordered_set<string> PKB::getProcedures() { return entityTable->getProcedures(); }
 
+unordered_set<string> PKB::getStatements() { return stmtTable->getAllStmts(); }
+
 void PKB::registerVariable(string varName) { return entityTable->addVariable(move(varName)); }
 
 void PKB::registerConstant(string constVal) { return entityTable->addConstant(move(constVal)); }
