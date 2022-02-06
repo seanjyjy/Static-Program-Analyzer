@@ -26,6 +26,8 @@ private:
 
     bool isEof();
 
+    string addPosPrefix(const string &s);
+
     void eatWhitespace();
 
     Token eatN(TokenType type, int n);
