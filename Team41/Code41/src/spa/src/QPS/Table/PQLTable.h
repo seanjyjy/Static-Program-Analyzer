@@ -18,7 +18,7 @@ private:
     // merge current table with intermediate pql table to produce a new table
     void mergeTable(Table* leftTable, Table* rightTable, Table* newTable, const Header& commonHeader);
     // Sort the table based on common header
-    void sort(const Header& commonHeader);
+    void sort(const Header& commonHeader) override;
     // Determine row equality based on common header
     bool isEqual(const Row* rowA, const Row* rowB, const Header& commonHeader);
     const Row* combineRow(const Row* rowA, const Row* rowB) const;

@@ -11,6 +11,5 @@ using namespace std;
 
 class Evaluator {
 public:
-    // string to be changed once a clause side is created
     virtual Table* evaluate(QueryClause clause, PKB *pkb) = 0;
 };

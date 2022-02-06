@@ -16,5 +16,5 @@ public:
     size_t size() override;
     virtual unordered_set<string> getColumn(string columnName) override;
     static Table* getTable();
-    void sort(const Header& commonHeader);
+    void sort(const Header& commonHeader) override;
 };

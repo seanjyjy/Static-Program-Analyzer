@@ -2,7 +2,6 @@
 
 #include "Evaluator.h"
 
-// TODO: to change when i know what is the clause type
 class ModifiesSEvaluator {
 private:
     static Table* evaluateIntegerIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right);
