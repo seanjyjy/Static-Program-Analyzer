@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_set>
+#include "Common/TNode.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ class ModifiesTable;
 class FollowsTable;
 class CallsTable;
 class ParentTable;
+class PatternTable;
 
 class PKB {
 public:
@@ -25,6 +27,7 @@ public:
     ModifiesTable *modifiesTable;
     FollowsTable *followsTable;
     ParentTable *parentTable;
+    PatternTable *patternTable;
 
     //======================================== Statement ==================================================
 
@@ -186,4 +189,23 @@ public:
     unordered_set<string> getModifiesByProc(string procName);// Gets list of variables that is modified by procedure
     vector<pair<string, string>> getAllModifiesP();// Gets list of proc-var pair where stmt modifies var
     unordered_set<string> getAllProcsModifyingSomeVar();// Gets list of proc where proc modifies some var
+
+    //=========================================== Pattern ===================================================
+
+    /**
+     * Registers to PKB that the specified assignment stmt has the following pattern
+     *
+     * @param stmtNum assign statement
+     * @param assignAST
+     */
+    void registerPattern(string stmtNum, string lhsVariable, TNode *rhsAssignAST);
+
+    unordered_set<string> getAllStmtsFromFullPattern(TNode *patternAST);// Gets list of assignStmt from pattern
+    unordered_set<string> getStmtFromFullPatternNVar(TNode *patternAST, string varName);// Gets list of assignStmt from pattern and varName
+    vector<pair<string, string>> getStmtNVarFromFullPattern(TNode *patternAST);// Gets list of assignStmt-varName from pattern
+
+    unordered_set<string> getAllStmtsFromSubPattern(TNode *subPatternAST);// Gets list of assignStmt from subpattern
+    unordered_set<string> getStmtFromSubPatternNVar(TNode *subPatternAST, string varName);// Gets list of assignStmt from subpattern and varName
+    vector<pair<string, string>> getStmtNVarFromSubPattern(TNode *subPatternAST);// Gets list of assignStmt-varName from subpattern
+
 };

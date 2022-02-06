@@ -1,4 +1,5 @@
 #include "TreeUtils.h"
+#include <algorithm>
 
 bool TreeUtils::isEqual(TNode *n1, TNode *n2) {
     // base case: if children are different sizes, not equal
@@ -15,4 +16,35 @@ bool TreeUtils::isEqual(TNode *n1, TNode *n2) {
         isEq = isEq && isEqual(n1->getChildren()[i], n2->getChildren()[i]);
     }
     return isEq;
+}
+
+string TreeUtils::serialize(TNode *root) {
+    string ret;
+    ret += root->toString();
+    vector<TNode *> ch = root->getChildren();
+    if (root->getType() == TNodeType::assignStmt) {
+        ret += "[" + serialize(ch[0]) + "]";
+        ret += "[" + serializeWithSort(ch[1]) + "]";
+    } else {
+        for (TNode *child: ch) {
+            ret += "[" + serialize(child) + "]";
+        }
+    }
+    return ret;
+}
+
+string TreeUtils::serializeWithSort(TNode *root) {
+    string ret;
+    ret += root->toString();
+    vector<TNode *> ch = root->getChildren();
+    vector<string> serializedCh;
+    for (TNode *child: ch) {
+        serializedCh.push_back("[" + serializeWithSort(child) + "]");
+    }
+    sort( serializedCh.begin(), serializedCh.end(), less<string>());
+
+    for (string child: serializedCh) {
+        ret += child;
+    }
+    return ret;
 }
