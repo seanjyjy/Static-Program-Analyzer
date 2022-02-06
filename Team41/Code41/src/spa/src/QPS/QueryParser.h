@@ -5,28 +5,30 @@
 #include "QueryObject.h"
 #include "QueryDeclaration.h"
 #include "QueryEvaluator.h"
+#include "QueryLexer.h"
 
 using namespace std;
 
 class QueryParser {
 private:
     const string &input;
-    const unordered_set<string> declaration_keywords =
-            {"stmt", "read", "print", "call", "while",
-             "if", "assign", "variable", "constant", "procedure"};
-    int index = 0;
-    char currChar;
-    bool declarationEndFound = false;
     QueryObject *queryObject;
+    QueryLexer *lex;
 
     string &readType();
     string &readSynonym();
     int skipToNearestChar();
     bool skipSuchThat();
+    bool isQueryClauseValid(string type, string left, string right);
+    QueryClause::clause_type determineClauseType(string type, string left, string right);
+    ClauseVariable::variable_type determineVariableType(string w);
     bool parseDeclarations();
     bool parseSelectSynonym();
     bool parseClause();
     bool parsePatternClause();
+    bool isDeclared(string synonym);
+    bool isDeclaredProcedure(string synonym);
+    optional<QueryDeclaration> findMatchingDeclaration(string synonym);
 public:
     QueryParser(string &input);
     QueryObject *parse();

@@ -13,4 +13,5 @@ public:
     string synonym;
 
     QueryDeclaration(design_entity_type type, string &synonym);
+    static design_entity_type stringToType(string &s);
 };
