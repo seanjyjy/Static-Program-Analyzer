@@ -26,6 +26,8 @@ private:
 
     bool isEof();
 
+    string withPosition(const string &s);
+
     void eatWhitespace();
 
     Token eatN(TokenType type, int n);

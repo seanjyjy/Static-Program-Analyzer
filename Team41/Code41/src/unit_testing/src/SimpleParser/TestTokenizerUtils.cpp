@@ -20,3 +20,8 @@ void TestTokenizerUtils::tokenizeAndCompare(string s, vector<pair<TokenType, str
         REQUIRE(expectedVal == gotVal);
     }
 }
+
+void TestTokenizerUtils::tokenize(string s) {
+    Tokenizer tokenizer(move(s));
+    Tokens tokens = tokenizer.tokenize();
+}

@@ -447,13 +447,14 @@ TEST_CASE("Tokenizer: integer") {
         TestTokenizerUtils::tokenizeAndCompare(s, expected);
     }
 
-    SECTION("leading zeroes") {
+    SECTION("all zeroes") {
         string s = "0000000000000000000";
-        vector<pair<TokenType, string>> expected = {
-                {TokenType::integer, "0000000000000000000"},
-                {TokenType::eof, ""},
-        };
-        TestTokenizerUtils::tokenizeAndCompare(s, expected);
+        REQUIRE_THROWS(TestTokenizerUtils::tokenize(s));
+    }
+
+    SECTION("leading zeroes") {
+        string s = "0000000000000000000999";
+        REQUIRE_THROWS(TestTokenizerUtils::tokenize(s));
     }
 }
 
