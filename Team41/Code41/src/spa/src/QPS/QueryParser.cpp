@@ -90,7 +90,7 @@ bool QueryParser::isQueryClauseValid(string type, string left, string right) {
     ModifiesP : 'Modifies' '(' entRef ',' entRef ')'
      */
 
-    if (type == "Follows" || type == "Follows" ||
+    if (type == "Follows" || type == "Follows*" ||
         type == "Parent" || type == "Parent*" ) {
         return lex->isStmtRef(left) && lex->isStmtRef(right);
     }

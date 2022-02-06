@@ -56,7 +56,6 @@ bool QueryLexer::isValidSynonym(string w) {
      IDENT : LETTER ( LETTER | DIGIT )*
      synonym : IDENT
      */
-    isalpha(w.at(0));
     for (int i = 0; i < w.length(); i++) {
         char c = w.at(i);
         if (i == 0) { // first char must be LETTER
@@ -192,11 +191,7 @@ bool QueryLexer::peekNextIsString(string w) {
     }
 
     while (!isSpecialChar(curr)) {
-        if (isSpecialChar(curr)) {
-            break;
-        } else {
-            out.push_back(curr);
-        }
+        out.push_back(curr);
         index++;
         curr = input.at(index);
     }
