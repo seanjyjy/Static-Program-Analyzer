@@ -26,7 +26,7 @@ private:
 
     bool isEof();
 
-    string addPosPrefix(const string &s);
+    string withPosition(const string &s);
 
     void eatWhitespace();
 

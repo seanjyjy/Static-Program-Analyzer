@@ -45,7 +45,7 @@ bool Tokenizer::isEof() {
     return currToken == '\0';
 }
 
-string Tokenizer::addPosPrefix(const string &s) {
+string Tokenizer::withPosition(const string &s) {
     string prefix = "row " + to_string(row) + ", col " + to_string(col) + ": ";
     return prefix + s;
 }
@@ -187,7 +187,7 @@ Token Tokenizer::eatInteger() {
     pair<int, int> start = {row, col};
 
     // integers with leading zeroes are not allowed
-    if (currToken == '0') throw runtime_error(addPosPrefix("integers must not have leading zeroes"));
+    if (currToken == '0') throw runtime_error(withPosition("integers must not have leading zeroes"));
 
     string val;
     while (isdigit(currToken)) {
@@ -256,7 +256,7 @@ Tokens Tokenizer::tokenize() {
         } else if (isdigit(currToken)) {
             tok = eatInteger();
         } else {
-            throw runtime_error(addPosPrefix("unknown token " + string(1, currToken)));
+            throw runtime_error(withPosition("unknown token " + string(1, currToken)));
         }
 
         tokens.add(tok);
