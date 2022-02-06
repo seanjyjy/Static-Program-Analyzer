@@ -341,19 +341,74 @@ TEST_CASE("Tokenizer: while statement") {
 
 TEST_CASE("Tokenizer: if statement") {
     SECTION("correct") {
-        // TODO
+        string s = "if (1==1) then { print x; } else { print y; }";
+        vector<pair<TokenType, string>> expected = {
+                {TokenType::name, "if"},
+                {TokenType::openingBracket, "("},
+                {TokenType::integer, "1"},
+                {TokenType::eq, "=="},
+                {TokenType::integer, "1"},
+                {TokenType::closingBracket, ")"},
+                {TokenType::openingBrace, "{"},
+                {TokenType::name, "print"},
+                {TokenType::name, "x"},
+                {TokenType::semicolon, ";"},
+                {TokenType::closingBrace, "}"},
+                {TokenType::name, "else"},
+                {TokenType::openingBrace, "{"},
+                {TokenType::name, "print"},
+                {TokenType::name, "y"},
+                {TokenType::semicolon, ";"},
+                {TokenType::eof, ""},
+        };
+        TestTokenizerUtils::tokenizeAndCompare(s, expected);
     }
 }
 
 TEST_CASE("Tokenizer: assign statement") {
     SECTION("correct") {
-        // TODO
+        string s = "variable = 1234;";
+        vector<pair<TokenType, string>> expected = {
+                {TokenType::name, "variable"},
+                {TokenType::assign, "="},
+                {TokenType::integer, "1234"},
+                {TokenType::semicolon, ";"},
+                {TokenType::eof, ""},
+        };
+        TestTokenizerUtils::tokenizeAndCompare(s, expected);
     }
 }
 
 TEST_CASE("Tokenizer: conditional expression") {
     SECTION("correct") {
-        // TODO
+        string s = "!(a==b) (cc==dd) && (1==1) || (1==1)";
+        vector<pair<TokenType, string>> expected = {
+                {TokenType::notOp, "!"},
+                {TokenType::openingBracket, "("},
+                {TokenType::name, "a"},
+                {TokenType::eq, "=="},
+                {TokenType::name, "b"},
+                {TokenType::closingBracket, ")"},
+                {TokenType::openingBracket, "("},
+                {TokenType::name, "cc"},
+                {TokenType::eq, "=="},
+                {TokenType::name, "dd"},
+                {TokenType::closingBracket, ")"},
+                {TokenType::andOp, "&&"},
+                {TokenType::openingBracket, "("},
+                {TokenType::integer, "1"},
+                {TokenType::eq, "=="},
+                {TokenType::integer, "1"},
+                {TokenType::closingBracket, ")"},
+                {TokenType::orOp, "&&"},
+                {TokenType::openingBracket, "("},
+                {TokenType::integer, "1"},
+                {TokenType::eq, "=="},
+                {TokenType::integer, "1"},
+                {TokenType::closingBracket, ")"},
+                {TokenType::eof, ""},
+        };
+        TestTokenizerUtils::tokenizeAndCompare(s, expected);
     }
 }
 
@@ -474,5 +529,12 @@ TEST_CASE("Tokenizer: whitespace") {
                 {TokenType::eof, ""},
         };
         TestTokenizerUtils::tokenizeAndCompare(s, expected);
+    }
+}
+
+TEST_CASE("Tokenizer: unknown input") {
+    SECTION("first") {
+        string s = "[ ] : ' \\ / < > @ # $ % ^ & ~";
+        REQUIRE_THROWS(TestTokenizerUtils::tokenize(s));
     }
 }
