@@ -15,9 +15,6 @@ private:
     QueryObject *queryObject;
     QueryLexer *lex;
 
-    string &readType();
-    string &readSynonym();
-    int skipToNearestChar();
     bool skipSuchThat();
     bool isQueryClauseValid(string type, string left, string right);
     QueryClause::clause_type determineClauseType(string type, string left, string right);

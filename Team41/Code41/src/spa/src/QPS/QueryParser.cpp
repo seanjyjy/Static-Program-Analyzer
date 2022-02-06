@@ -252,4 +252,3 @@ QueryObject *QueryParser::parse() {
 
     //parsePatternClause();
 }
-
