@@ -21,20 +21,23 @@ env:
 jobs:
   build:
     runs-on: windows-latest
-    timeout-minutes: 3
+    timeout-minutes: 5
     strategy:
       fail-fast: true
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          architecture: 'x64'
       - name: Build Project
         shell: bash
         run: |
-          cd Team00/Code00
+          cd Team41/Code41
           mkdir build
           cd build
-          cmake -A Win32 ..
+          cmake -A x64 ..
           cmake --build . --target unit_testing --config Release
           cmake --build . --target integration_testing --config Release
           cmake --build . --target autotester --config Release
+          ctest -C Release
           cd ../..
