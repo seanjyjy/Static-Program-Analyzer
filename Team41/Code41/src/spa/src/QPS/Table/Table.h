@@ -21,6 +21,7 @@ public:
     virtual bool hasRow(const Row* row) = 0;
     virtual size_t size() = 0;
     virtual unordered_set<string> getColumn(string columnName) = 0;
+    virtual void sort(const Header& commonHeader) = 0;
 
     friend class TrueTable;
     friend class FalseTable;

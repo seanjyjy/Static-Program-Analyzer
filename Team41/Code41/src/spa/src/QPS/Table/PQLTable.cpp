@@ -23,8 +23,8 @@ Table* PQLTable::mergeJoin(Table* intermediatePQLTable) {
     Table* newTable = new PQLTable(combinedHeader);
 
     // Sort Tables
-    sort(this, commonHeader);
-    sort(intermediatePQLTable, commonHeader);
+    this->sort(commonHeader);
+    intermediatePQLTable->sort(commonHeader);
 
     // Merge Tables
     mergeTable(this, intermediatePQLTable, newTable, commonHeader);
@@ -43,10 +43,10 @@ void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, 
     auto leftTableEnd = leftTableRow.end();
     auto rightTableIndex = rightTableRow.begin();
     auto rightTableEnd = rightTableRow.end();
-    printf("===Starting AT LEFT=== %s\n", (*leftTableIndex)->getValueAtColumn("v").c_str());
+
     while (leftTableIndex != leftTableEnd && rightTableIndex != rightTableEnd) {
         int result = compareRow(*leftTableIndex, *rightTableIndex, commonHeader);
-        printf("result: %d\n", result);
+
         if (result == -1) {
             leftTableIndex++;
             continue;
@@ -107,18 +107,13 @@ const Row* PQLTable::combineRow(const Row* rowA, const Row* rowB) const {
     return row;
 }
 
-void PQLTable::sort(Table* table, const Header& commonHeader) {
-    auto tableRows = table->getRows();
-
-    std::sort(tableRows.begin(), tableRows.end(), [commonHeader](const Row* left, const Row* right){
+void PQLTable::sort(const Header& commonHeader) {
+    std::sort(this->rows.begin(), this->rows.end(), [commonHeader](const Row* left, const Row* right){
         for (auto const& headerField : commonHeader) {
             return left->getValueAtColumn(headerField) <= right->getValueAtColumn(headerField);
         }
         return true;
     });
-    auto temp = tableRows.begin();
-    auto temp2 = *temp;
-    printf("tableRow.begin(): %s\n", temp2->getValueAtColumn("v").c_str());
 }
 
 Header PQLTable::getCommonHeader(Table *leftTable, Table *rightTable) {
@@ -156,10 +151,6 @@ int PQLTable::compareRow(const Row* leftRowPtr, const Row* rightRowPtr, const He
     auto rightRow = rightRowPtr->getRow();
 
     for (auto const& headerField : commonHeader) {
-        printf("common header field: %s\n", headerField.c_str());
-        printf("leftValue: %s\n", leftRow.at(headerField).c_str());
-        printf("rightValue: %s\n", rightRow.at(headerField).c_str());
-
         if (leftRow.at(headerField) < rightRow.at(headerField)) {
             return -1;
         }

@@ -10,7 +10,6 @@ Table* SelectSynonymEvaluator::evaluate(const QueryDeclaration& selectSynonym, P
 
     for (auto& result : setOfResult) {
         Row* row = new Row(synonym, result);
-        printf("adding result: %s\n", result.c_str());
         resultTable->addRow(row);
     }
 

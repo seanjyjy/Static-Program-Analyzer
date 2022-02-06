@@ -41,3 +41,5 @@ Table* TrueTable::getTable() {
     }
     return TrueTable::trueTable;
 }
+
+void TrueTable::sort(const Header &commonHeader) {}

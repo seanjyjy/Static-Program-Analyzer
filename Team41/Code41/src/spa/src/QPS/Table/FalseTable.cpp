@@ -41,3 +41,5 @@ Table* FalseTable::getTable() {
     }
     return FalseTable::falseTable;
 }
+
+void FalseTable::sort(const Header &commonHeader) {}
