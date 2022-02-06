@@ -97,6 +97,25 @@ TEST_CASE("Tokenizer: all") {
     TestTokenizerUtils::tokenizeAndCompare(s, expected);
 }
 
+TEST_CASE("Tokenizer: procedures") {
+    SECTION("keyword as procedure") {
+        string s = "procedure procedure {"
+                   "print x;"
+                   "}";
+        vector<pair<TokenType, string>> expected = {
+                {TokenType::name, "procedure"},
+                {TokenType::name, "procedure"},
+                {TokenType::openingBrace, "{"},
+                {TokenType::name, "print"},
+                {TokenType::name, "x"},
+                {TokenType::semicolon, ";"},
+                {TokenType::closingBrace, "}"},
+                {TokenType::eof, ""},
+        };
+        TestTokenizerUtils::tokenizeAndCompare(s, expected);
+    }
+}
+
 TEST_CASE("Tokenizer: read statement") {
     SECTION("correct") {
         string s = "read thisisavariable;";
@@ -322,19 +341,19 @@ TEST_CASE("Tokenizer: while statement") {
 
 TEST_CASE("Tokenizer: if statement") {
     SECTION("correct") {
-
+        // TODO
     }
 }
 
 TEST_CASE("Tokenizer: assign statement") {
     SECTION("correct") {
-
+        // TODO
     }
 }
 
 TEST_CASE("Tokenizer: conditional expression") {
     SECTION("correct") {
-
+        // TODO
     }
 }
 
