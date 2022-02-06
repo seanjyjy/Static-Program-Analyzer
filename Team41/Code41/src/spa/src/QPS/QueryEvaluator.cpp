@@ -4,29 +4,36 @@
 
 QueryEvaluator::QueryEvaluator(PKB *pkb) { this->pkb = pkb; }
 
-std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
-    std::set<std::string> result;
-    std::set<std::string> emptyResult;
-
-    Table* resultTable = nullptr;
+std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
+    std::unordered_set<std::string> emptyResult;
 
     if (!queryObject->isQueryValid) {
         return emptyResult;
     }
 
+    auto selectSynonym = queryObject->selectSynonym;
+    Table *resultTable = SelectSynonymEvaluator::evaluate(selectSynonym, this->pkb);
+
+    if (resultTable->isEmpty()) {
+        return emptyResult;
+    }
+
     for (auto& clause : queryObject->clauses) {
-        // Ignore warning for now
-        Table* intermediateTable = this->evaluate(clause); // false table is return it should be empty?
+        try {
+            Table* intermediateTable = this->evaluate(clause);
 
-        if (intermediateTable->isEmpty()) {
-            return emptyResult;
+            if (intermediateTable->isEmpty()) {
+                return emptyResult;
+            }
+
+            Table* temp = resultTable;
+            resultTable = resultTable->mergeJoin(intermediateTable);
+            // TODO figure out destructor
+            delete temp;
+
+        } catch (const runtime_error& error) {
+            resultTable = FalseTable::getTable();
         }
-
-        // The original table is not mutated but rather a new table is created
-        Table* temp = resultTable;
-        resultTable = resultTable->mergeJoin(intermediateTable);
-        // TODO figuure out destructor
-        delete temp;
 
         if (resultTable->isEmpty()) {
             return emptyResult;
@@ -34,7 +41,8 @@ std::set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     }
 
     // copy result from resultTable to result here when can think of based on queryObject schema
-    // auto rows = resultTable->getRows();
+     unordered_set<string> result = resultTable->getColumn(selectSynonym.synonym);
+     delete resultTable;
 
     return result;
 }

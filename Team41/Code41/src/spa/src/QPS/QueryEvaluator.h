@@ -1,6 +1,6 @@
 #pragma once
 
-#include <set>
+#include <unordered_set>
 #include <string>
 #include <vector>
 
@@ -10,6 +10,7 @@
 #include "QPS/Evaluator/UsesPEvaluator.h"
 #include "QPS/Evaluator/ModifiesSEvaluator.h"
 #include "QPS/Evaluator/ModifiesPEvaluator.h"
+#include "QPS/Evaluator/SelectSynonymEvaluator.h"
 #include "QueryObject.h"
 #include "QueryClause.h"
 
@@ -18,6 +19,6 @@ private:
     PKB* pkb;
 public:
     explicit QueryEvaluator(PKB* pkb);
-    std::set<std::string> evaluateQuery(QueryObject *queryObject);
+    std::unordered_set<std::string> evaluateQuery(QueryObject *queryObject);
     Table* evaluate(QueryClause& clause);
 };

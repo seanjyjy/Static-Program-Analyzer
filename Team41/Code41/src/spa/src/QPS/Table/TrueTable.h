@@ -5,6 +5,8 @@
 class TrueTable : public Table {
 public:
     TrueTable();
+    static Table *trueTable;
+
     bool isEmpty() override;
     Table* mergeJoin(Table* intermediatePQLTable) override;
     vector<const Row *> getRows() override;
@@ -12,4 +14,6 @@ public:
     Header getHeader() const override;
     bool hasRow(const Row* row) override;
     size_t size() override;
+    virtual unordered_set<string> getColumn(string columnName) override;
+    static Table* getTable();
 };

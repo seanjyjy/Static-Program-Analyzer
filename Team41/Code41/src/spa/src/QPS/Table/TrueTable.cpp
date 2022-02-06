@@ -1,6 +1,7 @@
 #include "TrueTable.h"
 
 TrueTable::TrueTable() = default;
+Table* TrueTable::trueTable = nullptr;
 
 bool TrueTable::isEmpty() {
     return false;
@@ -28,4 +29,15 @@ bool TrueTable::hasRow(const Row* row) {
 
 size_t TrueTable::size() {
     return 0;
+}
+
+unordered_set<string> TrueTable::getColumn(string columnName) {
+    return unordered_set<string>();
+}
+
+Table* TrueTable::getTable() {
+    if (TrueTable::trueTable == nullptr) {
+        TrueTable::trueTable = new TrueTable();
+    }
+    return TrueTable::trueTable;
 }

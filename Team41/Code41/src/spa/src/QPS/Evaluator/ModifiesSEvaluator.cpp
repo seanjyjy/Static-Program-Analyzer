@@ -28,17 +28,17 @@ Table* ModifiesSEvaluator::evaluate(QueryClause clause, PKB *pkb) {
         return evaluateSynonymWildCard(pkb, leftVariable);
     }
 
-    return new FalseTable();
+    return FalseTable::getTable();
 }
 
 Table* ModifiesSEvaluator::evaluateIntegerIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
     bool isUsesS = pkb->isModifiesS(left.getLabel(), right.getLabel());
 
     if (isUsesS) {
-        return new TrueTable();
+        return TrueTable::getTable();
     }
 
-    return new FalseTable();
+    return FalseTable::getTable();
 }
 
 Table* ModifiesSEvaluator::evaluateIntegerSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
@@ -60,10 +60,10 @@ Table* ModifiesSEvaluator::evaluateIntegerWildCard(PKB* pkb, ClauseVariable left
     unordered_set<string> setOfVariables = pkb->getModifiesByStmt(left.getLabel());
 
     if (setOfVariables.empty()) {
-        return new FalseTable();
+        return FalseTable::getTable();
     }
 
-    return new TrueTable();
+    return TrueTable::getTable();
 }
 
 Table* ModifiesSEvaluator::evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
@@ -100,16 +100,16 @@ Table* ModifiesSEvaluator::evaluateSynonymSynonym(PKB* pkb, ClauseVariable left,
 }
 
 Table* ModifiesSEvaluator::evaluateSynonymWildCard(PKB* pkb, ClauseVariable left) {
-//    unordered_set<string> setOfStatements = pkb->getAllStmtsModifyingSomeVar();
+    unordered_set<string> setOfStatements = pkb->getAllStmtsModifyingSomeVar();
 
     string column = left.getLabel();
     Header header = Header({column});
     Table* result = new PQLTable(header);
 
-//    for (auto& statement : setOfStatements) {
-//        Row* row = new Row(column, statement);
-//        result->addRow(row);
-//    }
+    for (auto& statement : setOfStatements) {
+        Row* row = new Row(column, statement);
+        result->addRow(row);
+    }
 
     return result;
 }

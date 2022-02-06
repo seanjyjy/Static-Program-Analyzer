@@ -4,8 +4,8 @@
 #include "QPS/Table/TrueTable.h"
 #include "QPS/Table/PQLTable.h"
 #include "PKB/PKB.h"
-#include "QPS/ClauseVariable.h" // this is from hardy
-#include "QPS/QueryClause.h" // this is from hardy
+#include "QPS/ClauseVariable.h"
+#include "QPS/QueryClause.h"
 
 using namespace std;
 

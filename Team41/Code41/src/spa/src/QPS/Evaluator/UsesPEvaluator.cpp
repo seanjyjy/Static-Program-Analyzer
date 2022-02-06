@@ -28,17 +28,17 @@ Table* UsesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
         return evaluateSynonymWildCard(pkb, leftVariable);
     }
 
-    return new FalseTable();
+    return FalseTable::getTable();
 }
 
 Table* UsesPEvaluator::evaluateIdentifierIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
     bool isUsesP = pkb->isUsesP(left.getLabel(), right.getLabel());
 
     if (isUsesP) {
-        return new TrueTable();
+        return TrueTable::getTable();
     }
 
-    return new FalseTable();
+    return FalseTable::getTable();
 }
 
 Table* UsesPEvaluator::evaluateIdentifierSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
@@ -60,10 +60,10 @@ Table* UsesPEvaluator::evaluateIdentifierWildCard(PKB* pkb, ClauseVariable left)
     unordered_set<string> setOfVariables = pkb->getUsesByProc(left.getLabel());
 
     if (setOfVariables.empty()) {
-        return new FalseTable();
+        return FalseTable::getTable();
     }
 
-    return new TrueTable();
+    return TrueTable::getTable();
 }
 
 Table* UsesPEvaluator::evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
@@ -100,16 +100,16 @@ Table* UsesPEvaluator::evaluateSynonymSynonym(PKB* pkb, ClauseVariable left, Cla
 }
 
 Table* UsesPEvaluator::evaluateSynonymWildCard(PKB* pkb, ClauseVariable left) {
-//    unordered_set<string> setOfProcedures =  pkb->getAllProcsUsingSomeVar();
+    unordered_set<string> setOfProcedures =  pkb->getAllProcsUsingSomeVar();
 
     string column = left.getLabel();
     Header header = Header({column});
     Table* result = new PQLTable(header);
 
-//    for (auto& procedure : setOfProcedures) {
-//        Row* row = new Row(column, procedure);
-//        result->addRow(row);
-//    }
+    for (auto& procedure : setOfProcedures) {
+        Row* row = new Row(column, procedure);
+        result->addRow(row);
+    }
 
     return result;
 }

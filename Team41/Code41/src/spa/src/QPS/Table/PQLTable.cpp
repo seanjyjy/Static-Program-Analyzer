@@ -14,16 +14,20 @@ Table* PQLTable::mergeJoin(Table* intermediatePQLTable) {
         throw runtime_error("PQLTable provided is null!");
     }
 
+    if (intermediatePQLTable == TrueTable::getTable()) {
+        return this;
+    }
+
     Header commonHeader = getCommonHeader(this, intermediatePQLTable);
     Header combinedHeader = getCombinedHeader(this, intermediatePQLTable);
     Table* newTable = new PQLTable(combinedHeader);
 
     // Sort Tables
-    sort(dynamic_cast<Table*>(this), commonHeader);
+    sort(this, commonHeader);
     sort(intermediatePQLTable, commonHeader);
 
     // Merge Tables
-    mergeTable(dynamic_cast<Table*>(this), intermediatePQLTable, newTable, commonHeader);
+    mergeTable(this, intermediatePQLTable, newTable, commonHeader);
     // TODO figure out the destructor lol
     delete intermediatePQLTable;
 
@@ -39,10 +43,10 @@ void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, 
     auto leftTableEnd = leftTableRow.end();
     auto rightTableIndex = rightTableRow.begin();
     auto rightTableEnd = rightTableRow.end();
-
+    printf("===Starting AT LEFT=== %s\n", (*leftTableIndex)->getValueAtColumn("v").c_str());
     while (leftTableIndex != leftTableEnd && rightTableIndex != rightTableEnd) {
         int result = compareRow(*leftTableIndex, *rightTableIndex, commonHeader);
-
+        printf("result: %d\n", result);
         if (result == -1) {
             leftTableIndex++;
             continue;
@@ -112,6 +116,9 @@ void PQLTable::sort(Table* table, const Header& commonHeader) {
         }
         return true;
     });
+    auto temp = tableRows.begin();
+    auto temp2 = *temp;
+    printf("tableRow.begin(): %s\n", temp2->getValueAtColumn("v").c_str());
 }
 
 Header PQLTable::getCommonHeader(Table *leftTable, Table *rightTable) {
@@ -149,6 +156,10 @@ int PQLTable::compareRow(const Row* leftRowPtr, const Row* rightRowPtr, const He
     auto rightRow = rightRowPtr->getRow();
 
     for (auto const& headerField : commonHeader) {
+        printf("common header field: %s\n", headerField.c_str());
+        printf("leftValue: %s\n", leftRow.at(headerField).c_str());
+        printf("rightValue: %s\n", rightRow.at(headerField).c_str());
+
         if (leftRow.at(headerField) < rightRow.at(headerField)) {
             return -1;
         }
@@ -223,4 +234,14 @@ PQLTable::~PQLTable() {
     for(auto r : rows) {
         delete r;
     }
+}
+
+unordered_set<string> PQLTable::getColumn(string columnName) {
+    unordered_set<string> result;
+
+    for (auto& row : this->getRows()) {
+        result.insert(row->getValueAtColumn(columnName));
+    }
+
+    return result;
 }

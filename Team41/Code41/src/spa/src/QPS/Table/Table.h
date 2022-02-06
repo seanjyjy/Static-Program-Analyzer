@@ -20,6 +20,7 @@ public:
     virtual Header getHeader() const = 0;
     virtual bool hasRow(const Row* row) = 0;
     virtual size_t size() = 0;
+    virtual unordered_set<string> getColumn(string columnName) = 0;
 
     friend class TrueTable;
     friend class FalseTable;

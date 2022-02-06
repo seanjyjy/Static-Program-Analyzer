@@ -1,6 +1,7 @@
 #include "FalseTable.h"
 
 FalseTable::FalseTable() = default;
+Table* FalseTable::falseTable = nullptr;
 
 bool FalseTable::isEmpty() {
     return true;
@@ -28,4 +29,15 @@ bool FalseTable::hasRow(const Row* row) {
 
 size_t FalseTable::size() {
     return 0;
+}
+
+unordered_set<string> FalseTable::getColumn(string columnName) {
+    return unordered_set<string>();
+}
+
+Table* FalseTable::getTable() {
+    if (FalseTable::falseTable == nullptr) {
+        FalseTable::falseTable = new FalseTable();
+    }
+    return FalseTable::falseTable;
 }

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Table.h"
+#include "TrueTable.h"
+#include "FalseTable.h"
 
 using namespace std;
 
@@ -37,5 +39,6 @@ public:
     Table* mergeJoin(Table* intermediatePQLTable) override;
 
     vector<const Row *> getRows() override;
+    virtual unordered_set<string> getColumn(string columnName) override;
 };
 

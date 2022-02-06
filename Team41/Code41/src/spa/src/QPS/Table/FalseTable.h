@@ -5,6 +5,8 @@
 class FalseTable : public Table {
 public:
     FalseTable();
+    static Table *falseTable;
+
     bool isEmpty() override;
     Table* mergeJoin(Table* intermediatePQLTable) override;
     vector<const Row *> getRows() override;
@@ -12,4 +14,6 @@ public:
     Header getHeader() const override;
     bool hasRow(const Row* row) override;
     size_t size() override;
+    virtual unordered_set<string> getColumn(string columnName) override;
+    static Table* getTable();
 };

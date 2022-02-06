@@ -2,6 +2,7 @@
 
 #include "Common/TNode.h"
 #include "PKB/PKB.h"
+#include <unordered_map>
 
 class DesignExtractor {
 private:
