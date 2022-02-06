@@ -45,10 +45,6 @@ bool Tokenizer::isEof() {
     return currToken == '\0';
 }
 
-bool Tokenizer::isKeyword(string s) {
-    return keywords.find(s) != keywords.end();
-}
-
 Token Tokenizer::eatN(TokenType type, int n) {
     if (n > (input.size() - idx)) throw length_error("eating too many characters: " + to_string(n));
 
@@ -249,7 +245,6 @@ Tokens Tokenizer::tokenize() {
             tok = eatNot();
         } else if (isalpha(currToken)) {
             tok = eatName();
-            if (isKeyword(tok.getVal())) tok = Token{TokenType::keyword, tok.getVal(), tok.getStart(), tok.getEnd()};
         } else if (isdigit(currToken)) {
             tok = eatInteger();
         } else {

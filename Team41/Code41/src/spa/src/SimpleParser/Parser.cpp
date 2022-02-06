@@ -96,7 +96,7 @@ TNode *Parser::eatProgram() {
 // procedure -> 'procedure' proc_name '{' stmtLst '}'
 TNode *Parser::eatProcedure() {
     // eat procedure keyword
-    checkAndAdvance(TokenType::keyword, "procedure");
+    checkAndAdvance(TokenType::name, "procedure");
 
     // eat procedure name
     Token *name = checkAndAdvance(TokenType::name);
@@ -124,18 +124,18 @@ TNode *Parser::eatStmtLst() {
 
 // stmt -> read | print | call | while | if | assign
 TNode *Parser::eatStmt() {
-    if (peekMatchTypeVal(TokenType::keyword, "read")) return eatStmtRead();
-    if (peekMatchTypeVal(TokenType::keyword, "print")) return eatStmtPrint();
-    if (peekMatchTypeVal(TokenType::keyword, "call")) return eatStmtCall();
-    if (peekMatchTypeVal(TokenType::keyword, "while")) return eatStmtWhile();
-    if (peekMatchTypeVal(TokenType::keyword, "if")) return eatStmtIf();
+    if (peekMatchTypeVal(TokenType::name, "read")) return eatStmtRead();
+    if (peekMatchTypeVal(TokenType::name, "print")) return eatStmtPrint();
+    if (peekMatchTypeVal(TokenType::name, "call")) return eatStmtCall();
+    if (peekMatchTypeVal(TokenType::name, "while")) return eatStmtWhile();
+    if (peekMatchTypeVal(TokenType::name, "if")) return eatStmtIf();
     if (peekMatchType(TokenType::name)) return eatStmtAssign();
     throw runtime_error(genErrorMsgWithCurrToken());
 }
 
 // read -> 'read' var_name ';'
 TNode *Parser::eatStmtRead() {
-    checkAndAdvance(TokenType::keyword, "read");
+    checkAndAdvance(TokenType::name, "read");
     Token *tokenBeforeAdv = checkAndAdvance(TokenType::name);
     checkAndAdvance(TokenType::semicolon);
     return TNode::makeReadStmt(TNode::makeVarName(tokenBeforeAdv));
@@ -143,7 +143,7 @@ TNode *Parser::eatStmtRead() {
 
 // print -> 'print' var_name ';'
 TNode *Parser::eatStmtPrint() {
-    checkAndAdvance(TokenType::keyword, "print");
+    checkAndAdvance(TokenType::name, "print");
     Token *tokenBeforeAdv = checkAndAdvance(TokenType::name);
     checkAndAdvance(TokenType::semicolon);
     return TNode::makePrintStmt(TNode::makeVarName(tokenBeforeAdv));
@@ -151,7 +151,7 @@ TNode *Parser::eatStmtPrint() {
 
 // call -> 'call' proc_name ';'
 TNode *Parser::eatStmtCall() {
-    checkAndAdvance(TokenType::keyword, "call");
+    checkAndAdvance(TokenType::name, "call");
     Token *tokenBeforeAdv = checkAndAdvance(TokenType::name);
     checkAndAdvance(TokenType::semicolon);
     return TNode::makeCallStmt(TNode::makeProcName(tokenBeforeAdv));
@@ -159,7 +159,7 @@ TNode *Parser::eatStmtCall() {
 
 // while -> 'while' '(' cond_expr ')' '{' stmtLst '}'
 TNode *Parser::eatStmtWhile() {
-    checkAndAdvance(TokenType::keyword, "while");
+    checkAndAdvance(TokenType::name, "while");
     checkAndAdvance(TokenType::openingBracket);
     TNode *condExpr = eatCondExpr();
     checkAndAdvance(TokenType::closingBracket);
@@ -171,15 +171,15 @@ TNode *Parser::eatStmtWhile() {
 
 // if -> 'if' '(' cond_expr ')' 'then' '{' stmtLst '}' 'else' '{' stmtLst '}'
 TNode *Parser::eatStmtIf() {
-    checkAndAdvance(TokenType::keyword, "if");
+    checkAndAdvance(TokenType::name, "if");
     checkAndAdvance(TokenType::openingBracket);
     TNode *condExpr = eatCondExpr();
     checkAndAdvance(TokenType::closingBracket);
-    checkAndAdvance(TokenType::keyword, "then");
+    checkAndAdvance(TokenType::name, "then");
     checkAndAdvance(TokenType::openingBrace);
     TNode *ifStmtLst = eatStmtLst();
     checkAndAdvance(TokenType::closingBrace);
-    checkAndAdvance(TokenType::keyword, "else");
+    checkAndAdvance(TokenType::name, "else");
     checkAndAdvance(TokenType::openingBrace);
     TNode *elseStmtLst = eatStmtLst();
     checkAndAdvance(TokenType::closingBrace);

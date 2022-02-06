@@ -12,8 +12,6 @@ using namespace std;
 
 class Tokenizer {
 private:
-    const unordered_set<string> keywords = {"procedure", "read", "print", "call", "while", "if", "then", "else"};
-
     string input;
     int idx;
     int row;
