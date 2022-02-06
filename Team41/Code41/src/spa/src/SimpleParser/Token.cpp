@@ -79,8 +79,6 @@ string Token::typeToString(TokenType type) {
             return "name";
         case TokenType::integer:
             return "integer";
-        case TokenType::keyword:
-            return "keyword";
         case TokenType::eof:
             return "eof";
         default:

@@ -21,7 +21,6 @@ enum class TokenType {
     times, // *
     div, // /
     mod, // %
-    keyword, // procedure, read, print, call, while, if, then, else
     name, // LETTER (LETTER|DIGIT)*
     integer, // DIGIT+
     eof, // special token indicating end of file

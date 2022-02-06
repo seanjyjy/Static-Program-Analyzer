@@ -26,7 +26,7 @@ TEST_CASE("Tokenizer: all") {
     Tokenizer tokenizer(s);
     Tokens tokens = tokenizer.tokenize();
     vector<pair<TokenType, string>> expected = {
-            {TokenType::keyword, "procedure"},
+            {TokenType::name, "procedure"},
             {TokenType::name, "main"},
             {TokenType::openingBrace, "{"},
             {TokenType::name, "one"},
@@ -37,13 +37,13 @@ TEST_CASE("Tokenizer: all") {
             {TokenType::assign, "="},
             {TokenType::integer, "0"},
             {TokenType::semicolon, ";"},
-            {TokenType::keyword, "read"},
+            {TokenType::name, "read"},
             {TokenType::name, "x"},
             {TokenType::semicolon, ";"},
-            {TokenType::keyword, "print"},
+            {TokenType::name, "print"},
             {TokenType::name, "x"},
             {TokenType::semicolon, ";"},
-            {TokenType::keyword, "while"},
+            {TokenType::name, "while"},
             {TokenType::openingBracket, "("},
             {TokenType::notOp, "!"},
             {TokenType::openingBracket, "("},
@@ -63,7 +63,7 @@ TEST_CASE("Tokenizer: all") {
             {TokenType::integer, "1"},
             {TokenType::semicolon, ";"},
             {TokenType::closingBrace, "}"},
-            {TokenType::keyword, "if"},
+            {TokenType::name, "if"},
             {TokenType::openingBracket, "("},
             {TokenType::openingBracket, "("},
             {TokenType::name, "one"},
@@ -77,14 +77,14 @@ TEST_CASE("Tokenizer: all") {
             {TokenType::integer, "2"},
             {TokenType::closingBracket, ")"},
             {TokenType::closingBracket, ")"},
-            {TokenType::keyword, "then"},
+            {TokenType::name, "then"},
             {TokenType::openingBrace, "{"},
             {TokenType::name, "two"},
             {TokenType::assign, "="},
             {TokenType::integer, "2"},
             {TokenType::semicolon, ";"},
             {TokenType::closingBrace, "}"},
-            {TokenType::keyword, "else"},
+            {TokenType::name, "else"},
             {TokenType::openingBrace, "{"},
             {TokenType::name, "two"},
             {TokenType::assign, "="},
@@ -97,11 +97,30 @@ TEST_CASE("Tokenizer: all") {
     TestTokenizerUtils::tokenizeAndCompare(s, expected);
 }
 
+TEST_CASE("Tokenizer: procedures") {
+    SECTION("keyword as procedure") {
+        string s = "procedure procedure {"
+                   "print x;"
+                   "}";
+        vector<pair<TokenType, string>> expected = {
+                {TokenType::name, "procedure"},
+                {TokenType::name, "procedure"},
+                {TokenType::openingBrace, "{"},
+                {TokenType::name, "print"},
+                {TokenType::name, "x"},
+                {TokenType::semicolon, ";"},
+                {TokenType::closingBrace, "}"},
+                {TokenType::eof, ""},
+        };
+        TestTokenizerUtils::tokenizeAndCompare(s, expected);
+    }
+}
+
 TEST_CASE("Tokenizer: read statement") {
     SECTION("correct") {
         string s = "read thisisavariable;";
         vector<pair<TokenType, string>> expected = {
-                {TokenType::keyword, "read"},
+                {TokenType::name, "read"},
                 {TokenType::name, "thisisavariable"},
                 {TokenType::semicolon, ";"},
                 {TokenType::eof, ""},
@@ -151,6 +170,17 @@ TEST_CASE("Tokenizer: read statement") {
         };
         TestTokenizerUtils::tokenizeAndCompare(s, expected);
     }
+
+    SECTION("keyword as argument") {
+        string s = "read read;";
+        vector<pair<TokenType, string>> expected = {
+                {TokenType::name, "read"},
+                {TokenType::name, "read"},
+                {TokenType::semicolon, ";"},
+                {TokenType::eof, ""},
+        };
+        TestTokenizerUtils::tokenizeAndCompare(s, expected);
+    }
 }
 
 
@@ -158,7 +188,7 @@ TEST_CASE("Tokenizer: print statement") {
     SECTION("correct") {
         string s = "print thisisavariable;";
         vector<pair<TokenType, string>> expected = {
-                {TokenType::keyword, "print"},
+                {TokenType::name, "print"},
                 {TokenType::name, "thisisavariable"},
                 {TokenType::semicolon, ";"},
                 {TokenType::eof, ""},
@@ -208,13 +238,24 @@ TEST_CASE("Tokenizer: print statement") {
         };
         TestTokenizerUtils::tokenizeAndCompare(s, expected);
     }
+
+    SECTION("keyword as argument") {
+        string s = "print print;";
+        vector<pair<TokenType, string>> expected = {
+                {TokenType::name, "print"},
+                {TokenType::name, "print"},
+                {TokenType::semicolon, ";"},
+                {TokenType::eof, ""},
+        };
+        TestTokenizerUtils::tokenizeAndCompare(s, expected);
+    }
 }
 
 TEST_CASE("Tokenizer: call statement") {
     SECTION("correct") {
         string s = "call main;";
         vector<pair<TokenType, string>> expected = {
-                {TokenType::keyword, "call"},
+                {TokenType::name, "call"},
                 {TokenType::name, "main"},
                 {TokenType::semicolon, ";"},
                 {TokenType::eof, ""},
@@ -264,20 +305,31 @@ TEST_CASE("Tokenizer: call statement") {
         };
         TestTokenizerUtils::tokenizeAndCompare(s, expected);
     }
+
+    SECTION("keyword as argument") {
+        string s = "call call;";
+        vector<pair<TokenType, string>> expected = {
+                {TokenType::name, "call"},
+                {TokenType::name, "call"},
+                {TokenType::semicolon, ";"},
+                {TokenType::eof, ""},
+        };
+        TestTokenizerUtils::tokenizeAndCompare(s, expected);
+    }
 }
 
 TEST_CASE("Tokenizer: while statement") {
     SECTION("correct") {
         string s = "while(1==1){print x;}";
         vector<pair<TokenType, string>> expected = {
-                {TokenType::keyword, "while"},
+                {TokenType::name, "while"},
                 {TokenType::openingBracket, "("},
                 {TokenType::integer, "1"},
                 {TokenType::eq, "=="},
                 {TokenType::integer, "1"},
                 {TokenType::closingBracket, ")"},
                 {TokenType::openingBrace, "{"},
-                {TokenType::keyword, "print"},
+                {TokenType::name, "print"},
                 {TokenType::name, "x"},
                 {TokenType::semicolon, ";"},
                 {TokenType::closingBrace, "}"},
@@ -289,19 +341,19 @@ TEST_CASE("Tokenizer: while statement") {
 
 TEST_CASE("Tokenizer: if statement") {
     SECTION("correct") {
-
+        // TODO
     }
 }
 
 TEST_CASE("Tokenizer: assign statement") {
     SECTION("correct") {
-
+        // TODO
     }
 }
 
 TEST_CASE("Tokenizer: conditional expression") {
     SECTION("correct") {
-
+        // TODO
     }
 }
 
