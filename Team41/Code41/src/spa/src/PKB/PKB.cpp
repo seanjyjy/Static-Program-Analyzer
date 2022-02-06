@@ -162,7 +162,7 @@ unordered_set<string> PKB::getUsesByStmt(string stmtNum) { return usesTable->get
 
 vector<pair<string, string>> PKB::getAllUsesS() { return usesTable->getStmtsVarEntries(); }
 
-unordered_set<string> PKB::getAllVarsUsedInSomeStmt() { return usesTable->getVarsUsedInSomeStmt(); }
+unordered_set<string> PKB::getAllStmtsUsingSomeVar() { return usesTable->getStmtsUsingSomeVar(); }
 
 void PKB::registerUsesS(string stmtNum, string varName) {
     if (!(isVariable(varName))) {
@@ -184,7 +184,7 @@ unordered_set<string> PKB::getUsesByProc(string procName) { return usesTable->ge
 
 vector<pair<string, string>> PKB::getAllUsesP() { return usesTable->getProcVarEntries(); }
 
-unordered_set<string> PKB::getAllVarsUsedInSomeProc() { return usesTable->getVarsUsedInSomeProc(); }
+unordered_set<string> PKB::getAllProcsUsingSomeVar() { return usesTable->getProcsUsingSomeVar(); }
 
 void PKB::registerUsesP(string procName, string varName) {
     if (!(isVariable(varName))) {
@@ -212,7 +212,7 @@ unordered_set<string> PKB::getModifiesByStmt(string stmtNum) {
 
 vector<pair<string, string>> PKB::getAllModifiesS() { return modifiesTable->getStmtsVarEntries(); }
 
-unordered_set<string> PKB::getAllVarsModifiedInSomeStmt() { return modifiesTable->getVarsModifiedInSomeStmt(); }
+unordered_set<string> PKB::getAllStmtsModifyingSomeVar() { return modifiesTable->getStmtsModifyingSomeVar(); }
 
 void PKB::registerModifiesS(string stmtNum, string varName) {
     if (!(isVariable(varName))) {
@@ -238,7 +238,7 @@ unordered_set<string> PKB::getModifiesByProc(string procName) {
 
 vector<pair<string, string>> PKB::getAllModifiesP() { return modifiesTable->getProcVarEntries(); }
 
-unordered_set<string> PKB::getAllVarsModifiedInSomeProc() { return modifiesTable->getVarsModifiedInSomeProc(); }
+unordered_set<string> PKB::getAllProcsModifyingSomeVar() { return modifiesTable->getProcsModifyingSomeVar(); }
 
 void PKB::registerModifiesP(string procName, string varName) {
     if (!(isVariable(varName))) {
