@@ -144,8 +144,7 @@ TEST_CASE("Tokenizer: read statement") {
     SECTION("trailing numbers") {
         string s = "read123 x;";
         vector<pair<TokenType, string>> expected = {
-                {TokenType::keyword, "read"},
-                {TokenType::integer, "123"},
+                {TokenType::name, "read123"},
                 {TokenType::name, "x"},
                 {TokenType::semicolon, ";"},
                 {TokenType::eof, ""},
@@ -202,8 +201,7 @@ TEST_CASE("Tokenizer: print statement") {
     SECTION("trailing numbers") {
         string s = "print123 x;";
         vector<pair<TokenType, string>> expected = {
-                {TokenType::keyword, "print"},
-                {TokenType::integer, "123"},
+                {TokenType::name, "print123"},
                 {TokenType::name, "x"},
                 {TokenType::semicolon, ";"},
                 {TokenType::eof, ""},
@@ -259,8 +257,7 @@ TEST_CASE("Tokenizer: call statement") {
     SECTION("trailing numbers") {
         string s = "call123 x;";
         vector<pair<TokenType, string>> expected = {
-                {TokenType::keyword, "call"},
-                {TokenType::integer, "123"},
+                {TokenType::name, "call123"},
                 {TokenType::name, "x"},
                 {TokenType::semicolon, ";"},
                 {TokenType::eof, ""},
@@ -277,6 +274,7 @@ TEST_CASE("Tokenizer: while statement") {
                 {TokenType::openingBracket, "("},
                 {TokenType::integer, "1"},
                 {TokenType::eq, "=="},
+                {TokenType::integer, "1"},
                 {TokenType::closingBracket, ")"},
                 {TokenType::openingBrace, "{"},
                 {TokenType::keyword, "print"},
