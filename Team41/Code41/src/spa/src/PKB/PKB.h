@@ -90,6 +90,7 @@ public:
     unordered_set<string> getVariables();// Gets list of variables
     unordered_set<string> getConstants();// Gets list of constants
     unordered_set<string> getProcedures();// Gets list of procedure names
+    unordered_set<string> getStatements();// Gets list of statement numbers
 
     void registerVariable(string varName);// Registers a variable to PKB
     void registerConstant(string constVal);// Registers a constant to PKB
