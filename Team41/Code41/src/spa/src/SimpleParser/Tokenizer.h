@@ -26,8 +26,6 @@ private:
 
     bool isEof();
 
-    bool isKeyword(string s);
-
     void eatWhitespace();
 
     Token eatN(TokenType type, int n);
