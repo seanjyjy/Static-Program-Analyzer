@@ -1,5 +1,6 @@
 #include "FollowsTable.h"
 #include <unordered_set>
+#include <stdexcept>
 
 FollowsTable::FollowsTable() : followsRelation("Follows"), followsTRelation("FollowsT") {}
 

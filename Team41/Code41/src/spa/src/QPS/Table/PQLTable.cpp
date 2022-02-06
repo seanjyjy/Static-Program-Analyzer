@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <unordered_set>
 #include <utility>
+#include <stdexcept>
 
 bool PQLTable::isEmpty() {
     return size() == 0;
