@@ -6,12 +6,12 @@ using namespace std;
 
 class ClauseVariable {
 private:
+    string &label;
+public:
     enum variable_type {
         identifier, wildcard, synonym, integer
     };
-    string &label;
     variable_type type;
-public:
     variable_type getType();
     string &getLabel();
     bool isIdentifier();
