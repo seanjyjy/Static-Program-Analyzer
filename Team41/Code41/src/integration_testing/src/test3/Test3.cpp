@@ -35,7 +35,7 @@ TEST_CASE("Test 3") {
 
     SECTION("Query 2") {
         string query = "variable v;\n"
-                       "Select v such that Uses (14, v)";
+                       "Select v such that Uses (15, v)";
 
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
