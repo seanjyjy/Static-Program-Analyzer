@@ -4,6 +4,14 @@ Table* ModifiesSEvaluator::evaluate(QueryClause clause, PKB *pkb) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
+    auto lt = leftVariable.getType();
+    auto rt = rightVariable.getType();
+    printf("leftVariableType: %d\n", lt);
+    printf("rightVariableType: %d\n", rt);
+
+    printf("isLeftVariable synonym: %s\n", leftVariable.isSynonym() ? "YES" : "NO");
+    printf("isrightVariable ident: %s\n", rightVariable.isIdentifier() ? "YES" : "NO");
+
     if (leftVariable.isInteger() && rightVariable.isIdentifier()) {
         return evaluateIntegerIdentifier(pkb, leftVariable, rightVariable);
     }

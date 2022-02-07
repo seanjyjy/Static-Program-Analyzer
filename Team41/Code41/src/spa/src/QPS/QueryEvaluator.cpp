@@ -11,18 +11,23 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
         return emptyResult;
     }
 
-    // TODO: Change it to truth table to speed up initial config
     auto selectSynonym = queryObject->selectSynonym;
-    Table *resultTable = SelectSynonymEvaluator::evaluate(selectSynonym, this->pkb);
+    Table *resultTable;
+
+    // TODO: Change it to truth table to speed up initial config
+    try {
+        resultTable = SelectSynonymEvaluator::evaluate(selectSynonym, this->pkb);
+    } catch (const runtime_error& error) {
+        resultTable = FalseTable::getTable();
+    }
 
     if (resultTable->isEmpty()) {
         return emptyResult;
     }
-
-    for (auto& clause : queryObject->clauses) {
+    printf("test first element lerft variable: %d\n", queryObject->clauses[0].getLeftClauseVariable().type);
+    for (auto clause : queryObject->clauses) {
         try {
             Table* intermediateTable = this->evaluate(clause);
-
             if (intermediateTable->isEmpty()) {
                 return emptyResult;
             }

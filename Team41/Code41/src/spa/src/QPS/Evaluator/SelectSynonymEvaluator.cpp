@@ -1,6 +1,6 @@
 #include "SelectSynonymEvaluator.h"
 
-Table* SelectSynonymEvaluator::evaluate(const QueryDeclaration& selectSynonym, PKB *pkb) {
+Table* SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym, PKB *pkb) {
     auto declarationType = selectSynonym.type;
     auto synonym = selectSynonym.synonym;
 
