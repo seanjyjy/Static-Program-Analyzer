@@ -1,5 +1,4 @@
 #include "QueryLexer.h"
-#include "catch.hpp"
 
 #include <ctype.h> // for isalpha, isdigit
 

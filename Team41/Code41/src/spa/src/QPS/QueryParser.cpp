@@ -164,9 +164,21 @@ bool QueryParser::parseClause() {
         QueryClause::clause_type type = determineClauseType(clause->c_str(), left->c_str(), right->c_str());
         ClauseVariable::variable_type leftType = QueryParser::determineVariableType(left->c_str());
         string l = left->c_str();
+
+        // TODO: From @hardy: Write a better way to exclude quotes somewhere there
+        if (ClauseVariable::variable_type::identifier == leftType) {
+            l = l.substr(1, l.length() - 2);
+        }
+
         ClauseVariable lcv(leftType, l);
         ClauseVariable::variable_type rightType = QueryParser::determineVariableType(right->c_str());
         string r = right->c_str();
+
+        // TODO: From @hardy: Write a better way to exclude quotes somewhere there
+        if (ClauseVariable::variable_type::identifier == rightType) {
+            r = r.substr(1, r.length() - 2);
+        }
+
         ClauseVariable rcv(rightType, r);
         QueryClause clause(type, lcv, rcv);
         queryObject->clauses.push_back(clause);

@@ -10,5 +10,5 @@ class SelectSynonymEvaluator {
 private:
     static unordered_set<string> getResultViaType(QueryDeclaration::design_entity_type type, PKB *pkb);
 public:
-    static Table* evaluate(const QueryDeclaration& selectSynonym, PKB *pkb);
+    static Table* evaluate(const QueryDeclaration selectSynonym, PKB *pkb);
 };
