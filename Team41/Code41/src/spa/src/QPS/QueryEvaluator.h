@@ -1,12 +1,24 @@
 #pragma once
 
-#include <set>
+#include <unordered_set>
 #include <string>
 #include <vector>
-#include "QPS/Evaluator.h"
+
+#include "PKB/PKB.h"
+#include "QPS/Evaluator/Evaluator.h"
+#include "QPS/Evaluator/UsesSEvaluator.h"
+#include "QPS/Evaluator/UsesPEvaluator.h"
+#include "QPS/Evaluator/ModifiesSEvaluator.h"
+#include "QPS/Evaluator/ModifiesPEvaluator.h"
+#include "QPS/Evaluator/SelectSynonymEvaluator.h"
 #include "QueryObject.h"
+#include "QueryClause.h"
 
 class QueryEvaluator {
-    std::set<std::string> evaluateQuery(QueryObject *queryObject);
-    Evaluator* getEvaluator(const std::string& clause);
+private:
+    PKB* pkb;
+public:
+    explicit QueryEvaluator(PKB* pkb);
+    std::unordered_set<std::string> evaluateQuery(QueryObject *queryObject);
+    Table* evaluate(QueryClause& clause);
 };

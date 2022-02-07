@@ -10,7 +10,7 @@ private:
     unordered_map<string, string> row;
 public:
     Row();
-
+    Row(const string& column, string value);
     size_t size() const;
     bool hasColumn(const string& column) const;
     string getValueAtColumn(const string& column) const;
