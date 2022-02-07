@@ -11,6 +11,7 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
         return emptyResult;
     }
 
+    // TODO: Change it to truth table to speed up initial config
     auto selectSynonym = queryObject->selectSynonym;
     Table *resultTable = SelectSynonymEvaluator::evaluate(selectSynonym, this->pkb);
 

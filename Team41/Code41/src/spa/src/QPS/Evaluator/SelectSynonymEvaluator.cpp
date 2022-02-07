@@ -19,7 +19,7 @@ Table* SelectSynonymEvaluator::evaluate(const QueryDeclaration& selectSynonym, P
 unordered_set<string> SelectSynonymEvaluator::getResultViaType(QueryDeclaration::design_entity_type type, PKB* pkb) {
     switch(type) {
         case QueryDeclaration::design_entity_type::STMT:
-            return {};
+            return pkb->getStatements();
         case QueryDeclaration::design_entity_type::READ:
             return pkb->getReads();
         case QueryDeclaration::design_entity_type::PRINT:
