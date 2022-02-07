@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <stack>
+#include <stdexcept>
 
 #include "Common/TNodeType.h"
 #include <DesignExtractor/EntitiesExtractor.h>
