@@ -85,3 +85,5 @@ string Token::typeToString(TokenType type) {
             throw runtime_error("unknown token type");
     }
 }
+
+Token::Token(TokenType type, string val): type(type), val(val), start({-1,-1}), end({-1,-1}) {}

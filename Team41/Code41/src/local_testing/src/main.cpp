@@ -1,17 +1,14 @@
-#include <iostream>
 #include "SimpleParser/Parser.h"
+#include "Common/AstBuilder.h"
 
 using namespace std;
 
 int main() {
-    string s = "procedure main {"
-               "x = 1 * 2 + 3 / 4;"
-               "}";
+    string s = "<eq>\n"
+               "\t<var val=hello></var>\n"
+               "\t<const val=1></const>\n"
+               "</eq>";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
-    if (ast != nullptr) {
-        ast->printRecursive();
-
-    }
+    TNode *root = AstBuilder(s).build();
+    root->printRecursive();
 }

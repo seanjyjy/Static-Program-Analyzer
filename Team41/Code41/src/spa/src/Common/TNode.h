@@ -34,6 +34,8 @@ public:
 
     void setParent(TNode *parent);
 
+    void setChildren(vector<TNode *> children);
+
     // mainly for debugging purposes
     string toString();
 

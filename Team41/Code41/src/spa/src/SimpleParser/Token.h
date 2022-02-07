@@ -15,6 +15,8 @@ private:
 public:
     Token();
 
+    Token(TokenType type, string val); // for testing purposes
+
     Token(TokenType type, string val, pair<int, int> start, pair<int, int> end);
 
     TokenType getType() const;

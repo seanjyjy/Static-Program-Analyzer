@@ -42,6 +42,10 @@ void TNode::setLeftChild(TNode *child) {
     children[0] = child;
 }
 
+void TNode::setChildren(vector<TNode *> ch) {
+    children = move(ch);
+}
+
 // dfs while setting parent pointers for all nodes
 void TNode::setAllParents() {
     if (children.empty()) return;
