@@ -1,23 +1,25 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "Common/TNode.h"
 #include "PKB/PKB.h"
+#include "EntitiesExtractor.h"
+#include "ModifiesExtractor.h"
+#include "UsesExtractor.h"
 
 class DesignExtractor {
 private:
     TNode *ast;
-    PKB *pkb;
+    PKB *pkb = new PKB();
     unordered_map<TNode *, string> nodeToStmtNumMap;
 
-    void registerEntity(TNode *node, int &stmtNum);
-    void registerEntities(); // statement number, register entities
-    void registerProcedures();
+    void extractEntities();
+    void extractModifies();
+    void extractUses();
 
 public:
-    DesignExtractor(TNode *ast, PKB *pkb);
+    DesignExtractor(TNode *ast);
 
-    void extractDesign();
-
-    void printStmtNums(); // debugging purposes
-
+    PKB *extractDesignToPkb();
 };
