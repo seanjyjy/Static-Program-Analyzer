@@ -1,4 +1,5 @@
 #include "FalseTable.h"
+#include <stdexcept>
 
 FalseTable::FalseTable() = default;
 Table* FalseTable::falseTable = nullptr;
