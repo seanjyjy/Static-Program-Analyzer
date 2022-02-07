@@ -16,7 +16,7 @@ enum TestValues {
     TEST_VALUE_2,
 };
 
-TEST_CASE("SingleMap") {
+TEST_CASE("PKB: SingleMap") {
     SingleMap<TestKeys, TestValues> table;
 
     SECTION("empty table") {

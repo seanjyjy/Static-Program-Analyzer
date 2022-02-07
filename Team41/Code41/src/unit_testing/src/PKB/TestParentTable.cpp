@@ -4,7 +4,7 @@
 
 using namespace std;
 
-TEST_CASE("ParentTable") {
+TEST_CASE("PKB: ParentTable") {
     ParentTable table;
     string stmt[] = {"0", "1", "2", "3", "4", "5"};
     unordered_set<string> EMPTY_SET;

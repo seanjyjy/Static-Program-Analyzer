@@ -14,7 +14,7 @@ enum TestValues {
     TEST_VALUE_2,
 };
 
-TEST_CASE("MultiMap") {
+TEST_CASE("PKB: MultiMap") {
     SetMultiMap<TestKeys, TestValues> table;
 
     SECTION("empty table") {
