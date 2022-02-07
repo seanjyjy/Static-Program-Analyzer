@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - jinhao/github-actions
   pull_request:
     branches:
       - master
@@ -21,14 +20,11 @@ env:
 jobs:
   build:
     runs-on: windows-latest
-    timeout-minutes: 5
     strategy:
       fail-fast: true
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          architecture: 'x64'
       - name: Build Project
         shell: bash
         run: |
@@ -39,5 +35,16 @@ jobs:
           cmake --build . --target unit_testing --config Release
           cmake --build . --target integration_testing --config Release
           cmake --build . --target autotester --config Release
-          ctest -C Release
           cd ../..
+      - name: Run Unit Tests
+        shell: bash
+        run: |
+          cd Team41/Code41/build
+          ctest -C Release -R unit_testing --output-on-failure
+          cd ../../..
+      - name: Run Integration Tests
+        shell: bash
+        run: |
+          cd Team41/Code41/build
+          ctest -C Release -R integration_testing --output-on-failure
+          cd ../../..
