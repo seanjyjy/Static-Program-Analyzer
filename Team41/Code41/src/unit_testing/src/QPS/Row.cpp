@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "QPS/Row.h"
+#include "QPS/Table/Row.h"
 
 using namespace std;
 
