@@ -1,4 +1,5 @@
 #include "Row.h"
+#include <stdexcept>
 
 Row::Row() = default;
 

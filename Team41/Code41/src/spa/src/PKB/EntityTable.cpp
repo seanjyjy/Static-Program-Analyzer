@@ -1,4 +1,5 @@
 #include "EntityTable.h"
+#include <stdexcept>
 
 EntityTable::EntityTable() = default;
 

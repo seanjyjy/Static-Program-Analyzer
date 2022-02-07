@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <unordered_set>
 #include <utility>
+#include <stdexcept>
 
 bool PQLTable::isEmpty() {
     return size() == 0;
@@ -109,8 +110,8 @@ const Row* PQLTable::combineRow(const Row* rowA, const Row* rowB) const {
 
 void PQLTable::sort(const Header& commonHeader) {
     std::sort(this->rows.begin(), this->rows.end(), [commonHeader](const Row* left, const Row* right){
-        for (auto const& headerField : commonHeader) {
-            return left->getValueAtColumn(headerField) <= right->getValueAtColumn(headerField);
+        for (const string& headerField : commonHeader) {
+            return left->getValueAtColumn(headerField) < right->getValueAtColumn(headerField);
         }
         return true;
     });

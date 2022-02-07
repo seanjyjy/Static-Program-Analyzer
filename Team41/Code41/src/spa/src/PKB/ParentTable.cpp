@@ -1,5 +1,6 @@
 #include "ParentTable.h"
 #include <unordered_set>
+#include <stdexcept>
 
 ParentTable::ParentTable() : parentRelation("Parent"), ancestorRelation("ParentT") {}
 

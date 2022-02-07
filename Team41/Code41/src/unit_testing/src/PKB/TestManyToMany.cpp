@@ -18,7 +18,7 @@ enum TestValues {
     TEST_VALUE_4,
 };
 
-TEST_CASE("ManyToMany") {
+TEST_CASE("PKB: ManyToMany") {
     const string tableName = "Many2Many_TestTable";
     ManyToMany<TestKeys, TestValues> table(tableName);
 

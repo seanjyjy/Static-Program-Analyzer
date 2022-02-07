@@ -1,7 +1,6 @@
 #pragma once
 
 #include <unordered_map>
-
 #include "Common/TNode.h"
 #include "PKB/PKB.h"
 #include "EntitiesExtractor.h"

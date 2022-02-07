@@ -20,7 +20,7 @@ enum TestValues {
     TEST_VALUE_4,
 };
 
-TEST_CASE("OneToMany") {
+TEST_CASE("PKB: OneToMany") {
     const string tableName = "TestTable";
     OneToMany<TestKeys, TestValues> table("TestTable");
 

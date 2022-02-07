@@ -3,7 +3,7 @@
 
 using namespace std;
 
-TEST_CASE("StmtTable") {
+TEST_CASE("PKB: StmtTable") {
     string lines[] = {"1", "2", "3", "4", "5", "6"};
     StmtType types[] = {ASSIGN, CALL, IF, PRINT, READ,
                         WHILE};

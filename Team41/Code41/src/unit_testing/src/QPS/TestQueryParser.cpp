@@ -4,7 +4,7 @@
 
 using namespace std;
 
-TEST_CASE("VALID") {
+TEST_CASE("QPS: Parser_VALID") {
     SECTION("VALID DECLARATION w/o such that") {
         string s = "variable v;\n"
                    "Select v";
@@ -120,7 +120,7 @@ TEST_CASE("VALID") {
     }
 }
 
-TEST_CASE("INVALID") {
+TEST_CASE("QPS: Parser_INVALID") {
     SECTION("INVALID DECLARATION such that bad clause") {
         string s = "variable v; assign a;\n"
                    "Select v such that Kills(a, v)";

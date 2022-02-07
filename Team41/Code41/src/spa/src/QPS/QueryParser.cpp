@@ -109,7 +109,7 @@ bool QueryParser::isDeclared(string synonym) {
 
 bool QueryParser::isDeclaredProcedure(string synonym) {
     optional<QueryDeclaration> posProc = findMatchingDeclaration(synonym);
-    return posProc->type == QueryDeclaration::PROCEDURE;
+    return posProc.has_value() && posProc.value().type == QueryDeclaration::PROCEDURE;
 }
 
 bool QueryParser::parseClause() {

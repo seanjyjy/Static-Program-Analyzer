@@ -1,4 +1,5 @@
 #include "TrueTable.h"
+#include <stdexcept>
 
 TrueTable::TrueTable() = default;
 Table* TrueTable::trueTable = nullptr;

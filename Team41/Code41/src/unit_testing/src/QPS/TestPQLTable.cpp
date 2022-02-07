@@ -4,7 +4,7 @@
 
 using namespace std;
 
-TEST_CASE() {
+TEST_CASE("QPS: PQLTable") {
     Header header({"a", "b", "c", "d"});
     PQLTable table = PQLTable(header);
     Row *row = new Row();
