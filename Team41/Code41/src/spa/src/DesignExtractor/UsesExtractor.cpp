@@ -26,8 +26,7 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
         vector<TNode *> ch = node->getChildren();
         for (TNode *child : ch) {
             dfs(child, usesSetChild);
-            DesignExtractorUtils::combineSets(usesSet, usesSetChild);
-            usesSetChild.clear();
+            DesignExtractorUtils::combineSetsClear(usesSet, usesSetChild);
         }
     } else if (type == TNodeType::printStmt) {
         usesSet = {node->getChildren()[0]->getVal()->getVal()}; // only 1 child varName
@@ -36,8 +35,7 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
         vector<TNode *> ch = node->getChildren();
         for (TNode *child : ch) { // 1st child is condExpr, rest are stmtLst
             dfs(child, usesSetChild);
-            DesignExtractorUtils::combineSets(usesSet, usesSetChild);
-            usesSetChild.clear();
+            DesignExtractorUtils::combineSetsClear(usesSet, usesSetChild);
         }
         mapUses(node, usesSet);
     } else if (type == TNodeType::assignStmt) {
@@ -48,8 +46,7 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
         vector<TNode *> ch = node->getChildren();
         for (TNode *child : ch) { // 1st child is condExpr, rest are stmtLst
             dfs(child, usesSetChild);
-            DesignExtractorUtils::combineSets(usesSet, usesSetChild);
-            usesSetChild.clear();
+            DesignExtractorUtils::combineSetsClear(usesSet, usesSetChild);
         }
     } else if (type == TNodeType::varName) {
         usesSet = {node->getVal()->getVal()};

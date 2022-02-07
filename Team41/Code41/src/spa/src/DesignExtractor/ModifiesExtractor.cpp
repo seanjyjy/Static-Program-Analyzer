@@ -25,8 +25,7 @@ void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
         vector<TNode *> ch = node->getChildren();
         for (TNode *child : ch) {
             dfs(child, modifiesSetChild);
-            DesignExtractorUtils::combineSets(modifiesSet, modifiesSetChild);
-            modifiesSetChild.clear();
+            DesignExtractorUtils::combineSetsClear(modifiesSet, modifiesSetChild);
         }
     } else if (type == TNodeType::readStmt || type == TNodeType::assignStmt) {
         modifiesSet = {node->getChildren()[0]->getVal()->getVal()}; // left child varName
@@ -39,8 +38,7 @@ void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
         vector<TNode *> ch = node->getChildren();
         for (size_t i = 1; i <= 2; i++) { // if stmt has stmtLst on 2nd and 3rd child
             dfs(ch[i], modifiesSetChild);
-            DesignExtractorUtils::combineSets(modifiesSet, modifiesSetChild);
-            modifiesSetChild.clear();
+            DesignExtractorUtils::combineSetsClear(modifiesSet, modifiesSetChild);
         }
         mapModifies(node, modifiesSet);
     }
