@@ -1,67 +1,73 @@
 #include "UsesExtractor.h"
+#include "DesignExtractorUtils.h"
 #include "Common/TNodeType.h"
-#include "PKB/PKB.h"
 
-UsesExtractor::UsesExtractor(TNode *ast, PKB *pkb, unordered_map<TNode *, string> &nodeToStmtNumMap) : ast(ast),
-                                                                                                               pkb(pkb), nodeToStmtNumMap(nodeToStmtNumMap) {}
+UsesExtractor::UsesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
+        ast(ast), nodeToStmtNumMap(nodeToStmtNumMap) {}
 
-void UsesExtractor::registerUses(TNode *node, list<TNode *> &usesLst) {
+void UsesExtractor::mapUses(TNode *node, unordered_set<string> &usesSet) {
+    if (usesSet.empty()) return;
+
     if (node->getType() == TNodeType::procedure) {
-        string procName = node->getVal()->getVal();
-        for (auto usesNode : usesLst)
-            pkb->registerUsesP(procName, usesNode->getVal()->getVal());
+        procUsesMap.insert({node->getVal()->getVal(), usesSet});
     } else {
-        string stmtNum = nodeToStmtNumMap.at(node);
-        for (auto usesNode : usesLst)
-            pkb->registerUsesS(stmtNum, usesNode->getVal()->getVal());
+        stmtUsesMap.insert({nodeToStmtNumMap[node], usesSet});
     }
 }
 
-void UsesExtractor::dfs(TNode *node, list<TNode *> &usesLst) {
-    list<TNode *> usesLstChild;
+void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
+    unordered_set<string> usesSetChild;
     TNodeType type = node->getType();
     if (type == TNodeType::procedure) {
-        dfs(node->getChildren()[0], usesLstChild); // only 1 child stmtLst
-        usesLst.splice(usesLst.end(), usesLstChild);
-        registerUses(node, usesLst);
+        dfs(node->getChildren()[0], usesSetChild); // only 1 child stmtLst
+        usesSet = usesSetChild;
+        mapUses(node, usesSet);
     } else if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = node->getChildren();
         for (TNode *child : ch) {
-            dfs(child, usesLstChild);
-            usesLst.splice(usesLst.end(), usesLstChild);
-            usesLstChild.clear();
-        } // no registering for stmtLst
+            dfs(child, usesSetChild);
+            DesignExtractorUtils::combineSets(usesSet, usesSetChild);
+            usesSetChild.clear();
+        }
     } else if (type == TNodeType::printStmt) {
-        usesLst = {node->getChildren()[0]}; // only 1 child varName
-        registerUses(node, usesLst);
+        usesSet = {node->getChildren()[0]->getVal()->getVal()}; // only 1 child varName
+        mapUses(node, usesSet);
     } else if (type == TNodeType::whileStmt || type == TNodeType::ifStmt) {
         vector<TNode *> ch = node->getChildren();
         for (TNode *child : ch) { // 1st child is condExpr, rest are stmtLst
-            dfs(child, usesLstChild);
-            usesLst.splice(usesLst.end(), usesLstChild);
-            usesLstChild.clear();
+            dfs(child, usesSetChild);
+            DesignExtractorUtils::combineSets(usesSet, usesSetChild);
+            usesSetChild.clear();
         }
-        registerUses(node, usesLst);
+        mapUses(node, usesSet);
     } else if (type == TNodeType::assignStmt) {
-        dfs(node->getChildren()[1], usesLstChild); // right child is expr
-        usesLst.splice(usesLst.end(), usesLstChild);
-        registerUses(node, usesLst);
+        dfs(node->getChildren()[1], usesSetChild); // right child is expr
+        usesSet = usesSetChild;
+        mapUses(node, usesSet);
     } else if (isCondExpr(type) || isOp(type)) {
         vector<TNode *> ch = node->getChildren();
         for (TNode *child : ch) { // 1st child is condExpr, rest are stmtLst
-            dfs(child, usesLstChild);
-            usesLst.splice(usesLst.end(), usesLstChild);
-            usesLstChild.clear();
-        } // no registering for condExpr and isOp
+            dfs(child, usesSetChild);
+            DesignExtractorUtils::combineSets(usesSet, usesSetChild);
+            usesSetChild.clear();
+        }
     } else if (type == TNodeType::varName) {
-        usesLst = {node};
+        usesSet = {node->getVal()->getVal()};
     }
 }
 
 void UsesExtractor::extractRelationship() {
     vector<TNode *> procNodes = ast->getChildren();
     for (TNode *procNode : procNodes) {
-        list<TNode *> lst;
+        unordered_set<string> lst;
         dfs(procNode, lst);
     }
+}
+
+unordered_map<string, unordered_set<string>> UsesExtractor::getProcUsesMap() {
+    return procUsesMap;
+}
+
+unordered_map<string, unordered_set<string>> UsesExtractor::getStmtUsesMap() {
+    return stmtUsesMap;
 }
