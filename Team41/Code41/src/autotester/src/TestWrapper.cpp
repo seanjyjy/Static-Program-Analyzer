@@ -27,9 +27,9 @@ TestWrapper::TestWrapper() {
 void TestWrapper::parse(std::string filename) {
     // call your parser to do the parsing
   // ...rest of your code...
-//    string fileContent = FileReader::getFileContent(filename);
-//    Parser p = Parser{fileContent};
-//    TNode* ast = p.parse();
+    string fileContent = FileReader::getFileContent(filename);
+    Parser p = Parser{fileContent};
+    TNode* ast = p.parse();
 }
 
 // method to evaluating a query
@@ -37,12 +37,12 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
   // call your evaluator to evaluate the query here
   // ...code to evaluate query...
 
-//    QueryParser qp = QueryParser{query};
-//    QueryObject* queryObject = qp.parse();
-//    QueryEvaluator queryEvaluator(pkbManager);
-//    std::unordered_set<std::string> result = queryEvaluator.evaluateQuery(queryObject);
-//
-//    // store the answers to the query in the results list (it is initially empty)
-//    // each result must be a string.
-//    std::copy(result.begin(), result.end(), std::back_inserter(results));
+    QueryParser qp = QueryParser{query};
+    QueryObject* queryObject = qp.parse();
+    QueryEvaluator queryEvaluator(pkbManager);
+    std::unordered_set<std::string> result = queryEvaluator.evaluateQuery(queryObject);
+
+    // store the answers to the query in the results list (it is initially empty)
+    // each result must be a string.
+    std::copy(result.begin(), result.end(), std::back_inserter(results));
 }

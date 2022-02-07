@@ -6,7 +6,6 @@ QueryEvaluator::QueryEvaluator(PKB *pkb) { this->pkb = pkb; }
 
 std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     std::unordered_set<std::string> emptyResult;
-
     if (!queryObject->isQueryValid) {
         return emptyResult;
     }
@@ -24,7 +23,7 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
     if (resultTable->isEmpty()) {
         return emptyResult;
     }
-    printf("test first element lerft variable: %d\n", queryObject->clauses[0].getLeftClauseVariable().type);
+
     for (auto clause : queryObject->clauses) {
         try {
             Table* intermediateTable = this->evaluate(clause);

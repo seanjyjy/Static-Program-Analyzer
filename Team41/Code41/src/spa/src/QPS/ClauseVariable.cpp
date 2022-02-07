@@ -1,7 +1,9 @@
 #include "ClauseVariable.h"
 
-ClauseVariable::ClauseVariable(variable_type type, string &label)
-    : type(type), label(label) {}
+#include <utility>
+
+ClauseVariable::ClauseVariable(variable_type type, string label)
+    : type(type), label(std::move(label)) {}
 
 bool ClauseVariable::isIdentifier() {
     return type == identifier;
@@ -23,6 +25,6 @@ ClauseVariable::variable_type ClauseVariable::getType() {
     return type;
 }
 
-string &ClauseVariable::getLabel() {
+string ClauseVariable::getLabel() {
     return label;
 }

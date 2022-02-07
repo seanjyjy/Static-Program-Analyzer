@@ -9,9 +9,3 @@ procedure p {
   else {
     z = 1; }
   z = z + x + i; }
-
-procedure q {
-  if (x==1) then {
-    z = x + 1; }
-  else {
-    x = z + x; } }
