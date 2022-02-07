@@ -59,8 +59,8 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
 void UsesExtractor::extractRelationship() {
     vector<TNode *> procNodes = ast->getChildren();
     for (TNode *procNode : procNodes) {
-        unordered_set<string> lst;
-        dfs(procNode, lst);
+        unordered_set<string> st;
+        dfs(procNode, st);
     }
 }
 
