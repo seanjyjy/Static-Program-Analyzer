@@ -11,7 +11,7 @@
 class DesignExtractor {
 private:
     TNode *ast;
-    PKB *pkb = new PKB();
+    PKB *pkb;
     unordered_map<TNode *, string> nodeToStmtNumMap;
 
     void extractEntities();
@@ -19,7 +19,7 @@ private:
     void extractUses();
 
 public:
-    DesignExtractor(TNode *ast);
+    DesignExtractor(TNode *ast, PKB *pkb);
 
-    PKB *extractDesignToPkb();
+    void extractDesignToPkb();
 };

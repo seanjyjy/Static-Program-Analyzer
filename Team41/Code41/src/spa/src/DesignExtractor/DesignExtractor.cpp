@@ -3,7 +3,7 @@
 
 using namespace std;
 
-DesignExtractor::DesignExtractor(TNode *ast) : ast(ast) {}
+DesignExtractor::DesignExtractor(TNode *ast, PKB *pkb) : ast(ast), pkb(pkb) {}
 
 void DesignExtractor::extractEntities() {
     EntitiesExtractor ee = EntitiesExtractor(ast);
@@ -61,9 +61,8 @@ void DesignExtractor::extractUses() {
     }
 }
 
-PKB *DesignExtractor::extractDesignToPkb() {
+void DesignExtractor::extractDesignToPkb() {
     extractEntities();
     extractModifies();
     extractUses();
-    return pkb;
 }
