@@ -14,13 +14,10 @@ AbstractWrapper* WrapperFactory::createWrapper() {
 // Do not modify the following line
 volatile bool AbstractWrapper::GlobalStop = false;
 
-
-PKB* pkbManager;
 // a default constructor
-TestWrapper::TestWrapper() {
+TestWrapper::TestWrapper() : pkbManager() {
   // create any objects here as instance variables of this class
   // as well as any initialization required for your spa program
-    pkbManager = new PKB();
 }
 
 // method for parsing the SIMPLE source
