@@ -51,3 +51,7 @@ bool Row::operator==(const Row &other) const {
     return true;
 }
 
+Row::Row(const string &column, string value) {
+    this->addEntry(column, value);
+}
+
