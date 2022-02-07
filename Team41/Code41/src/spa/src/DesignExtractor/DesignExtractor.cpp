@@ -61,7 +61,7 @@ void DesignExtractor::extractUses() {
     }
 }
 
-void DesignExtractor::extractDesignToPkb() {
+void DesignExtractor::extractDesign() {
     extractEntities();
     extractModifies();
     extractUses();

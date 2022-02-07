@@ -21,5 +21,5 @@ private:
 public:
     DesignExtractor(TNode *ast, PKB *pkb);
 
-    void extractDesignToPkb();
+    void extractDesign();
 };
