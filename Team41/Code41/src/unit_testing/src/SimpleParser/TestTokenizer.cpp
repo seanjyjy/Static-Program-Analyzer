@@ -447,14 +447,23 @@ TEST_CASE("Tokenizer: integer") {
         TestTokenizerUtils::tokenizeAndCompare(s, expected);
     }
 
-    SECTION("all zeroes") {
+    SECTION("all zeroes should throw") {
         string s = "0000000000000000000";
         REQUIRE_THROWS(TestTokenizerUtils::tokenize(s));
     }
 
-    SECTION("leading zeroes") {
+    SECTION("leading zeroes should throw") {
         string s = "0000000000000000000999";
         REQUIRE_THROWS(TestTokenizerUtils::tokenize(s));
+    }
+
+    SECTION("single zero should not throw") {
+        string s = "0";
+        vector<pair<TokenType, string>> expected = {
+                {TokenType::integer, "0"},
+                {TokenType::eof, ""},
+        };
+        TestTokenizerUtils::tokenizeAndCompare(s, expected);
     }
 }
 

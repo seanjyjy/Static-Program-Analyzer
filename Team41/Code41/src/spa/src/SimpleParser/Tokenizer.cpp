@@ -186,14 +186,14 @@ Token Tokenizer::eatInteger() {
     assert(isdigit(currToken));
     pair<int, int> start = {row, col};
 
-    // integers with leading zeroes are not allowed
-    if (currToken == '0') throw runtime_error(withPosition("integers must not have leading zeroes"));
-
     string val;
     while (isdigit(currToken)) {
         val += currToken;
         advance();
     }
+
+    // 0 allowed, but 01 should not be allowed
+    if (val.size() > 1 && val[0] == '0') throw runtime_error(withPosition("integers must not have leading zeroes"));
 
     pair<int, int> end = {row, col};
     return Token{TokenType::integer, val, start, end};
