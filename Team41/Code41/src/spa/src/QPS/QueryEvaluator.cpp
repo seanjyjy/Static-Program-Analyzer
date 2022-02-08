@@ -11,24 +11,18 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
     }
 
     auto selectSynonym = queryObject->selectSynonym;
-    Table *resultTable;
+    Table *resultTable = nullptr;
 
-    // TODO: Change it to truth table to speed up initial config
     try {
-        resultTable = SelectSynonymEvaluator::evaluate(selectSynonym, this->pkb);
-    } catch (const runtime_error& error) {
-        resultTable = FalseTable::getTable();
-    }
-
-    if (resultTable->isEmpty()) {
-        return emptyResult;
-    }
-
-    for (auto clause : queryObject->clauses) {
-        try {
+        for (auto clause : queryObject->clauses) {
             Table* intermediateTable = this->evaluate(clause);
             if (intermediateTable->isEmpty()) {
                 return emptyResult;
+            }
+
+            if (resultTable == nullptr) {
+                resultTable = intermediateTable;
+                continue;
             }
 
             Table* temp = resultTable;
@@ -36,13 +30,32 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
             // TODO figure out destructor
             delete temp;
 
-        } catch (const runtime_error& error) {
-            resultTable = FalseTable::getTable();
+
+            if (resultTable->isEmpty()) {
+                return emptyResult;
+            }
+        }
+    } catch (const runtime_error& error) {
+        return emptyResult;
+    }
+
+    try {
+        for (const auto& declaration : queryObject->declarations) {
+            Table* intermediateTable = SelectSynonymEvaluator::evaluate(declaration, this->pkb);
+
+            if (intermediateTable->isEmpty()) {
+                return emptyResult;
+            }
+
+            resultTable = resultTable->mergeJoin(intermediateTable);
+
+            if (resultTable->isEmpty()) {
+                return emptyResult;
+            }
         }
 
-        if (resultTable->isEmpty()) {
-            return emptyResult;
-        }
+    } catch (const runtime_error& error) {
+        return emptyResult;
     }
 
     // copy result from resultTable to result here when can think of based on queryObject schema
