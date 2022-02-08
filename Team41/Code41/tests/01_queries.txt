@@ -6,7 +6,7 @@ Select s
 2 - Select variable without clause
 variable v;
 Select v
-x411, y132, x1c2v3b4, x
+x411, y132, x1c2v3b4, x, y
 5000
 3 - Select constant without clause
 constant c;
@@ -85,13 +85,13 @@ x
 5000
 18 - Uses with while and ident variable
 while w;
-Select w such that Uses(w, "x")
+Select w such that Uses(w, "y")
 9
 5000
 19 - Uses with while and synonym variable
 while w; variable v;
 Select v such that Uses(w, v)
-y132, x
+y132, x, y
 5000
 20 - Uses none
 stmt s;

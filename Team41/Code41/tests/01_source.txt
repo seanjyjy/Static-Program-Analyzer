@@ -9,7 +9,7 @@ procedure fUnCt10n {
 
   read x;
   print y132;
-  while (y132 > 1) {
+  while ((y132 > 1) || (y == 1)) {
     if (1 == 2) then {
         x = x;
     } else {
