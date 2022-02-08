@@ -7,7 +7,7 @@ using namespace std;
 
 class Parser {
 private:
-    const string &input;
+    string input;
     Tokens tokens;
     int cursor;
     Token currToken;
@@ -72,10 +72,22 @@ private:
 
     TNode *eatFactor();
 
-public:
-    Parser(string &input);
+    void init(string &s);
 
-    TNode *parse();
+public:
+    Parser();
+
+    TNode *parseProgram(string &s);
+
+    /**
+     * Parses an expression string into an abstract syntax tree (AST).
+     * Used by the query evaluator for expression-spec.
+     * expr -> expr + term | expr - term | term
+     *
+     * @param s the expr string with optional leading/trailing whitespace
+     * @return the parsed AST
+     */
+    TNode *parseExpr(string &s);
 
     // debugging purposes
     void printTokens();

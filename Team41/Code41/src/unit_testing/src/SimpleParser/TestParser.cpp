@@ -12,8 +12,8 @@ TEST_CASE("Parser: procedure") {
         string s = "procedure main {"
                    "print x;"
                    "}";
-        Parser p = Parser{s};
-        TNode* ast = p.parse();
+        Parser p;
+        TNode* ast = p.parseProgram(s);
         REQUIRE(ast != nullptr);
         ast->printRecursive();
     }
@@ -26,8 +26,8 @@ TEST_CASE("Parser: procedure") {
                    "procedure two {\n"
                    "\tprint y;\n"
                    "}";
-        Parser p = Parser{s};
-        TNode* ast = p.parse();
+        Parser p;
+        TNode* ast = p.parseProgram(s);
         REQUIRE(ast != nullptr);
         ast->printRecursive();
     }
@@ -40,8 +40,8 @@ TEST_CASE("Parser: procedure") {
                    "procedure while { print x; }\n"
                    "procedure if { print x; }\n"
                    "procedure assign { print x; }";
-        Parser p = Parser{s};
-        TNode* ast = p.parse();
+        Parser p;
+        TNode* ast = p.parseProgram(s);
         REQUIRE(ast != nullptr);
         ast->printRecursive();
     }
@@ -52,8 +52,8 @@ TEST_CASE("Parser: read") {
         string s = "procedure main {\n"
                    "\tread x;\n"
                    "}";
-        Parser p = Parser{s};
-        TNode* ast = p.parse();
+        Parser p;
+        TNode* ast = p.parseProgram(s);
         REQUIRE(ast != nullptr);
         ast->printRecursive();
 
@@ -75,8 +75,8 @@ TEST_CASE("Parser: print") {
                    "print x;"
                    "}";
 
-        Parser p = Parser{s};
-        TNode* ast = p.parse();
+        Parser p;
+        TNode* ast = p.parseProgram(s);
         REQUIRE(ast != nullptr);
         ast->printRecursive();
     }
@@ -87,8 +87,8 @@ TEST_CASE("Parser: call") {
                "call helloWorld;"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -100,8 +100,8 @@ TEST_CASE("Parser: while") {
                "}"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -114,8 +114,8 @@ TEST_CASE("Parser: if") {
                "print y;"
                "}"
                "}";
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -125,8 +125,8 @@ TEST_CASE("Parser: assignment") {
                "x = y;"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -138,8 +138,8 @@ TEST_CASE("Parser: boolean expressions") {
                "}"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -151,8 +151,8 @@ TEST_CASE("Parser: relational expressions") {
                "}"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -162,8 +162,8 @@ TEST_CASE("Parser: arithmetic expressions") {
                "x = 1 * 2 + 3 / 4;"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
