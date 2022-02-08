@@ -368,3 +368,53 @@ TEST_CASE("PKB: parent abstraction") {
         REQUIRE_FALSE(pkbManager.isParentT(stmt[2], stmt[3]));
     }
 }
+
+TEST_CASE("PKB: pattern abstraction") {
+    string stmt[] = {"s0", "s1", "s2"};
+    string vars[] = {"v0", "v1", "v2"};
+    unordered_set<string> EMPTY_SET;
+    vector<pair<string, string>> EMPTY_SET_PAIR;
+
+    Token varTok = Token(TokenType::name, "v0", {0, 0}, {0, 0});
+    Token oneTok = Token(TokenType::integer, "1", {0, 0}, {0, 0});
+    Token twoTok = Token(TokenType::integer, "2", {0, 0}, {0, 0});
+
+    // 1 + 2 * v0
+    TNode *varNode = TNode::makeVarName(&varTok);
+    TNode *one = TNode::makeConstVal(&oneTok);
+    TNode *two = TNode::makeConstVal(&twoTok);
+    TNode *times = TNode::makeTimes(two, varNode);
+    TNode *plus = TNode::makePlus(one, times);
+
+    PKB pkbManager;
+
+    SECTION("Pattern") {
+        REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromFullPattern(plus), EMPTY_SET_PAIR));
+        REQUIRE(pkbManager.getAllStmtsFromFullPattern(plus) == unordered_set<string>());
+        REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[0]) == unordered_set<string>());
+
+        // v0 = 1 + 2 * v0
+        REQUIRE_NOTHROW(pkbManager.registerPattern(stmt[0], vars[0], plus));
+        REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromFullPattern(plus),
+                                      vector<pair<string, string>>({{stmt[0], vars[0]}})));
+        REQUIRE(pkbManager.getAllStmtsFromFullPattern(plus) == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[0]) == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[1]) == unordered_set<string>());
+    }
+
+    SECTION("SubPattern") {
+        REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromSubPattern(plus), EMPTY_SET_PAIR));
+        REQUIRE(pkbManager.getAllStmtsFromSubPattern(plus) == unordered_set<string>());
+        REQUIRE(pkbManager.getStmtFromSubPatternNVar(plus, vars[0]) == unordered_set<string>());
+        // v0 = 1 + 2 * v0
+        REQUIRE_NOTHROW(pkbManager.registerPattern(stmt[0], vars[0], plus));
+
+        for (TNode *child: {one, two, times, plus, varNode}) {
+            REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromSubPattern(child),
+                                          vector<pair<string, string>>({{stmt[0], vars[0]}})));
+            REQUIRE(pkbManager.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[0]}));
+            REQUIRE(pkbManager.getStmtFromSubPatternNVar(child, vars[0]) == unordered_set<string>({stmt[0]}));
+            REQUIRE(pkbManager.getStmtFromSubPatternNVar(child, vars[1]) == unordered_set<string>());
+        }
+    }
+}
