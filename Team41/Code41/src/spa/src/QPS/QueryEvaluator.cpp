@@ -47,6 +47,11 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
                 return emptyResult;
             }
 
+            if (resultTable == nullptr) {
+                resultTable = intermediateTable;
+                continue;
+            }
+
             resultTable = resultTable->mergeJoin(intermediateTable);
 
             if (resultTable->isEmpty()) {
@@ -59,8 +64,8 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
     }
 
     // copy result from resultTable to result here when can think of based on queryObject schema
-     unordered_set<string> result = resultTable->getColumn(selectSynonym.synonym);
-     delete resultTable;
+    unordered_set<string> result = resultTable->getColumn(selectSynonym.synonym);
+    delete resultTable;
 
     return result;
 }
