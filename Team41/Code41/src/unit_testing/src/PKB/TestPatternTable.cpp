@@ -4,7 +4,7 @@
 
 using namespace std;
 
-TEST_CASE("PatternTable") {
+TEST_CASE("PKB: PatternTable") {
     PatternTable table;
     string stmt[] = {"s0", "s1", "s2"};
     string vars[] = {"v0", "v1", "v2"};
@@ -112,8 +112,10 @@ TEST_CASE("PatternTable") {
                     REQUIRE(table.getStmtFromSubPatternNVar(child, vars[1]) == unordered_set<string>({stmt[1]}));
                 }
 
+                // v0 + 1 + 2 * 3 - 1 / 3
+                TNode* swappedOperands = TNode::makePlus(varNode, minus);
                 // unique to none
-                for (TNode *child: { four }) {
+                for (TNode *child: { four, swappedOperands }) {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
                                                   vector<pair<string, string>>()));
                     REQUIRE(table.getAllStmtsFromSubPattern(child) == unordered_set<string>());
