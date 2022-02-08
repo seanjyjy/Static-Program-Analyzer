@@ -1,8 +1,23 @@
-//
-// Created by minsc on 2/8/2022.
-//
+#pragma once
 
-#ifndef SPA_FOLLOWSEXTRACTOR_H
-#define SPA_FOLLOWSEXTRACTOR_H
+#include <list>
+#include <unordered_map>
 
-#endif //SPA_FOLLOWSEXTRACTOR_H
+#include "Common/TNode.h"
+
+class FollowsExtractor {
+private:
+    TNode *ast;
+    unordered_map<TNode *, string> &nodeToStmtNumMap;
+    unordered_map<string, list<string>> followsMap;
+
+    void mapFollows(TNode *node, list<string> &followsLst);
+    void dfs(TNode *node);
+
+public:
+    FollowsExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap);
+
+    void extractRelationship();
+
+    unordered_map<string, list<string>> getFollowsMap();
+};
