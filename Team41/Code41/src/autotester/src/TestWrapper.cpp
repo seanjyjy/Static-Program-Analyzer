@@ -25,8 +25,8 @@ void TestWrapper::parse(std::string filename) {
     // call your parser to do the parsing
   // ...rest of your code...
     string fileContent = FileReader::getFileContent(filename);
-    Parser p = Parser{fileContent};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(fileContent);
     DesignExtractor designExtractor(ast, pkbManager);
     designExtractor.extractDesign();
 }

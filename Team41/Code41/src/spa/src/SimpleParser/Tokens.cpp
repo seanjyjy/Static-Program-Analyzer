@@ -34,4 +34,8 @@ void Tokens::print() {
     }
 }
 
+void Tokens::clear() {
+    tokens.clear();
+}
+
 

@@ -43,11 +43,13 @@ public:
 
     void printRecursive();
 
-    static TNode *makeProgram(TNode *procedure);
+    static TNode *makeProgram(vector<TNode *> procedures);
 
     static TNode *makeProcedure(Token *name, TNode *stmtLst);
 
-    static TNode *makeStmtLst(vector<TNode *> stmts); // variable arguments, all TNode*
+    // variable arguments, all TNode*
+    static TNode *makeStmtLst(vector<TNode *> stmts);
+
     static TNode *makeReadStmt(TNode *var);
 
     static TNode *makePrintStmt(TNode *var);

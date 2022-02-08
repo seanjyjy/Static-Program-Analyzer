@@ -13,7 +13,7 @@ using namespace std;
 #include "Parser.h"
 #include "Tokenizer.h"
 
-Parser::Parser(string &input) : input(input), cursor(0) {}
+Parser::Parser(): cursor(0) {}
 
 void Parser::advance() {
     cursor++;
@@ -62,6 +62,10 @@ bool Parser::peekMatchTypeVal(TokenType type, string val) {
     return peekMatchType(type) && currToken.getVal() == val;
 }
 
+bool Parser::isEof() {
+    return peekMatchType(TokenType::eof);
+}
+
 string Parser::genErrorMsgWithCurrToken() {
     auto[startRow, startCol] = currToken.getStart();
     auto[endRow, endCol] = currToken.getEnd();
@@ -90,7 +94,11 @@ Token *Parser::checkAndAdvance(TokenType type, string val) {
 }
 
 TNode *Parser::eatProgram() {
-    return TNode::makeProgram(eatProcedure());
+    vector<TNode *> procedures;
+    while (!isEof()) {
+        procedures.push_back(eatProcedure());
+    }
+    return TNode::makeProgram(procedures);
 }
 
 // procedure -> 'procedure' proc_name '{' stmtLst '}'
@@ -447,19 +455,13 @@ TNode *Parser::eatFactor() {
     }
 }
 
-TNode *Parser::parse() {
-    // first, tokenize input
-    Tokenizer tokenizer(input);
-    tokens = tokenizer.tokenize();
-
-    // tokenize succeeded, setup for parsing
-    if (tokens.empty()) throw runtime_error("parser tokens must not be empty");
-    currToken = tokens[0];
+TNode *Parser::parseProgram(string &s) {
+    init(s);
 
     // parse to ast
     try {
         TNode *ast = eatProgram();
-        if (!peekMatchType(TokenType::eof)) throw runtime_error("invalid syntax");
+        if (!peekMatchType(TokenType::eof)) throw runtime_error("invalid program syntax");
         // success, now set all parent pointers
         ast->setAllParents();
         return ast;
@@ -470,7 +472,42 @@ TNode *Parser::parse() {
     return nullptr;
 }
 
+TNode *Parser::parseExpr(string &s) {
+    init(s);
+
+    try {
+        TNode *ast = eatExpr();
+        if (!peekMatchType(TokenType::eof)) throw runtime_error("invalid expr syntax");
+        // success, now set all parent pointers
+        ast->setAllParents();
+        return ast;
+    } catch (exception &e) {
+        cout << e.what() << endl;
+    }
+
+    return nullptr;
+}
+
+
 void Parser::printTokens() {
     tokens.print();
 }
+
+void Parser::init(string &s) {
+    // set current string to parse
+    input = move(s);
+
+    // remove previous tokens (if any)
+    tokens.clear();
+
+    // tokenize input
+    Tokenizer tokenizer(input);
+    tokens = tokenizer.tokenize();
+
+    // tokenize succeeded, now setup for ast recursive descent
+    if (tokens.empty()) throw runtime_error("parser tokens must not be empty");
+    cursor = 0;
+    currToken = tokens[0];
+}
+
 
