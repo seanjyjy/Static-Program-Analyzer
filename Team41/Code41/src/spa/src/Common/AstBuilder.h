@@ -44,6 +44,7 @@ private:
     TNode* convertIf();
     TNode* convertAssign();
     TNode* convertNot();
+    TNode* convertAnd();
     TNode* convertOr();
     TNode* convertGt();
     TNode* convertGe();

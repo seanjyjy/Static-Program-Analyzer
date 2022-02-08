@@ -1,0 +1,4 @@
+<gt>
+	<const val=0></const>
+	<const val=0></const>
+</gt>

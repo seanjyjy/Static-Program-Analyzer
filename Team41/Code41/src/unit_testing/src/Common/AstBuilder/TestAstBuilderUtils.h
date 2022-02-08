@@ -9,5 +9,5 @@ using namespace std;
 class TestAstBuilderUtils {
 public:
     static TNode* parseXml(string xml);
-    static string readFile(string filename);
+    static string readFile(string folder, string filename);
 };

@@ -1,0 +1,4 @@
+<lt>
+	<const val=2></const>
+	<const val=2></const>
+</lt>

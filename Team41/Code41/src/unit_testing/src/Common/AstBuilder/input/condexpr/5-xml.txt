@@ -1,0 +1,4 @@
+<eq>
+	<const val=4></const>
+	<const val=4></const>
+</eq>

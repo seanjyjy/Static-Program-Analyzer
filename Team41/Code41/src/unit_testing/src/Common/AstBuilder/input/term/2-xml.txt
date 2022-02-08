@@ -1,0 +1,4 @@
+<div>
+    <var name=c></var>
+    <const val=3></const>
+</div>

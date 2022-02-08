@@ -1,0 +1,4 @@
+<ne>
+	<const val=5></const>
+	<const val=5></const>
+</ne>

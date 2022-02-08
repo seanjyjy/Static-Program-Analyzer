@@ -1,0 +1,4 @@
+<ge>
+	<const val=1></const>
+	<const val=1></const>
+</ge>

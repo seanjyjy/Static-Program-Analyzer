@@ -181,6 +181,7 @@ TNode* XmlTag::convert() {
     if (type == T_IF) return convertIf();
     if (type == T_ASSIGN) return convertAssign();
     if (type == T_NOT) return convertNot();
+    if (type == T_AND) return convertAnd();
     if (type == T_OR) return convertOr();
     if (type == T_GT) return convertGt();
     if (type == T_GE) return convertGe();
@@ -238,6 +239,10 @@ TNode* XmlTag::convertAssign() {
 
 TNode* XmlTag::convertNot() {
     return TNode::makeNot(nullptr);
+}
+
+TNode* XmlTag::convertAnd() {
+    return TNode::makeAnd(nullptr, nullptr);
 }
 
 TNode* XmlTag::convertOr() {
