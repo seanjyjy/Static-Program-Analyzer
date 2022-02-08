@@ -1,9 +1,9 @@
 #include "catch.hpp"
-#include "QPS/Row.h"
+#include "QPS/Table/Row.h"
 
 using namespace std;
 
-TEST_CASE() {
+TEST_CASE("QPS: Row") {
     Row row;
     unordered_map<string, string> emptyRow;
 

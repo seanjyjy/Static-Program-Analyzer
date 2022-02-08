@@ -6,17 +6,17 @@ using namespace std;
 
 class ClauseVariable {
 private:
+    string label;
+public:
     enum variable_type {
         identifier, wildcard, synonym, integer
     };
-    string &label;
     variable_type type;
-public:
     variable_type getType();
-    string &getLabel();
+    string getLabel();
     bool isIdentifier();
     bool isWildCard();
     bool isSynonym();
     bool isInteger();
-    ClauseVariable(variable_type type, string &label);
+    ClauseVariable(variable_type type, string label);
 };

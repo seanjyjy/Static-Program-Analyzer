@@ -4,7 +4,7 @@
 
 using namespace std;
 
-TEST_CASE("UsesTable") {
+TEST_CASE("PKB: UsesTable") {
     UsesTable table;
     string vars[] = {"var1", "var2"};
     unordered_set<string> EMPTY_SET;

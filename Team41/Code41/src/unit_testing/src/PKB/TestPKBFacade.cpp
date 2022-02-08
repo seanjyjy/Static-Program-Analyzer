@@ -4,7 +4,7 @@
 
 using namespace std;
 
-TEST_CASE("PKB: entities") {
+TEST_CASE("PKB: entities abstraction") {
     unordered_set<string> EMPTY_SET;
     string entity[] = {"abc", "def"};
     unordered_set<string> FILLED_SET_1;
@@ -42,7 +42,7 @@ TEST_CASE("PKB: entities") {
     }
 }
 
-TEST_CASE("PKB: statements") {
+TEST_CASE("PKB: statements abstraction") {
     unordered_set<string> EMPTY_SET;
     string stmt[] = {"1", "2", "3", "4"};
     unordered_set<string> FILLED_SET_1;

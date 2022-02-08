@@ -1,10 +1,10 @@
 #include "catch.hpp"
-#include "QPS/PQLTable.h"
-#include "QPS/Row.h"
+#include "QPS/Table/PQLTable.h"
+#include "QPS/Table/Row.h"
 
 using namespace std;
 
-TEST_CASE() {
+TEST_CASE("QPS: PQLTable") {
     Header header({"a", "b", "c", "d"});
     PQLTable table = PQLTable(header);
     Row *row = new Row();
@@ -78,7 +78,6 @@ TEST_CASE() {
         Row* a1 = new Row();
         Row* a4 = new Row();
         Row* a3 = new Row();
-
         REQUIRE_NOTHROW(a1->addEntry("a", "1"));
         REQUIRE_NOTHROW(a4->addEntry("a", "4"));
         REQUIRE_NOTHROW(a3->addEntry("a", "3"));
@@ -91,7 +90,7 @@ TEST_CASE() {
          * 1 | a
          * 1 | b
          */
-        PQLTable* newTable = table2.mergeJoin(table3);
+        Table* newTable = table2.mergeJoin(table3);
         REQUIRE(newTable->getHeader() == header2);
         REQUIRE(newTable->size() == 2);
         REQUIRE(newTable->hasRow(row1a));
@@ -123,7 +122,7 @@ TEST_CASE() {
          * 1 | a | z
          * 1 | b | z
          */
-        PQLTable* newTable2 = table2.mergeJoin(table4);
+        Table* newTable2 = table2.mergeJoin(table4);
         Header header5({"a", "d", "v"});
         REQUIRE(newTable2->getHeader() == header5);
         REQUIRE(newTable2->size() == 2);
@@ -138,5 +137,35 @@ TEST_CASE() {
         REQUIRE_NOTHROW(row1bz->addEntry("d", "z"));
         REQUIRE(newTable2->hasRow(row1az));
         REQUIRE(newTable2->hasRow(row1bz));
+    }
+
+    SECTION("MERGE_JOIN_TEST2") {
+        Header header1({"v"});
+        Header header2({"v", "a"});
+
+        PQLTable table1 = PQLTable(header1);
+        Row* rowX = new Row("v", "x");
+        Row* rowY = new Row("v", "y");
+        Row* rowG = new Row("v", "g");
+        Row* rowA = new Row("v", "a");
+        table1.addRow(rowX);
+        table1.addRow(rowY);
+        table1.addRow(rowG);
+        table1.addRow(rowA);
+
+        PQLTable* table2 = new PQLTable(header2);
+        Row* rowa2 = new Row();
+        rowa2->addEntry("v", "a");
+        rowa2->addEntry("a", "2");
+        Row* rowy1 = new Row();
+        rowy1->addEntry("v", "y");
+        rowy1->addEntry("a", "1");
+        table2->addRow(rowa2);
+        table2->addRow(rowy1);
+
+        Table* table3 = table1.mergeJoin(table2);
+        REQUIRE(table3->size() == 2);
+        REQUIRE(table3->getHeader() == header2);
+
     }
 }

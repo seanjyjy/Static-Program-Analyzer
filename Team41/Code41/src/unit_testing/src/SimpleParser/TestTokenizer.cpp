@@ -437,11 +437,11 @@ TEST_CASE("Tokenizer: relational expression") {
 
 TEST_CASE("Tokenizer: arithmetic expression") {
     SECTION("correct") {
-        string s = "flwekfjw * 0139458 + fiweu / fiowqefj % 2019381 - 23049823";
+        string s = "flwekfjw * 139458 + fiweu / fiowqefj % 2019381 - 23049823";
         vector<pair<TokenType, string>> expected = {
                 {TokenType::name, "flwekfjw"},
                 {TokenType::times, "*"},
-                {TokenType::integer, "0139458"},
+                {TokenType::integer, "139458"},
                 {TokenType::plus, "+"},
                 {TokenType::name, "fiweu"},
                 {TokenType::div, "/"},

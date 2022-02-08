@@ -3,7 +3,7 @@
 
 using namespace std;
 
-TEST_CASE("EntityTable") {
+TEST_CASE("PKB: EntityTable") {
     EntityTable table;
     unordered_set<string> EMPTY_SET;
 

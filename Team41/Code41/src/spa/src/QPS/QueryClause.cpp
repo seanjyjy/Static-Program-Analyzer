@@ -1,12 +1,14 @@
 #include "QueryClause.h"
 
-QueryClause::QueryClause(clause_type type, ClauseVariable &left, ClauseVariable &right) :
-    type(type), left(left), right(right) {}
+#include <utility>
 
-ClauseVariable & QueryClause::getLeftClauseVariable() const {
+QueryClause::QueryClause(clause_type type, ClauseVariable left, ClauseVariable right) :
+    type(type), left(std::move(left)), right(std::move(right)) {}
+
+ClauseVariable QueryClause::getLeftClauseVariable() const {
     return left;
 }
 
-ClauseVariable &QueryClause::getRightClauseVariable() const {
+ClauseVariable QueryClause::getRightClauseVariable() const {
     return right;
 }
