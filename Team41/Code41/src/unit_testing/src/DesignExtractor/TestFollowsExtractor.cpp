@@ -22,8 +22,8 @@ TEST_CASE("FollowsExtractor: Non-nested") {
                "\t}\n"
                "\tprint k;\n"
                "}";
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -55,8 +55,8 @@ TEST_CASE("FollowsExtractor: Nested") {
                "\t\t}\n"
                "\t}\n"
                "}";
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
