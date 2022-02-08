@@ -1,5 +1,11 @@
 # Team 41
 
+## SIMPLE Testing Plan
+1. Nesting level - 0/1 (easy), 2 (medium), >=3 (hard)
+2. Order of nesting - while/while, if/if, if/while, while/if
+3. Position of nested container - first, last, middle, only statement
+4. Types of statements - `read` `print` `call` `while` `if` `assign`
+
 ## Local Testing
 If you need a main function with access to the `spa` library but want to bypass autotester, use the `src/local_testing` project.
 1. Create `main.cpp` in directory `src/local_testing/src`

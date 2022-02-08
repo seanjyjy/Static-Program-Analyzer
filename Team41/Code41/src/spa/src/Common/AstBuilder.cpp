@@ -25,27 +25,36 @@ TNode *AstBuilder::build() {
         if (!tag.isCloseTag) {
             // start of an xml tag, e.g <assign>
             stk.push({tag.convert(), true});
+            tagStk.push(tag);
         } else {
             // end of an xml tag, e.g </assign>
             vector<TNode*> children;
-            while (!stk.empty() && !stk.top().second) {
+            while (!stk.empty() && !tagStk.empty() && !stk.top().second) {
                 auto [node, isProcessed] = stk.top();
                 stk.pop();
+                tagStk.pop();
                 children.push_back(node);
             }
 
             // xml opening tag corresponding to closing tag
             auto [parent, isProcessed] = stk.top();
             stk.pop();
+            XmlTag parentTag = tagStk.top();
+            tagStk.pop();
+
+            // opening and closing tags must match
+            if (tag.type != parentTag.type) throw runtime_error("xml tag mismatch: " + tag.type + ", " + parentTag.type);
 
             // could be node or token
             if (parent->getType() == TNodeType::varName || parent->getType() == TNodeType::constValue) {
                 stk.push({parent, false});
+                tagStk.push(parentTag);
             } else {
                 // left to right
                 reverse(children.begin(), children.end());
                 parent->setChildren(children);
                 stk.push({parent, false});
+                tagStk.push(parentTag);
             }
         }
 
@@ -181,16 +190,22 @@ TNode* XmlTag::convert() {
     if (type == T_NE) return convertNe();
     if (type == T_VAR) return convertVar();
     if (type == T_CONST) return convertConst();
+    if (type == T_PLUS) return convertPlus();
+    if (type == T_MINUS) return convertMinus();
+    if (type == T_TIMES) return convertTimes();
+    if (type == T_DIV) return convertDiv();
+    if (type == T_MOD) return convertMod();
     throw runtime_error("unknown xml tag " + type);
 }
 
 TNode* XmlTag::convertProgram() {
-    return TNode::makeProgram(nullptr);
+    return TNode::makeProgram({});
 }
 
 TNode* XmlTag::convertProcedure() {
+    ensureKeys({"val"});
     string name = data["val"];
-    return TNode::makeProcedure(new Token(TokenType::name, name), nullptr);
+    return TNode::makeProcedure(Token::makeVar(name), nullptr);
 }
 
 TNode* XmlTag::convertStmtList() {
@@ -255,12 +270,41 @@ TNode* XmlTag::convertNe() {
 }
 
 TNode* XmlTag::convertVar() {
-    string name = data["val"];
-    return TNode::makeVarName(new Token(TokenType::name, name));
+    ensureKeys({"name"});
+    string name = data["name"];
+    return TNode::makeVarName(Token::makeVar(name));
 }
 
 TNode* XmlTag::convertConst() {
-    string name = data["val"];
-    return TNode::makeConstVal(new Token(TokenType::name, name));
+    ensureKeys({"val"});
+    string val = data["val"];
+    return TNode::makeConstVal(Token::makeConst(val));
 }
 
+TNode *XmlTag::convertPlus() {
+    return TNode::makePlus(nullptr, nullptr);
+}
+
+TNode *XmlTag::convertMinus() {
+    return TNode::makeMinus(nullptr, nullptr);
+}
+
+TNode *XmlTag::convertTimes() {
+    return TNode::makeTimes(nullptr, nullptr);
+}
+
+TNode *XmlTag::convertDiv() {
+    return TNode::makeDiv(nullptr, nullptr);
+}
+
+TNode *XmlTag::convertMod() {
+    return TNode::makeMod(nullptr, nullptr);
+}
+
+void XmlTag::ensureKeys(const vector<string>& keys) {
+    for (const string& key: keys) {
+        if (data.find(key) == data.end()) {
+            throw runtime_error("xml tag " + type + " missing key " + key);
+        }
+    }
+}

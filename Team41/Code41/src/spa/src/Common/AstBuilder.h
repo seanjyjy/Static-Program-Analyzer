@@ -6,16 +6,11 @@
 
 using namespace std;
 
-struct TNodeOrToken {
-    TNode* node;
-    Token* token;
-};
-
 class XmlTag {
 private:
     const string T_PROGRAM = "program";
     const string T_PROCEDURE = "procedure";
-    const string T_STMTLIST = "stmtList";
+    const string T_STMTLIST = "stmts";
     const string T_READ = "read";
     const string T_PRINT = "print";
     const string T_CALL = "call";
@@ -33,6 +28,11 @@ private:
     const string T_NE = "ne";
     const string T_VAR = "var";
     const string T_CONST = "const";
+    const string T_PLUS = "plus";
+    const string T_MINUS = "minus";
+    const string T_TIMES = "times";
+    const string T_DIV = "div";
+    const string T_MOD = "mod";
 
     TNode* convertProgram();
     TNode* convertProcedure();
@@ -53,8 +53,14 @@ private:
     TNode* convertNe();
     TNode* convertVar();
     TNode* convertConst();
-public:
+    TNode* convertPlus();
+    TNode* convertMinus();
+    TNode* convertTimes();
+    TNode* convertDiv();
+    TNode* convertMod();
 
+    void ensureKeys(const vector<string>& keys);
+public:
     string type;
     unordered_map<string, string> data;
     bool isCloseTag;
@@ -75,6 +81,7 @@ private:
     int idx;
     char currToken;
     stack<pair<TNode*, bool>> stk; // node/token, isOpeningTag
+    stack<XmlTag> tagStk; // mirrors stk, meant to ensure correctness
 
     void advance();
     XmlTag eatXmlTag();

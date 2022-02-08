@@ -1,0 +1,57 @@
+#include "catch.hpp"
+#include "TestAstBuilderUtils.h"
+#include "Common/TreeUtils.h"
+#include <iostream>
+
+using namespace std;
+
+TEST_CASE("AST Builder: statement list") {
+    cout << TestAstBuilderUtils::readFile("1.txt") << endl;
+    SECTION("read x;\n"
+            "print x;\n"
+            "call main;\n"
+            "x = 0;\n"
+            "while (1==1) { print x; }\n"
+            "if (1==1) then { print x; } else { print y; }") {
+        string xml = "<stmts>\n"
+                     "<read>\n"
+                     "\t<var name=x></var>\n"
+                     "</read>\n"
+                     "<print>\n"
+                     "\t<var name=x></var>\n"
+                     "</print>\n"
+                     "<call>\n"
+                     "\t<var name=main></var>\n"
+                     "</call>\n"
+                     "<assign>\n"
+                     "\t<var name=x></var>\n"
+                     "\t<const val=0></const>\n"
+                     "</assign>\n"
+                     "<while>\n"
+                     "\t<eq>\n"
+                     "\t\t<const val=1></const>\n"
+                     "\t\t<const val=1></const>\n"
+                     "\t</eq>\n"
+                     "\t<print>\n"
+                     "\t\t\t<var name=x></var>\n"
+                     "\t</print>\n"
+                     "</while>\n"
+                     "<if>\n"
+                     "\t<eq>\n"
+                     "\t<const val=1></const>\n"
+                     "\t<const val=1></const>\n"
+                     "\t</eq>\n"
+                     "\t<stmts>\n"
+                     "\t\t<print>\n"
+                     "\t<var name=x></var>\n"
+                     "\t\t</print>\n"
+                     "\t</stmts>\n"
+                     "<stmts>\n"
+                     "\t\t<print>\n"
+                     "\t<var name=y></var>\n"
+                     "\t\t</print>\n"
+                     "\t</stmts>\n"
+                     "</if>\n"
+                     "</stmts>";
+    }
+}

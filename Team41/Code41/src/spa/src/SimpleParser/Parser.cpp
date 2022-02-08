@@ -455,40 +455,6 @@ TNode *Parser::eatFactor() {
     }
 }
 
-TNode *Parser::parseProgram(string &s) {
-    init(s);
-
-    // parse to ast
-    try {
-        TNode *ast = eatProgram();
-        if (!peekMatchType(TokenType::eof)) throw runtime_error("invalid program syntax");
-        // success, now set all parent pointers
-        ast->setAllParents();
-        return ast;
-    } catch (exception &e) {
-        cout << e.what() << endl;
-    }
-
-    return nullptr;
-}
-
-TNode *Parser::parseExpr(string &s) {
-    init(s);
-
-    try {
-        TNode *ast = eatExpr();
-        if (!peekMatchType(TokenType::eof)) throw runtime_error("invalid expr syntax");
-        // success, now set all parent pointers
-        ast->setAllParents();
-        return ast;
-    } catch (exception &e) {
-        cout << e.what() << endl;
-    }
-
-    return nullptr;
-}
-
-
 void Parser::printTokens() {
     tokens.print();
 }
@@ -510,4 +476,115 @@ void Parser::init(string &s) {
     currToken = tokens[0];
 }
 
+TNode *Parser::parse(string &s) {
+    init(s);
 
+    try {
+        TNode *ast = nullptr;
+        switch (parseOption) {
+            case Option::program: ast = eatProgram(); break;
+            case Option::procedure: ast = eatProcedure(); break;
+            case Option::stmtlist: ast = eatStmtLst(); break;
+            case Option::stmt: ast = eatStmt(); break;
+            case Option::readStmt: ast = eatStmtRead(); break;
+            case Option::printStmt: ast = eatStmtPrint(); break;
+            case Option::callStmt: ast = eatStmtCall(); break;
+            case Option::whileStmt: ast = eatStmtWhile(); break;
+            case Option::ifStmt: ast = eatStmtIf(); break;
+            case Option::assignStmt: ast = eatStmtAssign(); break;
+            case Option::condExpr: ast = eatCondExpr(); break;
+            case Option::expr: ast = eatExpr(); break;
+            case Option::term: ast = eatTerm(); break;
+            case Option::name:
+            case Option::constant:
+                ast = eatFactor();
+                break;
+            default: throw runtime_error("unknown parse option given");
+        }
+        if (!peekMatchType(TokenType::eof)) throw runtime_error("invalid expr syntax");
+        // success, now set all parent pointers
+        ast->setAllParents();
+        return ast;
+    } catch (runtime_error &e) {
+        cout << e.what() << endl;
+    } catch (exception &e) {
+        cout << e.what() << endl;
+    }
+
+    return nullptr;
+}
+
+TNode *Parser::parseProgram(string &s) {
+    parseOption = Option::program;
+    return parse(s);
+}
+
+TNode *Parser::parseProcedure(string &s) {
+    parseOption = Option::procedure;
+    return parse(s);
+}
+
+TNode *Parser::parseStmtLst(string &s) {
+    parseOption = Option::stmtlist;
+    return parse(s);
+}
+
+TNode *Parser::parseStmt(string &s) {
+    parseOption = Option::stmt;
+    return parse(s);
+}
+
+TNode *Parser::parseRead(string &s) {
+    parseOption = Option::readStmt;
+    return parse(s);
+}
+
+TNode *Parser::parsePrint(string &s) {
+    parseOption = Option::printStmt;
+    return parse(s);
+}
+
+TNode *Parser::parseCall(string &s) {
+    parseOption = Option::callStmt;
+    return parse(s);
+}
+
+TNode *Parser::parseWhile(string &s) {
+    parseOption = Option::whileStmt;
+    return parse(s);
+}
+
+TNode *Parser::parseIf(string &s) {
+    parseOption = Option::ifStmt;
+    return parse(s);
+}
+
+TNode *Parser::parseAssign(string &s) {
+    parseOption = Option::assignStmt;
+    return parse(s);
+}
+
+TNode *Parser::parseCondExpr(string &s) {
+    parseOption = Option::condExpr;
+    return parse(s);
+}
+
+TNode *Parser::parseExpr(string &s) {
+    parseOption = Option::expr;
+    return parse(s);
+}
+
+TNode *Parser::parseTerm(string &s) {
+    parseOption = Option::term;
+    return parse(s);
+}
+
+TNode *Parser::parseName(string &s) {
+    parseOption = Option::name;
+    return parse(s);
+}
+
+TNode *Parser::parseConst(string &s) {
+    parseOption = Option::constant;
+    return parse(s);
+}

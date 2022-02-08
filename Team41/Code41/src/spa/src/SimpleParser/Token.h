@@ -12,10 +12,15 @@ private:
     string val;
     pair<int, int> start; // starting position of token, { row, col }
     pair<int, int> end; // ending position of token, { row, col }
-public:
-    Token();
 
-    Token(TokenType type, string val); // for testing purposes
+    // for testing purposes
+    Token(TokenType type, string val);
+public:
+    // for testing purposes
+    static Token* makeVar(string val);
+    static Token* makeConst(string val);
+
+    Token();
 
     Token(TokenType type, string val, pair<int, int> start, pair<int, int> end);
 
