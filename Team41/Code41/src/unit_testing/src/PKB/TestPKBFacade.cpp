@@ -384,7 +384,7 @@ TEST_CASE("PKB: pattern abstraction") {
     TNode *one = TNode::makeConstVal(&oneTok);
     TNode *two = TNode::makeConstVal(&twoTok);
     TNode *times = TNode::makeTimes(two, varNode);
-    TNode *plus = TNode::makeTimes(one, times);
+    TNode *plus = TNode::makePlus(one, times);
 
     PKB pkbManager;
 

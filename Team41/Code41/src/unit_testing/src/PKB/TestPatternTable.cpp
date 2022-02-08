@@ -24,10 +24,10 @@ TEST_CASE("PatternTable") {
     TNode *three = TNode::makeConstVal(&threeTok);
     TNode *four = TNode::makeConstVal(&fourTok);
     TNode *times = TNode::makeTimes(two, three);
-    TNode *divide = TNode::makeTimes(one, three);
-    TNode *plus = TNode::makeTimes(one, times);
-    TNode *minus = TNode::makeTimes(plus, divide);
-    TNode *plusVar = TNode::makeTimes(minus, varNode);
+    TNode *divide = TNode::makeDiv(one, three);
+    TNode *plus = TNode::makePlus(one, times);
+    TNode *minus = TNode::makeMinus(plus, divide);
+    TNode *plusVar = TNode::makePlus(minus, varNode);
 
     SECTION("FullPattern") {
         SECTION("Initial State") {
