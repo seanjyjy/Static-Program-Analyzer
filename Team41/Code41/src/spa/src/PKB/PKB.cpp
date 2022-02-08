@@ -131,6 +131,10 @@ void PKB::registerParent(string parentStmt, string childStmt) {
     return parentTable->setParent(move(parentStmt), move(childStmt));
 }
 
+void PKB::registerParentT(string parentStmt, string childStmt) {
+    return parentTable->setParentT(move(parentStmt), move(childStmt));
+}
+
 bool PKB::isParent(string stmt1, string stmt2) { return parentTable->isParent(move(stmt1), move(stmt2)); }
 
 unordered_set<string> PKB::getChildStmtsOf(string parentStmt) {

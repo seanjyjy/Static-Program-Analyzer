@@ -107,7 +107,6 @@ public:
 
     /**
      * Registers to PKB that the specified stmt1 follows specified stmt2
-     * Recursively update any indirect follow relationship between statements as required
      *
      * @param stmt1 the follower statement
      * @param stmt2 the followed statement
@@ -141,15 +140,13 @@ public:
 
     /**
      * Registers to PKB that the specified stmt1 is parent of specified stmt2.
-     * Recursively update any ancestor-descendant relationship as required
-     *
-     * @param parentStmt the parent statement
-     * @param childStmt the child statement
-     * @throws val_map_err if stmt2 is already direct child of some other statement
-     * @throws cyclic_err if the registration creates a cycle in the follow graph
-     * @throws self_err if statement attempts to parent itself
      */
     void registerParent(string parentStmt, string childStmt);
+
+    /**
+     * Registers to PKB that the specified stmt1 has ancestor-descendant relation with specified stmt2.
+     */
+    void registerParentT(string parentStmt, string childStmt);
 
     bool isParent(string stmt1, string stmt2); // Checks if stmt1 is parent of stmt2
     unordered_set<string> getChildStmtsOf(string parentStmt);// Gets the stmts that are direct child of parentStmt
