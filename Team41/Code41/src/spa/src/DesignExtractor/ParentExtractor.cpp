@@ -28,7 +28,7 @@ void ParentExtractor::mapParentT(TNode *node, list<string> &parentLst) {
 }
 
 void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
-    list<string> parentLstChild, parentLstTChild;
+    list<string> parentLstChild;
     TNodeType type = node->getType();
     if (type == TNodeType::procedure) {
         dfs(node->getChildren()[0], parentLstChild); // only 1 child stmtLst{
@@ -46,11 +46,13 @@ void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
         }
         mapParent(node);
         mapParentT(node, parentLst);
+        parentLst.push_front(nodeToStmtNumMap[node]);
     } else if (type == TNodeType::whileStmt) {
         dfs(node->getChildren()[1], parentLstChild); // right child stmtLst
         parentLst = parentLstChild;
         mapParent(node);
         mapParentT(node, parentLst);
+        parentLst.push_front(nodeToStmtNumMap[node]);
     } else if (isStatement(type)) { // read, print, call, assign
         parentLst = {nodeToStmtNumMap[node]};
     }
