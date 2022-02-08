@@ -14,8 +14,8 @@ TEST_CASE("Test 2") {
     cwd /= "src/integration_testing/src/test2/Test2.txt";
     string path = cwd.string();
     string fileContent = FileReader::getFileContent(path);
-    Parser p = Parser{fileContent};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(fileContent);
     PKB* pkbManager = new PKB();
     DesignExtractor designExtractor(ast, pkbManager);
     designExtractor.extractDesign();

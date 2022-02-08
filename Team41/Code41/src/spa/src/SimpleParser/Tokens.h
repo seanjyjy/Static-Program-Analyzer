@@ -16,6 +16,8 @@ public:
 
     bool empty();
 
+    void clear();
+
     Token &operator[](int idx);
 
     // debugging purposes

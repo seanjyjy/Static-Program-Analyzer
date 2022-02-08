@@ -6,13 +6,54 @@
 
 using namespace std;
 
+// TODO: actually generate the ast and check equality
+TEST_CASE("Parser: procedure") {
+    SECTION("single procedure should parseProgram") {
+        string s = "procedure main {"
+                   "print x;"
+                   "}";
+        Parser p;
+        TNode* ast = p.parseProgram(s);
+        REQUIRE(ast != nullptr);
+        ast->printRecursive();
+    }
+
+    SECTION("multiple procedures should parseProgram") {
+        string s = "procedure one {\n"
+                   "\tprint x;\n"
+                   "}\n"
+                   "\n"
+                   "procedure two {\n"
+                   "\tprint y;\n"
+                   "}";
+        Parser p;
+        TNode* ast = p.parseProgram(s);
+        REQUIRE(ast != nullptr);
+        ast->printRecursive();
+    }
+
+    SECTION("keyword as procedure name should parseProgram") {
+        string s = "procedure procedure { print x; }\n"
+                   "procedure read { print x; }\n"
+                   "procedure print { print x; }\n"
+                   "procedure call { print x; }\n"
+                   "procedure while { print x; }\n"
+                   "procedure if { print x; }\n"
+                   "procedure assign { print x; }";
+        Parser p;
+        TNode* ast = p.parseProgram(s);
+        REQUIRE(ast != nullptr);
+        ast->printRecursive();
+    }
+}
+
 TEST_CASE("Parser: read") {
     SECTION("1") {
         string s = "procedure main {\n"
                    "\tread x;\n"
                    "}";
-        Parser p = Parser{s};
-        TNode* ast = p.parse();
+        Parser p;
+        TNode* ast = p.parseProgram(s);
         REQUIRE(ast != nullptr);
         ast->printRecursive();
 
@@ -22,7 +63,7 @@ TEST_CASE("Parser: read") {
         TNode* stmtLst = TNode::makeStmtLst({ readS });
         Token* main = new Token(TokenType::name, "main", {0,0}, {0,0});
         TNode* procedure = TNode::makeProcedure(main, stmtLst);
-        TNode* program = TNode::makeProgram(procedure);
+        TNode* program = TNode::makeProgram({ procedure });
         program->printRecursive();
         REQUIRE(TreeUtils::isEqual(program, ast));
     }
@@ -34,8 +75,8 @@ TEST_CASE("Parser: print") {
                    "print x;"
                    "}";
 
-        Parser p = Parser{s};
-        TNode* ast = p.parse();
+        Parser p;
+        TNode* ast = p.parseProgram(s);
         REQUIRE(ast != nullptr);
         ast->printRecursive();
     }
@@ -46,8 +87,8 @@ TEST_CASE("Parser: call") {
                "call helloWorld;"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -59,8 +100,8 @@ TEST_CASE("Parser: while") {
                "}"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -73,8 +114,8 @@ TEST_CASE("Parser: if") {
                "print y;"
                "}"
                "}";
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -84,8 +125,8 @@ TEST_CASE("Parser: assignment") {
                "x = y;"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -97,8 +138,8 @@ TEST_CASE("Parser: boolean expressions") {
                "}"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -110,8 +151,8 @@ TEST_CASE("Parser: relational expressions") {
                "}"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
@@ -121,8 +162,8 @@ TEST_CASE("Parser: arithmetic expressions") {
                "x = 1 * 2 + 3 / 4;"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     REQUIRE(ast != nullptr);
     ast->printRecursive();
 }
