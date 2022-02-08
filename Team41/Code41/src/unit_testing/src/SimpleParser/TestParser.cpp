@@ -6,6 +6,47 @@
 
 using namespace std;
 
+// TODO: actually generate the ast and check equality
+TEST_CASE("Parser: procedure") {
+    SECTION("single procedure should parse") {
+        string s = "procedure main {"
+                   "print x;"
+                   "}";
+        Parser p = Parser{s};
+        TNode* ast = p.parse();
+        REQUIRE(ast != nullptr);
+        ast->printRecursive();
+    }
+
+    SECTION("multiple procedures should parse") {
+        string s = "procedure one {\n"
+                   "\tprint x;\n"
+                   "}\n"
+                   "\n"
+                   "procedure two {\n"
+                   "\tprint y;\n"
+                   "}";
+        Parser p = Parser{s};
+        TNode* ast = p.parse();
+        REQUIRE(ast != nullptr);
+        ast->printRecursive();
+    }
+
+    SECTION("keyword as procedure name should parse") {
+        string s = "procedure procedure { print x; }\n"
+                   "procedure read { print x; }\n"
+                   "procedure print { print x; }\n"
+                   "procedure call { print x; }\n"
+                   "procedure while { print x; }\n"
+                   "procedure if { print x; }\n"
+                   "procedure assign { print x; }";
+        Parser p = Parser{s};
+        TNode* ast = p.parse();
+        REQUIRE(ast != nullptr);
+        ast->printRecursive();
+    }
+}
+
 TEST_CASE("Parser: read") {
     SECTION("1") {
         string s = "procedure main {\n"
@@ -22,7 +63,7 @@ TEST_CASE("Parser: read") {
         TNode* stmtLst = TNode::makeStmtLst({ readS });
         Token* main = new Token(TokenType::name, "main", {0,0}, {0,0});
         TNode* procedure = TNode::makeProcedure(main, stmtLst);
-        TNode* program = TNode::makeProgram(procedure);
+        TNode* program = TNode::makeProgram({ procedure });
         program->printRecursive();
         REQUIRE(TreeUtils::isEqual(program, ast));
     }
