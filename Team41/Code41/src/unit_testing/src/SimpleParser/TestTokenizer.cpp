@@ -349,6 +349,7 @@ TEST_CASE("Tokenizer: if statement") {
                 {TokenType::eq, "=="},
                 {TokenType::integer, "1"},
                 {TokenType::closingBracket, ")"},
+                {TokenType::name, "then"},
                 {TokenType::openingBrace, "{"},
                 {TokenType::name, "print"},
                 {TokenType::name, "x"},
@@ -359,6 +360,7 @@ TEST_CASE("Tokenizer: if statement") {
                 {TokenType::name, "print"},
                 {TokenType::name, "y"},
                 {TokenType::semicolon, ";"},
+                {TokenType::closingBrace, "}"},
                 {TokenType::eof, ""},
         };
         TestTokenizerUtils::tokenizeAndCompare(s, expected);
@@ -400,7 +402,7 @@ TEST_CASE("Tokenizer: conditional expression") {
                 {TokenType::eq, "=="},
                 {TokenType::integer, "1"},
                 {TokenType::closingBracket, ")"},
-                {TokenType::orOp, "&&"},
+                {TokenType::orOp, "||"},
                 {TokenType::openingBracket, "("},
                 {TokenType::integer, "1"},
                 {TokenType::eq, "=="},
