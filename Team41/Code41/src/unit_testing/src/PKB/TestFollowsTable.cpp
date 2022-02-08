@@ -89,7 +89,7 @@ TEST_CASE("PKB: FollowsTable") {
             vector<pair<string, string>> entryList;
 
             // 0 -> 1
-            REQUIRE_NOTHROW(table.setFollows(stmt[0], stmt[1]));
+            REQUIRE_NOTHROW(table.setFollowsT(stmt[0], stmt[1]));
             entryList.push_back(make_pair(stmt[0], stmt[1]));
             REQUIRE(table.getStmtsFollowedTBy(stmt[0]) == unordered_set<string>({stmt[1]}));
             REQUIRE(table.getStmtsFollowingT(stmt[1]) == unordered_set<string>({stmt[0]}));
@@ -97,7 +97,7 @@ TEST_CASE("PKB: FollowsTable") {
             REQUIRE(table.isFollowsT(stmt[0], stmt[1]));
 
             // 2 -> 3
-            REQUIRE_NOTHROW(table.setFollows(stmt[2], stmt[3]));
+            REQUIRE_NOTHROW(table.setFollowsT(stmt[2], stmt[3]));
             entryList.push_back(make_pair(stmt[2], stmt[3]));
             REQUIRE(table.getStmtsFollowedTBy(stmt[2]) == unordered_set<string>({stmt[3]}));
             REQUIRE(table.getStmtsFollowingT(stmt[3]) == unordered_set<string>({stmt[2]}));
@@ -105,7 +105,10 @@ TEST_CASE("PKB: FollowsTable") {
             REQUIRE(table.isFollowsT(stmt[2], stmt[3]));
 
             //  0 -> 1 -> 2 -> 3
-            REQUIRE_NOTHROW(table.setFollows(stmt[1], stmt[2]));
+            REQUIRE_NOTHROW(table.setFollowsT(stmt[0], stmt[2]));
+            REQUIRE_NOTHROW(table.setFollowsT(stmt[0], stmt[3]));
+            REQUIRE_NOTHROW(table.setFollowsT(stmt[1], stmt[2]));
+            REQUIRE_NOTHROW(table.setFollowsT(stmt[1], stmt[3]));
             entryList.push_back(make_pair(stmt[0], stmt[2]));
             entryList.push_back(make_pair(stmt[0], stmt[3]));
             entryList.push_back(make_pair(stmt[1], stmt[2]));
@@ -126,31 +129,14 @@ TEST_CASE("PKB: FollowsTable") {
             REQUIRE(table.isFollowsT(stmt[0], stmt[3]));
             REQUIRE(table.isFollowsT(stmt[0], stmt[2]));
             REQUIRE(table.isFollowsT(stmt[1], stmt[3]));
-
-            REQUIRE(table.getStmtsFollowingSomeStmt() == unordered_set<string>({stmt[0], stmt[1], stmt[2]}));
-            REQUIRE(table.getStmtsFollowedBySomeStmt() == unordered_set<string>({stmt[1], stmt[2], stmt[3]}));
         }
 
             // domain specific edge cases
         SECTION("Edge cases") {
             // 0 -> 1
-            REQUIRE_NOTHROW(table.setFollows(stmt[0], stmt[1]));
+            REQUIRE_NOTHROW(table.setFollowsT(stmt[0], stmt[1]));
             // repeated follow does not throw error
-            REQUIRE_NOTHROW(table.setFollows(stmt[0], stmt[1]));
-
-            // 0 -> 1 -x-> 0
-            REQUIRE_THROWS_WITH(table.setFollows(stmt[1], stmt[0]),
-                                Catch::Contains("[PKB]") && Catch::Contains("[FollowsTable]") &&
-                                Catch::Contains("Cyclic dependency"));
-
-            // 0 -> 1 -> 2 -> 3
-            REQUIRE_NOTHROW(table.setFollows(stmt[1], stmt[2]));
-            REQUIRE_NOTHROW(table.setFollows(stmt[2], stmt[3]));
-
-            // 0 -> 1 -> 2 -> 3 -x-> 0
-            REQUIRE_THROWS_WITH(table.setFollows(stmt[3], stmt[0]),
-                                Catch::Contains("[PKB]") && Catch::Contains("[FollowsTable]") &&
-                                Catch::Contains("Cyclic dependency"));
+            REQUIRE_NOTHROW(table.setFollowsT(stmt[0], stmt[1]));
         }
     }
 }

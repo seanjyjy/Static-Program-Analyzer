@@ -113,10 +113,16 @@ public:
      * @param stmt2 the followed statement
      * @throws key_map_err if stmt1 is already following some other statement
      * @throws val_map_err if stmt2 is already followed by some other statement
-     * @throws cyclic_err if the registration creates a cycle in the follow graph
-     * @throws self_err if statement attempts to follow itself
      */
     void registerFollows(string stmt1, string stmt2);
+
+    /**
+     * Registers to PKB that the specified stmt1 followsT specified stmt2
+     *
+     * @param stmt1 the follower statement
+     * @param stmt2 the followed statement
+     */
+    void registerFollowsT(string stmt1, string stmt2);
 
     bool isFollows(string stmt1, string stmt2); // Checks if stmt1 follows stmt2
     string getStmtFollowing(string stmtNum);// Gets the stmt that follows the specified stmt

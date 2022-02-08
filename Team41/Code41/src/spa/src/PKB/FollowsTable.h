@@ -3,6 +3,7 @@
 #include "ManyToMany.h"
 #include "OneToOne.h"
 #include <string>
+#include <stdexcept>
 
 using namespace std;
 
@@ -16,6 +17,7 @@ public:
     FollowsTable();
 
     void setFollows(string follower, string followed);
+    void setFollowsT(string follower, string followed);
 
     string getStmtFollowedBy(string follower);
     string getStmtFollowing(string followed);
