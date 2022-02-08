@@ -450,7 +450,7 @@ TNode *Parser::eatFactor() {
 TNode *Parser::parseProgram(string &s) {
     init(s);
 
-    // parseProgram to ast
+    // parse to ast
     try {
         TNode *ast = eatProgram();
         if (!peekMatchType(TokenType::eof)) throw runtime_error("invalid program syntax");
@@ -486,7 +486,7 @@ void Parser::printTokens() {
 }
 
 void Parser::init(string &s) {
-    // set current string to parseProgram
+    // set current string to parse
     input = move(s);
 
     // remove previous tokens (if any)
