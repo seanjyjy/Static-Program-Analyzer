@@ -35,6 +35,8 @@ unordered_set<string> SelectSynonymEvaluator::getResultViaType(QueryDeclaration:
             return pkb->getAssigns();
         case QueryDeclaration::design_entity_type::VARIABLE:
             return pkb->getVariables();
+        case QueryDeclaration::design_entity_type::CONSTANT:
+            return pkb->getConstants();
         case QueryDeclaration::design_entity_type::PROCEDURE:
             return pkb->getProcedures();
         default:
