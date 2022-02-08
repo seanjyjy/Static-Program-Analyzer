@@ -6,6 +6,8 @@
 #include "EntitiesExtractor.h"
 #include "ModifiesExtractor.h"
 #include "UsesExtractor.h"
+#include "FollowsExtractor.h"
+#include "ParentExtractor.h"
 
 class DesignExtractor {
 private:
@@ -16,7 +18,8 @@ private:
     void extractEntities();
     void extractModifies();
     void extractUses();
-
+    void extractFollows();
+    void extractParent();
 public:
     DesignExtractor(TNode *ast, PKB *pkb);
 

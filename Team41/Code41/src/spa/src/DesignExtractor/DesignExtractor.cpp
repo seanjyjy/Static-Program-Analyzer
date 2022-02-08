@@ -61,8 +61,33 @@ void DesignExtractor::extractUses() {
     }
 }
 
+void DesignExtractor::extractFollows() {
+    FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
+    fe.extractRelationship();
+    for (auto &[followed, followsTLst] : fe.getFollowsTMap()) {
+        pkb->registerFollows(followsTLst.front(), followed); // front of list is follows
+        for (auto follower : followsTLst)
+            pkb->registerFollowsT(follower, followed);
+    }
+}
+
+void DesignExtractor::extractParent() {
+    ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
+    pe.extractRelationship();
+    for (auto &[parent, parentLst] : pe.getParentMap()) {
+        for (auto child : parentLst)
+            pkb->registerParent(parent, child);
+    }
+    for (auto &[parent, parentTLst] : pe.getParentTMap()) {
+        for (auto child : parentTLst)
+            pkb->registerParent(parent, child);
+    }
+}
+
 void DesignExtractor::extractDesign() {
     extractEntities();
     extractModifies();
     extractUses();
+    extractFollows();
+    extractParent();
 }
