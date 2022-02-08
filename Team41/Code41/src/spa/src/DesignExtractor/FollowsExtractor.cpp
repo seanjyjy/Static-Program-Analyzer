@@ -6,7 +6,7 @@ FollowsExtractor::FollowsExtractor(TNode *ast, unordered_map<TNode *, string> &n
 
 void FollowsExtractor::mapFollows(TNode *node, list<string> &followsLst) {
     if (followsLst.empty()) return;
-    followsMap.insert({nodeToStmtNumMap[node], followsLst});
+    followsTMap.insert({nodeToStmtNumMap[node], followsLst});
 }
 
 void FollowsExtractor::dfs(TNode *node) {
@@ -24,6 +24,7 @@ void FollowsExtractor::dfs(TNode *node) {
         list<string> followsLst;
         for (int i = ch.size() - 1; i >= 0; i--) {
             TNode *childNode = ch[i];
+            dfs(childNode);
             mapFollows(childNode, followsLst);
             followsLst.push_front(nodeToStmtNumMap[childNode]);
         }
@@ -37,6 +38,6 @@ void FollowsExtractor::extractRelationship() {
     }
 }
 
-unordered_map<string, list<string>> FollowsExtractor::getFollowsMap() {
-    return followsMap;
+unordered_map<string, list<string>> FollowsExtractor::getFollowsTMap() {
+    return followsTMap;
 }

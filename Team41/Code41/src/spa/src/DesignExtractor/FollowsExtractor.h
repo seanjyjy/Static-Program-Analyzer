@@ -9,7 +9,7 @@ class FollowsExtractor {
 private:
     TNode *ast;
     unordered_map<TNode *, string> &nodeToStmtNumMap;
-    unordered_map<string, list<string>> followsMap;
+    unordered_map<string, list<string>> followsTMap;
 
     void mapFollows(TNode *node, list<string> &followsLst);
     void dfs(TNode *node);
@@ -19,5 +19,5 @@ public:
 
     void extractRelationship();
 
-    unordered_map<string, list<string>> getFollowsMap();
+    unordered_map<string, list<string>> getFollowsTMap();
 };
