@@ -11,13 +11,18 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
     }
 
     auto selectSynonym = queryObject->selectSynonym;
-    Table *resultTable = TrueTable::getTable();
+    Table *resultTable = nullptr;
 
     try {
         for (auto clause : queryObject->clauses) {
             Table* intermediateTable = this->evaluate(clause);
             if (intermediateTable->isEmpty()) {
                 return emptyResult;
+            }
+
+            if (resultTable == nullptr) {
+                resultTable = intermediateTable;
+                continue;
             }
 
             Table* temp = resultTable;
