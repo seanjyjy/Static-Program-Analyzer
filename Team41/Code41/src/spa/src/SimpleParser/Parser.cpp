@@ -62,6 +62,10 @@ bool Parser::peekMatchTypeVal(TokenType type, string val) {
     return peekMatchType(type) && currToken.getVal() == val;
 }
 
+bool Parser::isEof() {
+    return peekMatchType(TokenType::eof);
+}
+
 string Parser::genErrorMsgWithCurrToken() {
     auto[startRow, startCol] = currToken.getStart();
     auto[endRow, endCol] = currToken.getEnd();
@@ -90,7 +94,11 @@ Token *Parser::checkAndAdvance(TokenType type, string val) {
 }
 
 TNode *Parser::eatProgram() {
-    return TNode::makeProgram(eatProcedure());
+    vector<TNode *> procedures;
+    while (!isEof()) {
+        procedures.push_back(eatProcedure());
+    }
+    return TNode::makeProgram(procedures);
 }
 
 // procedure -> 'procedure' proc_name '{' stmtLst '}'

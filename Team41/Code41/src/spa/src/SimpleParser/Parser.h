@@ -30,6 +30,8 @@ private:
 
     bool peekMatchTypeVal(TokenType type, string val);
 
+    bool isEof();
+
     string genErrorMsgWithCurrToken();
 
     string genSyntaxErrorMsg();
