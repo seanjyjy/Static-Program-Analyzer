@@ -1,0 +1,4 @@
+<minus>
+	<var name=a></var>
+	<var name=a></var>
+</minus>

@@ -5,10 +5,9 @@
 using namespace std;
 
 TEST_CASE("AST Builder: call") {
-    SECTION("call main;") {
-        string xml = "<call>\n"
-                     "\t<var name=main></var>\n"
-                     "</call>";
+    SECTION("1") {
+        string simple = TestAstBuilderUtils::readFile("call", "1-simple.txt");
+        string xml = TestAstBuilderUtils::readFile("call", "1-xml.txt");
         // manually build actual AST
         Token* var = Token::makeVar("main");
         TNode* call = TNode::makeCallStmt(

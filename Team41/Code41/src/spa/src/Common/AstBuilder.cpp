@@ -204,8 +204,8 @@ TNode* XmlTag::convertProgram() {
 }
 
 TNode* XmlTag::convertProcedure() {
-    ensureKeys({"val"});
-    string name = data["val"];
+    ensureKeys({"name"});
+    string name = data["name"];
     return TNode::makeProcedure(Token::makeVar(name), nullptr);
 }
 

@@ -6,8 +6,16 @@
 using namespace std;
 
 TEST_CASE("AST Builder: statement list") {
-    string simple = TestAstBuilderUtils::readFile("stmtlist", "1-simple.txt");
     SECTION("1") {
+        /*
+            read x;
+            print x;
+            call main;
+            x = 0;
+            while (1==1) { print x; }
+            if (1==1) then { print x; } else { print y; }
+         */
+        string simple = TestAstBuilderUtils::readFile("stmtlist", "1-simple.txt");
         string xml = TestAstBuilderUtils::readFile("stmtlist", "1-xml.txt");
         // manually build actual AST
         TNode* stmts = TNode::makeStmtLst({

@@ -1,0 +1,16 @@
+<minus>
+	<plus>
+		<times>
+            <const val=1></const>
+            <const val=1></const>
+		</times>
+		<div>
+			<const val=2></const>
+            <const val=2></const>
+		</div>
+	</plus>
+	<mod>
+        <var name=a></var>
+        <var name=a></var>
+	</mod>
+</minus>

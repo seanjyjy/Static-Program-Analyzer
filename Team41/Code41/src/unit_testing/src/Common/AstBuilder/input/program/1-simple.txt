@@ -1,0 +1,6 @@
+procedure first {
+	print x;
+}
+procedure second {
+	print x;
+}

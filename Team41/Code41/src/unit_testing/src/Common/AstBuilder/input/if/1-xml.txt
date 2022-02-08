@@ -1,0 +1,16 @@
+<if>
+	<eq>
+        <const val=1></const>
+        <const val=1></const>
+	</eq>
+	<stmts>
+		<print>
+	        <var name=x></var>
+		</print>
+	</stmts>
+    <stmts>
+		<print>
+	        <var name=y></var>
+		</print>
+	</stmts>
+</if>

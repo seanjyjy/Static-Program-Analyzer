@@ -6,11 +6,9 @@
 using namespace std;
 
 TEST_CASE("AST Builder: assign") {
-    SECTION("x = 0;") {
-        string xml = "<assign>\n"
-                     "\t<var name=x></var>\n"
-                     "\t<const val=0></const>\n"
-                     "</assign>";
+    SECTION("1") {
+        string simple = TestAstBuilderUtils::readFile("assign", "1-simple.txt");
+        string xml = TestAstBuilderUtils::readFile("assign", "1-xml.txt");
         // manually build actual AST
         Token* var = Token::makeVar("x");
         Token* integer = Token::makeConst("0");

@@ -1,0 +1,16 @@
+<program>
+    <procedure name=first>
+	    <stmts>
+            <print>
+                <var name=x></var>
+            </print>
+	    </stmts>
+    </procedure>
+    <procedure name=second>
+        <stmts>
+            <print>
+                <var name=x></var>
+            </print>
+        </stmts>
+    </procedure>
+</program>

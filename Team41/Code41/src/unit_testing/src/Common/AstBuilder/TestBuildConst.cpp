@@ -5,8 +5,9 @@
 using namespace std;
 
 TEST_CASE("AST Builder: constant") {
-    SECTION("0") {
-        string xml = "<const val=0></const>";
+    SECTION("1") {
+        string simple = TestAstBuilderUtils::readFile("const", "1-simple.txt");
+        string xml = TestAstBuilderUtils::readFile("const", "1-xml.txt");
         // manually build ast
         Token *integer = Token::makeConst("0");
         TNode *node = TNode::makeConstVal(integer);
