@@ -295,8 +295,9 @@ TEST_CASE("PKB: follows abstraction") {
 
         // 0 -> 1
         // 1 -> 2
-        pkbManager.registerFollows(stmt[0], stmt[1]);
-        pkbManager.registerFollows(stmt[1], stmt[2]);
+        pkbManager.registerFollowsT(stmt[0], stmt[1]);
+        pkbManager.registerFollowsT(stmt[1], stmt[2]);
+        pkbManager.registerFollowsT(stmt[0], stmt[2]);
         entryList.push_back(make_pair(stmt[0], stmt[1]));
         entryList.push_back(make_pair(stmt[0], stmt[2]));
         entryList.push_back(make_pair(stmt[1], stmt[2]));
@@ -346,9 +347,10 @@ TEST_CASE("PKB: parent abstraction") {
 
         // 0 -> {1, 2}
         // 1 -> {3}
-        pkbManager.registerParent(stmt[0], stmt[1]);
-        pkbManager.registerParent(stmt[0], stmt[2]);
-        pkbManager.registerParent(stmt[1], stmt[3]);
+        pkbManager.registerParentT(stmt[0], stmt[1]);
+        pkbManager.registerParentT(stmt[0], stmt[2]);
+        pkbManager.registerParentT(stmt[1], stmt[3]);
+        pkbManager.registerParentT(stmt[0], stmt[3]);
         entryList.push_back(make_pair(stmt[0], stmt[1]));
         entryList.push_back(make_pair(stmt[0], stmt[2]));
         entryList.push_back(make_pair(stmt[0], stmt[3]));

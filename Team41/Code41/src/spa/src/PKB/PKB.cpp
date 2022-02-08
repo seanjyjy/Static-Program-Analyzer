@@ -99,6 +99,8 @@ bool PKB::isVariable(string varName) { return entityTable->isVariable(move(varNa
 
 void PKB::registerFollows(string stmt1, string stmt2) { return followsTable->setFollows(move(stmt1), move(stmt2)); }
 
+void PKB::registerFollowsT(string stmt1, string stmt2) { return followsTable->setFollowsT(move(stmt1), move(stmt2)); }
+
 bool PKB::isFollows(string stmt1, string stmt2) { return followsTable->isFollows(move(stmt1), move(stmt2)); }
 
 string PKB::getStmtFollowing(string stmtNum) { return followsTable->getStmtFollowing(move(stmtNum)); }
@@ -127,6 +129,10 @@ unordered_set<string> PKB::getAllStmtsFollowedBySomeStmt() { return followsTable
 
 void PKB::registerParent(string parentStmt, string childStmt) {
     return parentTable->setParent(move(parentStmt), move(childStmt));
+}
+
+void PKB::registerParentT(string parentStmt, string childStmt) {
+    return parentTable->setParentT(move(parentStmt), move(childStmt));
 }
 
 bool PKB::isParent(string stmt1, string stmt2) { return parentTable->isParent(move(stmt1), move(stmt2)); }

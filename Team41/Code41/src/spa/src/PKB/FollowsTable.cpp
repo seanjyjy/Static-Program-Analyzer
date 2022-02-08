@@ -9,22 +9,15 @@ void FollowsTable::setFollows(string follower, string followed) {
     if (follower == followed) { throw domain_error("[PKB][FollowsTable] Statements cannot follow self"); }
     if (isFollows(follower, followed)) { return; }
 
-    unordered_set<string> allFollowers = getStmtsFollowingT(follower);
-    allFollowers.insert(follower);
-    unordered_set<string> allFollowed = getStmtsFollowedTBy(followed);
-    allFollowed.insert(followed);
-
-    if (allFollowed.find(follower) != allFollowed.end()) {
-        throw domain_error("[PKB][FollowsTable] Cyclic dependency detected in follows graph");
-    }
-
     followsRelation.addMapping(follower, followed);
+}
 
-    for (string f1: allFollowers) {
-        for (string f2: allFollowed) {
-            followsTRelation.addMapping(f1, f2);
-        }
-    }
+void FollowsTable::setFollowsT(string follower, string followed) {
+    // NOTE: does not check if follower is a numeric string
+    if (follower == followed) { throw domain_error("[PKB][FollowsTable] Statements cannot followT self"); }
+    if (isFollowsT(follower, followed)) { return; }
+
+    followsTRelation.addMapping(follower, followed);
 }
 
 string FollowsTable::getStmtFollowedBy(string follower) {
