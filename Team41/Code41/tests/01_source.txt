@@ -1,0 +1,22 @@
+procedure fUnCt10n {
+  x411 = 2;
+  y132 = 2 + 2;
+  x1c2v3b4 = 2 / 2;
+
+  x = 2 * 2;
+  x = 3 % 1;
+  x = 2 * 2 + 3 % 1 - 2 / 2;
+
+  read x;
+  print y132;
+  while (y132 > 1) {
+    if (1 == 2) then {
+        x = x;
+    } else {
+        x = 3;
+    }
+  }
+}
+
+
+

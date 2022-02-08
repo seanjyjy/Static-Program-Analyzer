@@ -1,0 +1,190 @@
+1 - Select statement without clause
+stmt s;
+Select s
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+5000
+2 - Select variable without clause
+variable v;
+Select v
+x411, y132, x1c2v3b4, x
+5000
+3 - Select constant without clause
+constant c;
+Select c
+1, 2, 3
+5000
+4 - Select print without clause
+print pn;
+Select pn
+8
+5000
+5 - Select read without clause
+read re;
+Select re
+7
+5000
+6 - Select while without clause
+while w;
+Select w
+9
+5000
+7 - Select if without clause
+if ifs;
+Select ifs
+10
+5000
+8 - Uses with invalid wildcard
+variable v;
+Select v such that Uses(_, v)
+none
+5000
+9 - Uses with statement and wildcard
+stmt s;
+Select s such that Uses(s, _)
+8, 9, 10, 11
+5000
+10 - Modifies with invalid wildcard
+variable v;
+Select v such that Modifies(_, v)
+none
+5000
+11 - Modifies with statement and wildcard
+stmt s;
+Select s such that Modifies(s, _)
+1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12
+5000
+12 - Uses with assign and ident variable
+assign a;
+Select a such that Uses(a, "x")
+11
+5000
+13 - Uses with assign and synonym variable
+assign a; variable v;
+Select a such that Uses(a, v)
+11
+5000
+14 - Uses with ident assign and synonym variable
+variable v;
+Select v such that Uses(1, v)
+none
+5000
+15 - Uses with print and ident variable
+print pn; variable v;
+Select v such that Uses(pn, v)
+y132
+5000
+16 - Uses with if and ident variable
+if ifs;
+Select ifs such that Uses(ifs, "x")
+10
+5000
+17 - Uses with if and synonym variable
+if ifs; variable v;
+Select v such that Uses(ifs, v)
+x
+5000
+18 - Uses with while and ident variable
+while w;
+Select w such that Uses(w, "x")
+9
+5000
+19 - Uses with while and synonym variable
+while w; variable v;
+Select v such that Uses(w, v)
+y132, x
+5000
+20 - Uses none
+stmt s;
+Select s such that Uses(s, "x411")
+none
+5000
+21 - Modifies with assign and ident variable
+stmt s;
+Select s such that Modifies(s, "x1c2v3b4")
+3
+5000
+22 - Modifies with assign and synonym variable
+assign a; variable v;
+Select a such that Modifies(a, v)
+1, 2, 3, 4, 5, 6, 11, 12
+5000
+23 - Modifies with ident assign and synonym variable
+variable v;
+Select v such that Modifies(1, v)
+x411
+5000
+24 - Modifies with read and synonym variable
+read r; variable v;
+Select v such that Modifies(r, v)
+x
+5000
+25 - Modifies with if and ident variable
+if ifs;
+Select ifs such that Modifies(ifs, "x")
+10
+5000
+26 - Modifies with if and ident variable - none
+if ifs;
+Select ifs such that Modifies(ifs, "c")
+none
+5000
+27 - Modifies with if and ident variable
+if ifs; variable v;
+Select v such that Modifies(ifs, v)
+x
+5000
+28 - Modifies with while and ident variable
+while w;
+Select w such that Modifies(w, "x")
+9
+5000
+29 - Modifies with while and synonym variable
+variable v;
+Select v such that Modifies(9, v)
+x
+5000
+30 - Modifies none
+stmt s;
+Select s such that Modifies(s, "xDoNotExist")
+none
+5000
+31 - Invalid case - Syntax error
+stmts s;
+Select s
+none
+5000
+32 - Invalid case - Syntax error
+prints p;
+Select p
+none
+5000
+33 - Invalid case - Syntax error
+red r;
+Select r
+none
+5000
+34 - Invalid case - Syntax error
+whil w;
+Select w
+none
+5000
+35 - Invalid case - Syntax error
+iff ifs;
+Select ifs
+none
+5000
+36 - Invalid case - Syntax error
+var v;
+Select v
+none
+5000
+37 - Invalid case - Syntax error
+prop p;
+Select p
+none
+5000
+38 - Invalid case - Syntax error
+cost c;
+Select c
+none
+5000
