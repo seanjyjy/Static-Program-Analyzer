@@ -23,8 +23,8 @@ TEST_CASE("DesignExtractor: Register Entities") {
                "\t\th = i + j;\n"
                "\t}\n"
                "}";
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
 

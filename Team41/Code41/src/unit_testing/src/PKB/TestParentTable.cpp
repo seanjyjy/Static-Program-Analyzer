@@ -87,8 +87,8 @@ TEST_CASE("PKB: ParentTable") {
             vector<pair<string, string>> entryList;
 
             // 0 -> {1, 2}
-            REQUIRE_NOTHROW(table.setParent(stmt[0], stmt[1]));
-            REQUIRE_NOTHROW(table.setParent(stmt[0], stmt[2]));
+            REQUIRE_NOTHROW(table.setParentT(stmt[0], stmt[1]));
+            REQUIRE_NOTHROW(table.setParentT(stmt[0], stmt[2]));
             entryList.push_back(make_pair(stmt[0], stmt[1]));
             entryList.push_back(make_pair(stmt[0], stmt[2]));
             REQUIRE(table.getAllDescendantsOf(stmt[0]) == unordered_set<string>({stmt[1], stmt[2]}));
@@ -98,7 +98,8 @@ TEST_CASE("PKB: ParentTable") {
 
             // 0 -> {1, 2}
             // 2 -> 3
-            REQUIRE_NOTHROW(table.setParent(stmt[2], stmt[3]));
+            REQUIRE_NOTHROW(table.setParentT(stmt[2], stmt[3]));
+            REQUIRE_NOTHROW(table.setParentT(stmt[0], stmt[3]));
             entryList.push_back(make_pair(stmt[2], stmt[3]));
             entryList.push_back(make_pair(stmt[0], stmt[3]));
             REQUIRE(table.getAllDescendantsOf(stmt[0]) == unordered_set<string>({stmt[1], stmt[2], stmt[3]}));
@@ -112,8 +113,12 @@ TEST_CASE("PKB: ParentTable") {
             // 0 -> {1, 2}
             // 2 -> 3
             // 3 -> {4, 5}
-            REQUIRE_NOTHROW(table.setParent(stmt[3], stmt[4]));
-            REQUIRE_NOTHROW(table.setParent(stmt[3], stmt[5]));
+            REQUIRE_NOTHROW(table.setParentT(stmt[3], stmt[4]));
+            REQUIRE_NOTHROW(table.setParentT(stmt[3], stmt[5]));
+            REQUIRE_NOTHROW(table.setParentT(stmt[2], stmt[4]));
+            REQUIRE_NOTHROW(table.setParentT(stmt[2], stmt[5]));
+            REQUIRE_NOTHROW(table.setParentT(stmt[0], stmt[4]));
+            REQUIRE_NOTHROW(table.setParentT(stmt[0], stmt[5]));
             entryList.push_back(make_pair(stmt[0], stmt[4]));
             entryList.push_back(make_pair(stmt[0], stmt[5]));
             entryList.push_back(make_pair(stmt[2], stmt[4]));
@@ -133,8 +138,6 @@ TEST_CASE("PKB: ParentTable") {
             REQUIRE(sortAndCompareVectors(table.getParentTEntries(), entryList));
             REQUIRE(table.isParentT(stmt[0], stmt[5]));
             REQUIRE_FALSE(table.isParentT(stmt[1], stmt[5]));
-            REQUIRE(table.getStmtsParentOfSomeStmt() == unordered_set<string>({stmt[0], stmt[2], stmt[3]}));
-            REQUIRE(table.getStmtsChildOfSomeStmt() == unordered_set<string>({stmt[1], stmt[2], stmt[3], stmt[4], stmt[5]}));
         }
 
             // domain specific edge cases
@@ -143,21 +146,6 @@ TEST_CASE("PKB: ParentTable") {
             REQUIRE_NOTHROW(table.setParent(stmt[0], stmt[1]));
             // repeated follow does not throw error
             REQUIRE_NOTHROW(table.setParent(stmt[0], stmt[1]));
-
-            // 0 -> 1
-            // 1 -x-> 0
-            REQUIRE_THROWS_WITH(table.setParent(stmt[1], stmt[0]),
-                                Catch::Contains("[PKB]") && Catch::Contains("[ParentTable]") &&
-                                Catch::Contains("Cyclic dependency"));
-
-            // 0 -> 1 -> 2 -> 3
-            REQUIRE_NOTHROW(table.setParent(stmt[1], stmt[2]));
-            REQUIRE_NOTHROW(table.setParent(stmt[2], stmt[3]));
-
-            // 0 -> 1 -> 2 -> 3 -x-> 0
-            REQUIRE_THROWS_WITH(table.setParent(stmt[3], stmt[0]),
-                                Catch::Contains("[PKB]") && Catch::Contains("[ParentTable]") &&
-                                Catch::Contains("Cyclic dependency"));
         }
     }
 }

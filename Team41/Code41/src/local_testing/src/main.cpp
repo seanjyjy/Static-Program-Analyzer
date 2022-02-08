@@ -8,8 +8,8 @@ int main() {
                "x = 1 * 2 + 3 / 4;"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     if (ast != nullptr) {
         ast->printRecursive();
 

@@ -16,6 +16,7 @@ public:
     ParentTable();
 
     void setParent(string parentStmt, string childStmt);
+    void setParentT(string parentStmt, string childStmt);
 
     unordered_set<string> getAllChildrenOf(string parentStmt);
     string getParentOf(string childStatement);

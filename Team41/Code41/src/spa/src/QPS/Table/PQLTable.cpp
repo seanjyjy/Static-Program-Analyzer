@@ -109,6 +109,7 @@ const Row* PQLTable::combineRow(const Row* rowA, const Row* rowB) const {
 }
 
 void PQLTable::sort(const Header& commonHeader) {
+    if (commonHeader.empty()) { return; }
     std::sort(this->rows.begin(), this->rows.end(), [commonHeader](const Row* left, const Row* right){
         for (const string& headerField : commonHeader) {
             return left->getValueAtColumn(headerField) < right->getValueAtColumn(headerField);

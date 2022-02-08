@@ -12,8 +12,8 @@ TEST_CASE("Integration test for simple source and PQL") {
                "g = a;"
                "}";
 
-    Parser p = Parser{s};
-    TNode* ast = p.parse();
+    Parser p;
+    TNode* ast = p.parseProgram(s);
     ast->printRecursive();
 
     PKB* pkbManager = new PKB();

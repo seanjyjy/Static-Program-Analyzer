@@ -9,22 +9,30 @@ void ParentTable::setParent(string parentStmt, string childStmt) {
     if (parentStmt == childStmt) { throw domain_error("[PKB][ParentTable] Statements cannot parent self"); }
     if (isParent(parentStmt, childStmt)) { return; }
 
-    unordered_set<string> allAncestors = getAllAncestorsOf(parentStmt);
-    allAncestors.insert(parentStmt);
-    unordered_set<string> allDescendants = getAllDescendantsOf(childStmt);
-    allDescendants.insert(childStmt);
-
-    if (allDescendants.find(parentStmt) != allDescendants.end()) {
-        throw domain_error("[PKB][ParentTable] Cyclic dependency detected in parenting graph");
-    }
+//    unordered_set<string> allAncestors = getAllAncestorsOf(parentStmt);
+//    allAncestors.insert(parentStmt);
+//    unordered_set<string> allDescendants = getAllDescendantsOf(childStmt);
+//    allDescendants.insert(childStmt);
+//
+//    if (allDescendants.find(parentStmt) != allDescendants.end()) {
+//        throw domain_error("[PKB][ParentTable] Cyclic dependency detected in parenting graph");
+//    }
 
     parentRelation.addMapping(parentStmt, childStmt);
 
-    for (string parent: allAncestors) {
-        for (string child: allDescendants) {
-            ancestorRelation.addMapping(parent, child);
-        }
-    }
+//    for (string parent: allAncestors) {
+//        for (string child: allDescendants) {
+//            ancestorRelation.addMapping(parent, child);
+//        }
+//    }
+}
+
+void ParentTable::setParentT(string parentStmt, string childStmt) {
+    // NOTE: does not check if follower is a numeric string
+    if (parentStmt == childStmt) { throw domain_error("[PKB][ParentTable] Statements cannot parentT self"); }
+    if (isParent(parentStmt, childStmt)) { return; }
+
+    ancestorRelation.addMapping(parentStmt, childStmt);
 }
 
 unordered_set<string> ParentTable::getAllChildrenOf(string parentStmt) {

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_set>
+#include "Common/TNode.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ class ModifiesTable;
 class FollowsTable;
 class CallsTable;
 class ParentTable;
+class PatternTable;
 
 class PKB {
 public:
@@ -25,6 +27,7 @@ public:
     ModifiesTable *modifiesTable;
     FollowsTable *followsTable;
     ParentTable *parentTable;
+    PatternTable *patternTable;
 
     //======================================== Statement ==================================================
 
@@ -104,16 +107,21 @@ public:
 
     /**
      * Registers to PKB that the specified stmt1 follows specified stmt2
-     * Recursively update any indirect follow relationship between statements as required
      *
      * @param stmt1 the follower statement
      * @param stmt2 the followed statement
      * @throws key_map_err if stmt1 is already following some other statement
      * @throws val_map_err if stmt2 is already followed by some other statement
-     * @throws cyclic_err if the registration creates a cycle in the follow graph
-     * @throws self_err if statement attempts to follow itself
      */
     void registerFollows(string stmt1, string stmt2);
+
+    /**
+     * Registers to PKB that the specified stmt1 followsT specified stmt2
+     *
+     * @param stmt1 the follower statement
+     * @param stmt2 the followed statement
+     */
+    void registerFollowsT(string stmt1, string stmt2);
 
     bool isFollows(string stmt1, string stmt2); // Checks if stmt1 follows stmt2
     string getStmtFollowing(string stmtNum);// Gets the stmt that follows the specified stmt
@@ -132,15 +140,13 @@ public:
 
     /**
      * Registers to PKB that the specified stmt1 is parent of specified stmt2.
-     * Recursively update any ancestor-descendant relationship as required
-     *
-     * @param parentStmt the parent statement
-     * @param childStmt the child statement
-     * @throws val_map_err if stmt2 is already direct child of some other statement
-     * @throws cyclic_err if the registration creates a cycle in the follow graph
-     * @throws self_err if statement attempts to parent itself
      */
     void registerParent(string parentStmt, string childStmt);
+
+    /**
+     * Registers to PKB that the specified stmt1 has ancestor-descendant relation with specified stmt2.
+     */
+    void registerParentT(string parentStmt, string childStmt);
 
     bool isParent(string stmt1, string stmt2); // Checks if stmt1 is parent of stmt2
     unordered_set<string> getChildStmtsOf(string parentStmt);// Gets the stmts that are direct child of parentStmt
@@ -186,4 +192,23 @@ public:
     unordered_set<string> getModifiesByProc(string procName);// Gets list of variables that is modified by procedure
     vector<pair<string, string>> getAllModifiesP();// Gets list of proc-var pair where stmt modifies var
     unordered_set<string> getAllProcsModifyingSomeVar();// Gets list of proc where proc modifies some var
+
+    //=========================================== Pattern ===================================================
+
+    /**
+     * Registers to PKB that the specified assignment stmt has the following pattern
+     *
+     * @param stmtNum assign statement
+     * @param assignAST
+     */
+    void registerPattern(string stmtNum, string lhsVariable, TNode *rhsAssignAST);
+
+    unordered_set<string> getAllStmtsFromFullPattern(TNode *patternAST);// Gets list of assignStmt from pattern
+    unordered_set<string> getStmtFromFullPatternNVar(TNode *patternAST, string varName);// Gets list of assignStmt from pattern and varName
+    vector<pair<string, string>> getStmtNVarFromFullPattern(TNode *patternAST);// Gets list of assignStmt-varName from pattern
+
+    unordered_set<string> getAllStmtsFromSubPattern(TNode *subPatternAST);// Gets list of assignStmt from subpattern
+    unordered_set<string> getStmtFromSubPatternNVar(TNode *subPatternAST, string varName);// Gets list of assignStmt from subpattern and varName
+    vector<pair<string, string>> getStmtNVarFromSubPattern(TNode *subPatternAST);// Gets list of assignStmt-varName from subpattern
+
 };

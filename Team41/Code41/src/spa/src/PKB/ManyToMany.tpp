@@ -1,6 +1,9 @@
 #include "ManyToMany.h"
 
 template<class K, class V>
+ManyToMany<K, V>::ManyToMany() : relationName("GenericMany2ManyTable") {}
+
+template<class K, class V>
 ManyToMany<K, V>::ManyToMany(const string &relationName) {
     this->relationName = relationName;
 }

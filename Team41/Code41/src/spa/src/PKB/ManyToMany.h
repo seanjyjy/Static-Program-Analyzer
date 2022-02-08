@@ -13,6 +13,7 @@ private:
     SetMultiMap<K, V> keyToValues;
     SetMultiMap<V, K> valuesToKey;
 public:
+    ManyToMany();
     explicit ManyToMany(const string &relationName);
 
     /**

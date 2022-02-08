@@ -4,6 +4,7 @@
 #include "QPS/QueryEvaluator.h"
 #include "QPS/QueryParser.h"
 #include "Common/FileReader.h"
+#include <iostream>
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper* WrapperFactory::wrapper = 0;
@@ -15,7 +16,7 @@ AbstractWrapper* WrapperFactory::createWrapper() {
 volatile bool AbstractWrapper::GlobalStop = false;
 
 // a default constructor
-TestWrapper::TestWrapper() : pkbManager() {
+TestWrapper::TestWrapper() : pkbManager(new PKB()) {
   // create any objects here as instance variables of this class
   // as well as any initialization required for your spa program
 }
@@ -25,21 +26,26 @@ void TestWrapper::parse(std::string filename) {
     // call your parser to do the parsing
   // ...rest of your code...
     string fileContent = FileReader::getFileContent(filename);
-    Parser p = Parser{fileContent};
-    TNode* ast = p.parse();
-    DesignExtractor designExtractor(ast, pkbManager);
+    cout << "Loading source: " << filename << endl;
+    Parser p;
+    TNode* ast = p.parseProgram(fileContent);
+    cout << "Parse complete" << endl;
+    DesignExtractor designExtractor(ast, this->pkbManager);
     designExtractor.extractDesign();
+    cout << "Extraction complete" << endl;
 }
 
 // method to evaluating a query
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
   // call your evaluator to evaluate the query here
   // ...code to evaluate query...
+    cout << "Evaluating: " << query << endl;
     QueryParser qp = QueryParser{query};
     QueryObject* queryObject = qp.parse();
-    QueryEvaluator queryEvaluator(pkbManager);
+    QueryEvaluator queryEvaluator(this->pkbManager);
     std::unordered_set<std::string> result = queryEvaluator.evaluateQuery(queryObject);
     // store the answers to the query in the results list (it is initially empty)
     // each result must be a string.
     std::copy(result.begin(), result.end(), std::back_inserter(results));
+    cout << "Done: " << query << endl;
 }
