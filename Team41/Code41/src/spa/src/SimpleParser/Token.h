@@ -15,10 +15,12 @@ private:
 
     // for testing purposes
     Token(TokenType type, string val);
+
 public:
     // for testing purposes
-    static Token* makeVar(string val);
-    static Token* makeConst(string val);
+    static Token *makeVar(string val);
+
+    static Token *makeConst(string val);
 
     Token();
 

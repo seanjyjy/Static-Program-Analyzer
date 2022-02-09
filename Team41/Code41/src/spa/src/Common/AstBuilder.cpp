@@ -10,7 +10,7 @@ using namespace std;
 
 AstBuilder::AstBuilder() = default;
 
-AstBuilder::AstBuilder(string xml): xml(xml), idx(0) {
+AstBuilder::AstBuilder(string xml) : xml(xml), idx(0) {
     if (xml.empty()) throw runtime_error("xml must be nonempty");
     currToken = xml[0];
 }
@@ -28,22 +28,23 @@ TNode *AstBuilder::build() {
             tagStk.push(tag);
         } else {
             // end of an xml tag, e.g </assign>
-            vector<TNode*> children;
+            vector<TNode *> children;
             while (!stk.empty() && !tagStk.empty() && !stk.top().second) {
-                auto [node, isProcessed] = stk.top();
+                auto[node, isProcessed] = stk.top();
                 stk.pop();
                 tagStk.pop();
                 children.push_back(node);
             }
 
             // xml opening tag corresponding to closing tag
-            auto [parent, isProcessed] = stk.top();
+            auto[parent, isProcessed] = stk.top();
             stk.pop();
             XmlTag parentTag = tagStk.top();
             tagStk.pop();
 
             // opening and closing tags must match
-            if (tag.type != parentTag.type) throw runtime_error("xml tag mismatch: " + tag.type + ", " + parentTag.type);
+            if (tag.type != parentTag.type)
+                throw runtime_error("xml tag mismatch: " + tag.type + ", " + parentTag.type);
 
             // could be node or token
             if (parent->getType() == TNodeType::varName || parent->getType() == TNodeType::constValue) {
@@ -62,7 +63,7 @@ TNode *AstBuilder::build() {
     }
 
     assert(stk.size() == 1);
-    auto [node, isProcessed] = stk.top();
+    auto[node, isProcessed] = stk.top();
     assert(node != nullptr);
     return node;
 }
@@ -168,9 +169,10 @@ unordered_map<string, string> AstBuilder::eatData() {
  */
 XmlTag::XmlTag() = default;
 
-XmlTag::XmlTag(string type, unordered_map<string, string> data, bool isCloseTag): type(move(type)), data(move(data)), isCloseTag(isCloseTag) {}
+XmlTag::XmlTag(string type, unordered_map<string, string> data, bool isCloseTag) : type(move(type)), data(move(data)),
+                                                                                   isCloseTag(isCloseTag) {}
 
-TNode* XmlTag::convert() {
+TNode *XmlTag::convert() {
     if (type == T_PROGRAM) return convertProgram();
     if (type == T_PROCEDURE) return convertProcedure();
     if (type == T_STMTLIST) return convertStmtList();
@@ -199,88 +201,88 @@ TNode* XmlTag::convert() {
     throw runtime_error("unknown xml tag " + type);
 }
 
-TNode* XmlTag::convertProgram() {
+TNode *XmlTag::convertProgram() {
     return TNode::makeProgram({});
 }
 
-TNode* XmlTag::convertProcedure() {
+TNode *XmlTag::convertProcedure() {
     ensureKeys({"name"});
     string name = data["name"];
     return TNode::makeProcedure(Token::makeVar(name), nullptr);
 }
 
-TNode* XmlTag::convertStmtList() {
+TNode *XmlTag::convertStmtList() {
     return TNode::makeStmtLst({});
 }
 
-TNode* XmlTag::convertRead() {
+TNode *XmlTag::convertRead() {
     return TNode::makeReadStmt(nullptr);
 }
 
-TNode* XmlTag::convertPrint() {
+TNode *XmlTag::convertPrint() {
     return TNode::makePrintStmt(nullptr);
 }
 
-TNode* XmlTag::convertCall() {
+TNode *XmlTag::convertCall() {
     return TNode::makeCallStmt(nullptr);
 }
 
-TNode* XmlTag::convertWhile() {
+TNode *XmlTag::convertWhile() {
     return TNode::makeWhileStmt(nullptr, nullptr);
 }
 
-TNode* XmlTag::convertIf() {
+TNode *XmlTag::convertIf() {
     return TNode::makeIfStmt(nullptr, nullptr, nullptr);
 }
 
-TNode* XmlTag::convertAssign() {
+TNode *XmlTag::convertAssign() {
     return TNode::makeAssignStmt(nullptr, nullptr);
 }
 
-TNode* XmlTag::convertNot() {
+TNode *XmlTag::convertNot() {
     return TNode::makeNot(nullptr);
 }
 
-TNode* XmlTag::convertAnd() {
+TNode *XmlTag::convertAnd() {
     return TNode::makeAnd(nullptr, nullptr);
 }
 
-TNode* XmlTag::convertOr() {
+TNode *XmlTag::convertOr() {
     return TNode::makeOr(nullptr, nullptr);
 }
 
-TNode* XmlTag::convertGt() {
+TNode *XmlTag::convertGt() {
     return TNode::makeGt(nullptr, nullptr);
 }
 
-TNode* XmlTag::convertGe() {
+TNode *XmlTag::convertGe() {
     return TNode::makeGe(nullptr, nullptr);
 }
 
-TNode* XmlTag::convertLt() {
+TNode *XmlTag::convertLt() {
     return TNode::makeLt(nullptr, nullptr);
 }
 
-TNode* XmlTag::convertLe() {
+TNode *XmlTag::convertLe() {
     return TNode::makeLe(nullptr, nullptr);
 }
 
-TNode* XmlTag::convertEq() {
+TNode *XmlTag::convertEq() {
     return TNode::makeEq(nullptr, nullptr);
 }
 
-TNode* XmlTag::convertNe() {
+TNode *XmlTag::convertNe() {
     // will be filled later
     return TNode::makeNe(nullptr, nullptr);
 }
 
-TNode* XmlTag::convertVar() {
+TNode *XmlTag::convertVar() {
     ensureKeys({"name"});
     string name = data["name"];
     return TNode::makeVarName(Token::makeVar(name));
 }
 
-TNode* XmlTag::convertConst() {
+TNode *XmlTag::convertConst() {
     ensureKeys({"val"});
     string val = data["val"];
     return TNode::makeConstVal(Token::makeConst(val));
@@ -306,8 +308,8 @@ TNode *XmlTag::convertMod() {
     return TNode::makeMod(nullptr, nullptr);
 }
 
-void XmlTag::ensureKeys(const vector<string>& keys) {
-    for (const string& key: keys) {
+void XmlTag::ensureKeys(const vector<string> &keys) {
+    for (const string &key: keys) {
         if (data.find(key) == data.end()) {
             throw runtime_error("xml tag " + type + " missing key " + key);
         }

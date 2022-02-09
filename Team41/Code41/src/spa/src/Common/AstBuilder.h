@@ -34,42 +34,68 @@ private:
     const string T_DIV = "div";
     const string T_MOD = "mod";
 
-    TNode* convertProgram();
-    TNode* convertProcedure();
-    TNode* convertStmtList();
-    TNode* convertRead();
-    TNode* convertPrint();
-    TNode* convertCall();
-    TNode* convertWhile();
-    TNode* convertIf();
-    TNode* convertAssign();
-    TNode* convertNot();
-    TNode* convertAnd();
-    TNode* convertOr();
-    TNode* convertGt();
-    TNode* convertGe();
-    TNode* convertLt();
-    TNode* convertLe();
-    TNode* convertEq();
-    TNode* convertNe();
-    TNode* convertVar();
-    TNode* convertConst();
-    TNode* convertPlus();
-    TNode* convertMinus();
-    TNode* convertTimes();
-    TNode* convertDiv();
-    TNode* convertMod();
+    TNode *convertProgram();
 
-    void ensureKeys(const vector<string>& keys);
+    TNode *convertProcedure();
+
+    TNode *convertStmtList();
+
+    TNode *convertRead();
+
+    TNode *convertPrint();
+
+    TNode *convertCall();
+
+    TNode *convertWhile();
+
+    TNode *convertIf();
+
+    TNode *convertAssign();
+
+    TNode *convertNot();
+
+    TNode *convertAnd();
+
+    TNode *convertOr();
+
+    TNode *convertGt();
+
+    TNode *convertGe();
+
+    TNode *convertLt();
+
+    TNode *convertLe();
+
+    TNode *convertEq();
+
+    TNode *convertNe();
+
+    TNode *convertVar();
+
+    TNode *convertConst();
+
+    TNode *convertPlus();
+
+    TNode *convertMinus();
+
+    TNode *convertTimes();
+
+    TNode *convertDiv();
+
+    TNode *convertMod();
+
+    void ensureKeys(const vector<string> &keys);
+
 public:
     string type;
     unordered_map<string, string> data;
     bool isCloseTag;
 
     XmlTag();
+
     XmlTag(string type, unordered_map<string, string> data, bool isCloseTag);
 
-    TNode* convert();
+    TNode *convert();
 };
 
 class AstBuilder {
@@ -81,26 +107,38 @@ private:
     string xml;
     int idx;
     char currToken;
-    stack<pair<TNode*, bool>> stk; // node/token, isOpeningTag
+    stack<pair<TNode *, bool>> stk; // node/token, isOpeningTag
     stack<XmlTag> tagStk; // mirrors stk, meant to ensure correctness
 
     void advance();
+
     XmlTag eatXmlTag();
+
     void eatWhitespace();
+
     void eatOpenTag();
+
     void eatCloseTag();
+
     void eatAssign();
+
     bool eatSlashIfExists();
+
     string eatName();
+
     unordered_map<string, string> eatData();
 
     bool isEof();
+
     bool isCloseTag();
+
     bool isOpenTag();
+
 public:
 
     AstBuilder();
+
     AstBuilder(string xml);
 
-    TNode* build();
+    TNode *build();
 };
