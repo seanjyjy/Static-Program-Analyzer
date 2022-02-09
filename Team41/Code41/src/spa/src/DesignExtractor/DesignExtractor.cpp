@@ -80,7 +80,7 @@ void DesignExtractor::extractParent() {
     }
     for (auto &[parent, parentTLst] : pe.getParentTMap()) {
         for (auto child : parentTLst)
-            pkb->registerParent(parent, child);
+            pkb->registerParentT(parent, child);
     }
 }
 
