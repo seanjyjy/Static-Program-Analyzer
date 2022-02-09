@@ -1,0 +1,3 @@
+<print>
+	<var name=x></var>
+</print>

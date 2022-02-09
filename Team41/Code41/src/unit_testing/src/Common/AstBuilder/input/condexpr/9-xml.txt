@@ -1,0 +1,10 @@
+<or>
+	<eq>
+		<var name=d></var>
+	    <const val=11></const>
+	</eq>
+	<eq>
+		<var name=e></var>
+	    <const val=10></const>
+	</eq>
+</or>

@@ -7,10 +7,29 @@ using namespace std;
 
 class Parser {
 private:
+    enum class Option {
+        program,
+        procedure,
+        stmtlist,
+        stmt,
+        readStmt,
+        printStmt,
+        callStmt,
+        whileStmt,
+        ifStmt,
+        assignStmt,
+        condExpr,
+        expr,
+        term,
+        name,
+        constant,
+    };
+
     string input;
-    Tokens tokens;
     int cursor;
+    Tokens tokens;
     Token currToken;
+    Option parseOption = Option::program;
 
     int saveCursor();
 
@@ -74,6 +93,8 @@ private:
 
     void init(string &s);
 
+    TNode *parse(string &s);
+
 public:
     Parser();
 
@@ -88,6 +109,34 @@ public:
      * @return the parsed AST
      */
     TNode *parseExpr(string &s);
+
+    // testing purposes
+
+    TNode *parseProcedure(string &s);
+
+    TNode *parseStmtLst(string &s);
+
+    TNode *parseStmt(string &s);
+
+    TNode *parseRead(string &s);
+
+    TNode *parsePrint(string &s);
+
+    TNode *parseCall(string &s);
+
+    TNode *parseWhile(string &s);
+
+    TNode *parseIf(string &s);
+
+    TNode *parseAssign(string &s);
+
+    TNode *parseCondExpr(string &s);
+
+    TNode *parseTerm(string &s);
+
+    TNode *parseName(string &s);
+
+    TNode *parseConst(string &s);
 
     // debugging purposes
     void printTokens();

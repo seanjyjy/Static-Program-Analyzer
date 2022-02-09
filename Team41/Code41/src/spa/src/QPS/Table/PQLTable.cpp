@@ -114,7 +114,7 @@ void PQLTable::sort(const Header& commonHeader) {
         for (const string& headerField : commonHeader) {
             return left->getValueAtColumn(headerField) < right->getValueAtColumn(headerField);
         }
-        return true;
+        return false;
     });
 }
 

@@ -9,6 +9,17 @@ Token::Token(TokenType type, string val, pair<int, int> start, pair<int, int> en
                                                                                      start(std::move(start)),
                                                                                      end(std::move(end)) {}
 
+Token::Token(TokenType type, string val): type(type), val(move(val)), start({-1,-1}), end({-1,-1}) {}
+
+Token *Token::makeVar(string val) {
+    return new Token(TokenType::name, move(val));
+}
+
+Token *Token::makeConst(string val) {
+    return new Token(TokenType::integer, move(val));
+}
+
+
 TokenType Token::getType() const {
     return type;
 }

@@ -1,0 +1,4 @@
+<mod>
+    <const val=10></const>
+    <const val=10></const>
+</mod>

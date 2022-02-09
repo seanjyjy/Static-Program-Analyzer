@@ -1,0 +1,3 @@
+<call>
+	<var name=main></var>
+</call>

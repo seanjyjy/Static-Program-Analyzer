@@ -1,0 +1,7 @@
+<procedure name=main>
+    <stmts>
+    	<print>
+    		<var name=x></var>
+    	</print>
+    </stmts>
+</procedure>

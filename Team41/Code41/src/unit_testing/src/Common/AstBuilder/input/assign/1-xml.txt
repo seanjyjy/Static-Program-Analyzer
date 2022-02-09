@@ -1,0 +1,4 @@
+<assign>
+	<var name=x></var>
+	<const val=0></const>
+</assign>

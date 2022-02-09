@@ -1,0 +1,10 @@
+<and>
+	<eq>
+		<var name=b></var>
+	    <var name=b></var>
+	</eq>
+	<eq>
+		<var name=c></var>
+	    <var name=c></var>
+	</eq>
+</and>
