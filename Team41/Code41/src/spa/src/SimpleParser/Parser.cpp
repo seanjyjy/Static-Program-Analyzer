@@ -13,7 +13,7 @@ using namespace std;
 #include "Parser.h"
 #include "Tokenizer.h"
 
-Parser::Parser(): cursor(0) {}
+Parser::Parser() : cursor(0) {}
 
 void Parser::advance() {
     cursor++;
@@ -66,18 +66,21 @@ bool Parser::isEof() {
     return peekMatchType(TokenType::eof);
 }
 
-string Parser::genErrorMsgWithCurrToken() {
+string Parser::withCurrToken(const string &s) {
     auto[startRow, startCol] = currToken.getStart();
     auto[endRow, endCol] = currToken.getEnd();
-    TokenType t = currToken.getType();
-    return "unexpected token " + Token::typeToString(t) + " from row " + to_string(startRow) + " col " +
+    return s + " starting from row " + to_string(startRow) + " col " +
            to_string(startCol) + " to row " + to_string(endRow) + " col " + to_string(endCol);
 }
 
-string Parser::genSyntaxErrorMsg() {
-    auto[startRow, startCol] = currToken.getStart();
-    return "syntax error while parsing tokens starting from row " + to_string(startRow) + " col " + to_string(startCol);
+string Parser::genericErrorMsg() {
+    return withCurrToken("unexpected token " + Token::typeToString(currToken.getType()));
 }
+
+string Parser::syntaxErrorMsg() {
+    return withCurrToken("syntax error while parsing tokens");
+}
+
 
 Token *Parser::checkAndAdvance(TokenType type) {
     expect(type);
@@ -101,7 +104,6 @@ TNode *Parser::eatProgram() {
     return TNode::makeProgram(procedures);
 }
 
-// procedure -> 'procedure' proc_name '{' stmtLst '}'
 TNode *Parser::eatProcedure() {
     // eat procedure keyword
     checkAndAdvance(TokenType::name, "procedure");
@@ -121,7 +123,6 @@ TNode *Parser::eatProcedure() {
     return TNode::makeProcedure(name, stmtLst);
 }
 
-// stmtLst -> stmt+
 TNode *Parser::eatStmtLst() {
     vector<TNode *> stmts;
     while (!peekMatchType(TokenType::closingBrace)) {
@@ -130,7 +131,6 @@ TNode *Parser::eatStmtLst() {
     return TNode::makeStmtLst(stmts);
 }
 
-// stmt -> read | print | call | while | if | assign
 TNode *Parser::eatStmt() {
     if (peekMatchTypeVal(TokenType::name, "read")) return eatStmtRead();
     if (peekMatchTypeVal(TokenType::name, "print")) return eatStmtPrint();
@@ -138,10 +138,9 @@ TNode *Parser::eatStmt() {
     if (peekMatchTypeVal(TokenType::name, "while")) return eatStmtWhile();
     if (peekMatchTypeVal(TokenType::name, "if")) return eatStmtIf();
     if (peekMatchType(TokenType::name)) return eatStmtAssign();
-    throw runtime_error(genErrorMsgWithCurrToken());
+    throw runtime_error(genericErrorMsg());
 }
 
-// read -> 'read' var_name ';'
 TNode *Parser::eatStmtRead() {
     checkAndAdvance(TokenType::name, "read");
     Token *tokenBeforeAdv = checkAndAdvance(TokenType::name);
@@ -149,7 +148,6 @@ TNode *Parser::eatStmtRead() {
     return TNode::makeReadStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
-// print -> 'print' var_name ';'
 TNode *Parser::eatStmtPrint() {
     checkAndAdvance(TokenType::name, "print");
     Token *tokenBeforeAdv = checkAndAdvance(TokenType::name);
@@ -157,7 +155,6 @@ TNode *Parser::eatStmtPrint() {
     return TNode::makePrintStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
-// call -> 'call' proc_name ';'
 TNode *Parser::eatStmtCall() {
     checkAndAdvance(TokenType::name, "call");
     Token *tokenBeforeAdv = checkAndAdvance(TokenType::name);
@@ -165,7 +162,6 @@ TNode *Parser::eatStmtCall() {
     return TNode::makeCallStmt(TNode::makeProcName(tokenBeforeAdv));
 }
 
-// while -> 'while' '(' cond_expr ')' '{' stmtLst '}'
 TNode *Parser::eatStmtWhile() {
     checkAndAdvance(TokenType::name, "while");
     checkAndAdvance(TokenType::openingBracket);
@@ -177,7 +173,6 @@ TNode *Parser::eatStmtWhile() {
     return TNode::makeWhileStmt(condExpr, stmtLst);
 }
 
-// if -> 'if' '(' cond_expr ')' 'then' '{' stmtLst '}' 'else' '{' stmtLst '}'
 TNode *Parser::eatStmtIf() {
     checkAndAdvance(TokenType::name, "if");
     checkAndAdvance(TokenType::openingBracket);
@@ -194,7 +189,6 @@ TNode *Parser::eatStmtIf() {
     return TNode::makeIfStmt(condExpr, ifStmtLst, elseStmtLst);
 }
 
-// assign -> var_name '=' expr ';'
 TNode *Parser::eatStmtAssign() {
     Token *tokenBeforeAdv = checkAndAdvance(TokenType::name);
     checkAndAdvance(TokenType::assign);
@@ -203,12 +197,6 @@ TNode *Parser::eatStmtAssign() {
     return TNode::makeAssignStmt(TNode::makeVarName(tokenBeforeAdv), expr);
 }
 
-/*
- * cond_expr  -> rel_expr
- *          | '!' '(' cond_expr ')'
- *          | '(' cond_expr ')' '&&' '(' cond_expr ')'
- *          | '(' cond_expr ')' '||' '(' cond_expr ')'
- */
 TNode *Parser::eatCondExpr() {
     int c = saveCursor();
     try {
@@ -257,17 +245,9 @@ TNode *Parser::eatCondExpr() {
     }
 
     // incorrect syntax
-    throw runtime_error(genSyntaxErrorMsg());
+    throw runtime_error(syntaxErrorMsg());
 }
 
-/*
- * rel_expr   -> rel_factor '>' rel_factor
- *              | rel_factor '>=' rel_factor
- *              | rel_factor '<' rel_factor
- *              | rel_factor '<=' rel_factor
- *              | rel_factor '==' rel_factor
- *              | rel_factor '!=' rel_facto
- */
 TNode *Parser::eatRelExpr() {
     TNode *rf1 = eatRelFactor();
     if (peekMatchType(TokenType::gt)) {
@@ -295,12 +275,9 @@ TNode *Parser::eatRelExpr() {
         TNode *rf2 = eatRelFactor();
         return TNode::makeNe(rf1, rf2);
     }
-    throw runtime_error(genSyntaxErrorMsg());
+    throw runtime_error(syntaxErrorMsg());
 }
 
-/*
- * rel_factor -> var_name | const_value | expr
- */
 TNode *Parser::eatRelFactor() {
     if (peekMatchType(TokenType::name)) {
         Token *t = checkAndAdvance(TokenType::name);
@@ -330,7 +307,6 @@ TNode *Parser::eatExpr() {
     return term;
 }
 
-// expr1 -> '+' term expr1 | '-' term expr1 | '+' term | '-' term
 TNode *Parser::eatExpr1() {
     if (peekMatchType(TokenType::plus)) {
         checkAndAdvance(TokenType::plus);
@@ -365,10 +341,9 @@ TNode *Parser::eatExpr1() {
 
         return TNode::makeMinus(TNode::makeDummy(), term);
     }
-    throw runtime_error(genSyntaxErrorMsg());
+    throw runtime_error(syntaxErrorMsg());
 }
 
-// term -> factor term1 | factor
 TNode *Parser::eatTerm() {
     TNode *factor = eatFactor();
 
@@ -385,7 +360,6 @@ TNode *Parser::eatTerm() {
     return factor;
 }
 
-// term1 -> '*' factor term1 | '/' factor term1 | '%' factor term1 | '*' factor | '/' factor | '%' factor
 TNode *Parser::eatTerm1() {
     if (peekMatchType(TokenType::times)) {
         checkAndAdvance(TokenType::times);
@@ -436,10 +410,9 @@ TNode *Parser::eatTerm1() {
 
         return TNode::makeMod(TNode::makeDummy(), factor);
     }
-    throw runtime_error(genSyntaxErrorMsg());
+    throw runtime_error(syntaxErrorMsg());
 }
 
-// factor -> var_name | const_value | '(' expr ')'
 TNode *Parser::eatFactor() {
     if (peekMatchType(TokenType::name)) {
         Token *t = checkAndAdvance(TokenType::name);
@@ -453,10 +426,6 @@ TNode *Parser::eatFactor() {
         checkAndAdvance(TokenType::closingBracket);
         return expr;
     }
-}
-
-void Parser::printTokens() {
-    tokens.print();
 }
 
 void Parser::init(string &s) {
@@ -482,24 +451,51 @@ TNode *Parser::parse(string &s) {
     try {
         TNode *ast = nullptr;
         switch (parseOption) {
-            case Option::program: ast = eatProgram(); break;
-            case Option::procedure: ast = eatProcedure(); break;
-            case Option::stmtlist: ast = eatStmtLst(); break;
-            case Option::stmt: ast = eatStmt(); break;
-            case Option::readStmt: ast = eatStmtRead(); break;
-            case Option::printStmt: ast = eatStmtPrint(); break;
-            case Option::callStmt: ast = eatStmtCall(); break;
-            case Option::whileStmt: ast = eatStmtWhile(); break;
-            case Option::ifStmt: ast = eatStmtIf(); break;
-            case Option::assignStmt: ast = eatStmtAssign(); break;
-            case Option::condExpr: ast = eatCondExpr(); break;
-            case Option::expr: ast = eatExpr(); break;
-            case Option::term: ast = eatTerm(); break;
+            case Option::program:
+                ast = eatProgram();
+                break;
+            case Option::procedure:
+                ast = eatProcedure();
+                break;
+            case Option::stmtlist:
+                ast = eatStmtLst();
+                break;
+            case Option::stmt:
+                ast = eatStmt();
+                break;
+            case Option::readStmt:
+                ast = eatStmtRead();
+                break;
+            case Option::printStmt:
+                ast = eatStmtPrint();
+                break;
+            case Option::callStmt:
+                ast = eatStmtCall();
+                break;
+            case Option::whileStmt:
+                ast = eatStmtWhile();
+                break;
+            case Option::ifStmt:
+                ast = eatStmtIf();
+                break;
+            case Option::assignStmt:
+                ast = eatStmtAssign();
+                break;
+            case Option::condExpr:
+                ast = eatCondExpr();
+                break;
+            case Option::expr:
+                ast = eatExpr();
+                break;
+            case Option::term:
+                ast = eatTerm();
+                break;
             case Option::name:
             case Option::constant:
                 ast = eatFactor();
                 break;
-            default: throw runtime_error("unknown parse option given");
+            default:
+                throw runtime_error("unknown parse option given");
         }
         if (!peekMatchType(TokenType::eof)) throw runtime_error("invalid expr syntax");
         // success, now set all parent pointers
@@ -587,4 +583,8 @@ TNode *Parser::parseName(string &s) {
 TNode *Parser::parseConst(string &s) {
     parseOption = Option::constant;
     return parse(s);
+}
+
+void Parser::printTokens() {
+    tokens.print();
 }

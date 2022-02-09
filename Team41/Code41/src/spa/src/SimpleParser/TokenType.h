@@ -1,5 +1,6 @@
 #pragma once
 
+// Represents the possible tokens recognised by the SIMPLE grammar.
 enum class TokenType {
     openingBrace, // {
     closingBrace, // }

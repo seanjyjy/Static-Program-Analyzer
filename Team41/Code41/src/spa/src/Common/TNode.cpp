@@ -83,8 +83,11 @@ void TNode::printRecursive() {
     cout << toStringRecursive() << endl;
 }
 
-TNode *TNode::makeProgram(vector<TNode *> procedures) { return new TNode(TNodeType::program, nullptr, move(procedures)); }
+TNode *TNode::makeProgram(vector<TNode *> procedures) {
+    return new TNode(TNodeType::program, nullptr, move(procedures));
+}
 
+// TODO: replace name token with procName tnode
 TNode *TNode::makeProcedure(Token *name, TNode *stmtLst) { return new TNode(TNodeType::procedure, name, {stmtLst}); }
 
 TNode *TNode::makeStmtLst(vector<TNode *> stmts) { return new TNode(TNodeType::stmtLst, nullptr, move(stmts)); }

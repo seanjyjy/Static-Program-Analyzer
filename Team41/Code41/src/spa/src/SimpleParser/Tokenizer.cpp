@@ -16,12 +16,12 @@ Tokenizer::Tokenizer(string s) : input(s), idx(0), row(0), col(0) {
 // private functions
 void Tokenizer::advance() {
     if (idx >= input.size()) {
-        currToken = '\0';
+        currToken = EOF_CHAR;
         return;
     }
     advancePosition();
     if (idx >= input.size()) {
-        currToken = '\0';
+        currToken = EOF_CHAR;
     } else {
         currToken = input[idx];
     }
@@ -42,7 +42,7 @@ string Tokenizer::peek(int n) {
 }
 
 bool Tokenizer::isEof() {
-    return currToken == '\0';
+    return currToken == EOF_CHAR;
 }
 
 string Tokenizer::withPosition(const string &s) {
@@ -203,7 +203,7 @@ Token Tokenizer::eatInteger() {
 Tokens Tokenizer::tokenize() {
     Tokens tokens;
 
-    while (currToken != '\0') {
+    while (currToken != EOF_CHAR) {
         Token tok;
 
         if (isspace(currToken)) {

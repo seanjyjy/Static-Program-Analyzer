@@ -6,5 +6,5 @@ using namespace std;
 
 class FileReader {
 public:
-    static string getFileContent(string& path);
+    static string getFileContent(string &path);
 };

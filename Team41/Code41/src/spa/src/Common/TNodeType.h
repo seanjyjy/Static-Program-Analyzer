@@ -1,5 +1,6 @@
 #pragma once
 
+// Represents the type of a SIMPLE Abstract Syntax Tree node.
 enum class TNodeType {
     program,
     procedure,
@@ -31,6 +32,7 @@ enum class TNodeType {
     dummy, // for parsing to ast
 };
 
+// TODO: refactor: this could be moved into the TNode class instead.
 static bool isStatement(TNodeType type) {
     switch (type) {
         case TNodeType::readStmt:
