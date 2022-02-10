@@ -84,10 +84,19 @@ void DesignExtractor::extractParent() {
     }
 }
 
+void DesignExtractor::extractPattern() {
+    PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
+    pe.extractRelationship();
+    for (auto &[stmt, lhsRhsPair] : pe.getAssignPatternMap()) {
+        pkb->registerPattern(stmt, lhsRhsPair.first, lhsRhsPair.second);
+    }
+}
+
 void DesignExtractor::extractDesign() {
     extractEntities();
     extractModifies();
     extractUses();
     extractFollows();
     extractParent();
+    extractPattern();
 }
