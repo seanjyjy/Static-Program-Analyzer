@@ -98,10 +98,11 @@ Table *FollowsEvaluator::evaluateSynonymInteger(PKB *pkb, ClauseVariable left, C
 }
 
 Table *FollowsEvaluator::evaluateSynonymSynonym(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+    // returns stmt1 follows stmt2
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllFollows();
 
-    string firstColumn = left.getLabel();
-    string secondColumn = right.getLabel();
+    string firstColumn = right.getLabel();
+    string secondColumn = left.getLabel();
     Header header = Header({firstColumn, secondColumn});
     Table* table = new PQLTable(header);
 
