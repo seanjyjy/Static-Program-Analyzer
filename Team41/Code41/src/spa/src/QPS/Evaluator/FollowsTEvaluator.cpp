@@ -56,13 +56,12 @@ Table* FollowsTEvaluator::evaluateIntegerInteger(PKB *pkb, ClauseVariable left, 
 Table* FollowsTEvaluator::evaluateIntegerSynonym(PKB *pkb, ClauseVariable left, ClauseVariable right) {
     unordered_set<string> followers = pkb->getAllStmtsFollowingT(left.getLabel());
 
+    if (followers.empty()) {
+        return FalseTable::getTable();
+    }
     string column = right.getLabel();
     Header header = Header({column});
     Table* table = new PQLTable(header);
-
-    if (followers.empty()) {
-        return table;
-    }
 
     for (auto& follower : followers) {
         Row* row = new Row(column, follower);
@@ -106,6 +105,10 @@ Table* FollowsTEvaluator::evaluateSynonymSynonym(PKB *pkb, ClauseVariable left, 
     // returns stmt1 follows stmt2
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllFollowsT();
 
+    if (listOfStmtToStmt.empty()) {
+        return FalseTable::getTable();
+    }
+
     string firstColumn = right.getLabel();
     string secondColumn = left.getLabel();
     Header header = Header({firstColumn, secondColumn});
@@ -123,6 +126,10 @@ Table* FollowsTEvaluator::evaluateSynonymSynonym(PKB *pkb, ClauseVariable left, 
 
 Table* FollowsTEvaluator::evaluateSynonymWildCard(PKB *pkb, ClauseVariable left) {
     unordered_set<string> setOfStatements = pkb->getAllStmtsFollowedBySomeStmt();
+
+    if (setOfStatements.empty()) {
+        return FalseTable::getTable();
+    }
 
     string column = left.getLabel();
     Header header = Header({column});
@@ -148,6 +155,10 @@ Table* FollowsTEvaluator::evaluateWildCardInteger(PKB *pkb, ClauseVariable right
 
 Table* FollowsTEvaluator::evaluateWildCardSynonym(PKB *pkb, ClauseVariable right) {
     unordered_set<string> setOfStatements = pkb->getAllStmtsFollowingSomeStmt();
+
+    if (setOfStatements.empty()) {
+        return FalseTable::getTable();
+    }
 
     string column = right.getLabel();
     Header header = Header({column});
