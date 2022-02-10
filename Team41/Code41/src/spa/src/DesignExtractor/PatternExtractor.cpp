@@ -22,8 +22,7 @@ void PatternExtractor::dfs(TNode *node) {
         dfs(node->getChildren()[1]); // right child is stmtLst
     } else if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = node->getChildren();
-        for (int i = ch.size() - 1; i >= 0; i--) {
-            TNode *childNode = ch[i];
+        for (TNode *childNode: ch) {
             dfs(childNode);
             if (childNode->getType() == TNodeType::assignStmt) {
                 mapAssignPattern(childNode);
