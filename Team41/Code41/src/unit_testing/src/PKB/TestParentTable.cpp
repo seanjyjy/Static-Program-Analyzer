@@ -148,4 +148,34 @@ TEST_CASE("PKB: ParentTable") {
             REQUIRE_NOTHROW(table.setParent(stmt[0], stmt[1]));
         }
     }
+
+    SECTION("Combined") {
+        vector<pair<string, string>> parentList;
+        vector<pair<string, string>> parentTList;
+
+        // 0 -> {1, 2}
+        // 2 -> 3
+        REQUIRE_NOTHROW(table.setParent(stmt[0], stmt[1]));
+        REQUIRE_NOTHROW(table.setParent(stmt[0], stmt[2]));
+        REQUIRE_NOTHROW(table.setParentT(stmt[0], stmt[1]));
+        REQUIRE_NOTHROW(table.setParentT(stmt[0], stmt[2]));
+        REQUIRE_NOTHROW(table.setParent(stmt[2], stmt[3]));
+        REQUIRE_NOTHROW(table.setParentT(stmt[2], stmt[3]));
+        REQUIRE_NOTHROW(table.setParentT(stmt[0], stmt[3]));
+
+        parentList.push_back(make_pair(stmt[0], stmt[1]));
+        parentList.push_back(make_pair(stmt[0], stmt[2]));
+        parentList.push_back(make_pair(stmt[2], stmt[3]));
+
+        parentTList.push_back(make_pair(stmt[0], stmt[1]));
+        parentTList.push_back(make_pair(stmt[0], stmt[2]));
+        parentTList.push_back(make_pair(stmt[2], stmt[3]));
+        parentTList.push_back(make_pair(stmt[0], stmt[3]));
+        REQUIRE(sortAndCompareVectors(table.getParentEntries(), parentList));
+        REQUIRE(sortAndCompareVectors(table.getParentTEntries(), parentTList));
+        REQUIRE(table.isParent(stmt[0], stmt[1]));
+        REQUIRE(table.isParentT(stmt[0], stmt[1]));
+        REQUIRE_FALSE(table.isParent(stmt[0], stmt[3]));
+        REQUIRE(table.isParentT(stmt[0], stmt[3]));
+    }
 }
