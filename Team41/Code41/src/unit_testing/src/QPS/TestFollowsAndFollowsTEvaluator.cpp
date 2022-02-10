@@ -7,10 +7,10 @@
 #include "QPS/ClauseVariable.h"
 
 TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
-    auto* table = new FollowsTable();
+    FollowsTable table;
     string stmt[] = {"1", "2", "3", "4", "5", "6"};
     auto* pkbManager = new PKB();
-    pkbManager->followsTable = table;
+    pkbManager->followsTable = &table;
 
     // 1 <- 2 <- 5 <- 6
     // 3 <- 4 (Think of it as an if block)
