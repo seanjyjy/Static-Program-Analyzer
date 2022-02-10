@@ -4,7 +4,6 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
-
     if (leftVariable.isIdentifier() && rightVariable.isIdentifier()) {
         return evaluateIdentifierIdentifier(pkb, leftVariable, rightVariable);
     }
