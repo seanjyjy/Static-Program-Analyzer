@@ -139,4 +139,30 @@ TEST_CASE("PKB: FollowsTable") {
             REQUIRE_NOTHROW(table.setFollowsT(stmt[0], stmt[1]));
         }
     }
+
+    SECTION("Combined") {
+        vector<pair<string, string>> followsList;
+        vector<pair<string, string>> followsTList;
+
+        // 0 -> 1 -> 2
+        REQUIRE_NOTHROW(table.setFollows(stmt[0], stmt[1]));
+        REQUIRE_NOTHROW(table.setFollows(stmt[1], stmt[2]));
+        REQUIRE_NOTHROW(table.setFollowsT(stmt[0], stmt[1]));
+        REQUIRE_NOTHROW(table.setFollowsT(stmt[1], stmt[2]));
+        REQUIRE_NOTHROW(table.setFollowsT(stmt[0], stmt[2]));
+        followsList.push_back(make_pair(stmt[0], stmt[1]));
+        followsList.push_back(make_pair(stmt[1], stmt[2]));
+        followsTList.push_back(make_pair(stmt[0], stmt[1]));
+        followsTList.push_back(make_pair(stmt[1], stmt[2]));
+        followsTList.push_back(make_pair(stmt[0], stmt[2]));
+        REQUIRE(sortAndCompareVectors(table.getFollowEntries(), followsList));
+        REQUIRE(sortAndCompareVectors(table.getFollowTEntries(), followsTList));
+        REQUIRE(table.getStmtFollowedBy(stmt[0]) == stmt[1]);
+        REQUIRE(table.getStmtFollowing(stmt[2]) == stmt[1]);
+        REQUIRE(table.getStmtsFollowedTBy(stmt[0]) == unordered_set<string>({stmt[1], stmt[2]}));
+        REQUIRE(table.getStmtsFollowingT(stmt[2]) == unordered_set<string>({stmt[0], stmt[1]}));
+        REQUIRE(table.isFollows(stmt[0], stmt[1]));
+        REQUIRE_FALSE(table.isFollows(stmt[0], stmt[2]));
+        REQUIRE(table.isFollowsT(stmt[0], stmt[2]));
+    }
 }
