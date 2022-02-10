@@ -272,7 +272,7 @@ private:
      *
      * @param s the input string to parse.
      */
-    void init(string &s);
+    void init(const string &s);
 
     /**
      * Parses the string into an AST.
@@ -280,7 +280,7 @@ private:
      * @param s the input string to parse.
      * @return the parsed AST node.
      */
-    TNode *parse(string &s);
+    TNode *parse(const string &s);
 
 public:
     Parser();
@@ -291,7 +291,7 @@ public:
      * @param s the program string.
      * @return the program AST node.
      */
-    TNode *parseProgram(string &s);
+    TNode *parseProgram(const string &s);
 
     /**
      * Parses an expression string into an abstract syntax tree (AST).
@@ -301,7 +301,7 @@ public:
      * @param s the expr string with optional leading/trailing whitespace
      * @return the parsed AST
      */
-    TNode *parseExpr(string &s);
+    TNode *parseExpr(const string &s);
 
     /**
      * Parses a procedure string. Only used in tests.
@@ -309,7 +309,7 @@ public:
      * @param s the procedure string
      * @return the procedure AST node.
      */
-    TNode *parseProcedure(string &s);
+    TNode *parseProcedure(const string &s);
 
     /**
      * Parses a statement list. Only used in tests.
@@ -317,7 +317,7 @@ public:
      * @param s the statement list
      * @return the stmtlst AST node.
      */
-    TNode *parseStmtLst(string &s);
+    TNode *parseStmtLst(const string &s);
 
     /**
      * Parses a statement. Only used in tests.
@@ -325,7 +325,7 @@ public:
      * @param s the statement string
      * @return the read/print/while/if/assign AST node.
      */
-    TNode *parseStmt(string &s);
+    TNode *parseStmt(const string &s);
 
     /**
      * Parses a read statement. Only used in tests.
@@ -333,7 +333,7 @@ public:
      * @param s the read statement string
      * @return the read AST node.
      */
-    TNode *parseRead(string &s);
+    TNode *parseRead(const string &s);
 
     /**
      * Parses a print statement. Only used in tests.
@@ -341,7 +341,7 @@ public:
      * @param s the print statement string
      * @return the print AST node
      */
-    TNode *parsePrint(string &s);
+    TNode *parsePrint(const string &s);
 
     /**
      * Parses a call statement. Only used in tests.
@@ -349,7 +349,7 @@ public:
      * @param s the call statement string
      * @return the call AST node
      */
-    TNode *parseCall(string &s);
+    TNode *parseCall(const string &s);
 
     /**
      * Parses a while statement. Only used in tests.
@@ -357,7 +357,7 @@ public:
      * @param s the while statement string
      * @return the while AST node
      */
-    TNode *parseWhile(string &s);
+    TNode *parseWhile(const string &s);
 
     /**
      * Parses an if statement. Only used in tests.
@@ -365,7 +365,7 @@ public:
      * @param s the if statement string
      * @return the if AST node
      */
-    TNode *parseIf(string &s);
+    TNode *parseIf(const string &s);
 
     /**
      * Parses an assign statement. Only used in tests.
@@ -373,7 +373,7 @@ public:
      * @param s the assign statement string
      * @return the assign AST node
      */
-    TNode *parseAssign(string &s);
+    TNode *parseAssign(const string &s);
 
     /**
      * Parses a conditional expression. Only used in tests.
@@ -381,7 +381,7 @@ public:
      * @param s the conditional expression statement string
      * @return the plus/minus/times/div/mod/and/or AST node
      */
-    TNode *parseCondExpr(string &s);
+    TNode *parseCondExpr(const string &s);
 
     /**
      * Parses a term. Only used in tests.
@@ -389,7 +389,7 @@ public:
      * @param s the term statement string.
      * @return the var/const/plus/minus/times/div/mod/and/or AST node
      */
-    TNode *parseTerm(string &s);
+    TNode *parseTerm(const string &s);
 
     /**
      * Parses a name. Only used in tests.
@@ -397,7 +397,7 @@ public:
      * @param s the name to parse
      * @return the var AST node
      */
-    TNode *parseName(string &s);
+    TNode *parseName(const string &s);
 
     /**
      * Parses a const. Only used in tests.
@@ -405,7 +405,7 @@ public:
      * @param s the const to parse
      * @return the const AST node
      */
-    TNode *parseConst(string &s);
+    TNode *parseConst(const string &s);
 
     /**
      * Prints all tokens. For debugging purposes.
