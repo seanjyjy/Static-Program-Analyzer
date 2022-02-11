@@ -13,7 +13,7 @@ void EntitiesExtractor::findProcedures() {
     vector<TNode *> procNodes = ast->getChildren();
     for (TNode *procNode : procNodes) {
         string procName = procNode->getVal()->getVal();
-        if (procSet.find(procName) != procSet.end())
+        if (procSet.find(procName) != procSet.end()) // Multiple procedures with same name not allowed
             throw runtime_error("Duplicate Procedure Name '" + procName + "' found");
         procSet.insert(procName);
     }
@@ -34,7 +34,7 @@ void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum) {
     }
 }
 
-void EntitiesExtractor::findEntities() { // todo register P calls P
+void EntitiesExtractor::findEntities() { // Todo: Register P calls P
     int stmtNum = 0;
     stack<TNode *> stk;
     stk.push(ast);

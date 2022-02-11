@@ -65,7 +65,7 @@ void DesignExtractor::extractFollows() {
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extractRelationship();
     for (auto &[followed, followsTLst] : fe.getFollowsTMap()) {
-        pkb->registerFollows(followsTLst.front(), followed); // front of list is follows
+        pkb->registerFollows(followsTLst.front(), followed); // front of list is direct follows
         for (auto follower : followsTLst)
             pkb->registerFollowsT(follower, followed);
     }

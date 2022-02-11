@@ -6,7 +6,7 @@
 using namespace std;
 
 TEST_CASE("DesignExtractor: Register Entities") {
-    // todo create ast without Parser
+    // Todo: Create ast without Parser
     string s = "procedure main {\n"
                "\tread x;\n"
                "\ty = z + 1;\n"
