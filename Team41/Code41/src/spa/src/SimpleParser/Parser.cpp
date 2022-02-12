@@ -428,7 +428,7 @@ TNode *Parser::eatFactor() {
     }
 }
 
-void Parser::init(string &s) {
+void Parser::init(const string &s) {
     // set current string to parse
     input = move(s);
 
@@ -445,7 +445,7 @@ void Parser::init(string &s) {
     currToken = tokens[0];
 }
 
-TNode *Parser::parse(string &s) {
+TNode *Parser::parse(const string &s) {
     init(s);
 
     try {
@@ -510,77 +510,77 @@ TNode *Parser::parse(string &s) {
     return nullptr;
 }
 
-TNode *Parser::parseProgram(string &s) {
+TNode *Parser::parseProgram(const string &s) {
     parseOption = Option::program;
     return parse(s);
 }
 
-TNode *Parser::parseProcedure(string &s) {
+TNode *Parser::parseProcedure(const string &s) {
     parseOption = Option::procedure;
     return parse(s);
 }
 
-TNode *Parser::parseStmtLst(string &s) {
+TNode *Parser::parseStmtLst(const string &s) {
     parseOption = Option::stmtlist;
     return parse(s);
 }
 
-TNode *Parser::parseStmt(string &s) {
+TNode *Parser::parseStmt(const string &s) {
     parseOption = Option::stmt;
     return parse(s);
 }
 
-TNode *Parser::parseRead(string &s) {
+TNode *Parser::parseRead(const string &s) {
     parseOption = Option::readStmt;
     return parse(s);
 }
 
-TNode *Parser::parsePrint(string &s) {
+TNode *Parser::parsePrint(const string &s) {
     parseOption = Option::printStmt;
     return parse(s);
 }
 
-TNode *Parser::parseCall(string &s) {
+TNode *Parser::parseCall(const string &s) {
     parseOption = Option::callStmt;
     return parse(s);
 }
 
-TNode *Parser::parseWhile(string &s) {
+TNode *Parser::parseWhile(const string &s) {
     parseOption = Option::whileStmt;
     return parse(s);
 }
 
-TNode *Parser::parseIf(string &s) {
+TNode *Parser::parseIf(const string &s) {
     parseOption = Option::ifStmt;
     return parse(s);
 }
 
-TNode *Parser::parseAssign(string &s) {
+TNode *Parser::parseAssign(const string &s) {
     parseOption = Option::assignStmt;
     return parse(s);
 }
 
-TNode *Parser::parseCondExpr(string &s) {
+TNode *Parser::parseCondExpr(const string &s) {
     parseOption = Option::condExpr;
     return parse(s);
 }
 
-TNode *Parser::parseExpr(string &s) {
+TNode *Parser::parseExpr(const string &s) {
     parseOption = Option::expr;
     return parse(s);
 }
 
-TNode *Parser::parseTerm(string &s) {
+TNode *Parser::parseTerm(const string &s) {
     parseOption = Option::term;
     return parse(s);
 }
 
-TNode *Parser::parseName(string &s) {
+TNode *Parser::parseName(const string &s) {
     parseOption = Option::name;
     return parse(s);
 }
 
-TNode *Parser::parseConst(string &s) {
+TNode *Parser::parseConst(const string &s) {
     parseOption = Option::constant;
     return parse(s);
 }
