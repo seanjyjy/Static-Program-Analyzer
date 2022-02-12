@@ -158,23 +158,25 @@ bool QueryParser::parseClause() {
         return false;
     }
 
-    bool clauseValid = isQueryClauseValid(clause->c_str(), left->c_str(), right->c_str());
+    return buildClause(clause->c_str(), left->c_str(), right->c_str());
+}
+
+bool QueryParser::buildClause(string clause, string left, string right) {
+    bool clauseValid = isQueryClauseValid(clause, left, right);
 
     if (clauseValid) {
-        QueryClause::clause_type type = determineClauseType(clause->c_str(), left->c_str(), right->c_str());
-        ClauseVariable::variable_type leftType = QueryParser::determineVariableType(left->c_str());
-        string l = left->c_str();
+        QueryClause::clause_type type = determineClauseType(clause, left, right);
+        ClauseVariable::variable_type leftType = QueryParser::determineVariableType(left);
+        string l = left;
 
-        // TODO: From @hardy: Write a better way to exclude quotes somewhere there
         if (ClauseVariable::variable_type::identifier == leftType) {
             l = l.substr(1, l.length() - 2);
         }
 
         ClauseVariable lcv(leftType, l);
-        ClauseVariable::variable_type rightType = QueryParser::determineVariableType(right->c_str());
-        string r = right->c_str();
+        ClauseVariable::variable_type rightType = QueryParser::determineVariableType(right);
+        string r = right;
 
-        // TODO: From @hardy: Write a better way to exclude quotes somewhere there
         if (ClauseVariable::variable_type::identifier == rightType) {
             r = r.substr(1, r.length() - 2);
         }

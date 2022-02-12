@@ -23,8 +23,10 @@ private:
     bool parseSelectSynonym();
     bool parseClause();
     bool parsePatternClause();
+    bool buildClause(string clause, string left, string right);
     bool isDeclared(string synonym);
     bool isDeclaredProcedure(string synonym);
+
     optional<QueryDeclaration> findMatchingDeclaration(string synonym);
 public:
     QueryParser(string &input);
