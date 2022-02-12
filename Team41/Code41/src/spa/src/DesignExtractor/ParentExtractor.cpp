@@ -31,7 +31,7 @@ void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
     list<string> parentLstChild;
     TNodeType type = node->getType();
     if (type == TNodeType::procedure) {
-        dfs(node->getChildren()[0], parentLstChild); // only 1 child stmtLst{
+        dfs(node->getChildren()[0], parentLstChild); // only 1 child stmtLst
     } else if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = node->getChildren();
         for (TNode *child : ch) {

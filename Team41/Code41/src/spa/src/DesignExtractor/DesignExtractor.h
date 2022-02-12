@@ -11,9 +11,9 @@
 
 class DesignExtractor {
 private:
-    TNode *ast;
-    PKB *pkb;
-    unordered_map<TNode *, string> nodeToStmtNumMap;
+    TNode *ast; // root node of AST
+    PKB *pkb; // pointer to PKB to store all entities and relationships
+    unordered_map<TNode *, string> nodeToStmtNumMap; // mapping of TNode* to statement number
 
     void extractEntities();
     void extractModifies();
@@ -23,5 +23,10 @@ private:
 public:
     DesignExtractor(TNode *ast, PKB *pkb);
 
+    /**
+     * Extracts all entities (procedures, statements, variables and constants) and relationships
+     * and stores them in the PKB sequentially.
+     * Supported relationships: Modifies, Uses, Follows(T) and Parent(T)
+     */
     void extractDesign();
 };
