@@ -15,7 +15,7 @@ bool EvaluatorUtils::isStmtType(QueryDeclaration::design_entity_type type) {
 }
 
 bool EvaluatorUtils::isModifiesStmtType(QueryDeclaration::design_entity_type type) {
-    return isStmtType(type) && !isPrint(type) && !isCall(type);
+    return isStmtType(type) && !isPrint(type);
 }
 
 bool EvaluatorUtils::isUsesStmtType(QueryDeclaration::design_entity_type type) {
