@@ -11,6 +11,8 @@
 #include "QPS/Evaluator/ModifiesSEvaluator.h"
 #include "QPS/Evaluator/ModifiesPEvaluator.h"
 #include "QPS/Evaluator/SelectSynonymEvaluator.h"
+#include "QPS/Evaluator/FollowsEvaluator.h"
+#include "QPS/Evaluator/FollowsTEvaluator.h"
 #include "QueryObject.h"
 #include "QueryClause.h"
 

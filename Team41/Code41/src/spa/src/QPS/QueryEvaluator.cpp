@@ -35,11 +35,7 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
                 return emptyResult;
             }
         }
-    } catch (const runtime_error& error) {
-        return emptyResult;
-    }
 
-    try {
         for (const auto& declaration : queryObject->declarations) {
             Table* intermediateTable = SelectSynonymEvaluator::evaluate(declaration, this->pkb);
 
@@ -58,7 +54,6 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
                 return emptyResult;
             }
         }
-
     } catch (const runtime_error& error) {
         return emptyResult;
     }
@@ -73,9 +68,9 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
 Table *QueryEvaluator::evaluate(QueryClause& clause) {
     switch(clause.type) {
         case QueryClause::clause_type::follows:
-            return nullptr;
+            return FollowsEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::followsT:
-            return nullptr;
+            return FollowsTEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::parent:
             return nullptr;
         case QueryClause::clause_type::parentT:
