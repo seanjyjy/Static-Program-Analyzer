@@ -13,6 +13,8 @@
 #include "QPS/Evaluator/SelectSynonymEvaluator.h"
 #include "QPS/Evaluator/FollowsEvaluator.h"
 #include "QPS/Evaluator/FollowsTEvaluator.h"
+#include "QPS/Evaluator/ParentEvaluator.h"
+#include "QPS/Evaluator/ParentTEvaluator.h"
 #include "QueryObject.h"
 #include "QueryClause.h"
 
