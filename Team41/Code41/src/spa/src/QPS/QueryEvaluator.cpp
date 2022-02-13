@@ -72,9 +72,9 @@ Table *QueryEvaluator::evaluate(QueryClause& clause) {
         case QueryClause::clause_type::followsT:
             return FollowsTEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::parent:
-            return nullptr;
+            return ParentEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::parentT:
-            return nullptr;
+            return ParentEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::usesS:
             return UsesSEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::usesP:
