@@ -118,6 +118,38 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(clauseMatch);
         REQUIRE(vMatch);
     }
+    SECTION("Full Pattern") {
+        string s = "assign a;\n"
+                   "Select a pattern a (_, \"count + 1\")";
+
+        QueryParser qp = QueryParser{s};
+        QueryObject *qo = qp.parse();
+        REQUIRE(qo->patternClauses.at(0).getRHS() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
+    }
+    SECTION("Sub Pattern") {
+        string s = "assign a;\n"
+                   "Select a pattern a (\"x\", _\"sub + 1\"_)";
+
+        QueryParser qp = QueryParser{s};
+        QueryObject *qo = qp.parse();
+
+        REQUIRE(qo->patternClauses.at(0).getRHS() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).isSubPattern());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isIdentifier());
+    }
+    SECTION("Wildcard Pattern") {
+        string s = "assign a; variable v;\n"
+                   "Select a pattern a (v, _)";
+
+        QueryParser qp = QueryParser{s};
+        QueryObject *qo = qp.parse();
+
+        REQUIRE(qo->patternClauses.at(0).getRHS() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isSynonym());
+    }
 }
 
 TEST_CASE("QPS: Parser_INVALID") {
@@ -136,14 +168,15 @@ TEST_CASE("QPS: Parser_INVALID") {
 
         QueryParser a = QueryParser{s};
         QueryObject *qo = a.parse();
-
+        printf("Hello");
         REQUIRE(!qo->isQueryValid);
+        printf("Hello");
     }
     SECTION("INVALID DECLARATION malformed such that") {
         string s = "variable v; assign a;\n"
                    "Select v suck that Uses(a, v)";
-
         QueryParser a = QueryParser{s};
+
         QueryObject *qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);

@@ -6,6 +6,7 @@
 #include "QueryDeclaration.h"
 #include "QueryEvaluator.h"
 #include "QueryLexer.h"
+#include "SimpleParser/Parser.h" // for pattern parse
 
 using namespace std;
 
@@ -23,8 +24,10 @@ private:
     bool parseSelectSynonym();
     bool parseClause();
     bool parsePatternClause();
+    bool buildClause(string clause, string left, string right);
     bool isDeclared(string synonym);
     bool isDeclaredProcedure(string synonym);
+
     optional<QueryDeclaration> findMatchingDeclaration(string synonym);
 public:
     QueryParser(string &input);
