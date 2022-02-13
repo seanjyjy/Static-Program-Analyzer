@@ -124,26 +124,31 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         QueryObject *qo = qp.parse();
-
-        REQUIRE(true);
+        REQUIRE(qo->patternClauses.at(0).getRHS() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
     }
     SECTION("Sub Pattern") {
         string s = "assign a;\n"
-                   "Select a pattern a (_, _\"sub + 1\"_)";
+                   "Select a pattern a (\"x\", _\"sub + 1\"_)";
 
         QueryParser qp = QueryParser{s};
         QueryObject *qo = qp.parse();
 
-        REQUIRE(true);
+        REQUIRE(qo->patternClauses.at(0).getRHS() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).isSubPattern());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isIdentifier());
     }
     SECTION("Wildcard Pattern") {
-        string s = "assign a;\n"
-                   "Select a pattern a (_, _)";
+        string s = "assign a; variable v;\n"
+                   "Select a pattern a (v, _)";
 
         QueryParser qp = QueryParser{s};
         QueryObject *qo = qp.parse();
 
-        REQUIRE(true);
+        REQUIRE(qo->patternClauses.at(0).getRHS() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isSynonym());
     }
 }
 

@@ -188,7 +188,7 @@ optional<string> QueryLexer::nextPatternExpression() {
         if (peekNextIsString("\"")) {
             index++;
         } else {
-            printf("'\"' expected at beginning of patterns.\n");
+            printf("'\"' expected at beginning of sub patterns.\n");
             return nullopt;
         }
         // sub patterns end before a '"'
@@ -206,8 +206,7 @@ optional<string> QueryLexer::nextPatternExpression() {
             return nullopt;
         }
         index++; // Skip over last '_'
-        nextSpecialExpected(")");
-        return out;
+        return "_" + out + "_"; // For parser to recognize sub
     } else {
         if (peekNextIsString("\"")) {
             index++;

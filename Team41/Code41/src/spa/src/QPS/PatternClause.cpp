@@ -3,6 +3,9 @@
 PatternClause::PatternClause(QueryDeclaration synonym, ClauseVariable lhs, TNode *miniAST) :
     synonym(synonym), lhs(lhs), miniAST(miniAST) {}
 
+QueryDeclaration PatternClause::getSynonym() const { return synonym; }
+ClauseVariable PatternClause::getLHS() const { return lhs; }
+TNode *PatternClause::getRHS() const { return miniAST; }
 void PatternClause::setIsWildcard() { type = wildcard; }
 void PatternClause::setIsFullPattern() { type = fullpattern; }
 void PatternClause::setIsSubPattern() { type = subpattern; }

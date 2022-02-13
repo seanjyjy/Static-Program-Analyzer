@@ -45,7 +45,8 @@ TEST_CASE("Integration test for simple source and PQL") {
 
     QueryDeclaration selectSynonym(QueryDeclaration::design_entity_type::VARIABLE, v);
 
-    auto *queryObjectMock = new QueryObject(declarationList, queryClauseList, selectSynonym, true);
+    vector<PatternClause> pc;
+    auto *queryObjectMock = new QueryObject(declarationList, queryClauseList, pc, selectSynonym, true);
     std::unordered_set<std::string> result = queryEvaluator.evaluateQuery(queryObjectMock);
     string stringRepresentation;
     for (auto& res : result) {
