@@ -1,15 +1,25 @@
 #include "EvaluatorUtils.h"
 
-bool EvaluatorUtils::isStmtType(QueryDeclaration::design_entity_type type) {
-    bool isProcedure = type == QueryDeclaration::design_entity_type::PROCEDURE;
-    bool isConstant = type == QueryDeclaration::design_entity_type::CONSTANT;
-    bool isVariable = EvaluatorUtils::isVariable(type);
+// ============================================= GENERAL UTILS ======================================================
 
-    if (isProcedure || isVariable || isConstant) {
+bool EvaluatorUtils::isStmtType(QueryDeclaration::design_entity_type type) {
+    bool isTypeProcedure = isProcedure(type);
+    bool isTypeConstant = isConstant(type);
+    bool isTypeVariable = isVariable(type);
+
+    if (isTypeProcedure || isTypeVariable || isTypeConstant) {
         return false;
     }
 
     return true;
+}
+
+bool EvaluatorUtils::isModifiesStmtType(QueryDeclaration::design_entity_type type) {
+    return isStmtType(type) && !isPrint(type) && !isCall(type);
+}
+
+bool EvaluatorUtils::isUsesStmtType(QueryDeclaration::design_entity_type type) {
+    return isStmtType(type) && !isRead(type);
 }
 
 bool EvaluatorUtils::isVariable(QueryDeclaration::design_entity_type type) {
@@ -20,6 +30,50 @@ bool EvaluatorUtils::isProcedure(QueryDeclaration::design_entity_type type) {
     return type == QueryDeclaration::design_entity_type::PROCEDURE;
 }
 
+bool EvaluatorUtils::isConstant(QueryDeclaration::design_entity_type type) {
+    return type == QueryDeclaration::design_entity_type::CONSTANT;
+}
+
+bool EvaluatorUtils::isPrint(QueryDeclaration::design_entity_type type) {
+    return type == QueryDeclaration::design_entity_type::PRINT;
+}
+
+bool EvaluatorUtils::isRead(QueryDeclaration::design_entity_type type) {
+    return type == QueryDeclaration::design_entity_type::READ;
+}
+
+bool EvaluatorUtils::isCall(QueryDeclaration::design_entity_type type) {
+    return type == QueryDeclaration::design_entity_type::CALL;
+}
+
+bool EvaluatorUtils::isIntegerSynonym(ClauseVariable* left, ClauseVariable* right) {
+    return left->isInteger() && right->isSynonym();
+}
+
+bool EvaluatorUtils::isIdentifierSynonym(ClauseVariable* left, ClauseVariable* right) {
+    return left->isIdentifier() && right->isSynonym();
+}
+
+bool EvaluatorUtils::isWildCardSynonym(ClauseVariable* left, ClauseVariable* right) {
+    return left->isWildCard() && right->isSynonym();
+}
+
+bool EvaluatorUtils::isSynonymSynonym(ClauseVariable* left, ClauseVariable* right) {
+    return left->isSynonym() && right->isSynonym();
+}
+
+bool EvaluatorUtils::isSynonymInteger(ClauseVariable* left, ClauseVariable* right) {
+    return left->isSynonym() && right->isInteger();
+}
+
+bool EvaluatorUtils::isSynonymIdentifier(ClauseVariable* left, ClauseVariable* right) {
+    return left->isSynonym() && right->isIdentifier();
+}
+
+bool EvaluatorUtils::isSynonymWildCard(ClauseVariable* left, ClauseVariable* right) {
+    return left->isSynonym() && right->isWildCard();
+}
+
 // ============================================= STMT UTILS ======================================================
 
 bool EvaluatorUtils::StmtUtils::isIntegerInteger(ClauseVariable* left, ClauseVariable* right) {
@@ -27,7 +81,7 @@ bool EvaluatorUtils::StmtUtils::isIntegerInteger(ClauseVariable* left, ClauseVar
 }
 
 bool EvaluatorUtils::StmtUtils::isValidIntegerSynonym(ClauseVariable* left, ClauseVariable* right) {
-    return left->isInteger() && right->isSynonym() && EvaluatorUtils::isStmtType(right->getDesignEntityType());
+    return isIntegerSynonym(left, right) && isStmtType(right->getDesignEntityType());
 }
 
 bool EvaluatorUtils::StmtUtils::isIntegerWildCard(ClauseVariable* left, ClauseVariable* right) {
@@ -35,18 +89,17 @@ bool EvaluatorUtils::StmtUtils::isIntegerWildCard(ClauseVariable* left, ClauseVa
 }
 
 bool EvaluatorUtils::StmtUtils::isValidSynonymInteger(ClauseVariable* left, ClauseVariable* right) {
-    return left->isSynonym() && right->isInteger() && EvaluatorUtils::isStmtType(left->getDesignEntityType());
+    return isSynonymInteger(left, right) && isStmtType(left->getDesignEntityType());
 }
 
 bool EvaluatorUtils::StmtUtils::isValidSynonymSynonym(ClauseVariable* left, ClauseVariable* right) {
-    return left->isSynonym() &&
-           right->isSynonym() &&
-           EvaluatorUtils::isStmtType(left->getDesignEntityType()) &&
-           EvaluatorUtils::isStmtType(right->getDesignEntityType());
+    return isSynonymSynonym(left, right)
+           && isStmtType(left->getDesignEntityType())
+           && isStmtType(right->getDesignEntityType());
 }
 
 bool EvaluatorUtils::StmtUtils::isValidSynonymWildCard(ClauseVariable* left, ClauseVariable* right) {
-    return left->isSynonym() && right->isWildCard() && EvaluatorUtils::isStmtType(left->getDesignEntityType());
+    return isSynonymWildCard(left, right) && isStmtType(left->getDesignEntityType());
 }
 
 bool EvaluatorUtils::StmtUtils::isWildCardInteger(ClauseVariable* left, ClauseVariable* right) {
@@ -54,7 +107,7 @@ bool EvaluatorUtils::StmtUtils::isWildCardInteger(ClauseVariable* left, ClauseVa
 }
 
 bool EvaluatorUtils::StmtUtils::isValidWildCardSynonym(ClauseVariable* left, ClauseVariable* right) {
-    return left->isWildCard() && right->isSynonym() && EvaluatorUtils::isStmtType(right->getDesignEntityType());
+    return isWildCardSynonym(left, right) && isStmtType(right->getDesignEntityType());
 }
 
 bool EvaluatorUtils::StmtUtils::isWildCardWildCard(ClauseVariable* left, ClauseVariable* right) {
@@ -68,7 +121,7 @@ bool EvaluatorUtils::ProcUtils::isIdentifierIdentifier(ClauseVariable *left, Cla
 }
 
 bool EvaluatorUtils::ProcUtils::isValidIdentifierSynonym(ClauseVariable *left, ClauseVariable *right) {
-    return left->isIdentifier() && right->isSynonym() && EvaluatorUtils::isVariable(right->getDesignEntityType());
+    return isIdentifierSynonym(left, right) && isVariable(right->getDesignEntityType());
 }
 
 bool EvaluatorUtils::ProcUtils::isIdentifierWildCard(ClauseVariable *left, ClauseVariable *right) {
@@ -76,18 +129,17 @@ bool EvaluatorUtils::ProcUtils::isIdentifierWildCard(ClauseVariable *left, Claus
 }
 
 bool EvaluatorUtils::ProcUtils::isValidSynonymIdentifier(ClauseVariable *left, ClauseVariable *right) {
-    return left->isSynonym() && right->isIdentifier() && EvaluatorUtils::isProcedure(left->getDesignEntityType());
+    return isSynonymIdentifier(left, right) && isProcedure(left->getDesignEntityType());
 }
 
 bool EvaluatorUtils::ProcUtils::isValidSynonymSynonym(ClauseVariable *left, ClauseVariable *right) {
-    return left->isSynonym() &&
-        right->isSynonym() &&
-        EvaluatorUtils::isProcedure(left->getDesignEntityType()) &&
-        EvaluatorUtils::isVariable(right->getDesignEntityType());
+    return isSynonymSynonym(left, right)
+        && isProcedure(left->getDesignEntityType())
+        && isVariable(right->getDesignEntityType());
 }
 
 bool EvaluatorUtils::ProcUtils::isValidSynonymWildCard(ClauseVariable *left, ClauseVariable *right) {
-    return left->isSynonym() && right->isWildCard() && EvaluatorUtils::isProcedure(left->getDesignEntityType());
+    return isSynonymWildCard(left, right) && isProcedure(left->getDesignEntityType());
 }
 
 // ============================================= S UTILS ======================================================
@@ -97,24 +149,38 @@ bool EvaluatorUtils::SUtils::isIntegerIdentifier(ClauseVariable* left, ClauseVar
 }
 
 bool EvaluatorUtils::SUtils::isValidIntegerSynonym(ClauseVariable* left, ClauseVariable* right) {
-    return left->isInteger() && right->isSynonym() && EvaluatorUtils::isVariable(right->getDesignEntityType());
+    return isIntegerSynonym(left, right) && isVariable(right->getDesignEntityType());
 }
 
 bool EvaluatorUtils::SUtils::isIntegerWildCard(ClauseVariable* left, ClauseVariable* right) {
     return left->isInteger() && right->isWildCard();
 }
 
-bool EvaluatorUtils::SUtils::isValidSynonymIdentifier(ClauseVariable* left, ClauseVariable* right) {
-    return left->isSynonym() && right->isIdentifier() && EvaluatorUtils::isStmtType(left->getDesignEntityType());
+bool EvaluatorUtils::SUtils::isValidModifiesSynonymIdentifier(ClauseVariable* left, ClauseVariable* right) {
+    return isSynonymIdentifier(left, right) && isModifiesStmtType(left->getDesignEntityType());
 }
 
-bool EvaluatorUtils::SUtils::isValidSynonymSynonym(ClauseVariable* left, ClauseVariable* right) {
-    return left->isSynonym()
-        && right->isSynonym()
-        && EvaluatorUtils::isStmtType(left->getDesignEntityType())
-        && EvaluatorUtils::isVariable(right->getDesignEntityType());
+bool EvaluatorUtils::SUtils::isValidUsesSynonymIdentifier(ClauseVariable* left, ClauseVariable* right) {
+    return isSynonymIdentifier(left, right) && isUsesStmtType(left->getDesignEntityType());
 }
 
-bool EvaluatorUtils::SUtils::isValidSynonymWildCard(ClauseVariable* left, ClauseVariable* right) {
-    return left->isSynonym() && right->isWildCard() && EvaluatorUtils::isStmtType(left->getDesignEntityType());
+bool EvaluatorUtils::SUtils::isValidModifiesSynonymSynonym(ClauseVariable* left, ClauseVariable* right) {
+    return isSynonymSynonym(left, right)
+        && isModifiesStmtType(left->getDesignEntityType())
+        && isVariable(right->getDesignEntityType());
+}
+
+bool EvaluatorUtils::SUtils::isValidUsesSynonymSynonym(ClauseVariable* left, ClauseVariable* right) {
+    return isSynonymSynonym(left, right)
+           && isUsesStmtType(left->getDesignEntityType())
+           && isVariable(right->getDesignEntityType());
+}
+
+
+bool EvaluatorUtils::SUtils::isValidModifiesSynonymWildCard(ClauseVariable* left, ClauseVariable* right) {
+    return isSynonymWildCard(left, right) && isModifiesStmtType(left->getDesignEntityType());
+}
+
+bool EvaluatorUtils::SUtils::isValidUsesSynonymWildCard(ClauseVariable* left, ClauseVariable* right) {
+    return isSynonymWildCard(left, right) && isUsesStmtType(left->getDesignEntityType());
 }

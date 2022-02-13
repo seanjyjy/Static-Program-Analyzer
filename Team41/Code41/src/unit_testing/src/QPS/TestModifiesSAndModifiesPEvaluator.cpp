@@ -13,7 +13,7 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
     string vars[] = {"var1", "var2"};
     string lines[] = {"1", "2", "3"};
     string proc[] = {"proc1", "proc2", "proc3"};
-    string declaration[] = { "a", "v", "p" };
+    string declaration[] = { "a", "v", "p", "pn", "c" };
 
     ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0], QueryDeclaration::CONSTANT);
     ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1], QueryDeclaration::CONSTANT);
@@ -29,6 +29,8 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
     ClauseVariable assignSyn(ClauseVariable::variable_type::synonym, declaration[0], QueryDeclaration::ASSIGN);
     ClauseVariable varSyn(ClauseVariable::variable_type::synonym, declaration[1], QueryDeclaration::VARIABLE);
     ClauseVariable procSyn(ClauseVariable::variable_type::synonym, declaration[2], QueryDeclaration::PROCEDURE);
+    ClauseVariable printSyn(ClauseVariable::variable_type::synonym, declaration[3], QueryDeclaration::PRINT);
+    ClauseVariable callSyn(ClauseVariable::variable_type::synonym, declaration[4], QueryDeclaration::CALL);
 
     ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", QueryDeclaration::NONE);
 
@@ -112,10 +114,16 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
             REQUIRE(ModifiesSEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
 
             QueryClause queryClause4(QueryClause::modifiesS, procSyn, assignSyn);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause2, pkbManager) == FalseTable::getTable());
+            REQUIRE(ModifiesSEvaluator::evaluate(queryClause4, pkbManager) == FalseTable::getTable());
 
             QueryClause queryClause5(QueryClause::modifiesS, procSyn, wildcard);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+            REQUIRE(ModifiesSEvaluator::evaluate(queryClause5, pkbManager) == FalseTable::getTable());
+
+            QueryClause queryClause6(QueryClause::modifiesS, printSyn, assignSyn);
+            REQUIRE(ModifiesSEvaluator::evaluate(queryClause6, pkbManager) == FalseTable::getTable());
+
+            QueryClause queryClause7(QueryClause::modifiesS, callSyn, wildcard);
+            REQUIRE(ModifiesSEvaluator::evaluate(queryClause7, pkbManager) == FalseTable::getTable());
         }
     }
 
@@ -199,10 +207,10 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
             REQUIRE(ModifiesPEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
 
             QueryClause queryClause4(QueryClause::modifiesS, assignSyn, assignSyn);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+            REQUIRE(ModifiesPEvaluator::evaluate(queryClause4, pkbManager) == FalseTable::getTable());
 
             QueryClause queryClause5(QueryClause::modifiesS, assignSyn, wildcard);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+            REQUIRE(ModifiesPEvaluator::evaluate(queryClause5, pkbManager) == FalseTable::getTable());
         }
     }
 }

@@ -16,15 +16,15 @@ Table* UsesSEvaluator::evaluate(QueryClause clause, PKB *pkb) {
         return evaluateIntegerWildCard(pkb, leftVariable);
     }
 
-    if (EvaluatorUtils::SUtils::isValidSynonymIdentifier(&leftVariable, &rightVariable)) {
+    if (EvaluatorUtils::SUtils::isValidUsesSynonymIdentifier(&leftVariable, &rightVariable)) {
         return evaluateSynonymIdentifier(pkb, leftVariable, rightVariable);
     }
 
-    if (EvaluatorUtils::SUtils::isValidSynonymSynonym(&leftVariable, &rightVariable)) {
+    if (EvaluatorUtils::SUtils::isValidUsesSynonymSynonym(&leftVariable, &rightVariable)) {
         return evaluateSynonymSynonym(pkb, leftVariable, rightVariable);
     }
 
-    if (EvaluatorUtils::SUtils::isValidSynonymWildCard(&leftVariable, &rightVariable)) {
+    if (EvaluatorUtils::SUtils::isValidUsesSynonymWildCard(&leftVariable, &rightVariable)) {
         return evaluateSynonymWildCard(pkb, leftVariable);
     }
 
