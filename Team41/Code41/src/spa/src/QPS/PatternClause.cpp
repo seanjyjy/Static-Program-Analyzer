@@ -1,6 +1,11 @@
 #include "PatternClause.h"
 
-PatternClause::PatternClause(clause_type type, ClauseVariable left, ClauseVariable right, QueryDeclaration synonym) :
- QueryClause(type, left, right), synonym(synonym) {
-    
-}
+PatternClause::PatternClause(QueryDeclaration synonym, ClauseVariable lhs, TNode *miniAST) :
+    synonym(synonym), lhs(lhs), miniAST(miniAST) {}
+
+void PatternClause::setIsWildcard() { type = wildcard; }
+void PatternClause::setIsFullPattern() { type = fullpattern; }
+void PatternClause::setIsSubPattern() { type = subpattern; }
+bool PatternClause::isWildcard() { return type == wildcard; }
+bool PatternClause::isFullPattern() { return type == fullpattern; }
+bool PatternClause::isSubPattern() { return type == subpattern; }

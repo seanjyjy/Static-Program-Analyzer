@@ -254,21 +254,20 @@ bool QueryParser::parsePatternClause() {
     optional<string> c = lex->nextSpecialExpected(",");
     if (c == nullopt) return false;
 
-    bool isWildCardOrSubPattern = lex->peekNextIsString("_");
-
     optional<string> patternExpr = lex->nextPatternExpression();
     if (patternExpr != nullopt) {
-        Parser simpleParser;
-        string expr = patternExpr->c_str();
-        TNode *miniAST = simpleParser.parseExpr(expr);
-        if (miniAST == nullptr) {
-            printf("Invalid pattern RHS\n");
+        if (patternExpr == "_") {
+        } else {
+            Parser simpleParser;
+            string expr = patternExpr->c_str();
+            TNode *miniAST = simpleParser.parseExpr(expr);
+            if (miniAST == nullptr) {
+                printf("Invalid pattern RHS: <%s>\n", patternExpr->c_str());
+                return false;
+            }
         }
     } else {
-        if (isWildCardOrSubPattern) {
-            // no pattern was found, therefore is a wildcard.
-            printf("RHS: Wildcard");
-        }
+        // Invalid RHS
         return false;
     }
 
@@ -309,7 +308,6 @@ QueryObject *QueryParser::parse() {
             queryObject->isQueryValid = true;
             return queryObject;
         } else {
-            printf("Why am I here?");
             queryObject->isQueryValid = false;
             string unexpected = lex->nextToken();
             printf("Unexpected term: %s", unexpected.c_str());
@@ -320,7 +318,6 @@ QueryObject *QueryParser::parse() {
     printf("Query parsed.\n");
     queryObject->isQueryValid = true;
     return queryObject;
-
 //    if (lex->isEndOfQuery()) {
 //        printf("Query parsed.\n");
 //        queryObject->isQueryValid = true;

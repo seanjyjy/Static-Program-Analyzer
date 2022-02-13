@@ -127,24 +127,24 @@ TEST_CASE("QPS: Parser_VALID") {
 
         REQUIRE(true);
     }
-//    SECTION("Sub Pattern") {
-//        string s = "assign a;\n"
-//                   "Select a pattern a (_, _\"count + 1\"_)";
-//
-//        QueryParser qp = QueryParser{s};
-//        QueryObject *qo = qp.parse();
-//
-//        REQUIRE(true);
-//    }
-//    SECTION("Wildcard Pattern") {
-//        string s = "assign a;\n"
-//                   "Select a pattern a (_, _)";
-//
-//        QueryParser qp = QueryParser{s};
-//        QueryObject *qo = qp.parse();
-//
-//        REQUIRE(true);
-//    }
+    SECTION("Sub Pattern") {
+        string s = "assign a;\n"
+                   "Select a pattern a (_, _\"sub + 1\"_)";
+
+        QueryParser qp = QueryParser{s};
+        QueryObject *qo = qp.parse();
+
+        REQUIRE(true);
+    }
+    SECTION("Wildcard Pattern") {
+        string s = "assign a;\n"
+                   "Select a pattern a (_, _)";
+
+        QueryParser qp = QueryParser{s};
+        QueryObject *qo = qp.parse();
+
+        REQUIRE(true);
+    }
 }
 
 TEST_CASE("QPS: Parser_INVALID") {

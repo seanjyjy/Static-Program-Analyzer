@@ -179,12 +179,35 @@ optional<string> QueryLexer::nextPatternExpression() {
     }
     string out = "";
     if (peekNextIsString("_")) {
-        printf("expecting subpattern or wildcard\n");
+        index++; // advance past first '_'
         if (peekNextIsString(")")) {
+            // Wildcard encountered
+            return "_";
+        }
+        // parse in sub pattern
+        if (peekNextIsString("\"")) {
+            index++;
+        } else {
+            printf("'\"' expected at beginning of patterns.\n");
             return nullopt;
         }
-
-
+        // sub patterns end before a '"'
+        while (!peekNextIsString("\"")) {
+            if (isEndOfQuery()) {
+                printf("Pattern incomplete.\n");
+                return nullopt;
+            }
+            out += input.at(index);
+            index++;
+        }
+        index++; // Skip over closing '"'
+        if (!peekNextIsString("_")) {
+            printf("'_' expected at end of sub pattern.");
+            return nullopt;
+        }
+        index++; // Skip over last '_'
+        nextSpecialExpected(")");
+        return out;
     } else {
         if (peekNextIsString("\"")) {
             index++;
