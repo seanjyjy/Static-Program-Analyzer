@@ -2,8 +2,12 @@
 
 #include <utility>
 
-ClauseVariable::ClauseVariable(variable_type type, string label)
-    : type(type), label(std::move(label)) {}
+ClauseVariable::ClauseVariable(variable_type type, string label, QueryDeclaration::design_entity_type designEntityType)
+    : type(type), label(std::move(label)), designEntityType(designEntityType) {}
+
+QueryDeclaration::design_entity_type ClauseVariable::getDesignEntityType() {
+    return designEntityType;
+}
 
 bool ClauseVariable::isIdentifier() {
     return type == identifier;

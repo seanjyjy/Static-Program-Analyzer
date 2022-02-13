@@ -64,6 +64,8 @@ TEST_CASE("QPS: Parser_VALID") {
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::modifiesP;
         bool selectMatch = qo->selectSynonym.synonym == "v";
 
+        REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::NONE);
+        REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
         REQUIRE(qo->isQueryValid);
         REQUIRE(typeMatch);
         REQUIRE(clauseMatch);
@@ -77,7 +79,8 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryObject *qo = qp.parse();
         bool typeMatch = qo->declarations.at(0).type == QueryDeclaration::CALL;
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::usesS;
-
+        REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::CALL);
+        REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
         REQUIRE(qo->isQueryValid);
         REQUIRE(typeMatch);
         REQUIRE(clauseMatch);
@@ -90,6 +93,8 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryObject *qo = qp.parse();
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::usesS;
         bool vMatch = qo->clauses.at(0).getLeftClauseVariable().type == ClauseVariable::synonym;
+        REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
         REQUIRE(qo->isQueryValid);
         REQUIRE(clauseMatch);
         REQUIRE(vMatch);
@@ -102,6 +107,8 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryObject *qo = qp.parse();
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::modifiesS;
         bool vMatch = qo->clauses.at(0).getLeftClauseVariable().type == ClauseVariable::wildcard;
+        REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::NONE);
+        REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
         REQUIRE(qo->isQueryValid);
         REQUIRE(clauseMatch);
         REQUIRE(vMatch);
