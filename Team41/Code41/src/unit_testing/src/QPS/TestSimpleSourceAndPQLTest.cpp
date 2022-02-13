@@ -32,8 +32,8 @@ TEST_CASE("Integration test for simple source and PQL") {
     vector<QueryClause> queryClauseList;
     string a = "a";
     string v = "v";
-    ClauseVariable left(ClauseVariable::variable_type::synonym, a);
-    ClauseVariable right(ClauseVariable::variable_type::synonym, v);
+    ClauseVariable left(ClauseVariable::variable_type::synonym, a, QueryDeclaration::NONE);
+    ClauseVariable right(ClauseVariable::variable_type::synonym, v, QueryDeclaration::NONE);
     QueryClause queryClause(QueryClause::clause_type::usesS, left, right);
     queryClauseList.push_back(queryClause);
 

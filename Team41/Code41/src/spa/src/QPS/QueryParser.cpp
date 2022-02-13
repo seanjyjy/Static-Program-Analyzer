@@ -60,6 +60,16 @@ optional<QueryDeclaration> QueryParser::findMatchingDeclaration(string synonym) 
     return nullopt;
 }
 
+QueryDeclaration::design_entity_type QueryParser::determineDeclarationType(string synonym) {
+    optional<QueryDeclaration> qd = findMatchingDeclaration(synonym);
+    if (qd == nullopt) {
+        // not a declared synonym
+        return QueryDeclaration::NONE;
+    } else {
+        return qd->type;
+    }
+}
+
 bool QueryParser::parseSelectSynonym() {
     lex->nextSpecial("Select");
     optional<string> synonym = lex->nextSynonym();
@@ -172,8 +182,7 @@ bool QueryParser::buildClause(string clause, string left, string right) {
         if (ClauseVariable::variable_type::identifier == leftType) {
             l = l.substr(1, l.length() - 2);
         }
-
-        ClauseVariable lcv(leftType, l);
+        ClauseVariable lcv(leftType, l, determineDeclarationType(l));
         ClauseVariable::variable_type rightType = determineVariableType(right);
         string r = right;
 
@@ -181,7 +190,7 @@ bool QueryParser::buildClause(string clause, string left, string right) {
             r = r.substr(1, r.length() - 2);
         }
 
-        ClauseVariable rcv(rightType, r);
+        ClauseVariable rcv(rightType, r, determineDeclarationType(r));
         QueryClause clause(type, lcv, rcv);
         queryObject->clauses.push_back(clause);
     } else {
@@ -297,7 +306,7 @@ bool QueryParser::parsePatternClause() {
     if (rp == nullopt) return false;
 
     // build the pattern clause
-    ClauseVariable lcv(determineVariableType(lhs->c_str()), lhs->c_str());
+    ClauseVariable lcv(determineVariableType(lhs->c_str()), lhs->c_str(), determineDeclarationType(lhs->c_str()));
     PatternVariable pv(pt, miniAST);
     PatternClause pc(declared.value(), lcv, pv);
     queryObject->patternClauses.push_back(pc);

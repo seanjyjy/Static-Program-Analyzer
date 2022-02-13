@@ -28,6 +28,7 @@ private:
     bool isDeclared(string synonym);
     bool isDeclaredProcedure(string synonym);
 
+    QueryDeclaration::design_entity_type determineDeclarationType(string synonym);
     optional<QueryDeclaration> findMatchingDeclaration(string synonym);
 public:
     QueryParser(string &input);

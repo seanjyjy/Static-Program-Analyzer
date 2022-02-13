@@ -43,20 +43,20 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
     pkbManager->registerParentT(stmt[1], stmt[6]); // 2 <- 7
     pkbManager->registerParentT(stmt[1], stmt[7]); // 2 <- 8
 
-    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1");
-    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2");
-    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3");
-    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4");
-    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5");
-    ClauseVariable integer6(ClauseVariable::variable_type::integer, "6");
-    ClauseVariable integer7(ClauseVariable::variable_type::integer, "7");
-    ClauseVariable integer8(ClauseVariable::variable_type::integer, "8");
-    ClauseVariable integer9(ClauseVariable::variable_type::integer, "9");
+    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", QueryDeclaration::NONE);
+    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", QueryDeclaration::NONE);
+    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", QueryDeclaration::NONE);
+    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", QueryDeclaration::NONE);
+    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", QueryDeclaration::NONE);
+    ClauseVariable integer6(ClauseVariable::variable_type::integer, "6", QueryDeclaration::NONE);
+    ClauseVariable integer7(ClauseVariable::variable_type::integer, "7", QueryDeclaration::NONE);
+    ClauseVariable integer8(ClauseVariable::variable_type::integer, "8", QueryDeclaration::NONE);
+    ClauseVariable integer9(ClauseVariable::variable_type::integer, "9", QueryDeclaration::NONE);
 
-    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1");
-    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2");
+    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", QueryDeclaration::NONE);
+    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", QueryDeclaration::NONE);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_");
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", QueryDeclaration::NONE);
 
     SECTION("Parent Evaluator") {
         SECTION("Integer Integer pair") {

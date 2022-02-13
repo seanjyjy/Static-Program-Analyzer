@@ -14,21 +14,21 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
     string lines[] = {"1", "2", "3"};
     string proc[] = {"proc1", "proc2", "proc3"};
 
-    ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0]);
-    ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1]);
-    ClauseVariable integer3(ClauseVariable::variable_type::integer, lines[2]);
+    ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0], QueryDeclaration::NONE);
+    ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1], QueryDeclaration::NONE);
+    ClauseVariable integer3(ClauseVariable::variable_type::integer, lines[2], QueryDeclaration::NONE);
 
-    ClauseVariable proc1(ClauseVariable::variable_type::identifier, proc[0]);
-    ClauseVariable proc2(ClauseVariable::variable_type::identifier, proc[1]);
-    ClauseVariable proc3(ClauseVariable::variable_type::identifier, proc[2]);
+    ClauseVariable proc1(ClauseVariable::variable_type::identifier, proc[0], QueryDeclaration::NONE);
+    ClauseVariable proc2(ClauseVariable::variable_type::identifier, proc[1], QueryDeclaration::NONE);
+    ClauseVariable proc3(ClauseVariable::variable_type::identifier, proc[2], QueryDeclaration::NONE);
 
-    ClauseVariable identifierVar1(ClauseVariable::variable_type::identifier, vars[0]);
-    ClauseVariable identifierVar2(ClauseVariable::variable_type::identifier, vars[1]);
+    ClauseVariable identifierVar1(ClauseVariable::variable_type::identifier, vars[0], QueryDeclaration::NONE);
+    ClauseVariable identifierVar2(ClauseVariable::variable_type::identifier, vars[1], QueryDeclaration::NONE);
 
-    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1");
-    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2");
+    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", QueryDeclaration::NONE);
+    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", QueryDeclaration::NONE);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_");
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", QueryDeclaration::NONE);
 
     SECTION("ModifiesS Evaluator") {
         pkbManager->registerModifiesS(lines[0], vars[0]);
