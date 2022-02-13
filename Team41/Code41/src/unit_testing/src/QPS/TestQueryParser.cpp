@@ -124,8 +124,9 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         QueryObject *qo = qp.parse();
-        REQUIRE(qo->patternClauses.at(0).getRHS() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
     }
     SECTION("Sub Pattern") {
@@ -135,8 +136,8 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         QueryObject *qo = qp.parse();
 
-        REQUIRE(qo->patternClauses.at(0).getRHS() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).isSubPattern());
+        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().isSubPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isIdentifier());
     }
     SECTION("Wildcard Pattern") {
@@ -145,9 +146,8 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         QueryObject *qo = qp.parse();
-
-        REQUIRE(qo->patternClauses.at(0).getRHS() == nullptr);
-        REQUIRE(qo->patternClauses.at(0).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().isWildcard());
         REQUIRE(qo->patternClauses.at(0).getLHS().isSynonym());
     }
 }

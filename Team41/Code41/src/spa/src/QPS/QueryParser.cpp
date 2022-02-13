@@ -298,20 +298,22 @@ bool QueryParser::parsePatternClause() {
 
     // build the pattern clause
     ClauseVariable lcv(determineVariableType(lhs->c_str()), lhs->c_str());
-    PatternClause pc(declared.value(), lcv, miniAST);
+    PatternVariable pv(PatternVariable::wildcard, miniAST);
+
     switch (pattern_type){
         case 0:
-            pc.setIsWildcard();
+            pv.type = PatternVariable::wildcard;
             break;
         case 1:
-            pc.setIsFullPattern();
+            pv.type = PatternVariable::fullpattern;
             break;
         case 2:
-            pc.setIsSubPattern();
+            pv.type = PatternVariable::subpattern;
             break;
         default:
             break;
     }
+    PatternClause pc(declared.value(), lcv, pv);
     queryObject->patternClauses.push_back(pc);
 
     return true;

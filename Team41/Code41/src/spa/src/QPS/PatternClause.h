@@ -3,27 +3,19 @@
 #include "Common/TNode.h"
 #include "ClauseVariable.h"
 #include "QueryDeclaration.h"
+#include "PatternVariable.h"
 
 class PatternClause {
 private:
     QueryDeclaration synonym;
     ClauseVariable lhs;
-    TNode *miniAST;
-    enum pattern_type {
-        wildcard, fullpattern, subpattern
-    };
-    pattern_type type;
+    PatternVariable rhs; // miniAST exists within
+
 public:
     QueryDeclaration getSynonym() const;
     ClauseVariable getLHS() const;
-    TNode *getRHS() const;
-    void setIsWildcard();
-    void setIsFullPattern();
-    void setIsSubPattern();
-    bool isWildcard();
-    bool isFullPattern();
-    bool isSubPattern();
-    PatternClause(QueryDeclaration synonym, ClauseVariable lhs, TNode *miniAST);
+    PatternVariable getRHS() const;
+    PatternClause(QueryDeclaration synonym, ClauseVariable lhs, PatternVariable rhs);
 };
 
 // todo: Be wary of advanced spa extensions. pattern will support more than just assignment
