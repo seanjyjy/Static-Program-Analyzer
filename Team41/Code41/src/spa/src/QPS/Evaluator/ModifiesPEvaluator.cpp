@@ -4,27 +4,27 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
-    if (leftVariable.isIdentifier() && rightVariable.isIdentifier()) {
+    if (EvaluatorUtils::ProcUtils::isIdentifierIdentifier(&leftVariable, &rightVariable)) {
         return evaluateIdentifierIdentifier(pkb, leftVariable, rightVariable);
     }
 
-    if (leftVariable.isIdentifier() && rightVariable.isSynonym()) {
+    if (EvaluatorUtils::ProcUtils::isValidIdentifierSynonym(&leftVariable, &rightVariable)) {
         return evaluateIdentifierSynonym(pkb, leftVariable, rightVariable);
     }
 
-    if (leftVariable.isIdentifier() && rightVariable.isWildCard()) {
+    if (EvaluatorUtils::ProcUtils::isIdentifierWildCard(&leftVariable, &rightVariable)) {
         return evaluateIdentifierWildCard(pkb, leftVariable);
     }
 
-    if (leftVariable.isSynonym() && rightVariable.isIdentifier()) {
+    if (EvaluatorUtils::ProcUtils::isValidSynonymIdentifier(&leftVariable, &rightVariable)) {
         return evaluateSynonymIdentifier(pkb, leftVariable, rightVariable);
     }
 
-    if (leftVariable.isSynonym() && rightVariable.isSynonym()) {
+    if (EvaluatorUtils::ProcUtils::isValidSynonymSynonym(&leftVariable, &rightVariable)) {
         return evaluateSynonymSynonym(pkb, leftVariable, rightVariable);
     }
 
-    if (leftVariable.isSynonym() && rightVariable.isWildCard()) {
+    if (EvaluatorUtils::ProcUtils::isValidSynonymWildCard(&leftVariable, &rightVariable)) {
         return evaluateSynonymWildCard(pkb, leftVariable);
     }
 

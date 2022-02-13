@@ -4,39 +4,39 @@ Table* FollowsEvaluator::evaluate(QueryClause clause, PKB *pkb) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
-    if (leftVariable.isInteger() && rightVariable.isInteger()) {
+    if (EvaluatorUtils::StmtUtils::isIntegerInteger(&leftVariable, &rightVariable)) {
         return evaluateIntegerInteger(pkb, leftVariable, rightVariable);
     }
 
-    if (leftVariable.isInteger() && rightVariable.isSynonym()) {
+    if (EvaluatorUtils::StmtUtils::isValidIntegerSynonym(&leftVariable, &rightVariable)) {
         return evaluateIntegerSynonym(pkb, leftVariable, rightVariable);
     }
 
-    if (leftVariable.isInteger() && rightVariable.isWildCard()) {
+    if (EvaluatorUtils::StmtUtils::isIntegerWildCard(&leftVariable, &rightVariable)) {
         return evaluateIntegerWildCard(pkb, leftVariable);
     }
 
-    if (leftVariable.isSynonym() && rightVariable.isInteger()) {
+    if (EvaluatorUtils::StmtUtils::isValidSynonymInteger(&leftVariable, &rightVariable)) {
         return evaluateSynonymInteger(pkb, leftVariable, rightVariable);
     }
 
-    if (leftVariable.isSynonym() && rightVariable.isSynonym()) {
+    if (EvaluatorUtils::StmtUtils::isValidSynonymSynonym(&leftVariable, &rightVariable)) {
         return evaluateSynonymSynonym(pkb, leftVariable, rightVariable);
     }
 
-    if (leftVariable.isSynonym() && rightVariable.isWildCard()) {
+    if (EvaluatorUtils::StmtUtils::isValidSynonymWildCard(&leftVariable, &rightVariable)) {
         return evaluateSynonymWildCard(pkb, leftVariable);
     }
 
-    if (leftVariable.isWildCard() && rightVariable.isInteger()) {
+    if (EvaluatorUtils::StmtUtils::isWildCardInteger(&leftVariable, &rightVariable)) {
         return evaluateWildCardInteger(pkb, rightVariable);
     }
 
-    if (leftVariable.isWildCard() && rightVariable.isSynonym()) {
+    if (EvaluatorUtils::StmtUtils::isValidWildCardSynonym(&leftVariable, &rightVariable)) {
         return evaluateWildCardSynonym(pkb, rightVariable);
     }
 
-    if (leftVariable.isWildCard() && rightVariable.isWildCard()) {
+    if (EvaluatorUtils::StmtUtils::isWildCardWildCard(&leftVariable, &rightVariable)) {
         return evaluateWildCardWildCard(pkb);
     }
 

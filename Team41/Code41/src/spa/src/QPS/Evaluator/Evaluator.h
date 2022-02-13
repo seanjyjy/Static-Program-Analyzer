@@ -6,6 +6,7 @@
 #include "PKB/PKB.h"
 #include "QPS/ClauseVariable.h"
 #include "QPS/QueryClause.h"
+#include "QPS/Evaluator/EvaluatorUtils.h"
 
 using namespace std;
 

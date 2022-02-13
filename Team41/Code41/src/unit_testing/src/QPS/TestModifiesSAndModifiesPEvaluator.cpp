@@ -13,20 +13,22 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
     string vars[] = {"var1", "var2"};
     string lines[] = {"1", "2", "3"};
     string proc[] = {"proc1", "proc2", "proc3"};
+    string declaration[] = { "a", "v", "p" };
 
-    ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0], QueryDeclaration::NONE);
-    ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1], QueryDeclaration::NONE);
-    ClauseVariable integer3(ClauseVariable::variable_type::integer, lines[2], QueryDeclaration::NONE);
+    ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0], QueryDeclaration::CONSTANT);
+    ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1], QueryDeclaration::CONSTANT);
+    ClauseVariable integer3(ClauseVariable::variable_type::integer, lines[2], QueryDeclaration::CONSTANT);
 
-    ClauseVariable proc1(ClauseVariable::variable_type::identifier, proc[0], QueryDeclaration::NONE);
-    ClauseVariable proc2(ClauseVariable::variable_type::identifier, proc[1], QueryDeclaration::NONE);
-    ClauseVariable proc3(ClauseVariable::variable_type::identifier, proc[2], QueryDeclaration::NONE);
+    ClauseVariable proc1(ClauseVariable::variable_type::identifier, proc[0], QueryDeclaration::PROCEDURE);
+    ClauseVariable proc2(ClauseVariable::variable_type::identifier, proc[1], QueryDeclaration::PROCEDURE);
+    ClauseVariable proc3(ClauseVariable::variable_type::identifier, proc[2], QueryDeclaration::PROCEDURE);
 
-    ClauseVariable identifierVar1(ClauseVariable::variable_type::identifier, vars[0], QueryDeclaration::NONE);
-    ClauseVariable identifierVar2(ClauseVariable::variable_type::identifier, vars[1], QueryDeclaration::NONE);
+    ClauseVariable identifierVar1(ClauseVariable::variable_type::identifier, vars[0], QueryDeclaration::VARIABLE);
+    ClauseVariable identifierVar2(ClauseVariable::variable_type::identifier, vars[1], QueryDeclaration::VARIABLE);
 
-    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", QueryDeclaration::NONE);
-    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", QueryDeclaration::NONE);
+    ClauseVariable assignSyn(ClauseVariable::variable_type::synonym, declaration[0], QueryDeclaration::ASSIGN);
+    ClauseVariable varSyn(ClauseVariable::variable_type::synonym, declaration[1], QueryDeclaration::VARIABLE);
+    ClauseVariable procSyn(ClauseVariable::variable_type::synonym, declaration[2], QueryDeclaration::PROCEDURE);
 
     ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", QueryDeclaration::NONE);
 
@@ -50,15 +52,15 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
         }
 
         SECTION("Integer Synonym Pair") {
-            QueryClause queryClause1(QueryClause::modifiesS, integer1, synonymS1);
+            QueryClause queryClause1(QueryClause::modifiesS, integer1, varSyn);
             Table* table1 = ModifiesSEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 2);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"var1", "var2"}));
+            REQUIRE(table1->getColumn("v") == unordered_set<string>({"var1", "var2"}));
 
-            QueryClause queryClause2(QueryClause::modifiesS, integer2, synonymS1);
+            QueryClause queryClause2(QueryClause::modifiesS, integer2, varSyn);
             Table* table2 = ModifiesSEvaluator::evaluate(queryClause2, pkbManager);
             REQUIRE(table2->size() == 1);
-            REQUIRE(table2->getColumn("s1") == unordered_set<string>({"var2"}));
+            REQUIRE(table2->getColumn("v") == unordered_set<string>({"var2"}));
         }
 
         SECTION("Integer WildCard Pair") {
@@ -73,40 +75,46 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
         }
 
         SECTION("Synonym Identifier Pair") {
-            QueryClause queryClause1(QueryClause::modifiesS, synonymS1, identifierVar1);
+            QueryClause queryClause1(QueryClause::modifiesS, assignSyn, identifierVar1);
             Table* table1 = ModifiesSEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 1);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"1"}));
+            REQUIRE(table1->getColumn("a") == unordered_set<string>({"1"}));
 
-            QueryClause queryClause2(QueryClause::modifiesS, synonymS1, identifierVar2);
+            QueryClause queryClause2(QueryClause::modifiesS, assignSyn, identifierVar2);
             Table* table2 = ModifiesSEvaluator::evaluate(queryClause2, pkbManager);
             REQUIRE(table2->size() == 2);
-            REQUIRE(table2->getColumn("s1") == unordered_set<string>({"1", "2"}));
+            REQUIRE(table2->getColumn("a") == unordered_set<string>({"1", "2"}));
         }
 
         SECTION("Synonym Synonym Pair") {
-            QueryClause queryClause1(QueryClause::modifiesS, synonymS1, synonymS2);
+            QueryClause queryClause1(QueryClause::modifiesS, assignSyn, varSyn);
             Table* table1 = ModifiesSEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 3);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"1", "2"}));
-            REQUIRE(table1->getColumn("s2") == unordered_set<string>({"var1", "var2"}));
+            REQUIRE(table1->getColumn("a") == unordered_set<string>({"1", "2"}));
+            REQUIRE(table1->getColumn("v") == unordered_set<string>({"var1", "var2"}));
         }
 
         SECTION("Synonym WildCard Pair") {
-            QueryClause queryClause1(QueryClause::modifiesS, synonymS1, wildcard);
+            QueryClause queryClause1(QueryClause::modifiesS, assignSyn, wildcard);
             Table* table1 = ModifiesSEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 2);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"1", "2"}));
+            REQUIRE(table1->getColumn("a") == unordered_set<string>({"1", "2"}));
         }
 
         SECTION("Semantically Invalid") {
-            QueryClause queryClause1(QueryClause::modifiesS, wildcard, identifierVar1 );
+            QueryClause queryClause1(QueryClause::modifiesS, wildcard, identifierVar1);
             REQUIRE(ModifiesSEvaluator::evaluate(queryClause1, pkbManager) == FalseTable::getTable());
 
-            QueryClause queryClause2(QueryClause::modifiesS, wildcard, synonymS1 );
+            QueryClause queryClause2(QueryClause::modifiesS, wildcard, assignSyn);
             REQUIRE(ModifiesSEvaluator::evaluate(queryClause2, pkbManager) == FalseTable::getTable());
 
-            QueryClause queryClause3(QueryClause::modifiesS, wildcard, wildcard );
+            QueryClause queryClause3(QueryClause::modifiesS, wildcard, wildcard);
+            REQUIRE(ModifiesSEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+
+            QueryClause queryClause4(QueryClause::modifiesS, procSyn, assignSyn);
+            REQUIRE(ModifiesSEvaluator::evaluate(queryClause2, pkbManager) == FalseTable::getTable());
+
+            QueryClause queryClause5(QueryClause::modifiesS, procSyn, wildcard);
             REQUIRE(ModifiesSEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
         }
     }
@@ -131,15 +139,15 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
         }
 
         SECTION("Identifier Synonym Pair") {
-            QueryClause queryClause1(QueryClause::modifiesP, proc1, synonymS1);
+            QueryClause queryClause1(QueryClause::modifiesP, proc1, varSyn);
             Table* table1 = ModifiesPEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 2);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"var1", "var2"}));
+            REQUIRE(table1->getColumn("v") == unordered_set<string>({"var1", "var2"}));
 
-            QueryClause queryClause2(QueryClause::modifiesP, proc2, synonymS1);
+            QueryClause queryClause2(QueryClause::modifiesP, proc2, varSyn);
             Table* table2 = ModifiesPEvaluator::evaluate(queryClause2, pkbManager);
             REQUIRE(table2->size() == 1);
-            REQUIRE(table2->getColumn("s1") == unordered_set<string>({"var2"}));
+            REQUIRE(table2->getColumn("v") == unordered_set<string>({"var2"}));
         }
 
         SECTION("Identifier WildCard Pair") {
@@ -154,40 +162,46 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
         }
 
         SECTION("Synonym Identifier Pair") {
-            QueryClause queryClause1(QueryClause::modifiesP, synonymS1, identifierVar1);
+            QueryClause queryClause1(QueryClause::modifiesP, procSyn, identifierVar1);
             Table* table1 = ModifiesPEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 1);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"proc1"}));
+            REQUIRE(table1->getColumn("p") == unordered_set<string>({"proc1"}));
 
-            QueryClause queryClause2(QueryClause::modifiesP, synonymS1, identifierVar2);
+            QueryClause queryClause2(QueryClause::modifiesP, procSyn, identifierVar2);
             Table* table2 = ModifiesPEvaluator::evaluate(queryClause2, pkbManager);
             REQUIRE(table2->size() == 2);
-            REQUIRE(table2->getColumn("s1") == unordered_set<string>({"proc1", "proc2"}));
+            REQUIRE(table2->getColumn("p") == unordered_set<string>({"proc1", "proc2"}));
         }
 
         SECTION("Synonym Synonym Pair") {
-            QueryClause queryClause1(QueryClause::modifiesP, synonymS1, synonymS2);
+            QueryClause queryClause1(QueryClause::modifiesP, procSyn, varSyn);
             Table* table1 = ModifiesPEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 3);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"proc1", "proc2"}));
-            REQUIRE(table1->getColumn("s2") == unordered_set<string>({"var1", "var2"}));
+            REQUIRE(table1->getColumn("p") == unordered_set<string>({"proc1", "proc2"}));
+            REQUIRE(table1->getColumn("v") == unordered_set<string>({"var1", "var2"}));
         }
 
         SECTION("Synonym WildCard Pair") {
-            QueryClause queryClause1(QueryClause::modifiesP, synonymS1, wildcard);
+            QueryClause queryClause1(QueryClause::modifiesP, procSyn, wildcard);
             Table* table1 = ModifiesPEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 2);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"proc1", "proc2"}));
+            REQUIRE(table1->getColumn("p") == unordered_set<string>({"proc1", "proc2"}));
         }
 
         SECTION("Semantically Invalid") {
-            QueryClause queryClause1(QueryClause::modifiesS, wildcard, identifierVar1 );
+            QueryClause queryClause1(QueryClause::modifiesS, wildcard, identifierVar1);
             REQUIRE(ModifiesPEvaluator::evaluate(queryClause1, pkbManager) == FalseTable::getTable());
 
-            QueryClause queryClause2(QueryClause::modifiesS, wildcard, synonymS1 );
+            QueryClause queryClause2(QueryClause::modifiesS, wildcard, assignSyn);
             REQUIRE(ModifiesPEvaluator::evaluate(queryClause2, pkbManager) == FalseTable::getTable());
 
-            QueryClause queryClause3(QueryClause::modifiesS, wildcard, wildcard );
+            QueryClause queryClause3(QueryClause::modifiesS, wildcard, wildcard);
+            REQUIRE(ModifiesPEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+
+            QueryClause queryClause4(QueryClause::modifiesS, assignSyn, assignSyn);
+            REQUIRE(ModifiesPEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+
+            QueryClause queryClause5(QueryClause::modifiesS, assignSyn, wildcard);
             REQUIRE(ModifiesPEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
         }
     }

@@ -28,15 +28,15 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
     pkbManager->registerFollowsT(stmt[5], stmt[0]); // 6 -> 1
     pkbManager->registerFollowsT(stmt[5], stmt[1]); // 6 -> 2
 
-    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", QueryDeclaration::NONE);
-    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", QueryDeclaration::NONE);
-    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", QueryDeclaration::NONE);
-    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", QueryDeclaration::NONE);
-    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", QueryDeclaration::NONE);
-    ClauseVariable integer6(ClauseVariable::variable_type::integer, "6", QueryDeclaration::NONE);
+    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", QueryDeclaration::CONSTANT);
+    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", QueryDeclaration::CONSTANT);
+    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", QueryDeclaration::CONSTANT);
+    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", QueryDeclaration::CONSTANT);
+    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", QueryDeclaration::CONSTANT);
+    ClauseVariable integer6(ClauseVariable::variable_type::integer, "6", QueryDeclaration::CONSTANT);
 
-    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", QueryDeclaration::NONE);
-    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", QueryDeclaration::NONE);
+    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", QueryDeclaration::ASSIGN);
+    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", QueryDeclaration::READ);
 
     ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", QueryDeclaration::NONE);
 
