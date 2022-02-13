@@ -306,7 +306,9 @@ bool QueryParser::parsePatternClause() {
     if (rp == nullopt) return false;
 
     // build the pattern clause
-    ClauseVariable lcv(determineVariableType(lhs->c_str()), lhs->c_str(), determineDeclarationType(lhs->c_str()));
+    ClauseVariable lcv(determineVariableType(lhs->c_str()),
+                       lhs->substr(1, lhs->length() - 2),
+                       determineDeclarationType(lhs->c_str()));
     PatternVariable pv(pt, miniAST);
     PatternClause pc(declared.value(), lcv, pv);
     queryObject->patternClauses.push_back(pc);
