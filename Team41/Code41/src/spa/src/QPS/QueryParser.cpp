@@ -222,6 +222,56 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
 }
 
 bool QueryParser::parsePatternClause() {
+    optional<string> such = lex->nextSpecial("pattern");
+    if (!such.has_value()) {
+        printf("Malformed input. Expected keyword: pattern\n");
+        return false;
+    }
+
+    optional<string> patternSyn = lex->nextSynonym();
+    optional<QueryDeclaration> declared = findMatchingDeclaration(patternSyn->c_str());
+    if (declared == nullopt) {
+        printf("Use of undeclared pattern synonym: %s", patternSyn->c_str());
+        return false;
+    } else {
+        if (declared->type != QueryDeclaration::ASSIGN && declared->type != QueryDeclaration::WHILE && declared->type != QueryDeclaration::IF) {
+            printf("Pattern synonym must be of type assign, while or if");
+            return false;
+        }
+    }
+
+    if (patternSyn == nullopt) return false;
+
+    optional<string> lp = lex->nextSpecialExpected("(");
+    if (lp == nullopt) return false;
+
+    optional<string> lhs = lex->nextClauseVariable();
+    if (lhs == nullopt) return false;
+    if (!(lex->isWildCard(lhs->c_str()) || lex->isIdentifier(lhs->c_str()))) {
+        return false;
+    }
+
+    optional<string> c = lex->nextSpecialExpected(",");
+    if (c == nullopt) return false;
+
+    bool isWildCardOrSubPattern = lex->peekNextIsString("_");
+
+    optional<string> patternExpr = lex->nextPatternExpression();
+    if (patternExpr != nullopt) {
+        Parser simpleParser;
+        string expr = patternExpr->c_str();
+        TNode *miniAST = simpleParser.parseExpr(expr);
+        if (miniAST == nullptr) {
+            printf("Invalid pattern RHS\n");
+        }
+    } else {
+        if (isWildCardOrSubPattern) {
+            // no pattern was found, therefore is a wildcard.
+            printf("RHS: Wildcard");
+        }
+        return false;
+    }
+
     return true;
 }
 
@@ -244,16 +294,40 @@ QueryObject *QueryParser::parse() {
         return queryObject ;
     }
 
-    if (lex->isEndOfQuery()) {
-        printf("Query parsed.\n");
-        queryObject->isQueryValid = true;
-        return queryObject;
-    }
+    while (!lex->isEndOfQuery()) {
+        if (lex->peekNextIsString("such")) {
+            skipSuchThat();
+            if (!parseClause()) {
+                return queryObject;
+            }
+        } else if (lex->peekNextIsString("pattern")) {
+            // Do pattern stuff
+            if (!parsePatternClause()) {
 
-    skipSuchThat();
-    if (!parseClause()) {
-        return queryObject;
+            }
+            // Temp return
+            queryObject->isQueryValid = true;
+            return queryObject;
+        } else {
+            printf("Why am I here?");
+            queryObject->isQueryValid = false;
+            string unexpected = lex->nextToken();
+            printf("Unexpected term: %s", unexpected.c_str());
+            return queryObject;
+        }
+
     }
+    printf("Query parsed.\n");
+    queryObject->isQueryValid = true;
+    return queryObject;
+
+//    if (lex->isEndOfQuery()) {
+//        printf("Query parsed.\n");
+//        queryObject->isQueryValid = true;
+//        return queryObject;
+//    }
+
+
 
     if (lex->isEndOfQuery()) {
         printf("Query parsed.\n");

@@ -6,6 +6,7 @@
 #include "QueryDeclaration.h"
 #include "QueryEvaluator.h"
 #include "QueryLexer.h"
+#include "SimpleParser/Parser.h" // for pattern parse
 
 using namespace std;
 

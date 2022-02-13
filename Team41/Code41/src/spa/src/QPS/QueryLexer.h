@@ -36,6 +36,7 @@ public:
     optional<string> nextSpecial(string w);
     optional<string> nextClause();
     optional<string> nextClauseVariable();
+    optional<string> nextPatternExpression();
     bool peekNextIsString(string w);
     bool isEndOfQuery();
     bool isStmtRef(string w);
@@ -43,4 +44,5 @@ public:
     bool isValidSynonym(string w);
     bool isInteger(string w);
     bool isIdentifier(string w);
+    bool isWildCard(string w);
 };

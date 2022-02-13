@@ -118,6 +118,33 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(clauseMatch);
         REQUIRE(vMatch);
     }
+    SECTION("Full Pattern") {
+        string s = "assign a;\n"
+                   "Select a pattern a (_, \"count + 1\")";
+
+        QueryParser qp = QueryParser{s};
+        QueryObject *qo = qp.parse();
+
+        REQUIRE(true);
+    }
+//    SECTION("Sub Pattern") {
+//        string s = "assign a;\n"
+//                   "Select a pattern a (_, _\"count + 1\"_)";
+//
+//        QueryParser qp = QueryParser{s};
+//        QueryObject *qo = qp.parse();
+//
+//        REQUIRE(true);
+//    }
+//    SECTION("Wildcard Pattern") {
+//        string s = "assign a;\n"
+//                   "Select a pattern a (_, _)";
+//
+//        QueryParser qp = QueryParser{s};
+//        QueryObject *qo = qp.parse();
+//
+//        REQUIRE(true);
+//    }
 }
 
 TEST_CASE("QPS: Parser_INVALID") {
@@ -136,14 +163,15 @@ TEST_CASE("QPS: Parser_INVALID") {
 
         QueryParser a = QueryParser{s};
         QueryObject *qo = a.parse();
-
+        printf("Hello");
         REQUIRE(!qo->isQueryValid);
+        printf("Hello");
     }
     SECTION("INVALID DECLARATION malformed such that") {
         string s = "variable v; assign a;\n"
                    "Select v suck that Uses(a, v)";
-
         QueryParser a = QueryParser{s};
+
         QueryObject *qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);

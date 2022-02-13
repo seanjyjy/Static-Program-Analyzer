@@ -92,6 +92,10 @@ bool QueryLexer::isIdentifier(string w) {
     return isValidSynonym(content);
 }
 
+bool QueryLexer::isWildCard(string w) {
+    return w == "_";
+}
+
 optional<string> QueryLexer::nextDeclarationType() {
     string possibleType = nextToken();
     if (isDeclarationKeyword(possibleType)) {
@@ -109,7 +113,7 @@ optional<string> QueryLexer::nextSynonym() {
         return possibleSynonym;
     } else {
         // todo: throw something?
-        printf("Invalid declaration type: <%s>", possibleSynonym.c_str());
+        printf("Invalid synonym: <%s>", possibleSynonym.c_str());
         return nullopt;
     }
 }
@@ -121,7 +125,7 @@ optional<string> QueryLexer::nextSpecialExpected(string w) {
         return w;
     } else {
         // todo: throw something?
-        printf("Syntax error: Expected '%s' at end of declaration.", w.c_str());
+        printf("Syntax error: Expected '%s'.", w.c_str());
         return nullopt;
     }
 }
@@ -168,34 +172,56 @@ optional<string> QueryLexer::nextClauseVariable() {
     return nullopt;
 }
 
+optional<string> QueryLexer::nextPatternExpression() {
+    if (isEndOfQuery()) {
+        printf("Expected a pattern expression.\n");
+        return nullopt;
+    }
+    string out = "";
+    if (peekNextIsString("_")) {
+        printf("expecting subpattern or wildcard\n");
+        if (peekNextIsString(")")) {
+            return nullopt;
+        }
+
+
+    } else {
+        if (peekNextIsString("\"")) {
+            index++;
+        } else {
+            printf("'\"' expected at beginning of full patterns.\n");
+            return nullopt;
+        }
+        // full patterns end before a '"'
+        while (!peekNextIsString("\"")) {
+            if (isEndOfQuery()) {
+                printf("Pattern incomplete.\n");
+                return nullopt;
+            }
+            out += input.at(index);
+            index++;
+        }
+        index++; // Skip over closing '"'
+        return out;
+    }
+}
+
 bool QueryLexer::isEndOfQuery() {
     return index == input.length();
 }
 
 bool QueryLexer::peekNextIsString(string w) {
-    // Attempt at handling index out of bounds.
-    if (isEndOfQuery()) return false;
-
-    int temp = index;
-
-    string out = "";
     skipSpaces();
-    char curr = input.at(index);
+    for (int i = 0; i < w.length(); i++) {
+        int j = index + i;
+        if (j >= input.length()) {
+            return false;
+        }
 
-    // Treat special characters as tokens themselves.
-    if (isSpecialChar(curr)) {
-        out.push_back(curr);
-        index = temp;
-        return out == w;
+        if (input.at(j) != w.at(i))
+            return false;
     }
-
-    while (!isSpecialChar(curr)) {
-        out.push_back(curr);
-        index++;
-        curr = input.at(index);
-    }
-    index = temp;
-    return out == w;
+    return true;
 }
 
 bool QueryLexer::isStmtRef(string w) {
