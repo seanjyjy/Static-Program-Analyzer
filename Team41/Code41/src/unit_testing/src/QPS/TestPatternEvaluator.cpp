@@ -20,12 +20,12 @@ TEST_CASE("Evaluator: Pattern evaluator") {
     string expr[] = {"x+y+z", "x+y", "2", "x+y*z-2"};
 
     QueryDeclaration assignSyn(QueryDeclaration::ASSIGN, ASSIGN_SYN_LBL);
-    ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL);
+    ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL, QueryDeclaration::VARIABLE);
 
-    ClauseVariable identifierV1(ClauseVariable::identifier, vars[0]);
-    ClauseVariable identifierV2(ClauseVariable::identifier, vars[1]);
+    ClauseVariable identifierV1(ClauseVariable::identifier, vars[0], QueryDeclaration::VARIABLE);
+    ClauseVariable identifierV2(ClauseVariable::identifier, vars[1], QueryDeclaration::VARIABLE);
 
-    ClauseVariable wildcard(ClauseVariable::wildcard, "_");
+    ClauseVariable wildcard(ClauseVariable::wildcard, "_", QueryDeclaration::VARIABLE);
 
     TNode *node1 = TestAstBuilderUtils::parseXml(xml[0]);
     TNode *node2 = TestAstBuilderUtils::parseXml(xml[1]);

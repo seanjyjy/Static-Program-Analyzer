@@ -6,6 +6,17 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKB *pkb) {
     auto leftVariable = clause.getLHS();
     auto rightVariable = clause.getRHS();
 
+    // TODO: test variable type
+    // check if leftVariable is variable type
+    if (leftVariable.getDesignEntityType() != QueryDeclaration::VARIABLE) {
+        throw runtime_error("Expected variable for LHS of pattern");
+    }
+
+    // check if leftVariable is variable type
+    if (patternSynonym.type != QueryDeclaration::ASSIGN) {
+        throw runtime_error("Expected synonym of type assign");
+    }
+
     if (leftVariable.isWildCard() && rightVariable.isFullPattern()) {
         return evaluateWildCardFullPattern(pkb, patternSynonym, rightVariable);
     }
