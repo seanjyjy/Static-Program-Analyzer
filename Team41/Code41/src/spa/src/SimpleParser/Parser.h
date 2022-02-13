@@ -11,7 +11,6 @@ private:
     enum class Option {
         program,
         procedure,
-        stmtlist,
         stmt,
         readStmt,
         printStmt,
@@ -310,14 +309,6 @@ public:
      * @return the procedure AST node.
      */
     TNode *parseProcedure(const string &s);
-
-    /**
-     * Parses a statement list. Only used in tests.
-     *
-     * @param s the statement list
-     * @return the stmtlst AST node.
-     */
-    TNode *parseStmtLst(const string &s);
 
     /**
      * Parses a statement. Only used in tests.

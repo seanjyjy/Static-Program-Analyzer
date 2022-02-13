@@ -1,5 +1,8 @@
-//
-// Created by Kendrick on 12/2/2022.
-//
+#include "catch.hpp"
+#include "TestParserUtils.h"
 
-// TODO
+TEST_CASE("Parser: if statement") {
+    SECTION("1") {
+        TestParserUtils::parseIfAndCompare("1-simple.txt", "1-xml.txt");
+    }
+}

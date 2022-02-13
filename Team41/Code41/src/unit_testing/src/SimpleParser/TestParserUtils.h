@@ -20,7 +20,6 @@ public:
     static void parseProcedureAndCompare(const string& simple, const string& xml);
     static void parseProgramAndCompare(const string& simple, const string& xml);
     static void parseReadAndCompare(const string& simple, const string& xml);
-    static void parseStmtListAndCompare(const string& simple, const string& xml);
     static void parseTermAndCompare(const string& simple, const string& xml);
     static void parseWhileAndCompare(const string& simple, const string& xml);
 };

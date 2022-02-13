@@ -108,15 +108,6 @@ void TestParserUtils::parseReadAndCompare(const string& simpleFile, const string
     REQUIRE(TreeUtils::isEqual(parsed, expected));
 }
 
-void TestParserUtils::parseStmtListAndCompare(const string& simpleFile, const string& xmlFile) {
-    string simple = readFile("stmtlist", simpleFile);
-    string xml = readFile("stmtlist", xmlFile);
-    Parser p;
-    TNode* parsed = p.parseStmtLst(simple);
-    TNode* expected = parseXml(xml);
-    REQUIRE(TreeUtils::isEqual(parsed, expected));
-}
-
 void TestParserUtils::parseTermAndCompare(const string& simpleFile, const string& xmlFile) {
     string simple = readFile("term", simpleFile);
     string xml = readFile("term", xmlFile);

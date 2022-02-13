@@ -4,11 +4,13 @@
 using namespace std;
 
 int main() {
-    string s = "<eq>\n"
-               "\t<var val=hello></var>\n"
-               "\t<const val=1></const>\n"
-               "</eq>";
+    string s = "read x;\n"
+               "print x;\n"
+               "call main;\n"
+               "x = 0;\n"
+               "while (1==1) { print x; }\n"
+               "if (1==1) then { print x; } else { print y; }"
+               "}";
+    Parser p;
 
-    TNode *root = AstBuilder(s).build();
-    root->printRecursive();
 }

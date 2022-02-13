@@ -1,42 +1,42 @@
-<stmts>
-    <read>
-        <var name=x></var>
-    </read>
-    <print>
-        <var name=x></var>
-    </print>
-    <call>
-        <var name=main></var>
-    </call>
-    <assign>
-        <var name=x></var>
-        <const val=0></const>
-    </assign>
-    <while>
-        <eq>
-            <const val=1></const>
-            <const val=1></const>
-        </eq>
-        <stmts>
-            <print>
-                    <var name=x></var>
-            </print>
-        </stmts>
-    </while>
-    <if>
-        <eq>
-            <const val=1></const>
-            <const val=1></const>
-        </eq>
-        <stmts>
-            <print>
-                <var name=x></var>
-            </print>
-        </stmts>
-        <stmts>
-            <print>
-                <var name=y></var>
-            </print>
-        </stmts>
-    </if>
-</stmts>
+<procedure name=stmtlist>
+	<stmts>
+		<read>
+			<var name=x></var>
+		</read>
+		<print>
+			<var name=x></var>
+		</print>
+		<call>
+			<var name=main></var>
+		</call>
+		<assign>
+			<var name=x></var>
+			<const val=0></const>
+		</assign>
+		<while>
+			<eq>
+				<const val=1></const>
+				<const val=1></const>
+			</eq>
+			<print>
+				<var name=x></var>
+			</print>
+		</while>
+		<if>
+			<eq>
+				<const val=1></const>
+				<const val=1></const>
+			</eq>
+			<stmts>
+				<print>
+					<var name=x></var>
+				</print>
+			</stmts>
+			<stmts>
+				<print>
+					<var name=y></var>
+				</print>
+			</stmts>
+		</if>
+	</stmts>
+</procedure>
