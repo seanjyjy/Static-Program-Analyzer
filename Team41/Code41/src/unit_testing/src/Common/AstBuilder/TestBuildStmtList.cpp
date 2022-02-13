@@ -21,20 +21,20 @@ TEST_CASE("AST Builder: statement list") {
         string xml = TestAstBuilderUtils::readFile("stmtlist", "1-xml.txt");
         // manually build actual AST
         TNode* procedure = TNode::makeProcedure(
-                Token::makeVar("stmtlist"),
+                Token::makeName("stmtlist"),
                 TNode::makeStmtLst({
-                      TNode::makeReadStmt(TNode::makeVarName(Token::makeVar("x"))),
-                      TNode::makePrintStmt(TNode::makeVarName(Token::makeVar("x"))),
-                      TNode::makeCallStmt(TNode::makeVarName(Token::makeVar("main"))),
-                      TNode::makeAssignStmt(TNode::makeVarName(Token::makeVar("x")), TNode::makeConstVal(Token::makeConst("0"))),
+                      TNode::makeReadStmt(TNode::makeVarName(Token::makeName("x"))),
+                      TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x"))),
+                      TNode::makeCallStmt(TNode::makeProcName(Token::makeName("main"))),
+                      TNode::makeAssignStmt(TNode::makeVarName(Token::makeName("x")), TNode::makeConstVal(Token::makeConst("0"))),
                       TNode::makeWhileStmt(
                               TNode::makeEq(TNode::makeConstVal(Token::makeConst("1")), TNode::makeConstVal(Token::makeConst("1"))),
-                              TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeVar("x"))) })
+                              TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x"))) })
                       ),
                       TNode::makeIfStmt(
                               TNode::makeEq(TNode::makeConstVal(Token::makeConst("1")), TNode::makeConstVal(Token::makeConst("1"))),
-                              TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeVar("x"))) }),
-                              TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeVar("y"))) })
+                              TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x"))) }),
+                              TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeName("y"))) })
                       )
                 })
         );

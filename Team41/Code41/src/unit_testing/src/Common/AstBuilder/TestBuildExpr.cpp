@@ -26,8 +26,8 @@ TEST_CASE("AST Builder: expression") {
         string xml = TestAstBuilderUtils::readFile("expr", "2-xml.txt");
 
         TNode* minus = TNode::makeMinus(
-                TNode::makeVarName(Token::makeVar("a")),
-                TNode::makeVarName(Token::makeVar("a"))
+                TNode::makeVarName(Token::makeName("a")),
+                TNode::makeVarName(Token::makeName("a"))
                 );
 
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
@@ -51,8 +51,8 @@ TEST_CASE("AST Builder: expression") {
                             )
                         ),
                 TNode::makeMod(
-                    TNode::makeVarName(Token::makeVar("a")),
-                    TNode::makeVarName(Token::makeVar("a"))
+                    TNode::makeVarName(Token::makeName("a")),
+                    TNode::makeVarName(Token::makeName("a"))
                     )
                 );
         TNode *ast = TestAstBuilderUtils::parseXml(xml);

@@ -192,6 +192,7 @@ TNode *XmlTag::convert() {
     if (type == T_EQ) return convertEq();
     if (type == T_NE) return convertNe();
     if (type == T_VAR) return convertVar();
+    if (type == T_PROC) return convertProcName();
     if (type == T_CONST) return convertConst();
     if (type == T_PLUS) return convertPlus();
     if (type == T_MINUS) return convertMinus();
@@ -208,7 +209,7 @@ TNode *XmlTag::convertProgram() {
 TNode *XmlTag::convertProcedure() {
     ensureKeys({"name"});
     string name = data["name"];
-    return TNode::makeProcedure(Token::makeVar(name), nullptr);
+    return TNode::makeProcedure(Token::makeName(name), nullptr);
 }
 
 TNode *XmlTag::convertStmtList() {
@@ -279,7 +280,13 @@ TNode *XmlTag::convertNe() {
 TNode *XmlTag::convertVar() {
     ensureKeys({"name"});
     string name = data["name"];
-    return TNode::makeVarName(Token::makeVar(name));
+    return TNode::makeVarName(Token::makeName(name));
+}
+
+TNode *XmlTag::convertProcName() {
+    ensureKeys({"name"});
+    string name = data["name"];
+    return TNode::makeProcName(Token::makeName(name));
 }
 
 TNode *XmlTag::convertConst() {

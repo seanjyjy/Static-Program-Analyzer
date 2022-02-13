@@ -102,8 +102,8 @@ TEST_CASE("AST Builder: conditional expression") {
         // manually build actual AST
         TNode* nt = TNode::makeNot(
                 TNode::makeEq(
-                    TNode::makeVarName(Token::makeVar("a")),
-                    TNode::makeVarName(Token::makeVar("a"))
+                    TNode::makeVarName(Token::makeName("a")),
+                    TNode::makeVarName(Token::makeName("a"))
                     )
                 );
         // parse and test
@@ -119,12 +119,12 @@ TEST_CASE("AST Builder: conditional expression") {
         // manually build actual AST
         TNode* ad = TNode::makeAnd(
                 TNode::makeEq(
-                        TNode::makeVarName(Token::makeVar("b")),
-                        TNode::makeVarName(Token::makeVar("b"))
+                        TNode::makeVarName(Token::makeName("b")),
+                        TNode::makeVarName(Token::makeName("b"))
                 ),
                 TNode::makeEq(
-                        TNode::makeVarName(Token::makeVar("c")),
-                        TNode::makeVarName(Token::makeVar("c"))
+                        TNode::makeVarName(Token::makeName("c")),
+                        TNode::makeVarName(Token::makeName("c"))
                 )
         );
         // parse and test
@@ -140,11 +140,11 @@ TEST_CASE("AST Builder: conditional expression") {
         // manually build actual AST
         TNode* o = TNode::makeOr(
                 TNode::makeEq(
-                        TNode::makeVarName(Token::makeVar("d")),
+                        TNode::makeVarName(Token::makeName("d")),
                         TNode::makeConstVal(Token::makeConst("11"))
                 ),
                 TNode::makeEq(
-                        TNode::makeVarName(Token::makeVar("e")),
+                        TNode::makeVarName(Token::makeName("e")),
                         TNode::makeConstVal(Token::makeConst("10"))
                 )
         );

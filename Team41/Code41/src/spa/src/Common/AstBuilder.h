@@ -29,6 +29,7 @@ private:
     const string T_EQ = "eq";
     const string T_NE = "ne";
     const string T_VAR = "var";
+    const string T_PROC = "proc";
     const string T_CONST = "const";
     const string T_PLUS = "plus";
     const string T_MINUS = "minus";
@@ -92,6 +93,9 @@ private:
 
     // reads variable name "name" from data and returns a variable ast node.
     TNode *convertVar();
+
+    // reads process name "name" from data and returns a process name ast node.
+    TNode *convertProcName();
 
     // reads constant value "val" from data and returns an integer ast node.
     TNode *convertConst();
