@@ -223,7 +223,7 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
 
 bool QueryParser::parsePatternClause() {
     TNode *miniAST = nullptr;
-    int pattern_type = 0; // 0 - wildcard, 1 - full, 2 - sub
+    PatternVariable::pattern_type pt = PatternVariable::wildcard;
     optional<string> patt = lex->nextSpecial("pattern");
     if (!patt.has_value()) {
         printf("Malformed input. Expected keyword: pattern\n");
@@ -271,16 +271,16 @@ bool QueryParser::parsePatternClause() {
     optional<string> patternExpr = lex->nextPatternExpression();
     if (patternExpr != nullopt) {
         if (patternExpr == "_") {
-            pattern_type = 0;
+            pt = PatternVariable::wildcard;
         } else {
             Parser simpleParser;
             string expr = patternExpr->c_str();
 
             if (expr.at(0) == '_' && expr.at(expr.length() - 1) == '_') {
-                pattern_type = 2; // sub pattern
+                pt = PatternVariable::subpattern; // sub pattern
                 expr = expr.substr(1, expr.length() - 2);
             } else{
-                pattern_type = 1; // full pattern
+                pt = PatternVariable::fullpattern; // full pattern
             }
             miniAST = simpleParser.parseExpr(expr);
             if (miniAST == nullptr) {
@@ -298,21 +298,7 @@ bool QueryParser::parsePatternClause() {
 
     // build the pattern clause
     ClauseVariable lcv(determineVariableType(lhs->c_str()), lhs->c_str());
-    PatternVariable pv(PatternVariable::wildcard, miniAST);
-
-    switch (pattern_type){
-        case 0:
-            pv.type = PatternVariable::wildcard;
-            break;
-        case 1:
-            pv.type = PatternVariable::fullpattern;
-            break;
-        case 2:
-            pv.type = PatternVariable::subpattern;
-            break;
-        default:
-            break;
-    }
+    PatternVariable pv(pt, miniAST);
     PatternClause pc(declared.value(), lcv, pv);
     queryObject->patternClauses.push_back(pc);
 
