@@ -38,12 +38,20 @@ bool EvaluatorUtils::isPrint(QueryDeclaration::design_entity_type type) {
     return type == QueryDeclaration::design_entity_type::PRINT;
 }
 
+bool EvaluatorUtils::isAssign(QueryDeclaration::design_entity_type type) {
+    return type == QueryDeclaration::design_entity_type::ASSIGN;
+}
+
 bool EvaluatorUtils::isRead(QueryDeclaration::design_entity_type type) {
     return type == QueryDeclaration::design_entity_type::READ;
 }
 
 bool EvaluatorUtils::isCall(QueryDeclaration::design_entity_type type) {
     return type == QueryDeclaration::design_entity_type::CALL;
+}
+
+bool EvaluatorUtils::isVariableSynonym(ClauseVariable* var) {
+    return var->isSynonym() && isVariable(var->getDesignEntityType());
 }
 
 bool EvaluatorUtils::isIntegerSynonym(ClauseVariable* left, ClauseVariable* right) {

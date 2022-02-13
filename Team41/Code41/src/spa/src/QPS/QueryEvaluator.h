@@ -15,6 +15,7 @@
 #include "QPS/Evaluator/FollowsTEvaluator.h"
 #include "QPS/Evaluator/ParentEvaluator.h"
 #include "QPS/Evaluator/ParentTEvaluator.h"
+#include "QPS/Evaluator/PatternEvaluator.h"
 #include "QueryObject.h"
 #include "QueryClause.h"
 
@@ -25,4 +26,5 @@ public:
     explicit QueryEvaluator(PKB* pkb);
     std::unordered_set<std::string> evaluateQuery(QueryObject *queryObject);
     Table* evaluate(QueryClause& clause);
+    Table* evaluate(PatternClause& clause);
 };

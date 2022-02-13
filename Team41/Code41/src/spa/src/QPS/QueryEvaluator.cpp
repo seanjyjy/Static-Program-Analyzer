@@ -13,9 +13,21 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
     auto selectSynonym = queryObject->selectSynonym;
     Table *resultTable = nullptr;
 
+    auto queryClauses = queryObject->clauses;
+    auto patternClauses = queryObject->patternClauses;
+    auto suchThatClPtr = queryClauses.begin();
+    auto patternClPtr = patternClauses.begin();
     try {
-        for (auto clause : queryObject->clauses) {
-            Table* intermediateTable = this->evaluate(clause);
+        while (suchThatClPtr != queryClauses.end() || patternClPtr != patternClauses.end()) {
+            Table *intermediateTable;
+            if (suchThatClPtr != queryClauses.end()) {
+                intermediateTable = this->evaluate(*suchThatClPtr);
+                suchThatClPtr++;
+            } else {
+                intermediateTable = this->evaluate(*patternClPtr);
+                patternClPtr++;
+            }
+
             if (intermediateTable->isEmpty()) {
                 return emptyResult;
             }
@@ -65,8 +77,8 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
     return result;
 }
 
-Table *QueryEvaluator::evaluate(QueryClause& clause) {
-    switch(clause.type) {
+Table *QueryEvaluator::evaluate(QueryClause &clause) {
+    switch (clause.type) {
         case QueryClause::clause_type::follows:
             return FollowsEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::followsT:
@@ -83,11 +95,17 @@ Table *QueryEvaluator::evaluate(QueryClause& clause) {
             return ModifiesSEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::modifiesP:
             return ModifiesPEvaluator::evaluate(clause, this->pkb);
-        case QueryClause::clause_type::pattern:
-            return nullptr;
         default:
             throw std::runtime_error("unknown clause of type " + to_string(clause.type));
     }
 }
 
-
+Table *QueryEvaluator::evaluate(PatternClause &clause) {
+    auto type = clause.getSynonym().type;
+    switch (type) {
+        case QueryDeclaration::design_entity_type::ASSIGN:
+            return PatternEvaluator::evaluate(clause, this->pkb);
+        default:
+            throw std::runtime_error("unknown pattern clause of type " + to_string(type));
+    }
+}

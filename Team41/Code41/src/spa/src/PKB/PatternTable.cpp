@@ -35,7 +35,8 @@ unordered_set<string> PatternTable::getAllStmtsFromSubPattern(TNode *subPatternA
     unordered_set<string> res;
 
     while (it != keys.end()) {
-        res.merge(patternRelation.get(*it).getKeys());
+        unordered_set<string> toMerge = patternRelation.get(*it).getKeys();
+        res.insert(toMerge.begin(), toMerge.end());
         it = find_if(next(it), keys.end(), containsSubString);
     }
     return res;
@@ -49,7 +50,8 @@ unordered_set<string> PatternTable::getStmtFromSubPatternNVar(TNode *subPatternA
 
     unordered_set<string> res;
     while (it != keys.end()) {
-        res.merge(patternRelation.get(*it).getKeysFromValue(varName));
+        unordered_set<string> toMerge = patternRelation.get(*it).getKeysFromValue(varName);
+        res.insert(toMerge.begin(), toMerge.end());
         it = find_if(next(it), keys.end(), containsSubString);
     }
     return res;

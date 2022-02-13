@@ -32,4 +32,43 @@ TEST_CASE("Test 1") {
         unordered_set<string> answer{"3", "4", "11"};
         REQUIRE(result == answer);
     }
+
+    SECTION("Query 2") {
+        string query = "assign a;\n"
+                       "Select a pattern a(\"z\", _\"x\"_)";
+
+        QueryParser qp = QueryParser{query};
+        QueryObject* queryObject = qp.parse();
+        QueryEvaluator queryEvaluator(pkbManager);
+        unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
+
+        unordered_set<string> answer{"7", "9"};
+        REQUIRE(result == answer);
+    }
+
+    SECTION("Query 3") {
+        string query = "assign a;\n"
+                       "Select a pattern a(_, _\"z+x\"_)";
+
+        QueryParser qp = QueryParser{query};
+        QueryObject* queryObject = qp.parse();
+        QueryEvaluator queryEvaluator(pkbManager);
+        unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
+
+        unordered_set<string> answer{"8", "9"};
+        REQUIRE(result == answer);
+    }
+
+    SECTION("Query 4") {
+        string query = "assign a; variable v;\n"
+                       "Select v pattern a(v, _\"z+x\"_)";
+
+        QueryParser qp = QueryParser{query};
+        QueryObject* queryObject = qp.parse();
+        QueryEvaluator queryEvaluator(pkbManager);
+        unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
+
+        unordered_set<string> answer{"y", "z"};
+        REQUIRE(result == answer);
+    }
 }
