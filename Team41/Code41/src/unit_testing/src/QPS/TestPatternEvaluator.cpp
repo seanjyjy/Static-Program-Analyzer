@@ -163,4 +163,18 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         REQUIRE(table2->size() == 4);
         REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[0], lines[1], lines[2], lines[3]}));
     }
+
+    SECTION("Semantically Invalid") {
+        QueryDeclaration stmtSyn(QueryDeclaration::STMT, ASSIGN_SYN_LBL);
+        PatternClause patternClause1(stmtSyn, variableSyn, patternFP1);
+        REQUIRE(PatternEvaluator::evaluate(patternClause1, pkbManager) == FalseTable::getTable());
+
+        ClauseVariable procSyn(ClauseVariable::synonym, "proc", QueryDeclaration::PROCEDURE);
+        PatternClause patternClause2(assignSyn, procSyn, patternFP1);
+        REQUIRE(PatternEvaluator::evaluate(patternClause2, pkbManager) == FalseTable::getTable());
+
+        ClauseVariable readSyn(ClauseVariable::synonym, "proc", QueryDeclaration::READ);
+        PatternClause patternClause3(assignSyn, readSyn, patternFP1);
+        REQUIRE(PatternEvaluator::evaluate(patternClause3, pkbManager) == FalseTable::getTable());
+    }
 }

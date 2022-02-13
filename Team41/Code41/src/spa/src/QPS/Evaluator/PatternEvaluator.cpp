@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include "PatternEvaluator.h"
 #include "Common/TreeUtils.h"
 
@@ -8,13 +7,8 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKB *pkb) {
     auto rightVariable = clause.getRHS();
 
     // check if leftVariable is variable type
-    if (leftVariable.isSynonym() && leftVariable.getDesignEntityType() != QueryDeclaration::VARIABLE) {
-        throw runtime_error("Expected variable for LHS of pattern");
-    }
-
-    // check if leftVariable is variable type
-    if (patternSynonym.type != QueryDeclaration::ASSIGN) {
-        throw runtime_error("Expected synonym of type assign");
+    if (!EvaluatorUtils::isAssign(patternSynonym.type)) {
+        return FalseTable::getTable();
     }
 
     if (leftVariable.isWildCard() && rightVariable.isFullPattern()) {
@@ -41,15 +35,15 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKB *pkb) {
         return evaluateIdentifierWildCard(pkb, patternSynonym, leftVariable);
     }
 
-    if (leftVariable.isSynonym() && rightVariable.isFullPattern()) {
+    if (EvaluatorUtils::isVariableSynonym(&leftVariable) && rightVariable.isFullPattern()) {
         return evaluateSynonymFullPattern(pkb, patternSynonym, leftVariable, rightVariable);
     }
 
-    if (leftVariable.isSynonym() && rightVariable.isSubPattern()) {
+    if (EvaluatorUtils::isVariableSynonym(&leftVariable) && rightVariable.isSubPattern()) {
         return evaluateSynonymSubPattern(pkb, patternSynonym, leftVariable, rightVariable);
     }
 
-    if (leftVariable.isSynonym() && rightVariable.isWildcard()) {
+    if (EvaluatorUtils::isVariableSynonym(&leftVariable) && rightVariable.isWildcard()) {
         return evaluateSynonymWildCard(pkb, patternSynonym, leftVariable);
     }
 

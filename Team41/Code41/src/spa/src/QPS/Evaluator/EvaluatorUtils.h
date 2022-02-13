@@ -13,9 +13,11 @@ public:
     static bool isProcedure(QueryDeclaration::design_entity_type type);
     static bool isConstant(QueryDeclaration::design_entity_type type);
     static bool isPrint(QueryDeclaration::design_entity_type type);
+    static bool isAssign(QueryDeclaration::design_entity_type type);
     static bool isRead(QueryDeclaration::design_entity_type type);
     static bool isCall(QueryDeclaration::design_entity_type type);
 
+    static bool isVariableSynonym(ClauseVariable *var);
     static bool isIntegerSynonym(ClauseVariable *left, ClauseVariable *right);
     static bool isSynonymInteger(ClauseVariable *left, ClauseVariable *right);
     static bool isSynonymSynonym(ClauseVariable *left, ClauseVariable *right);
@@ -51,6 +53,20 @@ public:
 
     // For ModifiesS, UsesS
     class SUtils {
+    public:
+        static bool isIntegerIdentifier(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidIntegerSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isIntegerWildCard(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidModifiesSynonymIdentifier(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidUsesSynonymIdentifier(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidModifiesSynonymSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidUsesSynonymSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidModifiesSynonymWildCard(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidUsesSynonymWildCard(ClauseVariable* left, ClauseVariable* right);
+    };
+
+    // For PatternUtils
+    class PatternUtils {
     public:
         static bool isIntegerIdentifier(ClauseVariable* left, ClauseVariable* right);
         static bool isValidIntegerSynonym(ClauseVariable* left, ClauseVariable* right);
