@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "PatternEvaluator.h"
 #include "Common/TreeUtils.h"
 
