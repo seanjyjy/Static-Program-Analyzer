@@ -7,14 +7,44 @@
 
 class PatternClause {
 private:
+    // the synonym attached to the pattern clause
     QueryDeclaration synonym;
+
+    // LHS of the pattern clause
     ClauseVariable lhs;
+
+    // RHS of the pattern clause
     PatternVariable rhs; // miniAST exists within
 
 public:
+    /**
+     * Getter for the synonym.
+     *
+     * @return QueryDeclaration representing the synonym of the pattern.
+     */
     QueryDeclaration getSynonym() const;
+
+    /**
+     * Getter for the LHS.
+     *
+     * @return ClauseVariable representing the LHS of the pattern.
+     */
     ClauseVariable getLHS() const;
+
+    /**
+     * Getter for the RHS.
+     *
+     * @return PatternVariable representing the RHS of the pattern.
+     */
     PatternVariable getRHS() const;
+
+    /**
+     * Constructor for the PatternClause class.
+     *
+     * @param synonym of the pattern clause
+     * @param left for the LHS ClauseVariable instance.
+     * @param right for the RHS PatternVariable instance.
+     */
     PatternClause(QueryDeclaration synonym, ClauseVariable lhs, PatternVariable rhs);
 };
 
