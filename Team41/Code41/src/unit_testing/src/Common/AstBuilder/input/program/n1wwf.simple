@@ -1,0 +1,10 @@
+procedure n1wwf {
+	while ((1 == 1) && (2 == 2)) {
+		while ((a == a) || (b == b)) {
+			print x;
+		}
+		print x;
+	}
+	read abook;
+	print thecops;
+}

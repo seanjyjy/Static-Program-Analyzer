@@ -1,0 +1,10 @@
+procedure n1wwl {
+	read notes;
+	print lectureslides;
+	while ((nus > ntu) && (ntu > sutd)) {
+		yeet = 99999;
+		while (sutd > sit) {
+			nus = ntu + sutd;
+		}
+	}
+}

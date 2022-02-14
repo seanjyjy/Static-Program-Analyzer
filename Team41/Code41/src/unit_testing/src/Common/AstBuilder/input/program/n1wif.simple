@@ -1,0 +1,11 @@
+procedure n1wif {
+	while (gl < glhf) {
+		if (you == gg) then {
+			print glhf;
+        } else {
+            print ggez;
+        }
+	}
+	read x;
+	x = x + x;
+}

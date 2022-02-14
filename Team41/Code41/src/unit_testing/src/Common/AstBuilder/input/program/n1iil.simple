@@ -1,0 +1,17 @@
+procedure n1iil {
+	singapore = china + malaysia + india;
+	read korea;
+	if ((korea >= singapore) || (korea > japan)) then {
+		print daehanminguk;
+		singapore = china;
+	} else {
+		read malaysia;
+		print korea;
+		if (singapore > malaysia) then {
+			print majullah;
+			read singlish;
+		} else {
+			singapore = malaysia;
+		}
+	}
+}

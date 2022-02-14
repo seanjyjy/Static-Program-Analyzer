@@ -1,0 +1,14 @@
+procedure n1iwf {
+	if (cs3203 == APainInTheAss) then {
+		while (isAlive == 1) {
+			print help;
+		}
+		print outTheseTestCases;
+    } else {
+        while (bleedingOut == 1) {
+            read myWill;
+        }
+        read youMustBeLying;
+    }
+	read cs3203;
+}
