@@ -130,10 +130,10 @@ optional<string> QueryLexer::nextSpecialExpected(string w) {
     }
 }
 
-optional<string> QueryLexer::nextSpecial(string s) {
+optional<string> QueryLexer::nextSpecial(string w) {
     string expectedSpecial = nextToken();
-    if (expectedSpecial == s) {
-        return s;
+    if (expectedSpecial == w) {
+        return w;
     } else {
         return nullopt;
     }
