@@ -1,6 +1,8 @@
-read x;
-print x;
-call main;
-x = 0;
-while (1==1) { print x; }
-if (1==1) then { print x; } else { print y; }
+procedure stmtlist {
+    read x;
+    print x;
+    call main;
+    x = 0;
+    while (1==1) { print x; }
+    if (1==1) then { print x; } else { print y; }
+}

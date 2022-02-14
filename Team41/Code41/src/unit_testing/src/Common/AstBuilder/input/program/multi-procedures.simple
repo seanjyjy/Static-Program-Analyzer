@@ -1,0 +1,18 @@
+procedure procedure {
+	print procedure;
+}
+procedure read {
+	print read;
+}
+procedure print {
+    print print;
+}
+procedure call {
+    print call;
+}
+procedure while {
+    print while;
+}
+procedure if {
+    print if;
+}

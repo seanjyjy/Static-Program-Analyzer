@@ -10,7 +10,7 @@ TEST_CASE("AST Builder: name") {
         string simple = TestAstBuilderUtils::readFile("name", "1-simple.txt");
         string xml = TestAstBuilderUtils::readFile("name", "1-xml.txt");
         // manually build ast
-        Token *var = Token::makeVar("hi");
+        Token *var = Token::makeName("hi");
         TNode *node = TNode::makeVarName(var);
         // parse xml and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);

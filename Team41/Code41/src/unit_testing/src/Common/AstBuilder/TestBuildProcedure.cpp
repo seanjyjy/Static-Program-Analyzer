@@ -11,8 +11,8 @@ TEST_CASE("AST Builder: procedure") {
         string xml = TestAstBuilderUtils::readFile("procedure", "1-xml.txt");
         // manually build actual AST
         TNode *procedure = TNode::makeProcedure(
-                Token::makeVar("main"),
-                TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeVar("x")))})
+                Token::makeName("main"),
+                TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x")))})
                 );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);

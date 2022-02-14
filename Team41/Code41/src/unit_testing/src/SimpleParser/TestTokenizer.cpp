@@ -14,7 +14,7 @@ TEST_CASE("Tokenizer: all") {
                "    two = 0;\n"
                "    read x;\n"
                "    print x;\n"
-               "    while (!(1 > 2) && (3 >= 4) {\n"
+               "    while (!(1 > 2) && (3 >= 4)) {\n"
                "        one = 1;\n"
                "    }\n"
                "    if ((one != two) || (1 <= 2)) then {\n"
@@ -56,6 +56,7 @@ TEST_CASE("Tokenizer: all") {
             {TokenType::integer, "3"},
             {TokenType::ge, ">="},
             {TokenType::integer, "4"},
+            {TokenType::closingBracket, ")"},
             {TokenType::closingBracket, ")"},
             {TokenType::openingBrace, "{"},
             {TokenType::name, "one"},

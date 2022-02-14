@@ -12,7 +12,7 @@ TEST_CASE("AST Builder: term") {
         // manually build actual AST
         TNode* mult = TNode::makeTimes(
                 TNode::makeConstVal(Token::makeConst("2")),
-                TNode::makeVarName(Token::makeVar("b"))
+                TNode::makeVarName(Token::makeName("b"))
                 );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
@@ -26,7 +26,7 @@ TEST_CASE("AST Builder: term") {
         string xml = TestAstBuilderUtils::readFile("term", "2-xml.txt");
         // manually build actual AST
         TNode* div = TNode::makeDiv(
-            TNode::makeVarName(Token::makeVar("c")),
+            TNode::makeVarName(Token::makeName("c")),
             TNode::makeConstVal(Token::makeConst("3"))
         );
         // parse and test

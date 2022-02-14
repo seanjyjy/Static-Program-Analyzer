@@ -15,12 +15,12 @@ TEST_CASE("AST Builder: program") {
         // manually build actual AST
         TNode *prog = TNode::makeProgram({
              TNode::makeProcedure(
-                     Token::makeVar("first"),
-                     TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeVar("x")))})
+                     Token::makeName("first"),
+                     TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x")))})
              ),
              TNode::makeProcedure(
-                     Token::makeVar("second"),
-                     TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeVar("x")))})
+                     Token::makeName("second"),
+                     TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x")))})
              )
         });
         // parse and test

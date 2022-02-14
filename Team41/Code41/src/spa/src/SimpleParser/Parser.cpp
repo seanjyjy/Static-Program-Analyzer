@@ -457,9 +457,6 @@ TNode *Parser::parse(const string &s) {
             case Option::procedure:
                 ast = eatProcedure();
                 break;
-            case Option::stmtlist:
-                ast = eatStmtLst();
-                break;
             case Option::stmt:
                 ast = eatStmt();
                 break;
@@ -517,11 +514,6 @@ TNode *Parser::parseProgram(const string &s) {
 
 TNode *Parser::parseProcedure(const string &s) {
     parseOption = Option::procedure;
-    return parse(s);
-}
-
-TNode *Parser::parseStmtLst(const string &s) {
-    parseOption = Option::stmtlist;
     return parse(s);
 }
 

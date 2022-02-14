@@ -18,7 +18,7 @@ private:
 
 public:
     // for testing purposes, initializes start/end pairs to rubbish values
-    static Token *makeVar(string val);
+    static Token *makeName(string val);
 
     // for testing purposes, initializes start/end pairs to rubbish values
     static Token *makeConst(string val);

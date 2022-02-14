@@ -16,10 +16,10 @@ TEST_CASE("AST Builder: if statement") {
                     TNode::makeConstVal(Token::makeConst("1"))
                 ),
                 TNode::makeStmtLst({
-                    TNode::makePrintStmt(TNode::makeVarName(Token::makeVar("x")))
+                    TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x")))
                 }),
                 TNode::makeStmtLst({
-                   TNode::makePrintStmt(TNode::makeVarName(Token::makeVar("y")))
+                   TNode::makePrintStmt(TNode::makeVarName(Token::makeName("y")))
                 })
                 );
         // parse and test
