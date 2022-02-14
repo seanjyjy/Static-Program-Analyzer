@@ -1,0 +1,16 @@
+procedure main {
+    while (a != 1) {
+        read b;
+        if (c > 1) then {
+            d = e + f + g;
+            print h;
+        } else {
+            i = 6 * 9;
+            while ((j != k) || (m <= 2)) {
+                n = p - q + r;
+                read s;
+                print t;
+            }
+        }
+    }
+}

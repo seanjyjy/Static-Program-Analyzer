@@ -1,0 +1,4 @@
+<plus>
+	<var name=c></var>
+	<const val=1></const>
+</plus>
