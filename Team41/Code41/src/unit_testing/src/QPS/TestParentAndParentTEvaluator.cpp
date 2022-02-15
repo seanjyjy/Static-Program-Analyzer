@@ -1,16 +1,13 @@
 #include "catch.hpp"
 #include "PKB/PKB.h"
 #include "PKB/ParentTable.h"
-#include "../UnitTestUtility.h"
 #include "QPS/Evaluator/ParentEvaluator.h"
 #include "QPS/Evaluator/ParentTEvaluator.h"
 #include "QPS/ClauseVariable.h"
 
 TEST_CASE("Evaluator: Parent and ParentT evaluator") {
-    ParentTable table;
     string stmt[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     PKB* pkbManager = new PKB();
-    pkbManager->parentTable = &table;
 
     /*
         1 x = 1;
@@ -92,6 +89,9 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
             Table* table4 = ParentEvaluator::evaluate(queryClause4, pkbManager);
             REQUIRE(table4->size() == 2);
             REQUIRE(table4->getColumn("s1") == unordered_set<string>({"7", "8"}));
+
+            delete table2;
+            delete table4;
         }
 
         SECTION("Integer Wildcard pair") {
@@ -132,6 +132,9 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
             Table* table5 = ParentEvaluator::evaluate(queryClause5, pkbManager);
             REQUIRE(table5->size() == 1);
             REQUIRE(table5->getColumn("s1") == unordered_set<string>({"6"}));
+            delete table3;
+            delete table4;
+            delete table5;
         }
 
         SECTION("Synonym Synonym pair") {
@@ -140,6 +143,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
             REQUIRE(table1->size() == 6);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "6"}));
             REQUIRE(table1->getColumn("s2") == unordered_set<string>({"3", "4", "5", "6", "7", "8"}));
+            delete table1;
         }
 
         SECTION("Synonym Wildcard pair") {
@@ -147,6 +151,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
             Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 2);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "6"}));
+            delete table1;
         }
 
         SECTION("Wildcard Integer pair") {
@@ -171,12 +176,14 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
             Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 6);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"3", "4", "5", "6", "7", "8"}));
+            delete table1;
         }
 
         SECTION("Wildcard Wildcard pair") {
             QueryClause queryClause1(QueryClause::parent, wildcard, wildcard);
             Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(ParentEvaluator::evaluate(queryClause1, pkbManager) == TrueTable::getTable());
+            delete table1;
         }
     }
 
@@ -220,6 +227,8 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
             Table* table4 = ParentTEvaluator::evaluate(queryClause4, pkbManager);
             REQUIRE(table4->size() == 2);
             REQUIRE(table4->getColumn("s1") == unordered_set<string>({"7", "8"}));
+            delete table2;
+            delete table4;
         }
 
         SECTION("Integer Wildcard pair") {
@@ -271,6 +280,10 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
             QueryClause queryClause7(QueryClause::parentT, synonymS1, integer9);
             REQUIRE(ParentTEvaluator::evaluate(queryClause7, pkbManager) == FalseTable::getTable());
+            delete table3;
+            delete table4;
+            delete table5;
+            delete table6;
         }
 
         SECTION("Synonym Synonym pair") {
@@ -279,6 +292,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
             REQUIRE(table1->size() == 8);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "6"}));
             REQUIRE(table1->getColumn("s2") == unordered_set<string>({"3", "4", "5", "6", "7", "8"}));
+            delete table1;
         }
 
         SECTION("Synonym Wildcard pair") {
@@ -286,6 +300,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
             Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 2);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "6"}));
+            delete table1;
         }
 
         SECTION("Wildcard Integer pair") {
@@ -316,6 +331,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
             Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 6);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"3", "4", "5", "6", "7", "8"}));
+            delete table1;
         }
 
         SECTION("Wildcard Wildcard pair") {
@@ -323,4 +339,6 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
             REQUIRE(ParentTEvaluator::evaluate(queryClause1, pkbManager) == TrueTable::getTable());
         }
     }
+
+    delete pkbManager;
 }

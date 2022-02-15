@@ -1,15 +1,12 @@
 #include "catch.hpp"
 #include "PKB/PKB.h"
 #include "PKB/UsesTable.h"
-#include "../UnitTestUtility.h"
 #include "QPS/Evaluator/UsesSEvaluator.h"
 #include "QPS/Evaluator/UsesPEvaluator.h"
 #include "QPS/ClauseVariable.h"
 
 TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
-    UsesTable table;
     PKB* pkbManager = new PKB();
-    pkbManager->usesTable = &table;
     string vars[] = {"var1", "var2"};
     string lines[] = {"1", "2", "3"};
     string proc[] = {"proc1", "proc2", "proc3"};
@@ -62,6 +59,8 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
             Table* table2 = UsesSEvaluator::evaluate(queryClause2, pkbManager);
             REQUIRE(table2->size() == 1);
             REQUIRE(table2->getColumn("v") == unordered_set<string>({"var2"}));
+            delete table1;
+            delete table2;
         }
 
         SECTION("Integer WildCard Pair") {
@@ -85,6 +84,8 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
             Table* table2 = UsesSEvaluator::evaluate(queryClause2, pkbManager);
             REQUIRE(table2->size() == 2);
             REQUIRE(table2->getColumn("a") == unordered_set<string>({"1", "2"}));
+            delete table1;
+            delete table2;
         }
 
         SECTION("Synonym Synonym Pair") {
@@ -93,6 +94,7 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
             REQUIRE(table1->size() == 3);
             REQUIRE(table1->getColumn("a") == unordered_set<string>({"1", "2"}));
             REQUIRE(table1->getColumn("v") == unordered_set<string>({"var1", "var2"}));
+            delete table1;
         }
 
         SECTION("Synonym WildCard Pair") {
@@ -100,6 +102,7 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
             Table* table1 = UsesSEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 2);
             REQUIRE(table1->getColumn("a") == unordered_set<string>({"1", "2"}));
+            delete table1;
         }
 
         SECTION("Semantically Invalid") {
@@ -152,6 +155,8 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
             Table* table2 = UsesPEvaluator::evaluate(queryClause2, pkbManager);
             REQUIRE(table2->size() == 1);
             REQUIRE(table2->getColumn("v") == unordered_set<string>({"var2"}));
+            delete table1;
+            delete table2;
         }
 
         SECTION("Identifier WildCard Pair") {
@@ -175,6 +180,8 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
             Table* table2 = UsesPEvaluator::evaluate(queryClause2, pkbManager);
             REQUIRE(table2->size() == 2);
             REQUIRE(table2->getColumn("p") == unordered_set<string>({"proc1", "proc2"}));
+            delete table1;
+            delete table2;
         }
 
         SECTION("Synonym Synonym Pair") {
@@ -183,6 +190,7 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
             REQUIRE(table1->size() == 3);
             REQUIRE(table1->getColumn("p") == unordered_set<string>({"proc1", "proc2"}));
             REQUIRE(table1->getColumn("v") == unordered_set<string>({"var1", "var2"}));
+            delete table1;
         }
 
         SECTION("Synonym WildCard Pair") {
@@ -190,6 +198,7 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
             Table* table1 = UsesPEvaluator::evaluate(queryClause1, pkbManager);
             REQUIRE(table1->size() == 2);
             REQUIRE(table1->getColumn("p") == unordered_set<string>({"proc1", "proc2"}));
+            delete table1;
         }
 
         SECTION("Semantically Invalid") {
@@ -209,4 +218,5 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
             REQUIRE(UsesPEvaluator::evaluate(queryClause5, pkbManager) == FalseTable::getTable());
         }
     }
+    delete pkbManager;
 }
