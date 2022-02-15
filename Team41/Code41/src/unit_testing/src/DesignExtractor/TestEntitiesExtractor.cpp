@@ -1,30 +1,14 @@
 #include "catch.hpp"
 
 #include "DesignExtractor/EntitiesExtractor.h"
-#include "SimpleParser/Parser.h"
+#include "Common/AstBuilder.h"
+#include "TestDesignExtractorUtils.h"
 
 using namespace std;
 
 TEST_CASE("DesignExtractor: Register Entities") {
-    // Todo: Create ast without Parser
-    string s = "procedure main {\n"
-               "\tread x;\n"
-               "\ty = z + 1;\n"
-               "\twhile (b != 1) {\n"
-               "\t\tc = 2;\n"
-               "\t\twhile (c > 1) {\n"
-               "\t\t\tx = y + c;\n"
-               "\t\t}\n"
-               "\t\tprint a;\n"
-               "\t}\n"
-               "\tif (f > 1) then {\n"
-               "\t\tprint q;\n"
-               "\t} else {\n"
-               "\t\th = i + j;\n"
-               "\t}\n"
-               "}";
-    Parser p;
-    TNode* ast = p.parseProgram(s);
+    // nested-simple.txt
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "nested-xml.txt")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
 
@@ -40,13 +24,13 @@ TEST_CASE("DesignExtractor: Register Entities") {
     }
 
     SECTION("Variable") {
-        unordered_set<string> expectedVarNames = {"x", "y", "z", "b", "c", "a",
-                                                  "f", "q", "h", "i", "j"};
+        unordered_set<string> expectedVarNames = {"a", "b", "c", "d", "e", "f", "g", "h",
+                                                  "i", "j", "k", "m", "n", "p", "q", "r", "s", "t"};
         REQUIRE(ee.getVarSet() == expectedVarNames);
     }
 
     SECTION("Constants") {
-        unordered_set<string> expectedConstVals = {"1", "2"};
+        unordered_set<string> expectedConstVals = {"1", "2", "6", "9"};
         REQUIRE(ee.getConstSet() == expectedConstVals);
     }
 }

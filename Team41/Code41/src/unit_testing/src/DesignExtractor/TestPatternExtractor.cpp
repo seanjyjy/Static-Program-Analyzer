@@ -2,28 +2,14 @@
 
 #include "DesignExtractor/EntitiesExtractor.h"
 #include "DesignExtractor/PatternExtractor.h"
-#include "SimpleParser/Parser.h"
+#include "Common/AstBuilder.h"
+#include "TestDesignExtractorUtils.h"
 
 using namespace std;
 
 TEST_CASE("PatternExtractor: Non-nested") {
-    string s = "procedure main {\n"
-               "\tread x;\n"
-               "\ty = z + 1;\n"
-               "\twhile (b != 1) {\n"
-               "\t\ta = z + y - 2 * 3 / x - 1;\n"
-               "\t\tb = 2;\n"
-               "\t}\n"
-               "\tif (f > 1) then {\n"
-               "\t\tb = 3;\n"
-               "\t} else {\n"
-               "\t\tprint a;"
-               "\t\tread b;"
-               "\t}\n"
-               "\tprint k;"
-               "}";
-    Parser p;
-    TNode* ast = p.parseProgram(s);
+    // non_nested-simple.txt
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "non_nested-xml.txt")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -32,17 +18,12 @@ TEST_CASE("PatternExtractor: Non-nested") {
     pe.extractRelationship();
 
     SECTION("AssignPattern") {
-        unordered_map<string, pair<string, string>> expectedPattern = {
-                {"2", {"y", p.parseExpr(("z + 1"))->toStringRecursive()}},
-                {"4", {"a", p.parseExpr(("z + y - 2 * 3 / x - 1"))->toStringRecursive()}},
-                {"5", {"b", p.parseExpr(("2"))->toStringRecursive()}},
-                {"7", {"b", p.parseExpr(("3"))->toStringRecursive()}}
+        unordered_map<string, pair<string, TNode *>> expectedAssignPattern = {
+                {"2", {"b", AstBuilder(TestDesignExtractorUtils::readFile("pattern", "2.txt")).build()}},
+                {"4", {"e", AstBuilder(TestDesignExtractorUtils::readFile("pattern", "4.txt")).build()}},
+                {"5", {"f", AstBuilder(TestDesignExtractorUtils::readFile("pattern", "5.txt")).build()}},
+                {"7", {"j", AstBuilder(TestDesignExtractorUtils::readFile("pattern", "7.txt")).build()}}
         };
-        unordered_map<string, pair<string, string>> parsedResult;
-        for(auto [stmt, pair] : pe.getAssignPatternMap()) {
-            parsedResult.insert({stmt, {pair.first, pair.second->toStringRecursive()}});
-        }
-        REQUIRE(parsedResult == expectedPattern);
+        REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
     }
 }
-

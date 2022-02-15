@@ -1,0 +1,15 @@
+procedure main {
+    read a;
+    b = c + 1;
+    while (d != 1) {
+        e = 2;
+        f = 4;
+    }
+    if ((g > 1) && (h == i)) then {
+        j = 3;
+    } else {
+        print k;
+        read m;
+    }
+    print n;
+}
