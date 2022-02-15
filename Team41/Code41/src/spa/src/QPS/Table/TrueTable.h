@@ -5,6 +5,7 @@
 class TrueTable : public Table {
 public:
     TrueTable();
+    ~TrueTable();
     static Table *trueTable;
 
     bool isEmpty() override;
@@ -17,4 +18,5 @@ public:
     virtual unordered_set<string> getColumn(string columnName) override;
     static Table* getTable();
     void sort(const Header& commonHeader) override;
+    bool isBooleanTable();
 };

@@ -2,6 +2,9 @@
 #include <stdexcept>
 
 TrueTable::TrueTable() = default;
+TrueTable::~TrueTable() {
+    TrueTable::trueTable = nullptr;
+};
 Table* TrueTable::trueTable = nullptr;
 
 bool TrueTable::isEmpty() {
@@ -44,3 +47,7 @@ Table* TrueTable::getTable() {
 }
 
 void TrueTable::sort(const Header &commonHeader) {}
+
+bool TrueTable::isBooleanTable() {
+    return true;
+}

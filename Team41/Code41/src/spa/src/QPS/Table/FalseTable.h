@@ -5,6 +5,7 @@
 class FalseTable : public Table {
 public:
     FalseTable();
+    ~FalseTable();
     static Table *falseTable;
 
     bool isEmpty() override;
@@ -17,4 +18,5 @@ public:
     virtual unordered_set<string> getColumn(string columnName) override;
     static Table* getTable();
     void sort(const Header& commonHeader) override;
+    bool isBooleanTable();
 };

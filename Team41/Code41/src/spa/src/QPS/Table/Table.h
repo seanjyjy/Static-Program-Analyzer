@@ -22,6 +22,8 @@ public:
     virtual size_t size() = 0;
     virtual unordered_set<string> getColumn(string columnName) = 0;
     virtual void sort(const Header& commonHeader) = 0;
+    virtual bool isBooleanTable() = 0;
+    virtual ~Table() = default;
 
     friend class TrueTable;
     friend class FalseTable;

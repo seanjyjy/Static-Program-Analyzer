@@ -29,8 +29,6 @@ Table* PQLTable::mergeJoin(Table* intermediatePQLTable) {
 
     // Merge Tables
     mergeTable(this, intermediatePQLTable, newTable, commonHeader);
-    // TODO figure out the destructor lol
-    delete intermediatePQLTable;
 
     return newTable;
 }
@@ -237,4 +235,8 @@ unordered_set<string> PQLTable::getColumn(string columnName) {
     }
 
     return result;
+}
+
+bool PQLTable::isBooleanTable() {
+    return false;
 }
