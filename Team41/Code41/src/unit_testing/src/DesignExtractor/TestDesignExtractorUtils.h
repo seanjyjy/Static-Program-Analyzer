@@ -4,6 +4,7 @@
 #include <filesystem>
 #include "Common/FileReader.h"
 #include "Common/TreeUtils.h"
+#include <list>
 
 class TestDesignExtractorUtils {
 public:
