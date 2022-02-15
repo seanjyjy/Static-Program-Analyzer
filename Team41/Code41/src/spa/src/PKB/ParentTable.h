@@ -15,8 +15,8 @@ private:
 public:
     ParentTable();
 
-    void setParent(string parentStmt, string childStmt);
-    void setParentT(string parentStmt, string childStmt);
+    void setParent(const string& parentStmt, const string& childStmt);
+    void setParentT(const string& parentStmt, const string& childStmt);
 
     unordered_set<string> getAllChildrenOf(string parentStmt);
     string getParentOf(string childStatement);

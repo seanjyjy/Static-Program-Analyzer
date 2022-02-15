@@ -16,8 +16,8 @@ private:
 public:
     FollowsTable();
 
-    void setFollows(string follower, string followed);
-    void setFollowsT(string follower, string followed);
+    void setFollows(const string& follower, const string& followed);
+    void setFollowsT(const string& follower, const string& followed);
 
     string getStmtFollowedBy(string follower);
     string getStmtFollowing(string followed);

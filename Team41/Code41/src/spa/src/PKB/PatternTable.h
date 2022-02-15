@@ -15,7 +15,7 @@ private:
 public:
     PatternTable();
 
-    void setPattern(string stmtNum, string lhsVariable, TNode *rhsAssignAST);
+    void setPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST);
 
     unordered_set<string> getAllStmtsFromFullPattern(TNode *patternAST);
     unordered_set<string> getStmtFromFullPatternNVar(TNode *patternAST, string varName);
@@ -27,7 +27,7 @@ public:
     vector<pair<string, string>> getStmtNVarFromFullPattern(TNode *patternAST);
 
     unordered_set<string> getAllStmtsFromSubPattern(TNode *subPatternAST);
-    unordered_set<string> getStmtFromSubPatternNVar(TNode *subPatternAST, string varName);
+    unordered_set<string> getStmtFromSubPatternNVar(TNode *subPatternAST, const string& varName);
     /**
      * Get assignStmt-variable pair based on sub pattern
      * @param subPatternAST the sub AST

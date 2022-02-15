@@ -14,7 +14,7 @@ private:
 public:
     UsesTable();
 
-    void setVarUsedInStmt(string stmtNum, string varName);
+    void setVarUsedInStmt(const string& stmtNum, const string& varName);
     unordered_set<string> getVarsUsedInStmt(string stmtNum);
     unordered_set<string> getStmtsUsingVar(string varName);
     vector<pair<string, string>> getStmtsVarEntries();
@@ -22,7 +22,7 @@ public:
     unordered_set<string> getStmtsUsingSomeVar();
     bool isUsesS(string stmtNum, string varName);
 
-    void setVarUsedInProc(string procName, string varName);
+    void setVarUsedInProc(const string& procName, const string& varName);
     unordered_set<string> getVarsUsedInProc(string procName);
     unordered_set<string> getProcsUsingVar(string varName);
     vector<pair<string, string>> getProcVarEntries();

@@ -44,14 +44,14 @@ public:
      * @param type the type of the statement
      * @throws error if type of stmtNumber is already set
      */
-    void setStmt(string stmtNum, StmtType type);
+    void setStmt(const string& stmtNum, StmtType type);
 
     /**
      * Gets the number of statements stored in table
      *
      * @return set of statement numbers
      */
-    int getStmtCount();
+    size_t getStmtCount();
 
     /**
      * Gets all statements added to the table
