@@ -86,7 +86,7 @@ Table *QueryEvaluator::evaluate(QueryClause &clause) {
         case QueryClause::clause_type::parent:
             return ParentEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::parentT:
-            return ParentEvaluator::evaluate(clause, this->pkb);
+            return ParentTEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::usesS:
             return UsesSEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::usesP:
