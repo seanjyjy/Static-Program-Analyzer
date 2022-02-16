@@ -178,7 +178,7 @@ optional<string> QueryLexer::nextPatternExpression() {
         if (peekNextIsString("\"")) {
             index++;
         } else {
-            // '\' expected at beginning of sub patterns
+            // '"' expected at beginning of sub patterns
             return nullopt;
         }
         // sub patterns end before a '"'
