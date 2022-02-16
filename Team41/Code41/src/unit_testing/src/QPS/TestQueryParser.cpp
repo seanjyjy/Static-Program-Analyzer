@@ -188,6 +188,33 @@ TEST_CASE("QPS: Parser_VALID") {
 }
 
 TEST_CASE("QPS: Parser_INVALID") {
+    SECTION("INVALID DECLARATION type") {
+        string s = "variable v; asinine a;\n"
+                   "Select v such that Kills(a, v)";
+
+        QueryParser a = QueryParser{s};
+        QueryObject *qo = a.parse();
+
+        REQUIRE(!qo->isQueryValid);
+    }
+    SECTION("INVALID DECLARATION synonym with '_'") {
+        string s = "variable _vlad; assign a;\n"
+                   "Select v such that Kills(a, v)";
+
+        QueryParser a = QueryParser{s};
+        QueryObject *qo = a.parse();
+
+        REQUIRE(!qo->isQueryValid);
+    }
+    SECTION("INVALID DECLARATION synonym with '0-9'") {
+        string s = "variable v; assign 69a;\n"
+                   "Select v such that Kills(a, v)";
+
+        QueryParser a = QueryParser{s};
+        QueryObject *qo = a.parse();
+
+        REQUIRE(!qo->isQueryValid);
+    }
     SECTION("INVALID DECLARATION such that bad clause") {
         string s = "variable v; assign a;\n"
                    "Select v such that Kills(a, v)";
@@ -203,9 +230,23 @@ TEST_CASE("QPS: Parser_INVALID") {
 
         QueryParser a = QueryParser{s};
         QueryObject *qo = a.parse();
-        printf("Hello");
         REQUIRE(!qo->isQueryValid);
-        printf("Hello");
+    }
+    SECTION("No ClauseVariable left") {
+        string s = "variable v; assign a;\n"
+                   "Select v such that Uses(, v)";
+
+        QueryParser qp = QueryParser{s};
+        QueryObject *qo = qp.parse();
+        REQUIRE(!qo->isQueryValid);
+    }
+    SECTION("No ClauseVariable right") {
+        string s = "variable v; assign a;\n"
+                   "Select v such that Uses(a, )";
+
+        QueryParser qp = QueryParser{s};
+        QueryObject *qo = qp.parse();
+        REQUIRE(!qo->isQueryValid);
     }
     SECTION("INVALID DECLARATION malformed such that") {
         string s = "variable v; assign a;\n"
@@ -239,7 +280,7 @@ TEST_CASE("QPS: Parser_INVALID") {
 
         REQUIRE(!qo->isQueryValid);
     }
-    SECTION("INVALID: Undeclared synonym") {
+    SECTION("Select undeclared synonym") {
         string s = "variable v; assign a;\n"
                    "Select f such that Uses(a, v)";
 
@@ -248,5 +289,15 @@ TEST_CASE("QPS: Parser_INVALID") {
 
         REQUIRE(!qo->isQueryValid);
     }
+    // todo undeclared variabes within clause not detected.
+//    SECTION("clause undeclared synonym") {
+//        string s = "variable v; assign a;\n"
+//                   "Select v such that Uses(a, v)";
+//
+//        QueryParser a = QueryParser{s};
+//        QueryObject *qo = a.parse();
+//
+//        REQUIRE(!qo->isQueryValid);
+//    }
 
 }
