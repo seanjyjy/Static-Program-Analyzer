@@ -13,7 +13,9 @@ int QueryLexer::skipSpaces() {
     char curr = input.at(index);
     while (curr == ' ' || curr == '\n') {
         index++;
-        curr = input.at(index);
+        if (index < input.length()) {
+            curr = input.at(index);
+        } else { break; }
     }
     return index;
 }
@@ -217,6 +219,7 @@ optional<string> QueryLexer::nextPatternExpression() {
 }
 
 bool QueryLexer::isEndOfQuery() {
+    skipSpaces();
     return index == input.length();
 }
 

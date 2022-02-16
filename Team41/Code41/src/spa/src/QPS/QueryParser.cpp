@@ -61,6 +61,7 @@ bool QueryParser::parseDeclarations() {
                 } else {
                     // Neither ',' nor ';'. Syntax error
                     printf("Syntax error: Expected a ';' for end of declaration.\n");
+                    return false;
                 }
             }
         }
@@ -170,7 +171,7 @@ bool QueryParser::parseClause() {
     }
     if (lex->isValidSynonym(left->c_str())) { // check if synonym has been
         if (!isDeclared(left->c_str())) {
-            printf("Use of undeclared synonym <%s> for clause: %s\n", left->c_str(), clause->c_str());
+            printf("Syntax Error: Use of undeclared synonym <%s> for clause %s LHS\n", left->c_str(), clause->c_str());
             return false;
         }
     }
@@ -188,7 +189,7 @@ bool QueryParser::parseClause() {
     }
     if (lex->isValidSynonym(right->c_str())) { // check if synonym has been
         if (!isDeclared(right->c_str())) {
-            printf("Use of undeclared synonym <%s> for clause: %s\n", right->c_str(), clause->c_str());
+            printf("Syntax Error: Use of undeclared synonym <%s> for clause %s RHS\n", right->c_str(), clause->c_str());
             return false;
         }
     }
@@ -270,11 +271,14 @@ bool QueryParser::parsePatternClause() {
     }
 
     optional<string> patternSyn = lex->nextSynonym();
-    if (patternSyn == nullopt) return false;
+    if (patternSyn == nullopt) {
+        printf("Syntax Error: No pattern synonym was found\n");
+        return false;
+    }
 
     optional<QueryDeclaration> declared = findMatchingDeclaration(patternSyn->c_str());
     if (declared == nullopt) {
-        printf("Use of undeclared pattern synonym: %s", patternSyn->c_str());
+        printf("Syntax Error: Use of undeclared pattern synonym <%s>\n", patternSyn->c_str());
         return false;
     } else {
         if (declared->type != QueryDeclaration::ASSIGN && declared->type != QueryDeclaration::WHILE && declared->type != QueryDeclaration::IF) {
@@ -300,7 +304,7 @@ bool QueryParser::parsePatternClause() {
     if (lex->isValidSynonym(lhs->c_str())) {
         optional<QueryDeclaration> lhsDeclared = findMatchingDeclaration(lhs->c_str());
         if (lhsDeclared == nullopt) {
-            printf("Use of undeclared pattern LHS synonym: %s", lhs->c_str());
+            printf("Syntax Error: Use of undeclared pattern LHS synonym <%s>\n", lhs->c_str());
             return false;
         }
     }
@@ -379,6 +383,7 @@ QueryObject *QueryParser::parse() {
     if (!parseDeclarations()) {
         return queryObject;
     }
+
     if (!parseSelectSynonym()) {
         return queryObject ;
     }
@@ -401,8 +406,8 @@ QueryObject *QueryParser::parse() {
             printf("Syntax Error: Unexpected term <%s> found.", unexpected.c_str());
             return queryObject;
         }
-
     }
+
     printf("Query parsed.\n");
     queryObject->isQueryValid = true;
     return queryObject;

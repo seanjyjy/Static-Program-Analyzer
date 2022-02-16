@@ -19,7 +19,7 @@ private:
              "Parent*", "Uses", "Modifies"};
 
     const unordered_set<char> special_char =
-            {'(', ')', ';', ',', ' '};
+            {'(', ')', ';', ',', ' ', '\n'};
 
     int index = 0; // tracks position in input
     const string &input; // input string being parsed
