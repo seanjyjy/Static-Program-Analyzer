@@ -1,0 +1,109 @@
+--. procedure n3IwWwIwM {
+01.    procedure = procedure + 1;
+02.    procedure = procedure - 1;
+03.    if ((a * b * c == 1) && (if % else % then <= 2)) then {
+04.        print = 98 * 20 + 2;
+05.        while (((and * two) >= 1) || ( 1 <= (and * two))) {
+06.            read read;
+07.            if (0 == 0) then {
+08.                print print;
+09.                while (bob == builder) {
+10.                    try = catch + 1;
+--.                }
+--.            } else {
+11.                read reader;
+12.                while (while + 1 == while + 1) {
+13.                    while = while * while;
+--.                }
+--.            }
+--.        }
+--.    } else {
+14.        print x;
+--.    }
+15.    read a;
+16.    while ((b+1) <= (c * 80)) {
+17.        d = e / (99 * f);
+18.        while (((3 * 3 * 3) > (4 * 4 * 4)) && ((1 == 1) && ((1 > (1 * e2 / (3 + 4))) && ((a + b + c) <= 10)))) {
+19.            print g;
+20.            if (((i < 1) || (j == 2)) || (k > 3)) then {
+21.                print y;
+22.                while ((10 * 10) < 100) {
+23.                    print x;
+--.                }
+24.                print y;
+--.            } else {
+25.                m = n + 5 / p;
+--.            }
+26.            y = y / 4;
+--.        }
+27.        z = 2 + r * (3 * 4);
+--.    }
+28.    print q;
+29.    procedure = (i + i + i) / (i * i * i);
+30.    if (!( (3 * then * 5) < (r * pi * 0) )) then {
+31.       read = read;
+32.        if ((2 / 10 * 1) < 10) then {
+33.            print one;
+34.            if ((30 * 40 * 50) == 100) then {
+35.                print x;
+36.                if ((10 % 10) < (2 % 2)) then {
+37.                    if = 10;
+--.                } else {
+38.                    if = 10;
+--.                }
+39.                print y;
+--.            } else {
+40.                print x;
+--.            }
+41.            read x;
+--.        } else {
+42.            PROCEDURE = PROCEDURE * WHILE;
+43.            i10 = 789 * 987 * i10;
+--.        }
+44.        Read = Read;
+--.    } else {
+45.        print y;
+46.        if ((0 * 1 * 2) > (3 * 2 * 1)) then {
+47.            IF = IF * THEN * ELSE;
+48.            i1 = i1 * 5;
+--.        } else {
+49.            if (1 == 1) then {
+50.                print y;
+--.            } else {
+51.                print z;
+--.            }
+--.        }
+52.        print y;
+--.    }
+53.    a = 10 * 20;
+54.    while (( 2 * a / b % c + d) >= 1) {
+55.        b = a * 10;
+56.        if (a != b) then {
+57.            c = c + b;
+58.            while (!(!(!(!(a == 0))))) {
+59.                print x;
+60.                if ( (d == 4) && ( (c == 3) && ((a == 1) || (b == 2)) ) ) then {
+61.                    print x1;
+--.                } else {
+62.                    print x2;
+--.                }
+63.                print x;
+--.            }
+64.            print x;
+--.        } else {
+65.            read x;
+66.            while ((!((a == b) || (c == d))) && (b ==c )) {
+67.                read x;
+68.                if ((1 == a ) && (a == 1)) then {
+69.                    print x3;
+--.                } else {
+70.                    print x4;
+--.                }
+71.                read x;
+--.            }
+72.            read x;
+--.        }
+73.        c = b * 10;
+--.    }
+74.    d = 20 * 30;
+--.}
