@@ -1,0 +1,16 @@
+<gt>
+	<plus>
+		<const val=1></const>
+		<times>
+			<const val=2></const>
+			<const val=3></const>
+		</times>
+	</plus>
+	<minus>
+		<div>
+			<const val=1></const>
+			<const val=2></const>
+		</div>
+		<const val=3></const>
+	</minus>
+</gt>

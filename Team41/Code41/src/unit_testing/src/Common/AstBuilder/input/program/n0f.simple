@@ -1,7 +1,7 @@
 procedure n0f {
-	while (!((a < c) && (10 == d)) {
+	while (!((a < c) && (10 == d))) {
 		h3ll0 = 0;
-}
-read temptation;
-print yourfather;
+    }
+    read temptation;
+    print yourfather;
 }

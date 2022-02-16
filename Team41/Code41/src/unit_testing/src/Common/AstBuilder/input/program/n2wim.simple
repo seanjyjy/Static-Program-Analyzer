@@ -1,0 +1,21 @@
+procedure n2wim {
+	print i;
+	while (1 == 1) {
+		print j;
+		if (2 == 2) then {
+			print k;
+			while (3 == 3) {
+				print a;
+			}
+			print b;
+		} else {
+			print c;
+			while (4 == 4) {
+				print d;
+			}
+			print e;
+		}
+		print f;
+	}
+	print g;
+}

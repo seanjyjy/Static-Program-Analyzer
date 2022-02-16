@@ -1,0 +1,21 @@
+procedure n3iwm {
+	if (0 == 0) then {
+		print x;
+		while (0 == 0) {
+			print x;
+			if (0 == 0) then {
+				print x;
+				while (0 == 0) {
+					print x;
+				}
+				print x;
+			} else {
+				print x;
+			}
+			print x;
+		}
+		print x;
+	} else {
+		print x;
+	}
+}

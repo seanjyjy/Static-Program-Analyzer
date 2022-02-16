@@ -1,0 +1,27 @@
+procedure n3wil {
+	print x;
+	while (0 == 0) {
+		print x;
+		if (0 == 0) then {
+			print x;
+			while (0 == 0) {
+				print x;
+				if (0 == 0) then {
+					print x;
+				} else {
+					print x;
+				}
+			}
+		} else {
+			print x;
+			while (0 == 0) {
+				print x;
+				if (0 == 0) then {
+					print x;
+				} else {
+					print x;
+				}
+			}
+		}
+	}
+}

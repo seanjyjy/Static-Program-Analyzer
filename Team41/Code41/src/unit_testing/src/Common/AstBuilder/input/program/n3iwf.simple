@@ -1,0 +1,18 @@
+procedure n3iwf {
+	if (!(0 == 0)) then {
+		while ((2 * 2 * 2 * 2) > (4 * 4* 4)) {
+			if ((if / if) < (while / while)) then {
+				while (!(x == x)) {
+					print x;
+				}
+				read y;
+			} else {
+				print x;
+			}
+			one = one * 2;
+		}
+		a = b * c / 2;
+	} else {
+		print x;
+	}
+}

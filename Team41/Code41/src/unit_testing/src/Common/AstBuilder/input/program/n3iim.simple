@@ -1,0 +1,38 @@
+procedure n3iim {
+	procedure = (i + i + i) / (i * i * i);
+	if (!( (3 * then * 5) < (r * pi * 0) )) then {
+		read = read;
+		if ((2 / 10 * 1) < 10) then {
+			print one;
+			if ((30 * 40 * 50) == 100) then {
+				print x;
+				if ((10 % 10) < (2 % 2)) then {
+					if = 10;
+				} else {
+					if = 10;
+				}
+				print y;
+			} else {
+				print x;
+			}
+			read x;
+		} else {
+			PROCEDURE = PROCEDURE * WHILE;
+			i10 = 789 * 987 * i10;
+		}
+		Read = Read;
+	} else {
+		print y;
+		if ((0 * 1 * 2) > (3 * 2 * 1)) then {
+			IF = IF * THEN * ELSE;
+			i1 = i1 * 5;
+		} else {
+			if (1 == 1) then {
+				print y;
+			} else {
+				print z;
+			}
+		}
+		print y;
+	}
+}

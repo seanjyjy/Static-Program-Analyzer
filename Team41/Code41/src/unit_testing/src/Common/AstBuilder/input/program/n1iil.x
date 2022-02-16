@@ -2,54 +2,82 @@
 	<procedure name=n1iil>
 		<stmts>
 			<assign>
-				<var name=singapore></var>
+				<var name=sg></var>
 				<plus>
 					<plus>
-						<var name=china></var>
-						<var name=malaysia></var>
+						<var name=ch></var>
+						<var name=my></var>
 					</plus>
-					<var name=india></var>
+					<var name=ind></var>
 				</plus>
 			</assign>
 			<read>
-				<var name=korea></var>
+				<var name=kr></var>
 			</read>
 			<if>
 				<or>
 					<ge>
-						<var name=korea></var>
-						<var name=singapore></var>
+						<var name=kr></var>
+						<var name=sg></var>
 					</ge>
 					<gt>
-						<var name=korea></var>
-						<var name=japan></var>
+						<var name=kr></var>
+						<var name=jap></var>
 					</gt>
 				</or>
 				<stmts>
 					<print>
-						<var name=daehanminguk></var>
+						<var name=yay></var>
 					</print>
 					<assign>
-						<var name=singapore></var>
-						<var name=china></var>
+						<var name=sg></var>
+						<minus>
+							<var name=ch></var>
+							<var name=ind></var>
+						</minus>
 					</assign>
 					<if>
-						<gt>
-							<var name=singapore></var>
-							<var name=malaysia></var>
-						</gt>
+						<ne>
+							<var name=sg></var>
+							<const val=999></const>
+						</ne>
 						<stmts>
 							<print>
-								<var name=majullah></var>
-								<read>
-									<var name=singlish></var>
-								</read>
+								<var name=help></var>
 							</print>
 						</stmts>
 						<stmts>
+							<read>
+								<var name=ok></var>
+							</read>
+						</stmts>
+					</if>
+				</stmts>
+				<stmts>
+					<read>
+						<var name=my></var>
+					</read>
+					<print>
+						<var name=kr></var>
+					</print>
+					<if>
+						<gt>
+							<var name=sg></var>
+							<var name=my></var>
+						</gt>
+						<stmts>
 							<assign>
-								<var name=singapore></var>
-								<var name=malaysia></var>
+								<var name=ch></var>
+								<times>
+									<var name=kr></var>
+									<var name=jap></var>
+								</times>
+							</assign>
+						</stmts>
+						<stmts>
+							<assign>
+								<var name=sg></var>
+								<var name=my></var>
 							</assign>
 						</stmts>
 					</if>

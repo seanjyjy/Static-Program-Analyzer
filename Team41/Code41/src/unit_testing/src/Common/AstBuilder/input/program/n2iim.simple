@@ -1,0 +1,45 @@
+procedure n2iim {
+	print thisistiring;
+	if (1 == 1) then {
+		read x;
+		if (2 == 2) then {
+			read y;
+			if (3 == 3) then {
+				a = 1 + 2 + 3;
+			} else {
+				b = 4 + 5 + 6;
+			}
+			read z;
+		} else {
+			read y2;
+			if (32 == 32) then {
+				a2 = 1 + 2 + 3;
+			} else {
+				b2 = 4 + 5 + 6;
+			}
+			read z2;
+		}
+		read t;
+	} else {
+		read x3;
+		if (23 == 23) then {
+			read y3;
+			if (33 == 33) then {
+				a3 = 1 + 2 + 3;
+			} else {
+				b3 = 4 + 5 + 6;
+			}
+			read z3;
+		} else {
+			read y3;
+			if (33 == 33) then {
+				a3 = 1 + 2 + 3;
+			} else {
+				b3 = 4 + 5 + 6;
+			}
+			read z3;
+		}
+		read t3;
+	}
+	print imtired;
+}

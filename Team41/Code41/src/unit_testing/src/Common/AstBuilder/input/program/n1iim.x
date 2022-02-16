@@ -41,21 +41,25 @@
 								<const val=1></const>
 								<const val=2></const>
 							</eq>
+							<lt>
+							    <const val=9></const>
+							    <const val=8></const>
+							</lt>
 						</or>
 						<stmts>
 							<assign>
 								<var name=winter></var>
-								<mult>
+								<times>
 									<var name=olympics></var>
 									<const val=2022></const>
-								</mult>
+								</times>
 							</assign>
 						</stmts>
 						<stmts>
 							<assign>
 								<var name=tripping></var>
 								<div>
-									<var name=1q2w3e></var>
+									<var name=q1q2w3e></var>
 									<const val=100></const>
 								</div>
 							</assign>

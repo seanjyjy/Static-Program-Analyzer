@@ -95,7 +95,9 @@ void TestParserUtils::parseProgramAndCompare(const string& simpleFile, const str
     string xml = readFile("program", xmlFile);
     Parser p;
     TNode* parsed = p.parseProgram(simple);
+    parsed->printRecursive();
     TNode* expected = parseXml(xml);
+    expected->printRecursive();
     REQUIRE(TreeUtils::isEqual(parsed, expected));
 }
 

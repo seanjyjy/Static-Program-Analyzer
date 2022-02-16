@@ -56,7 +56,7 @@ void TNode::setAllParents() {
 }
 
 string TNode::toString() {
-    if (val != nullptr && !val->getVal().empty()) {
+    if (val != nullptr && !(val->getVal().empty())) {
         return TNode::typeToString(type) + " " + val->getVal();
     }
     return TNode::typeToString(type);

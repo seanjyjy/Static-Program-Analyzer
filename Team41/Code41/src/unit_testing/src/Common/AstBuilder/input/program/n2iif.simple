@@ -1,0 +1,38 @@
+procedure n2iif {
+	if ((tired == 1) || (munchies != sold)) then {
+		if (trippy == yes) then {
+			if (blackpink == popular) then {
+				print moneyandbuymerch;
+			} else {
+				print moneyandbuymerch;
+			}
+			read blackpinkbiographies;
+		} else {
+			if (aespa == popular) then {
+				print aespa;
+			} else {
+				print aespa;
+			}
+			read aespabiographies;
+		}
+		read HOW2ST4LK;
+	} else {
+		if (trippy2 == yes) then {
+			if (blackpink2 == popular) then {
+				print moneyandbuymerch2;
+			} else {
+				print moneyandbuymerch2;
+			}
+			read blackpinkbiographies2;
+		} else {
+			if (aespa2 == popular) then {
+				print aespa2;
+			} else {
+				print aespa2;
+			}
+			read aespabiographies2;
+		}
+		read HOW2ST4LK2;
+	}
+	stalker = 777 / 777;
+}
