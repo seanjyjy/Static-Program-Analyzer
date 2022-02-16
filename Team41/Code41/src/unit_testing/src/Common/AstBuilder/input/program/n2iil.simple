@@ -1,0 +1,38 @@
+procedure n2iil {
+	print LondonBridge;
+	if (a == a) then {
+		read x;
+		if (b ==b ) then {
+			read x;
+			if (c == c) then {
+				print x;
+			} else {
+				print y;
+			}
+		} else {
+			read x;
+			if (d == d) then {
+				print x;
+			} else {
+				print y;
+			}
+		}
+	} else {
+		read x;
+		if (b ==b ) then {
+			read x;
+			if (c == c) then {
+				print x;
+			} else {
+				print y;
+			}
+		} else {
+			read x;
+			if (d == d) then {
+				print x;
+			} else {
+				print y;
+			}
+		}
+	}
+}

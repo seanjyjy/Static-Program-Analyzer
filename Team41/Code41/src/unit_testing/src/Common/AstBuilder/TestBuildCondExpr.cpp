@@ -153,4 +153,31 @@ TEST_CASE("AST Builder: conditional expression") {
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, o));
     }
+
+    SECTION("10") {
+        // 1 + 2 * 3 > 1 / 2 - 3
+        string simple = TestAstBuilderUtils::readFile("condexpr", "10-simple.txt");
+        string xml = TestAstBuilderUtils::readFile("condexpr", "10-xml.txt");
+        // manually build actual AST
+        TNode* gt = TNode::makeGt(
+                TNode::makePlus(
+                        TNode::makeConstVal(Token::makeConst("1")),
+                        TNode::makeTimes(
+                                TNode::makeConstVal(Token::makeConst("2")),
+                                TNode::makeConstVal(Token::makeConst("3"))
+                                )
+                        ),
+                TNode::makeMinus(
+                        TNode::makeDiv(
+                                TNode::makeConstVal(Token::makeConst("1")),
+                                TNode::makeConstVal(Token::makeConst("2"))
+                                ),
+                        TNode::makeConstVal(Token::makeConst("3"))
+                        )
+                );
+        // parse and test
+        TNode *ast = TestAstBuilderUtils::parseXml(xml);
+        REQUIRE(ast != nullptr);
+        REQUIRE(TreeUtils::isEqual(ast, gt));
+    }
 }

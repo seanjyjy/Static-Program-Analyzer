@@ -1,0 +1,13 @@
+procedure n1wil {
+	read aespa;
+	blackpink = aespa + 9999;
+	while (blackpink > aespa) {
+		aespa = aespa + 1;
+		print blackpink;
+		if (bts >= blackpink) then {
+			blackpink = blackpink + 1;
+        } else {
+            read bts;
+        }
+	}
+}

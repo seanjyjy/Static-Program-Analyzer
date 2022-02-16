@@ -1,0 +1,21 @@
+procedure n1iil {
+	sg= ch + my + ind;
+	read kr;
+	if ((kr >= sg) || (kr > jap)) then {
+		print yay;
+		sg = ch - ind;
+		if (sg != 999) then {
+			print help;
+		} else {
+			read ok;
+		}
+	} else {
+		read my;
+		print kr;
+		if (sg > my) then {
+			ch = kr * jap;
+		} else {
+			sg = my;
+		}
+	}
+}

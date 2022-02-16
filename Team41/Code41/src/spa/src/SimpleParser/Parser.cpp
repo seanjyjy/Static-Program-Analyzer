@@ -132,12 +132,48 @@ TNode *Parser::eatStmtLst() {
 }
 
 TNode *Parser::eatStmt() {
-    if (peekMatchTypeVal(TokenType::name, "read")) return eatStmtRead();
-    if (peekMatchTypeVal(TokenType::name, "print")) return eatStmtPrint();
-    if (peekMatchTypeVal(TokenType::name, "call")) return eatStmtCall();
-    if (peekMatchTypeVal(TokenType::name, "while")) return eatStmtWhile();
-    if (peekMatchTypeVal(TokenType::name, "if")) return eatStmtIf();
-    if (peekMatchType(TokenType::name)) return eatStmtAssign();
+    int c = saveCursor();
+    try {
+        return eatStmtRead();
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        return eatStmtPrint();
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        return eatStmtCall();
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        return eatStmtWhile();
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        return eatStmtIf();
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        return eatStmtAssign();
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
     throw runtime_error(genericErrorMsg());
 }
 
@@ -249,45 +285,94 @@ TNode *Parser::eatCondExpr() {
 }
 
 TNode *Parser::eatRelExpr() {
-    TNode *rf1 = eatRelFactor();
-    if (peekMatchType(TokenType::gt)) {
+    int c = saveCursor();
+    try {
+        TNode *rf1 = eatRelFactor();
         checkAndAdvance(TokenType::gt);
         TNode *rf2 = eatRelFactor();
         return TNode::makeGt(rf1, rf2);
-    } else if (peekMatchType(TokenType::ge)) {
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        TNode *rf1 = eatRelFactor();
         checkAndAdvance(TokenType::ge);
         TNode *rf2 = eatRelFactor();
         return TNode::makeGe(rf1, rf2);
-    } else if (peekMatchType(TokenType::lt)) {
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        TNode *rf1 = eatRelFactor();
         checkAndAdvance(TokenType::lt);
         TNode *rf2 = eatRelFactor();
         return TNode::makeLt(rf1, rf2);
-    } else if (peekMatchType(TokenType::le)) {
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        TNode *rf1 = eatRelFactor();
         checkAndAdvance(TokenType::le);
         TNode *rf2 = eatRelFactor();
         return TNode::makeLe(rf1, rf2);
-    } else if (peekMatchType(TokenType::eq)) {
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        TNode *rf1 = eatRelFactor();
         checkAndAdvance(TokenType::eq);
         TNode *rf2 = eatRelFactor();
         return TNode::makeEq(rf1, rf2);
-    } else if (peekMatchType(TokenType::ne)) {
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        TNode *rf1 = eatRelFactor();
         checkAndAdvance(TokenType::ne);
         TNode *rf2 = eatRelFactor();
         return TNode::makeNe(rf1, rf2);
+    } catch (exception &e) {
+        backtrack(c);
     }
+
     throw runtime_error(syntaxErrorMsg());
 }
 
 TNode *Parser::eatRelFactor() {
-    if (peekMatchType(TokenType::name)) {
+    int c = saveCursor();
+    try {
+        return eatExpr();
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
         Token *t = checkAndAdvance(TokenType::name);
         return TNode::makeVarName(t);
-    } else if (peekMatchType(TokenType::integer)) {
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
         Token *t = checkAndAdvance(TokenType::integer);
         return TNode::makeConstVal(t);
-    } else {
-        return eatExpr();
+    } catch (exception &e) {
+        backtrack(c);
     }
+
+    throw runtime_error(syntaxErrorMsg());
 }
 
 // expr -> term expr1 | term
@@ -414,18 +499,33 @@ TNode *Parser::eatTerm1() {
 }
 
 TNode *Parser::eatFactor() {
-    if (peekMatchType(TokenType::name)) {
-        Token *t = checkAndAdvance(TokenType::name);
-        return TNode::makeVarName(t);
-    } else if (peekMatchType(TokenType::integer)) {
-        Token *t = checkAndAdvance(TokenType::integer);
-        return TNode::makeConstVal(t);
-    } else {
+    int c = saveCursor();
+    try {
         checkAndAdvance(TokenType::openingBracket);
         TNode *expr = eatExpr();
         checkAndAdvance(TokenType::closingBracket);
         return expr;
+    } catch (exception &e) {
+        backtrack(c);
     }
+
+    c = saveCursor();
+    try {
+        Token *t = checkAndAdvance(TokenType::name);
+        return TNode::makeVarName(t);
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    c = saveCursor();
+    try {
+        Token *t = checkAndAdvance(TokenType::integer);
+        return TNode::makeConstVal(t);
+    } catch (exception &e) {
+        backtrack(c);
+    }
+
+    throw runtime_error(syntaxErrorMsg());
 }
 
 void Parser::init(const string &s) {

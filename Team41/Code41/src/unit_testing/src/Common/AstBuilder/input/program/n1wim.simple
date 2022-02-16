@@ -1,0 +1,13 @@
+procedure n1wim {
+	a = b + c;
+	while (d != e) {
+		f = g - h;
+		if (k > m) then {
+			print n;
+        } else {
+            read p;
+        }
+        i = j;
+	}
+	q = r * s;
+}

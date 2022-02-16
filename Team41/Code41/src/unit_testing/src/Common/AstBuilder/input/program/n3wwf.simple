@@ -1,0 +1,18 @@
+procedure n3wwf {
+	while ( (7 < (4+5)) && ((a < (2+3+4)) || (b == 99)) ) {
+		while ((1+4) == (2+3)) {
+			if ((9 - c / d) != e) then {
+				while ( 1 == 1 ) {
+					print x;
+				}
+				read x;
+			} else {
+				print g;
+			}
+			h = 9 - h + 2;
+		}
+		i = j / (j / (k - 88));
+		read m;
+	}
+	p = q - r * s;
+}

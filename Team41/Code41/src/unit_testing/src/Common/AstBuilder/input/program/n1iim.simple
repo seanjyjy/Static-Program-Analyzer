@@ -1,0 +1,15 @@
+procedure n1iim {
+	a = 1 / 2 / 3 / 4 / 5 / 6;
+	if ((a != b) && (c != d)) then {
+		print a;
+		if ((1 == 2) || (9 < 8)) then {
+			winter = olympics * 2022;
+		} else {
+			tripping = q1q2w3e / 100;
+		}
+		read AftershockS15;
+	} else {
+		print x;
+    }
+	b = 1 % 2 % 3 % 4 % 5 % 6;
+}

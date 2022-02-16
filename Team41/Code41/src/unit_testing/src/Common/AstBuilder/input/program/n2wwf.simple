@@ -1,0 +1,10 @@
+procedure n2wwf {
+	while (!(tired == true)) {
+		while (!(spirit == broken)) {
+			while (willToLive >= willToDie) {
+				read continueWorking;
+			}
+		}
+	}
+	print writeCS3203Tests;
+}

@@ -1,0 +1,24 @@
+procedure n2iwf {
+	if (group != 41) then {
+		while (cs3203 != 41) {
+			if (pain == read) then {
+				read = read;
+			} else {
+				else = if + else - then;
+			}
+			print = print;
+		}
+		while = while;
+	} else {
+		while (cs32032 != 41) {
+			if (pain2 == read2) then {
+				read2 = read2;
+			} else {
+				else2 = if2 + else2 - then2;
+			}
+			print2 = print2;
+		}
+		while2 = while2;
+	}
+	if = else;
+}

@@ -1,0 +1,17 @@
+procedure n2wil {
+	print a;
+	while ((1+1) == (2 + 2)) {
+		print y;
+		if (1 == 1) then {
+			print z;
+			while ((1 / 2) != (2 / 1)) {
+				print x;
+			}
+		} else {
+			print a1;
+			while (2 == 2) {
+				print x;
+			}
+		}
+	}
+}

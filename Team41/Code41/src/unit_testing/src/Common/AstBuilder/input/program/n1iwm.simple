@@ -1,0 +1,17 @@
+procedure n1iwm {
+	read x;
+	if (x == 1) then {
+		print correct;
+		while (1 == 1) {
+			print correct3;
+		}
+		print correct2;
+	} else {
+		print wrong;
+		while (2 == 2) {
+			print wrong3;
+		}
+		print wrong2;
+	}
+	print y;
+}

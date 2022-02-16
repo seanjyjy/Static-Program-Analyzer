@@ -1,0 +1,27 @@
+procedure n3wif {
+	while (0 == tr33) {
+        if (0 == tree) then {
+            while (while == while) {
+                if (if == if) then {
+                    group = a * b;
+                } else {
+                    tree = a * (b + c + d);
+                }
+                print x1;
+            }
+            print x2;
+        } else {
+            while (0 == a) {
+                if (x == 0) then {
+                    a = 10 * b * c - 2;
+                } else {
+                    x = a - b + c;
+                }
+                print x3;
+            }
+            print x4;
+        }
+        print x5;
+    }
+    print x6;
+}

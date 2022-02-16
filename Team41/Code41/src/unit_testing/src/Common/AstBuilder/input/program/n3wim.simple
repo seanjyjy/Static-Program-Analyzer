@@ -1,0 +1,33 @@
+procedure n3wim {
+	a = 10 * 20;
+	while (( 2 * a / b % c + d) >= 1) {
+		b = a * 10;
+		if (a != b) then {
+			c = c + b;
+			while (!(!(!(!(a == 0))))) {
+				print x;
+				if ( (d == 4) && ( (c == 3) && ((a == 1) || (b == 2)) ) ) then {
+					print x1;
+				} else {
+					print x2;
+				}
+				print x;
+			}
+			print x;
+		} else {
+			read x;
+			while ((!((a == b) || (c == d))) && (b ==c )) {
+				read x;
+				if ((1 == a ) && (a == 1)) then {
+					print x3;
+				} else {
+					print x4;
+				}
+				read x;
+			}
+			read x;
+		}
+		c = b * 10;
+	}
+	d = 20 * 30;
+}

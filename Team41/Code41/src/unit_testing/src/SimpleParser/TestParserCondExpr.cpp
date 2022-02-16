@@ -29,4 +29,7 @@ TEST_CASE("Parser: conditional expression") {
     SECTION("9") {
         TestParserUtils::parseCondExprAndCompare("9-simple.txt", "9-xml.txt");
     }
+    SECTION("10") {
+        TestParserUtils::parseCondExprAndCompare("10-simple.txt", "10-xml.txt");
+    }
 }
