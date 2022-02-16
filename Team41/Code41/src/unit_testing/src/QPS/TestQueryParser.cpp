@@ -158,7 +158,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->patternClauses.at(0).getLHS().isSynonym());
     }
     SECTION("TYPE syn1, syn2;") {
-        string s = "variable v, v1, v2;\n"
+        string s = "variable v, v1, v2; assign a, a1;\n"
                    "Select v";
         QueryParser qp = QueryParser{s};
         QueryObject *qo = qp.parse();
@@ -174,6 +174,14 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(synMatch);
         typeMatch = qo->declarations.at(2).type == QueryDeclaration::VARIABLE;
         synMatch = qo->declarations.at(2).synonym == "v2";
+        REQUIRE(typeMatch);
+        REQUIRE(synMatch);
+        typeMatch = qo->declarations.at(3).type == QueryDeclaration::ASSIGN;
+        synMatch = qo->declarations.at(3).synonym == "a";
+        REQUIRE(typeMatch);
+        REQUIRE(synMatch);
+        typeMatch = qo->declarations.at(4).type == QueryDeclaration::ASSIGN;
+        synMatch = qo->declarations.at(4).synonym == "a1";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
     }
