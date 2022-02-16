@@ -22,6 +22,7 @@
 class QueryEvaluator {
 private:
     PKB* pkb;
+    void safeDeleteTable(Table* table);
 public:
     explicit QueryEvaluator(PKB* pkb);
     std::unordered_set<std::string> evaluateQuery(QueryObject *queryObject);

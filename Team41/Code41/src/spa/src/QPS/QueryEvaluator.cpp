@@ -29,6 +29,8 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
             }
 
             if (intermediateTable->isEmpty()) {
+                safeDeleteTable(intermediateTable);
+                safeDeleteTable(resultTable);
                 return emptyResult;
             }
 
@@ -37,13 +39,17 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
                 continue;
             }
 
-            Table* temp = resultTable;
+            Table *ogTable = resultTable;
             resultTable = resultTable->mergeJoin(intermediateTable);
-            // TODO figure out destructor
-            delete temp;
-
+            if (ogTable != resultTable) {
+                safeDeleteTable(ogTable);
+            }
+            if (resultTable != intermediateTable) {
+                safeDeleteTable(intermediateTable);
+            }
 
             if (resultTable->isEmpty()) {
+                safeDeleteTable(resultTable);
                 return emptyResult;
             }
         }
@@ -52,6 +58,8 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
             Table* intermediateTable = SelectSynonymEvaluator::evaluate(declaration, this->pkb);
 
             if (intermediateTable->isEmpty()) {
+                safeDeleteTable(intermediateTable);
+                safeDeleteTable(resultTable);
                 return emptyResult;
             }
 
@@ -60,9 +68,17 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
                 continue;
             }
 
+            Table *ogTable = resultTable;
             resultTable = resultTable->mergeJoin(intermediateTable);
+            if (ogTable != resultTable) {
+                safeDeleteTable(ogTable);
+            }
+            if (resultTable != intermediateTable) {
+                safeDeleteTable(intermediateTable);
+            }
 
             if (resultTable->isEmpty()) {
+                safeDeleteTable(resultTable);
                 return emptyResult;
             }
         }
@@ -72,7 +88,7 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
 
     // copy result from resultTable to result here when can think of based on queryObject schema
     unordered_set<string> result = resultTable->getColumn(selectSynonym.synonym);
-    delete resultTable;
+    safeDeleteTable(resultTable);
 
     return result;
 }
@@ -107,5 +123,11 @@ Table *QueryEvaluator::evaluate(PatternClause &clause) {
             return PatternEvaluator::evaluate(clause, this->pkb);
         default:
             throw std::runtime_error("unknown pattern clause of type " + to_string(type));
+    }
+}
+
+void QueryEvaluator::safeDeleteTable(Table* table) {
+    if (table != nullptr && !table->isBooleanTable()) {
+        delete table;
     }
 }

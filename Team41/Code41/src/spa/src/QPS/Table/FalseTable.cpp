@@ -2,6 +2,9 @@
 #include <stdexcept>
 
 FalseTable::FalseTable() = default;
+FalseTable::~FalseTable() {
+    FalseTable::falseTable = nullptr;
+};
 Table* FalseTable::falseTable = nullptr;
 
 bool FalseTable::isEmpty() {
@@ -44,3 +47,7 @@ Table* FalseTable::getTable() {
 }
 
 void FalseTable::sort(const Header &commonHeader) {}
+
+bool FalseTable::isBooleanTable() {
+    return true;
+}

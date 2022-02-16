@@ -71,6 +71,8 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         REQUIRE(table2->size() == 1);
         REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[3]}));
         REQUIRE(table2->getColumn(VAR_SYN_LBL) == unordered_set<string>({vars[1]}));
+        delete table1;
+        delete table2;
     }
 
     SECTION("Synonym SubPattern Pair") {
@@ -87,6 +89,8 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         REQUIRE(table2->size() == 2);
         REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[2], lines[3]}));
         REQUIRE(table2->getColumn(VAR_SYN_LBL) == unordered_set<string>({vars[0], vars[1]}));
+        delete table1;
+        delete table2;
     }
 
     SECTION("Synonym WildCard Pair") {
@@ -95,6 +99,7 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         REQUIRE(table2->size() == 4);
         REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[0], lines[1], lines[2], lines[3]}));
         REQUIRE(table2->getColumn(VAR_SYN_LBL) == unordered_set<string>({vars[0], vars[1]}));
+        delete table2;
     }
 
     SECTION("Identifier FullPattern Pair") {
@@ -107,6 +112,8 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         Table *table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
         REQUIRE(table2->size() == 0);
         REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>());
+        delete table1;
+        delete table2;
     }
 
     SECTION("Identifier SubPattern Pair") {
@@ -119,6 +126,8 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         Table *table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
         REQUIRE(table2->size() == 1);
         REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[2]}));
+        delete table1;
+        delete table2;
     }
 
     SECTION("Identifier WildCard Pair") {
@@ -131,6 +140,8 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         Table *table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
         REQUIRE(table2->size() == 2);
         REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[1], lines[3]}));
+        delete table1;
+        delete table2;
     }
 
     SECTION("WildCard FullPattern Pair") {
@@ -143,6 +154,8 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         Table *table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
         REQUIRE(table2->size() == 1);
         REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[3]}));
+        delete table1;
+        delete table2;
     }
 
     SECTION("WildCard SubPattern Pair") {
@@ -155,6 +168,8 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         Table *table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
         REQUIRE(table2->size() == 2);
         REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[2], lines[3]}));
+        delete table1;
+        delete table2;
     }
 
     SECTION("WildCard WildCard Pair") {
@@ -162,6 +177,7 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         Table *table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
         REQUIRE(table2->size() == 4);
         REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[0], lines[1], lines[2], lines[3]}));
+        delete table2;
     }
 
     SECTION("Semantically Invalid") {
@@ -177,4 +193,10 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         PatternClause patternClause3(assignSyn, readSyn, patternFP1);
         REQUIRE(PatternEvaluator::evaluate(patternClause3, pkbManager) == FalseTable::getTable());
     }
+
+    delete node1;
+    delete node2;
+    delete node3;
+    delete node4;
+    delete pkbManager;
 }
