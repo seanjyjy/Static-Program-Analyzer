@@ -1,0 +1,30 @@
+procedure n3iif {
+	if (( (!(if * else * if > 1)) || (!(call >= read)) ) || (print == while)) then {
+		if = 10 * if;
+		if = if * if * if;
+	} else {
+		if (2 == 2) then {
+			if (!(3 == 3)) then {
+				if (100 == abe) then {
+					print x;
+				} else {
+					print y;
+				}
+				read = read * 20;
+			} else {
+				print = print * 30;
+			}
+			if = if * then % else;
+			read if;
+		} else {
+			if (4 == 4) then {
+				else = then % 4;
+			} else {
+				then = else * 3;
+			}
+			cream = 10 * dollars;
+		}
+	}
+	if = 10 + 0;
+    if = 0;
+}

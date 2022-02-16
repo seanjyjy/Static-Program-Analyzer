@@ -6,7 +6,7 @@ TEST_CASE("Parser: program") {
         TestParserUtils::parseProgramAndCompare("1-simple.txt", "1-xml.txt");
     }
     SECTION("multiple procedures") {
-        TestParserUtils::parseProgramAndCompare("multi-procedures.simple", "multi-procedures.txt");
+        TestParserUtils::parseProgramAndCompare("multi-procedures.simple", "multi-procedures.x");
     }
     SECTION("N0 F") {
         TestParserUtils::parseProgramAndCompare("n0f.simple", "n0f.x");
@@ -89,20 +89,23 @@ TEST_CASE("Parser: program") {
     SECTION("N3 WW M") {
         TestParserUtils::parseProgramAndCompare("n3wwm.simple", "n3wwm.x");
     }
-    SECTION("N3 II M") {
-        TestParserUtils::parseProgramAndCompare("n3iim.simple", "n3iim.x");
+    SECTION("N3 II F") {
+        TestParserUtils::parseProgramAndCompare("n3iif.simple", "n3iif.x");
     }
     SECTION("N3 II L") {
         TestParserUtils::parseProgramAndCompare("n3iil.simple", "n3iil.x");
     }
+    SECTION("N3 II M") {
+        TestParserUtils::parseProgramAndCompare("n3iim.simple", "n3iim.x");
+    }
     SECTION("N3 IW F") {
         TestParserUtils::parseProgramAndCompare("n3iwf.simple", "n3iwf.x");
     }
-    SECTION("N3 IW M") {
-        TestParserUtils::parseProgramAndCompare("n3iwm.simple", "n3iwm.x");
-    }
     SECTION("N3 IW L") {
         TestParserUtils::parseProgramAndCompare("n3iwl.simple", "n3iwl.x");
+    }
+    SECTION("N3 IW M") {
+        TestParserUtils::parseProgramAndCompare("n3iwm.simple", "n3iwm.x");
     }
     SECTION("N3 WI F") {
         TestParserUtils::parseProgramAndCompare("n3wif.simple", "n3wif.x");
