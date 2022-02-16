@@ -19,7 +19,7 @@ private:
              "Parent*", "Uses", "Modifies"};
 
     const unordered_set<char> special_char =
-            {'(', ')', ';', ',', ' '};
+            {'(', ')', ';', ',', ' ', '\n'};
 
     int index = 0; // tracks position in input
     const string &input; // input string being parsed
@@ -88,22 +88,13 @@ public:
     optional<string> nextSynonym();
 
     /**
-     * Returns a special character expected in the next token.
-     * index is updated too.
-     *
-     * @param w the string expected to show up.
-     * @return optional string representing either a found special character or null.
-     */
-    optional<string> nextSpecialExpected(string w);
-
-    /**
      * Returns a non-expected but special expected in the next token.
      * index is updated too.
      *
      * @param w the string expected to show up.
      * @return optional string representing either a found special character or null.
      */
-    optional<string> nextSpecial(string w);
+    optional<string> nextExpected(string w);
 
     /**
      * Returns a clause in the next token.

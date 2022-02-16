@@ -13,7 +13,9 @@ int QueryLexer::skipSpaces() {
     char curr = input.at(index);
     while (curr == ' ' || curr == '\n') {
         index++;
-        curr = input.at(index);
+        if (index < input.length()) {
+            curr = input.at(index);
+        } else { break; }
     }
     return index;
 }
@@ -97,42 +99,31 @@ bool QueryLexer::isWildCard(string w) {
 }
 
 optional<string> QueryLexer::nextDeclarationType() {
+    int temp = index;
     string possibleType = nextToken();
     if (isDeclarationKeyword(possibleType)) {
         return possibleType;
     } else {
-        // todo: throw something?
-        printf("Invalid declaration type: <%s>", possibleType.c_str());
+        index = temp; // reset index to stable loc
         return nullopt;
     }
 }
 
 optional<string> QueryLexer::nextSynonym() {
+    int temp = index;
     string possibleSynonym = nextToken();
     if (isValidSynonym(possibleSynonym)) {
         return possibleSynonym;
     } else {
-        // todo: throw something?
-        printf("Invalid synonym: <%s>", possibleSynonym.c_str());
+        index = temp; // reset index to stable loc
         return nullopt;
     }
 }
 
-optional<string> QueryLexer::nextSpecialExpected(string w) {
-    string expected = nextToken();
-    if (expected == w) {
-        index++;
-        return w;
-    } else {
-        // todo: throw something?
-        printf("Syntax error: Expected '%s'.", w.c_str());
-        return nullopt;
-    }
-}
-
-optional<string> QueryLexer::nextSpecial(string w) {
+optional<string> QueryLexer::nextExpected(string w) {
     string expectedSpecial = nextToken();
     if (expectedSpecial == w) {
+        index++;
         return w;
     } else {
         return nullopt;
@@ -140,12 +131,12 @@ optional<string> QueryLexer::nextSpecial(string w) {
 }
 
 optional<string> QueryLexer::nextClause() {
+    int temp = index;
     string possibleClause = nextToken();
     if (isClauseKeyword(possibleClause)) {
         return possibleClause;
     } else {
-        // todo: throw something?
-        printf("Invalid clause: <%s>", possibleClause.c_str());
+        index = temp; // reset index to stable loc
         return nullopt;
     }
 }
@@ -153,7 +144,6 @@ optional<string> QueryLexer::nextClause() {
 optional<string> QueryLexer::nextClauseVariable() {
     string possibleVariable = nextToken();
     if (possibleVariable.length() == 0) {
-        printf("Cannot leave clause empty. Requires 2 parameters.");
         return nullopt;
     }
     if (possibleVariable == "_")
@@ -174,7 +164,7 @@ optional<string> QueryLexer::nextClauseVariable() {
 
 optional<string> QueryLexer::nextPatternExpression() {
     if (isEndOfQuery()) {
-        printf("Expected a pattern expression.\n");
+        // No expected pattern expression found
         return nullopt;
     }
     string out = "";
@@ -188,13 +178,13 @@ optional<string> QueryLexer::nextPatternExpression() {
         if (peekNextIsString("\"")) {
             index++;
         } else {
-            printf("'\"' expected at beginning of sub patterns.\n");
+            // '"' expected at beginning of sub patterns
             return nullopt;
         }
         // sub patterns end before a '"'
         while (!peekNextIsString("\"")) {
             if (isEndOfQuery()) {
-                printf("Pattern incomplete.\n");
+                // Pattern incomplete
                 return nullopt;
             }
             out += input.at(index);
@@ -202,7 +192,7 @@ optional<string> QueryLexer::nextPatternExpression() {
         }
         index++; // Skip over closing '"'
         if (!peekNextIsString("_")) {
-            printf("'_' expected at end of sub pattern.");
+            // '_' expected at end of sub pattern
             return nullopt;
         }
         index++; // Skip over last '_'
@@ -211,13 +201,13 @@ optional<string> QueryLexer::nextPatternExpression() {
         if (peekNextIsString("\"")) {
             index++;
         } else {
-            printf("'\"' expected at beginning of full patterns.\n");
+            // '\' expected at beginning of full patterns
             return nullopt;
         }
         // full patterns end before a '"'
         while (!peekNextIsString("\"")) {
             if (isEndOfQuery()) {
-                printf("Pattern incomplete.\n");
+                // Pattern incomplete
                 return nullopt;
             }
             out += input.at(index);
@@ -229,6 +219,7 @@ optional<string> QueryLexer::nextPatternExpression() {
 }
 
 bool QueryLexer::isEndOfQuery() {
+    skipSpaces();
     return index == input.length();
 }
 
