@@ -133,6 +133,7 @@ optional<string> QueryLexer::nextSpecialExpected(string w) {
 optional<string> QueryLexer::nextSpecial(string w) {
     string expectedSpecial = nextToken();
     if (expectedSpecial == w) {
+        index++;
         return w;
     } else {
         return nullopt;

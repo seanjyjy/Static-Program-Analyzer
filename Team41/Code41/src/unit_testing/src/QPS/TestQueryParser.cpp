@@ -157,6 +157,26 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->patternClauses.at(0).getRHS().isWildcard());
         REQUIRE(qo->patternClauses.at(0).getLHS().isSynonym());
     }
+    SECTION("TYPE syn1, syn2;") {
+        string s = "variable v, v1, v2;\n"
+                   "Select v";
+        QueryParser qp = QueryParser{s};
+        QueryObject *qo = qp.parse();
+
+        REQUIRE(qo->isQueryValid);
+        bool typeMatch = qo->declarations.at(0).type == QueryDeclaration::VARIABLE;
+        bool synMatch = qo->declarations.at(0).synonym == "v";
+        REQUIRE(typeMatch);
+        REQUIRE(synMatch);
+        typeMatch = qo->declarations.at(1).type == QueryDeclaration::VARIABLE;
+        synMatch = qo->declarations.at(1).synonym == "v1";
+        REQUIRE(typeMatch);
+        REQUIRE(synMatch);
+        typeMatch = qo->declarations.at(2).type == QueryDeclaration::VARIABLE;
+        synMatch = qo->declarations.at(2).synonym == "v2";
+        REQUIRE(typeMatch);
+        REQUIRE(synMatch);
+    }
 }
 
 TEST_CASE("QPS: Parser_INVALID") {
@@ -220,4 +240,5 @@ TEST_CASE("QPS: Parser_INVALID") {
 
         REQUIRE(!qo->isQueryValid);
     }
+
 }

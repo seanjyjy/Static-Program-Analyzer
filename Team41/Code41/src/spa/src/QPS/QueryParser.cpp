@@ -31,20 +31,37 @@ bool QueryParser::parseDeclarations() {
         if (type == nullopt) {
             return false;
         }
-        optional<string> synonym = lex->nextSynonym();
-        if (type == nullopt) {
-            return false;
-        }
-        optional<string> smc = lex->nextSpecialExpected(";");
-        if (smc == nullopt) {
-            return false;
-        }
 
-        // Populate queryObject
-        string syn = synonym->c_str();
-        QueryDeclaration::design_entity_type t = QueryDeclaration::stringToType(type.value());
-        QueryDeclaration qd(t, syn);
-        queryObject->declarations.push_back(qd);
+        // for same type, same line (TYPE syn1, syn2,...;)
+        bool isSetEnd = false;
+        // Check if is same type, same line (TYPE syn1, syn2,...;)
+        while (!isSetEnd) {
+            // Read a synonym
+            optional<string> synonym = lex->nextSynonym();
+            if (synonym == nullopt) {
+                return false;
+            }
+            // Generate the QueryDeclaration object
+            string syn = synonym->c_str();
+            QueryDeclaration::design_entity_type t = QueryDeclaration::stringToType(type.value());
+            QueryDeclaration qd(t, syn);
+            queryObject->declarations.push_back(qd);
+
+
+            // Check if there's a comma to carry on same line
+            if(lex->peekNextIsString(",")){
+                lex->nextSpecial(",");
+            } else {
+                // No comma? Expect a ";" for end of a declaration type
+                if (lex->peekNextIsString(";")) {
+                    lex->nextSpecial(";");
+                    isSetEnd = true;
+                } else {
+                    // Neither ',' nor ';'. Syntax error
+                    printf("Syntax error: Expected a ';' for end of declaration.\n");
+                }
+            }
+        }
 
         isDeclarationEnd = lex->peekNextIsString("Select");
     } while (!isDeclarationEnd);
