@@ -1,0 +1,10 @@
+procedure main {
+    a = 1;
+    b = c;
+    d = 2 + 3;
+    e = f - 3;
+    g = 4 * h;
+    i = j / k;
+    m = 5 - n + p * 6;
+    q = (r * 7 - 8) + (s + t / u);
+}

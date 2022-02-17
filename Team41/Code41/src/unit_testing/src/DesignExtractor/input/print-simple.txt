@@ -1,0 +1,5 @@
+procedure main {
+    print a;
+    print bcd;
+    print e1fg5;
+}
