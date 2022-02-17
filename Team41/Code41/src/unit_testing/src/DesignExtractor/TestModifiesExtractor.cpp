@@ -26,7 +26,7 @@ TEST_CASE("ModifiesExtractor: Assign") {
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
 }
 
-TEST_CASE("ModifiesExtractor:Read") {
+TEST_CASE("ModifiesExtractor: Read") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "read-xml.txt")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
@@ -44,7 +44,7 @@ TEST_CASE("ModifiesExtractor:Read") {
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
 }
 
-TEST_CASE("ModifiesExtractor:Print") {
+TEST_CASE("ModifiesExtractor: Print") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "print-xml.txt")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
@@ -75,7 +75,7 @@ TEST_CASE("ModifiesExtractor: While") {
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
 }
 
-TEST_CASE("ModifiesExtractor:If") {
+TEST_CASE("ModifiesExtractor: If") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "if-xml.txt")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
