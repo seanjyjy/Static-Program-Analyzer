@@ -22,10 +22,37 @@
 class QueryEvaluator {
 private:
     PKB* pkb;
+
+    /**
+     * Deletes a table after it is not being used.
+     *
+     * @param table Table to be deleted.
+     */
     void safeDeleteTable(Table* table);
 public:
     explicit QueryEvaluator(PKB* pkb);
+
+    /**
+     * Based on the QueryObject, evaluates the query provided return a set of results.
+     *
+     * @param queryObject QueryObject.
+     * @return A set of results based on the query provided.
+     */
     std::unordered_set<std::string> evaluateQuery(QueryObject *queryObject);
+
+    /**
+     * Constructs a table based on the QueryClause provided.
+     *
+     * @param clause QueryClause.
+     * @return A table that contains information based on the QueryClause provided.
+     */
     Table* evaluate(QueryClause& clause);
+
+    /**
+     * Constructs a table based on the PatternClause provided.
+     *
+     * @param clause PatternClause.
+     * @return A table that contains information based on the PatternClause provided.
+     */
     Table* evaluate(PatternClause& clause);
 };
