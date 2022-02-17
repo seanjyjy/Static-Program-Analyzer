@@ -41,22 +41,22 @@ Select w such that Follows(w, _)
 9 - Follows(c, _) - call does not exist
 call c;
 Select c such that Follows(c, _)
-none
+
 5000
 10 - Follows(v, _) - error
 variable v;
 Select v such that Follows(v, _)
-none
+
 5000
 11 - Follows(c, _) - error
 constant c;
 Select c such that Follows(c, _)
-none
+
 5000
 12 - Follows(proc, _) - error
 procedure proc;
 Select proc such that Follows(proc, _)
-none
+
 5000
 15 - Follows(_, 16)
 constant c;
@@ -96,22 +96,22 @@ Select w such that Follows(_, w)
 22 - Follows(_, c) - invalid synonym
 call c;
 Select c such that Follows(_, c)
-none
+
 5000
 23 - Follows(_, v) - error
 variable v;
 Select v such that Follows(_, v)
-none
+
 5000
 24 - Follows(_, c) - error
 constant c;
 Select c such that Follows(_, c)
-none
+
 5000
 25 - Follows(_, proc) - error
 procedure proc;
 Select proc such that Follows(_, proc)
-none
+
 5000
 26 - Follows(s, S)
 stmt s, S;
@@ -256,22 +256,22 @@ Select w such that Follows*(w, _)
 209 - Follows*(c, _) - call does not exist
 call c;
 Select c such that Follows*(c, _)
-none
+
 5000
 210 - Follows*(v, _) - error
 variable v;
 Select v such that Follows*(v, _)
-none
+
 5000
 211 - Follows*(c, _) - error
 constant c;
 Select c such that Follows*(c, _)
-none
+
 5000
 212 - Follows*(proc, _) - error
 procedure proc;
 Select proc such that Follows*(proc, _)
-none
+
 5000
 215 - Follows*(_, 16)
 constant c;
@@ -311,22 +311,22 @@ Select w such that Follows*(_, w)
 222 - Follows*(_, c) - invalid synonym
 call c;
 Select c such that Follows*(_, c)
-none
+
 5000
 223 - Follows*(_, v) - error
 variable v;
 Select v such that Follows*(_, v)
-none
+
 5000
 224 - Follows*(_, c) - error
 constant c;
 Select c such that Follows*(_, c)
-none
+
 5000
 225 - Follows*(_, proc) - error
 procedure proc;
 Select proc such that Follows*(_, proc)
-none
+
 5000
 226 - Follows*(s, S)
 stmt s, S;

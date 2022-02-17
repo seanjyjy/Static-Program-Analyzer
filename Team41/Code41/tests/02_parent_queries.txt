@@ -16,17 +16,17 @@ Select s such that Parent(s, _)
 4 - Parent(pn, _)
 print pn;
 Select pn such that Parent(pn, _)
-none
+
 5000
 5 - Parent(r, _)
 read r;
 Select r such that Parent(r, _)
-none
+
 5000
 6 - Parent(a, _)
 assign a;
 Select a such that Parent(a, _)
-none
+
 5000
 7 - Parent(ifs, _)
 if ifs;
@@ -41,22 +41,22 @@ Select w such that Parent(w, _)
 9 - Parent(c, _) - call does not exist
 call c;
 Select c such that Parent(c, _)
-none
+
 5000
 10 - Parent(v, _) - error
 variable v;
 Select v such that Parent(v, _)
-none
+
 5000
 11 - Parent(c, _) - error
 constant c;
 Select c such that Parent(c, _)
-none
+
 5000
 12 - Parent(proc, _) - error
 procedure proc;
 Select proc such that Parent(proc, _)
-none
+
 5000
 15 - Parent(_, 20)
 constant c;
@@ -96,22 +96,22 @@ Select w such that Parent(_, w)
 22 - Parent(_, c) - invalid synonym
 call c;
 Select c such that Parent(_, c)
-none
+
 5000
 23 - Parent(_, v) - error
 variable v;
 Select v such that Parent(_, v)
-none
+
 5000
 24 - Parent(_, c) - error
 constant c;
 Select c such that Parent(_, c)
-none
+
 5000
 25 - Parent(_, proc) - error
 procedure proc;
 Select proc such that Parent(_, proc)
-none
+
 5000
 26 - Parent(s, S) 
 stmt s, S;
@@ -231,17 +231,17 @@ Select s such that Parent*(s, _)
 204 - Parent*(pn, _)
 print pn;
 Select pn such that Parent*(pn, _)
-none
+
 5000
 205 - Parent*(r, _)
 read r;
 Select r such that Parent*(r, _)
-none
+
 5000
 206 - Parent*(a, _)
 assign a;
 Select a such that Parent*(a, _)
-none
+
 5000
 207 - Parent*(ifs, _)
 if ifs;
@@ -256,22 +256,22 @@ Select w such that Parent*(w, _)
 209 - Parent*(c, _) - call does not exist
 call c;
 Select c such that Parent*(c, _)
-none
+
 5000
 210 - Parent*(v, _) - error
 variable v;
 Select v such that Parent*(v, _)
-none
+
 5000
 211 - Parent*(c, _) - error
 constant c;
 Select c such that Parent*(c, _)
-none
+
 5000
 212 - Parent*(proc, _) - error
 procedure proc;
 Select proc such that Parent*(proc, _)
-none
+
 5000
 215 - Parent*(_, 20)
 constant c;
@@ -311,22 +311,22 @@ Select w such that Parent*(_, w)
 222 - Parent*(_, c) - invalid synonym
 call c;
 Select c such that Parent*(_, c)
-none
+
 5000
 223 - Parent*(_, v) - error
 variable v;
 Select v such that Parent*(_, v)
-none
+
 5000
 224 - Parent*(_, c) - error
 constant c;
 Select c such that Parent*(_, c)
-none
+
 5000
 225 - Parent*(_, proc) - error
 procedure proc;
 Select proc such that Parent*(_, proc)
-none
+
 5000
 226 - Parent*(s, S)
 stmt s, S;

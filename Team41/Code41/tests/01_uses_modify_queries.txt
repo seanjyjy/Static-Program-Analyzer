@@ -36,7 +36,7 @@ Select ifs
 8 - Uses with invalid wildcard
 variable v;
 Select v such that Uses(_, v)
-none
+
 5000
 9 - Uses with statement and wildcard
 stmt s;
@@ -101,7 +101,7 @@ none
 21 - Modifies with invalid wildcard
 variable v;
 Select v such that Modifies(_, v)
-none
+
 5000
 22 - Modifies with statement and wildcard
 stmt s;
@@ -161,65 +161,65 @@ none
 33 - Invalid case - Syntax error
 stmts s;
 Select s
-none
+
 5000
 34 - Invalid case - Syntax error
 prints p;
 Select p
-none
+
 5000
 35 - Invalid case - Syntax error
 red r;
 Select r
-none
+
 5000
 36 - Invalid case - Syntax error
 whil w;
 Select w
-none
+
 5000
 37 - Invalid case - Syntax error
 iff ifs;
 Select ifs
-none
+
 5000
 38 - Invalid case - Syntax error
 var v;
 Select v
-none
+
 5000
 39 - Invalid case - Syntax error
 prop p;
 Select p
-none
+
 5000
 40 - Invalid case - Syntax error
 cost c;
 Select c
-none
+
 5000
 41 - Invalid case - Uses with read
 read r;
 Select r such that Uses(r,_)
-none
+
 5000
 42 - Invalid case - Modifies with print
 print pn;
 Select pn such that Modifies(pn,_)
-none
+
 5000
 43 - Invalid case - Case sensitive Uses
 stmt s; variable v;
 Select r such that uses(s,v)
-none
+
 5000
 44 - Invalid case - Case sensitive Modify
 stmt s; variable v;
 Select r such that modifies(s,v)
-none
+
 5000
 45 - Invalid case - Ends with semicolon
 stmt s; variable v;
 Select r such that modifies(s,v);
-none
+
 5000
