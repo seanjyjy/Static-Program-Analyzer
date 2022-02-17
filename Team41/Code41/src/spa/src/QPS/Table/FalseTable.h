@@ -5,6 +5,7 @@
 class FalseTable : public Table {
 public:
     FalseTable();
+    ~FalseTable();
 
     bool isEmpty() override;
     Table* mergeJoin(Table* intermediatePQLTable) override;

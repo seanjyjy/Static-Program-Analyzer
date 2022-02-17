@@ -2,6 +2,7 @@
 #include <stdexcept>
 
 FalseTable::FalseTable() = default;
+FalseTable::~FalseTable() = default;
 
 bool FalseTable::isEmpty() {
     return true;

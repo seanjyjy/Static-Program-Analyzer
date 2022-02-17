@@ -2,6 +2,7 @@
 #include <stdexcept>
 
 TrueTable::TrueTable() = default;
+TrueTable::~TrueTable() = default;
 
 bool TrueTable::isEmpty() {
     return false;
