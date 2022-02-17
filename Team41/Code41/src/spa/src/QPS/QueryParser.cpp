@@ -93,7 +93,12 @@ QueryDeclaration::design_entity_type QueryParser::determineDeclarationType(strin
 bool QueryParser::parseSelectSynonym() {
     lex->nextExpected("Select");
     optional<string> synonym = lex->nextSynonym();
-    optional<QueryDeclaration> qd = findMatchingDeclaration(synonym->c_str());
+    if (!synonym.has_value()) {
+        // todo: throw something?
+        printf("Syntax Error: Use of select with no synonym.\n");
+        return false;
+    }
+    optional<QueryDeclaration> qd = findMatchingDeclaration(*synonym);
     if (!qd.has_value()) {
         // todo: throw something?
         printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
