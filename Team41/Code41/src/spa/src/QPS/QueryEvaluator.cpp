@@ -17,6 +17,7 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
     auto patternClauses = queryObject->patternClauses;
     auto suchThatClPtr = queryClauses.begin();
     auto patternClPtr = patternClauses.begin();
+
     try {
         while (suchThatClPtr != queryClauses.end() || patternClPtr != patternClauses.end()) {
             Table *intermediateTable;
@@ -127,7 +128,7 @@ Table *QueryEvaluator::evaluate(PatternClause &clause) {
 }
 
 void QueryEvaluator::safeDeleteTable(Table* table) {
-    if (table != nullptr && !table->isBooleanTable()) {
+    if (table != nullptr) {
         delete table;
     }
 }

@@ -10,12 +10,11 @@ bool PQLTable::isEmpty() {
 }
 
 Table* PQLTable::mergeJoin(Table* intermediatePQLTable) {
-
     if (intermediatePQLTable == nullptr) {
         throw runtime_error("PQLTable provided is null!");
     }
 
-    if (intermediatePQLTable == TrueTable::getTable()) {
+    if (intermediatePQLTable->getType() == Table::TrueTable) {
         return this;
     }
 
@@ -239,4 +238,8 @@ unordered_set<string> PQLTable::getColumn(string columnName) {
 
 bool PQLTable::isBooleanTable() {
     return false;
+}
+
+Table::TableType PQLTable::getType() {
+    return Table::PQLTable;
 }

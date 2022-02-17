@@ -2,10 +2,6 @@
 #include <stdexcept>
 
 TrueTable::TrueTable() = default;
-TrueTable::~TrueTable() {
-    TrueTable::trueTable = nullptr;
-};
-Table* TrueTable::trueTable = nullptr;
 
 bool TrueTable::isEmpty() {
     return false;
@@ -39,15 +35,12 @@ unordered_set<string> TrueTable::getColumn(string columnName) {
     return unordered_set<string>();
 }
 
-Table* TrueTable::getTable() {
-    if (TrueTable::trueTable == nullptr) {
-        TrueTable::trueTable = new TrueTable();
-    }
-    return TrueTable::trueTable;
-}
-
 void TrueTable::sort(const Header &commonHeader) {}
 
 bool TrueTable::isBooleanTable() {
     return true;
+}
+
+Table::TableType TrueTable::getType() {
+    return Table::TrueTable;
 }

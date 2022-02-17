@@ -28,17 +28,18 @@ Table* UsesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
         return evaluateSynonymWildCard(pkb, leftVariable);
     }
 
-    return FalseTable::getTable();
+    // to be change to throw Semantic Error
+    return new FalseTable();
 }
 
 Table* UsesPEvaluator::evaluateIdentifierIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
     bool isUsesP = pkb->isUsesP(left.getLabel(), right.getLabel());
 
     if (isUsesP) {
-        return TrueTable::getTable();
+        return new TrueTable();
     }
 
-    return FalseTable::getTable();
+    return new FalseTable();
 }
 
 Table* UsesPEvaluator::evaluateIdentifierSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
@@ -60,10 +61,10 @@ Table* UsesPEvaluator::evaluateIdentifierWildCard(PKB* pkb, ClauseVariable left)
     unordered_set<string> setOfVariables = pkb->getUsesByProc(left.getLabel());
 
     if (setOfVariables.empty()) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
-    return TrueTable::getTable();
+    return new TrueTable();
 }
 
 Table* UsesPEvaluator::evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {

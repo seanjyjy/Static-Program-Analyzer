@@ -47,7 +47,8 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKB *pkb) {
         return evaluateSynonymWildCard(pkb, patternSynonym, leftVariable);
     }
 
-    return FalseTable::getTable();
+    // to be change to throw Semantic Error
+    return new FalseTable();
 }
 
 Table *PatternEvaluator::evaluateWildCardFullPattern(PKB *pkb, QueryDeclaration patternSyn, PatternVariable right) {
