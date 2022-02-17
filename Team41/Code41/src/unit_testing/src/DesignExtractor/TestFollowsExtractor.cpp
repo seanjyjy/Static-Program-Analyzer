@@ -7,13 +7,40 @@
 
 using namespace std;
 
+TEST_CASE("FollowsExtractor: While") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "while-xml.txt")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
+    fe.extractRelationship();
+
+    unordered_map<string, list<string>> expectedFollowsT = {
+            {"1", {"3", "5", "7", "10"}}, {"3", {"5", "7", "10"}}, {"5", {"7", "10"}}, {"7", {"10"}}
+    };
+    REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+}
+
+TEST_CASE("FollowsExtractor: If") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "if-xml.txt")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
+    fe.extractRelationship();
+
+    unordered_map<string, list<string>> expectedFollowsT = {
+            {"1", {"4", "7", "10", "17"}}, {"4", {"7", "10", "17"}}, {"7", {"10", "17"}}, {"10", {"17"}},
+    };
+    REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+}
+
 TEST_CASE("FollowsExtractor: Non-nested") {
     // non_nested-simple.txt
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "non_nested-xml.txt")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extractRelationship();
 
@@ -30,7 +57,6 @@ TEST_CASE("FollowsExtractor: Nested") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extractRelationship();
 

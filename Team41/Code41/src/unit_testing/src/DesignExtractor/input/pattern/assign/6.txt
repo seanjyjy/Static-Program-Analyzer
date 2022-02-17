@@ -1,0 +1,4 @@
+<div>
+	<var name=j></var>
+	<var name=k></var>
+</div>

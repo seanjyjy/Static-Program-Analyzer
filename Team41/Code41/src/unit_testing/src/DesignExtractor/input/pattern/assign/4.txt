@@ -1,0 +1,4 @@
+<minus>
+	<var name=f></var>
+	<const val=3></const>
+</minus>

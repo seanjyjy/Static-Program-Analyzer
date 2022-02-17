@@ -1,0 +1,4 @@
+<times>
+	<const val=6></const>
+	<const val=9></const>
+</times>
