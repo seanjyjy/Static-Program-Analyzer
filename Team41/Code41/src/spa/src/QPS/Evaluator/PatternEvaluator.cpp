@@ -8,7 +8,7 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKB *pkb) {
 
     // check if leftVariable is variable type
     if (!EvaluatorUtils::isAssign(patternSynonym.type)) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
     if (leftVariable.isWildCard() && rightVariable.isFullPattern()) {
@@ -47,7 +47,8 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKB *pkb) {
         return evaluateSynonymWildCard(pkb, patternSynonym, leftVariable);
     }
 
-    return FalseTable::getTable();
+    // to be change to throw Semantic Error
+    return new FalseTable();
 }
 
 Table *PatternEvaluator::evaluateWildCardFullPattern(PKB *pkb, QueryDeclaration patternSyn, PatternVariable right) {

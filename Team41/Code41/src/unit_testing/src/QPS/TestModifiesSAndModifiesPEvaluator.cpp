@@ -37,16 +37,24 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
 
         SECTION("Integer Identifier Pair") {
             QueryClause queryClause1(QueryClause::modifiesS, integer1, identifierVar1);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause1, pkbManager) == TrueTable::getTable());
+            Table* table1 = ModifiesSEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::modifiesS, integer1, identifierVar2);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause2, pkbManager) == TrueTable::getTable());
+            Table* table2 = ModifiesSEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::modifiesS, integer2, identifierVar1);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+            Table* table3 = ModifiesSEvaluator::evaluate(queryClause3, pkbManager);
+            REQUIRE(table3->getType() == Table::FalseTable);
 
             QueryClause queryClause4(QueryClause::modifiesS, integer2, identifierVar2);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause4, pkbManager) == TrueTable::getTable());
+            Table* table4 = ModifiesSEvaluator::evaluate(queryClause4, pkbManager);
+            REQUIRE(table4->getType() == Table::TrueTable);
+            delete table1;
+            delete table2;
+            delete table3;
+            delete table4;
         }
 
         SECTION("Integer Synonym Pair") {
@@ -65,13 +73,19 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
 
         SECTION("Integer WildCard Pair") {
             QueryClause queryClause1(QueryClause::modifiesS, integer1, wildcard);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause1, pkbManager) == TrueTable::getTable());
+            Table* table1 = ModifiesSEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::modifiesS, integer2, wildcard);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause2, pkbManager) == TrueTable::getTable());
+            Table* table2 = ModifiesSEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::modifiesS, integer3, wildcard);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+            Table* table3 = ModifiesSEvaluator::evaluate(queryClause3, pkbManager);
+            REQUIRE(table3->getType() == Table::FalseTable);
+            delete table1;
+            delete table2;
+            delete table3;
         }
 
         SECTION("Synonym Identifier Pair") {
@@ -107,22 +121,34 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
 
         SECTION("Semantically Invalid") {
             QueryClause queryClause1(QueryClause::modifiesS, wildcard, identifierVar1);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause1, pkbManager) == FalseTable::getTable());
+            Table* table1 = ModifiesSEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::modifiesS, wildcard, assignSyn);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause2, pkbManager) == FalseTable::getTable());
+            Table* table2 = ModifiesSEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::FalseTable);
 
             QueryClause queryClause3(QueryClause::modifiesS, wildcard, wildcard);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+            Table* table3 = ModifiesSEvaluator::evaluate(queryClause3, pkbManager);
+            REQUIRE(table3->getType() == Table::FalseTable);
 
             QueryClause queryClause4(QueryClause::modifiesS, procSyn, assignSyn);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause4, pkbManager) == FalseTable::getTable());
+            Table* table4 = ModifiesSEvaluator::evaluate(queryClause4, pkbManager);
+            REQUIRE(table4->getType() == Table::FalseTable);
 
             QueryClause queryClause5(QueryClause::modifiesS, procSyn, wildcard);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause5, pkbManager) == FalseTable::getTable());
+            Table* table5 = ModifiesSEvaluator::evaluate(queryClause5, pkbManager);
+            REQUIRE(table5->getType() == Table::FalseTable);
 
             QueryClause queryClause6(QueryClause::modifiesS, printSyn, assignSyn);
-            REQUIRE(ModifiesSEvaluator::evaluate(queryClause6, pkbManager) == FalseTable::getTable());
+            Table* table6 = ModifiesSEvaluator::evaluate(queryClause6, pkbManager);
+            REQUIRE(table6->getType() == Table::FalseTable);
+            delete table1;
+            delete table2;
+            delete table3;
+            delete table4;
+            delete table5;
+            delete table6;
         }
     }
 
@@ -133,16 +159,24 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
 
         SECTION("Identifier Identifier Pair") {
             QueryClause queryClause1(QueryClause::modifiesP, proc1, identifierVar1);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause1, pkbManager) == TrueTable::getTable());
+            Table* table1 = ModifiesPEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::modifiesP, proc1, identifierVar2);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause2, pkbManager) == TrueTable::getTable());
+            Table* table2 = ModifiesPEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::modifiesP, proc2, identifierVar1);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+            Table* table3 = ModifiesPEvaluator::evaluate(queryClause3, pkbManager);
+            REQUIRE(table3->getType() == Table::FalseTable);
 
             QueryClause queryClause4(QueryClause::modifiesP, proc2, identifierVar2);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause4, pkbManager) == TrueTable::getTable());
+            Table* table4 = ModifiesPEvaluator::evaluate(queryClause4, pkbManager);
+            REQUIRE(table4->getType() == Table::TrueTable);
+            delete table1;
+            delete table2;
+            delete table3;
+            delete table4;
         }
 
         SECTION("Identifier Synonym Pair") {
@@ -161,13 +195,19 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
 
         SECTION("Identifier WildCard Pair") {
             QueryClause queryClause1(QueryClause::modifiesP, proc1, wildcard);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause1, pkbManager) == TrueTable::getTable());
+            Table* table1 = ModifiesPEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::modifiesP, proc2, wildcard);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause2, pkbManager) == TrueTable::getTable());
+            Table* table2 = ModifiesPEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::modifiesP, proc3, wildcard);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+            Table* table3 = ModifiesPEvaluator::evaluate(queryClause3, pkbManager);
+            REQUIRE(table3->getType() == Table::FalseTable);
+            delete table1;
+            delete table2;
+            delete table3;
         }
 
         SECTION("Synonym Identifier Pair") {
@@ -203,19 +243,30 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
 
         SECTION("Semantically Invalid") {
             QueryClause queryClause1(QueryClause::modifiesS, wildcard, identifierVar1);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause1, pkbManager) == FalseTable::getTable());
+            Table* table1 = ModifiesPEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::modifiesS, wildcard, assignSyn);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause2, pkbManager) == FalseTable::getTable());
+            Table* table2 = ModifiesPEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::FalseTable);
 
             QueryClause queryClause3(QueryClause::modifiesS, wildcard, wildcard);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause3, pkbManager) == FalseTable::getTable());
+            Table* table3 = ModifiesPEvaluator::evaluate(queryClause3, pkbManager);
+            REQUIRE(table3->getType() == Table::FalseTable);
 
             QueryClause queryClause4(QueryClause::modifiesS, assignSyn, assignSyn);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause4, pkbManager) == FalseTable::getTable());
+            Table* table4 = ModifiesPEvaluator::evaluate(queryClause4, pkbManager);
+            REQUIRE(table4->getType() == Table::FalseTable);
 
             QueryClause queryClause5(QueryClause::modifiesS, assignSyn, wildcard);
-            REQUIRE(ModifiesPEvaluator::evaluate(queryClause5, pkbManager) == FalseTable::getTable());
+            Table* table5 = ModifiesPEvaluator::evaluate(queryClause5, pkbManager);
+            REQUIRE(table5->getType() == Table::FalseTable);
+
+            delete table1;
+            delete table2;
+            delete table3;
+            delete table4;
+            delete table5;
         }
     }
 

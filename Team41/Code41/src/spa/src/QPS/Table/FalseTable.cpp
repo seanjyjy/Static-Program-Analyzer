@@ -2,10 +2,7 @@
 #include <stdexcept>
 
 FalseTable::FalseTable() = default;
-FalseTable::~FalseTable() {
-    FalseTable::falseTable = nullptr;
-};
-Table* FalseTable::falseTable = nullptr;
+FalseTable::~FalseTable() = default;
 
 bool FalseTable::isEmpty() {
     return true;
@@ -39,15 +36,8 @@ unordered_set<string> FalseTable::getColumn(string columnName) {
     return unordered_set<string>();
 }
 
-Table* FalseTable::getTable() {
-    if (FalseTable::falseTable == nullptr) {
-        FalseTable::falseTable = new FalseTable();
-    }
-    return FalseTable::falseTable;
-}
-
 void FalseTable::sort(const Header &commonHeader) {}
 
-bool FalseTable::isBooleanTable() {
-    return true;
+Table::TableType FalseTable::getType() {
+    return Table::FalseTable;
 }

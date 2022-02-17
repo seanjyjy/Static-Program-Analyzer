@@ -40,19 +40,30 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
     SECTION("Follows Evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::follows, integer1, integer2);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause1, pkbManager) == FalseTable::getTable());
+            Table* table1 = FollowsEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::follows, integer2, integer1);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause2, pkbManager) == TrueTable::getTable());
+            Table* table2 = FollowsEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::follows, integer4, integer3);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause3, pkbManager) == TrueTable::getTable());
+            Table* table3 = FollowsEvaluator::evaluate(queryClause3, pkbManager);
+            REQUIRE(table3->getType() == Table::TrueTable);
 
             QueryClause queryClause4(QueryClause::follows, integer6, integer5);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause4, pkbManager) == TrueTable::getTable());
+            Table* table4 = FollowsEvaluator::evaluate(queryClause4, pkbManager);
+            REQUIRE(table4->getType() == Table::TrueTable);
 
             QueryClause queryClause5(QueryClause::follows, integer6, integer1);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause5, pkbManager) == FalseTable::getTable());
+            Table* table5 = FollowsEvaluator::evaluate(queryClause5, pkbManager);
+            REQUIRE(table5->getType() == Table::FalseTable);
+
+            delete table1;
+            delete table2;
+            delete table3;
+            delete table4;
+            delete table5;
         }
 
         SECTION("Integer Synonym pair") {
@@ -71,10 +82,15 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
 
         SECTION("Integer Wildcard pair") {
             QueryClause queryClause1(QueryClause::follows, integer3, wildcard);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause1, pkbManager) == TrueTable::getTable());
+            Table* table1 = FollowsEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::follows, integer6, wildcard);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause2, pkbManager) == FalseTable::getTable());
+            Table* table2 = FollowsEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::FalseTable);
+
+            delete table1;
+            delete table2;
         }
 
         SECTION("Synonym Integer pair") {
@@ -91,6 +107,7 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
             Table* table3 = FollowsEvaluator::evaluate(queryClause3, pkbManager);
             REQUIRE(table3->size() == 1);
             REQUIRE(table3->getColumn("s1") == unordered_set<string>({"3"}));
+
             delete table1;
             delete table2;
             delete table3;
@@ -115,13 +132,20 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
 
         SECTION("Wildcard Integer pair") {
             QueryClause queryClause1(QueryClause::follows, wildcard, integer1);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause1, pkbManager) == FalseTable::getTable());
+            Table* table1 = FollowsEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::follows, wildcard, integer5);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause2, pkbManager) == TrueTable::getTable());
+            Table* table2 = FollowsEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::follows, wildcard, integer6);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause3, pkbManager) == TrueTable::getTable());
+            Table* table3 = FollowsEvaluator::evaluate(queryClause3, pkbManager);
+            REQUIRE(table3->getType() == Table::TrueTable);
+
+            delete table1;
+            delete table2;
+            delete table3;
         }
 
         SECTION("Wildcard Synonym pair") {
@@ -134,31 +158,46 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
 
         SECTION("Wildcard Wildcard pair") {
             QueryClause queryClause1(QueryClause::follows, wildcard, wildcard);
-            REQUIRE(FollowsEvaluator::evaluate(queryClause1, pkbManager) == TrueTable::getTable());
+            Table* table1 = FollowsEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::TrueTable);
+            delete table1;
         }
     }
 
     SECTION("FollowsT Evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::followsT, integer1, integer2);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause1, pkbManager) == FalseTable::getTable());
+            Table* table1 = FollowsTEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::followsT, integer2, integer1);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause2, pkbManager) == TrueTable::getTable());
+            Table* table2 = FollowsTEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::followsT, integer4, integer3);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause3, pkbManager) == TrueTable::getTable());
+            Table* table3 = FollowsTEvaluator::evaluate(queryClause3, pkbManager);
+            REQUIRE(table3->getType() == Table::TrueTable);
 
             QueryClause queryClause4(QueryClause::followsT, integer6, integer5);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause4, pkbManager) == TrueTable::getTable());
+            Table* table4 = FollowsTEvaluator::evaluate(queryClause4, pkbManager);
+            REQUIRE(table4->getType() == Table::TrueTable);
 
             // transitive
             QueryClause queryClause5(QueryClause::followsT, integer6, integer1);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause5, pkbManager) == TrueTable::getTable());
+            Table* table5 = FollowsTEvaluator::evaluate(queryClause5, pkbManager);
+            REQUIRE(table5->getType() == Table::TrueTable);
 
             // doesn't follow into an if block
             QueryClause queryClause6(QueryClause::followsT, integer6, integer3);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause6, pkbManager) == FalseTable::getTable());
+            Table* table6 = FollowsTEvaluator::evaluate(queryClause6, pkbManager);
+            REQUIRE(table6->getType() == Table::FalseTable);
+
+            delete table1;
+            delete table2;
+            delete table3;
+            delete table4;
+            delete table5;
+            delete table6;
         }
 
         SECTION("Integer Synonym pair") {
@@ -176,10 +215,15 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
 
         SECTION("Integer Wildcard pair") {
             QueryClause queryClause1(QueryClause::followsT, integer3, wildcard);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause1, pkbManager) == TrueTable::getTable());
+            Table* table1 = FollowsTEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::followsT, integer6, wildcard);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause2, pkbManager) == FalseTable::getTable());
+            Table* table2 = FollowsTEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::FalseTable);
+
+            delete table1;
+            delete table2;
         }
 
         SECTION("Synonym Integer pair") {
@@ -196,6 +240,7 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
             Table* table3 = FollowsTEvaluator::evaluate(queryClause3, pkbManager);
             REQUIRE(table3->size() == 1);
             REQUIRE(table3->getColumn("s1") == unordered_set<string>({"3"}));
+
             delete table1;
             delete table2;
             delete table3;
@@ -220,13 +265,20 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
 
         SECTION("Wildcard Integer pair") {
             QueryClause queryClause1(QueryClause::followsT, wildcard, integer1);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause1, pkbManager) == FalseTable::getTable());
+            Table* table1 = FollowsTEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::followsT, wildcard, integer5);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause2, pkbManager) == TrueTable::getTable());
+            Table* table2 = FollowsTEvaluator::evaluate(queryClause2, pkbManager);
+            REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::followsT, wildcard, integer6);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause3, pkbManager) == TrueTable::getTable());
+            Table* table3 = FollowsTEvaluator::evaluate(queryClause3, pkbManager);
+            REQUIRE(table3->getType() == Table::TrueTable);
+
+            delete table1;
+            delete table2;
+            delete table3;
         }
 
         SECTION("Wildcard Synonym pair") {
@@ -239,7 +291,9 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
 
         SECTION("Wildcard Wildcard pair") {
             QueryClause queryClause1(QueryClause::followsT, wildcard, wildcard);
-            REQUIRE(FollowsTEvaluator::evaluate(queryClause1, pkbManager) == TrueTable::getTable());
+            Table* table1 = FollowsTEvaluator::evaluate(queryClause1, pkbManager);
+            REQUIRE(table1->getType() == Table::TrueTable);
+            delete table1;
         }
     }
 

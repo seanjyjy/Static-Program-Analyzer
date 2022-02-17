@@ -40,24 +40,25 @@ Table* ParentEvaluator::evaluate(QueryClause clause, PKB *pkb) {
         return evaluateWildCardWildCard(pkb);
     }
 
-    return FalseTable::getTable();
+    // to be change to throw Semantic Error
+    return new FalseTable();
 }
 
 Table* ParentEvaluator::evaluateIntegerInteger(PKB *pkb, ClauseVariable left, ClauseVariable right) {
     bool isParent = pkb->isParent(left.getLabel(), right.getLabel());
 
     if (isParent) {
-        return TrueTable::getTable();
+        return new TrueTable();
     }
 
-    return FalseTable::getTable();
+    return new FalseTable();
 }
 
 Table* ParentEvaluator::evaluateIntegerSynonym(PKB *pkb, ClauseVariable left, ClauseVariable right) {
     unordered_set<string> setOfChildren = pkb->getChildStmtsOf(left.getLabel());
 
     if (setOfChildren.empty()) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
     string column = right.getLabel();
@@ -76,17 +77,17 @@ Table* ParentEvaluator::evaluateIntegerWildCard(PKB *pkb, ClauseVariable left) {
     unordered_set<string> setOfChildren = pkb->getChildStmtsOf(left.getLabel());
 
     if (setOfChildren.empty()) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
-    return TrueTable::getTable();
+    return new TrueTable();
 }
 
 Table* ParentEvaluator::evaluateSynonymInteger(PKB *pkb, ClauseVariable left, ClauseVariable right) {
     string parent = pkb->getParentOf(right.getLabel());
 
     if (parent.empty()) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
     string column = left.getLabel();
@@ -104,7 +105,7 @@ Table* ParentEvaluator::evaluateSynonymSynonym(PKB *pkb, ClauseVariable left, Cl
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllParent();
 
     if (listOfStmtToStmt.empty()) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
     string firstColumn = left.getLabel();
@@ -127,7 +128,7 @@ Table* ParentEvaluator::evaluateSynonymWildCard(PKB *pkb, ClauseVariable left) {
     unordered_set<string> setOfParents = pkb->getAllStmtsParentOfSomeStmt();
 
     if (setOfParents.empty()) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
     string column = left.getLabel();
@@ -146,10 +147,10 @@ Table* ParentEvaluator::evaluateWildCardInteger(PKB *pkb, ClauseVariable right) 
     string parent = pkb->getParentOf(right.getLabel());
 
     if (parent.empty()) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
-    return TrueTable::getTable();
+    return new TrueTable();
 }
 
 Table* ParentEvaluator::evaluateWildCardSynonym(PKB *pkb, ClauseVariable right) {
@@ -157,7 +158,7 @@ Table* ParentEvaluator::evaluateWildCardSynonym(PKB *pkb, ClauseVariable right) 
     unordered_set<string> setOfParentedStmts = pkb->getAllStmtsChildOfBySomeStmt();
 
     if (setOfParentedStmts.empty()) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
     string column = right.getLabel();
@@ -176,8 +177,8 @@ Table* ParentEvaluator::evaluateWildCardWildCard(PKB *pkb) {
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllParent();
 
     if (listOfStmtToStmt.empty()) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
-    return TrueTable::getTable();
+    return new TrueTable();
 }

@@ -13,6 +13,9 @@ using Iterator = std::vector<const Row *>::iterator;
 
 class Table {
 public:
+    enum TableType {
+        TrueTable, FalseTable, PQLTable
+    };
     virtual bool isEmpty() = 0;
     virtual Table* mergeJoin(Table* intermediatePQLTable) = 0;
     virtual vector<const Row *> getRows() = 0;
@@ -22,7 +25,7 @@ public:
     virtual size_t size() = 0;
     virtual unordered_set<string> getColumn(string columnName) = 0;
     virtual void sort(const Header& commonHeader) = 0;
-    virtual bool isBooleanTable() = 0;
+    virtual TableType getType() = 0;
     virtual ~Table() = default;
 
     friend class TrueTable;

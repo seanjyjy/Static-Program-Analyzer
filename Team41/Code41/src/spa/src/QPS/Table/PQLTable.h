@@ -34,8 +34,8 @@ public:
     Header getHeader() const override;
     size_t size() override;
     void addRow(const Row* row) override;
-    // Checks if table is a boolean table
-    bool isBooleanTable();
+
+    TableType getType() override;
 
     // merge the two table based on sort-merge join algorithm
     Table* mergeJoin(Table* intermediatePQLTable) override;

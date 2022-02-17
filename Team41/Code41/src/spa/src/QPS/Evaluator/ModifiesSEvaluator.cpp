@@ -28,17 +28,18 @@ Table* ModifiesSEvaluator::evaluate(QueryClause clause, PKB *pkb) {
         return evaluateSynonymWildCard(pkb, leftVariable);
     }
 
-    return FalseTable::getTable();
+    // to be change to throw Semantic Error
+    return new FalseTable();
 }
 
 Table* ModifiesSEvaluator::evaluateIntegerIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
     bool isUsesS = pkb->isModifiesS(left.getLabel(), right.getLabel());
 
     if (isUsesS) {
-        return TrueTable::getTable();
+        return new TrueTable();
     }
 
-    return FalseTable::getTable();
+    return new FalseTable();
 }
 
 Table* ModifiesSEvaluator::evaluateIntegerSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
@@ -60,10 +61,10 @@ Table* ModifiesSEvaluator::evaluateIntegerWildCard(PKB* pkb, ClauseVariable left
     unordered_set<string> setOfVariables = pkb->getModifiesByStmt(left.getLabel());
 
     if (setOfVariables.empty()) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
-    return TrueTable::getTable();
+    return new TrueTable();
 }
 
 Table* ModifiesSEvaluator::evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
