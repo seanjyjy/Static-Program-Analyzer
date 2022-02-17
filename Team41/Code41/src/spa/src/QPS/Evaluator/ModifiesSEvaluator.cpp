@@ -28,8 +28,7 @@ Table* ModifiesSEvaluator::evaluate(QueryClause clause, PKB *pkb) {
         return evaluateSynonymWildCard(pkb, leftVariable);
     }
 
-    // to be change to throw Semantic Error
-    return new FalseTable();
+    throw SemanticException("Invalid query provided for Modifies");
 }
 
 Table* ModifiesSEvaluator::evaluateIntegerIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {

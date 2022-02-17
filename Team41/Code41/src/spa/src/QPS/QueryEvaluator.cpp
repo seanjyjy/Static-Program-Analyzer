@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include "QueryEvaluator.h"
 #include "QPS/Evaluator/Evaluator.h"
 
@@ -55,8 +54,8 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
             }
         }
 
-        for (const auto& declaration : queryObject->declarations) {
-            Table* intermediateTable = SelectSynonymEvaluator::evaluate(declaration, this->pkb);
+        for (const auto &declaration: queryObject->declarations) {
+            Table *intermediateTable = SelectSynonymEvaluator::evaluate(declaration, this->pkb);
 
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
@@ -83,7 +82,13 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
                 return emptyResult;
             }
         }
+    } catch (SemanticException& error) {
+        std::cout << error.what() << std::endl;
+
+        return emptyResult;
     } catch (const runtime_error& error) {
+        std::cout << error.what() << std::endl;
+
         return emptyResult;
     }
 
