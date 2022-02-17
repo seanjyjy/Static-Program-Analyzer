@@ -333,11 +333,15 @@ bool QueryParser::parsePatternClause() {
             Parser simpleParser;
             string expr = patternExpr->c_str();
 
-            if (expr.length() > 1 && expr.at(0) == '_' && expr.at(expr.length() - 1) == '_') {
+            if (expr.at(0) == '_' && expr.at(expr.length() - 1) == '_') {
                 pt = PatternVariable::subpattern; // sub pattern
                 expr = expr.substr(1, expr.length() - 2);
-            } else {
+            } else if (expr.at(0) == '"' && expr.at(expr.length() - 1) == '"') {
                 pt = PatternVariable::fullpattern; // full pattern
+                expr = expr.substr(1, expr.length() - 2);
+            } else {
+                printf("Unknown pattern RHS: <%s>\n", patternExpr->c_str());
+                return false;
             }
             try {
                 miniAST = simpleParser.parseExpr(expr);

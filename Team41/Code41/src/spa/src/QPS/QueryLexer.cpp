@@ -214,7 +214,7 @@ optional<string> QueryLexer::nextPatternExpression() {
             index++;
         }
         index++; // Skip over closing '"'
-        return out;
+        return "\"" + out + "\""; // For parser to recognize pattern
     }
 }
 
