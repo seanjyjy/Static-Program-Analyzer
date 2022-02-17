@@ -1,15 +1,12 @@
 #pragma once
-#include <exception>
-#include <string>
+#include "SPAException.h"
 
 using namespace std;
 
-class SemanticException : public exception {
-private:
-    string errorMessage;
+class SemanticException : public SPAException {
 public:
     SemanticException(string errorMessage);
-
-    string what();
+    string what() override;
+    ~SemanticException();
 };
 

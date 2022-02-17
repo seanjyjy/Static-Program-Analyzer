@@ -1,14 +1,11 @@
 #pragma once
-#include <exception>
-#include <string>
+#include "SPAException.h"
 
 using namespace std;
 
-class SyntheticException {
-private:
-    string errorMessage;
+class SyntheticException : public SPAException {
 public:
-    SyntheticException(string errorMessage);
-
-    string what();
+    SyntheticException(string message);
+    string what() override;
+    ~SyntheticException();
 };
