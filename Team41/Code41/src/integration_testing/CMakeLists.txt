@@ -3,4 +3,4 @@ file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h" "${CMAKE_CURRENT_SOURCE_
 add_executable(integration_testing ${srcs})
 
 target_link_libraries(integration_testing spa)
-add_test(integration_testing integration_testing.exe)
+add_test(integration_testing integration_testing)

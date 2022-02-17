@@ -13,7 +13,7 @@ foreach(SIMPLE_SRC ${SIMPLE_TESTS})
     string(REGEX MATCH "([A-Za-z0-9_]*)_source.txt$" TEST_NAME "${SIMPLE_SRC}")
     string(REGEX REPLACE "_source.txt$" "" TEST_NAME ${TEST_NAME})
     message(STATUS "Test ${TEST_NAME} source=${SIMPLE_SRC}, query=${PQL_QUERIES}")
-    add_test("autotester-${TEST_NAME}" autotester.exe ${SIMPLE_SRC} ${PQL_QUERIES} -)
+    add_test("autotester-${TEST_NAME}" autotester ${SIMPLE_SRC} ${PQL_QUERIES} -)
     set_tests_properties("autotester-${TEST_NAME}" PROPERTIES
             FAIL_REGULAR_EXPRESSION "Missing: ;Additional: ")
 endforeach()
