@@ -1,5 +1,6 @@
 #include "Row.h"
 #include <stdexcept>
+#include <utility>
 
 Row::Row() = default;
 
@@ -26,7 +27,7 @@ unordered_map<string, string> Row::getRow() const {
 void Row::addEntry(const string& column, string value) {
     bool hasColumn = this->hasColumn(column);
 
-    // if this exact entry has been added before, can we return
+    // if this exact entry has been added before, we can return
     if (hasColumn && this->row.at(column) == value) {
         return;
     }
@@ -53,6 +54,6 @@ bool Row::operator==(const Row &other) const {
 }
 
 Row::Row(const string &column, string value) {
-    this->addEntry(column, value);
+    this->addEntry(column, std::move(value));
 }
 
