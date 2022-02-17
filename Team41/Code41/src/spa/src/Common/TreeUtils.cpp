@@ -32,5 +32,5 @@ string TreeUtils::serialize(TNode *root) {
     for (TNode *child: ch) {
         ret += "[" + serialize(child) + "]";
     }
-    return ret;
+    return "[" + ret + "]";
 }
