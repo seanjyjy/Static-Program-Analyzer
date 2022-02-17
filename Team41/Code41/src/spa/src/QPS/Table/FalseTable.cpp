@@ -38,10 +38,6 @@ unordered_set<string> FalseTable::getColumn(string columnName) {
 
 void FalseTable::sort(const Header &commonHeader) {}
 
-bool FalseTable::isBooleanTable() {
-    return true;
-}
-
 Table::TableType FalseTable::getType() {
     return Table::FalseTable;
 }

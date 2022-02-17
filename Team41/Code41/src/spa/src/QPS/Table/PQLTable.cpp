@@ -236,10 +236,6 @@ unordered_set<string> PQLTable::getColumn(string columnName) {
     return result;
 }
 
-bool PQLTable::isBooleanTable() {
-    return false;
-}
-
 Table::TableType PQLTable::getType() {
     return Table::PQLTable;
 }

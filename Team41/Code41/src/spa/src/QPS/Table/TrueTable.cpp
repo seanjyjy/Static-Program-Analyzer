@@ -38,10 +38,6 @@ unordered_set<string> TrueTable::getColumn(string columnName) {
 
 void TrueTable::sort(const Header &commonHeader) {}
 
-bool TrueTable::isBooleanTable() {
-    return true;
-}
-
 Table::TableType TrueTable::getType() {
     return Table::TrueTable;
 }

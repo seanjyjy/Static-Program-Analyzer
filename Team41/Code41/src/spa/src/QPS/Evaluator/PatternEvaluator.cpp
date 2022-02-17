@@ -8,7 +8,7 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKB *pkb) {
 
     // check if leftVariable is variable type
     if (!EvaluatorUtils::isAssign(patternSynonym.type)) {
-        return FalseTable::getTable();
+        return new FalseTable();
     }
 
     if (leftVariable.isWildCard() && rightVariable.isFullPattern()) {

@@ -34,8 +34,6 @@ public:
     Header getHeader() const override;
     size_t size() override;
     void addRow(const Row* row) override;
-    // Checks if table is a boolean table
-    bool isBooleanTable();
 
     TableType getType() override;
 

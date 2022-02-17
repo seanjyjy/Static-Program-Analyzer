@@ -16,6 +16,5 @@ public:
     size_t size() override;
     virtual unordered_set<string> getColumn(string columnName) override;
     void sort(const Header& commonHeader) override;
-    bool isBooleanTable() override;
     TableType getType() override;
 };
