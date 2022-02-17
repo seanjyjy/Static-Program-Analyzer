@@ -1,0 +1,72 @@
+--. procedure procedure {
+01.    x411 = 2;
+02.    y132 = 2 + 2;
+03.    x1c2v3b4 = 2 / 2;
+04.    x = y132 * 2;
+05.    x = 3 % x;
+06.    x = 2 * 2 + 3 % 1 - x411 / 2;
+07.    var = 2;
+08.    foo = 4;
+09.    bar = foo - 4 + 3 * 2;
+10.    X = 1;
+11.    read bar;
+12.    bar = foo;
+13.    if (a < bar) then{
+14.        while (bar > temp) {
+15.            oSCar  = 1 * bar + tmp;
+16.            while (!(tmp / tmp == bar * bar)) {
+17.                oSCar = X - (bar + foo * chArlie);
+--.            }
+--.        }
+18.        while ((!(x != 1)) && (!(x == 1))) {
+19.            x = x + 1;
+20.            if (foo==0) then {
+21.                while (bar== 3){
+22.                    print A1pH3;
+23.                    b = 0;
+24.                    c = x411 + z + A1pH3;
+--.                }
+--.            } else {
+25.                while (c>1) {
+26.                    c = c -1;
+--.                }
+27.                x = x+ 1;
+--.            }
+--.        }
+--.     } else {
+28.   	    a= 2;
+--.   	}
+29.   	while (foo < bar) {
+30.         if (var > 0) then {
+31.             var = var + 22222222222222222222222222222;
+32.             bar = bar + 11111111111111111111111111111;
+33.   	        var = var - 22222222222222222222222222222;
+--.   	    } else {
+34.   	        foo = foo + 1;
+35.             var = var - 1;
+36.             while = 8;
+37.             while (while > 1) {
+38.                 while = 3 * 2 + while / 2 - 6;
+39.                 read read;
+40.                 read print;
+41.                 then = read;
+42.                 else = print;
+43.                 if (while != 0) then {
+44.                     temp = while * 2 - 2;
+45.                     read while;
+46.                     while = foo - bar * var + 3 * 2;
+47.                     print while;
+48.                     while = (temp + 2) / 2;
+--.                 } else {
+49.                    read temp;
+50.                    print temp;
+--.                 }
+51.                 print read;
+52.                 print print;
+--.            }
+--.        }
+--.    }
+53.    print var;
+54.    print foo;
+55.    print bar;
+--.}
