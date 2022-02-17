@@ -121,34 +121,22 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
 
         SECTION("Semantically Invalid") {
             QueryClause queryClause1(QueryClause::modifiesS, wildcard, identifierVar1);
-            Table* table1 = ModifiesSEvaluator::evaluate(queryClause1, pkbManager);
-            REQUIRE(table1->getType() == Table::FalseTable);
+            REQUIRE_THROWS(ModifiesSEvaluator::evaluate(queryClause1, pkbManager));
 
             QueryClause queryClause2(QueryClause::modifiesS, wildcard, assignSyn);
-            Table* table2 = ModifiesSEvaluator::evaluate(queryClause2, pkbManager);
-            REQUIRE(table2->getType() == Table::FalseTable);
+            REQUIRE_THROWS(ModifiesSEvaluator::evaluate(queryClause2, pkbManager));
 
             QueryClause queryClause3(QueryClause::modifiesS, wildcard, wildcard);
-            Table* table3 = ModifiesSEvaluator::evaluate(queryClause3, pkbManager);
-            REQUIRE(table3->getType() == Table::FalseTable);
+            REQUIRE_THROWS(ModifiesSEvaluator::evaluate(queryClause3, pkbManager));
 
             QueryClause queryClause4(QueryClause::modifiesS, procSyn, assignSyn);
-            Table* table4 = ModifiesSEvaluator::evaluate(queryClause4, pkbManager);
-            REQUIRE(table4->getType() == Table::FalseTable);
+            REQUIRE_THROWS(ModifiesSEvaluator::evaluate(queryClause4, pkbManager));
 
             QueryClause queryClause5(QueryClause::modifiesS, procSyn, wildcard);
-            Table* table5 = ModifiesSEvaluator::evaluate(queryClause5, pkbManager);
-            REQUIRE(table5->getType() == Table::FalseTable);
+            REQUIRE_THROWS(ModifiesSEvaluator::evaluate(queryClause5, pkbManager));
 
             QueryClause queryClause6(QueryClause::modifiesS, printSyn, assignSyn);
-            Table* table6 = ModifiesSEvaluator::evaluate(queryClause6, pkbManager);
-            REQUIRE(table6->getType() == Table::FalseTable);
-            delete table1;
-            delete table2;
-            delete table3;
-            delete table4;
-            delete table5;
-            delete table6;
+            REQUIRE_THROWS(ModifiesSEvaluator::evaluate(queryClause6, pkbManager));
         }
     }
 
@@ -243,30 +231,19 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
 
         SECTION("Semantically Invalid") {
             QueryClause queryClause1(QueryClause::modifiesS, wildcard, identifierVar1);
-            Table* table1 = ModifiesPEvaluator::evaluate(queryClause1, pkbManager);
-            REQUIRE(table1->getType() == Table::FalseTable);
+            REQUIRE_THROWS(ModifiesPEvaluator::evaluate(queryClause1, pkbManager));
 
             QueryClause queryClause2(QueryClause::modifiesS, wildcard, assignSyn);
-            Table* table2 = ModifiesPEvaluator::evaluate(queryClause2, pkbManager);
-            REQUIRE(table2->getType() == Table::FalseTable);
+            REQUIRE_THROWS(ModifiesPEvaluator::evaluate(queryClause2, pkbManager));
 
             QueryClause queryClause3(QueryClause::modifiesS, wildcard, wildcard);
-            Table* table3 = ModifiesPEvaluator::evaluate(queryClause3, pkbManager);
-            REQUIRE(table3->getType() == Table::FalseTable);
+            REQUIRE_THROWS(ModifiesPEvaluator::evaluate(queryClause3, pkbManager));
 
             QueryClause queryClause4(QueryClause::modifiesS, assignSyn, assignSyn);
-            Table* table4 = ModifiesPEvaluator::evaluate(queryClause4, pkbManager);
-            REQUIRE(table4->getType() == Table::FalseTable);
+            REQUIRE_THROWS(ModifiesPEvaluator::evaluate(queryClause4, pkbManager));
 
             QueryClause queryClause5(QueryClause::modifiesS, assignSyn, wildcard);
-            Table* table5 = ModifiesPEvaluator::evaluate(queryClause5, pkbManager);
-            REQUIRE(table5->getType() == Table::FalseTable);
-
-            delete table1;
-            delete table2;
-            delete table3;
-            delete table4;
-            delete table5;
+            REQUIRE_THROWS(ModifiesPEvaluator::evaluate(queryClause5, pkbManager));
         }
     }
 

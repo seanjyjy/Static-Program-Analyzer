@@ -6,11 +6,6 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKB *pkb) {
     auto leftVariable = clause.getLHS();
     auto rightVariable = clause.getRHS();
 
-    // check if leftVariable is variable type
-    if (!EvaluatorUtils::isAssign(patternSynonym.type)) {
-        return new FalseTable();
-    }
-
     if (leftVariable.isWildCard() && rightVariable.isFullPattern()) {
         return evaluateWildCardFullPattern(pkb, patternSynonym, rightVariable);
     }
