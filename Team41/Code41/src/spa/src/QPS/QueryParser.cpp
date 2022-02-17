@@ -93,7 +93,12 @@ QueryDeclaration::design_entity_type QueryParser::determineDeclarationType(strin
 bool QueryParser::parseSelectSynonym() {
     lex->nextExpected("Select");
     optional<string> synonym = lex->nextSynonym();
-    optional<QueryDeclaration> qd = findMatchingDeclaration(synonym->c_str());
+    if (!synonym.has_value()) {
+        // todo: throw something?
+        printf("Syntax Error: Use of select with no synonym.\n");
+        return false;
+    }
+    optional<QueryDeclaration> qd = findMatchingDeclaration(*synonym);
     if (!qd.has_value()) {
         // todo: throw something?
         printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
@@ -331,10 +336,18 @@ bool QueryParser::parsePatternClause() {
             if (expr.at(0) == '_' && expr.at(expr.length() - 1) == '_') {
                 pt = PatternVariable::subpattern; // sub pattern
                 expr = expr.substr(1, expr.length() - 2);
-            } else{
+            } else if (expr.at(0) == '"' && expr.at(expr.length() - 1) == '"') {
                 pt = PatternVariable::fullpattern; // full pattern
+                expr = expr.substr(1, expr.length() - 2);
+            } else {
+                printf("Unknown pattern RHS: <%s>\n", patternExpr->c_str());
+                return false;
             }
-            miniAST = simpleParser.parseExpr(expr);
+            try {
+                miniAST = simpleParser.parseExpr(expr);
+            } catch (exception &e) {
+                miniAST = nullptr;
+            }
             if (miniAST == nullptr) {
                 printf("Invalid pattern RHS: <%s>\n", patternExpr->c_str());
                 return false;

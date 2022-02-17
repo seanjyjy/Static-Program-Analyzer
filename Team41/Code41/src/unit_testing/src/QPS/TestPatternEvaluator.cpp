@@ -16,8 +16,8 @@ TEST_CASE("Evaluator: Pattern evaluator") {
     string xml[] = {"<plus><plus><var name=x></var><var name=y></var></plus><var name=z></var></plus>",
                     "<plus><var name=x></var><var name=y></var></plus>",
                     "<const val=2></const>",
-                    "<minus><plus><var name=x></var><times><var name=x></var><var name=y></var></times></plus><const val=2></const></minus>"};
-    string expr[] = {"x+y+z", "x+y", "2", "x+y*z-2"};
+                    "<minus><plus><var name=x></var><times><var name=x></var><var name=y></var></times></plus><const val=20></const></minus>"};
+    string expr[] = {"x+y+z", "x+y", "2", "x+y*z-20"};
 
     QueryDeclaration assignSyn(QueryDeclaration::ASSIGN, ASSIGN_SYN_LBL);
     ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL, QueryDeclaration::VARIABLE);
@@ -34,7 +34,7 @@ TEST_CASE("Evaluator: Pattern evaluator") {
 
     PatternVariable patternFP1(PatternVariable::fullpattern, node1); // x+y+z
     PatternVariable patternFP2(PatternVariable::fullpattern, node2); // x+y
-    PatternVariable patternFP3(PatternVariable::fullpattern, node4); // x+y*z-2
+    PatternVariable patternFP3(PatternVariable::fullpattern, node4); // x+y*z-20
 
     PatternVariable subpatternSP1(PatternVariable::subpattern, node2); // _x+y_
     PatternVariable subpatternSP2(PatternVariable::subpattern, node3); // _2_
@@ -47,7 +47,7 @@ TEST_CASE("Evaluator: Pattern evaluator") {
     pkbManager->registerPattern(lines[1], vars[1], node2);
     // var1 = 2;
     pkbManager->registerPattern(lines[2], vars[0], node3);
-    // var2 = x+y*z-2;
+    // var2 = x+y*z-20;
     pkbManager->registerPattern(lines[3], vars[1], node4);
     for (string l: lines) {
         pkbManager->registerAssign(l);
@@ -65,7 +65,7 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         REQUIRE(table1->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[0]}));
         REQUIRE(table1->getColumn(VAR_SYN_LBL) == unordered_set<string>({vars[0]}));
 
-        // "x+y*z-2" ?
+        // "x+y*z-20" ?
         PatternClause patternClause2(assignSyn, variableSyn, patternFP3);
         Table *table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
         REQUIRE(table2->size() == 1);
@@ -86,9 +86,9 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         // _2_ ?
         PatternClause patternClause2(assignSyn, variableSyn, subpatternSP2);
         Table *table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
-        REQUIRE(table2->size() == 2);
-        REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[2], lines[3]}));
-        REQUIRE(table2->getColumn(VAR_SYN_LBL) == unordered_set<string>({vars[0], vars[1]}));
+        REQUIRE(table2->size() == 1);
+        REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[2]}));
+        REQUIRE(table2->getColumn(VAR_SYN_LBL) == unordered_set<string>({vars[0]}));
         delete table1;
         delete table2;
     }
@@ -166,8 +166,8 @@ TEST_CASE("Evaluator: Pattern evaluator") {
 
         PatternClause patternClause2(assignSyn, wildcard, subpatternSP2);
         Table *table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
-        REQUIRE(table2->size() == 2);
-        REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[2], lines[3]}));
+        REQUIRE(table2->size() == 1);
+        REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>({lines[2]}));
         delete table1;
         delete table2;
     }
