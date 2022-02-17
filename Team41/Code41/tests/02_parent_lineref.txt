@@ -41,7 +41,7 @@
 28.    print q;
 29.    procedure = (i + i + i) / (i * i * i);
 30.    if (!( (3 * then * 5) < (r * pi * 0) )) then {
-31.       read = read;
+31.        read = read;
 32.        if ((2 / 10 * 1) < 10) then {
 33.            print one;
 34.            if ((30 * 40 * 50) == 100) then {
