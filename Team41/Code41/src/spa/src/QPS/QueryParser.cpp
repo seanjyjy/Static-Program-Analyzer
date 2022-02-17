@@ -333,7 +333,7 @@ bool QueryParser::parsePatternClause() {
             Parser simpleParser;
             string expr = patternExpr->c_str();
 
-            if (expr.at(0) == '_' && expr.at(expr.length() - 1) == '_') {
+            if (expr.length() > 1 && expr.at(0) == '_' && expr.at(expr.length() - 1) == '_') {
                 pt = PatternVariable::subpattern; // sub pattern
                 expr = expr.substr(1, expr.length() - 2);
             } else {
@@ -342,6 +342,9 @@ bool QueryParser::parsePatternClause() {
             try {
                 miniAST = simpleParser.parseExpr(expr);
             } catch (exception &e) {
+                miniAST = nullptr;
+            }
+            if (miniAST == nullptr) {
                 printf("Invalid pattern RHS: <%s>\n", patternExpr->c_str());
                 return false;
             }
