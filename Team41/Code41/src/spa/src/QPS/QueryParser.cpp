@@ -336,11 +336,12 @@ bool QueryParser::parsePatternClause() {
             if (expr.at(0) == '_' && expr.at(expr.length() - 1) == '_') {
                 pt = PatternVariable::subpattern; // sub pattern
                 expr = expr.substr(1, expr.length() - 2);
-            } else{
+            } else {
                 pt = PatternVariable::fullpattern; // full pattern
             }
-            miniAST = simpleParser.parseExpr(expr);
-            if (miniAST == nullptr) {
+            try {
+                miniAST = simpleParser.parseExpr(expr);
+            } catch (exception &e) {
                 printf("Invalid pattern RHS: <%s>\n", patternExpr->c_str());
                 return false;
             }
