@@ -46,9 +46,7 @@ void TNode::setParent(TNode *par) {
 
 void TNode::setLeftChild(TNode *child) {
     assert(!children.empty());
-    if (children.size() > 0) {
-        delete children[0];
-    }
+    delete children[0];
     children[0] = child;
 }
 
