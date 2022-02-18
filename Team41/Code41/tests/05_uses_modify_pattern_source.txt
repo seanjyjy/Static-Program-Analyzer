@@ -17,12 +17,12 @@ then {T0ngT0ngQ1ANG                             = h;               h =          
 } else {
 while (zz == tc) {zz = 2;}
 print
-ab; print
+ab; read
 db;
 ab=                     db;while
 (ab
 ==
-aj) {tj = abc;
+aj) {tj = abcdef;
                 }
 }print
 T0ngT0ngQ1ANG;while (ab == ac) {
@@ -50,7 +50,7 @@ else
 ;
 }
 }
-print weAllCry;
+read weAllCry;
 }
 } else {while (else ==
 sad) {then = lol;print whyAreKeyWordsEvenUsed;}if (youReachedHere == youPsycho) then {enjoyThisReallyFunLongText=kidding;okTimeToEndSoon=yesPls;} else {
@@ -59,4 +59,4 @@ OK
 ;}while
 (neverGonnaLetThisEnd
 ==
-sadness) {print iAmSad123;print youAreSad321;bastards = VERYTRUE;read helloWord;while (youReachedHere == youPsycho){then=youAreSad321;}}}}
+sadness) {print iAmSad123;print youAreSad321;bastards = VERYTRUE;read helloWord;while (youReachedHere == youPsycho){then=youAreSad321;read moreToK1M2S;}}}}

@@ -26,10 +26,10 @@
 20.                    zz = 2;
 --.                }
 21.                print ab;
-22.                print db;
+22.                read db;
 23.                ab = db;
 24.                while (ab == aj) {
-25.                    tj = abc;
+25.                    tj = abcdef;
 --.                }
 --.            }
 26.            print T0ngT0ngQ1ANG;
@@ -50,7 +50,7 @@
 38.                    theyAllHeartLess = bastards + heartless;
 --.                }
 --.            }
-39.            print weAllCry;
+39.            read weAllCry;
 --.        }
 --.    } else {
 40.        while (else == sad) {
@@ -70,6 +70,7 @@
 51.            read helloWord;
 52.            while (youReachedHere == youPsycho) {
 53.                 then = youAreSad321;
+54.                 read moreToK1M2S;
 --.            }
 --.        }
 --.    }
