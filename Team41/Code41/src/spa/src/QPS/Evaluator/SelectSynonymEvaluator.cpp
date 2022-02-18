@@ -40,6 +40,6 @@ unordered_set<string> SelectSynonymEvaluator::getResultViaType(QueryDeclaration:
         case QueryDeclaration::design_entity_type::PROCEDURE:
             return pkb->getProcedures();
         default:
-            throw runtime_error("type doesnt exist");
+            throw SemanticException("Invalid query provided for Select");
     }
 }

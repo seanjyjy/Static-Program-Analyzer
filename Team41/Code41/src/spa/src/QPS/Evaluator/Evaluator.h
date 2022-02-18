@@ -7,6 +7,7 @@
 #include "QPS/ClauseVariable.h"
 #include "QPS/QueryClause.h"
 #include "QPS/Evaluator/EvaluatorUtils.h"
+#include "Exception/SemanticException.h"
 
 using namespace std;
 

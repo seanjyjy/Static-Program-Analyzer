@@ -5,6 +5,7 @@
 #include "QPS/Table/PQLTable.h"
 #include "PKB/PKB.h"
 #include "QPS/QueryDeclaration.h"
+#include "Exception/SemanticException.h"
 
 class SelectSynonymEvaluator {
 private:

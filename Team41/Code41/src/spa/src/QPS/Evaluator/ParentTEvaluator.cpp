@@ -40,8 +40,7 @@ Table* ParentTEvaluator::evaluate(QueryClause clause, PKB *pkb) {
         return evaluateWildCardWildCard(pkb);
     }
 
-    // to be change to throw Semantic Error
-    return new FalseTable();
+    throw SemanticException("Invalid query provided for Parent*");
 }
 
 Table* ParentTEvaluator::evaluateIntegerInteger(PKB *pkb, ClauseVariable left, ClauseVariable right) {

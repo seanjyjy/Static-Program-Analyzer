@@ -6,11 +6,6 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKB *pkb) {
     auto leftVariable = clause.getLHS();
     auto rightVariable = clause.getRHS();
 
-    // check if leftVariable is variable type
-    if (!EvaluatorUtils::isAssign(patternSynonym.type)) {
-        return new FalseTable();
-    }
-
     if (leftVariable.isWildCard() && rightVariable.isFullPattern()) {
         return evaluateWildCardFullPattern(pkb, patternSynonym, rightVariable);
     }
@@ -47,8 +42,7 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKB *pkb) {
         return evaluateSynonymWildCard(pkb, patternSynonym, leftVariable);
     }
 
-    // to be change to throw Semantic Error
-    return new FalseTable();
+    throw SemanticException("Invalid query provided for Pattern");
 }
 
 Table *PatternEvaluator::evaluateWildCardFullPattern(PKB *pkb, QueryDeclaration patternSyn, PatternVariable right) {

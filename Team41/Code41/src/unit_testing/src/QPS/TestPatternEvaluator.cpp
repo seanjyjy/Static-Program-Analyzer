@@ -181,24 +181,13 @@ TEST_CASE("Evaluator: Pattern evaluator") {
     }
 
     SECTION("Semantically Invalid") {
-        QueryDeclaration stmtSyn(QueryDeclaration::STMT, ASSIGN_SYN_LBL);
-        PatternClause patternClause1(stmtSyn, variableSyn, patternFP1);
-        Table* table1 = PatternEvaluator::evaluate(patternClause1, pkbManager);
-        REQUIRE(table1->getType() == Table::FalseTable);
-
         ClauseVariable procSyn(ClauseVariable::synonym, "proc", QueryDeclaration::PROCEDURE);
-        PatternClause patternClause2(assignSyn, procSyn, patternFP1);
-        Table* table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
-        REQUIRE(table2->getType() == Table::FalseTable);
+        PatternClause patternClause1(assignSyn, procSyn, patternFP1);
+        REQUIRE_THROWS(PatternEvaluator::evaluate(patternClause1, pkbManager));
 
         ClauseVariable readSyn(ClauseVariable::synonym, "proc", QueryDeclaration::READ);
-        PatternClause patternClause3(assignSyn, readSyn, patternFP1);
-        Table* table3 = PatternEvaluator::evaluate(patternClause3, pkbManager);
-        REQUIRE(table3->getType() == Table::FalseTable);
-
-        delete table1;
-        delete table2;
-        delete table3;
+        PatternClause patternClause2(assignSyn, readSyn, patternFP1);
+        REQUIRE_THROWS(PatternEvaluator::evaluate(patternClause2, pkbManager));
     }
 
     delete node1;
