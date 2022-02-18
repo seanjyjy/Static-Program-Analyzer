@@ -81,7 +81,7 @@ string Parser::syntaxErrorMsg() {
     return withCurrToken("syntax error while parsing tokens");
 }
 
-Token *Parser::checkAndGetToken(TokenType type) {
+Token *Parser::checkAndGetTokenAndAdvance(TokenType type) {
     expect(type);
     Token *ret = currToken.copy();
     advance();
@@ -111,7 +111,7 @@ TNode *Parser::eatProcedure() {
     checkAndAdvance(TokenType::name, "procedure");
 
     // eat procedure name
-    Token *name = checkAndGetToken(TokenType::name);
+    Token *name = checkAndGetTokenAndAdvance(TokenType::name);
 
     // eat {
     checkAndAdvance(TokenType::openingBrace);
@@ -181,21 +181,21 @@ TNode *Parser::eatStmt() {
 
 TNode *Parser::eatStmtRead() {
     checkAndAdvance(TokenType::name, "read");
-    Token *tokenBeforeAdv = checkAndGetToken(TokenType::name);
+    Token *tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
     checkAndAdvance(TokenType::semicolon);
     return TNode::makeReadStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtPrint() {
     checkAndAdvance(TokenType::name, "print");
-    Token *tokenBeforeAdv = checkAndGetToken(TokenType::name);
+    Token *tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
     checkAndAdvance(TokenType::semicolon);
     return TNode::makePrintStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtCall() {
     checkAndAdvance(TokenType::name, "call");
-    Token *tokenBeforeAdv = checkAndGetToken(TokenType::name);
+    Token *tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
     checkAndAdvance(TokenType::semicolon);
     return TNode::makeCallStmt(TNode::makeProcName(tokenBeforeAdv));
 }
@@ -228,7 +228,7 @@ TNode *Parser::eatStmtIf() {
 }
 
 TNode *Parser::eatStmtAssign() {
-    Token *tokenBeforeAdv = checkAndGetToken(TokenType::name);
+    Token *tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
     checkAndAdvance(TokenType::assign);
     TNode *expr = eatExpr();
     checkAndAdvance(TokenType::semicolon);
@@ -384,7 +384,7 @@ TNode *Parser::eatRelFactor() {
 
     c = saveCursor();
     try {
-        Token *t = checkAndGetToken(TokenType::name);
+        Token *t = checkAndGetTokenAndAdvance(TokenType::name);
         return TNode::makeVarName(t);
     } catch (exception &e) {
         backtrack(c);
@@ -392,7 +392,7 @@ TNode *Parser::eatRelFactor() {
 
     c = saveCursor();
     try {
-        Token *t = checkAndGetToken(TokenType::integer);
+        Token *t = checkAndGetTokenAndAdvance(TokenType::integer);
         return TNode::makeConstVal(t);
     } catch (exception &e) {
         backtrack(c);
@@ -553,7 +553,7 @@ TNode *Parser::eatFactor() {
 
     c = saveCursor();
     try {
-        Token *t = checkAndGetToken(TokenType::name);
+        Token *t = checkAndGetTokenAndAdvance(TokenType::name);
         return TNode::makeVarName(t);
     } catch (exception &e) {
         backtrack(c);
@@ -561,7 +561,7 @@ TNode *Parser::eatFactor() {
 
     c = saveCursor();
     try {
-        Token *t = checkAndGetToken(TokenType::integer);
+        Token *t = checkAndGetTokenAndAdvance(TokenType::integer);
         return TNode::makeConstVal(t);
     } catch (exception &e) {
         backtrack(c);

@@ -72,7 +72,7 @@ private:
      * @param type the token type to match
      * @return the token matched before the cursor is advanced.
      */
-    Token *checkAndGetToken(TokenType type);
+    Token *checkAndGetTokenAndAdvance(TokenType type);
 
     /**
      * Verifies the current token matches the type and advances the cursor.
