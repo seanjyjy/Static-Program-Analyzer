@@ -244,41 +244,51 @@ TNode *Parser::eatCondExpr() {
     }
 
     c = saveCursor();
+    TNode *condExpr = nullptr;
     try {
         checkAndAdvance(TokenType::notOp);
         checkAndAdvance(TokenType::openingBracket);
-        TNode *condExpr = eatCondExpr();
+        condExpr = eatCondExpr();
         checkAndAdvance(TokenType::closingBracket);
         return TNode::makeNot(condExpr);
     } catch (exception &e) {
+        delete condExpr;
         backtrack(c);
     }
 
+    TNode *condExpr1 = nullptr;
+    TNode *condExpr2 = nullptr;
     c = saveCursor();
     try {
         checkAndAdvance(TokenType::openingBracket);
-        TNode *condExpr1 = eatCondExpr();
+        condExpr1 = eatCondExpr();
         checkAndAdvance(TokenType::closingBracket);
         checkAndAdvance(TokenType::andOp);
         checkAndAdvance(TokenType::openingBracket);
-        TNode *condExpr2 = eatCondExpr();
+        condExpr2 = eatCondExpr();
         checkAndAdvance(TokenType::closingBracket);
         return TNode::makeAnd(condExpr1, condExpr2);
     } catch (exception &e) {
+        delete condExpr1;
+        delete condExpr2;
         backtrack(c);
     }
 
+    condExpr1 = nullptr;
+    condExpr2 = nullptr;
     c = saveCursor();
     try {
         checkAndAdvance(TokenType::openingBracket);
-        TNode *condExpr1 = eatCondExpr();
+        condExpr1 = eatCondExpr();
         checkAndAdvance(TokenType::closingBracket);
         checkAndAdvance(TokenType::orOp);
         checkAndAdvance(TokenType::openingBracket);
-        TNode *condExpr2 = eatCondExpr();
+        condExpr2 = eatCondExpr();
         checkAndAdvance(TokenType::closingBracket);
         return TNode::makeOr(condExpr1, condExpr2);
     } catch (exception &e) {
+        delete condExpr1;
+        delete condExpr2;
         backtrack(c);
     }
 
@@ -288,62 +298,76 @@ TNode *Parser::eatCondExpr() {
 
 TNode *Parser::eatRelExpr() {
     int c = saveCursor();
+    TNode *rf1 = nullptr;
+    TNode *rf2 = nullptr;
     try {
-        TNode *rf1 = eatRelFactor();
+        rf1 = eatRelFactor();
         checkAndAdvance(TokenType::gt);
-        TNode *rf2 = eatRelFactor();
+        rf2 = eatRelFactor();
         return TNode::makeGt(rf1, rf2);
     } catch (exception &e) {
+        delete rf1;
+        delete rf2;
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        TNode *rf1 = eatRelFactor();
+        rf1 = eatRelFactor();
         checkAndAdvance(TokenType::ge);
-        TNode *rf2 = eatRelFactor();
+        rf2 = eatRelFactor();
         return TNode::makeGe(rf1, rf2);
     } catch (exception &e) {
+        delete rf1;
+        delete rf2;
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        TNode *rf1 = eatRelFactor();
+        rf1 = eatRelFactor();
         checkAndAdvance(TokenType::lt);
-        TNode *rf2 = eatRelFactor();
+        rf2 = eatRelFactor();
         return TNode::makeLt(rf1, rf2);
     } catch (exception &e) {
+        delete rf1;
+        delete rf2;
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        TNode *rf1 = eatRelFactor();
+        rf1 = eatRelFactor();
         checkAndAdvance(TokenType::le);
-        TNode *rf2 = eatRelFactor();
+        rf2 = eatRelFactor();
         return TNode::makeLe(rf1, rf2);
     } catch (exception &e) {
+        delete rf1;
+        delete rf2;
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        TNode *rf1 = eatRelFactor();
+        rf1 = eatRelFactor();
         checkAndAdvance(TokenType::eq);
-        TNode *rf2 = eatRelFactor();
+        rf2 = eatRelFactor();
         return TNode::makeEq(rf1, rf2);
     } catch (exception &e) {
+        delete rf1;
+        delete rf2;
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        TNode *rf1 = eatRelFactor();
+        rf1 = eatRelFactor();
         checkAndAdvance(TokenType::ne);
-        TNode *rf2 = eatRelFactor();
+        rf2 = eatRelFactor();
         return TNode::makeNe(rf1, rf2);
     } catch (exception &e) {
+        delete rf1;
+        delete rf2;
         backtrack(c);
     }
 
@@ -382,12 +406,14 @@ TNode *Parser::eatExpr() {
     TNode *term = eatTerm();
 
     int c = saveCursor();
+    TNode *expr1 = nullptr;
     try {
-        TNode *expr1 = eatExpr1();
+        expr1 = eatExpr1();
         expr1->setLeftChild(term);
         while (expr1->getParent() != nullptr) expr1 = expr1->getParent();
         return expr1;
     } catch (exception &e) {
+        delete expr1;
         backtrack(c);
     }
 
@@ -400,13 +426,15 @@ TNode *Parser::eatExpr1() {
         TNode *term = eatTerm();
 
         int c = saveCursor();
+        TNode *expr1 = nullptr;
         try {
-            TNode *expr1 = eatExpr1();
+            expr1 = eatExpr1();
             TNode *pl = TNode::makePlus(TNode::makeDummy(), term);
             expr1->setLeftChild(pl);
             pl->setParent(expr1);
             return pl;
         } catch (exception &e) {
+            delete expr1;
             backtrack(c);
         }
 
@@ -416,13 +444,15 @@ TNode *Parser::eatExpr1() {
         TNode *term = eatTerm();
 
         int c = saveCursor();
+        TNode *expr1 = nullptr;
         try {
-            TNode *expr1 = eatExpr1();
+            expr1 = eatExpr1();
             TNode *pl = TNode::makeMinus(TNode::makeDummy(), term);
             expr1->setLeftChild(pl);
             pl->setParent(expr1);
             return pl;
         } catch (exception &e) {
+            delete expr1;
             backtrack(c);
         }
 
@@ -435,12 +465,14 @@ TNode *Parser::eatTerm() {
     TNode *factor = eatFactor();
 
     int c = saveCursor();
+    TNode *term1 = nullptr;
     try {
-        TNode *term1 = eatTerm1();
+        term1 = eatTerm1();
         term1->setLeftChild(factor);
         while (term1->getParent() != nullptr) term1 = term1->getParent();
         return term1;
     } catch (exception &e) {
+        delete term1;
         backtrack(c);
     }
 
@@ -453,13 +485,15 @@ TNode *Parser::eatTerm1() {
         TNode *factor = eatFactor();
 
         int c = saveCursor();
+        TNode *term1 = nullptr;
         try {
-            TNode *term1 = eatTerm1();
+            term1 = eatTerm1();
             TNode *times = TNode::makeTimes(TNode::makeDummy(), factor);
             term1->setLeftChild(times);
             times->setParent(term1);
             return times;
         } catch (exception &e) {
+            delete term1;
             backtrack(c);
         }
 
@@ -469,6 +503,7 @@ TNode *Parser::eatTerm1() {
         TNode *factor = eatFactor();
 
         int c = saveCursor();
+        TNode *term1 = nullptr;
         try {
             TNode *term1 = eatTerm1();
             TNode *dv = TNode::makeDiv(TNode::makeDummy(), factor);
@@ -476,6 +511,7 @@ TNode *Parser::eatTerm1() {
             dv->setParent(term1);
             return dv;
         } catch (exception &e) {
+            delete term1;
             backtrack(c);
         }
 
@@ -485,13 +521,15 @@ TNode *Parser::eatTerm1() {
         TNode *factor = eatFactor();
 
         int c = saveCursor();
+        TNode *term1 = nullptr;
         try {
-            TNode *term1 = eatTerm1();
+            term1 = eatTerm1();
             TNode *md = TNode::makeMod(TNode::makeDummy(), factor);
             term1->setLeftChild(md);
             md->setParent(term1);
             return md;
         } catch (exception &e) {
+            delete term1;
             backtrack(c);
         }
 
@@ -502,12 +540,14 @@ TNode *Parser::eatTerm1() {
 
 TNode *Parser::eatFactor() {
     int c = saveCursor();
+    TNode *expr = nullptr;
     try {
         checkAndAdvance(TokenType::openingBracket);
-        TNode *expr = eatExpr();
+        expr = eatExpr();
         checkAndAdvance(TokenType::closingBracket);
         return expr;
     } catch (exception &e) {
+        delete expr;
         backtrack(c);
     }
 
