@@ -19,6 +19,7 @@ TEST_CASE("Test 2") {
     PKB pkbManager = PKB();
     DesignExtractor designExtractor(ast, &pkbManager);
     designExtractor.extractDesign();
+    delete ast;
 
     SECTION("Query 1") {
         string query = "variable v;\n"
@@ -31,5 +32,6 @@ TEST_CASE("Test 2") {
 
         unordered_set<string> answer{"i", "x", "y", "z"};
         REQUIRE(result == answer);
+        delete queryObject;
     }
 }

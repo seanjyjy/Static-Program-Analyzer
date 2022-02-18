@@ -11,21 +11,25 @@ TEST_CASE("PKB: PatternTable") {
     unordered_set<string> EMPTY_SET;
     vector<pair<string, string>> EMPTY_SET_PAIR;
 
-    Token varTok = Token(TokenType::name, "v0", {0, 0}, {0, 0});
-    Token oneTok = Token(TokenType::integer, "1", {0, 0}, {0, 0});
-    Token twoTok = Token(TokenType::integer, "2", {0, 0}, {0, 0});
-    Token threeTok = Token(TokenType::integer, "3", {0, 0}, {0, 0});
-    Token fourTok = Token(TokenType::integer, "4", {0, 0}, {0, 0});
+    Token *varTok = new Token(TokenType::name, "v0", {0, 0}, {0, 0});
+    Token *oneTok = new Token(TokenType::integer, "1", {0, 0}, {0, 0});
+    Token *oneTok_copy = oneTok->copy();
+    Token *twoTok = new Token(TokenType::integer, "2", {0, 0}, {0, 0});
+    Token *threeTok = new Token(TokenType::integer, "3", {0, 0}, {0, 0});
+    Token *threeTok_copy = threeTok->copy();
+    Token *fourTok = new Token(TokenType::integer, "4", {0, 0}, {0, 0});
 
     // 1 + 2 * 3 - 1 / 3 + v0
-    TNode *varNode = TNode::makeVarName(&varTok);
-    TNode *one = TNode::makeConstVal(&oneTok);
-    TNode *two = TNode::makeConstVal(&twoTok);
-    TNode *three = TNode::makeConstVal(&threeTok);
-    TNode *four = TNode::makeConstVal(&fourTok);
+    TNode *varNode = TNode::makeVarName(varTok);
+    TNode *one = TNode::makeConstVal(oneTok);
+    TNode *one_copy = TNode::makeConstVal(oneTok_copy);
+    TNode *two = TNode::makeConstVal(twoTok);
+    TNode *three = TNode::makeConstVal(threeTok);
+    TNode *three_copy = TNode::makeConstVal(threeTok_copy);
+    TNode *four = TNode::makeConstVal(fourTok);
     TNode *times = TNode::makeTimes(two, three);
-    TNode *divide = TNode::makeDiv(one, three);
-    TNode *plus = TNode::makePlus(one, times);
+    TNode *divide = TNode::makeDiv(one, three_copy);
+    TNode *plus = TNode::makePlus(one_copy, times);
     TNode *minus = TNode::makeMinus(plus, divide);
     TNode *plusVar = TNode::makePlus(minus, varNode);
 
@@ -122,7 +126,15 @@ TEST_CASE("PKB: PatternTable") {
                     REQUIRE(table.getStmtFromSubPatternNVar(child, vars[0]) == unordered_set<string>());
                     REQUIRE(table.getStmtFromSubPatternNVar(child, vars[1]) == unordered_set<string>());
                 }
+
+                // clean up newly created nodes
+                timesMinusDivide->setChildren(vector<TNode*>());
+                swappedOperands->setChildren(vector<TNode*>());
+                delete swappedOperands;
+                delete timesMinusDivide;
             }
         }
     }
+    delete plusVar;
+    delete four;
 }

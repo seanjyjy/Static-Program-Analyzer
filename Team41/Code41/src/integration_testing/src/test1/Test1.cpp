@@ -19,6 +19,7 @@ TEST_CASE("Test 1") {
     PKB pkbManager = PKB();
     DesignExtractor designExtractor(ast, &pkbManager);
     designExtractor.extractDesign();
+    delete ast;
 
     SECTION("Query 1") {
         string query = "stmt s;\n"
@@ -31,6 +32,7 @@ TEST_CASE("Test 1") {
 
         unordered_set<string> answer{"3", "4", "11"};
         REQUIRE(result == answer);
+        delete queryObject;
     }
 
     SECTION("Query 2") {
@@ -44,6 +46,7 @@ TEST_CASE("Test 1") {
 
         unordered_set<string> answer{"7", "9"};
         REQUIRE(result == answer);
+        delete queryObject;
     }
 
     SECTION("Query 3") {
@@ -57,6 +60,7 @@ TEST_CASE("Test 1") {
 
         unordered_set<string> answer{"8", "9"};
         REQUIRE(result == answer);
+        delete queryObject;
     }
 
     SECTION("Query 4") {
@@ -70,5 +74,6 @@ TEST_CASE("Test 1") {
 
         unordered_set<string> answer{"y", "z"};
         REQUIRE(result == answer);
+        delete queryObject;
     }
 }

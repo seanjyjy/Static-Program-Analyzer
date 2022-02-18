@@ -24,6 +24,7 @@ TEST_CASE("ModifiesExtractor: Assign") {
             {"5", {"g"}}, {"6", {"i"}}, {"7", {"m"}}, {"8", {"q"}}
     };
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
 }
 
 TEST_CASE("ModifiesExtractor: Read") {
@@ -42,6 +43,7 @@ TEST_CASE("ModifiesExtractor: Read") {
                 {"1", {"a"}}, {"2", {"bcd"}}, {"3", {"e1fg5"}}
     };
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
 }
 
 TEST_CASE("ModifiesExtractor: Print") {
@@ -54,6 +56,7 @@ TEST_CASE("ModifiesExtractor: Print") {
 
     REQUIRE(me.getProcModifiesMap().empty());
     REQUIRE(me.getStmtModifiesMap().empty());
+    delete ast;
 }
 
 TEST_CASE("ModifiesExtractor: While") {
@@ -73,6 +76,7 @@ TEST_CASE("ModifiesExtractor: While") {
             {"7", {"w"}}, {"8", {"w"}}, {"9", {"w"}}, {"10", {"t"}}, {"11", {"t"}}
     };
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
 }
 
 TEST_CASE("ModifiesExtractor: If") {
@@ -95,6 +99,7 @@ TEST_CASE("ModifiesExtractor: If") {
             {"17", {"t", "tt"}}, {"18", {"t"}}, {"19", {"tt"}}
     };
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
 }
 
 TEST_CASE("ModifiesExtractor: Non-nested") {
@@ -116,6 +121,7 @@ TEST_CASE("ModifiesExtractor: Non-nested") {
             {"6", {"j", "m"}}, {"7", {"j"}}, {"9", {"m"}}
     };
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
 }
 
 TEST_CASE("ModifiesExtractor: Nested") {
@@ -137,4 +143,5 @@ TEST_CASE("ModifiesExtractor: Nested") {
             {"4", {"d"}}, {"6", {"i"}}, {"7", {"n", "s"}}, {"8", {"n"}}, {"9", {"s"}}
     };
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
 }

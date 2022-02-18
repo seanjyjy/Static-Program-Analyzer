@@ -377,14 +377,14 @@ TEST_CASE("PKB: pattern abstraction") {
     unordered_set<string> EMPTY_SET;
     vector<pair<string, string>> EMPTY_SET_PAIR;
 
-    Token varTok = Token(TokenType::name, "v0", {0, 0}, {0, 0});
-    Token oneTok = Token(TokenType::integer, "1", {0, 0}, {0, 0});
-    Token twoTok = Token(TokenType::integer, "2", {0, 0}, {0, 0});
+    Token* varTok = new  Token(TokenType::name, "v0", {0, 0}, {0, 0});
+    Token* oneTok = new Token(TokenType::integer, "1", {0, 0}, {0, 0});
+    Token* twoTok = new Token(TokenType::integer, "2", {0, 0}, {0, 0});
 
     // 1 + 2 * v0
-    TNode *varNode = TNode::makeVarName(&varTok);
-    TNode *one = TNode::makeConstVal(&oneTok);
-    TNode *two = TNode::makeConstVal(&twoTok);
+    TNode *varNode = TNode::makeVarName(varTok);
+    TNode *one = TNode::makeConstVal(oneTok);
+    TNode *two = TNode::makeConstVal(twoTok);
     TNode *times = TNode::makeTimes(two, varNode);
     TNode *plus = TNode::makePlus(one, times);
 
@@ -419,4 +419,6 @@ TEST_CASE("PKB: pattern abstraction") {
             REQUIRE(pkbManager.getStmtFromSubPatternNVar(child, vars[1]) == unordered_set<string>());
         }
     }
+
+    delete plus;
 }
