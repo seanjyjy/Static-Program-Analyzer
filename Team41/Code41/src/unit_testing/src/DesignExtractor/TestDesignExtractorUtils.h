@@ -25,14 +25,12 @@ public:
 
     static bool isPatternEqual(unordered_map<string, pair<string, TNode *>> mp1, unordered_map<string, pair<string, TNode *>> mp2) {
         if (mp1.size() != mp2.size()) return false;
-        auto it1 = mp1.begin(), it2 = mp2.begin();
-        while (it1 != mp1.end()) {
-            auto &[stmt1, p1] = *it1;
-            auto &[stmt2, p2] = *it2;
+        for (auto &[stmt, p1] : mp1) {
+            if (mp2.find(stmt) == mp2.end()) return false;
+            pair<string, TNode *> p2 = mp2[stmt];
             //std::cout << stmt1 << " " << stmt2 << endl << p1.first << " " << p2.first << endl << " " << p1.second << " " << p2.second << endl;
-            if (stmt1 != stmt2 || p1.first != p2.first || !TreeUtils::isEqual(p1.second, p2.second))
+            if (p1.first != p2.first || !TreeUtils::isEqual(p1.second, p2.second))
                 return false;
-            ++it1; ++it2;
         }
         return true;
     }
