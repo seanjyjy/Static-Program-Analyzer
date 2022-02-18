@@ -11,13 +11,13 @@ TEST_CASE("PKB: PatternTable") {
     unordered_set<string> EMPTY_SET;
     vector<pair<string, string>> EMPTY_SET_PAIR;
 
-    Token *varTok = new Token(TokenType::name, "v0", {0, 0}, {0, 0});
-    Token *oneTok = new Token(TokenType::integer, "1", {0, 0}, {0, 0});
+    Token* varTok = Token::makeName("v0");
+    Token* oneTok = Token::makeConst("1");
     Token *oneTok_copy = oneTok->copy();
-    Token *twoTok = new Token(TokenType::integer, "2", {0, 0}, {0, 0});
-    Token *threeTok = new Token(TokenType::integer, "3", {0, 0}, {0, 0});
+    Token* twoTok = Token::makeConst("2");
+    Token *threeTok = Token::makeConst("3");
     Token *threeTok_copy = threeTok->copy();
-    Token *fourTok = new Token(TokenType::integer, "4", {0, 0}, {0, 0});
+    Token *fourTok = Token::makeConst("4");
 
     // 1 + 2 * 3 - 1 / 3 + v0
     TNode *varNode = TNode::makeVarName(varTok);

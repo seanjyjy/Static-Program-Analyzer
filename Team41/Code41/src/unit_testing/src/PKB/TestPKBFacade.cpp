@@ -377,9 +377,9 @@ TEST_CASE("PKB: pattern abstraction") {
     unordered_set<string> EMPTY_SET;
     vector<pair<string, string>> EMPTY_SET_PAIR;
 
-    Token* varTok = new  Token(TokenType::name, "v0", {0, 0}, {0, 0});
-    Token* oneTok = new Token(TokenType::integer, "1", {0, 0}, {0, 0});
-    Token* twoTok = new Token(TokenType::integer, "2", {0, 0}, {0, 0});
+    Token* varTok = Token::makeName("v0");
+    Token* oneTok = Token::makeConst("1");
+    Token* twoTok = Token::makeConst("2");
 
     // 1 + 2 * v0
     TNode *varNode = TNode::makeVarName(varTok);
