@@ -46,6 +46,11 @@ public:
     TNode *getMiniAST();
 
     /**
+     * Clean up method to delete AST
+     */
+    void cleanAST();
+
+    /**
      * Constructor for the PatternVariable class.
      *
      * @param type of the new pattern variable

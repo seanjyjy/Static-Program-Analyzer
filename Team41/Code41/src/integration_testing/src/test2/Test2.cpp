@@ -16,8 +16,8 @@ TEST_CASE("Test 2") {
     string fileContent = FileReader::getFileContent(path);
     Parser p;
     TNode* ast = p.parseProgram(fileContent);
-    PKB* pkbManager = new PKB();
-    DesignExtractor designExtractor(ast, pkbManager);
+    PKB pkbManager = PKB();
+    DesignExtractor designExtractor(ast, &pkbManager);
     designExtractor.extractDesign();
 
     SECTION("Query 1") {
@@ -26,7 +26,7 @@ TEST_CASE("Test 2") {
 
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
-        QueryEvaluator queryEvaluator(pkbManager);
+        QueryEvaluator queryEvaluator(&pkbManager);
         unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
 
         unordered_set<string> answer{"i", "x", "y", "z"};
