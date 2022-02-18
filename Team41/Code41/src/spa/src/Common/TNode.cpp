@@ -13,6 +13,13 @@ using namespace std;
 TNode::TNode(TNodeType type, Token *val, vector<TNode *> children) : type(type), val(val), children(move(children)),
                                                                      parent(nullptr) {}
 
+TNode::~TNode() {
+    delete val;
+    for(TNode * ch : children) {
+        delete ch;
+    }
+}
+
 void TNode::addChild(TNode *child) {
     children.push_back(child);
 }
@@ -39,6 +46,9 @@ void TNode::setParent(TNode *par) {
 
 void TNode::setLeftChild(TNode *child) {
     assert(!children.empty());
+    if (children.size() > 0) {
+        delete children[0];
+    }
     children[0] = child;
 }
 
