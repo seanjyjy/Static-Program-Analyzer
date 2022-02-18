@@ -38,7 +38,7 @@ private:
      * @return 0 if both rows are of the same order, -1 if leftRowPtr has a higher priority and 1 if rightRowPtr has
      * a lower priority.
      */
-    int compareRow(const Row* leftRowPtr, const Row* rightRowPtr, const Header& commonHeader) const;
+    int compareRow(const Row* leftRowPtr, const Row* rightRowPtr, vector<string> commonHeader) const;
 
     /**
      * Merge both table based on the common header to form the resultant cross product table.
@@ -48,14 +48,14 @@ private:
      * @param newTable A new table to be populated with the result of the merging.
      * @param commonHeader The common header that provides the column for ordering.
      */
-    void mergeTable(Table* leftTable, Table* rightTable, Table* newTable, const Header& commonHeader);
+    void mergeTable(Table* leftTable, Table* rightTable, Table* newTable, vector<string> commonHeader);
 
     /**
      * Sorts the table based on the common header fields.
      *
      * @param commonHeader The common header that provides the column for sorting order.
      */
-    void sort(const Header& commonHeader) override;
+    void sort(vector<string> commonHeader) override;
 
     /**
      * Determines if two rows are equal based on the common header fields.
@@ -65,7 +65,7 @@ private:
      * @param commonHeader The common header that provides the column for equality check
      * @return True if both rows are considered equal based on common header, else false.
      */
-    bool isEqual(const Row* rowA, const Row* rowB, const Header& commonHeader);
+    bool isEqual(const Row* rowA, const Row* rowB, const vector<string> commonHeader);
 
     /**
      * Combines the two rows together.
