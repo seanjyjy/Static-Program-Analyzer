@@ -343,7 +343,7 @@ variable v; assign a;
 Select v such that Uses(1, "NevERGONNA12GiveYouUP12DONTEXIST") pattern a(v, _"g +           g"_)
 
 5000
-66 - Uses Integer Identifier Pattern Pair3
+66 - Uses Integer Identifier Pattern Pair1
 variable v; assign a;
 Select v such that Uses(1, "NevERGONNA12GiveYouUP12") pattern a(v, "(abcdef + abcdef) - abcdef")
 tj
@@ -547,4 +547,219 @@ Select s such that Uses(s, _) pattern a(_, "x * g")
 assign a;
 Select a such that Uses(a, _) pattern a(_, "x")
 7
+5000
+107 - Modifies Integer Identifier SubPattern Pair1
+assign a; variable v;
+Select v such that Modifies(1, "x") pattern a(_, _"g + g"_)
+FATBOM123BOM,NevERGONNA12GiveYouUP12,OK,PLSEND,T0ngT0ngQ1ANG,VERYTRUE,ab,abcdef,ac,aj,b,bastards,cry,d1Ngd1Ngd1Ng,db,elephant,else,enjoyThisReallyFunLongText,g,h,heartless,helloWord,i,iAmSad123,iWeep,jb,kidding,l,lol,moreToK1M2S,neverGonnaLetThisEnd,noChance,noCry,okTimeToEndSoon,sad,sadness,seeThisRub115h,tc,then,theyAllHeartLess,thisIs100PercentTheStartOfT24134QSDAFAF,tj,weAllCry,weAllWeep,weCry,whyAreKeyWordsEvenUsed,x,y,yesPls,youAreSad321,youCry,youPsycho,youReachedHere,youWeep,z1b3sw,zz
+5000
+108 - Modifies Integer Identifier SubPattern Pair2
+assign a;
+Select a such that Modifies(7, "x") pattern a(_, _"g + g"_)
+11,44
+5000
+109 - Modifies Integer Identifier Pattern Pair1
+assign a;
+Select a such that Modifies(3, "ab") pattern a("ab", "1")
+28
+5000
+110 - Modifies Integer Synonym SubPattern Pair1
+assign a; variable v;
+Select v such that Modifies(3, v) pattern a(v, _)
+PLSEND,T0ngT0ngQ1ANG,ab,bastards,cry,enjoyThisReallyFunLongText,h,okTimeToEndSoon,then,theyAllHeartLess,thisIs100PercentTheStartOfT24134QSDAFAF,tj,weAllWeep,weCry,x,zz
+5000
+111 - Modifies Integer Synonym SubPattern Pair2
+assign a; variable v;
+Select a such that Modifies(6, v) pattern a(v, _"g"_)
+10,11
+5000
+112 - Modifies Integer Synonym SubPattern Pair3
+assign a; variable v;
+Select v such that Modifies(47, v) pattern a(_, _"yesPls + g"_)
+bastards,helloWord,moreToK1M2S,then
+5000
+113 - Modifies Integer Synonym SubPattern Pair4
+assign a; variable v;
+Select v such that Modifies(47, v) pattern a(_, _"kidding + g"_)
+
+5000
+114 - Modifies Integer Synonym Pattern Pair1
+assign a; variable v;
+Select a such that Modifies(3, v) pattern a(_, "x")
+7
+5000
+115 - Modifies Integer Synonym Pattern Pair2
+assign a; variable v;
+Select a such that Modifies(47, v) pattern a("bastards", "VERYTRUE")
+50
+5000
+116 - Modifies Integer WildCard SubPattern Pair1
+assign a;
+Select a such that Modifies(1, _) pattern a("x", _"x + 1"_)
+
+5000
+117 - Modifies Integer WildCard SubPattern Pair2
+assign a; variable v;
+Select v such that Modifies(21, _) pattern a(_, _"x"_)
+
+5000
+118 - Modifies Integer WildCard Pattern Pair1
+assign a;
+Select a such that Modifies(31, _) pattern a(_, "heartless")
+
+5000
+119 - Modifies Integer WildCard Pattern Pair2
+assign a;
+Select a such that Modifies(31, _) pattern a("x", "x")
+7
+5000
+120 - Modifies Synonym Identifier SubPattern Pair1
+read re; assign a;
+Select re such that Modifies(re, "weAllCry") pattern a(_, _)
+39
+5000
+121 - Modifies Synonym Identifier SubPattern Pair2
+while w; assign a;
+Select w such that Modifies(w, "T0ngT0ngQ1ANG") pattern a(_, _" h + y "_)
+6
+5000
+122 - Modifies Synonym Identifier SubPattern Pair3
+if ifs; assign a;
+Select ifs such that Modifies(ifs, "weCry") pattern a(_, _"1"_)
+3,5
+5000
+123 - Modifies Synonym Identifier SubPattern Pair4
+stmt s; assign a;
+Select s such that Modifies(s, "h") pattern a(_, _"77 - g  + y"_)
+
+5000
+124 - Modifies Synonym Identifier SubPattern Pair5
+assign a;
+Select a such that Modifies(a, "x") pattern a("x", _)
+1,7
+5000
+125 - Modifies Synonym Identifier Pattern Pair1
+read re; assign a;
+Select re such that Modifies(re, "moreToK1M2S") pattern a("okTimeToEndSoon", "yesPls + g + g")
+54
+5000
+126 - Modifies Synonym Identifier Pattern Pair2
+while w; assign a;
+Select w such that Modifies(w, "zz") pattern a(_, _)
+19
+5000
+127 - Modifies Synonym Identifier Pattern Pair3
+if ifs; assign a;
+Select ifs such that Modifies(ifs, "zz") pattern a(_, _)
+3,5,14
+5000
+128 - Modifies Synonym Identifier Pattern Pair4
+stmt s; assign a;
+Select s such that Modifies(s, "zz") pattern a("enjoyThisReallyFunLongText", (kidding + g) + g);
+
+5000
+129 - Modifies Synonym Identifier Pattern Pair5
+assign a;
+Select a such that Modifies(a, "cry") pattern a("cry", "cry + 1")
+17
+5000
+130 - Modifies Synonym Synonym SubPattern Pair1
+read re; variable v; assign a;
+Select re such that Modifies(re, v) pattern a(v, _)
+
+5000
+131 - Modifies Synonym Synonym SubPattern Pair2
+while w; variable v; assign a;
+Select w such that Modifies(w, v) pattern a(v, _)
+6, 16,19,24,27,31,40,47,52
+5000
+132 - Modifies Synonym Synonym SubPattern Pair3
+if ifs; variable v; assign a;
+Select ifs such that Modifies(ifs, v) pattern a(v, _"g + g"_)
+3,5,9,43
+5000
+133 - Modifies Synonym Synonym SubPattern Pair4
+stmt s; variable v; assign a;
+Select s such that Modifies(s, v) pattern a("enjoyThisReallyFunLongText", _"kidding + g"_)
+
+5000
+134 - Modifies Synonym Synonym SubPattern Pair5
+assign a; variable v;
+Select a such that Modifies(a, v) pattern a(v, _)
+1,7,10,11,12,17,18,20,23,25,28,32,35,38,41,44,45,46,50,53
+5000
+135 - Modifies Synonym Synonym Pattern Pair1
+read re; variable v; assign a;
+Select re such that Modifies(re, v) pattern a("x", "x")
+22,39,51,54
+5000
+136 - Modifies Synonym Synonym Pattern Pair2 - Expected empty
+while w; variable v; assign a;
+Select w such that Modifies(w, v) pattern a(bastards, "VERYTRUE")
+
+5000
+137 - Modifies Synonym Synonym Pattern Pair3
+if ifs; variable v; assign a;
+Select ifs such that Modifies(ifs, v) pattern a("x", "x + 1")
+
+5000
+138 - Modifies Synonym Synonym Pattern Pair4
+stmt s; variable v; assign a;
+Select s such that Modifies(s, v) pattern a("h", 77 - g  + y * g * g + g + g * y)
+
+5000
+139 - Modifies Synonym Synonym Pattern Pair5
+assign a; variable v;
+Select a such that Modifies(a, v) pattern a(v, _)
+1,7,10,11,12,17,18,20,23,25,28,32,35,38,41,44,45,46,50,53
+5000
+140 - Modifies Synonym WildCard SubPattern Pair1
+read re; assign a;
+Select re such that Modifies(re, _) pattern a(_, _)
+22,39,51,54
+5000
+141 - Modifies Synonym WildCard SubPattern Pair2
+while w; assign a;
+Select w such that Modifies(w, _) pattern a(_, _"zz * h"_)
+6,16,19,24,27,31,40,47,52
+5000
+142 - Modifies Synonym WildCard SubPattern Pair3
+if ifs; assign a;
+Select ifs such that Modifies(ifs, _) pattern a("tj", _"abcdef - abcdef"_)
+
+5000
+143 - Modifies Synonym WildCard SubPattern Pair4
+stmt s; assign a;
+Select s such that Modifies(s, _) pattern a("x", _"y"_)
+
+5000
+144 - Modifies Synonym WildCard SubPattern Pair5
+assign a;
+Select a such that Modifies(a, _) pattern a(_, _"g +     g"_)
+11,44
+5000
+145 - Modifies Synonym WildCard Pattern Pair1
+read re; assign a;
+Select re such that Modifies(re, _) pattern a("x", "x")
+22,39,51,54
+5000
+146 - Modifies Synonym WildCard Pattern Pair2
+while w; assign a;
+Select w such that Modifies(w, _) pattern a("theyAllHeartLess", "bastards + heartless")
+6,16,19,24,27,31,40,47,52
+5000
+147 - Modifies Synonym WildCard Pattern Pair3
+if ifs; assign a;
+Select ifs such that Modifies(ifs, _) pattern a("enjoyThisReallyFunLongText", "(kidding + g) + g")
+
+5000
+148 - Modifies Synonym WildCard Pattern Pair4
+stmt s; assign a;
+Select s such that Modifies(s, _) pattern a("okTimeToEndSoon", "yesPls + (g + g)")
+
+5000
+149 - Modifies Synonym WildCard Pattern Pair5
+assign a;
+Select a such that Modifies(a, _) pattern a("ab", "1")
+28
 5000
