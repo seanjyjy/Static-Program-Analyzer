@@ -8,8 +8,8 @@
 07.                x = x;
 08.                print i;
 09.                if ((d1Ngd1Ngd1Ng == NevERGONNA12GiveYouUP12) || (g == b)) then {
-10.                    T0ngT0ngQ1ANG = h;
-11.                    h = 77;
+10.                    T0ngT0ngQ1ANG = h + y + 2 + ((x)) * g;
+11.                    h = (77 - (g  + y)) * (g * (((g + g) + (g * y))));
 --.                } else {
 12.                    h = abcdef;
 --.                }
@@ -23,13 +23,13 @@
 18.                thisIs100PercentTheStartOfT24134QSDAFAF = b;
 --.            } else {
 19.                while (zz == tc) {
-20.                    zz = 2;
+20.                    zz = 2 + zz * h + y;
 --.                }
 21.                print ab;
 22.                read db;
 23.                ab = db;
 24.                while (ab == aj) {
-25.                    tj = abcdef;
+25.                    tj = (abcdef + abcdef) - abcdef;
 --.                }
 --.            }
 26.            print T0ngT0ngQ1ANG;
@@ -58,8 +58,8 @@
 42.            print whyAreKeyWordsEvenUsed;
 --.        }
 43.        if (youReachedHere == youPsycho) then {
-44.            enjoyThisReallyFunLongText = kidding;
-45.            okTimeToEndSoon = yesPls;
+44.            enjoyThisReallyFunLongText = kidding + (g + g);
+45.            okTimeToEndSoon = yesPls + g + g;
 --.        } else {
 46.            PLSEND = OK;
 --.        }

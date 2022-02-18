@@ -11,18 +11,30 @@
 x               =                x     ; print i; if
 ((d1Ngd1Ngd1Ng ==                          NevERGONNA12GiveYouUP12        )                 ||
 (g == b))
-then {T0ngT0ngQ1ANG                             = h;               h =                    77     ;
+then {T0ngT0ngQ1ANG=h+y+                 2+((x))*            g         ;               h = (77 -
+(g  +
+y)) * (g
+* (((g + g)
++ (g * y)
+)
+)
+)
+;
                 } else {h = abcdef;}print l;}if(d1Ngd1Ngd1Ng==b)then{print thisIs100PercentTheStartOfT24134QSDAFAF;while(jb==noChance){cry=cry+1;}
                 thisIs100PercentTheStartOfT24134QSDAFAF = b;
 } else {
-while (zz == tc) {zz = 2;}
+while (zz == tc) {zz=2+zz*h+y;}
 print
 ab; read
 db;
 ab=                     db;while
 (ab
 ==
-aj) {tj = abcdef;
+aj) {tj = (abcdef
++ abcdef
+) -
+abcdef
+;
                 }
 }print
 T0ngT0ngQ1ANG;while (ab == ac) {
@@ -53,7 +65,7 @@ else
 read weAllCry;
 }
 } else {while (else ==
-sad) {then = lol;print whyAreKeyWordsEvenUsed;}if (youReachedHere == youPsycho) then {enjoyThisReallyFunLongText=kidding;okTimeToEndSoon=yesPls;} else {
+sad) {then = lol;print whyAreKeyWordsEvenUsed;}if (youReachedHere == youPsycho) then {enjoyThisReallyFunLongText=kidding+(g+g);okTimeToEndSoon=yesPls+g+g;} else {
 PLSEND =
 OK
 ;}while
