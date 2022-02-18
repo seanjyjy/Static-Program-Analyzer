@@ -1,0 +1,5 @@
+procedure main {
+    read a;
+    read bcd;
+    read e1fg5;
+}

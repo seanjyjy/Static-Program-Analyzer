@@ -1,0 +1,4 @@
+<plus>
+	<const val=2></const>
+	<const val=3></const>
+</plus>

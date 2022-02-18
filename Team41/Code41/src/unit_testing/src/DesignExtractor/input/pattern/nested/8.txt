@@ -1,0 +1,7 @@
+<plus>
+	<minus>
+		<var name=p></var>
+		<var name=q></var>
+	</minus>
+	<var name=r></var>
+</plus>

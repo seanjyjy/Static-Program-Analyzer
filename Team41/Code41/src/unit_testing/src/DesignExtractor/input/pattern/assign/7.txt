@@ -1,0 +1,10 @@
+<plus>
+	<minus>
+		<const val=5></const>
+		<var name=n></var>
+	</minus>
+	<times>
+		<var name=p></var>
+		<const val=6></const>
+	</times>
+</plus>

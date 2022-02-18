@@ -1,0 +1,35 @@
+procedure main {
+    if (a == 1) then {
+        x = 1;
+    } else {
+        xx = 11;
+    }
+    if (2 != b) then {
+        read y;
+    } else {
+        read yy;
+    }
+    if (c < d) then {
+        print z;
+    } else {
+        print zz;
+    }
+    if (e > 3) then {
+        if (4 >= f) then {
+            w = v;
+        } else {
+            ww = vv;
+        }
+    } else {
+        if (!(i <= 5)) then {
+            r = s;
+        } else {
+            rr = ss;
+        }
+    }
+    if ((g < 5) && (!(6 == h || 7 != 8))) then {
+        t = u;
+    } else {
+        tt = uu;
+    }
+}
