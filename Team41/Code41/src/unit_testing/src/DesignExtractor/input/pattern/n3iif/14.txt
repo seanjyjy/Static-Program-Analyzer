@@ -1,0 +1,4 @@
+<mod>
+	<var name=then></var>
+	<const val=4></const>
+</mod>

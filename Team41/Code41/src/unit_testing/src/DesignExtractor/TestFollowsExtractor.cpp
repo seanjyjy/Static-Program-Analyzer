@@ -7,6 +7,53 @@
 
 using namespace std;
 
+TEST_CASE("FollowsExtractor: Assign") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
+    fe.extractRelationship();
+
+    unordered_map<string, list<string>> expectedFollowsT = {
+            {"1", {"2", "3", "4", "5", "6", "7", "8"}}, {"2", {"3", "4", "5", "6", "7", "8"}},
+            {"3", {"4", "5", "6", "7", "8"}}, {"4", {"5", "6", "7", "8"}}, {"5", {"6", "7", "8"}},
+            {"6", {"7", "8"}}, {"7", {"8"}}
+    };
+    REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
+}
+
+TEST_CASE("FollowsExtractor: Read") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
+    fe.extractRelationship();
+
+    unordered_map<string, list<string>> expectedFollowsT = {
+            {"1", {"2", "3"}}, {"2", {"3"}}
+    };
+    REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
+}
+
+TEST_CASE("FollowsExtractor: Print") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
+    fe.extractRelationship();
+
+    unordered_map<string, list<string>> expectedFollowsT = {
+            {"1", {"2", "3"}}, {"2", {"3"}}
+    };
+    REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
+}
+
 TEST_CASE("FollowsExtractor: While") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);

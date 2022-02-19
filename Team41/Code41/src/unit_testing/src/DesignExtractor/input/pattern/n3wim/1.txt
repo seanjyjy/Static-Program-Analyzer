@@ -1,0 +1,4 @@
+<times>
+	<const val=10></const>
+	<const val=20></const>
+</times>

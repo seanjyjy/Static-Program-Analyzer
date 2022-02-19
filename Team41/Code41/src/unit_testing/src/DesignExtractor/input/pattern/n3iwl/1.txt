@@ -1,0 +1,4 @@
+<plus>
+	<var name=procedure></var>
+	<const val=1></const>
+</plus>
