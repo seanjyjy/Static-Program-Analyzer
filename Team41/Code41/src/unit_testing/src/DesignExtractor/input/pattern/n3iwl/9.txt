@@ -1,0 +1,4 @@
+<plus>
+	<var name=catch></var>
+	<const val=1></const>
+</plus>

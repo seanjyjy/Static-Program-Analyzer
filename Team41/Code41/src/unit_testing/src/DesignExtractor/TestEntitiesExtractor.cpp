@@ -6,6 +6,74 @@
 
 using namespace std;
 
+TEST_CASE("EntitiesExtractor: Assign") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+
+    SECTION("Statement Nums") {
+        REQUIRE(ee.getNodeToStmtNumMap().size() == 8);
+    }
+    SECTION("Procedures") {
+        unordered_set<string> expectedProcedures = {"main"};
+        REQUIRE(ee.getProcSet() == expectedProcedures);
+    }
+    SECTION("Variable") {
+        unordered_set<string> expectedVarNames = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
+                                                  "m", "n", "p", "q", "r", "s", "t", "u"};
+        REQUIRE(ee.getVarSet() == expectedVarNames);
+    }
+    SECTION("Constants") {
+        unordered_set<string> expectedConsts = {"1", "2", "3", "4", "5", "6", "7", "8"};
+        REQUIRE(ee.getConstSet() == expectedConsts);
+    }
+    delete ast;
+}
+
+TEST_CASE("EntitiesExtractor: Read") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+
+    SECTION("Statement Nums") {
+        REQUIRE(ee.getNodeToStmtNumMap().size() == 3);
+    }
+    SECTION("Procedures") {
+        unordered_set<string> expectedProcedures = {"main"};
+        REQUIRE(ee.getProcSet() == expectedProcedures);
+    }
+    SECTION("Variable") {
+        unordered_set<string> expectedVarNames = {"a", "bcd", "e1fg5"};
+        REQUIRE(ee.getVarSet() == expectedVarNames);
+    }
+    SECTION("Constants") {
+        REQUIRE(ee.getConstSet().empty());
+    }
+    delete ast;
+}
+
+TEST_CASE("EntitiesExtractor: Print") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+
+    SECTION("Statement Nums") {
+        REQUIRE(ee.getNodeToStmtNumMap().size() == 3);
+    }
+    SECTION("Procedures") {
+        unordered_set<string> expectedProcedures = {"main"};
+        REQUIRE(ee.getProcSet() == expectedProcedures);
+    }
+    SECTION("Variable") {
+        unordered_set<string> expectedVarNames = {"a", "bcd", "e1fg5"};
+        REQUIRE(ee.getVarSet() == expectedVarNames);
+    }
+    SECTION("Constants") {
+        REQUIRE(ee.getConstSet().empty());
+    }
+    delete ast;
+}
+
 TEST_CASE("EntitiesExtractor: While") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
@@ -48,6 +116,30 @@ TEST_CASE("EntitiesExtractor: If") {
     }
     SECTION("Constants") {
         unordered_set<string> expectedConsts = {"1", "11", "2", "3", "4", "5", "6", "7", "8"};
+        REQUIRE(ee.getConstSet() == expectedConsts);
+    }
+    delete ast;
+}
+
+TEST_CASE("EntitiesExtractor: Non-Nested") {
+    // non_nested-simple.txt
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+
+    SECTION("Statement Nums") {
+        REQUIRE(ee.getNodeToStmtNumMap().size() == 10);
+    }
+    SECTION("Procedures") {
+        unordered_set<string> expectedProcedures = {"main"};
+        REQUIRE(ee.getProcSet() == expectedProcedures);
+    }
+    SECTION("Variable") {
+        unordered_set<string> expectedVarNames = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "m", "n"};
+        REQUIRE(ee.getVarSet() == expectedVarNames);
+    }
+    SECTION("Constants") {
+        unordered_set<string> expectedConsts = {"1", "2", "3", "4"};
         REQUIRE(ee.getConstSet() == expectedConsts);
     }
     delete ast;

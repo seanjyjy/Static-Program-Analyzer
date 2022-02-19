@@ -1,0 +1,4 @@
+<times>
+	<var name=b></var>
+	<const val=10></const>
+</times>

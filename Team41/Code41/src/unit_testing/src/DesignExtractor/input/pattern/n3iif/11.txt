@@ -1,0 +1,7 @@
+<mod>
+	<times>
+		<var name=if></var>
+		<var name=then></var>
+	</times>
+	<var name=else></var>
+</mod>

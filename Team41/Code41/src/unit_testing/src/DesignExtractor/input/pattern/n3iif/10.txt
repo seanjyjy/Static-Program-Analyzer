@@ -1,0 +1,4 @@
+<times>
+	<var name=print></var>
+	<const val=30></const>
+</times>
