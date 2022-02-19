@@ -11,7 +11,7 @@ public:
     static string readFile(string folder, string filename) {
         filesystem::path cwd = filesystem::current_path();
         cwd = cwd.parent_path().parent_path().parent_path();
-        list<string> paths = {"src", "unit_testing", "src", "DesignExtractor", "input"};
+        list<string> paths = {"src", "unit_testing"};
         if (!folder.empty())
             paths.push_back(folder);
         paths.push_back(filename);
@@ -21,6 +21,18 @@ public:
         string path = cwd.string();
         string fileContent = FileReader::getFileContent(path);
         return fileContent;
+    }
+
+    static string readDeInput(string filename) {
+        return readFile("src/DesignExtractor/input", filename);
+    }
+
+    static string readDePattern(string patternFolder, string filename) {
+        return readFile("src/DesignExtractor/input/pattern/" + patternFolder, filename);
+    }
+
+    static string readSimpleProgram(string filename) {
+        return readFile("simple/program", filename);
     }
 
     static bool isPatternEqual(unordered_map<string, pair<string, TNode *>> mp1, unordered_map<string, pair<string, TNode *>> mp2) {
