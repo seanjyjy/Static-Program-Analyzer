@@ -1,9 +1,9 @@
 #include <algorithm>
 #include <stack>
-#include <stdexcept>
 
 #include "Common/TNodeType.h"
 #include <DesignExtractor/EntitiesExtractor.h>
+#include <Exception/SemanticException.h>
 
 using namespace std;
 
@@ -14,7 +14,7 @@ void EntitiesExtractor::findProcedures() {
     for (TNode *procNode : procNodes) {
         string procName = procNode->getVal()->getVal();
         if (procSet.find(procName) != procSet.end()) // Multiple procedures with same name not allowed
-            throw runtime_error("Duplicate Procedure Name '" + procName + "' found");
+            throw SemanticException("Duplicate Procedure Name '" + procName + "' found");
         procSet.insert(procName);
     }
 }

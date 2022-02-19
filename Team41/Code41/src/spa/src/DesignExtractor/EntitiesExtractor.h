@@ -16,7 +16,7 @@ private:
     /**
      * Records procedure names to procSet from children nodes of the root of AST.
      *
-     * @throws runtime_exception if multiple procedures with same names exist
+     * @throws SemanticException if multiple procedures with same names exist
      */
     void findProcedures();
 
