@@ -8,7 +8,7 @@
 using namespace std;
 
 TEST_CASE("FollowsExtractor: While") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -22,7 +22,7 @@ TEST_CASE("FollowsExtractor: While") {
 }
 
 TEST_CASE("FollowsExtractor: If") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -37,7 +37,7 @@ TEST_CASE("FollowsExtractor: If") {
 
 TEST_CASE("FollowsExtractor: Non-nested") {
     // non_nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -53,7 +53,7 @@ TEST_CASE("FollowsExtractor: Non-nested") {
 
 TEST_CASE("FollowsExtractor: Nested") {
     // nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();

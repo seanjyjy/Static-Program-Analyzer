@@ -8,7 +8,7 @@
 using namespace std;
 
 TEST_CASE("ModifiesExtractor: Assign") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -27,7 +27,7 @@ TEST_CASE("ModifiesExtractor: Assign") {
 }
 
 TEST_CASE("ModifiesExtractor: Read") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -45,7 +45,7 @@ TEST_CASE("ModifiesExtractor: Read") {
 }
 
 TEST_CASE("ModifiesExtractor: Print") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -57,7 +57,7 @@ TEST_CASE("ModifiesExtractor: Print") {
 }
 
 TEST_CASE("ModifiesExtractor: While") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -76,7 +76,7 @@ TEST_CASE("ModifiesExtractor: While") {
 }
 
 TEST_CASE("ModifiesExtractor: If") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -99,7 +99,7 @@ TEST_CASE("ModifiesExtractor: If") {
 
 TEST_CASE("ModifiesExtractor: Non-nested") {
     // non_nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -120,7 +120,7 @@ TEST_CASE("ModifiesExtractor: Non-nested") {
 
 TEST_CASE("ModifiesExtractor: Nested") {
     // nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();

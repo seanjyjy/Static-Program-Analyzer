@@ -7,7 +7,7 @@
 using namespace std;
 
 TEST_CASE("EntitiesExtractor: While") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
 
@@ -29,7 +29,7 @@ TEST_CASE("EntitiesExtractor: While") {
 }
 
 TEST_CASE("EntitiesExtractor: If") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
 
@@ -53,7 +53,7 @@ TEST_CASE("EntitiesExtractor: If") {
 
 TEST_CASE("EntitiesExtractor: Nested") {
     // nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
 
