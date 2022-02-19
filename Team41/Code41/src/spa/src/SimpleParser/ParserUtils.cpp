@@ -21,7 +21,9 @@ string ParserUtils::highlight(const string &simple, int fromRow, int fromCol, in
 
             // build the highlight as long as we are within range
             if (inHighlightZone(currRow, currCol, fromRow, fromCol, toRow, toCol)) {
-                highlight += (isspace(simple[i])) ? simple[i] : '^';
+                highlight += (isspace(simple[i]) && simple[i] != ' ') ? simple[i] : '^';
+            } else if (inHighlightRow(currRow, fromRow, toRow)){
+                highlight += (isspace(simple[i])) ? simple[i] : ' ';
             }
             
             // update row, col and index
@@ -55,4 +57,8 @@ bool ParserUtils::inHighlightZone(int currRow, int currCol, int fromRow, int fro
                (currRow > fromRow && currRow < toRow) ||
                (currRow == toRow && currCol <= toCol);
     }
+}
+
+bool ParserUtils::inHighlightRow(int currRow, int fromRow, int toRow) {
+    return currRow >= fromRow && currRow <= toRow;
 }

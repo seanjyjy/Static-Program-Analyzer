@@ -8,10 +8,10 @@ using namespace std;
 
 int main() {
     string s = "procedure main{\n"
-               "\ta = 9341 + 10;\n"
+               "a = 0941 + 10;\n"
                "b = 100 + 200;\n"
                "}\n";
-    cout << ParserUtils::highlight(s, 0, 0, 0, 4) << endl;
+    cout << ParserUtils::highlight(s, 1, 1, 1, 4) << endl;
 //
 //    Parser p;
 //    TNode* ast = p.parseProgram(s);
