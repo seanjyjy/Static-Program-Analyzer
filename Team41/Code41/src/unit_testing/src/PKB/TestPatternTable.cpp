@@ -11,29 +11,33 @@ TEST_CASE("PKB: PatternTable") {
     unordered_set<string> EMPTY_SET;
     vector<pair<string, string>> EMPTY_SET_PAIR;
 
-    Token varTok = Token(TokenType::name, "v0", {0, 0}, {0, 0});
-    Token oneTok = Token(TokenType::integer, "1", {0, 0}, {0, 0});
-    Token twoTok = Token(TokenType::integer, "2", {0, 0}, {0, 0});
-    Token threeTok = Token(TokenType::integer, "3", {0, 0}, {0, 0});
-    Token fourTok = Token(TokenType::integer, "4", {0, 0}, {0, 0});
+    Token* varTok = Token::makeName("v0");
+    Token* oneTok = Token::makeConst("1");
+    Token *oneTok_copy = oneTok->copy();
+    Token* twoTok = Token::makeConst("2");
+    Token *threeTok = Token::makeConst("3");
+    Token *threeTok_copy = threeTok->copy();
+    Token *fourTok = Token::makeConst("4");
 
     // 1 + 2 * 3 - 1 / 3 + v0
-    TNode *varNode = TNode::makeVarName(&varTok);
-    TNode *one = TNode::makeConstVal(&oneTok);
-    TNode *two = TNode::makeConstVal(&twoTok);
-    TNode *three = TNode::makeConstVal(&threeTok);
-    TNode *four = TNode::makeConstVal(&fourTok);
+    TNode *varNode = TNode::makeVarName(varTok);
+    TNode *one = TNode::makeConstVal(oneTok);
+    TNode *one_copy = TNode::makeConstVal(oneTok_copy);
+    TNode *two = TNode::makeConstVal(twoTok);
+    TNode *three = TNode::makeConstVal(threeTok);
+    TNode *three_copy = TNode::makeConstVal(threeTok_copy);
+    TNode *four = TNode::makeConstVal(fourTok);
     TNode *times = TNode::makeTimes(two, three);
-    TNode *divide = TNode::makeDiv(one, three);
-    TNode *plus = TNode::makePlus(one, times);
+    TNode *divide = TNode::makeDiv(one, three_copy);
+    TNode *plus = TNode::makePlus(one_copy, times);
     TNode *minus = TNode::makeMinus(plus, divide);
     TNode *plusVar = TNode::makePlus(minus, varNode);
 
     SECTION("FullPattern") {
         SECTION("Initial State") {
             REQUIRE(sortAndCompareVectors(table.getStmtNVarFromFullPattern(plusVar), EMPTY_SET_PAIR));
-            REQUIRE(table.getAllStmtsFromFullPattern(plusVar) == unordered_set<string>());
-            REQUIRE(table.getStmtFromFullPatternNVar(plusVar, vars[0]) == unordered_set<string>());
+            REQUIRE(table.getAllStmtsFromFullPattern(plusVar).empty());
+            REQUIRE(table.getStmtFromFullPatternNVar(plusVar, vars[0]).empty());
         }
 
         SECTION("Basic functionality") {
@@ -42,7 +46,7 @@ TEST_CASE("PKB: PatternTable") {
                                           vector<pair<string, string>>({{stmt[0], vars[0]}})));
             REQUIRE(table.getAllStmtsFromFullPattern(plusVar) == unordered_set<string>({stmt[0]}));
             REQUIRE(table.getStmtFromFullPatternNVar(plusVar, vars[0]) == unordered_set<string>({stmt[0]}));
-            REQUIRE(table.getStmtFromFullPatternNVar(plusVar, vars[1]) == unordered_set<string>());
+            REQUIRE(table.getStmtFromFullPatternNVar(plusVar, vars[1]).empty());
 
             REQUIRE_NOTHROW(table.setPattern(stmt[1], vars[1], plusVar));
             REQUIRE(sortAndCompareVectors(table.getStmtNVarFromFullPattern(plusVar),
@@ -53,16 +57,16 @@ TEST_CASE("PKB: PatternTable") {
             REQUIRE(table.getStmtFromFullPatternNVar(plusVar, vars[1]) == unordered_set<string>({stmt[1]}));
 
             // empty result
-            REQUIRE(table.getAllStmtsFromFullPattern(plus) == unordered_set<string>({}));
-            REQUIRE(table.getAllStmtsFromFullPattern(varNode) == unordered_set<string>({}));
+            REQUIRE(table.getAllStmtsFromFullPattern(plus).empty());
+            REQUIRE(table.getAllStmtsFromFullPattern(varNode).empty());
         }
     }
 
     SECTION("SubPattern") {
         SECTION("Initial State") {
             REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(plusVar), EMPTY_SET_PAIR));
-            REQUIRE(table.getAllStmtsFromSubPattern(plusVar) == unordered_set<string>());
-            REQUIRE(table.getStmtFromSubPatternNVar(plusVar, vars[0]) == unordered_set<string>());
+            REQUIRE(table.getAllStmtsFromSubPattern(plusVar).empty());
+            REQUIRE(table.getStmtFromSubPatternNVar(plusVar, vars[0]).empty());
         }
 
         SECTION("Basic functionality") {
@@ -74,7 +78,7 @@ TEST_CASE("PKB: PatternTable") {
                                                   vector<pair<string, string>>({{stmt[0], vars[0]}})));
                     REQUIRE(table.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[0]}));
                     REQUIRE(table.getStmtFromSubPatternNVar(child, vars[0]) == unordered_set<string>({stmt[0]}));
-                    REQUIRE(table.getStmtFromSubPatternNVar(child, vars[1]) == unordered_set<string>());
+                    REQUIRE(table.getStmtFromSubPatternNVar(child, vars[1]).empty());
                 }
             }
 
@@ -100,7 +104,7 @@ TEST_CASE("PKB: PatternTable") {
                                                   vector<pair<string, string>>({{stmt[0], vars[0]}})));
                     REQUIRE(table.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[0]}));
                     REQUIRE(table.getStmtFromSubPatternNVar(child, vars[0]) == unordered_set<string>({stmt[0]}));
-                    REQUIRE(table.getStmtFromSubPatternNVar(child, vars[1]) == unordered_set<string>());
+                    REQUIRE(table.getStmtFromSubPatternNVar(child, vars[1]).empty());
                 }
 
                 // unique to stmt[1]
@@ -108,7 +112,7 @@ TEST_CASE("PKB: PatternTable") {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
                                                   vector<pair<string, string>>({{stmt[1], vars[1]}})));
                     REQUIRE(table.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[1]}));
-                    REQUIRE(table.getStmtFromSubPatternNVar(child, vars[0]) == unordered_set<string>());
+                    REQUIRE(table.getStmtFromSubPatternNVar(child, vars[0]).empty());
                     REQUIRE(table.getStmtFromSubPatternNVar(child, vars[1]) == unordered_set<string>({stmt[1]}));
                 }
 
@@ -118,11 +122,19 @@ TEST_CASE("PKB: PatternTable") {
                 for (TNode *child: { four, swappedOperands }) {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
                                                   vector<pair<string, string>>()));
-                    REQUIRE(table.getAllStmtsFromSubPattern(child) == unordered_set<string>());
-                    REQUIRE(table.getStmtFromSubPatternNVar(child, vars[0]) == unordered_set<string>());
-                    REQUIRE(table.getStmtFromSubPatternNVar(child, vars[1]) == unordered_set<string>());
+                    REQUIRE(table.getAllStmtsFromSubPattern(child).empty());
+                    REQUIRE(table.getStmtFromSubPatternNVar(child, vars[0]).empty());
+                    REQUIRE(table.getStmtFromSubPatternNVar(child, vars[1]).empty());
                 }
+
+                // clean up newly created nodes
+                timesMinusDivide->setChildren(vector<TNode*>());
+                swappedOperands->setChildren(vector<TNode*>());
+                delete swappedOperands;
+                delete timesMinusDivide;
             }
         }
     }
+    delete plusVar;
+    delete four;
 }

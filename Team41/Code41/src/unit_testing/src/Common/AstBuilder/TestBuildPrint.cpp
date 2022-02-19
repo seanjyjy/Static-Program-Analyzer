@@ -11,11 +11,14 @@ TEST_CASE("AST Builder: print statement") {
         string xml = TestAstBuilderUtils::readFile("print", "1-xml.txt");
         // manually build actual AST
         Token* var = Token::makeName("x");
-        TNode* call = TNode::makePrintStmt(
+        TNode* pn = TNode::makePrintStmt(
                 TNode::makeVarName(var));
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
-        REQUIRE(TreeUtils::isEqual(ast, call));
+        REQUIRE(TreeUtils::isEqual(ast, pn));
+
+        delete pn;
+        delete ast;
     }
 }

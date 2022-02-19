@@ -362,6 +362,7 @@ bool QueryParser::parsePatternClause() {
     optional<string> rp = lex->nextExpected(")");
     if (rp == nullopt) {
         printf("Syntax Error: Expected ')' for end of pattern declaration.\n");
+        delete miniAST;
         return false;
     }
 
@@ -394,34 +395,45 @@ QueryObject *QueryParser::parse() {
     lex = new QueryLexer(input);
 
     if (!parseDeclarations()) {
+        cleanup();
         return queryObject;
     }
 
     if (!parseSelectSynonym()) {
-        return queryObject ;
+        cleanup();
+        return queryObject;
     }
 
     while (!lex->isEndOfQuery()) {
         if (lex->peekNextIsString("such")) {
             skipSuchThat();
             if (!parseClause()) {
+                cleanup();
                 return queryObject;
             }
         } else if (lex->peekNextIsString("pattern")) {
             // Do pattern stuff
             if (!parsePatternClause()) {
                 queryObject->isQueryValid = false;
+                cleanup();
                 return queryObject;
             }
         } else {
             queryObject->isQueryValid = false;
             string unexpected = lex->nextToken();
             printf("Syntax Error: Unexpected term <%s> found.", unexpected.c_str());
+            cleanup();
             return queryObject;
         }
     }
 
     printf("Query parsed.\n");
     queryObject->isQueryValid = true;
+    cleanup();
     return queryObject;
+}
+
+void QueryParser::cleanup() {
+    delete lex;
+    lex = nullptr;
 }

@@ -43,5 +43,7 @@ TEST_CASE("AST Builder: statement list") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, procedure));
+        delete ast;
+        delete procedure;
     }
 }

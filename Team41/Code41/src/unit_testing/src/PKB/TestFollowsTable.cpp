@@ -117,9 +117,9 @@ TEST_CASE("PKB: FollowsTable") {
             REQUIRE(table.getStmtsFollowedTBy(stmt[0]) == unordered_set<string>({stmt[1], stmt[2], stmt[3]}));
             REQUIRE(table.getStmtsFollowedTBy(stmt[1]) == unordered_set<string>({stmt[2], stmt[3]}));
             REQUIRE(table.getStmtsFollowedTBy(stmt[2]) == unordered_set<string>({stmt[3]}));
-            REQUIRE(table.getStmtsFollowedTBy(stmt[3]) == unordered_set<string>());
+            REQUIRE(table.getStmtsFollowedTBy(stmt[3]).empty());
 
-            REQUIRE(table.getStmtsFollowingT(stmt[0]) == unordered_set<string>());
+            REQUIRE(table.getStmtsFollowingT(stmt[0]).empty());
             REQUIRE(table.getStmtsFollowingT(stmt[1]) == unordered_set<string>({stmt[0]}));
             REQUIRE(table.getStmtsFollowingT(stmt[2]) == unordered_set<string>({stmt[0], stmt[1]}));
             REQUIRE(table.getStmtsFollowingT(stmt[3]) == unordered_set<string>({stmt[0], stmt[1], stmt[2]}));

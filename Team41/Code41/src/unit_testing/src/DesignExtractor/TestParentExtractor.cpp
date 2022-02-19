@@ -17,6 +17,7 @@ TEST_CASE("ParentExtractor: Assign") {
 
     REQUIRE(pe.getParentMap().empty());
     REQUIRE(pe.getParentTMap().empty());
+    delete ast;
 }
 
 TEST_CASE("ParentExtractor: Read") {
@@ -29,6 +30,7 @@ TEST_CASE("ParentExtractor: Read") {
 
     REQUIRE(pe.getParentMap().empty());
     REQUIRE(pe.getParentTMap().empty());
+    delete ast;
 }
 
 TEST_CASE("ParentExtractor: Print") {
@@ -41,6 +43,7 @@ TEST_CASE("ParentExtractor: Print") {
 
     REQUIRE(pe.getParentMap().empty());
     REQUIRE(pe.getParentTMap().empty());
+    delete ast;
 }
 
 TEST_CASE("ParentExtractor: While") {
@@ -59,6 +62,7 @@ TEST_CASE("ParentExtractor: While") {
             {"1", {"2"}}, {"3", {"4"}}, {"5", {"6"}}, {"7", {"8", "9"}}, {"8", {"9"}}, {"10", {"11"}}
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
+    delete ast;
 }
 
 TEST_CASE("ParentExtractor: If") {
@@ -79,6 +83,7 @@ TEST_CASE("ParentExtractor: If") {
             {"10", {"11", "12", "13", "14", "15", "16"}}, {"11", {"12", "13"}}, {"14", {"15", "16"}}, {"17", {"18", "19"}}
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
+    delete ast;
 }
 
 TEST_CASE("ParentExtractor: Non-nested") {
@@ -98,6 +103,7 @@ TEST_CASE("ParentExtractor: Non-nested") {
             {"3", {"4", "5"}}, {"6", {"7", "8", "9"}}
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
+    delete ast;
 }
 
 TEST_CASE("ParentExtractor: Nested") {
@@ -118,5 +124,6 @@ TEST_CASE("ParentExtractor: Nested") {
             {"3", {"4", "5", "6", "7", "8", "9", "10"}}, {"7", {"8", "9", "10"}}
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
+    delete ast;
 }
 

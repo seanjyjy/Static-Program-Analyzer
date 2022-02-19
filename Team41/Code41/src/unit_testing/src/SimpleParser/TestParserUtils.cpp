@@ -16,6 +16,8 @@ void TestParserUtils::parseAssignAndCompare(const string& simpleFile, const stri
     TNode* parsed = p.parseAssign(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseCallAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -25,6 +27,8 @@ void TestParserUtils::parseCallAndCompare(const string& simpleFile, const string
     TNode* parsed = p.parseCall(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseCondExprAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -34,6 +38,8 @@ void TestParserUtils::parseCondExprAndCompare(const string& simpleFile, const st
     TNode* parsed = p.parseCondExpr(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseConstAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -43,6 +49,8 @@ void TestParserUtils::parseConstAndCompare(const string& simpleFile, const strin
     TNode* parsed = p.parseConst(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseExprAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -52,6 +60,8 @@ void TestParserUtils::parseExprAndCompare(const string& simpleFile, const string
     TNode* parsed = p.parseExpr(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseIfAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -61,6 +71,8 @@ void TestParserUtils::parseIfAndCompare(const string& simpleFile, const string& 
     TNode* parsed = p.parseIf(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseNameAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -70,6 +82,8 @@ void TestParserUtils::parseNameAndCompare(const string& simpleFile, const string
     TNode* parsed = p.parseName(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parsePrintAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -79,6 +93,8 @@ void TestParserUtils::parsePrintAndCompare(const string& simpleFile, const strin
     TNode* parsed = p.parsePrint(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseProcedureAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -88,6 +104,8 @@ void TestParserUtils::parseProcedureAndCompare(const string& simpleFile, const s
     TNode* parsed = p.parseProcedure(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseProgramAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -97,6 +115,8 @@ void TestParserUtils::parseProgramAndCompare(const string& simpleFile, const str
     TNode* parsed = p.parseProgram(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseReadAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -106,6 +126,8 @@ void TestParserUtils::parseReadAndCompare(const string& simpleFile, const string
     TNode* parsed = p.parseRead(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseTermAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -115,6 +137,8 @@ void TestParserUtils::parseTermAndCompare(const string& simpleFile, const string
     TNode* parsed = p.parseTerm(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 void TestParserUtils::parseWhileAndCompare(const string& simpleFile, const string& xmlFile) {
@@ -124,6 +148,8 @@ void TestParserUtils::parseWhileAndCompare(const string& simpleFile, const strin
     TNode* parsed = p.parseWhile(simple);
     TNode* expected = parseXml(xml);
     REQUIRE(TreeUtils::isEqual(parsed, expected));
+    delete parsed;
+    delete expected;
 }
 
 TNode *TestParserUtils::parseSimple(const string& simple) {

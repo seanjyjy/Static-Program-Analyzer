@@ -12,3 +12,9 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
     patternClauses(std::move(patternClauses)),
     selectSynonym(std::move(selectSynonym)),
     isQueryValid(isQueryValid) {}
+
+QueryObject::~QueryObject() {
+    for (auto p: patternClauses) {
+        p.getRHS().cleanAST();
+    }
+}

@@ -23,7 +23,7 @@ class TestWrapper : public AbstractWrapper {
   // method for evaluating a query
   virtual void evaluate(std::string query, std::list<std::string>& results);
 
-  PKB* pkbManager;
+  PKB pkbManager;
 };
 
 #endif

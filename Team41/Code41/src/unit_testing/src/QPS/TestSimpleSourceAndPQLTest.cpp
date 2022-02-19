@@ -56,6 +56,7 @@ TEST_CASE("Integration test for simple source and PQL") {
     stringRepresentation = stringRepresentation.substr(0, stringRepresentation.size() - 2);
     printf("Answer: %s", stringRepresentation.c_str());
 
+    delete queryObject;
     delete queryObjectMock;
     delete pkbManager;
     delete ast;

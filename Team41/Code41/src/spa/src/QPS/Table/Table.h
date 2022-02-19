@@ -80,7 +80,7 @@ public:
      *
      * @param commonHeader A vector of strings that contains the header information that is used for sorting.
      */
-    virtual void sort(const Header& commonHeader) = 0;
+    virtual void sort(vector<string> commonHeader) = 0;
     virtual TableType getType() = 0;
     virtual ~Table() = default;
 
