@@ -36,7 +36,7 @@ unordered_set<string> FalseTable::getColumn(string columnName) {
     return unordered_set<string>();
 }
 
-void FalseTable::sort(const Header &commonHeader) {}
+void FalseTable::sort(vector<string> commonHeader) {}
 
 Table::TableType FalseTable::getType() {
     return Table::FalseTable;

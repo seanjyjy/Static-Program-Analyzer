@@ -21,5 +21,7 @@ TEST_CASE("AST Builder: while statement") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, whl));
+        delete ast;
+        delete whl;
     }
 }

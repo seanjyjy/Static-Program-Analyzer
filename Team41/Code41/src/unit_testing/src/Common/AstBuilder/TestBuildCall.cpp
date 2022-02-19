@@ -16,5 +16,8 @@ TEST_CASE("AST Builder: call") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, call));
+
+        delete call;
+        delete ast;
     }
 }

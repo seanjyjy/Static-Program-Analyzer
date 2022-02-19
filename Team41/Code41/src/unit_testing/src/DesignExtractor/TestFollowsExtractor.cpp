@@ -19,6 +19,7 @@ TEST_CASE("FollowsExtractor: While") {
             {"1", {"3", "5", "7", "10"}}, {"3", {"5", "7", "10"}}, {"5", {"7", "10"}}, {"7", {"10"}}
     };
     REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
 }
 
 TEST_CASE("FollowsExtractor: If") {
@@ -33,6 +34,7 @@ TEST_CASE("FollowsExtractor: If") {
             {"1", {"4", "7", "10", "17"}}, {"4", {"7", "10", "17"}}, {"7", {"10", "17"}}, {"10", {"17"}},
     };
     REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
 }
 
 TEST_CASE("FollowsExtractor: Non-nested") {
@@ -49,6 +51,7 @@ TEST_CASE("FollowsExtractor: Non-nested") {
             {"6", {"10"}}, {"4", {"5"}}, {"8", {"9"}}
     };
     REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
 }
 
 TEST_CASE("FollowsExtractor: Nested") {
@@ -64,6 +67,7 @@ TEST_CASE("FollowsExtractor: Nested") {
             {"2", {"3"}}, {"4", {"5"}}, {"6", {"7"}}, {"8", {"9", "10"}}, {"9", {"10"}}
     };
     REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
 }
 
 TEST_CASE("FollowsExtractor: n3iif") {

@@ -12,9 +12,9 @@ TEST_CASE("PKB: StmtTable") {
     SECTION("empty table") {
         // Before adding
         REQUIRE(table.getStmtCount() == 0);
-        REQUIRE(table.getAllStmtsByType(ASSIGN) == unordered_set<string>());
-        REQUIRE(table.getAllStmts() == unordered_set<string>());
-        REQUIRE(table.getAllTypes() == unordered_set<StmtType>());
+        REQUIRE(table.getAllStmtsByType(ASSIGN).empty());
+        REQUIRE(table.getAllStmts().empty());
+        REQUIRE(table.getAllTypes().empty());
         REQUIRE_FALSE(table.isStmtType(lines[0], ASSIGN));
     }
 

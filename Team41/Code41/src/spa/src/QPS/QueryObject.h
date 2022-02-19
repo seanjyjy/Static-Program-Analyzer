@@ -26,4 +26,5 @@ public:
      * @param isQueryValid query's validity.
      */
     QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, QueryDeclaration selectSynonym, bool isQueryValid);
+    ~QueryObject();
 };

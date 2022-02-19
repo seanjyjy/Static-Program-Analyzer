@@ -23,6 +23,7 @@ TEST_CASE("UsesExtractor: Assign") {
             {"2", {"c"}}, {"4", {"f"}}, {"5", {"h"}}, {"6", {"j", "k"}}, {"7", {"n", "p"}}, {"8", {"r", "s", "t", "u"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
 }
 
 TEST_CASE("UsesExtractor: Read") {
@@ -35,6 +36,7 @@ TEST_CASE("UsesExtractor: Read") {
 
     REQUIRE(ue.getProcUsesMap().empty());
     REQUIRE(ue.getStmtUsesMap().empty());
+    delete ast;
 }
 
 TEST_CASE("UsesExtractor: Print") {
@@ -53,6 +55,7 @@ TEST_CASE("UsesExtractor: Print") {
             {"1", {"a"}}, {"2", {"bcd"}}, {"3", {"e1fg5"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
 }
 
 TEST_CASE("UsesExtractor: While") {
@@ -73,6 +76,7 @@ TEST_CASE("UsesExtractor: While") {
             {"10", {"g", "h", "u"}}, {"11", {"u"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
 }
 
 TEST_CASE("UsesExtractor: If") {
@@ -94,6 +98,7 @@ TEST_CASE("UsesExtractor: If") {
             {"17", {"g", "h", "u", "uu"}}, {"18", {"u"}}, {"19", {"uu"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
 }
 
 TEST_CASE("UsesExtractor: Non-nested") {
@@ -114,6 +119,7 @@ TEST_CASE("UsesExtractor: Non-nested") {
             {"2", {"c"}}, {"3", {"d"}}, {"6", {"g", "h", "i", "k"}}, {"8", {"k"}}, {"10", {"n"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
 }
 
 TEST_CASE("UsesExtractor: Nested") {
@@ -138,6 +144,7 @@ TEST_CASE("UsesExtractor: Nested") {
             {"8", {"p", "q", "r"}}, {"10", {"t"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
 }
 
 TEST_CASE("UsesExtractor: n3iif") {

@@ -16,9 +16,10 @@ TEST_CASE("Test 3") {
     string fileContent = FileReader::getFileContent(path);
     Parser p;
     TNode* ast = p.parseProgram(fileContent);
-    PKB* pkbManager = new PKB();
-    DesignExtractor designExtractor(ast, pkbManager);
+    PKB pkbManager = PKB();
+    DesignExtractor designExtractor(ast, &pkbManager);
     designExtractor.extractDesign();
+    delete ast;
 
     SECTION("Query 1") {
         string query = "variable v;\n"
@@ -26,11 +27,12 @@ TEST_CASE("Test 3") {
 
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
-        QueryEvaluator queryEvaluator(pkbManager);
+        QueryEvaluator queryEvaluator(&pkbManager);
         unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
 
         unordered_set<string> answer{"count"};
         REQUIRE(result == answer);
+        delete queryObject;
     }
 
     SECTION("Query 2") {
@@ -39,11 +41,12 @@ TEST_CASE("Test 3") {
 
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
-        QueryEvaluator queryEvaluator(pkbManager);
+        QueryEvaluator queryEvaluator(&pkbManager);
         unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
 
         unordered_set<string> answer{"cenX", "cenY"};
         REQUIRE(result == answer);
+        delete queryObject;
     }
 
     SECTION("Query 3") {
@@ -52,10 +55,11 @@ TEST_CASE("Test 3") {
 
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
-        QueryEvaluator queryEvaluator(pkbManager);
+        QueryEvaluator queryEvaluator(&pkbManager);
         unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
 
         unordered_set<string> answer{"computeCentroid"};
         REQUIRE(result == answer);
+        delete queryObject;
     }
 }

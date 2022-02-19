@@ -18,6 +18,9 @@ TEST_CASE("AST Builder: conditional expression") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, gt));
+
+        delete ast;
+        delete gt;
     }
 
     SECTION("2") {
@@ -33,6 +36,8 @@ TEST_CASE("AST Builder: conditional expression") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, ge));
+        delete ast;
+        delete ge;
     }
 
     SECTION("3") {
@@ -48,6 +53,8 @@ TEST_CASE("AST Builder: conditional expression") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, lt));
+        delete ast;
+        delete lt;
     }
 
     SECTION("4") {
@@ -63,6 +70,8 @@ TEST_CASE("AST Builder: conditional expression") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, le));
+        delete ast;
+        delete le;
     }
 
     SECTION("5") {
@@ -78,6 +87,8 @@ TEST_CASE("AST Builder: conditional expression") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, eq));
+        delete ast;
+        delete eq;
     }
 
     SECTION("6") {
@@ -93,6 +104,8 @@ TEST_CASE("AST Builder: conditional expression") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, ne));
+        delete ast;
+        delete ne;
     }
 
     SECTION("7") {
@@ -110,6 +123,8 @@ TEST_CASE("AST Builder: conditional expression") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, nt));
+        delete ast;
+        delete nt;
     }
 
     SECTION("8") {
@@ -131,6 +146,8 @@ TEST_CASE("AST Builder: conditional expression") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, ad));
+        delete ast;
+        delete ad;
     }
 
     SECTION("9") {
@@ -152,6 +169,8 @@ TEST_CASE("AST Builder: conditional expression") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, o));
+        delete ast;
+        delete o;
     }
 
     SECTION("10") {
@@ -179,5 +198,7 @@ TEST_CASE("AST Builder: conditional expression") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, gt));
+        delete gt;
+        delete ast;
     }
 }

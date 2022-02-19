@@ -305,8 +305,8 @@ TEST_CASE("PKB: follows abstraction") {
         REQUIRE(pkbManager.isFollowsT(stmt[0], stmt[1]));
         REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[0]) == unordered_set<string>({stmt[1], stmt[2]}));
         REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[1]) == unordered_set<string>({stmt[2]}));
-        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[2]) == unordered_set<string>());
-        REQUIRE(pkbManager.getAllStmtsFollowingT(stmt[0]) == unordered_set<string>());
+        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[2]).empty());
+        REQUIRE(pkbManager.getAllStmtsFollowingT(stmt[0]).empty());
         REQUIRE(pkbManager.getAllStmtsFollowingT(stmt[1]) == unordered_set<string>({stmt[0]}));
         REQUIRE(pkbManager.getAllStmtsFollowingT(stmt[2]) == unordered_set<string>({stmt[0], stmt[1]}));
         REQUIRE(pkbManager.isFollowsT(stmt[0], stmt[2]));
@@ -360,11 +360,11 @@ TEST_CASE("PKB: parent abstraction") {
         REQUIRE(pkbManager.getAncestorStmtsOf(stmt[3]) == unordered_set<string>({stmt[0], stmt[1]}));
         REQUIRE(pkbManager.getAncestorStmtsOf(stmt[2]) == unordered_set<string>({stmt[0]}));
         REQUIRE(pkbManager.getAncestorStmtsOf(stmt[1]) == unordered_set<string>({stmt[0]}));
-        REQUIRE(pkbManager.getAncestorStmtsOf(stmt[0]) == unordered_set<string>());
+        REQUIRE(pkbManager.getAncestorStmtsOf(stmt[0]).empty());
 
         REQUIRE(pkbManager.getDescendantStmtsOf(stmt[0]) == unordered_set<string>({stmt[1], stmt[2], stmt[3]}));
         REQUIRE(pkbManager.getDescendantStmtsOf(stmt[1]) == unordered_set<string>({stmt[3]}));
-        REQUIRE(pkbManager.getDescendantStmtsOf(stmt[2]) == unordered_set<string>());
+        REQUIRE(pkbManager.getDescendantStmtsOf(stmt[2]).empty());
 
         REQUIRE(pkbManager.isParentT(stmt[0], stmt[3]));
         REQUIRE_FALSE(pkbManager.isParentT(stmt[2], stmt[3]));
@@ -377,14 +377,14 @@ TEST_CASE("PKB: pattern abstraction") {
     unordered_set<string> EMPTY_SET;
     vector<pair<string, string>> EMPTY_SET_PAIR;
 
-    Token varTok = Token(TokenType::name, "v0", {0, 0}, {0, 0});
-    Token oneTok = Token(TokenType::integer, "1", {0, 0}, {0, 0});
-    Token twoTok = Token(TokenType::integer, "2", {0, 0}, {0, 0});
+    Token* varTok = Token::makeName("v0");
+    Token* oneTok = Token::makeConst("1");
+    Token* twoTok = Token::makeConst("2");
 
     // 1 + 2 * v0
-    TNode *varNode = TNode::makeVarName(&varTok);
-    TNode *one = TNode::makeConstVal(&oneTok);
-    TNode *two = TNode::makeConstVal(&twoTok);
+    TNode *varNode = TNode::makeVarName(varTok);
+    TNode *one = TNode::makeConstVal(oneTok);
+    TNode *two = TNode::makeConstVal(twoTok);
     TNode *times = TNode::makeTimes(two, varNode);
     TNode *plus = TNode::makePlus(one, times);
 
@@ -392,8 +392,8 @@ TEST_CASE("PKB: pattern abstraction") {
 
     SECTION("Pattern") {
         REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromFullPattern(plus), EMPTY_SET_PAIR));
-        REQUIRE(pkbManager.getAllStmtsFromFullPattern(plus) == unordered_set<string>());
-        REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[0]) == unordered_set<string>());
+        REQUIRE(pkbManager.getAllStmtsFromFullPattern(plus).empty());
+        REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[0]).empty());
 
         // v0 = 1 + 2 * v0
         REQUIRE_NOTHROW(pkbManager.registerPattern(stmt[0], vars[0], plus));
@@ -401,13 +401,13 @@ TEST_CASE("PKB: pattern abstraction") {
                                       vector<pair<string, string>>({{stmt[0], vars[0]}})));
         REQUIRE(pkbManager.getAllStmtsFromFullPattern(plus) == unordered_set<string>({stmt[0]}));
         REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[0]) == unordered_set<string>({stmt[0]}));
-        REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[1]) == unordered_set<string>());
+        REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[1]).empty());
     }
 
     SECTION("SubPattern") {
         REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromSubPattern(plus), EMPTY_SET_PAIR));
-        REQUIRE(pkbManager.getAllStmtsFromSubPattern(plus) == unordered_set<string>());
-        REQUIRE(pkbManager.getStmtFromSubPatternNVar(plus, vars[0]) == unordered_set<string>());
+        REQUIRE(pkbManager.getAllStmtsFromSubPattern(plus).empty());
+        REQUIRE(pkbManager.getStmtFromSubPatternNVar(plus, vars[0]).empty());
         // v0 = 1 + 2 * v0
         REQUIRE_NOTHROW(pkbManager.registerPattern(stmt[0], vars[0], plus));
 
@@ -416,7 +416,9 @@ TEST_CASE("PKB: pattern abstraction") {
                                           vector<pair<string, string>>({{stmt[0], vars[0]}})));
             REQUIRE(pkbManager.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[0]}));
             REQUIRE(pkbManager.getStmtFromSubPatternNVar(child, vars[0]) == unordered_set<string>({stmt[0]}));
-            REQUIRE(pkbManager.getStmtFromSubPatternNVar(child, vars[1]) == unordered_set<string>());
+            REQUIRE(pkbManager.getStmtFromSubPatternNVar(child, vars[1]).empty());
         }
     }
+
+    delete plus;
 }

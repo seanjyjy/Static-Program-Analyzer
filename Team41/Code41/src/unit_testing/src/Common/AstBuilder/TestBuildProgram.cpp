@@ -27,5 +27,7 @@ TEST_CASE("AST Builder: program") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, prog));
+        delete ast;
+        delete prog;
     }
 }

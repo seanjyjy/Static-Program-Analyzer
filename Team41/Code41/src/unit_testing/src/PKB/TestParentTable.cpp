@@ -45,7 +45,7 @@ TEST_CASE("PKB: ParentTable") {
             // 1 -> 5
             REQUIRE(table.getAllChildrenOf(stmt[0]) == unordered_set<string>({stmt[1], stmt[2]}));
             REQUIRE(table.getAllChildrenOf(stmt[1]) == unordered_set<string>({stmt[5]}));
-            REQUIRE(table.getAllChildrenOf(stmt[3]) == unordered_set<string>());
+            REQUIRE(table.getAllChildrenOf(stmt[3]).empty());
 
             REQUIRE(table.isParent(stmt[0], stmt[1]));
             REQUIRE_FALSE(table.isParent(stmt[0], stmt[5]));
@@ -103,7 +103,7 @@ TEST_CASE("PKB: ParentTable") {
             entryList.push_back(make_pair(stmt[2], stmt[3]));
             entryList.push_back(make_pair(stmt[0], stmt[3]));
             REQUIRE(table.getAllDescendantsOf(stmt[0]) == unordered_set<string>({stmt[1], stmt[2], stmt[3]}));
-            REQUIRE(table.getAllDescendantsOf(stmt[1]) == unordered_set<string>());
+            REQUIRE(table.getAllDescendantsOf(stmt[1]).empty());
             REQUIRE(table.getAllDescendantsOf(stmt[2]) == unordered_set<string>({stmt[3]}));
             REQUIRE(table.getAllAncestorsOf(stmt[3]) == unordered_set<string>({stmt[0], stmt[2]}));
             REQUIRE(sortAndCompareVectors(table.getParentTEntries(), entryList));
@@ -127,7 +127,7 @@ TEST_CASE("PKB: ParentTable") {
             entryList.push_back(make_pair(stmt[3], stmt[5]));
 
             REQUIRE(table.getAllDescendantsOf(stmt[0]) == unordered_set<string>({stmt[1], stmt[2], stmt[3], stmt[4], stmt[5]}));
-            REQUIRE(table.getAllDescendantsOf(stmt[1]) == unordered_set<string>());
+            REQUIRE(table.getAllDescendantsOf(stmt[1]).empty());
             REQUIRE(table.getAllDescendantsOf(stmt[2]) == unordered_set<string>({stmt[3], stmt[4], stmt[5]}));
             REQUIRE(table.getAllDescendantsOf(stmt[3]) == unordered_set<string>({stmt[4], stmt[5]}));
 

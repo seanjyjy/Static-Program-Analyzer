@@ -22,17 +22,21 @@ Table* PQLTable::mergeJoin(Table* intermediatePQLTable) {
     Header combinedHeader = getCombinedHeader(this, intermediatePQLTable);
     Table* newTable = new PQLTable(combinedHeader);
 
+    vector<string> orderedCommonHeader;
+    orderedCommonHeader.insert(orderedCommonHeader.end(), commonHeader.begin(), commonHeader.end());
+    std::sort(orderedCommonHeader.begin(), orderedCommonHeader.end());
+
     // Sort Tables
-    this->sort(commonHeader);
-    intermediatePQLTable->sort(commonHeader);
+    this->sort(orderedCommonHeader);
+    intermediatePQLTable->sort(orderedCommonHeader);
 
     // Merge Tables
-    mergeTable(this, intermediatePQLTable, newTable, commonHeader);
+    mergeTable(this, intermediatePQLTable, newTable, orderedCommonHeader);
 
     return newTable;
 }
 
-void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, const Header& commonHeader) {
+void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, vector<string> commonHeader) {
     auto leftTableRow = leftTable->getRows();
     auto rightTableRow = rightTable->getRows();
 
@@ -44,7 +48,6 @@ void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, 
 
     while (leftTableIndex != leftTableEnd && rightTableIndex != rightTableEnd) {
         int result = compareRow(*leftTableIndex, *rightTableIndex, commonHeader);
-
         if (result == -1) {
             leftTableIndex++;
             continue;
@@ -81,8 +84,8 @@ void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, 
     }
 }
 
-bool PQLTable::isEqual(const Row* rowA, const Row* rowB, const Header& commonHeader) {
-    for (auto& headerField: commonHeader) {
+bool PQLTable::isEqual(const Row* rowA, const Row* rowB, vector<string> orderedCommonHeader) {
+    for (auto& headerField: orderedCommonHeader) {
         if (rowA->getValueAtColumn(headerField) != rowB->getValueAtColumn(headerField)) {
             return false;
         }
@@ -105,11 +108,15 @@ const Row* PQLTable::combineRow(const Row* rowA, const Row* rowB) const {
     return row;
 }
 
-void PQLTable::sort(const Header& commonHeader) {
-    if (commonHeader.empty()) { return; }
-    std::sort(this->rows.begin(), this->rows.end(), [commonHeader](const Row* left, const Row* right){
-        for (const string& headerField : commonHeader) {
-            return left->getValueAtColumn(headerField) < right->getValueAtColumn(headerField);
+void PQLTable::sort(vector<string> orderedCommonHeader) {
+    if (orderedCommonHeader.empty()) { return; }
+    std::sort(this->rows.begin(), this->rows.end(), [orderedCommonHeader](const Row* left, const Row* right){
+        for (const string& headerField : orderedCommonHeader) {
+            string leftVal = left->getValueAtColumn(headerField);
+            string rightVal = right->getValueAtColumn(headerField);
+            if (leftVal != rightVal) {
+                return leftVal < rightVal;
+            };
         }
         return false;
     });
@@ -145,11 +152,11 @@ Header PQLTable::getCombinedHeader(Table *leftTable, Table *rightTable) {
     return combinedHeader;
 }
 
-int PQLTable::compareRow(const Row* leftRowPtr, const Row* rightRowPtr, const Header& commonHeader) const {
+int PQLTable::compareRow(const Row* leftRowPtr, const Row* rightRowPtr, vector<string> orderedCommonHeader) const {
     auto leftRow = leftRowPtr->getRow();
     auto rightRow = rightRowPtr->getRow();
 
-    for (auto const& headerField : commonHeader) {
+    for (auto const& headerField : orderedCommonHeader) {
         if (leftRow.at(headerField) < rightRow.at(headerField)) {
             return -1;
         }

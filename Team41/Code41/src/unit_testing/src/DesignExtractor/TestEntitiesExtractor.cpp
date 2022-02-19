@@ -26,6 +26,7 @@ TEST_CASE("EntitiesExtractor: While") {
         unordered_set<string> expectedConsts = {"1", "2", "3", "4", "5", "6", "7", "8"};
         REQUIRE(ee.getConstSet() == expectedConsts);
     }
+    delete ast;
 }
 
 TEST_CASE("EntitiesExtractor: If") {
@@ -49,6 +50,7 @@ TEST_CASE("EntitiesExtractor: If") {
         unordered_set<string> expectedConsts = {"1", "11", "2", "3", "4", "5", "6", "7", "8"};
         REQUIRE(ee.getConstSet() == expectedConsts);
     }
+    delete ast;
 }
 
 TEST_CASE("EntitiesExtractor: Nested") {
@@ -73,6 +75,7 @@ TEST_CASE("EntitiesExtractor: Nested") {
         unordered_set<string> expectedConsts = {"1", "2", "6", "9"};
         REQUIRE(ee.getConstSet() == expectedConsts);
     }
+    delete ast;
 }
 
 TEST_CASE("EntitiesExtractor: n3iif") {

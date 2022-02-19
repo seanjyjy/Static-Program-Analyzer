@@ -26,10 +26,15 @@ private:
     };
 
     string input; // input string to tokenize
-    int cursor; // keep track of position in input
+    int cursor = 0; // keep track of position in input
     Tokens tokens; // tokens after tokenizing
     Token currToken; // current token being parsed
     Option parseOption = Option::program; // decides how input is parsed
+
+    int errorStartRow = -1; // earliest row parsed until error, 0-indexed
+    int errorStartCol = -1; // earliest col parsed until error, 0-indexed
+    int errorEndRow = -1; // latest row parsed until error, 0-indexed
+    int errorEndCol = -1; // latest col parsed until error, 0-indexed
 
     /**
      * Copies the current index of the cursor and returns it.
@@ -63,7 +68,7 @@ private:
      * @param type the token type to match
      * @param val the token value to match
      */
-    void expect(TokenType type, string val);
+    void expect(TokenType type, const string& val);
 
     /**
      * Verifies the current token matches the type, advances the cursor and returns the matched token.
@@ -72,17 +77,24 @@ private:
      * @param type the token type to match
      * @return the token matched before the cursor is advanced.
      */
-    Token *checkAndAdvance(TokenType type);
+    Token *checkAndGetTokenAndAdvance(TokenType type);
 
     /**
-     * Verifies the current token matches the type and value, advances the cursor and returns the matched token.
+     * Verifies the current token matches the type and advances the cursor.
+     * Throws if the match fails. Mainly a convenience function.
+     *
+     * @param type the token type to match
+     */
+    void checkAndAdvance(TokenType type);
+
+    /**
+     * Verifies the current token matches the type and value and advances the cursor.
      * Throws if the match fails. Mainly a convenience function.
      *
      * @param type the token type to match
      * @param val the token value to match
-     * @return the token matched before the cursor is advanced.
      */
-    Token *checkAndAdvance(TokenType type, string val);
+    void checkAndAdvance(TokenType type, string val);
 
     /**
      * Checks if the current token matches the given type, but does not throw.
@@ -91,15 +103,6 @@ private:
      * @return true if the current token matches the given type, false otherwise.
      */
     bool peekMatchType(TokenType type);
-
-    /**
-     * Checks if the current token matches the given type and value, but does not throw.
-     *
-     * @param type token type to match
-     * @param val token value to match
-     * @return true if the current token matches the given type, false otherwise.
-     */
-    bool peekMatchTypeVal(TokenType type, string val);
 
     /**
      * Checks if all tokens have been consumed.
@@ -114,14 +117,7 @@ private:
      * @param s the string to augment.
      * @return the augmented string.
      */
-    string withCurrToken(const string &s);
-
-    /**
-     * Generates an error message including start and end parse positions of the current token.
-     *
-     * @return a string describing the error.
-     */
-    string genericErrorMsg();
+    string withDetails(const string &s);
 
     /**
      * Generates a syntax error message including start and end parse positions of the current token.
@@ -129,6 +125,13 @@ private:
      * @return a string describing the error.
      */
     string syntaxErrorMsg();
+
+    /**
+     * Highlights and returns the input SIMPLE source based on start/end error row/column.
+     *
+     * @return the highlighted SIMPLE source
+     */
+    string highlightSource();
 
     /**
      * Parses a program. program -> procedure+

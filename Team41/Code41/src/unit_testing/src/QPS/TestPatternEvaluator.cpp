@@ -111,7 +111,7 @@ TEST_CASE("Evaluator: Pattern evaluator") {
         PatternClause patternClause2(assignSyn, identifierV1, patternFP2);
         Table *table2 = PatternEvaluator::evaluate(patternClause2, pkbManager);
         REQUIRE(table2->size() == 0);
-        REQUIRE(table2->getColumn(ASSIGN_SYN_LBL) == unordered_set<string>());
+        REQUIRE(table2->getColumn(ASSIGN_SYN_LBL).empty());
         delete table1;
         delete table2;
     }

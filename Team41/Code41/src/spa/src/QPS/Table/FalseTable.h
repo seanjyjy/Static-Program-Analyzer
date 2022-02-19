@@ -32,10 +32,7 @@ public:
     virtual unordered_set<string> getColumn(string columnName) override;
 
     // This is a stub method
-    static Table* getTable();
-
-    // This is a stub method
-    void sort(const Header& commonHeader) override;
+    void sort(vector<string> commonHeader) override;
 
     // This is a stub method
     TableType getType() override;

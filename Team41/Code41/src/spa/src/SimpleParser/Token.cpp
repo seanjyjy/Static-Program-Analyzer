@@ -23,15 +23,15 @@ TokenType Token::getType() const {
     return type;
 }
 
-const string Token::getVal() const {
+string Token::getVal() const {
     return val;
 }
 
-const pair<int, int> Token::getStart() const {
+pair<int, int> Token::getStart() const {
     return start;
 }
 
-const pair<int, int> Token::getEnd() const {
+pair<int, int> Token::getEnd() const {
     return end;
 }
 
@@ -39,8 +39,10 @@ Token *Token::copy() const {
     return new Token(getType(), getVal(), getStart(), getEnd());
 }
 
-const string Token::toString() const {
-    return "Token{" + typeToString(type) + ", '" + val + "'}";
+string Token::toString() const {
+    return "Token{" + typeToString(type) + ", '" + val + "'" +
+            ", " + "{" + to_string(start.first) + "," + to_string(start.second) + "}" +
+            ", " + "{" + to_string(end.first) + "," + to_string(end.second) + "}" + "'}";
 }
 
 string Token::typeToString(TokenType type) {
