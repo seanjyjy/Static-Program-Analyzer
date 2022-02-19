@@ -142,3 +142,25 @@ TEST_CASE("EntitiesExtractor: n3wim") {
         REQUIRE(ee.getConstSet() == expectedConsts);
     }
 }
+
+TEST_CASE("EntitiesExtractor: n3wwl") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+
+    SECTION("Statement Nums") {
+        REQUIRE(ee.getNodeToStmtNumMap().size() == 9);
+    }
+    SECTION("Procedures") {
+        unordered_set<string> expectedProcedures = {"n3wwl"};
+        REQUIRE(ee.getProcSet() == expectedProcedures);
+    }
+    SECTION("Variable") {
+        unordered_set<string> expectedVarNames = {"while", "if", "then", "e2", "a", "b", "c", "else"};
+        REQUIRE(ee.getVarSet() == expectedVarNames);
+    }
+    SECTION("Constants") {
+        unordered_set<string> expectedConsts = {"0", "120348725108321", "3", "4", "1", "10", "2"};
+        REQUIRE(ee.getConstSet() == expectedConsts);
+    }
+}

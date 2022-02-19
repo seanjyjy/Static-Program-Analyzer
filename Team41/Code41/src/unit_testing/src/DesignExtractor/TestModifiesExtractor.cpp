@@ -203,3 +203,23 @@ TEST_CASE("ModifiesExtractor: n3wim") {
     };
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
 }
+
+TEST_CASE("ModifiesExtractor: n3wwl") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap);
+    me.extractRelationship();
+
+    unordered_map<string, unordered_set<string>> expectedProcModifies = {
+            {"n3wwl", {"while"}}
+    };
+    REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
+
+    unordered_map<string, unordered_set<string>> expectedStmtModifies = {
+            {"1", {"while"}}, {"2", {"while"}}, {"3", {"while"}}, {"4", {"while"}}, {"5", {"while"}},
+            {"6", {"while"}}, {"7", {"while"}}, {"8", {"while"}}, {"9", {"while"}}
+    };
+    REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+}

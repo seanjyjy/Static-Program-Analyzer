@@ -207,3 +207,23 @@ TEST_CASE("UsesExtractor: n3wim") {
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
 }
+
+TEST_CASE("UsesExtractor: n3wwl") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    ue.extractRelationship();
+
+    unordered_map<string, unordered_set<string>> expectedProcUses = {
+            {"n3wwl", {"while", "if", "then", "e2", "a", "b", "c", "else"}}
+    };
+    REQUIRE(ue.getProcUsesMap() == expectedProcUses);
+
+    unordered_map<string, unordered_set<string>> expectedStmtUses = {
+            {"1", {"while"}}, {"2", {"while", "if", "then", "e2", "a", "b", "c", "else"}}, {"3", {"then"}},
+            {"4", {"e2", "a", "b", "c", "if", "else"}}, {"5", {"if"}}, {"6", {"else"}}, {"7", {"else"}}
+    };
+    REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+}

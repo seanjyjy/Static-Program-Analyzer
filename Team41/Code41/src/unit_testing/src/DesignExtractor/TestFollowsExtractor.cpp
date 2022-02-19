@@ -110,3 +110,17 @@ TEST_CASE("FollowsExtractor: n3wim") {
     };
     REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
 }
+
+TEST_CASE("FollowsExtractor: n3wwl") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
+    fe.extractRelationship();
+
+    unordered_map<string, list<string>> expectedFollowsT = {
+            {"1", {"2"}}, {"3", {"4"}}, {"5", {"6"}}, {"7", {"8"}}
+    };
+    REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+}

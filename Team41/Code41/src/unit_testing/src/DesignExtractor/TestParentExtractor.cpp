@@ -182,3 +182,22 @@ TEST_CASE("ParentExtractor: n3wim") {
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
 }
+
+TEST_CASE("ParentExtractor: n3wwl") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
+    pe.extractRelationship();
+
+    unordered_map<string, list<string>> expectedParent = {
+            {"2", {"3", "4"}}, {"4", {"5", "6"}}, {"6", {"7", "8"}}, {"8", {"9"}}
+    };
+    REQUIRE(pe.getParentMap() == expectedParent);
+    unordered_map<string, list<string>> expectedParentT = {
+            {"2", {"3", "4", "5", "6", "7", "8", "9"}}, {"4", {"5", "6", "7", "8", "9"}},
+            {"6", {"7", "8", "9"}}, {"8", {"9"}}
+    };
+    REQUIRE(pe.getParentTMap() == expectedParentT);
+}
