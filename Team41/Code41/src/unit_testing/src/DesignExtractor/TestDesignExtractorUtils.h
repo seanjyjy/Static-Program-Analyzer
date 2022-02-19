@@ -40,7 +40,6 @@ public:
         for (auto &[stmt, p1] : mp1) {
             if (mp2.find(stmt) == mp2.end()) return false;
             pair<string, TNode *> p2 = mp2[stmt];
-            //std::cout << stmt1 << " " << stmt2 << endl << p1.first << " " << p2.first << endl << " " << p1.second << " " << p2.second << endl;
             if (p1.first != p2.first || !TreeUtils::isEqual(p1.second, p2.second))
                 return false;
         }
