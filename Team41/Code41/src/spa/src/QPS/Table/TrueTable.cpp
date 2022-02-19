@@ -36,7 +36,7 @@ unordered_set<string> TrueTable::getColumn(string columnName) {
     return unordered_set<string>();
 }
 
-void TrueTable::sort(const Header &commonHeader) {}
+void TrueTable::sort(vector<string> commonHeader) {}
 
 Table::TableType TrueTable::getType() {
     return Table::TrueTable;
