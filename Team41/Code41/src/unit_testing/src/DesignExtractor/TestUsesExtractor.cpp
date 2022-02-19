@@ -114,7 +114,6 @@ TEST_CASE("UsesExtractor: Non-nested") {
             {"main", {"c", "d", "g", "h", "i", "k", "n"}}
     };
     REQUIRE(ue.getProcUsesMap() == expectedProcUses);
-
     unordered_map<string, unordered_set<string>> expectedStmtUses = {
             {"2", {"c"}}, {"3", {"d"}}, {"6", {"g", "h", "i", "k"}}, {"8", {"k"}}, {"10", {"n"}}
     };
@@ -135,7 +134,6 @@ TEST_CASE("UsesExtractor: Nested") {
             {"main", {"a", "c", "e", "f", "g", "h", "j", "k", "m", "p", "q", "r", "t"}}
     };
     REQUIRE(ue.getProcUsesMap() == expectedProcUses);
-
     unordered_map<string, unordered_set<string>> expectedStmtUses = {
             {"1", {"a", "c", "e", "f", "g", "h", "j", "k", "m", "p", "q", "r", "t"}},
             {"3", {"c", "e", "f", "g", "h", "j", "k", "m", "p", "q", "r", "t"}},
@@ -159,7 +157,6 @@ TEST_CASE("UsesExtractor: n3iif") {
             {"n3iif", {"if", "else", "call", "read", "print", "while", "abe", "x", "y", "then", "dollars"}}
     };
     REQUIRE(ue.getProcUsesMap() == expectedProcUses);
-
     unordered_map<string, unordered_set<string>> expectedStmtUses = {
             {"1", {"if", "else", "call", "read", "print", "while", "abe", "x", "y", "then", "dollars"}},
             {"2", {"if"}}, {"3", {"if"}},
@@ -169,6 +166,7 @@ TEST_CASE("UsesExtractor: n3iif") {
             {"13", {"then", "else"}}, {"14", {"then"}}, {"15", {"else"}}, {"16", {"dollars"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
 }
 
 TEST_CASE("UsesExtractor: n3iwl") {
@@ -183,7 +181,6 @@ TEST_CASE("UsesExtractor: n3iwl") {
             {"n3iwl", {"procedure", "a", "b", "c", "if", "else", "then", "and", "two", "print", "bob", "builder", "catch", "while", "x"}}
     };
     REQUIRE(ue.getProcUsesMap() == expectedProcUses);
-
     unordered_map<string, unordered_set<string>> expectedStmtUses = {
             {"1", {"procedure"}}, {"2", {"a", "b", "c", "if", "else", "then", "and", "two", "print", "bob", "builder", "catch", "while", "x"}},
             {"4", {"and", "two", "print", "bob", "builder", "catch", "while"}}, {"6", {"print", "bob", "builder", "catch", "while"}},
@@ -191,6 +188,7 @@ TEST_CASE("UsesExtractor: n3iwl") {
             {"11", {"while"}}, {"12", {"while"}}, {"13", {"x"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
 }
 
 TEST_CASE("UsesExtractor: n3wim") {
@@ -205,7 +203,6 @@ TEST_CASE("UsesExtractor: n3wim") {
             {"n3wim", {"a", "b", "c", "d", "x", "x1", "x2", "x3", "x4"}}
     };
     REQUIRE(ue.getProcUsesMap() == expectedProcUses);
-
     unordered_map<string, unordered_set<string>> expectedStmtUses = {
             {"2", {"a", "b", "c", "d", "x", "x1", "x2", "x3", "x4"}}, {"3", {"a"}}, {"4", {"a", "b", "c", "x", "d", "x1", "x2", "x3", "x4"}},
             {"5", {"c", "b"}}, {"6", {"a", "x", "d", "c", "b", "x1", "x2"}}, {"7", {"x"}},
@@ -213,6 +210,7 @@ TEST_CASE("UsesExtractor: n3wim") {
             {"14", {"a", "b", "c", "d", "x3", "x4"}}, {"16", {"a", "x3", "x4"}}, {"17", {"x3"}}, {"18", {"x4"}}, {"21", {"b"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
 }
 
 TEST_CASE("UsesExtractor: n3wwl") {
@@ -227,10 +225,10 @@ TEST_CASE("UsesExtractor: n3wwl") {
             {"n3wwl", {"while", "if", "then", "e2", "a", "b", "c", "else"}}
     };
     REQUIRE(ue.getProcUsesMap() == expectedProcUses);
-
     unordered_map<string, unordered_set<string>> expectedStmtUses = {
             {"1", {"while"}}, {"2", {"while", "if", "then", "e2", "a", "b", "c", "else"}}, {"3", {"then"}},
             {"4", {"e2", "a", "b", "c", "if", "else"}}, {"5", {"if"}}, {"6", {"else"}}, {"7", {"else"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
 }

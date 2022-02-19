@@ -83,6 +83,7 @@ TEST_CASE("FollowsExtractor: n3iif") {
             {"6", {"9"}}, {"13", {"16"}}
     };
     REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
 }
 
 TEST_CASE("FollowsExtractor: n3iwl") {
@@ -97,6 +98,7 @@ TEST_CASE("FollowsExtractor: n3iwl") {
             {"1", {"2"}}, {"3", {"4"}}, {"5", {"6"}}, {"7", {"8"}}, {"10", {"11"}}
     };
     REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
 }
 
 TEST_CASE("FollowsExtractor: n3wim") {
@@ -113,6 +115,7 @@ TEST_CASE("FollowsExtractor: n3wim") {
             {"13", {"14", "20"}}, {"14", {"20"}}, {"15", {"16", "19"}}, {"16", {"19"}}
     };
     REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
 }
 
 TEST_CASE("FollowsExtractor: n3wwl") {
@@ -127,4 +130,5 @@ TEST_CASE("FollowsExtractor: n3wwl") {
             {"1", {"2"}}, {"3", {"4"}}, {"5", {"6"}}, {"7", {"8"}}
     };
     REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
 }

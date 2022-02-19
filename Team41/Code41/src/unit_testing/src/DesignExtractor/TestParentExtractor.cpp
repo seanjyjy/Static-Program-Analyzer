@@ -146,6 +146,7 @@ TEST_CASE("ParentExtractor: n3iif") {
             {"5", {"6", "7", "8", "9", "10"}}, {"6", {"7", "8"}}, {"13", {"14", "15"}}
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
+    delete ast;
 }
 
 TEST_CASE("ParentExtractor: n3iwl") {
@@ -166,6 +167,7 @@ TEST_CASE("ParentExtractor: n3iwl") {
             {"6", {"7", "8", "9", "10", "11", "12"}}, {"8", {"9"}}, {"11", {"12"}}
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
+    delete ast;
 }
 
 TEST_CASE("ParentExtractor: n3wim") {
@@ -188,6 +190,7 @@ TEST_CASE("ParentExtractor: n3wim") {
             {"14", {"15", "16", "17", "18", "19"}}, {"16", {"17", "18"}}
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
+    delete ast;
 }
 
 TEST_CASE("ParentExtractor: n3wwl") {
@@ -207,4 +210,5 @@ TEST_CASE("ParentExtractor: n3wwl") {
             {"6", {"7", "8", "9"}}, {"8", {"9"}}
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
+    delete ast;
 }

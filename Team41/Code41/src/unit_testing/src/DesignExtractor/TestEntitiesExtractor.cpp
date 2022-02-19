@@ -99,6 +99,7 @@ TEST_CASE("EntitiesExtractor: n3iif") {
         unordered_set<string> expectedConsts = {"1", "10", "2", "3", "100", "20", "30", "4", "0"};
         REQUIRE(ee.getConstSet() == expectedConsts);
     }
+    delete ast;
 }
 
 TEST_CASE("EntitiesExtractor: n3iwl") {
@@ -122,6 +123,7 @@ TEST_CASE("EntitiesExtractor: n3iwl") {
         unordered_set<string> expectedConsts = {"1", "2", "98", "20", "0"};
         REQUIRE(ee.getConstSet() == expectedConsts);
     }
+    delete ast;
 }
 
 TEST_CASE("EntitiesExtractor: n3wim") {
@@ -144,6 +146,7 @@ TEST_CASE("EntitiesExtractor: n3wim") {
         unordered_set<string> expectedConsts = {"10", "20", "2", "0", "4", "3", "1", "30"};
         REQUIRE(ee.getConstSet() == expectedConsts);
     }
+    delete ast;
 }
 
 TEST_CASE("EntitiesExtractor: n3wwl") {
@@ -166,4 +169,5 @@ TEST_CASE("EntitiesExtractor: n3wwl") {
         unordered_set<string> expectedConsts = {"0", "120348725108321", "3", "4", "1", "10", "2"};
         REQUIRE(ee.getConstSet() == expectedConsts);
     }
+    delete ast;
 }
