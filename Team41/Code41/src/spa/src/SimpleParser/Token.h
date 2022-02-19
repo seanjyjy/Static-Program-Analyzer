@@ -31,16 +31,16 @@ public:
     [[nodiscard]] TokenType getType() const;
 
     // returns the value of this token
-    [[nodiscard]] const string getVal() const;
+    [[nodiscard]] string getVal() const;
 
     // returns the start position in source file this token was tokenized
-    [[nodiscard]] const pair<int, int> getStart() const;
+    [[nodiscard]] pair<int, int> getStart() const;
 
     // returns the end position in source file this token was tokenized
-    [[nodiscard]] const pair<int, int> getEnd() const;
+    [[nodiscard]] pair<int, int> getEnd() const;
 
     // returns a human-readable representation of this token
-    [[nodiscard]] const string toString() const;
+    [[nodiscard]] string toString() const;
 
     // returns a deep copy of the current token
     [[nodiscard]] Token *copy() const;

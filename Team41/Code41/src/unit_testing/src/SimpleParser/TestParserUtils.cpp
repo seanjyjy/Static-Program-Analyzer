@@ -172,3 +172,57 @@ string TestParserUtils::readFile(string folder, string filename) {
     string fileContent = FileReader::getFileContent(path);
     return fileContent;
 }
+
+void TestParserUtils::parseAssignExpectThrows(const string &simple) {
+    string source = readFile("assign", simple);
+    Parser p;
+    REQUIRE_THROWS(p.parseAssign(simple));
+}
+
+void TestParserUtils::parseCallExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parseCondExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parseConstExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parseExprExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parseIfExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parseNameExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parsePrintExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parseProcedureExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parseProgramExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parseReadExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parseTermExpectThrows(const string &simple) {
+
+}
+
+void TestParserUtils::parseWhileExpectThrows(const string &simple) {
+
+}

@@ -11,4 +11,10 @@ TEST_CASE("Parser: term") {
     SECTION("3") {
         TestParserUtils::parseTermAndCompare("3-simple.txt", "3-xml.txt");
     }
+    SECTION("complex") {
+        TestParserUtils::parseTermAndCompare("complex.simple", "complex.x");
+    }
+    SECTION("whitespace") {
+        TestParserUtils::parseTermAndCompare("whitespace.simple", "whitespace.x");
+    }
 }

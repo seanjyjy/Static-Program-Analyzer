@@ -7,9 +7,14 @@ There are currently 3 types of naming conventions.
 - e.g `1-xml.txt` - contains corresponding "xml" for same-numbered SIMPLE source
 
 # V2
-`<test case description>.<simple|x>`
+**Incorrect tests start with a `x-` !**
+
+`[x-]<test case description>.<simple|x>`
 - e.g `multi-procedures.simple` - contains SIMPLE source for multiple procedures
 - e.g `mult-procedures.x` - corresponding "xml"
+- e.g `x-leading-zeroes.simple` - incorrect SIMPLE
+
+
 
 # V3
 Only relevant to "program" test cases

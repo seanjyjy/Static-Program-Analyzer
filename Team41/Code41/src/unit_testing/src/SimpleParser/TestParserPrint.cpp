@@ -5,4 +5,7 @@ TEST_CASE("Parser: print statement") {
     SECTION("1") {
         TestParserUtils::parsePrintAndCompare("1-simple.txt", "1-xml.txt");
     }
+    SECTION("lines") {
+        TestParserUtils::parsePrintAndCompare("whitespace.simple", "whitespace.x");
+    }
 }
