@@ -13,7 +13,7 @@ using namespace std;
 #include "Parser.h"
 #include "Tokenizer.h"
 
-Parser::Parser() : cursor(0) {}
+Parser::Parser() : cursor(0), maxRowOnError(0), maxColOnError(0) {}
 
 void Parser::advance() {
     cursor++;
@@ -36,19 +36,23 @@ void Parser::expect(TokenType type) {
         string expectedType = Token::typeToString(type);
         string gotType = Token::typeToString(currToken.getType());
         auto[startRow, startCol] = currToken.getStart();
-        string msg = "expected " + expectedType + " at row " + to_string(startRow) +
+        startRow++; // from 0-indexed to 1-indexed
+        startCol++;
+        string msg = "expected " + expectedType + " when parsing from row " + to_string(startRow) +
                      ", col " + to_string(startCol) + ", got " + gotType;
         throw runtime_error(msg);
     }
 }
 
-void Parser::expect(TokenType type, string s) {
+void Parser::expect(TokenType type, const string& s) {
     if (currToken.getType() != type || currToken.getVal() != s) {
         string expectedType = Token::typeToString(type);
         string gotType = Token::typeToString(currToken.getType());
         auto[startRow, startCol] = currToken.getStart();
+        startRow++; // from 0-indexed to 1-indexed
+        startCol++;
         string msg = "expected " + expectedType + " " + s +
-                     " at row " + to_string(startRow) + ", col " + to_string(startCol) +
+                     " when parsing from row " + to_string(startRow) + ", col " + to_string(startCol) +
                      ", got " + gotType + currToken.getVal();
         throw runtime_error(msg);
     }
@@ -56,10 +60,6 @@ void Parser::expect(TokenType type, string s) {
 
 bool Parser::peekMatchType(TokenType type) {
     return currToken.getType() == type;
-}
-
-bool Parser::peekMatchTypeVal(TokenType type, string val) {
-    return peekMatchType(type) && currToken.getVal() == val;
 }
 
 bool Parser::isEof() {
@@ -73,14 +73,9 @@ string Parser::withCurrToken(const string &s) {
            to_string(startCol) + " to row " + to_string(endRow) + " col " + to_string(endCol);
 }
 
-string Parser::genericErrorMsg() {
-    return withCurrToken("unexpected token " + Token::typeToString(currToken.getType()));
-}
-
 string Parser::syntaxErrorMsg() {
     return withCurrToken("syntax error while parsing tokens");
 }
-
 
 Token *Parser::checkAndAdvance(TokenType type) {
     expect(type);
@@ -89,8 +84,8 @@ Token *Parser::checkAndAdvance(TokenType type) {
     return ret;
 }
 
-Token *Parser::checkAndAdvance(TokenType type, string val) {
-    expect(type, move(val));
+Token *Parser::checkAndAdvance(TokenType type, const string& val) {
+    expect(type, val);
     Token *ret = currToken.copy();
     advance();
     return ret;
@@ -174,7 +169,7 @@ TNode *Parser::eatStmt() {
         backtrack(c);
     }
 
-    throw runtime_error(genericErrorMsg());
+    throw runtime_error(syntaxErrorMsg());
 }
 
 TNode *Parser::eatStmtRead() {

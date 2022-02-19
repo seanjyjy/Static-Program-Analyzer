@@ -31,6 +31,9 @@ private:
     Token currToken; // current token being parsed
     Option parseOption = Option::program; // decides how input is parsed
 
+    int maxRowOnError; // farthest row parsed until error
+    int maxColOnError; // farthest col parsed until error
+
     /**
      * Copies the current index of the cursor and returns it.
      *
@@ -63,7 +66,7 @@ private:
      * @param type the token type to match
      * @param val the token value to match
      */
-    void expect(TokenType type, string val);
+    void expect(TokenType type, const string& val);
 
     /**
      * Verifies the current token matches the type, advances the cursor and returns the matched token.
@@ -82,7 +85,7 @@ private:
      * @param val the token value to match
      * @return the token matched before the cursor is advanced.
      */
-    Token *checkAndAdvance(TokenType type, string val);
+    Token *checkAndAdvance(TokenType type, const string& val);
 
     /**
      * Checks if the current token matches the given type, but does not throw.
@@ -91,15 +94,6 @@ private:
      * @return true if the current token matches the given type, false otherwise.
      */
     bool peekMatchType(TokenType type);
-
-    /**
-     * Checks if the current token matches the given type and value, but does not throw.
-     *
-     * @param type token type to match
-     * @param val token value to match
-     * @return true if the current token matches the given type, false otherwise.
-     */
-    bool peekMatchTypeVal(TokenType type, string val);
 
     /**
      * Checks if all tokens have been consumed.
@@ -115,13 +109,6 @@ private:
      * @return the augmented string.
      */
     string withCurrToken(const string &s);
-
-    /**
-     * Generates an error message including start and end parse positions of the current token.
-     *
-     * @return a string describing the error.
-     */
-    string genericErrorMsg();
 
     /**
      * Generates a syntax error message including start and end parse positions of the current token.

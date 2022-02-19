@@ -1,0 +1,27 @@
+if (((if * else * while) >= 1) && (((!(read == print)) && (then != procedure)) || (procedure == 0))) then {
+    read = while * 10 / if;
+    read if;
+    if ((if < then - while) || (read == print)) then {
+        procedure = if + while;
+    } else {
+        else = then / procedure;
+        if (while / while / while == else * else * else) then {
+            print while;
+        } else {
+            while = (if - else) * procedure;
+        }
+    }
+} else {
+    print = if + else;
+    print read;
+    if (procedure == 4 * 4 * 4) then {
+        else = if * (procedure + else);
+        if (program + program + program < procedure + procedure + procedure) then {
+            print print;
+        } else {
+            read read;
+        }
+    } else {
+        read = (read - if - read) / else;
+    }
+}

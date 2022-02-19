@@ -22,4 +22,18 @@ public:
     static void parseReadAndCompare(const string& simple, const string& xml);
     static void parseTermAndCompare(const string& simple, const string& xml);
     static void parseWhileAndCompare(const string& simple, const string& xml);
+
+    static void parseAssignExpectThrows(const string& simple);
+    static void parseCallExpectThrows(const string& simple);
+    static void parseCondExpectThrows(const string& simple);
+    static void parseConstExpectThrows(const string& simple);
+    static void parseExprExpectThrows(const string& simple);
+    static void parseIfExpectThrows(const string& simple);
+    static void parseNameExpectThrows(const string& simple);
+    static void parsePrintExpectThrows(const string& simple);
+    static void parseProcedureExpectThrows(const string& simple);
+    static void parseProgramExpectThrows(const string& simple);
+    static void parseReadExpectThrows(const string& simple);
+    static void parseTermExpectThrows(const string& simple);
+    static void parseWhileExpectThrows(const string& simple);
 };
