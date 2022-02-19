@@ -1,6 +1,7 @@
 #include "Tokenizer.h"
 #include "Tokens.h"
 #include "SimpleParser/ParserUtils.h"
+#include "Exception/TokenizeException.h"
 
 #include <utility>
 #include <cctype>
@@ -11,7 +12,7 @@
 
 // member initialization
 Tokenizer::Tokenizer(string s) : input(s), idx(0), row(0), col(0) {
-    if (s.empty()) throw invalid_argument("input to tokenizer must be nonempty");
+    if (s.empty()) throw TokenizeException("input to tokenizer must be nonempty");
     currToken = s[0];
 }
 
@@ -53,7 +54,7 @@ string Tokenizer::withPosition(const string &s) {
 }
 
 Token Tokenizer::eatN(TokenType type, int n) {
-    if (n > (input.size() - idx)) throw length_error("eating too many characters: " + to_string(n));
+    if (n > (input.size() - idx)) throw TokenizeException("eating too many characters: " + to_string(n));
 
     pair<int, int> start = {row, col};
     string val;
@@ -198,7 +199,7 @@ Token Tokenizer::eatInteger() {
     if (val.size() > 1 && val[0] == '0') {
         string msg = withPosition("integers must not have leading zeroes") +
                 highlightSource(start.first, start.second, row, col);
-        throw runtime_error(msg);
+        throw TokenizeException(msg);
     }
 
     pair<int, int> end = {row, col};
@@ -265,7 +266,7 @@ Tokens Tokenizer::tokenize() {
             } else {
                 string msg = withPosition("unknown token " + string(1, currToken)) +
                         highlightSource(row, col, row, col);
-                throw runtime_error(msg);
+                throw TokenizeException(msg);
             }
 
             tokens.add(tok);
