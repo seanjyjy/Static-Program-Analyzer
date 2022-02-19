@@ -8,7 +8,7 @@
 using namespace std;
 
 TEST_CASE("ModifiesExtractor: Assign") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "assign-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -28,7 +28,7 @@ TEST_CASE("ModifiesExtractor: Assign") {
 }
 
 TEST_CASE("ModifiesExtractor: Read") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "read-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -47,7 +47,7 @@ TEST_CASE("ModifiesExtractor: Read") {
 }
 
 TEST_CASE("ModifiesExtractor: Print") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "print-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -60,7 +60,7 @@ TEST_CASE("ModifiesExtractor: Print") {
 }
 
 TEST_CASE("ModifiesExtractor: While") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "while-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -80,7 +80,7 @@ TEST_CASE("ModifiesExtractor: While") {
 }
 
 TEST_CASE("ModifiesExtractor: If") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "if-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -104,7 +104,7 @@ TEST_CASE("ModifiesExtractor: If") {
 
 TEST_CASE("ModifiesExtractor: Non-nested") {
     // non_nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "non_nested-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -115,7 +115,6 @@ TEST_CASE("ModifiesExtractor: Non-nested") {
             {"main", {"a", "b", "e", "f", "j", "m"}}
     };
     REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
-
     unordered_map<string, unordered_set<string>> expectedStmtModifies = {
             {"1", {"a"}}, {"2", {"b"}}, {"3", {"e", "f"}}, {"4", {"e"}}, {"5", {"f"}},
             {"6", {"j", "m"}}, {"7", {"j"}}, {"9", {"m"}}
@@ -126,7 +125,7 @@ TEST_CASE("ModifiesExtractor: Non-nested") {
 
 TEST_CASE("ModifiesExtractor: Nested") {
     // nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readFile("", "nested-xml.txt")).build();
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
@@ -137,10 +136,94 @@ TEST_CASE("ModifiesExtractor: Nested") {
             {"main", {"b", "d", "i", "n", "s"}}
     };
     REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
-
     unordered_map<string, unordered_set<string>> expectedStmtModifies = {
             {"1", {"b", "d", "i", "n", "s"}}, {"2", {"b"}}, {"3", {"d", "i", "n", "s"}},
             {"4", {"d"}}, {"6", {"i"}}, {"7", {"n", "s"}}, {"8", {"n"}}, {"9", {"s"}}
+    };
+    REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
+}
+
+TEST_CASE("ModifiesExtractor: n3iif") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iif.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap);
+    me.extractRelationship();
+
+    unordered_map<string, unordered_set<string>> expectedProcModifies = {
+            {"n3iif", {"if", "read", "print", "else", "then", "cream"}}
+    };
+    REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
+    unordered_map<string, unordered_set<string>> expectedStmtModifies = {
+            {"1", {"if", "read", "print", "else", "then", "cream"}}, {"2", {"if"}}, {"3", {"if"}},
+            {"4", {"read", "print", "if", "else", "then", "cream"}}, {"5", {"read", "print"}},
+            {"9", {"read"}}, {"10", {"print"}}, {"11", {"if"}}, {"12", {"if"}},
+            {"13", {"else", "then"}}, {"14", {"else"}}, {"15", {"then"}}, {"16", {"cream"}},
+            {"17", {"if"}}, {"18", {"if"}}
+    };
+    REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
+}
+
+TEST_CASE("ModifiesExtractor: n3iwl") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iwl.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap);
+    me.extractRelationship();
+
+    unordered_map<string, unordered_set<string>> expectedProcModifies = {
+            {"n3iwl", {"procedure", "print", "read", "try", "reader", "while"}}
+    };
+    REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
+    unordered_map<string, unordered_set<string>> expectedStmtModifies = {
+            {"1", {"procedure"}}, {"2", {"print", "read", "try", "reader", "while"}}, {"3", {"print"}},
+            {"4", {"read", "try", "reader", "while"}}, {"5", {"read"}}, {"6", {"try", "reader", "while"}},
+            {"8", {"try"}}, {"9", {"try"}}, {"10", {"reader"}}, {"11", {"while"}}, {"12", {"while"}}
+    };
+    REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
+}
+
+TEST_CASE("ModifiesExtractor: n3wim") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wim.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap);
+    me.extractRelationship();
+
+    unordered_map<string, unordered_set<string>> expectedProcModifies = {
+            {"n3wim", {"a", "b", "c", "x", "d"}}
+    };
+    REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
+    unordered_map<string, unordered_set<string>> expectedStmtModifies = {
+            {"1", {"a"}}, {"2", {"b", "c", "x"}}, {"3", {"b"}}, {"4", {"c", "x"}}, {"5", {"c"}},
+            {"13", {"x"}}, {"14", {"x"}}, {"15", {"x"}}, {"19", {"x"}}, {"20", {"x"}},
+            {"21", {"c"}}, {"22", {"d"}}
+    };
+    REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
+}
+
+TEST_CASE("ModifiesExtractor: n3wwl") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extractEntities();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap);
+    me.extractRelationship();
+
+    unordered_map<string, unordered_set<string>> expectedProcModifies = {
+            {"n3wwl", {"while"}}
+    };
+    REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
+    unordered_map<string, unordered_set<string>> expectedStmtModifies = {
+            {"1", {"while"}}, {"2", {"while"}}, {"3", {"while"}}, {"4", {"while"}}, {"5", {"while"}},
+            {"6", {"while"}}, {"7", {"while"}}, {"8", {"while"}}, {"9", {"while"}}
     };
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
     delete ast;
