@@ -116,4 +116,64 @@ TEST_CASE("Parser: program") {
     SECTION("N3 WI M") {
         TestParserUtils::parseProgramAndCompare("n3wim.simple", "n3wim.x");
     }
+    SECTION("x condexpr missing bracket") {
+        TestParserUtils::parseProgramExpectFailure("x-condexpr-missing-bracket.simple");
+    }
+    SECTION("x const const") {
+        TestParserUtils::parseProgramExpectFailure("x-const-const.simple");
+    }
+    SECTION("x const leading zero") {
+        TestParserUtils::parseProgramExpectFailure("x-const-leading-zero.simple");
+    }
+    SECTION("x if empty stmtlist") {
+        TestParserUtils::parseProgramExpectFailure("x-if-empty-stmtlist.simple");
+    }
+    SECTION("x if no brace") {
+        TestParserUtils::parseProgramExpectFailure("x-if-no-brace.simple");
+    }
+    SECTION("x multi semicolon") {
+        TestParserUtils::parseProgramExpectFailure("x-multi-semicolon.simple");
+    }
+    SECTION("x if no then") {
+        TestParserUtils::parseProgramExpectFailure("x-no-then.simple");
+    }
+    SECTION("x operator operator") {
+        TestParserUtils::parseProgramExpectFailure("x-operator-operator.simple");
+    }
+    SECTION("x procedure empty stmtlist") {
+        TestParserUtils::parseProgramExpectFailure("x-procedure-empty-stmtlist.simple");
+    }
+    SECTION("x procedure incomplete") {
+        TestParserUtils::parseProgramExpectFailure("x-procedure-incomplete.simple");
+    }
+    SECTION("x procedure no brace") {
+        TestParserUtils::parseProgramExpectFailure("x-procedure-no-brace.simple");
+    }
+    SECTION("x var declaration") {
+        TestParserUtils::parseProgramExpectFailure("x-var-declaration.simple");
+    }
+    SECTION("x var starts with digit") {
+        TestParserUtils::parseProgramExpectFailure("x-var-starts-with-digit.simple");
+    }
+    SECTION("x var var") {
+        TestParserUtils::parseProgramExpectFailure("x-var-var.simple");
+    }
+    SECTION("x while empty stmtlist") {
+        TestParserUtils::parseProgramExpectFailure("x-while-empty-stmtlist.simple");
+    }
+    SECTION("x while missing brace") {
+        TestParserUtils::parseProgramExpectFailure("x-while-missing-brace.simple");
+    }
+    SECTION("x print const") {
+        TestParserUtils::parseProgramExpectFailure("x-print-const.simple");
+    }
+    SECTION("x read const") {
+        TestParserUtils::parseProgramExpectFailure("x-read-const.simple");
+    }
+    SECTION("x print no semicolon") {
+        TestParserUtils::parseProgramExpectFailure("x-print-no-semicolon.simple");
+    }
+    SECTION("x read no semicolon") {
+        TestParserUtils::parseProgramExpectFailure("x-read-no-semicolon.simple");
+    }
 }

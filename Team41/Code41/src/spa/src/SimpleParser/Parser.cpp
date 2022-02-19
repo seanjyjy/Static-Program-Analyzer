@@ -139,6 +139,8 @@ TNode *Parser::eatProcedure() {
 
 TNode *Parser::eatStmtLst() {
     vector<TNode *> stmts;
+    // at least one statement in stmtlist
+    stmts.push_back(eatStmt());
     while (!peekMatchType(TokenType::closingBrace)) {
         stmts.push_back(eatStmt());
     }

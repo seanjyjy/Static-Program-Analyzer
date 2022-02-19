@@ -173,56 +173,80 @@ string TestParserUtils::readFile(string folder, string filename) {
     return fileContent;
 }
 
-void TestParserUtils::parseAssignExpectThrows(const string &simple) {
-    string source = readFile("assign", simple);
+void TestParserUtils::parseAssignExpectFailure(const string &file) {
+    string source = readFile("assign", file);
     Parser p;
-    REQUIRE_THROWS(p.parseAssign(simple));
+    REQUIRE(p.parseAssign(source) == nullptr);
 }
 
-void TestParserUtils::parseCallExpectThrows(const string &simple) {
-
+void TestParserUtils::parseCallExpectFailure(const string &file) {
+    string source = readFile("call", file);
+    Parser p;
+    REQUIRE(p.parseCall(source) == nullptr);
 }
 
-void TestParserUtils::parseCondExpectThrows(const string &simple) {
-
+void TestParserUtils::parseCondExprExpectFailure(const string &file) {
+    string source = readFile("condexpr", file);
+    Parser p;
+    REQUIRE(p.parseCondExpr(source) == nullptr);
 }
 
-void TestParserUtils::parseConstExpectThrows(const string &simple) {
-
+void TestParserUtils::parseConstExpectFailure(const string &file) {
+    string source = readFile("const", file);
+    Parser p;
+    REQUIRE(p.parseConst(source) == nullptr);
 }
 
-void TestParserUtils::parseExprExpectThrows(const string &simple) {
-
+void TestParserUtils::parseExprExpectFailure(const string &file) {
+    string source = readFile("expr", file);
+    Parser p;
+    REQUIRE(p.parseExpr(source) == nullptr);
 }
 
-void TestParserUtils::parseIfExpectThrows(const string &simple) {
-
+void TestParserUtils::parseIfExpectFailure(const string &file) {
+    string source = readFile("if", file);
+    Parser p;
+    REQUIRE(p.parseIf(source) == nullptr);
 }
 
-void TestParserUtils::parseNameExpectThrows(const string &simple) {
-
+void TestParserUtils::parseNameExpectFailure(const string &file) {
+    string source = readFile("name", file);
+    Parser p;
+    REQUIRE(p.parseName(source) == nullptr);
 }
 
-void TestParserUtils::parsePrintExpectThrows(const string &simple) {
-
+void TestParserUtils::parsePrintExpectFailure(const string &file) {
+    string source = readFile("print", file);
+    Parser p;
+    REQUIRE(p.parsePrint(source) == nullptr);
 }
 
-void TestParserUtils::parseProcedureExpectThrows(const string &simple) {
-
+void TestParserUtils::parseProcedureExpectFailure(const string &file) {
+    string source = readFile("procedure", file);
+    Parser p;
+    REQUIRE(p.parseProcedure(source) == nullptr);
 }
 
-void TestParserUtils::parseProgramExpectThrows(const string &simple) {
-
+void TestParserUtils::parseProgramExpectFailure(const string &file) {
+    string source = readFile("program", file);
+    Parser p;
+    REQUIRE(p.parseProgram(source) == nullptr);
 }
 
-void TestParserUtils::parseReadExpectThrows(const string &simple) {
-
+void TestParserUtils::parseReadExpectFailure(const string &file) {
+    string source = readFile("read", file);
+    Parser p;
+    REQUIRE(p.parseRead(source) == nullptr);
 }
 
-void TestParserUtils::parseTermExpectThrows(const string &simple) {
-
+void TestParserUtils::parseTermExpectFailure(const string &file) {
+    string source = readFile("term", file);
+    Parser p;
+    REQUIRE(p.parseTerm(source) == nullptr);
 }
 
-void TestParserUtils::parseWhileExpectThrows(const string &simple) {
-
+void TestParserUtils::parseWhileExpectFailure(const string &file) {
+    string source = readFile("while", file);
+    Parser p;
+    REQUIRE(p.parseWhile(source) == nullptr);
 }

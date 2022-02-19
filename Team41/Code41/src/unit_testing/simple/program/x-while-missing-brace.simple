@@ -1,0 +1,4 @@
+procedure main {
+	while (0 == 0) {
+		print x;
+}

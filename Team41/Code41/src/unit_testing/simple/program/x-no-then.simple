@@ -1,0 +1,7 @@
+procedure main {
+	if (0 == 0) {
+		print x;
+	} else {
+		print x;
+	}
+}
