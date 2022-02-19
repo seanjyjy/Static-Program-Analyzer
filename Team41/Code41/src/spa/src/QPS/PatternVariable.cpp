@@ -18,3 +18,8 @@ TNode *PatternVariable::getMiniAST() {
 
 PatternVariable::PatternVariable(pattern_type type, TNode *miniAST) :
     type(type), miniAST(miniAST) {}
+
+void PatternVariable::cleanAST() {
+    delete miniAST;
+    miniAST = nullptr;
+}

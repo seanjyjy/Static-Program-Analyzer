@@ -5,12 +5,13 @@
 using namespace std;
 
 TEST_CASE("QPS: Parser_VALID") {
+    QueryObject *qo = nullptr;
     SECTION("Missing such that") {
         string s = "variable v;\n"
                    "Select v";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         bool typeMatch = qo->declarations.at(0).type == QueryDeclaration::VARIABLE;
         bool synMatch = qo->declarations.at(0).synonym == "v";
         bool selectMatch = qo->selectSynonym.synonym == "v";
@@ -25,7 +26,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select v such that Uses(a, v)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         bool typeMatch = qo->declarations.at(1).type == QueryDeclaration::ASSIGN;
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::usesS;
         REQUIRE(qo->isQueryValid);
@@ -37,7 +38,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select s such that Uses(s, \"bloody\")";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::usesS;
         REQUIRE(qo->isQueryValid);
         REQUIRE(clauseMatch);
@@ -47,7 +48,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select v such that Modifies(p, v)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         bool typeMatch = qo->declarations.at(1).type == QueryDeclaration::VARIABLE;
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::modifiesP;
         REQUIRE(qo->isQueryValid);
@@ -59,7 +60,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select v such that Modifies(\"someProcName\", v)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         bool typeMatch = qo->declarations.at(0).type == QueryDeclaration::VARIABLE;
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::modifiesP;
         bool selectMatch = qo->selectSynonym.synonym == "v";
@@ -76,7 +77,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select v such that Uses(c, v)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         bool typeMatch = qo->declarations.at(0).type == QueryDeclaration::CALL;
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::usesS;
         REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::CALL);
@@ -90,7 +91,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select v such that Uses(a, v)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::usesS;
         bool vMatch = qo->clauses.at(0).getLeftClauseVariable().type == ClauseVariable::synonym;
         REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
@@ -104,7 +105,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select v such that Modifies(_, v)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::modifiesS;
         bool vMatch = qo->clauses.at(0).getLeftClauseVariable().type == ClauseVariable::wildcard;
         REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::NONE);
@@ -118,7 +119,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select v such that Modifies(42, v)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         bool clauseMatch = qo->clauses.at(0).type == QueryClause::modifiesS;
         bool vMatch = qo->clauses.at(0).getLeftClauseVariable().type == ClauseVariable::integer;
         REQUIRE(qo->isQueryValid);
@@ -130,7 +131,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select a pattern a (_, \"count + 1\")";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
         REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
         REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
@@ -141,7 +142,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select a pattern a (\"x\", _\"sub + 1\"_)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
 
         REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
         REQUIRE(qo->patternClauses.at(0).getRHS().isSubPattern());
@@ -152,7 +153,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select a pattern a (v, _)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() == nullptr);
         REQUIRE(qo->patternClauses.at(0).getRHS().isWildcard());
         REQUIRE(qo->patternClauses.at(0).getLHS().isSynonym());
@@ -161,7 +162,7 @@ TEST_CASE("QPS: Parser_VALID") {
         string s = "variable v, v1, v2; assign a, a1;\n"
                    "Select v";
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
 
         REQUIRE(qo->isQueryValid);
         bool typeMatch = qo->declarations.at(0).type == QueryDeclaration::VARIABLE;
@@ -189,7 +190,7 @@ TEST_CASE("QPS: Parser_VALID") {
         string s = "variable           v,v1,      v2  ; assign          a, a1      ;\n"
                    "Select         v pattern       a (   _    ,     \"count + 1\")      ";
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
 
         REQUIRE(qo->isQueryValid);
         bool typeMatch = qo->declarations.at(0).type == QueryDeclaration::VARIABLE;
@@ -222,7 +223,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select a such that Uses(a, v) pattern a (_, \"count + 1\")";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
         REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
         REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
@@ -235,7 +236,7 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select a pattern a (_, \"count + 1\") such that Uses(a, v)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
 
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
         REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
@@ -247,12 +248,13 @@ TEST_CASE("QPS: Parser_VALID") {
 }
 
 TEST_CASE("QPS: Parser_INVALID") {
+    QueryObject *qo = nullptr;
     SECTION("Bad declaration type") {
         string s = "variable v; asinine a;\n"
                    "Select v such that Kills(a, v)";
 
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
@@ -261,7 +263,7 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select v such that Kills(a, v)";
 
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
@@ -270,7 +272,7 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select v such that Kills(a, v)";
 
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
@@ -279,7 +281,7 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select v such that Kills(a, v)";
 
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
@@ -288,7 +290,7 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select v such that";
 
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("No ClauseVariable left") {
@@ -296,7 +298,7 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select v such that Uses(, v)";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("No ClauseVariable right") {
@@ -304,15 +306,14 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select v such that Uses(a, )";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("Malformed such that") {
         string s = "variable v; assign a;\n"
                    "Select v suck that Uses(a, v)";
         QueryParser a = QueryParser{s};
-
-        QueryObject *qo = a.parse();
+        qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
@@ -321,21 +322,21 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "select v such that Uses(a, v)";
 
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("Empty query") {
         string s = "";
         QueryParser qp = QueryParser{s};
-        qp.parse();
-        REQUIRE(true);
+        qo = qp.parse();
+        REQUIRE(!qo->isQueryValid);
     }
     SECTION("No Select clause") {
         string s = "variable v; assign a;";
 
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
@@ -344,7 +345,7 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select f such that Uses(a, v)";
 
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
@@ -353,7 +354,7 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select v such that Uses(leftBad, v)";
 
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
@@ -362,28 +363,28 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select v such that Uses(a, rightBad)";
 
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("pattern undeclared LHS") {
         string s = "variable v; assign a;\n"
                    "Select v such that Uses(a, v) pattern a (leftPatBad, _)";
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("pattern no synonym") {
         string s = "variable v; assign a;\n"
                    "Select v such that Uses(a, v) pattern (leftPatBad, _)";
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("pattern misspelled") {
         string s = "variable v; assign a;\n"
                    "Select v such that Uses(a, v) paddern a (v, _)";
         QueryParser a = QueryParser{s};
-        QueryObject *qo = a.parse();
+        qo = a.parse();
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("Missing semi colon 1") {
@@ -391,7 +392,7 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select v";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
@@ -399,32 +400,33 @@ TEST_CASE("QPS: Parser_INVALID") {
         string s = "variable v            Select v";
 
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
 
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("Rogue semicolons in declarations 1") {
         string s = ";;;variable v; Select v";
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("Rogue semicolons in declarations 2") {
         string s = "variable ;;; ; ;v; Select v";
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("Rogue semicolons in select") {
         string s = "variable v; Select ;; ; v";
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         REQUIRE(!qo->isQueryValid);
     }
     SECTION("Rogue semicolons at query end") {
         string s = "variable v; Select v;";
         QueryParser qp = QueryParser{s};
-        QueryObject *qo = qp.parse();
+        qo = qp.parse();
         REQUIRE(!qo->isQueryValid);
     }
+    delete qo;
 }

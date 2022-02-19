@@ -18,6 +18,8 @@ TEST_CASE("AST Builder: term") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, mult));
+        delete ast;
+        delete mult;
     }
 
     SECTION("2") {
@@ -33,6 +35,8 @@ TEST_CASE("AST Builder: term") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, div));
+        delete ast;
+        delete div;
     }
 
     SECTION("3") {
@@ -48,5 +52,7 @@ TEST_CASE("AST Builder: term") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, mod));
+        delete ast;
+        delete mod;
     }
 }

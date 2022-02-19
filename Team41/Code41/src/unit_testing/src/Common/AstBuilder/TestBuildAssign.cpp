@@ -19,5 +19,8 @@ TEST_CASE("AST Builder: assign") {
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);
         REQUIRE(TreeUtils::isEqual(ast, assign));
+
+        delete assign;
+        delete ast;
     }
 }

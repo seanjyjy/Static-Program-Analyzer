@@ -72,17 +72,24 @@ private:
      * @param type the token type to match
      * @return the token matched before the cursor is advanced.
      */
-    Token *checkAndAdvance(TokenType type);
+    Token *checkAndGetTokenAndAdvance(TokenType type);
 
     /**
-     * Verifies the current token matches the type and value, advances the cursor and returns the matched token.
+     * Verifies the current token matches the type and advances the cursor.
+     * Throws if the match fails. Mainly a convenience function.
+     *
+     * @param type the token type to match
+     */
+    void checkAndAdvance(TokenType type);
+
+    /**
+     * Verifies the current token matches the type and value and advances the cursor.
      * Throws if the match fails. Mainly a convenience function.
      *
      * @param type the token type to match
      * @param val the token value to match
-     * @return the token matched before the cursor is advanced.
      */
-    Token *checkAndAdvance(TokenType type, string val);
+    void checkAndAdvance(TokenType type, string val);
 
     /**
      * Checks if the current token matches the given type, but does not throw.

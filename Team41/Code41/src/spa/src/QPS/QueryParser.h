@@ -126,6 +126,11 @@ private:
      * @return QueryDeclaration object of the synonym if declared, else null.
      */
     optional<QueryDeclaration> findMatchingDeclaration(string synonym);
+
+    /**
+     * Clean up method to clean up unused attributes after parsing
+     */
+    void cleanup();
 public:
     /**
      * Constructor for the QueryParser class.

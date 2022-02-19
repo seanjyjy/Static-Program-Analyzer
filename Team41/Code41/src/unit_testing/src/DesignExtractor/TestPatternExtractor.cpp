@@ -26,6 +26,12 @@ TEST_CASE("PatternExtractor: Assign") {
             {"8", {"q", AstBuilder(TestDesignExtractorUtils::readFile("pattern/assign", "8.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+
+    // clean up
+    for(auto [stmt, expectedPair] : expectedAssignPattern) {
+        delete expectedPair.second;
+    }
+    delete ast;
 }
 
 TEST_CASE("PatternExtractor: While") {
@@ -42,6 +48,12 @@ TEST_CASE("PatternExtractor: While") {
             {"11", {"t", AstBuilder(TestDesignExtractorUtils::readFile("pattern/while", "11.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+
+    // clean up
+    for(auto [stmt, expectedPair] : expectedAssignPattern) {
+        delete expectedPair.second;
+    }
+    delete ast;
 }
 
 TEST_CASE("PatternExtractor: If") {
@@ -63,6 +75,12 @@ TEST_CASE("PatternExtractor: If") {
             {"19", {"tt", AstBuilder(TestDesignExtractorUtils::readFile("pattern/if", "19.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+
+    // clean up
+    for(auto [stmt, expectedPair] : expectedAssignPattern) {
+        delete expectedPair.second;
+    }
+    delete ast;
 }
 
 TEST_CASE("PatternExtractor: Non-nested") {
@@ -81,6 +99,12 @@ TEST_CASE("PatternExtractor: Non-nested") {
             {"7", {"j", AstBuilder(TestDesignExtractorUtils::readFile("pattern/non-nested", "7.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+
+    // clean up
+    for(auto [stmt, expectedPair] : expectedAssignPattern) {
+        delete expectedPair.second;
+    }
+    delete ast;
 }
 
 TEST_CASE("PatternExtractor: Nested") {
@@ -98,4 +122,10 @@ TEST_CASE("PatternExtractor: Nested") {
             {"8", {"n", AstBuilder(TestDesignExtractorUtils::readFile("pattern/nested", "8.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+
+    // clean up
+    for(auto [stmt, expectedPair] : expectedAssignPattern) {
+        delete expectedPair.second;
+    }
+    delete ast;
 }

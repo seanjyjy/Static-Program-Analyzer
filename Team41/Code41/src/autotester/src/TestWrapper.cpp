@@ -16,7 +16,7 @@ AbstractWrapper* WrapperFactory::createWrapper() {
 volatile bool AbstractWrapper::GlobalStop = false;
 
 // a default constructor
-TestWrapper::TestWrapper() : pkbManager(new PKB()) {
+TestWrapper::TestWrapper() : pkbManager() {
   // create any objects here as instance variables of this class
   // as well as any initialization required for your spa program
 }
@@ -30,7 +30,7 @@ void TestWrapper::parse(std::string filename) {
     Parser p;
     TNode* ast = p.parseProgram(fileContent);
     cout << "Parse complete" << endl;
-    DesignExtractor designExtractor(ast, this->pkbManager);
+    DesignExtractor designExtractor(ast, &pkbManager);
     designExtractor.extractDesign();
     cout << "Extraction complete" << endl;
 }
@@ -42,10 +42,11 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
     cout << "Evaluating: " << query << endl;
     QueryParser qp = QueryParser{query};
     QueryObject* queryObject = qp.parse();
-    QueryEvaluator queryEvaluator(this->pkbManager);
+    QueryEvaluator queryEvaluator(&pkbManager);
     std::unordered_set<std::string> result = queryEvaluator.evaluateQuery(queryObject);
     // store the answers to the query in the results list (it is initially empty)
     // each result must be a string.
     std::copy(result.begin(), result.end(), std::back_inserter(results));
+    delete queryObject;
     cout << "Done: " << query << endl;
 }

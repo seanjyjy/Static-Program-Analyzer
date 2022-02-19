@@ -16,6 +16,7 @@ private:
     TNode *parent = nullptr; // will be set after ast is parsed
 public:
     TNode(TNodeType type, Token *val, vector<TNode *> children);
+    ~TNode();
 
     // appends a child to rightmost end of children.
     void addChild(TNode *child);
