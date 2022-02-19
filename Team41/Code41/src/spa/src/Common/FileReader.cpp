@@ -19,5 +19,5 @@ string FileReader::getFileContent(string &path) {
         in.close();
         return (contents);
     }
-    throw (errno);
+    throw runtime_error("Cannot open file: " + path);
 }
