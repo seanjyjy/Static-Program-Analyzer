@@ -12,8 +12,10 @@ using namespace std;
 #include "Common/TNode.h"
 #include "Parser.h"
 #include "Tokenizer.h"
+#include "Exception/SyntaxException.h"
+#include "SimpleParser/ParserUtils.h"
 
-Parser::Parser() : cursor(0), maxRowOnError(0), maxColOnError(0) {}
+Parser::Parser() {}
 
 void Parser::advance() {
     cursor++;
@@ -35,12 +37,17 @@ void Parser::expect(TokenType type) {
     if (currToken.getType() != type) {
         string expectedType = Token::typeToString(type);
         string gotType = Token::typeToString(currToken.getType());
-        auto[startRow, startCol] = currToken.getStart();
-        startRow++; // from 0-indexed to 1-indexed
-        startCol++;
-        string msg = "expected " + expectedType + " when parsing from row " + to_string(startRow) +
-                     ", col " + to_string(startCol) + ", got " + gotType;
-        throw runtime_error(msg);
+        auto [startRow, startCol] = currToken.getStart();
+        auto [endRow, endCol] = currToken.getEnd();
+        if (startRow < errorStartRow || (startRow == errorStartRow && startCol < errorStartCol)) {
+            errorStartRow = startRow;
+            errorStartCol = startCol;
+        }
+        if (endRow > errorEndRow || (endRow == errorEndRow && endCol > errorEndCol)) {
+            errorEndRow = endRow;
+            errorEndCol = endCol;
+        }
+        throw SyntaxException();
     }
 }
 
@@ -48,13 +55,17 @@ void Parser::expect(TokenType type, const string& s) {
     if (currToken.getType() != type || currToken.getVal() != s) {
         string expectedType = Token::typeToString(type);
         string gotType = Token::typeToString(currToken.getType());
-        auto[startRow, startCol] = currToken.getStart();
-        startRow++; // from 0-indexed to 1-indexed
-        startCol++;
-        string msg = "expected " + expectedType + " " + s +
-                     " when parsing from row " + to_string(startRow) + ", col " + to_string(startCol) +
-                     ", got " + gotType + currToken.getVal();
-        throw runtime_error(msg);
+        auto [startRow, startCol] = currToken.getStart();
+        auto [endRow, endCol] = currToken.getEnd();
+        if (startRow < errorStartRow || (startRow == errorStartRow && startCol < errorStartCol)) {
+            errorStartRow = startRow;
+            errorStartCol = startCol;
+        }
+        if (endRow > errorEndRow || (endRow == errorEndRow && endCol > errorEndCol)) {
+            errorEndRow = endRow;
+            errorEndCol = endCol;
+        }
+        throw SyntaxException();
     }
 }
 
@@ -66,15 +77,20 @@ bool Parser::isEof() {
     return peekMatchType(TokenType::eof);
 }
 
-string Parser::withCurrToken(const string &s) {
-    auto[startRow, startCol] = currToken.getStart();
-    auto[endRow, endCol] = currToken.getEnd();
-    return s + " starting from row " + to_string(startRow) + " col " +
-           to_string(startCol) + " to row " + to_string(endRow) + " col " + to_string(endCol);
+string Parser::withDetails(const string &s) {
+    return s + " - from" +
+           " row " + to_string(errorStartRow+1) + " col " + to_string(errorStartCol+1) +
+           " to row " + to_string(errorEndRow+1) + " col " + to_string(errorEndCol+1);
 }
 
 string Parser::syntaxErrorMsg() {
-    return withCurrToken("syntax error while parsing tokens");
+    return withDetails("syntax error during parse");
+}
+
+string Parser::highlightSource() {
+    return "\nvvvvvvvvvvvvvvvvvvvvvvvvvvvvv PARSER ERROR HIGHLIGHT vvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n" +
+        ParserUtils::highlight(input, errorStartRow, errorStartCol, errorEndRow, errorEndCol) +
+            "\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ END ERROR HIGHLIGHT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
 }
 
 Token *Parser::checkAndAdvance(TokenType type) {
@@ -169,7 +185,7 @@ TNode *Parser::eatStmt() {
         backtrack(c);
     }
 
-    throw runtime_error(syntaxErrorMsg());
+    throw SyntaxException();
 }
 
 TNode *Parser::eatStmtRead() {
@@ -276,7 +292,7 @@ TNode *Parser::eatCondExpr() {
     }
 
     // incorrect syntax
-    throw runtime_error(syntaxErrorMsg());
+    throw SyntaxException();
 }
 
 TNode *Parser::eatRelExpr() {
@@ -340,7 +356,7 @@ TNode *Parser::eatRelExpr() {
         backtrack(c);
     }
 
-    throw runtime_error(syntaxErrorMsg());
+    throw SyntaxException();
 }
 
 TNode *Parser::eatRelFactor() {
@@ -367,7 +383,7 @@ TNode *Parser::eatRelFactor() {
         backtrack(c);
     }
 
-    throw runtime_error(syntaxErrorMsg());
+    throw SyntaxException();
 }
 
 // expr -> term expr1 | term
@@ -421,7 +437,7 @@ TNode *Parser::eatExpr1() {
 
         return TNode::makeMinus(TNode::makeDummy(), term);
     }
-    throw runtime_error(syntaxErrorMsg());
+    throw SyntaxException();
 }
 
 TNode *Parser::eatTerm() {
@@ -490,7 +506,7 @@ TNode *Parser::eatTerm1() {
 
         return TNode::makeMod(TNode::makeDummy(), factor);
     }
-    throw runtime_error(syntaxErrorMsg());
+    throw SyntaxException();
 }
 
 TNode *Parser::eatFactor() {
@@ -520,30 +536,40 @@ TNode *Parser::eatFactor() {
         backtrack(c);
     }
 
-    throw runtime_error(syntaxErrorMsg());
+    throw SyntaxException();
 }
 
 void Parser::init(const string &s) {
     // set current string to parse
-    input = move(s);
+    input = s;
 
     // remove previous tokens (if any)
     tokens.clear();
 
     // tokenize input
     Tokenizer tokenizer(input);
-    tokens = tokenizer.tokenize();
+    try {
+        tokens = tokenizer.tokenize();
+    } catch (exception &e) {
+        throw exception("parser met an error during tokenizing, aborting");
+    }
 
     // tokenize succeeded, now setup for ast recursive descent
-    if (tokens.empty()) throw runtime_error("parser tokens must not be empty");
+    if (tokens.empty()) throw exception("parser tokens must not be empty");
+
     cursor = 0;
+    errorStartRow = INT_MAX;
+    errorStartCol = INT_MAX;
+    errorEndRow = -1;
+    errorEndCol = -1;
     currToken = tokens[0];
 }
 
 TNode *Parser::parse(const string &s) {
-    init(s);
-
     try {
+        // setup and tokenize
+        init(s);
+
         TNode *ast = nullptr;
         switch (parseOption) {
             case Option::program:
@@ -587,15 +613,18 @@ TNode *Parser::parse(const string &s) {
                 ast = eatFactor();
                 break;
             default:
-                throw runtime_error("unknown parse option given");
+                throw exception("unknown parse option given");
         }
-        if (!peekMatchType(TokenType::eof)) throw runtime_error("invalid expr syntax");
+        if (!peekMatchType(TokenType::eof)) throw exception("extra tokens remaining after parse");
         // success, now set all parent pointers
         ast->setAllParents();
         return ast;
-    } catch (runtime_error &e) {
-        cout << e.what() << endl;
+    } catch (SyntaxException &e) {
+        // syntax errors are only thrown during parsing
+        cout << syntaxErrorMsg() << endl;
+        cout << endl << highlightSource() << endl;
     } catch (exception &e) {
+        // any other error, e.g tokenizing is thrown as a std::exception
         cout << e.what() << endl;
     }
 

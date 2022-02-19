@@ -51,6 +51,13 @@ private:
     string withPosition(const string &s);
 
     /**
+     * Highlights the SIMPLE source code.
+     *
+     * @return the highlighted SIMPLE source code.
+     */
+    string highlightSource(int fromRow, int fromCol, int toRow, int toCol);
+
+    /**
      * Consumes the current char while isspace() returns true on the current token.
      */
     void eatWhitespace();

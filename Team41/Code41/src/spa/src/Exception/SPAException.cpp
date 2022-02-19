@@ -1,3 +1,7 @@
 #include "SPAException.h"
 
-SPAException::SPAException(string errorMessage) : errorMessage(errorMessage) {}
+using namespace std;
+
+#include <utility>
+
+SPAException::SPAException(string errorMessage) : errorMessage(move(errorMessage)) {}

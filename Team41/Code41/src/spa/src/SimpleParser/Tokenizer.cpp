@@ -1,11 +1,13 @@
 #include "Tokenizer.h"
 #include "Tokens.h"
+#include "SimpleParser/ParserUtils.h"
 
 #include <utility>
 #include <cctype>
 #include <stdexcept>
 #include <cassert>
 #include <unordered_set>
+#include <iostream>
 
 // member initialization
 Tokenizer::Tokenizer(string s) : input(s), idx(0), row(0), col(0) {
@@ -28,11 +30,11 @@ void Tokenizer::advance() {
 }
 
 void Tokenizer::advancePosition() {
-    this->idx++;
-    this->col++;
+    idx++;
+    col++;
     if (currToken == '\n') {
-        this->row++;
-        this->col = 0;
+        row++;
+        col = 0;
     }
 }
 
@@ -193,7 +195,11 @@ Token Tokenizer::eatInteger() {
     }
 
     // 0 allowed, but 01 should not be allowed
-    if (val.size() > 1 && val[0] == '0') throw runtime_error(withPosition("integers must not have leading zeroes"));
+    if (val.size() > 1 && val[0] == '0') {
+        string msg = withPosition("integers must not have leading zeroes") +
+                highlightSource(start.first, start.second, row, col);
+        throw runtime_error(msg);
+    }
 
     pair<int, int> end = {row, col};
     return Token{TokenType::integer, val, start, end};
@@ -201,68 +207,81 @@ Token Tokenizer::eatInteger() {
 
 // public functions
 Tokens Tokenizer::tokenize() {
-    Tokens tokens;
+    try {
+        Tokens tokens;
 
-    while (currToken != EOF_CHAR) {
-        Token tok;
+        while (currToken != EOF_CHAR) {
+            Token tok;
 
-        if (isspace(currToken)) {
-            eatWhitespace(); // no token
-            continue;
+            if (isspace(currToken)) {
+                eatWhitespace(); // no token
+                continue;
+            }
+
+            if (currToken == '{') {
+                tok = eatOpeningBrace();
+            } else if (currToken == '}') {
+                tok = eatClosingBrace();
+            } else if (currToken == '(') {
+                tok = eatOpeningBracket();
+            } else if (currToken == ')') {
+                tok = eatClosingBracket();
+            } else if (currToken == ';') {
+                tok = eatSemicolon();
+            } else if (currToken == '+') {
+                tok = eatPlus();
+            } else if (currToken == '-') {
+                tok = eatMinus();
+            } else if (currToken == '*') {
+                tok = eatTimes();
+            } else if (currToken == '/') {
+                tok = eatDiv();
+            } else if (currToken == '%') {
+                tok = eatMod();
+            } else if (currToken == '&') {
+                tok = eatAnd();
+            } else if (currToken == '|') {
+                tok = eatOr();
+            } else if (currToken == '>' && peek(2) == ">=") {
+                tok = eatGe();
+            } else if (currToken == '>') {
+                tok = eatGt();
+            } else if (currToken == '<' && peek(2) == "<=") {
+                tok = eatLe();
+            } else if (currToken == '<') {
+                tok = eatLt();
+            } else if (currToken == '=' && peek(2) == "==") {
+                tok = eatEq();
+            } else if (currToken == '=') {
+                tok = eatAssign();
+            } else if (currToken == '!' && peek(2) == "!=") {
+                tok = eatNe();
+            } else if (currToken == '!') {
+                tok = eatNot();
+            } else if (isalpha(currToken)) {
+                tok = eatName();
+            } else if (isdigit(currToken)) {
+                tok = eatInteger();
+            } else {
+                string msg = withPosition("unknown token " + string(1, currToken)) +
+                        highlightSource(row, col, row, col);
+                throw runtime_error(msg);
+            }
+
+            tokens.add(tok);
         }
 
-        if (currToken == '{') {
-            tok = eatOpeningBrace();
-        } else if (currToken == '}') {
-            tok = eatClosingBrace();
-        } else if (currToken == '(') {
-            tok = eatOpeningBracket();
-        } else if (currToken == ')') {
-            tok = eatClosingBracket();
-        } else if (currToken == ';') {
-            tok = eatSemicolon();
-        } else if (currToken == '+') {
-            tok = eatPlus();
-        } else if (currToken == '-') {
-            tok = eatMinus();
-        } else if (currToken == '*') {
-            tok = eatTimes();
-        } else if (currToken == '/') {
-            tok = eatDiv();
-        } else if (currToken == '%') {
-            tok = eatMod();
-        } else if (currToken == '&') {
-            tok = eatAnd();
-        } else if (currToken == '|') {
-            tok = eatOr();
-        } else if (currToken == '>' && peek(2) == ">=") {
-            tok = eatGe();
-        } else if (currToken == '>') {
-            tok = eatGt();
-        } else if (currToken == '<' && peek(2) == "<=") {
-            tok = eatLe();
-        } else if (currToken == '<') {
-            tok = eatLt();
-        } else if (currToken == '=' && peek(2) == "==") {
-            tok = eatEq();
-        } else if (currToken == '=') {
-            tok = eatAssign();
-        } else if (currToken == '!' && peek(2) == "!=") {
-            tok = eatNe();
-        } else if (currToken == '!') {
-            tok = eatNot();
-        } else if (isalpha(currToken)) {
-            tok = eatName();
-        } else if (isdigit(currToken)) {
-            tok = eatInteger();
-        } else {
-            throw runtime_error(withPosition("unknown token " + string(1, currToken)));
-        }
-
-        tokens.add(tok);
+        Token eof = Token{TokenType::eof, "", {-1, -1}, {-1, -1}};
+        tokens.add(eof);
+        return tokens;
+    } catch (exception &e) {
+        cout << e.what() << endl;
+        throw e;
     }
+}
 
-    Token eof = Token{TokenType::eof, "", {-1, -1}, {-1, -1}};
-    tokens.add(eof);
-    return tokens;
+string Tokenizer::highlightSource(int fromRow, int fromCol, int toRow, int toCol) {
+    return  "\n\nvvvvvvvvvvvvvvvvvvvvvvvvvvvvv TOKENIZER ERROR HIGHLIGHT vvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n\n" +
+            ParserUtils::highlight(input, fromRow, fromCol, toRow, toCol) +
+            "\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ END ERROR HIGHLIGHT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
 }

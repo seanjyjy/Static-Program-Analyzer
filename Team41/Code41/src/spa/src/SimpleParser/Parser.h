@@ -26,13 +26,15 @@ private:
     };
 
     string input; // input string to tokenize
-    int cursor; // keep track of position in input
+    int cursor = 0; // keep track of position in input
     Tokens tokens; // tokens after tokenizing
     Token currToken; // current token being parsed
     Option parseOption = Option::program; // decides how input is parsed
 
-    int maxRowOnError; // farthest row parsed until error
-    int maxColOnError; // farthest col parsed until error
+    int errorStartRow = -1; // earliest row parsed until error, 0-indexed
+    int errorStartCol = -1; // earliest col parsed until error, 0-indexed
+    int errorEndRow = -1; // latest row parsed until error, 0-indexed
+    int errorEndCol = -1; // latest col parsed until error, 0-indexed
 
     /**
      * Copies the current index of the cursor and returns it.
@@ -108,7 +110,7 @@ private:
      * @param s the string to augment.
      * @return the augmented string.
      */
-    string withCurrToken(const string &s);
+    string withDetails(const string &s);
 
     /**
      * Generates a syntax error message including start and end parse positions of the current token.
@@ -116,6 +118,13 @@ private:
      * @return a string describing the error.
      */
     string syntaxErrorMsg();
+
+    /**
+     * Highlights and returns the input SIMPLE source based on start/end error row/column.
+     *
+     * @return the highlighted SIMPLE source
+     */
+    string highlightSource();
 
     /**
      * Parses a program. program -> procedure+
