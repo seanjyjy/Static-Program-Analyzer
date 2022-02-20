@@ -5,6 +5,11 @@
 #include "StmtType.h"
 
 using namespace std;
+
+/**
+ * Store list of statement used in the SIMPLE program and their respective types
+ * - uses One-Many relation to map statement type to statements and vice versa
+ */
 class StmtTable {
 private:
     OneToMany<StmtType, string> mapping;

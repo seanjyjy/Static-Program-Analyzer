@@ -6,6 +6,18 @@
 
 using namespace std;
 
+/**
+ * A relational table that supports storing Many-Many relationships
+ *
+ * Supports lookup in both direction
+ *
+ * Many-Many relationship is defined as:
+ * - A K key can have multiple V value and
+ * - Each V value can have multiple K key
+ *
+ * @tparam K the key of the relation
+ * @tparam V the val of the relation
+ */
 template<class K, class V>
 class ManyToMany {
 private:

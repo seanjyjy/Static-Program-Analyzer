@@ -15,6 +15,12 @@ class CallsTable;
 class ParentTable;
 class PatternTable;
 
+/**
+ * Used for storing and retrieving abstractions for SIMPLE source code.
+ *
+ * The PKB facade class provides methods to
+ * update or access the various relational table.
+ */
 class PKB {
 public:
     PKB();
@@ -133,8 +139,8 @@ public:
     unordered_set<string> getAllStmtsFollowedTBy(string stmtNum) const;// Gets list of stmts that is followedT by given stmt
     vector<pair<string, string>> getAllFollowsT() const; // Gets list of stmt1-stmt2 pair where stmt1 followsT stmt2
 
-    unordered_set<string> getAllStmtsFollowingSomeStmt() const; // get list of stmt following some stmt
-    unordered_set<string> getAllStmtsFollowedBySomeStmt() const; // get list of stmt followed by some stmt
+    unordered_set<string> getAllStmtsFollowingSomeStmt() const; // Get list of stmt following some stmt
+    unordered_set<string> getAllStmtsFollowedBySomeStmt() const; // Get list of stmt followed by some stmt
 
     //=========================================== Parent ===================================================
 
@@ -153,9 +159,9 @@ public:
     string getParentOf(string childStmt) const;// Gets the stmt that is parent of childStmt
     vector<pair<string, string>> getAllParent() const; // Gets list of parent-child pair where stmt1 is parent of stmt2
 
-    bool isParentT(string stmt1, string stmt2) const; // Checks if stmt1 is parent of stmt2
-    unordered_set<string> getDescendantStmtsOf(string parentStmt) const;// Gets the stmts that are descendants of parentStmt
-    unordered_set<string> getAncestorStmtsOf(string childStmt) const;// Gets the stmt that is ancestors of childStmt
+    bool isParentT(string stmt1, string stmt2) const; // Checks if stmt1 is parentT of stmt2
+    unordered_set<string> getDescendantStmtsOf(string parentStmt) const; // Gets the stmts that are descendants of parentStmt
+    unordered_set<string> getAncestorStmtsOf(string childStmt) const; // Gets the stmts that are ancestors of childStmt
     vector<pair<string, string>> getAllParentT() const; // Gets list of parent-child pair where stmt1 is ancestor of stmt2
 
     unordered_set<string> getAllStmtsParentOfSomeStmt() const; // get list of stmt parent of some stmt
@@ -190,16 +196,17 @@ public:
     bool isModifiesP(string procName, string varName) const;// Checks if specified procedure modifies specified variable
     unordered_set<string> getModifiesPByVar(string varName) const;// Gets list of procedures that modifies specified variable
     unordered_set<string> getModifiesByProc(string procName) const;// Gets list of variables that is modified by procedure
-    vector<pair<string, string>> getAllModifiesP() const;// Gets list of proc-var pair where stmt modifies var
+    vector<pair<string, string>> getAllModifiesP() const;// Gets list of proc-var pair where proc modifies var
     unordered_set<string> getAllProcsModifyingSomeVar() const;// Gets list of proc where proc modifies some var
 
     //=========================================== Pattern ===================================================
 
     /**
-     * Registers to PKB that the specified assignment stmt has the following pattern
+     * Registers to PKB that the specified assignment stmt, modifies the variable and has the following expression pattern
      *
      * @param stmtNum assign statement
-     * @param assignAST
+     * @param lhsVariable the modified variable in the statement
+     * @param assignAST the Abstract Syntax Tree for the RHS expression of the statement
      */
     void registerPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST);
 

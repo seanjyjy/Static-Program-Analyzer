@@ -10,8 +10,13 @@
 using namespace std;
 
 /**
- * A K key can have only one V value and
- * each V value can only have one K key
+ * A relational table that supports storing One-One relationships
+ *
+ * Supports lookup in both direction
+ *
+ * One-One relationship is defined as:
+ * - A K key can have only one V value and
+ * - Each V value can only have one K key
  *
  * @tparam K the key of the relation
  * @tparam V the val of the relation
