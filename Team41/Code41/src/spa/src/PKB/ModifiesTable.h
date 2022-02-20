@@ -5,6 +5,11 @@
 
 using namespace std;
 
+/**
+ * A relational table that stores the Modifies abstractions
+ * - ModifiesS relation follows Many-Many relationship mapping
+ * - ModifiesP relation follows Many-Many relationship mapping
+ */
 class ModifiesTable {
 private:
     // ModifiesS : 'Modifies' '(' stmtRef ',' entRef ')'
@@ -14,19 +19,32 @@ private:
 public:
     ModifiesTable();
 
-    void setVarModifiedInStmt(string stmtNum, string varName);
-    unordered_set<string> getVarsModifiedInStmt(string stmtNum);
-    unordered_set<string> getStmtsModifyingVar(string varName);
-    vector<pair<string, string>> getStmtsVarEntries();
-    unordered_set<string> getVarsModifiedInSomeStmt();
-    unordered_set<string> getStmtsModifyingSomeVar();
-    bool isModifiesS(string stmtNum, string varName);
+    /**
+     * Set stmt modifies var relation in the table
+     *
+     * @param stmtNum the modifying statement
+     * @param varName the modified variable
+     */
+    void setVarModifiedInStmt(const string& stmtNum, const string& varName);
+    unordered_set<string> getVarsModifiedInStmt(string stmtNum); // Gets set of variables that is modified by statement
+    unordered_set<string> getStmtsModifyingVar(string varName); // Gets set of statements that modifies variable
+    vector<pair<string, string>> getStmtsVarEntries(); // Gets list of stmt-var pair where stmt modifies var
+    unordered_set<string> getVarsModifiedInSomeStmt(); // Gets set of var where var is modified by some stmt
+    unordered_set<string> getStmtsModifyingSomeVar(); // Gets set of stmt where stmt modifies some var
+    bool isModifiesS(string stmtNum, string varName); // Checks if statement modifies variable
 
-    void setVarModifiedInProc(string procName, string varName);
-    unordered_set<string> getVarsModifiedInProc(string procName);
-    unordered_set<string> getProcsModifyingVar(string varName);
-    vector<pair<string, string>> getProcVarEntries();
-    unordered_set<string> getVarsModifiedInSomeProc();
-    unordered_set<string> getProcsModifyingSomeVar();
-    bool isModifiesP(string procName, string varName);
+    /**
+     * Set procedure modifies var relation in the table
+     *
+     * @param procName the modifying procedure
+     * @param varName the modified variable
+     */
+    void setVarModifiedInProc(const string& procName, const string& varName);
+    unordered_set<string> getVarsModifiedInProc(string procName);// Gets set of variables that is modified by procedure
+    unordered_set<string> getProcsModifyingVar(string varName);// Gets set of procedures that modifies specified variable
+    vector<pair<string, string>> getProcVarEntries(); // Gets list of proc-var pair where proc modifies var
+    unordered_set<string> getVarsModifiedInSomeProc(); // Gets set of var where var is modified by some proc
+    unordered_set<string> getProcsModifyingSomeVar(); // Gets set of proc where proc modifies some var
+    bool isModifiesP(string procName, string varName);// Checks if procedure modifies variable
 };
+

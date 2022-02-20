@@ -1,4 +1,5 @@
 #include <string>
+#include <utility>
 
 #include "StmtTable.h"
 
@@ -11,18 +12,18 @@ unordered_set<string> StmtTable::getAllStmtsByType(StmtType type) {
 }
 
 StmtType StmtTable::getStmtType(string stmtNumber) {
-    return mapping.getKeyFromValue(stmtNumber);
+    return mapping.getKeyFromValue(std::move(stmtNumber));
 }
 
 bool StmtTable::isStmtType(string stmtNumber, StmtType type) {
-    return mapping.hasMapping(type, stmtNumber);
+    return mapping.hasMapping(type, std::move(stmtNumber));
 }
 
-void StmtTable::setStmt(string stmtNum, StmtType type) {
+void StmtTable::setStmt(const string& stmtNum, StmtType type) {
     return mapping.addMapping(type, stmtNum);
 }
 
-int StmtTable::getStmtCount() {
+size_t StmtTable::getStmtCount() {
     return mapping.valSize();
 }
 

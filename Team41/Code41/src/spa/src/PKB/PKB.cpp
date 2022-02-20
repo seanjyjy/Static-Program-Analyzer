@@ -35,259 +35,259 @@ PKB::~PKB() {
 
 //======================================== Statements ==================================================
 
-unordered_set<string> PKB::getAssigns() { return stmtTable->getAllStmtsByType(ASSIGN); }
+unordered_set<string> PKB::getAssigns() const { return stmtTable->getAllStmtsByType(ASSIGN); }
 
-unordered_set<string> PKB::getWhiles() { return stmtTable->getAllStmtsByType(WHILE); }
+unordered_set<string> PKB::getWhiles() const { return stmtTable->getAllStmtsByType(WHILE); }
 
-unordered_set<string> PKB::getIfs() { return stmtTable->getAllStmtsByType(IF); }
+unordered_set<string> PKB::getIfs() const { return stmtTable->getAllStmtsByType(IF); }
 
-unordered_set<string> PKB::getReads() { return stmtTable->getAllStmtsByType(READ); }
+unordered_set<string> PKB::getReads() const { return stmtTable->getAllStmtsByType(READ); }
 
-unordered_set<string> PKB::getPrints() { return stmtTable->getAllStmtsByType(PRINT); }
+unordered_set<string> PKB::getPrints() const { return stmtTable->getAllStmtsByType(PRINT); }
 
-unordered_set<string> PKB::getCalls() { return stmtTable->getAllStmtsByType(CALL); }
+unordered_set<string> PKB::getCalls() const { return stmtTable->getAllStmtsByType(CALL); }
 
-void PKB::registerAssign(string stmtNum) { return stmtTable->setStmt(move(stmtNum), ASSIGN); }
+void PKB::registerAssign(const string& stmtNum) { return stmtTable->setStmt(stmtNum, ASSIGN); }
 
-void PKB::registerWhile(string stmtNum) { return stmtTable->setStmt(move(stmtNum), WHILE); }
+void PKB::registerWhile(const string& stmtNum) { return stmtTable->setStmt(stmtNum, WHILE); }
 
-void PKB::registerIf(string stmtNum) { return stmtTable->setStmt(move(stmtNum), IF); }
+void PKB::registerIf(const string& stmtNum) { return stmtTable->setStmt(stmtNum, IF); }
 
-void PKB::registerRead(string stmtNum) { return stmtTable->setStmt(move(stmtNum), READ); }
+void PKB::registerRead(const string& stmtNum) { return stmtTable->setStmt(stmtNum, READ); }
 
-void PKB::registerPrint(string stmtNum) { return stmtTable->setStmt(move(stmtNum), PRINT); }
+void PKB::registerPrint(const string& stmtNum) { return stmtTable->setStmt(stmtNum, PRINT); }
 
-void PKB::registerCall(string stmtNum) { return stmtTable->setStmt(move(stmtNum), CALL); }
+void PKB::registerCall(const string& stmtNum) { return stmtTable->setStmt(stmtNum, CALL); }
 
-bool PKB::isAssignStmt(string stmtNum) { return stmtTable->isStmtType(move(stmtNum), ASSIGN); }
+bool PKB::isAssignStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), ASSIGN); }
 
-bool PKB::isWhileStmt(string stmtNum) { return stmtTable->isStmtType(move(stmtNum), WHILE); }
+bool PKB::isWhileStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), WHILE); }
 
-bool PKB::isIfStmt(string stmtNum) { return stmtTable->isStmtType(move(stmtNum), IF); }
+bool PKB::isIfStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), IF); }
 
-bool PKB::isReadStmt(string stmtNum) { return stmtTable->isStmtType(move(stmtNum), READ); }
+bool PKB::isReadStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), READ); }
 
-bool PKB::isPrintStmt(string stmtNum) { return stmtTable->isStmtType(move(stmtNum), PRINT); }
+bool PKB::isPrintStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), PRINT); }
 
-bool PKB::isCallStmt(string stmtNum) { return stmtTable->isStmtType(move(stmtNum), CALL); }
+bool PKB::isCallStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), CALL); }
 
-int PKB::getStatementCount() { return stmtTable->getStmtCount(); }
+int PKB::getStatementCount() const { return stmtTable->getStmtCount(); }
 
 //======================================== Entities ==================================================
 
-unordered_set<string> PKB::getVariables() { return entityTable->getVariables(); }
+unordered_set<string> PKB::getVariables() const { return entityTable->getVariables(); }
 
-unordered_set<string> PKB::getConstants() { return entityTable->getConstants(); }
+unordered_set<string> PKB::getConstants() const { return entityTable->getConstants(); }
 
-unordered_set<string> PKB::getProcedures() { return entityTable->getProcedures(); }
+unordered_set<string> PKB::getProcedures() const { return entityTable->getProcedures(); }
 
-unordered_set<string> PKB::getStatements() { return stmtTable->getAllStmts(); }
+unordered_set<string> PKB::getStatements() const { return stmtTable->getAllStmts(); }
 
-void PKB::registerVariable(string varName) { return entityTable->addVariable(move(varName)); }
+void PKB::registerVariable(const string& varName) { return entityTable->addVariable(varName); }
 
-void PKB::registerConstant(string constVal) { return entityTable->addConstant(move(constVal)); }
+void PKB::registerConstant(const string& constVal) { return entityTable->addConstant(constVal); }
 
-void PKB::registerProcedure(string procName) { return entityTable->addProcedure(move(procName)); }
+void PKB::registerProcedure(const string& procName) { return entityTable->addProcedure(procName); }
 
-bool PKB::isConstant(string constVal) { return entityTable->isConstant(move(constVal)); };
+bool PKB::isConstant(string constVal) const { return entityTable->isConstant(move(constVal)); }
 
-bool PKB::isProcedure(string procName) { return entityTable->isProcedure(move(procName)); }
+bool PKB::isProcedure(string procName) const { return entityTable->isProcedure(move(procName)); }
 
-bool PKB::isVariable(string varName) { return entityTable->isVariable(move(varName)); }
+bool PKB::isVariable(string varName) const { return entityTable->isVariable(move(varName)); }
 
 //======================================== Follows ==================================================
 
-void PKB::registerFollows(string stmt1, string stmt2) { return followsTable->setFollows(move(stmt1), move(stmt2)); }
+void PKB::registerFollows(const string& stmt1, const string& stmt2) { return followsTable->setFollows(stmt1, stmt2); }
 
-void PKB::registerFollowsT(string stmt1, string stmt2) { return followsTable->setFollowsT(move(stmt1), move(stmt2)); }
+void PKB::registerFollowsT(const string& stmt1, const string& stmt2) { return followsTable->setFollowsT(stmt1, stmt2); }
 
-bool PKB::isFollows(string stmt1, string stmt2) { return followsTable->isFollows(move(stmt1), move(stmt2)); }
+bool PKB::isFollows(string stmt1, string stmt2) const { return followsTable->isFollows(move(stmt1), move(stmt2)); }
 
-string PKB::getStmtFollowing(string stmtNum) { return followsTable->getStmtFollowing(move(stmtNum)); }
+string PKB::getStmtFollowing(string stmtNum) const { return followsTable->getStmtFollowing(move(stmtNum)); }
 
-string PKB::getStmtFollowedBy(string stmtNum) { return followsTable->getStmtFollowedBy(move(stmtNum)); }
+string PKB::getStmtFollowedBy(string stmtNum) const { return followsTable->getStmtFollowedBy(move(stmtNum)); }
 
-vector<pair<string, string>> PKB::getAllFollows() { return followsTable->getFollowEntries(); }
+vector<pair<string, string>> PKB::getAllFollows() const { return followsTable->getFollowEntries(); }
 
-bool PKB::isFollowsT(string stmt1, string stmt2) { return followsTable->isFollowsT(move(stmt1), move(stmt2)); }
+bool PKB::isFollowsT(string stmt1, string stmt2) const { return followsTable->isFollowsT(move(stmt1), move(stmt2)); }
 
-unordered_set<string> PKB::getAllStmtsFollowingT(string stmtNum) {
+unordered_set<string> PKB::getAllStmtsFollowingT(string stmtNum) const {
     return followsTable->getStmtsFollowingT(move(stmtNum));
 }
 
-unordered_set<string> PKB::getAllStmtsFollowedTBy(string stmtNum) {
+unordered_set<string> PKB::getAllStmtsFollowedTBy(string stmtNum) const {
     return followsTable->getStmtsFollowedTBy(move(stmtNum));
 }
 
-vector<pair<string, string>> PKB::getAllFollowsT() { return followsTable->getFollowTEntries(); }
+vector<pair<string, string>> PKB::getAllFollowsT() const { return followsTable->getFollowTEntries(); }
 
-unordered_set<string> PKB::getAllStmtsFollowingSomeStmt() { return followsTable->getStmtsFollowingSomeStmt(); }
+unordered_set<string> PKB::getAllStmtsFollowingSomeStmt() const { return followsTable->getStmtsFollowingSomeStmt(); }
 
-unordered_set<string> PKB::getAllStmtsFollowedBySomeStmt() { return followsTable->getStmtsFollowedBySomeStmt(); }
+unordered_set<string> PKB::getAllStmtsFollowedBySomeStmt() const { return followsTable->getStmtsFollowedBySomeStmt(); }
 
 //======================================== Parent ==================================================
 
-void PKB::registerParent(string parentStmt, string childStmt) {
-    return parentTable->setParent(move(parentStmt), move(childStmt));
+void PKB::registerParent(const string& parentStmt, const string& childStmt) {
+    return parentTable->setParent(parentStmt, childStmt);
 }
 
-void PKB::registerParentT(string parentStmt, string childStmt) {
-    return parentTable->setParentT(move(parentStmt), move(childStmt));
+void PKB::registerParentT(const string& parentStmt, const string& childStmt) {
+    return parentTable->setParentT(parentStmt, childStmt);
 }
 
-bool PKB::isParent(string stmt1, string stmt2) { return parentTable->isParent(move(stmt1), move(stmt2)); }
+bool PKB::isParent(string stmt1, string stmt2) const { return parentTable->isParent(move(stmt1), move(stmt2)); }
 
-unordered_set<string> PKB::getChildStmtsOf(string parentStmt) {
+unordered_set<string> PKB::getChildStmtsOf(string parentStmt) const {
     return parentTable->getAllChildrenOf(move(parentStmt));
 }
 
-string PKB::getParentOf(string childStmt) { return parentTable->getParentOf(move(childStmt)); }
+string PKB::getParentOf(string childStmt) const { return parentTable->getParentOf(move(childStmt)); }
 
-vector<pair<string, string>> PKB::getAllParent() { return parentTable->getParentEntries(); }
+vector<pair<string, string>> PKB::getAllParent() const { return parentTable->getParentEntries(); }
 
-bool PKB::isParentT(string stmt1, string stmt2) { return parentTable->isParentT(move(stmt1), stmt2); }
+bool PKB::isParentT(string stmt1, string stmt2) const { return parentTable->isParentT(move(stmt1), std::move(stmt2)); }
 
-unordered_set<string> PKB::getDescendantStmtsOf(string parentStmt) {
+unordered_set<string> PKB::getDescendantStmtsOf(string parentStmt) const {
     return parentTable->getAllDescendantsOf(move(parentStmt));
 }
 
-unordered_set<string> PKB::getAncestorStmtsOf(string childStmt) {
+unordered_set<string> PKB::getAncestorStmtsOf(string childStmt) const {
     return parentTable->getAllAncestorsOf(move(childStmt));
 }
 
-vector<pair<string, string>> PKB::getAllParentT() { return parentTable->getParentTEntries(); }
+vector<pair<string, string>> PKB::getAllParentT() const { return parentTable->getParentTEntries(); }
 
-unordered_set<string> PKB::getAllStmtsParentOfSomeStmt() { return parentTable->getStmtsParentOfSomeStmt(); }
+unordered_set<string> PKB::getAllStmtsParentOfSomeStmt() const { return parentTable->getStmtsParentOfSomeStmt(); }
 
-unordered_set<string> PKB::getAllStmtsChildOfBySomeStmt() { return parentTable->getStmtsChildOfSomeStmt(); }
+unordered_set<string> PKB::getAllStmtsChildOfBySomeStmt() const { return parentTable->getStmtsChildOfSomeStmt(); }
 
 //======================================== Uses ==================================================
 
-bool PKB::isUsesS(string stmtNum, string varName) {
+bool PKB::isUsesS(string stmtNum, string varName) const {
     return usesTable->isUsesS(move(stmtNum), move(varName));
 }
 
-unordered_set<string> PKB::getUsesSByVar(string varName) { return usesTable->getStmtsUsingVar(move(varName)); }
+unordered_set<string> PKB::getUsesSByVar(string varName) const { return usesTable->getStmtsUsingVar(move(varName)); }
 
-unordered_set<string> PKB::getUsesByStmt(string stmtNum) { return usesTable->getVarsUsedInStmt(move(stmtNum)); }
+unordered_set<string> PKB::getUsesByStmt(string stmtNum) const { return usesTable->getVarsUsedInStmt(move(stmtNum)); }
 
-vector<pair<string, string>> PKB::getAllUsesS() { return usesTable->getStmtsVarEntries(); }
+vector<pair<string, string>> PKB::getAllUsesS() const { return usesTable->getStmtsVarEntries(); }
 
-unordered_set<string> PKB::getAllStmtsUsingSomeVar() { return usesTable->getStmtsUsingSomeVar(); }
+unordered_set<string> PKB::getAllStmtsUsingSomeVar() const { return usesTable->getStmtsUsingSomeVar(); }
 
-void PKB::registerUsesS(string stmtNum, string varName) {
+void PKB::registerUsesS(const string& stmtNum, const string& varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerUsesS] Used variable is not registered" << endl;
     }
     if (!isAssignStmt(stmtNum) && !isPrintStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum)) {
         cout << "Warning: " << "[PKB][registerUsesS] Statement is not of type assign/print/if/while" << endl;
     }
-    return usesTable->setVarUsedInStmt(move(stmtNum), move(varName));
+    return usesTable->setVarUsedInStmt(stmtNum, varName);
 }
 
-bool PKB::isUsesP(string procName, string varName) {
+bool PKB::isUsesP(string procName, string varName) const {
     return usesTable->isUsesP(move(procName), move(varName));
 }
 
-unordered_set<string> PKB::getUsesPByVar(string varName) { return usesTable->getProcsUsingVar(move(varName)); }
+unordered_set<string> PKB::getUsesPByVar(string varName) const { return usesTable->getProcsUsingVar(move(varName)); }
 
-unordered_set<string> PKB::getUsesByProc(string procName) { return usesTable->getVarsUsedInProc(move(procName)); }
+unordered_set<string> PKB::getUsesByProc(string procName) const { return usesTable->getVarsUsedInProc(move(procName)); }
 
-vector<pair<string, string>> PKB::getAllUsesP() { return usesTable->getProcVarEntries(); }
+vector<pair<string, string>> PKB::getAllUsesP() const { return usesTable->getProcVarEntries(); }
 
-unordered_set<string> PKB::getAllProcsUsingSomeVar() { return usesTable->getProcsUsingSomeVar(); }
+unordered_set<string> PKB::getAllProcsUsingSomeVar() const { return usesTable->getProcsUsingSomeVar(); }
 
-void PKB::registerUsesP(string procName, string varName) {
+void PKB::registerUsesP(const string& procName, const string& varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerUsesP] Used variable is not registered" << endl;
     }
     if (!(isProcedure(procName))) {
         cout << "Warning: " << "[PKB][registerUsesP] Procedure is not registered" << endl;
     }
-    return usesTable->setVarUsedInProc(move(procName), move(varName));
+    return usesTable->setVarUsedInProc(procName, varName);
 }
 
 //======================================== Modifies ==================================================
 
-bool PKB::isModifiesS(string stmtNum, string varName) {
+bool PKB::isModifiesS(string stmtNum, string varName) const {
     return modifiesTable->isModifiesS(move(stmtNum), move(varName));
 }
 
-unordered_set<string> PKB::getModifiesSByVar(string varName) {
+unordered_set<string> PKB::getModifiesSByVar(string varName) const {
     return modifiesTable->getStmtsModifyingVar(move(varName));
 }
 
-unordered_set<string> PKB::getModifiesByStmt(string stmtNum) {
+unordered_set<string> PKB::getModifiesByStmt(string stmtNum) const {
     return modifiesTable->getVarsModifiedInStmt(move(stmtNum));
 }
 
-vector<pair<string, string>> PKB::getAllModifiesS() { return modifiesTable->getStmtsVarEntries(); }
+vector<pair<string, string>> PKB::getAllModifiesS() const { return modifiesTable->getStmtsVarEntries(); }
 
-unordered_set<string> PKB::getAllStmtsModifyingSomeVar() { return modifiesTable->getStmtsModifyingSomeVar(); }
+unordered_set<string> PKB::getAllStmtsModifyingSomeVar() const { return modifiesTable->getStmtsModifyingSomeVar(); }
 
-void PKB::registerModifiesS(string stmtNum, string varName) {
+void PKB::registerModifiesS(const string& stmtNum, const string& varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerModifiesS] Used variable is not registered" << endl;
     }
     if (!isAssignStmt(stmtNum) && !isReadStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum)) {
         cout << "Warning: " << "[PKB][registerModifiesS] Statement is not of type assign/read/if/while" << endl;
     }
-    return modifiesTable->setVarModifiedInStmt(move(stmtNum), move(varName));
+    return modifiesTable->setVarModifiedInStmt(stmtNum, varName);
 }
 
-bool PKB::isModifiesP(string procName, string varName) {
+bool PKB::isModifiesP(string procName, string varName) const {
     return modifiesTable->isModifiesP(move(procName), move(varName));
 }
 
-unordered_set<string> PKB::getModifiesPByVar(string varName) {
+unordered_set<string> PKB::getModifiesPByVar(string varName) const {
     return modifiesTable->getProcsModifyingVar(move(varName));
 }
 
-unordered_set<string> PKB::getModifiesByProc(string procName) {
+unordered_set<string> PKB::getModifiesByProc(string procName) const {
     return modifiesTable->getVarsModifiedInProc(move(procName));
 }
 
-vector<pair<string, string>> PKB::getAllModifiesP() { return modifiesTable->getProcVarEntries(); }
+vector<pair<string, string>> PKB::getAllModifiesP() const { return modifiesTable->getProcVarEntries(); }
 
-unordered_set<string> PKB::getAllProcsModifyingSomeVar() { return modifiesTable->getProcsModifyingSomeVar(); }
+unordered_set<string> PKB::getAllProcsModifyingSomeVar() const { return modifiesTable->getProcsModifyingSomeVar(); }
 
-void PKB::registerModifiesP(string procName, string varName) {
+void PKB::registerModifiesP(const string& procName, const string& varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerModifiesP] Used variable is not registered" << endl;
     }
     if (!(isProcedure(procName))) {
         cout << "Warning: " << "[PKB][registerModifiesP] Procedure is not registered" << endl;
     }
-    return modifiesTable->setVarModifiedInProc(move(procName), move(varName));
+    return modifiesTable->setVarModifiedInProc(procName, varName);
 }
 
 //======================================== Pattern ==================================================
 
-void PKB::registerPattern(string stmtNum, string lhsVariable, TNode *rhsAssignAST) {
+void PKB::registerPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST) {
     return patternTable->setPattern(stmtNum, lhsVariable, rhsAssignAST);
 }
 
-unordered_set<string> PKB::getAllStmtsFromFullPattern(TNode *patternAST) {
+unordered_set<string> PKB::getAllStmtsFromFullPattern(TNode *patternAST) const {
     return patternTable->getAllStmtsFromFullPattern(patternAST);
 }
 
-unordered_set<string> PKB::getStmtFromFullPatternNVar(TNode *patternAST, string varName) {
-    return patternTable->getStmtFromFullPatternNVar(patternAST, varName);
+unordered_set<string> PKB::getStmtFromFullPatternNVar(TNode *patternAST, string varName) const {
+    return patternTable->getStmtFromFullPatternNVar(patternAST, std::move(varName));
 }
 
-vector<pair<string, string>> PKB::getStmtNVarFromFullPattern(TNode *patternAST) {
+vector<pair<string, string>> PKB::getStmtNVarFromFullPattern(TNode *patternAST) const {
     return patternTable->getStmtNVarFromFullPattern(patternAST);
 }
 
-unordered_set<string> PKB::getAllStmtsFromSubPattern(TNode *subPatternAST) {
+unordered_set<string> PKB::getAllStmtsFromSubPattern(TNode *subPatternAST) const {
     return patternTable->getAllStmtsFromSubPattern(subPatternAST);
 }
 
-unordered_set<string> PKB::getStmtFromSubPatternNVar(TNode *subPatternAST, string varName) {
+unordered_set<string> PKB::getStmtFromSubPatternNVar(TNode *subPatternAST, const string& varName) const {
     return patternTable->getStmtFromSubPatternNVar(subPatternAST, varName);
 }
 
-vector<pair<string, string>> PKB::getStmtNVarFromSubPattern(TNode *subPatternAST) {
+vector<pair<string, string>> PKB::getStmtNVarFromSubPattern(TNode *subPatternAST) const {
     return patternTable->getStmtNVarFromSubPattern(subPatternAST);
 }
 
