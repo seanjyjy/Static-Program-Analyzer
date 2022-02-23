@@ -275,9 +275,9 @@ Tokens Tokenizer::tokenize() {
         Token eof = Token{TokenType::eof, "", {-1, -1}, {-1, -1}};
         tokens.add(eof);
         return tokens;
-    } catch (exception &e) {
+    } catch (TokenizeException &e) {
         cout << e.what() << endl;
-        throw e;
+        throw;
     }
 }
 
