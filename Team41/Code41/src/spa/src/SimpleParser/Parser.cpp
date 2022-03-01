@@ -13,6 +13,7 @@ using namespace std;
 #include "Parser.h"
 #include "Tokenizer.h"
 #include "Exception/SyntaxException.h"
+#include "Exception/TokenizeException.h"
 #include "SimpleParser/ParserUtils.h"
 
 Parser::Parser() {}
@@ -593,11 +594,7 @@ void Parser::init(const string &s) {
 
     // tokenize input
     Tokenizer tokenizer(input);
-    try {
-        tokens = tokenizer.tokenize();
-    } catch (exception &e) {
-        throw exception("parser met an error during tokenizing, aborting");
-    }
+    tokens = tokenizer.tokenize();
 
     // tokenize succeeded, now setup for ast recursive descent
     if (tokens.empty()) throw exception("parser tokens must not be empty");
@@ -664,13 +661,19 @@ TNode *Parser::parse(const string &s) {
         // success, now set all parent pointers
         ast->setAllParents();
         return ast;
+    } catch (TokenizeException &e) {
+        // tokenize errors are thrown pre-parse
+        cout << "parser met an error during tokenizing, aborting" << endl;
     } catch (SyntaxException &e) {
         // syntax errors are only thrown during parsing
         cout << syntaxErrorMsg() << endl;
         cout << endl << highlightSource() << endl;
     } catch (exception &e) {
-        // any other error, e.g tokenizing is thrown as a std::exception
+        // other exceptions not directly related to tokenizing/parsing
         cout << e.what() << endl;
+    } catch (...) {
+        // just in case
+        cout << "unknown exception caught" << endl;
     }
 
     return nullptr;
