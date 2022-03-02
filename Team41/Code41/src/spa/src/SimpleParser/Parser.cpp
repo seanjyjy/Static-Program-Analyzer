@@ -3,10 +3,10 @@
 #include <utility>
 #include <vector>
 #include <cassert>
+#include <climits>
+#include <stdexcept>
 
 using namespace std;
-
-#include <stdexcept>
 
 #include "Token.h"
 #include "Common/TNode.h"
@@ -520,7 +520,7 @@ TNode *Parser::eatTerm1() {
         int c = saveCursor();
         TNode *term1 = nullptr;
         try {
-            TNode *term1 = eatTerm1();
+            term1 = eatTerm1();
             TNode *dv = TNode::makeDiv(TNode::makeDummy(), factor);
             term1->setLeftChild(dv);
             dv->setParent(term1);
@@ -597,7 +597,7 @@ void Parser::init(const string &s) {
     tokens = tokenizer.tokenize();
 
     // tokenize succeeded, now setup for ast recursive descent
-    if (tokens.empty()) throw exception("parser tokens must not be empty");
+    if (tokens.empty()) throw runtime_error("parser tokens must not be empty");
 
     cursor = 0;
     errorStartRow = INT_MAX;
@@ -655,9 +655,9 @@ TNode *Parser::parse(const string &s) {
                 ast = eatFactor();
                 break;
             default:
-                throw exception("unknown parse option given");
+                throw runtime_error("unknown parse option given");
         }
-        if (!peekMatchType(TokenType::eof)) throw exception("extra tokens remaining after parse");
+        if (!peekMatchType(TokenType::eof)) throw runtime_error("extra tokens remaining after parse");
         // success, now set all parent pointers
         ast->setAllParents();
         return ast;
@@ -668,7 +668,7 @@ TNode *Parser::parse(const string &s) {
         // syntax errors are only thrown during parsing
         cout << syntaxErrorMsg() << endl;
         cout << endl << highlightSource() << endl;
-    } catch (exception &e) {
+    } catch (runtime_error &e) {
         // other exceptions not directly related to tokenizing/parsing
         cout << e.what() << endl;
     } catch (...) {
