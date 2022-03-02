@@ -1,4 +1,4 @@
-#include "PKB/SingleMap.h"
+#include "PKB/Relations/SingleMap.h"
 
 #include "catch.hpp"
 #include "../UnitTestUtility.h"

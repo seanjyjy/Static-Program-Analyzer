@@ -14,7 +14,7 @@ private:
      * @return A table that contains information based on the UsesS relation between a statement line and
      * an identifier.
      */
-    static Table* evaluateIntegerIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateIntegerIdentifier(PKBClient* pkb, ClauseVariable left, ClauseVariable right);
 
     /**
      * Construct a table that captures the UsesS relation between a statement line and a synonym.
@@ -24,7 +24,7 @@ private:
      * @param right Clause variable.
      * @return A table that contains information based on the UsesS relation between a statement line and a synonym
      */
-    static Table* evaluateIntegerSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateIntegerSynonym(PKBClient* pkb, ClauseVariable left, ClauseVariable right);
 
     /**
      * Construct a table that captures the UsesS relation between a statement line and a wildcard.
@@ -33,7 +33,7 @@ private:
      * @param left Clause variable.
      * @return A table that contains information based on the UsesS relation between a statement line and a wildcard.
      */
-    static Table* evaluateIntegerWildCard(PKB* pkb, ClauseVariable left);
+    static Table* evaluateIntegerWildCard(PKBClient* pkb, ClauseVariable left);
 
     /**
      * Construct a table that captures the UsesS relation between a synonym and an identifier.
@@ -43,7 +43,7 @@ private:
      * @param right Clause variable.
      * @return A table that contains information based on the UsesS relation between a synonym and an identifier.
      */
-    static Table* evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateSynonymIdentifier(PKBClient* pkb, ClauseVariable left, ClauseVariable right);
 
     /**
      * Construct a table that captures the UsesS relation between two synonym
@@ -53,7 +53,7 @@ private:
      * @param right Clause variable.
      * @return A table that contains information based on the UsesS relation between two synonym
      */
-    static Table* evaluateSynonymSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateSynonymSynonym(PKBClient* pkb, ClauseVariable left, ClauseVariable right);
 
     /**
      * Construct a table that captures the UsesS relation between a synonym and a wildcard.
@@ -62,7 +62,7 @@ private:
      * @param left Clause variable.
      * @return A table that contains information based on the UsesS relation between a synonym and a wildcard.
      */
-    static Table* evaluateSynonymWildCard(PKB* pkb, ClauseVariable left);
+    static Table* evaluateSynonymWildCard(PKBClient* pkb, ClauseVariable left);
 public:
     /**
      * Depending on the QueryClause, choose a certain evaluate method for UsesS to evaluate this clause
@@ -71,5 +71,5 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table depending on the type of Query Clause.
      */
-    static Table* evaluate(QueryClause clause, PKB *pkb);
+    static Table* evaluate(QueryClause clause, PKBClient *pkb);
 };

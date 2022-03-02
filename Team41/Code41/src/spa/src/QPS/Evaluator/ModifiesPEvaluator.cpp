@@ -1,6 +1,6 @@
 #include "ModifiesPEvaluator.h"
 
-Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
+Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKBClient* pkb) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
@@ -31,7 +31,7 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
     throw SemanticException("Invalid query provided for Modifies");
 }
 
- Table* ModifiesPEvaluator::evaluateIdentifierIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
+ Table* ModifiesPEvaluator::evaluateIdentifierIdentifier(PKBClient* pkb, ClauseVariable left, ClauseVariable right) {
     bool isModifiesP = pkb->isModifiesP(left.getLabel(), right.getLabel());
 
     if (isModifiesP) {
@@ -41,7 +41,7 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
     return new FalseTable();
 }
 
- Table* ModifiesPEvaluator::evaluateIdentifierSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
+ Table* ModifiesPEvaluator::evaluateIdentifierSynonym(PKBClient* pkb, ClauseVariable left, ClauseVariable right) {
     unordered_set<string> setOfVariables = pkb->getModifiesByProc(left.getLabel());
 
     string column = right.getLabel();
@@ -56,7 +56,7 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
     return result;
 }
 
- Table* ModifiesPEvaluator::evaluateIdentifierWildCard(PKB* pkb, ClauseVariable left) {
+ Table* ModifiesPEvaluator::evaluateIdentifierWildCard(PKBClient* pkb, ClauseVariable left) {
     unordered_set<string> setOfVariables = pkb->getModifiesByProc(left.getLabel());
 
     if (setOfVariables.empty()) {
@@ -66,7 +66,7 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
     return new TrueTable();
 }
 
- Table* ModifiesPEvaluator::evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
+ Table* ModifiesPEvaluator::evaluateSynonymIdentifier(PKBClient* pkb, ClauseVariable left, ClauseVariable right) {
     unordered_set<string> setOfStatements = pkb->getModifiesPByVar(right.getLabel());
 
     string column = left.getLabel();
@@ -81,7 +81,7 @@ Table* ModifiesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
     return result;
 }
 
-Table* ModifiesPEvaluator::evaluateSynonymSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
+Table* ModifiesPEvaluator::evaluateSynonymSynonym(PKBClient* pkb, ClauseVariable left, ClauseVariable right) {
     vector<pair<string, string>> listOfStatementToVariable = pkb->getAllModifiesP();
 
     string firstColumn = left.getLabel();
@@ -99,7 +99,7 @@ Table* ModifiesPEvaluator::evaluateSynonymSynonym(PKB* pkb, ClauseVariable left,
     return result;
 }
 
-Table* ModifiesPEvaluator::evaluateSynonymWildCard(PKB* pkb, ClauseVariable left) {
+Table* ModifiesPEvaluator::evaluateSynonymWildCard(PKBClient* pkb, ClauseVariable left) {
     unordered_set<string> setOfStatements = pkb->getAllProcsModifyingSomeVar();
 
     string column = left.getLabel();

@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "PKB/OneToOne.h"
+#include "PKB/Relations/OneToOne.h"
 #include "../UnitTestUtility.h"
 
 using namespace std;

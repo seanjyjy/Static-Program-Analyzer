@@ -1,6 +1,6 @@
 #include "FollowsEvaluator.h"
 
-Table* FollowsEvaluator::evaluate(QueryClause clause, PKB *pkb) {
+Table* FollowsEvaluator::evaluate(QueryClause clause, PKBClient *pkb) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
@@ -43,7 +43,7 @@ Table* FollowsEvaluator::evaluate(QueryClause clause, PKB *pkb) {
     throw SemanticException("Invalid query provided for Follows");
 }
 
-Table *FollowsEvaluator::evaluateIntegerInteger(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table *FollowsEvaluator::evaluateIntegerInteger(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     bool isFollows = pkb->isFollows(left.getLabel(), right.getLabel());
 
     if (isFollows) {
@@ -53,7 +53,7 @@ Table *FollowsEvaluator::evaluateIntegerInteger(PKB *pkb, ClauseVariable left, C
     return new FalseTable();
 }
 
-Table *FollowsEvaluator::evaluateIntegerSynonym(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table *FollowsEvaluator::evaluateIntegerSynonym(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     string follower = pkb->getStmtFollowing(left.getLabel());
 
     if (follower.empty()) {
@@ -69,7 +69,7 @@ Table *FollowsEvaluator::evaluateIntegerSynonym(PKB *pkb, ClauseVariable left, C
     return table;
 }
 
-Table *FollowsEvaluator::evaluateIntegerWildCard(PKB *pkb, ClauseVariable left) {
+Table *FollowsEvaluator::evaluateIntegerWildCard(PKBClient *pkb, ClauseVariable left) {
     string follower = pkb->getStmtFollowing(left.getLabel());
 
     if (follower.empty()) {
@@ -79,7 +79,7 @@ Table *FollowsEvaluator::evaluateIntegerWildCard(PKB *pkb, ClauseVariable left) 
     return new TrueTable();
 }
 
-Table *FollowsEvaluator::evaluateSynonymInteger(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table *FollowsEvaluator::evaluateSynonymInteger(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     string followed = pkb->getStmtFollowedBy(right.getLabel());
 
     if (followed.empty()) {
@@ -95,7 +95,7 @@ Table *FollowsEvaluator::evaluateSynonymInteger(PKB *pkb, ClauseVariable left, C
     return table;
 }
 
-Table *FollowsEvaluator::evaluateSynonymSynonym(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table *FollowsEvaluator::evaluateSynonymSynonym(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     // returns stmt1 follows stmt2
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllFollows();
 
@@ -118,7 +118,7 @@ Table *FollowsEvaluator::evaluateSynonymSynonym(PKB *pkb, ClauseVariable left, C
     return table;
 }
 
-Table *FollowsEvaluator::evaluateSynonymWildCard(PKB *pkb, ClauseVariable left) {
+Table *FollowsEvaluator::evaluateSynonymWildCard(PKBClient *pkb, ClauseVariable left) {
     unordered_set<string> setOfStatements = pkb->getAllStmtsFollowedBySomeStmt();
 
     if (setOfStatements.empty()) {
@@ -137,7 +137,7 @@ Table *FollowsEvaluator::evaluateSynonymWildCard(PKB *pkb, ClauseVariable left) 
     return table;
 }
 
-Table *FollowsEvaluator::evaluateWildCardInteger(PKB *pkb, ClauseVariable right) {
+Table *FollowsEvaluator::evaluateWildCardInteger(PKBClient *pkb, ClauseVariable right) {
     string followedByCurrent = pkb->getStmtFollowedBy(right.getLabel());
 
     if (followedByCurrent.empty()) {
@@ -147,7 +147,7 @@ Table *FollowsEvaluator::evaluateWildCardInteger(PKB *pkb, ClauseVariable right)
     return new TrueTable();
 }
 
-Table *FollowsEvaluator::evaluateWildCardSynonym(PKB *pkb, ClauseVariable right) {
+Table *FollowsEvaluator::evaluateWildCardSynonym(PKBClient *pkb, ClauseVariable right) {
     unordered_set<string> setOfStatements = pkb->getAllStmtsFollowingSomeStmt();
 
     if (setOfStatements.empty()) {
@@ -166,7 +166,7 @@ Table *FollowsEvaluator::evaluateWildCardSynonym(PKB *pkb, ClauseVariable right)
     return table;
 }
 
-Table *FollowsEvaluator::evaluateWildCardWildCard(PKB *pkb) {
+Table *FollowsEvaluator::evaluateWildCardWildCard(PKBClient *pkb) {
     vector<pair<string, string>> listOfStmtStmt = pkb->getAllFollows();
 
     if (listOfStmtStmt.empty()) {

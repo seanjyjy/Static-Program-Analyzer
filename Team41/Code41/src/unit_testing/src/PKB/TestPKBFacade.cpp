@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "PKB/PKB.h"
+#include "PKB/PKBManager.h"
 #include "../UnitTestUtility.h"
 
 using namespace std;
@@ -13,7 +13,7 @@ TEST_CASE("PKB: entities abstraction") {
     FILLED_SET_2.insert(entity[0]);
     FILLED_SET_2.insert(entity[1]);
 
-    PKB pkbManager;
+    PKBManager pkbManager;
 
     SECTION("add variables") {
         REQUIRE(pkbManager.getVariables() == EMPTY_SET);
@@ -51,7 +51,7 @@ TEST_CASE("PKB: statements abstraction") {
     FILLED_SET_2.insert(stmt[0]);
     FILLED_SET_2.insert(stmt[1]);
 
-    PKB pkbManager;
+    PKBManager pkbManager;
 
     SECTION("add assign") {
         REQUIRE(pkbManager.getAssigns() == EMPTY_SET);
@@ -166,7 +166,7 @@ TEST_CASE("PKB: uses abstraction") {
     vector<pair<string, string>> entryList;
     string var[] = {"v1", "v2"};
 
-    PKB pkbManager;
+    PKBManager pkbManager;
 
     SECTION("UsesS") {
         unordered_set<string> stmtList;
@@ -218,7 +218,7 @@ TEST_CASE("PKB: modifies abstraction") {
     vector<pair<string, string>> entryList;
     string var[] = {"v1", "v2"};
 
-    PKB pkbManager;
+    PKBManager pkbManager;
 
     SECTION("ModifiesS") {
         unordered_set<string> stmtList;
@@ -270,7 +270,7 @@ TEST_CASE("PKB: follows abstraction") {
     vector<pair<string, string>> entryList;
     string stmt[] = {"1", "2", "3"};
 
-    PKB pkbManager;
+    PKBManager pkbManager;
 
     SECTION("Follows") {
         REQUIRE(sortAndCompareVectors(pkbManager.getAllFollows(), entryList));
@@ -318,7 +318,7 @@ TEST_CASE("PKB: parent abstraction") {
     vector<pair<string, string>> entryList;
     string stmt[] = {"1", "2", "3", "4"};
 
-    PKB pkbManager;
+    PKBManager pkbManager;
 
     SECTION("Parent") {
         REQUIRE(sortAndCompareVectors(pkbManager.getAllParent(), entryList));
@@ -388,7 +388,7 @@ TEST_CASE("PKB: pattern abstraction") {
     TNode *times = TNode::makeTimes(two, varNode);
     TNode *plus = TNode::makePlus(one, times);
 
-    PKB pkbManager;
+    PKBManager pkbManager;
 
     SECTION("Pattern") {
         REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromFullPattern(plus), EMPTY_SET_PAIR));

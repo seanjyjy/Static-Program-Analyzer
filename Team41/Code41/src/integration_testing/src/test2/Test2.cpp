@@ -16,7 +16,7 @@ TEST_CASE("Test 2") {
     string fileContent = FileReader::getFileContent(path);
     Parser p;
     TNode* ast = p.parseProgram(fileContent);
-    PKB pkbManager = PKB();
+    PKBManager pkbManager = PKBManager();
     DesignExtractor designExtractor(ast, &pkbManager);
     designExtractor.extractDesign();
     delete ast;
