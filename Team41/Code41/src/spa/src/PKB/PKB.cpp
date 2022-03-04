@@ -100,15 +100,24 @@ bool PKB::isVariable(string varName) const { return entityTable->isVariable(move
 
 //======================================== Calls ==================================================
 
-void PKB::registerCalls(const string &proc1, const string &proc2) {
-    callsTable->setCalls(move(proc1), proc2);
+void PKB::registerCalls(const string& proc1, const string& proc2) {
+    if (!(isProcedure(proc1))) {
+        cout << "Warning: " << "[PKB][registerCalls] Caller is not a registered procedure" << endl;
+    }
+    if (!(isProcedure(proc2))) {
+        cout << "Warning: " << "[PKB][registerCalls] Callee is not a registered procedure" << endl;
+    }
+    callsTable->setCalls(proc1, proc2);
 }
 
-void PKB::registerCallsT(const string &proc1, const string &proc2) {
-    if (!(isProcedure(proc2))) {
-        throw runtime_error("[PKB][registerCalls] Called procedure is not registered");
+void PKB::registerCallsT(const string& proc1, const string& proc2) {
+    if (!(isProcedure(proc1))) {
+        cout << "Warning: " << "[PKB][registerCallsT] Caller is not a registered procedure" << endl;
     }
-    callsTable->setCallsT(move(proc1), proc2);
+    if (!(isProcedure(proc2))) {
+        cout << "Warning: " << "[PKB][registerCallsT] Callee is not a registered procedure" << endl;
+    }
+    callsTable->setCallsT(proc1, proc2);
 }
 
 bool PKB::isCalls(string proc1, string proc2) { return callsTable->isCalls(move(proc1), move(proc2)); }

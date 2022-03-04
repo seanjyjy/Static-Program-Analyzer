@@ -40,8 +40,8 @@ vector<pair<string, string>> CallsTable::getCallsEntries() {
     return callsRelation.getEntries();
 }
 
-bool CallsTable::isCalls(string follower, string followed) {
-    return callsRelation.hasMapping(follower, followed);
+bool CallsTable::isCalls(string caller, string callee) {
+    return callsRelation.hasMapping(caller, callee);
 }
 
 unordered_set<string> CallsTable::getProcsCalledTBy(string caller) {
@@ -56,6 +56,6 @@ vector<pair<string, string>> CallsTable::getCallsTEntries() {
     return callsTRelation.getEntries();
 }
 
-bool CallsTable::isCallsT(string follower, string followed) {
-    return callsTRelation.hasMapping(follower, followed);
+bool CallsTable::isCallsT(string caller, string callee) {
+    return callsTRelation.hasMapping(caller, callee);
 }
