@@ -1,4 +1,3 @@
-#include <vector>
 #include <iostream>
 #include "PKB/Tables/StmtTable.h"
 #include "PKB/Tables/EntityTable.h"
@@ -7,6 +6,7 @@
 #include "PKB/Tables/FollowsTable.h"
 #include "PKB/Tables/ParentTable.h"
 #include "PKB/Tables/PatternTable.h"
+#include "PKB/Tables/CallsTable.h"
 
 using namespace std;
 
@@ -33,6 +33,28 @@ void PKBManager::registerVariable(const string& varName) { return entityTable->a
 void PKBManager::registerConstant(const string& constVal) { return entityTable->addConstant(constVal); }
 
 void PKBManager::registerProcedure(const string& procName) { return entityTable->addProcedure(procName); }
+
+//======================================== Calls ==================================================
+
+void PKBManager::registerCalls(const string& proc1, const string& proc2) {
+    if (!(isProcedure(proc1))) {
+        cout << "Warning: " << "[PKB][registerCalls] Caller is not a registered procedure" << endl;
+    }
+    if (!(isProcedure(proc2))) {
+        cout << "Warning: " << "[PKB][registerCalls] Callee is not a registered procedure" << endl;
+    }
+    callsTable->setCalls(proc1, proc2);
+}
+
+void PKBManager::registerCallsT(const string& proc1, const string& proc2) {
+    if (!(isProcedure(proc1))) {
+        cout << "Warning: " << "[PKB][registerCallsT] Caller is not a registered procedure" << endl;
+    }
+    if (!(isProcedure(proc2))) {
+        cout << "Warning: " << "[PKB][registerCallsT] Callee is not a registered procedure" << endl;
+    }
+    callsTable->setCallsT(proc1, proc2);
+}
 
 //======================================== Follows ==================================================
 

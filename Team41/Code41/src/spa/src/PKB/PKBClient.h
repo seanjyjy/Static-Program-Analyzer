@@ -35,26 +35,6 @@ public:
 
     //======================================== Calls ==================================================
 
-    /**
-     * Registers to PKB that proc1 calls proc2
-     *
-     * @param proc1 the procedure where it is called from
-     * @param proc2 the called procedure
-     * @throws cyclic_err if the registration creates a cycle in the call graph
-     * @throws self_err if the procedure attempts to call itself
-     */
-    void registerCalls(const string& proc1, const string& proc2);
-
-    /**
-     * Registers to PKB that proc1 callsT proc2
-     *
-     * @param proc1 the procedure where it is called from
-     * @param proc2 the called procedure
-     * @throws cyclic_err if the registration creates a cycle in the call graph
-     * @throws self_err if the procedure attempts to call itself
-     */
-    void registerCallsT(const string& proc1, const string& proc2);
-
     bool isCalls(string proc1, string proc2); // Checks if proc1 calls proc2
     unordered_set<string> getAllProcCalling(string procName);// Gets list of procedures that calls proc
     unordered_set<string> getAllProcCalledBy(string procName);// Gets list of procedures that is called by proc

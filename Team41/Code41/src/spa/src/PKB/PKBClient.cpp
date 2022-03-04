@@ -4,6 +4,7 @@
 #include "PKB/Tables/FollowsTable.h"
 #include "PKB/Tables/ParentTable.h"
 #include "PKB/Tables/PatternTable.h"
+#include "PKB/Tables/CallsTable.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ PKBClient::PKBClient() {
     followsTable = new FollowsTable();
     parentTable = new ParentTable();
     patternTable = new PatternTable();
+    callsTable = new CallsTable();
 }
 
 PKBClient::~PKBClient() {
@@ -22,6 +24,7 @@ PKBClient::~PKBClient() {
     delete followsTable;
     delete parentTable;
     delete patternTable;
+    delete callsTable;
 }
 
 //======================================== Follows ==================================================
@@ -137,6 +140,26 @@ unordered_set<string> PKBClient::getModifiesByProc(string procName) const {
 vector<pair<string, string>> PKBClient::getAllModifiesP() const { return modifiesTable->getProcVarEntries(); }
 
 unordered_set<string> PKBClient::getAllProcsModifyingSomeVar() const { return modifiesTable->getProcsModifyingSomeVar(); }
+
+//======================================== Calls ==================================================
+
+bool PKBClient::isCalls(string proc1, string proc2) { return callsTable->isCalls(move(proc1), move(proc2)); }
+
+unordered_set<string> PKBClient::getAllProcCalling(string procName) { return callsTable->getProcsCalling(move(procName)); }
+
+unordered_set<string> PKBClient::getAllProcCalledBy(string procName) { return callsTable->getProcsCalledBy(move(procName)); }
+
+vector<pair<string, string>> PKBClient::getAllCalls() { return callsTable->getCallsEntries(); }
+
+bool PKBClient::isCallsT(string proc1, string proc2) { return callsTable->isCallsT(move(proc1), move(proc2)); }
+
+unordered_set<string> PKBClient::getAllProcCallingT(string procName) { return callsTable->getProcsCallingT(move(procName)); }
+
+unordered_set<string> PKBClient::getAllProcCalledTBy(string procName) {
+    return callsTable->getProcsCalledTBy(move(procName));
+}
+
+vector<pair<string, string>> PKBClient::getAllCallsT() { return callsTable->getCallsTEntries(); }
 
 //======================================== Pattern ==================================================
 

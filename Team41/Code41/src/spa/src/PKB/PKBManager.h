@@ -60,6 +60,28 @@ public:
     void registerConstant(const string& constVal);// Registers a constant to PKBManager
     void registerProcedure(const string& procName);// Registers a procedure to PKBManager
 
+    //=========================================== Calls ===================================================
+
+    /**
+     * Registers to PKB that proc1 calls proc2
+     *
+     * @param proc1 the procedure where it is called from
+     * @param proc2 the called procedure
+     * @throws cyclic_err if the registration creates a cycle in the call graph
+     * @throws self_err if the procedure attempts to call itself
+     */
+    void registerCalls(const string& proc1, const string& proc2);
+
+    /**
+     * Registers to PKB that proc1 callsT proc2
+     *
+     * @param proc1 the procedure where it is called from
+     * @param proc2 the called procedure
+     * @throws cyclic_err if the registration creates a cycle in the call graph
+     * @throws self_err if the procedure attempts to call itself
+     */
+    void registerCallsT(const string& proc1, const string& proc2);
+
     //=========================================== Follows ===================================================
 
     /**
