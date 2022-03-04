@@ -1,3 +1,5 @@
+// remove comment to disable assertions before release
+//#define NDEBUG
 #include "AstBuilder.h"
 
 #include <utility>

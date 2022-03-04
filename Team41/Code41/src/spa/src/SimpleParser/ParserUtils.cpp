@@ -62,3 +62,15 @@ bool ParserUtils::inHighlightZone(int currRow, int currCol, int fromRow, int fro
 bool ParserUtils::inHighlightRow(int currRow, int fromRow, int toRow) {
     return currRow >= fromRow && currRow <= toRow;
 }
+
+string ParserUtils::withBanner(const string &msg, const string &topBannerMsg, const string &btmBannerMsg) {
+    return "\n\n" + topBannerMsg + "\n\n" + msg + "\n" + btmBannerMsg + "\n";
+}
+
+string
+ParserUtils::highlightAndBanner(const string &simple, int fromRow, int fromCol, int toRow, int toCol, const string &top,
+                                const string &btm) {
+    return withBanner(highlight(simple, fromRow, fromCol, toRow, toCol),
+                      top,
+                      btm);
+}

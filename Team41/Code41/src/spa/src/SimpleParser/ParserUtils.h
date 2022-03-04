@@ -21,4 +21,19 @@ public:
      * @return the highlighted SIMPLE source
      */
     static string highlight(const string& simple, int fromRow, int fromCol, int toRow, int toCol);
+
+    /**
+     * Adds a very prominent banner to the top and bottom of a string to make it more noticeable.
+     *
+     * @param msg the message to bannerize.
+     * @param topBannerMsg the message enclosed in the top banner.
+     * @param btmBannerMsg the message enclosed in the bottom banner.
+     * @return the bannerized message.
+     */
+    static string withBanner(const string& msg, const string& topBannerMsg, const string& btmBannerMsg);
+
+    /**
+     * Convenience function that highlights a message, then adds a banner.
+     */
+    static string highlightAndBanner(const string& simple, int fromRow, int fromCol, int toRow, int toCol, const string& top, const string& btm);
 };
