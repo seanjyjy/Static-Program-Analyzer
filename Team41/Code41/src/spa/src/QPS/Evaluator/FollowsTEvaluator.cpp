@@ -173,7 +173,7 @@ Table* FollowsTEvaluator::evaluateWildCardSynonym(PKBClient *pkb, ClauseVariable
 }
 
 Table* FollowsTEvaluator::evaluateWildCardWildCard(PKBClient *pkb) {
-    vector<pair<string, string>> listOfStmtStmt = pkb->getAllFollows();
+    vector<pair<string, string>> listOfStmtStmt = pkb->getAllFollowsT();
 
     if (listOfStmtStmt.empty()) {
         return new FalseTable();
