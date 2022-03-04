@@ -78,6 +78,10 @@ bool EvaluatorUtils::isSynonymWildCard(ClauseVariable* left, ClauseVariable* rig
     return left->isSynonym() && right->isWildCard();
 }
 
+bool EvaluatorUtils::isWildCardWildCard(ClauseVariable* left, ClauseVariable* right) {
+    return left->isWildCard() && right->isWildCard();
+}
+
 // ============================================= STMT UTILS ======================================================
 
 bool EvaluatorUtils::StmtUtils::isIntegerInteger(ClauseVariable* left, ClauseVariable* right) {
@@ -112,10 +116,6 @@ bool EvaluatorUtils::StmtUtils::isWildCardInteger(ClauseVariable* left, ClauseVa
 
 bool EvaluatorUtils::StmtUtils::isValidWildCardSynonym(ClauseVariable* left, ClauseVariable* right) {
     return isWildCardSynonym(left, right) && isStmtType(right->getDesignEntityType());
-}
-
-bool EvaluatorUtils::StmtUtils::isWildCardWildCard(ClauseVariable* left, ClauseVariable* right) {
-    return left->isWildCard() && right->isWildCard();
 }
 
 // ============================================= PROC UTILS ======================================================
@@ -187,4 +187,32 @@ bool EvaluatorUtils::SUtils::isValidModifiesSynonymWildCard(ClauseVariable* left
 
 bool EvaluatorUtils::SUtils::isValidUsesSynonymWildCard(ClauseVariable* left, ClauseVariable* right) {
     return isSynonymWildCard(left, right) && isUsesStmtType(left->getDesignEntityType());
+}
+
+// ============================================ Calls Utils ====================================================
+
+bool EvaluatorUtils::CallsUtils::isValidCallsIdentifierSynonym(ClauseVariable *left, ClauseVariable *right) {
+    return isIdentifierSynonym(left, right) && isProcedure(right->getDesignEntityType());
+}
+
+bool EvaluatorUtils::CallsUtils::isValidCallsSynonymIdentifier(ClauseVariable *left, ClauseVariable *right) {
+    return isSynonymIdentifier(left, right) && isProcedure(left->getDesignEntityType());
+}
+
+bool EvaluatorUtils::CallsUtils::isValidCallsSynonymSynonym(ClauseVariable *left, ClauseVariable *right) {
+    return isSynonymSynonym(left, right)
+        && isProcedure(left->getDesignEntityType())
+        && isProcedure(right->getDesignEntityType());
+}
+
+bool EvaluatorUtils::CallsUtils::isValidCallsSynonymWildCard(ClauseVariable *left, ClauseVariable *right) {
+    return isSynonymWildCard(left, right) && isProcedure(left->getDesignEntityType());
+}
+
+bool EvaluatorUtils::CallsUtils::isValidCallsWildCardSynonym(ClauseVariable *left, ClauseVariable *right) {
+    return isWildCardSynonym(left, right) && isProcedure(right->getDesignEntityType());
+}
+
+bool EvaluatorUtils::CallsUtils::isWildCardIdentifier(ClauseVariable *left, ClauseVariable *right) {
+    return left->isWildCard() && right->isIdentifier();
 }
