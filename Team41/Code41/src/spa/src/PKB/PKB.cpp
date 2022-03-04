@@ -8,6 +8,7 @@
 #include "FollowsTable.h"
 #include "ParentTable.h"
 #include "PatternTable.h"
+#include "CallsTable.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ PKB::PKB() {
     followsTable = new FollowsTable();
     parentTable = new ParentTable();
     patternTable = new PatternTable();
+    callsTable = new CallsTable();
 }
 
 PKB::~PKB() {
@@ -31,6 +33,7 @@ PKB::~PKB() {
     delete followsTable;
     delete parentTable;
     delete patternTable;
+    delete callsTable;
 }
 
 //======================================== Statements ==================================================
@@ -94,6 +97,46 @@ bool PKB::isConstant(string constVal) const { return entityTable->isConstant(mov
 bool PKB::isProcedure(string procName) const { return entityTable->isProcedure(move(procName)); }
 
 bool PKB::isVariable(string varName) const { return entityTable->isVariable(move(varName)); }
+
+//======================================== Calls ==================================================
+
+void PKB::registerCalls(const string& proc1, const string& proc2) {
+    if (!(isProcedure(proc1))) {
+        cout << "Warning: " << "[PKB][registerCalls] Caller is not a registered procedure" << endl;
+    }
+    if (!(isProcedure(proc2))) {
+        cout << "Warning: " << "[PKB][registerCalls] Callee is not a registered procedure" << endl;
+    }
+    callsTable->setCalls(proc1, proc2);
+}
+
+void PKB::registerCallsT(const string& proc1, const string& proc2) {
+    if (!(isProcedure(proc1))) {
+        cout << "Warning: " << "[PKB][registerCallsT] Caller is not a registered procedure" << endl;
+    }
+    if (!(isProcedure(proc2))) {
+        cout << "Warning: " << "[PKB][registerCallsT] Callee is not a registered procedure" << endl;
+    }
+    callsTable->setCallsT(proc1, proc2);
+}
+
+bool PKB::isCalls(string proc1, string proc2) { return callsTable->isCalls(move(proc1), move(proc2)); }
+
+unordered_set<string> PKB::getAllProcCalling(string procName) { return callsTable->getProcsCalling(move(procName)); }
+
+unordered_set<string> PKB::getAllProcCalledBy(string procName) { return callsTable->getProcsCalledBy(move(procName)); }
+
+vector<pair<string, string>> PKB::getAllCalls() { return callsTable->getCallsEntries(); }
+
+bool PKB::isCallsT(string proc1, string proc2) { return callsTable->isCallsT(move(proc1), move(proc2)); }
+
+unordered_set<string> PKB::getAllProcCallingT(string procName) { return callsTable->getProcsCallingT(move(procName)); }
+
+unordered_set<string> PKB::getAllProcCalledTBy(string procName) {
+    return callsTable->getProcsCalledTBy(move(procName));
+}
+
+vector<pair<string, string>> PKB::getAllCallsT() { return callsTable->getCallsTEntries(); }
 
 //======================================== Follows ==================================================
 
@@ -290,4 +333,3 @@ unordered_set<string> PKB::getStmtFromSubPatternNVar(TNode *subPatternAST, const
 vector<pair<string, string>> PKB::getStmtNVarFromSubPattern(TNode *subPatternAST) const {
     return patternTable->getStmtNVarFromSubPattern(subPatternAST);
 }
-

@@ -11,8 +11,8 @@ class EntityTable;
 class UsesTable;
 class ModifiesTable;
 class FollowsTable;
-class CallsTable;
 class ParentTable;
+class CallsTable;
 class PatternTable;
 
 /**
@@ -34,6 +34,7 @@ public:
     FollowsTable *followsTable;
     ParentTable *parentTable;
     PatternTable *patternTable;
+    CallsTable *callsTable;
 
     //======================================== Statement ==================================================
 
@@ -108,6 +109,38 @@ public:
     bool isConstant(string constVal) const;// Checks if specified variable is registered
     bool isProcedure(string procName) const;// Checks if specified constant is registered
     bool isVariable(string varName) const;// Checks if specified procedure is registered
+
+    //======================================== Calls ==================================================
+
+    /**
+     * Registers to PKB that proc1 calls proc2
+     *
+     * @param proc1 the procedure where it is called from
+     * @param proc2 the called procedure
+     * @throws cyclic_err if the registration creates a cycle in the call graph
+     * @throws self_err if the procedure attempts to call itself
+     */
+    void registerCalls(const string& proc1, const string& proc2);
+
+    /**
+     * Registers to PKB that proc1 callsT proc2
+     *
+     * @param proc1 the procedure where it is called from
+     * @param proc2 the called procedure
+     * @throws cyclic_err if the registration creates a cycle in the call graph
+     * @throws self_err if the procedure attempts to call itself
+     */
+    void registerCallsT(const string& proc1, const string& proc2);
+
+    bool isCalls(string proc1, string proc2); // Checks if proc1 calls proc2
+    unordered_set<string> getAllProcCalling(string procName);// Gets list of procedures that calls proc
+    unordered_set<string> getAllProcCalledBy(string procName);// Gets list of procedures that is called by proc
+    vector<pair<string, string>> getAllCalls(); // Gets list of proc1-proc2 pair where proc1 calls proc2
+
+    bool isCallsT(string proc1, string proc2); // Checks if proc1 callsT proc2
+    unordered_set<string> getAllProcCallingT(string procName);// Gets list of procedures that callsT proc
+    unordered_set<string> getAllProcCalledTBy(string procName);// Gets list of procedures that is calledT by proc
+    vector<pair<string, string>> getAllCallsT(); // Gets list of proc1-proc2 pair where proc1 callsT proc2
 
     //=========================================== Follows ===================================================
 
