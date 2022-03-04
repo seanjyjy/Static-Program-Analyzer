@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include "Common/TNode.h"
-#include "PKB/PKB.h"
+#include "PKB/PKBManager.h"
 #include "EntitiesExtractor.h"
 #include "ModifiesExtractor.h"
 #include "UsesExtractor.h"
@@ -13,7 +13,7 @@
 class DesignExtractor {
 private:
     TNode *ast; // root node of AST
-    PKB *pkb; // pointer to PKB to store all entities and relationships
+    PKBManager *pkb; // pointer to PKBManager to store all entities and relationships
     unordered_map<TNode *, string> nodeToStmtNumMap; // mapping of TNode* to statement number
 
     void extractEntities();
@@ -23,11 +23,11 @@ private:
     void extractParent();
     void extractPattern();
 public:
-    DesignExtractor(TNode *ast, PKB *pkb);
+    DesignExtractor(TNode *ast, PKBManager *pkb);
 
     /**
      * Extracts all entities (procedures, statements, variables and constants) and relationships
-     * and stores them in the PKB sequentially.
+     * and stores them in the PKBManager sequentially.
      * Supported relationships: Modifies, Uses, Follows(T) and Parent(T)
      */
     void extractDesign();

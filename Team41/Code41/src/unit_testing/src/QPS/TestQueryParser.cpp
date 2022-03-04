@@ -245,6 +245,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
         REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
     }
+    delete qo;
 }
 
 TEST_CASE("QPS: Parser_INVALID") {

@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "PKB/ManyToMany.h"
+#include "PKB/Relations/ManyToMany.h"
 #include "../UnitTestUtility.h"
 
 using namespace std;

@@ -16,7 +16,7 @@ TEST_CASE("Integration test for simple source and PQL") {
     TNode* ast = p.parseProgram(s);
     ast->printRecursive();
 
-    PKB* pkbManager = new PKB();
+    PKBManager* pkbManager = new PKBManager();
     DesignExtractor designExtractor(ast, pkbManager);
     designExtractor.extractDesign();
 

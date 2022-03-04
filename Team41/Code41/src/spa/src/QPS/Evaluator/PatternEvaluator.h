@@ -14,7 +14,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a wildcard and a full pattern.
      */
-    static Table *evaluateWildCardFullPattern(PKB *pkb, QueryDeclaration patternSyn, PatternVariable right);
+    static Table *evaluateWildCardFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between a wildcard and a sub pattern.
@@ -24,7 +24,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a wildcard and a sub pattern.
      */
-    static Table *evaluateWildCardSubPattern(PKB *pkb, QueryDeclaration patternSyn, PatternVariable right);
+    static Table *evaluateWildCardSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between two wildcard.
@@ -34,7 +34,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between two wildcard.
      */
-    static Table *evaluateWildCardWildCard(PKB *pkb, QueryDeclaration patternSyn);
+    static Table *evaluateWildCardWildCard(PKBClient *pkb, QueryDeclaration patternSyn);
 
     /**
      * Construct a table that captures the Pattern relation between an identifier and a full pattern.
@@ -44,7 +44,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a full pattern.
      */
-    static Table *evaluateIdentifierFullPattern(PKB *pkb, QueryDeclaration patternSyn,
+    static Table *evaluateIdentifierFullPattern(PKBClient *pkb, QueryDeclaration patternSyn,
                                                 ClauseVariable left, PatternVariable right);
 
     /**
@@ -55,7 +55,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a sub pattern.
      */
-    static Table *evaluateIdentifierSubPattern(PKB *pkb, QueryDeclaration patternSyn,
+    static Table *evaluateIdentifierSubPattern(PKBClient *pkb, QueryDeclaration patternSyn,
                                                ClauseVariable left, PatternVariable right);
 
     /**
@@ -66,7 +66,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a wildcard.
      */
-    static Table *evaluateIdentifierWildCard(PKB *pkb, QueryDeclaration patternSyn, ClauseVariable left);
+    static Table *evaluateIdentifierWildCard(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a full pattern.
@@ -76,7 +76,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a full pattern.
      */
-    static Table *evaluateSynonymFullPattern(PKB *pkb, QueryDeclaration patternSyn,
+    static Table *evaluateSynonymFullPattern(PKBClient *pkb, QueryDeclaration patternSyn,
                                              ClauseVariable left, PatternVariable right);
 
     /**
@@ -87,7 +87,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a sub pattern.
      */
-    static Table *evaluateSynonymSubPattern(PKB *pkb, QueryDeclaration patternSyn,
+    static Table *evaluateSynonymSubPattern(PKBClient *pkb, QueryDeclaration patternSyn,
                                             ClauseVariable left, PatternVariable right);
 
     /**
@@ -98,7 +98,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a wildcard.
      */
-    static Table *evaluateSynonymWildCard(PKB *pkb, QueryDeclaration patternSyn, ClauseVariable left);
+    static Table *evaluateSynonymWildCard(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left);
 
 public:
     /**
@@ -108,5 +108,5 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table depending on the type of Query Clause.
      */
-    static Table *evaluate(PatternClause clause, PKB *pkb);
+    static Table *evaluate(PatternClause clause, PKBClient *pkb);
 };

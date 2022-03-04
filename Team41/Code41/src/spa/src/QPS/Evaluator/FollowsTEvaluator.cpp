@@ -1,6 +1,6 @@
 #include "FollowsTEvaluator.h"
 
-Table* FollowsTEvaluator::evaluate(QueryClause clause, PKB *pkb) {
+Table* FollowsTEvaluator::evaluate(QueryClause clause, PKBClient *pkb) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
@@ -43,7 +43,7 @@ Table* FollowsTEvaluator::evaluate(QueryClause clause, PKB *pkb) {
     throw SemanticException("Invalid query provided for Follows*");
 }
 
-Table* FollowsTEvaluator::evaluateIntegerInteger(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table* FollowsTEvaluator::evaluateIntegerInteger(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     bool isFollows = pkb->isFollowsT(left.getLabel(), right.getLabel());
 
     if (isFollows) {
@@ -53,7 +53,7 @@ Table* FollowsTEvaluator::evaluateIntegerInteger(PKB *pkb, ClauseVariable left, 
     return new FalseTable();
 }
 
-Table* FollowsTEvaluator::evaluateIntegerSynonym(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table* FollowsTEvaluator::evaluateIntegerSynonym(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     unordered_set<string> followers = pkb->getAllStmtsFollowingT(left.getLabel());
 
     if (followers.empty()) {
@@ -71,7 +71,7 @@ Table* FollowsTEvaluator::evaluateIntegerSynonym(PKB *pkb, ClauseVariable left, 
     return table;
 }
 
-Table* FollowsTEvaluator::evaluateIntegerWildCard(PKB *pkb, ClauseVariable left) {
+Table* FollowsTEvaluator::evaluateIntegerWildCard(PKBClient *pkb, ClauseVariable left) {
     unordered_set<string> followers = pkb->getAllStmtsFollowingT(left.getLabel());
 
     if (followers.empty()) {
@@ -81,7 +81,7 @@ Table* FollowsTEvaluator::evaluateIntegerWildCard(PKB *pkb, ClauseVariable left)
     return new TrueTable();
 }
 
-Table* FollowsTEvaluator::evaluateSynonymInteger(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table* FollowsTEvaluator::evaluateSynonymInteger(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     unordered_set<string> followedSet = pkb->getAllStmtsFollowedTBy(right.getLabel());
 
     if (followedSet.empty()) {
@@ -101,7 +101,7 @@ Table* FollowsTEvaluator::evaluateSynonymInteger(PKB *pkb, ClauseVariable left, 
     return table;
 }
 
-Table* FollowsTEvaluator::evaluateSynonymSynonym(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table* FollowsTEvaluator::evaluateSynonymSynonym(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     // returns stmt1 follows stmt2
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllFollowsT();
 
@@ -124,7 +124,7 @@ Table* FollowsTEvaluator::evaluateSynonymSynonym(PKB *pkb, ClauseVariable left, 
     return table;
 }
 
-Table* FollowsTEvaluator::evaluateSynonymWildCard(PKB *pkb, ClauseVariable left) {
+Table* FollowsTEvaluator::evaluateSynonymWildCard(PKBClient *pkb, ClauseVariable left) {
     unordered_set<string> setOfStatements = pkb->getAllStmtsFollowedBySomeStmt();
 
     if (setOfStatements.empty()) {
@@ -143,7 +143,7 @@ Table* FollowsTEvaluator::evaluateSynonymWildCard(PKB *pkb, ClauseVariable left)
     return table;
 }
 
-Table* FollowsTEvaluator::evaluateWildCardInteger(PKB *pkb, ClauseVariable right) {
+Table* FollowsTEvaluator::evaluateWildCardInteger(PKBClient *pkb, ClauseVariable right) {
     unordered_set<string> followedByCurrent = pkb->getAllStmtsFollowedTBy(right.getLabel());
 
     if (followedByCurrent.empty()) {
@@ -153,7 +153,7 @@ Table* FollowsTEvaluator::evaluateWildCardInteger(PKB *pkb, ClauseVariable right
     return new TrueTable();
 }
 
-Table* FollowsTEvaluator::evaluateWildCardSynonym(PKB *pkb, ClauseVariable right) {
+Table* FollowsTEvaluator::evaluateWildCardSynonym(PKBClient *pkb, ClauseVariable right) {
     unordered_set<string> setOfStatements = pkb->getAllStmtsFollowingSomeStmt();
 
     if (setOfStatements.empty()) {
@@ -172,7 +172,7 @@ Table* FollowsTEvaluator::evaluateWildCardSynonym(PKB *pkb, ClauseVariable right
     return table;
 }
 
-Table* FollowsTEvaluator::evaluateWildCardWildCard(PKB *pkb) {
+Table* FollowsTEvaluator::evaluateWildCardWildCard(PKBClient *pkb) {
     vector<pair<string, string>> listOfStmtStmt = pkb->getAllFollows();
 
     if (listOfStmtStmt.empty()) {

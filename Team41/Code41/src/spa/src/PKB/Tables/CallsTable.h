@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ManyToMany.h"
-#include "OneToOne.h"
+#include "PKB/Relations/ManyToMany.h"
+#include "PKB/Relations/OneToOne.h"
 #include <string>
 
 using namespace std;

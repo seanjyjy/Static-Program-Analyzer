@@ -30,7 +30,7 @@ string TreeUtils::serialize(TNode *root) {
     ret += root->toString();
     vector<TNode *> ch = root->getChildren();
     for (TNode *child: ch) {
-        ret += "[" + serialize(child) + "]";
+        ret += serialize(child);
     }
     return "[" + ret + "]";
 }

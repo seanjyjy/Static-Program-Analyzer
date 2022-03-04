@@ -1,12 +1,12 @@
 #include "catch.hpp"
-#include "PKB/PKB.h"
-#include "PKB/UsesTable.h"
+#include "PKB/PKBManager.h"
+#include "PKB/Tables/UsesTable.h"
 #include "QPS/Evaluator/UsesSEvaluator.h"
 #include "QPS/Evaluator/UsesPEvaluator.h"
 #include "QPS/ClauseVariable.h"
 
 TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
-    PKB* pkbManager = new PKB();
+    PKBManager* pkbManager = new PKBManager();
     string vars[] = {"var1", "var2"};
     string lines[] = {"1", "2", "3"};
     string proc[] = {"proc1", "proc2", "proc3"};

@@ -2,8 +2,8 @@
 
 #include <unordered_map>
 #include <algorithm>
-#include "ManyToMany.h"
-#include "SingleMap.h"
+#include "PKB/Relations/ManyToMany.h"
+#include "PKB/Relations/SingleMap.h"
 #include "Common/TNode.h"
 #include "Common/TreeUtils.h"
 

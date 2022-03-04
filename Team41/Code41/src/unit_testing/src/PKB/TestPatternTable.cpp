@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "PKB/PatternTable.h"
+#include "PKB/Tables/PatternTable.h"
 #include "../UnitTestUtility.h"
 
 using namespace std;

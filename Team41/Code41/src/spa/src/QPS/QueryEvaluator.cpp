@@ -1,7 +1,7 @@
 #include "QueryEvaluator.h"
 #include "QPS/Evaluator/Evaluator.h"
 
-QueryEvaluator::QueryEvaluator(PKB *pkb) { this->pkb = pkb; }
+QueryEvaluator::QueryEvaluator(PKBClient *pkb) { this->pkb = pkb; }
 
 std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     std::unordered_set<std::string> emptyResult;

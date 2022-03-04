@@ -1,4 +1,4 @@
-#include "PKB/SetMultiMap.h"
+#include "PKB/Relations/SetMultiMap.h"
 #include "../UnitTestUtility.h"
 #include "catch.hpp"
 

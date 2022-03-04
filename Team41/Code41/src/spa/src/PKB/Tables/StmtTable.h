@@ -1,10 +1,22 @@
 #pragma once
 
-#include "OneToMany.h"
-
-#include "StmtType.h"
+#include "PKB/Relations/OneToMany.h"
 
 using namespace std;
+
+/**
+ * The types of SIMPLE statements
+ */
+enum StmtType {
+    UNKNOWN_STMT,
+    ASSIGN,
+    WHILE,
+    IF,
+    READ,
+    PRINT,
+    CALL
+};
+
 
 /**
  * Store list of statement used in the SIMPLE program and their respective types

@@ -3,7 +3,7 @@
 #include "QPS/Table/FalseTable.h"
 #include "QPS/Table/TrueTable.h"
 #include "QPS/Table/PQLTable.h"
-#include "PKB/PKB.h"
+#include "PKB/PKBClient.h"
 #include "QPS/ClauseVariable.h"
 #include "QPS/QueryClause.h"
 #include "QPS/Evaluator/EvaluatorUtils.h"
@@ -21,5 +21,5 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table that contains information based on the query that was executed.
      */
-    virtual Table* evaluate(QueryClause clause, PKB *pkb) = 0;
+    virtual Table* evaluate(QueryClause clause, PKBClient *pkb) = 0;
 };

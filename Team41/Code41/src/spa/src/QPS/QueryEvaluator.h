@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "PKB/PKB.h"
+#include "PKB/PKBClient.h"
 #include "QPS/Evaluator/Evaluator.h"
 #include "QPS/Evaluator/UsesSEvaluator.h"
 #include "QPS/Evaluator/UsesPEvaluator.h"
@@ -21,7 +21,7 @@
 
 class QueryEvaluator {
 private:
-    PKB* pkb;
+    PKBClient* pkb;
 
     /**
      * Deletes a table after it is not being used.
@@ -30,7 +30,7 @@ private:
      */
     void safeDeleteTable(Table* table);
 public:
-    explicit QueryEvaluator(PKB* pkb);
+    explicit QueryEvaluator(PKBClient* pkb);
 
     /**
      * Based on the QueryObject, evaluates the query provided return a set of results.

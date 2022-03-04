@@ -1,6 +1,6 @@
 #include "UsesPEvaluator.h"
 
-Table* UsesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
+Table* UsesPEvaluator::evaluate(QueryClause clause, PKBClient* pkb) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
@@ -31,7 +31,7 @@ Table* UsesPEvaluator::evaluate(QueryClause clause, PKB* pkb) {
     throw SemanticException("Invalid query provided for Uses");
 }
 
-Table* UsesPEvaluator::evaluateIdentifierIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
+Table* UsesPEvaluator::evaluateIdentifierIdentifier(PKBClient* pkb, ClauseVariable left, ClauseVariable right) {
     bool isUsesP = pkb->isUsesP(left.getLabel(), right.getLabel());
 
     if (isUsesP) {
@@ -41,7 +41,7 @@ Table* UsesPEvaluator::evaluateIdentifierIdentifier(PKB* pkb, ClauseVariable lef
     return new FalseTable();
 }
 
-Table* UsesPEvaluator::evaluateIdentifierSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
+Table* UsesPEvaluator::evaluateIdentifierSynonym(PKBClient* pkb, ClauseVariable left, ClauseVariable right) {
     unordered_set<string> setOfVariables = pkb->getUsesByProc(left.getLabel());
 
     string column = right.getLabel();
@@ -56,7 +56,7 @@ Table* UsesPEvaluator::evaluateIdentifierSynonym(PKB* pkb, ClauseVariable left, 
     return result;
 }
 
-Table* UsesPEvaluator::evaluateIdentifierWildCard(PKB* pkb, ClauseVariable left) {
+Table* UsesPEvaluator::evaluateIdentifierWildCard(PKBClient* pkb, ClauseVariable left) {
     unordered_set<string> setOfVariables = pkb->getUsesByProc(left.getLabel());
 
     if (setOfVariables.empty()) {
@@ -66,7 +66,7 @@ Table* UsesPEvaluator::evaluateIdentifierWildCard(PKB* pkb, ClauseVariable left)
     return new TrueTable();
 }
 
-Table* UsesPEvaluator::evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right) {
+Table* UsesPEvaluator::evaluateSynonymIdentifier(PKBClient* pkb, ClauseVariable left, ClauseVariable right) {
     unordered_set<string> setOfProcedures = pkb->getUsesPByVar(right.getLabel());
 
     string column = left.getLabel();
@@ -81,7 +81,7 @@ Table* UsesPEvaluator::evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, 
     return result;
 }
 
-Table* UsesPEvaluator::evaluateSynonymSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right) {
+Table* UsesPEvaluator::evaluateSynonymSynonym(PKBClient* pkb, ClauseVariable left, ClauseVariable right) {
     vector<pair<string, string>> listOfProcedureToVariable =  pkb->getAllUsesP();
 
     string firstColumn = left.getLabel();
@@ -99,7 +99,7 @@ Table* UsesPEvaluator::evaluateSynonymSynonym(PKB* pkb, ClauseVariable left, Cla
     return result;
 }
 
-Table* UsesPEvaluator::evaluateSynonymWildCard(PKB* pkb, ClauseVariable left) {
+Table* UsesPEvaluator::evaluateSynonymWildCard(PKBClient* pkb, ClauseVariable left) {
     unordered_set<string> setOfProcedures =  pkb->getAllProcsUsingSomeVar();
 
     string column = left.getLabel();

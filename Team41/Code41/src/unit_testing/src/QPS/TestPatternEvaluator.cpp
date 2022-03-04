@@ -1,12 +1,12 @@
 #include "catch.hpp"
-#include "PKB/PKB.h"
-#include "PKB/PatternTable.h"
+#include "PKB/PKBManager.h"
+#include "PKB/Tables/PatternTable.h"
 #include "QPS/Evaluator/PatternEvaluator.h"
 #include "QPS/ClauseVariable.h"
 #include "../Common/AstBuilder/TestAstBuilderUtils.h"
 
 TEST_CASE("Evaluator: Pattern evaluator") {
-    PKB *pkbManager = new PKB();
+    PKBManager *pkbManager = new PKBManager();
     // z = x + 1;
     // x = a + b;
     string lines[] = {"1", "2", "3", "4"};

@@ -3,7 +3,7 @@
 #include "QPS/Table/FalseTable.h"
 #include "QPS/Table/TrueTable.h"
 #include "QPS/Table/PQLTable.h"
-#include "PKB/PKB.h"
+#include "PKB/PKBClient.h"
 #include "QPS/QueryDeclaration.h"
 #include "Exception/SemanticException.h"
 
@@ -16,7 +16,7 @@ private:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table depending on the select type.
      */
-    static unordered_set<string> getResultViaType(QueryDeclaration::design_entity_type type, PKB *pkb);
+    static unordered_set<string> getResultViaType(QueryDeclaration::design_entity_type type, PKBClient *pkb);
 public:
     /**
      * Depending on the select synonym in query declaration , get all values of that synonym from the pkb.
@@ -25,5 +25,5 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table depending on the select synonym.
      */
-    static Table* evaluate(const QueryDeclaration selectSynonym, PKB *pkb);
+    static Table* evaluate(const QueryDeclaration selectSynonym, PKBClient *pkb);
 };
