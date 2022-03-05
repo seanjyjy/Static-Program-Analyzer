@@ -8,6 +8,9 @@ TEST_CASE("Parser: program") {
     SECTION("multiple procedures") {
         TestParserUtils::parseProgramAndCompare("multi-procedures.simple", "multi-procedures.x");
     }
+    SECTION("call") {
+        TestParserUtils::parseProgramAndCompare("call.simple", "call.x");
+    }
     SECTION("N0 F") {
         TestParserUtils::parseProgramAndCompare("n0f.simple", "n0f.x");
     }

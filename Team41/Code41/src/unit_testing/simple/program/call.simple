@@ -1,0 +1,31 @@
+procedure call {
+	call call;
+	if (0 == 0) then {
+		call CALL;
+		call = 1 + 2;
+	} else {
+		call call123;
+		while (call == 0) {
+			read call;
+			print call;
+		}
+	}
+	call call;
+}
+procedure CALL {
+	call Call123;
+	call = 1 + 2 + 3;
+	read Call123;
+	print Call123;
+}
+procedure call123 {
+	if ((call == call) || (call != call)) then {
+		call CALL;
+	} else {
+	    print x;
+	}
+}
+procedure Call123 {
+	call call123;
+	call call123;
+}
