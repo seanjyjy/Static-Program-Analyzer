@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "SetMultiMap.h"
+#include "PKB/Relations/SetMultiMap.h"
 
 using namespace std;
 

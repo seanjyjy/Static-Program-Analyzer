@@ -12,7 +12,7 @@ private:
      * @param right Clause variable.
      * @return A table that contains information based on the ModifiesP relation between two identifiers.
      */
-    static Table* evaluateIdentifierIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateIdentifierIdentifier(PKBClient* pkb, ClauseVariable left, ClauseVariable right);
 
     /**
      * Construct a table that captures the ModifiesP relation between an identifier and a synonym.
@@ -22,7 +22,7 @@ private:
      * @param right Clause variable.
      * @return A table that contains information based on the ModifiesP relation between an identifier and a synonym.
      */
-    static Table* evaluateIdentifierSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateIdentifierSynonym(PKBClient* pkb, ClauseVariable left, ClauseVariable right);
 
     /**
      * Construct a table that captures the ModifiesP relation between an identifier and a wildcard.
@@ -31,7 +31,7 @@ private:
      * @param left Clause variable.
      * @return A table that contains information based on the ModifiesP relation between an identifier and a wildcard.
      */
-    static Table* evaluateIdentifierWildCard(PKB* pkb, ClauseVariable left);
+    static Table* evaluateIdentifierWildCard(PKBClient* pkb, ClauseVariable left);
 
     /**
      * Construct a table that captures the ModifiesP relation between a synonym and an identifier.
@@ -41,7 +41,7 @@ private:
      * @param right Clause variable.
      * @return A table that contains information based on the ModifiesP relation between a synonym and an identifier.
      */
-    static Table* evaluateSynonymIdentifier(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateSynonymIdentifier(PKBClient* pkb, ClauseVariable left, ClauseVariable right);
 
     /**
      * Construct a table that captures the ModifiesP relation between two synonym.
@@ -51,7 +51,7 @@ private:
      * @param right Clause variable.
      * @return A table that contains information based on the ModifiesP relation between two synonym.
      */
-    static Table* evaluateSynonymSynonym(PKB* pkb, ClauseVariable left, ClauseVariable right);
+    static Table* evaluateSynonymSynonym(PKBClient* pkb, ClauseVariable left, ClauseVariable right);
 
     /**
      * Construct a table that captures the ModifiesP relation between a synonym and a wildcard.
@@ -60,7 +60,7 @@ private:
      * @param left Clause variable.
      * @return A table that contains information based on the ModifiesP relation between a synonym and a wildcard.
      */
-    static Table* evaluateSynonymWildCard(PKB* pkb, ClauseVariable left);
+    static Table* evaluateSynonymWildCard(PKBClient* pkb, ClauseVariable left);
 public:
     /**
      * Depending on the QueryClause, choose a certain evaluate method for ModifiesP to evaluate this clause
@@ -69,5 +69,5 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table depending on the type of Query Clause.
      */
-    static Table* evaluate(QueryClause clause, PKB *pkb);
+    static Table* evaluate(QueryClause clause, PKBClient *pkb);
 };

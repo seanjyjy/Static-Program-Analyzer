@@ -1,13 +1,13 @@
 #include "catch.hpp"
-#include "PKB/PKB.h"
-#include "PKB/ParentTable.h"
+#include "PKB/PKBManager.h"
+#include "PKB/Tables/ParentTable.h"
 #include "QPS/Evaluator/ParentEvaluator.h"
 #include "QPS/Evaluator/ParentTEvaluator.h"
 #include "QPS/ClauseVariable.h"
 
 TEST_CASE("Evaluator: Parent and ParentT evaluator") {
     string stmt[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    PKB* pkbManager = new PKB();
+    PKBManager* pkbManager = new PKBManager();
 
     /*
         1 x = 1;

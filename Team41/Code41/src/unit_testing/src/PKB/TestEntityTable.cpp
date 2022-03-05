@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "PKB/EntityTable.h"
+#include "PKB/Tables/EntityTable.h"
 
 using namespace std;
 

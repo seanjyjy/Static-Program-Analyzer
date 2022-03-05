@@ -5,10 +5,10 @@
 #include <utility>
 #include <vector>
 #include <cassert>
+#include <climits>
+#include <stdexcept>
 
 using namespace std;
-
-#include <stdexcept>
 
 #include "Token.h"
 #include "Common/TNode.h"
@@ -118,8 +118,15 @@ void Parser::checkAndAdvance(TokenType type, const string& val) {
 
 TNode *Parser::eatProgram() {
     vector<TNode *> procedures;
-    while (!isEof()) {
-        procedures.push_back(eatProcedure());
+    try {
+        while (!isEof()) {
+            procedures.push_back(eatProcedure());
+        }
+    } catch (SyntaxException &e) {
+        for (TNode *proc: procedures) {
+            delete proc;
+        }
+        throw SyntaxException();
     }
     return TNode::makeProgram(procedures);
 }
@@ -131,14 +138,19 @@ TNode *Parser::eatProcedure() {
     // eat procedure name
     Token *name = checkAndGetTokenAndAdvance(TokenType::name);
 
-    // eat {
-    checkAndAdvance(TokenType::openingBrace);
-
-    // eat statements
-    TNode *stmtLst = eatStmtLst();
-
-    // eat }
-    checkAndAdvance(TokenType::closingBrace);
+    TNode *stmtLst = nullptr;
+    try {
+        // eat {
+        checkAndAdvance(TokenType::openingBrace);
+        // eat statements
+        stmtLst = eatStmtLst();
+        // eat }
+        checkAndAdvance(TokenType::closingBrace);
+    } catch (SyntaxException &e) {
+        delete name;
+        delete stmtLst;
+        throw;
+    }
 
     return TNode::makeProcedure(name, stmtLst);
 }
@@ -146,9 +158,16 @@ TNode *Parser::eatProcedure() {
 TNode *Parser::eatStmtLst() {
     vector<TNode *> stmts;
     // at least one statement in stmtlist
-    stmts.push_back(eatStmt());
-    while (!peekMatchType(TokenType::closingBrace)) {
+    try {
         stmts.push_back(eatStmt());
+        while (!peekMatchType(TokenType::closingBrace)) {
+            stmts.push_back(eatStmt());
+        }
+    } catch (SyntaxException &e) {
+        for (TNode *stmt: stmts) {
+            delete stmt;
+        }
+        throw;
     }
     return TNode::makeStmtLst(stmts);
 }
@@ -200,58 +219,99 @@ TNode *Parser::eatStmt() {
 }
 
 TNode *Parser::eatStmtRead() {
-    checkAndAdvance(TokenType::name, "read");
-    Token *tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
-    checkAndAdvance(TokenType::semicolon);
+    Token *tokenBeforeAdv = nullptr;
+    try {
+        checkAndAdvance(TokenType::name, "read");
+        tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
+        checkAndAdvance(TokenType::semicolon);
+    } catch (SyntaxException &e) {
+        delete tokenBeforeAdv;
+        throw;
+    }
     return TNode::makeReadStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtPrint() {
-    checkAndAdvance(TokenType::name, "print");
-    Token *tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
-    checkAndAdvance(TokenType::semicolon);
+    Token *tokenBeforeAdv = nullptr;
+    try {
+        checkAndAdvance(TokenType::name, "print");
+        tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
+        checkAndAdvance(TokenType::semicolon);
+    } catch (SyntaxException &e) {
+        delete tokenBeforeAdv;
+        throw;
+    }
     return TNode::makePrintStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtCall() {
-    checkAndAdvance(TokenType::name, "call");
-    Token *tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
-    checkAndAdvance(TokenType::semicolon);
+    Token *tokenBeforeAdv = nullptr;
+    try {
+        checkAndAdvance(TokenType::name, "call");
+        tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
+        checkAndAdvance(TokenType::semicolon);
+    } catch (SyntaxException &e) {
+        delete tokenBeforeAdv;
+        throw;
+    }
     return TNode::makeCallStmt(TNode::makeProcName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtWhile() {
-    checkAndAdvance(TokenType::name, "while");
-    checkAndAdvance(TokenType::openingBracket);
-    TNode *condExpr = eatCondExpr();
-    checkAndAdvance(TokenType::closingBracket);
-    checkAndAdvance(TokenType::openingBrace);
-    TNode *stmtLst = eatStmtLst();
-    checkAndAdvance(TokenType::closingBrace);
-    return TNode::makeWhileStmt(condExpr, stmtLst);
+    TNode *condExpr = nullptr;
+    TNode *stmtLst = nullptr;
+    try {
+        checkAndAdvance(TokenType::name, "while");
+        checkAndAdvance(TokenType::openingBracket);
+        condExpr = eatCondExpr();
+        checkAndAdvance(TokenType::closingBracket);
+        checkAndAdvance(TokenType::openingBrace);
+        stmtLst = eatStmtLst();
+        checkAndAdvance(TokenType::closingBrace);
+        return TNode::makeWhileStmt(condExpr, stmtLst);
+    } catch (SyntaxException &e) {
+        delete condExpr;
+        delete stmtLst;
+        throw;
+    }
 }
 
 TNode *Parser::eatStmtIf() {
-    checkAndAdvance(TokenType::name, "if");
-    checkAndAdvance(TokenType::openingBracket);
-    TNode *condExpr = eatCondExpr();
-    checkAndAdvance(TokenType::closingBracket);
-    checkAndAdvance(TokenType::name, "then");
-    checkAndAdvance(TokenType::openingBrace);
-    TNode *ifStmtLst = eatStmtLst();
-    checkAndAdvance(TokenType::closingBrace);
-    checkAndAdvance(TokenType::name, "else");
-    checkAndAdvance(TokenType::openingBrace);
-    TNode *elseStmtLst = eatStmtLst();
-    checkAndAdvance(TokenType::closingBrace);
-    return TNode::makeIfStmt(condExpr, ifStmtLst, elseStmtLst);
+    TNode *condExpr = nullptr, *ifStmtLst = nullptr, *elseStmtLst = nullptr;
+    try {
+        checkAndAdvance(TokenType::name, "if");
+        checkAndAdvance(TokenType::openingBracket);
+        condExpr = eatCondExpr();
+        checkAndAdvance(TokenType::closingBracket);
+        checkAndAdvance(TokenType::name, "then");
+        checkAndAdvance(TokenType::openingBrace);
+        ifStmtLst = eatStmtLst();
+        checkAndAdvance(TokenType::closingBrace);
+        checkAndAdvance(TokenType::name, "else");
+        checkAndAdvance(TokenType::openingBrace);
+        elseStmtLst = eatStmtLst();
+        checkAndAdvance(TokenType::closingBrace);
+        return TNode::makeIfStmt(condExpr, ifStmtLst, elseStmtLst);
+    } catch (SyntaxException &e) {
+        delete condExpr;
+        delete ifStmtLst;
+        delete elseStmtLst;
+        throw;
+    }
 }
 
 TNode *Parser::eatStmtAssign() {
     Token *tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
-    checkAndAdvance(TokenType::assign);
-    TNode *expr = eatExpr();
-    checkAndAdvance(TokenType::semicolon);
+    TNode *expr = nullptr;
+    try {
+        checkAndAdvance(TokenType::assign);
+        expr = eatExpr();
+        checkAndAdvance(TokenType::semicolon);
+    } catch (SyntaxException &e) {
+        delete tokenBeforeAdv;
+        delete expr;
+        throw;
+    }
     return TNode::makeAssignStmt(TNode::makeVarName(tokenBeforeAdv), expr);
 }
 
@@ -568,14 +628,16 @@ TNode *Parser::eatTerm1() {
 
         int c = saveCursor();
         TNode *term1 = nullptr;
+        TNode *dv = nullptr;
         try {
-            TNode *term1 = eatTerm1();
-            TNode *dv = TNode::makeDiv(TNode::makeDummy(), factor);
+            term1 = eatTerm1();
+            dv = TNode::makeDiv(TNode::makeDummy(), factor);
             term1->setLeftChild(dv);
             dv->setParent(term1);
             return dv;
         } catch (exception &e) {
             delete term1;
+            delete dv;
             backtrack(c);
         }
 
@@ -644,7 +706,7 @@ void Parser::init(const string &s) {
     tokens = tokenizer.tokenize();
 
     // tokenize succeeded, now setup for ast recursive descent
-    if (tokens.empty()) throw exception("parser tokens must not be empty");
+    if (tokens.empty()) throw runtime_error("parser tokens must not be empty");
 
     cursor = 0;
     errorStartRow = INT_MAX;
@@ -702,9 +764,9 @@ TNode *Parser::parse(const string &s) {
                 ast = eatFactor();
                 break;
             default:
-                throw exception("unknown parse option given");
+                throw runtime_error("unknown parse option given");
         }
-        if (!peekMatchType(TokenType::eof)) throw exception("extra tokens remaining after parse");
+        if (!peekMatchType(TokenType::eof)) throw runtime_error("extra tokens remaining after parse");
         // success, now set all parent pointers
         ast->setAllParents();
         return ast;
@@ -718,7 +780,7 @@ TNode *Parser::parse(const string &s) {
         // syntax errors are only thrown during parsing
         cout << syntaxErrorMsg() << endl;
         cout << endl << highlightSource() << endl;
-    } catch (exception &e) {
+    } catch (runtime_error &e) {
         // other exceptions not directly related to tokenizing/parsing
         cout << e.what() << endl;
     } catch (...) {

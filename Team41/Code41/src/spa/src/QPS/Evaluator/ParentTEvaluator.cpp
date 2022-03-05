@@ -1,6 +1,6 @@
 #include "ParentTEvaluator.h"
 
-Table* ParentTEvaluator::evaluate(QueryClause clause, PKB *pkb) {
+Table* ParentTEvaluator::evaluate(QueryClause clause, PKBClient *pkb) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
@@ -43,7 +43,7 @@ Table* ParentTEvaluator::evaluate(QueryClause clause, PKB *pkb) {
     throw SemanticException("Invalid query provided for Parent*");
 }
 
-Table* ParentTEvaluator::evaluateIntegerInteger(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table* ParentTEvaluator::evaluateIntegerInteger(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     bool isParentT = pkb->isParentT(left.getLabel(), right.getLabel());
 
     if (isParentT) {
@@ -53,7 +53,7 @@ Table* ParentTEvaluator::evaluateIntegerInteger(PKB *pkb, ClauseVariable left, C
     return new FalseTable();
 }
 
-Table* ParentTEvaluator::evaluateIntegerSynonym(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table* ParentTEvaluator::evaluateIntegerSynonym(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     unordered_set<string> setOfDescendants = pkb->getDescendantStmtsOf(left.getLabel());
 
     if (setOfDescendants.empty()) {
@@ -72,7 +72,7 @@ Table* ParentTEvaluator::evaluateIntegerSynonym(PKB *pkb, ClauseVariable left, C
     return table;
 }
 
-Table* ParentTEvaluator::evaluateIntegerWildCard(PKB *pkb, ClauseVariable left) {
+Table* ParentTEvaluator::evaluateIntegerWildCard(PKBClient *pkb, ClauseVariable left) {
     unordered_set<string> setOfDescendants = pkb->getDescendantStmtsOf(left.getLabel());
 
     if (setOfDescendants.empty()) {
@@ -82,7 +82,7 @@ Table* ParentTEvaluator::evaluateIntegerWildCard(PKB *pkb, ClauseVariable left) 
     return new TrueTable();
 }
 
-Table* ParentTEvaluator::evaluateSynonymInteger(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table* ParentTEvaluator::evaluateSynonymInteger(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     unordered_set<string> setOfAncestors = pkb->getAncestorStmtsOf(right.getLabel());
 
     if (setOfAncestors.empty()) {
@@ -101,7 +101,7 @@ Table* ParentTEvaluator::evaluateSynonymInteger(PKB *pkb, ClauseVariable left, C
     return table;
 }
 
-Table* ParentTEvaluator::evaluateSynonymSynonym(PKB *pkb, ClauseVariable left, ClauseVariable right) {
+Table* ParentTEvaluator::evaluateSynonymSynonym(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
     // Gets list of parent-child pair where stmt1 is ancestor of stmt2
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllParentT();
 
@@ -124,7 +124,7 @@ Table* ParentTEvaluator::evaluateSynonymSynonym(PKB *pkb, ClauseVariable left, C
     return table;
 }
 
-Table* ParentTEvaluator::evaluateSynonymWildCard(PKB *pkb, ClauseVariable left) {
+Table* ParentTEvaluator::evaluateSynonymWildCard(PKBClient *pkb, ClauseVariable left) {
     // get list of stmt parent of some stmt
     unordered_set<string> setOfParents = pkb->getAllStmtsParentOfSomeStmt();
 
@@ -144,7 +144,7 @@ Table* ParentTEvaluator::evaluateSynonymWildCard(PKB *pkb, ClauseVariable left) 
     return table;
 }
 
-Table* ParentTEvaluator::evaluateWildCardInteger(PKB *pkb, ClauseVariable right) {
+Table* ParentTEvaluator::evaluateWildCardInteger(PKBClient *pkb, ClauseVariable right) {
     unordered_set<string> setOfAncestors = pkb->getAncestorStmtsOf(right.getLabel());
 
     if (setOfAncestors.empty()) {
@@ -154,7 +154,7 @@ Table* ParentTEvaluator::evaluateWildCardInteger(PKB *pkb, ClauseVariable right)
     return new TrueTable();
 }
 
-Table* ParentTEvaluator::evaluateWildCardSynonym(PKB *pkb, ClauseVariable right) {
+Table* ParentTEvaluator::evaluateWildCardSynonym(PKBClient *pkb, ClauseVariable right) {
     // get list of stmt parented by some stmt
     unordered_set<string> setOfStmtsThatHasParent = pkb->getAllStmtsChildOfBySomeStmt();
 
@@ -174,7 +174,7 @@ Table* ParentTEvaluator::evaluateWildCardSynonym(PKB *pkb, ClauseVariable right)
     return table;
 }
 
-Table* ParentTEvaluator::evaluateWildCardWildCard(PKB *pkb) {
+Table* ParentTEvaluator::evaluateWildCardWildCard(PKBClient *pkb) {
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllParentT();
 
     if (listOfStmtToStmt.empty()) {

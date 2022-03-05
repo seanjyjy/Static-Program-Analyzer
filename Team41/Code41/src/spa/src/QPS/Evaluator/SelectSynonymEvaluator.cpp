@@ -1,7 +1,7 @@
 #include "SelectSynonymEvaluator.h"
 #include <stdexcept>
 
-Table* SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym, PKB *pkb) {
+Table* SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym, PKBClient *pkb) {
     auto declarationType = selectSynonym.type;
     auto synonym = selectSynonym.synonym;
 
@@ -17,7 +17,7 @@ Table* SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym, PK
     return resultTable;
 }
 
-unordered_set<string> SelectSynonymEvaluator::getResultViaType(QueryDeclaration::design_entity_type type, PKB* pkb) {
+unordered_set<string> SelectSynonymEvaluator::getResultViaType(QueryDeclaration::design_entity_type type, PKBClient* pkb) {
     switch(type) {
         case QueryDeclaration::design_entity_type::STMT:
             return pkb->getStatements();

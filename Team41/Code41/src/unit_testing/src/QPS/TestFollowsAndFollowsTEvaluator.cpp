@@ -1,13 +1,13 @@
 #include "catch.hpp"
-#include "PKB/PKB.h"
-#include "PKB/FollowsTable.h"
+#include "PKB/PKBManager.h"
+#include "PKB/Tables/FollowsTable.h"
 #include "QPS/Evaluator/FollowsEvaluator.h"
 #include "QPS/Evaluator/FollowsTEvaluator.h"
 #include "QPS/ClauseVariable.h"
 
 TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
     string stmt[] = {"1", "2", "3", "4", "5", "6"};
-    auto* pkbManager = new PKB();
+    auto* pkbManager = new PKBManager();
 
     // 1 <- 2 <- 5 <- 6
     // 3 <- 4 (Think of it as an if block)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ManyToMany.h"
+#include "PKB/Relations/ManyToMany.h"
 #include <string>
 
 using namespace std;
