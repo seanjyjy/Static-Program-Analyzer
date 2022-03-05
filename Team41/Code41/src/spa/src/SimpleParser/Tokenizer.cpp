@@ -1,13 +1,14 @@
+// remove comment to disable assertions before release
+//#define NDEBUG
 #include "Tokenizer.h"
 #include "Tokens.h"
-#include "SimpleParser/ParserUtils.h"
+#include "SimpleParser/SPUtils.h"
 #include "Exception/TokenizeException.h"
 
 #include <utility>
 #include <cctype>
 #include <stdexcept>
 #include <cassert>
-#include <unordered_set>
 #include <iostream>
 
 // member initialization
@@ -282,7 +283,9 @@ Tokens Tokenizer::tokenize() {
 }
 
 string Tokenizer::highlightSource(int fromRow, int fromCol, int toRow, int toCol) {
-    return  "\n\nvvvvvvvvvvvvvvvvvvvvvvvvvvvvv TOKENIZER ERROR HIGHLIGHT vvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n\n" +
-            ParserUtils::highlight(input, fromRow, fromCol, toRow, toCol) +
-            "\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ END ERROR HIGHLIGHT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+    return SPUtils::highlightAndBanner(
+            input, fromRow, fromCol, toRow, toCol,
+            "vvvvvvvvvvvvvvvvvvvvvvvvvvvvv TOKENIZER ERROR HIGHLIGHT vvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ END ERROR HIGHLIGHT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+    );
 }

@@ -94,7 +94,7 @@ private:
      * @param type the token type to match
      * @param val the token value to match
      */
-    void checkAndAdvance(TokenType type, string val);
+    void checkAndAdvance(TokenType type, const string& val);
 
     /**
      * Checks if the current token matches the given type, but does not throw.
@@ -228,6 +228,41 @@ private:
     TNode *eatRelExpr();
 
     /**
+     * Parses a relational expression. Convenience function for TNode *eatRelExpr().
+     */
+    TNode *eatRelExpr(TokenType type);
+
+    /**
+     * Parses the production rel_expr -> rel_factor '>' rel_factor.
+     */
+    TNode *eatGtExpr();
+
+    /**
+     * Parses the production rel_expr -> rel_factor '>=' rel_factor.
+     */
+    TNode *eatGeExpr();
+
+    /**
+     * Parses the production rel_expr -> rel_factor '<' rel_factor.
+     */
+    TNode *eatLtExpr();
+
+    /**
+     * Parses the production rel_expr -> rel_factor '<=' rel_factor.
+     */
+    TNode *eatLeExpr();
+
+    /**
+     * Parses the production rel_expr -> rel_factor '==' rel_factor.
+     */
+    TNode *eatEqExpr();
+
+    /**
+     * Parses the production rel_expr -> rel_factor 'Ne' rel_factor.
+     */
+    TNode *eatNeExpr();
+
+    /**
      * Parses a relational factor. rel_factor -> var_name | const_value | expr
      *
      * @return the var | const | expr nodes with their respective children.
@@ -268,6 +303,21 @@ private:
      * @return the var | const | expr node with their respective children.
      */
     TNode *eatFactor();
+
+    /**
+     * Parses a variable name.
+     *
+     * @return the var node, which has no children.
+     */
+    TNode *eatVarName();
+
+    /**
+     * Parses a constant value.
+     *
+     * @return the const node, which has no children.
+     */
+    TNode *eatConstVal();
+
 
     /**
      * Sets up parse state. Must be called before parse for correct behaviour.

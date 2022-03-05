@@ -1,3 +1,5 @@
+// remove comment to disable assertions before release
+//#define NDEBUG
 #include <iostream>
 #include <string>
 #include <utility>
@@ -14,9 +16,9 @@ using namespace std;
 #include "Tokenizer.h"
 #include "Exception/SyntaxException.h"
 #include "Exception/TokenizeException.h"
-#include "SimpleParser/ParserUtils.h"
+#include "SimpleParser/SPUtils.h"
 
-Parser::Parser() {}
+Parser::Parser() = default;
 
 void Parser::advance() {
     cursor++;
@@ -38,8 +40,8 @@ void Parser::expect(TokenType type) {
     if (currToken.getType() != type) {
         string expectedType = Token::typeToString(type);
         string gotType = Token::typeToString(currToken.getType());
-        auto[startRow, startCol] = currToken.getStart();
-        auto[endRow, endCol] = currToken.getEnd();
+        auto [startRow, startCol] = currToken.getStart();
+        auto [endRow, endCol] = currToken.getEnd();
         if (startRow < errorStartRow || (startRow == errorStartRow && startCol < errorStartCol)) {
             errorStartRow = startRow;
             errorStartCol = startCol;
@@ -89,9 +91,11 @@ string Parser::syntaxErrorMsg() {
 }
 
 string Parser::highlightSource() {
-    return "\n\nvvvvvvvvvvvvvvvvvvvvvvvvvvvvv PARSER ERROR HIGHLIGHT vvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n\n" +
-        ParserUtils::highlight(input, errorStartRow, errorStartCol, errorEndRow, errorEndCol) +
-            "\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ END ERROR HIGHLIGHT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+    return SPUtils::highlightAndBanner(
+            input, errorStartRow, errorStartCol, errorEndRow, errorEndCol,
+            "vvvvvvvvvvvvvvvvvvvvvvvvvvvvv PARSER ERROR HIGHLIGHT vvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ END ERROR HIGHLIGHT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+            );
 }
 
 Token *Parser::checkAndGetTokenAndAdvance(TokenType type) {
@@ -106,8 +110,8 @@ void Parser::checkAndAdvance(TokenType type) {
     advance();
 }
 
-void Parser::checkAndAdvance(TokenType type, string val) {
-    expect(type, move(val));
+void Parser::checkAndAdvance(TokenType type, const string& val) {
+    expect(type, val);
     advance();
 }
 
@@ -115,9 +119,10 @@ TNode *Parser::eatProgram() {
     vector<TNode *> procedures;
     try {
         while (!isEof()) {
+            auto temp = &Parser::eatProcedure;
             procedures.push_back(eatProcedure());
         }
-    } catch (SyntaxException e) {
+    } catch (SyntaxException &e) {
         for (TNode *proc: procedures) {
             delete proc;
         }
@@ -127,42 +132,42 @@ TNode *Parser::eatProgram() {
 }
 
 TNode *Parser::eatProcedure() {
-    // eat procedure keyword
-    checkAndAdvance(TokenType::name, "procedure");
-
-    // eat procedure name
-    Token *name = checkAndGetTokenAndAdvance(TokenType::name);
-
+    Token *name = nullptr;
     TNode *stmtLst = nullptr;
+
     try {
+        // eat procedure keyword
+        checkAndAdvance(TokenType::name, "procedure");
+        // eat procedure name
+        name = checkAndGetTokenAndAdvance(TokenType::name);
         // eat {
         checkAndAdvance(TokenType::openingBrace);
         // eat statements
         stmtLst = eatStmtLst();
         // eat }
         checkAndAdvance(TokenType::closingBrace);
-    } catch (SyntaxException e) {
+
+        return TNode::makeProcedure(name, stmtLst);
+    } catch (SyntaxException &e) {
         delete name;
         delete stmtLst;
-        throw SyntaxException();
+        throw;
     }
-
-    return TNode::makeProcedure(name, stmtLst);
 }
 
 TNode *Parser::eatStmtLst() {
     vector<TNode *> stmts;
-    // at least one statement in stmtlist
     try {
+        // at least one statement in stmtlist
         stmts.push_back(eatStmt());
         while (!peekMatchType(TokenType::closingBrace)) {
             stmts.push_back(eatStmt());
         }
-    } catch (SyntaxException e) {
+    } catch (SyntaxException &e) {
         for (TNode *stmt: stmts) {
             delete stmt;
         }
-        throw SyntaxException();
+        throw;
     }
     return TNode::makeStmtLst(stmts);
 }
@@ -219,11 +224,11 @@ TNode *Parser::eatStmtRead() {
         checkAndAdvance(TokenType::name, "read");
         tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::semicolon);
-    } catch (SyntaxException e) {
+        return TNode::makeReadStmt(TNode::makeVarName(tokenBeforeAdv));
+    } catch (SyntaxException &e) {
         delete tokenBeforeAdv;
-        throw SyntaxException();
+        throw;
     }
-    return TNode::makeReadStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtPrint() {
@@ -232,11 +237,11 @@ TNode *Parser::eatStmtPrint() {
         checkAndAdvance(TokenType::name, "print");
         tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::semicolon);
-    } catch (SyntaxException e) {
+        return TNode::makePrintStmt(TNode::makeVarName(tokenBeforeAdv));
+    } catch (SyntaxException &e) {
         delete tokenBeforeAdv;
-        throw SyntaxException();
+        throw;
     }
-    return TNode::makePrintStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtCall() {
@@ -245,15 +250,16 @@ TNode *Parser::eatStmtCall() {
         checkAndAdvance(TokenType::name, "call");
         tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::semicolon);
-    } catch (SyntaxException e) {
+        return TNode::makeCallStmt(TNode::makeProcName(tokenBeforeAdv));
+    } catch (SyntaxException &e) {
         delete tokenBeforeAdv;
-        throw SyntaxException();
+        throw;
     }
-    return TNode::makeCallStmt(TNode::makeProcName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtWhile() {
-    TNode *condExpr = nullptr, *stmtLst = nullptr;
+    TNode *condExpr = nullptr;
+    TNode *stmtLst = nullptr;
     try {
         checkAndAdvance(TokenType::name, "while");
         checkAndAdvance(TokenType::openingBracket);
@@ -263,10 +269,10 @@ TNode *Parser::eatStmtWhile() {
         stmtLst = eatStmtLst();
         checkAndAdvance(TokenType::closingBrace);
         return TNode::makeWhileStmt(condExpr, stmtLst);
-    } catch (SyntaxException e) {
+    } catch (SyntaxException &e) {
         delete condExpr;
         delete stmtLst;
-        throw SyntaxException();
+        throw;
     }
 }
 
@@ -286,27 +292,28 @@ TNode *Parser::eatStmtIf() {
         elseStmtLst = eatStmtLst();
         checkAndAdvance(TokenType::closingBrace);
         return TNode::makeIfStmt(condExpr, ifStmtLst, elseStmtLst);
-    } catch (SyntaxException e) {
+    } catch (SyntaxException &e) {
         delete condExpr;
         delete ifStmtLst;
         delete elseStmtLst;
-        throw SyntaxException();
+        throw;
     }
 }
 
 TNode *Parser::eatStmtAssign() {
-    Token *tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
+    Token *tokenBeforeAdv = nullptr;
     TNode *expr = nullptr;
     try {
+        tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::assign);
         expr = eatExpr();
         checkAndAdvance(TokenType::semicolon);
-    } catch (SyntaxException e) {
+        return TNode::makeAssignStmt(TNode::makeVarName(tokenBeforeAdv), expr);
+    } catch (SyntaxException &e) {
         delete tokenBeforeAdv;
         delete expr;
-        throw SyntaxException();
+        throw;
     }
-    return TNode::makeAssignStmt(TNode::makeVarName(tokenBeforeAdv), expr);
 }
 
 TNode *Parser::eatCondExpr() {
@@ -372,79 +379,126 @@ TNode *Parser::eatCondExpr() {
 
 TNode *Parser::eatRelExpr() {
     int c = saveCursor();
-    TNode *rf1 = nullptr;
+
     try {
-        rf1 = eatRelFactor();
-        checkAndAdvance(TokenType::gt);
-        TNode *rf2 = eatRelFactor();
-        return TNode::makeGt(rf1, rf2);
+        return eatGtExpr();
     } catch (exception &e) {
-        delete rf1;
-        rf1 = nullptr;
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        rf1 = eatRelFactor();
-        checkAndAdvance(TokenType::ge);
-        TNode *rf2 = eatRelFactor();
-        return TNode::makeGe(rf1, rf2);
+        return eatGeExpr();
     } catch (exception &e) {
-        delete rf1;
-        rf1 = nullptr;
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        rf1 = eatRelFactor();
-        checkAndAdvance(TokenType::lt);
-        TNode *rf2 = eatRelFactor();
-        return TNode::makeLt(rf1, rf2);
+        return eatLtExpr();
     } catch (exception &e) {
-        delete rf1;
-        rf1 = nullptr;
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        rf1 = eatRelFactor();
-        checkAndAdvance(TokenType::le);
-        TNode *rf2 = eatRelFactor();
-        return TNode::makeLe(rf1, rf2);
+        return eatLeExpr();
     } catch (exception &e) {
-        delete rf1;
-        rf1 = nullptr;
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        rf1 = eatRelFactor();
-        checkAndAdvance(TokenType::eq);
-        TNode *rf2 = eatRelFactor();
-        return TNode::makeEq(rf1, rf2);
+        return eatEqExpr();
     } catch (exception &e) {
-        delete rf1;
-        rf1 = nullptr;
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        rf1 = eatRelFactor();
-        checkAndAdvance(TokenType::ne);
-        TNode *rf2 = eatRelFactor();
-        return TNode::makeNe(rf1, rf2);
+        return eatNeExpr();
     } catch (exception &e) {
-        delete rf1;
-        rf1 = nullptr;
         backtrack(c);
     }
 
     throw SyntaxException();
+}
+
+TNode *Parser::eatRelExpr(TokenType type) {
+    TNode *rf1 = nullptr;
+    TNode *rf2 = nullptr;
+    // this try-catch is needed to deallocate memory if parsing fails
+    try {
+        switch (type) {
+            case TokenType::gt: {
+                rf1 = eatRelFactor();
+                checkAndAdvance(TokenType::gt);
+                rf2 = eatRelFactor();
+                return TNode::makeGt(rf1, rf2);
+            }
+            case TokenType::ge: {
+                rf1 = eatRelFactor();
+                checkAndAdvance(TokenType::ge);
+                rf2 = eatRelFactor();
+                return TNode::makeGe(rf1, rf2);
+            }
+            case TokenType::lt: {
+                rf1 = eatRelFactor();
+                checkAndAdvance(TokenType::lt);
+                rf2 = eatRelFactor();
+                return TNode::makeLt(rf1, rf2);
+            }
+            case TokenType::le: {
+                rf1 = eatRelFactor();
+                checkAndAdvance(TokenType::le);
+                rf2 = eatRelFactor();
+                return TNode::makeLe(rf1, rf2);
+            }
+            case TokenType::eq: {
+                rf1 = eatRelFactor();
+                checkAndAdvance(TokenType::eq);
+                rf2 = eatRelFactor();
+                return TNode::makeEq(rf1, rf2);
+            }
+            case TokenType::ne: {
+                rf1 = eatRelFactor();
+                checkAndAdvance(TokenType::ne);
+                rf2 = eatRelFactor();
+                return TNode::makeNe(rf1, rf2);
+            }
+            default: {
+                throw runtime_error("incorrect token type given to eatRelExpr");
+            }
+        }
+    } catch (exception &e) {
+        delete rf1;
+        delete rf2;
+        throw;
+    }
+}
+
+TNode *Parser::eatGtExpr() {
+    return eatRelExpr(TokenType::gt);
+}
+
+TNode *Parser::eatGeExpr() {
+    return eatRelExpr(TokenType::ge);
+}
+
+TNode *Parser::eatLtExpr() {
+    return eatRelExpr(TokenType::lt);
+}
+
+TNode *Parser::eatLeExpr() {
+    return eatRelExpr(TokenType::le);
+}
+
+TNode *Parser::eatEqExpr() {
+    return eatRelExpr(TokenType::eq);
+}
+
+TNode *Parser::eatNeExpr() {
+    return eatRelExpr(TokenType::ne);
 }
 
 TNode *Parser::eatRelFactor() {
@@ -457,16 +511,14 @@ TNode *Parser::eatRelFactor() {
 
     c = saveCursor();
     try {
-        Token *t = checkAndGetTokenAndAdvance(TokenType::name);
-        return TNode::makeVarName(t);
+        return eatVarName();
     } catch (exception &e) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        Token *t = checkAndGetTokenAndAdvance(TokenType::integer);
-        return TNode::makeConstVal(t);
+        return eatConstVal();
     } catch (exception &e) {
         backtrack(c);
     }
@@ -577,14 +629,16 @@ TNode *Parser::eatTerm1() {
 
         int c = saveCursor();
         TNode *term1 = nullptr;
+        TNode *dv = nullptr;
         try {
             term1 = eatTerm1();
-            TNode *dv = TNode::makeDiv(TNode::makeDummy(), factor);
+            dv = TNode::makeDiv(TNode::makeDummy(), factor);
             term1->setLeftChild(dv);
             dv->setParent(term1);
             return dv;
         } catch (exception &e) {
             delete term1;
+            delete dv;
             backtrack(c);
         }
 
@@ -626,16 +680,14 @@ TNode *Parser::eatFactor() {
 
     c = saveCursor();
     try {
-        Token *t = checkAndGetTokenAndAdvance(TokenType::name);
-        return TNode::makeVarName(t);
+        return eatVarName();
     } catch (exception &e) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
-        Token *t = checkAndGetTokenAndAdvance(TokenType::integer);
-        return TNode::makeConstVal(t);
+        return eatConstVal();
     } catch (exception &e) {
         backtrack(c);
     }
@@ -809,4 +861,14 @@ TNode *Parser::parseConst(const string &s) {
 
 void Parser::printTokens() {
     tokens.print();
+}
+
+TNode *Parser::eatVarName() {
+    Token *t = checkAndGetTokenAndAdvance(TokenType::name);
+    return TNode::makeVarName(t);
+}
+
+TNode *Parser::eatConstVal() {
+    Token *t = checkAndGetTokenAndAdvance(TokenType::integer);
+    return TNode::makeConstVal(t);
 }
