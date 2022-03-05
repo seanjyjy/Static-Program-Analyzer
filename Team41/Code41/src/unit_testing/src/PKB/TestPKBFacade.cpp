@@ -56,11 +56,11 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add assign") {
         REQUIRE(pkbManager.getAssigns() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isAssignStmt(stmt[0]));
-        REQUIRE_NOTHROW(pkbManager.registerAssign(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerAssignStmt(stmt[0]));
         REQUIRE(pkbManager.isAssignStmt(stmt[0]));
         REQUIRE(pkbManager.getAssigns() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isAssignStmt(stmt[1]));
-        REQUIRE_NOTHROW(pkbManager.registerAssign(stmt[1]));
+        REQUIRE_NOTHROW(pkbManager.registerAssignStmt(stmt[1]));
         REQUIRE(pkbManager.isAssignStmt(stmt[1]));
         REQUIRE(pkbManager.getAssigns() == FILLED_SET_2);
 
@@ -71,11 +71,11 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add while") {
         REQUIRE(pkbManager.getWhiles() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isWhileStmt(stmt[0]));
-        REQUIRE_NOTHROW(pkbManager.registerWhile(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerWhileStmt(stmt[0]));
         REQUIRE(pkbManager.isWhileStmt(stmt[0]));
         REQUIRE(pkbManager.getWhiles() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isWhileStmt(stmt[1]));
-        REQUIRE_NOTHROW(pkbManager.registerWhile(stmt[1]));
+        REQUIRE_NOTHROW(pkbManager.registerWhileStmt(stmt[1]));
         REQUIRE(pkbManager.isWhileStmt(stmt[1]));
         REQUIRE(pkbManager.getWhiles() == FILLED_SET_2);
     }
@@ -83,11 +83,11 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add ifs") {
         REQUIRE(pkbManager.getIfs() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isIfStmt(stmt[0]));
-        REQUIRE_NOTHROW(pkbManager.registerIf(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerIfStmt(stmt[0]));
         REQUIRE(pkbManager.isIfStmt(stmt[0]));
         REQUIRE(pkbManager.getIfs() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isIfStmt(stmt[1]));
-        REQUIRE_NOTHROW(pkbManager.registerIf(stmt[1]));
+        REQUIRE_NOTHROW(pkbManager.registerIfStmt(stmt[1]));
         REQUIRE(pkbManager.isIfStmt(stmt[1]));
         REQUIRE(pkbManager.getIfs() == FILLED_SET_2);
     }
@@ -95,11 +95,11 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add reads") {
         REQUIRE(pkbManager.getReads() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isReadStmt(stmt[0]));
-        REQUIRE_NOTHROW(pkbManager.registerRead(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[0]));
         REQUIRE(pkbManager.isReadStmt(stmt[0]));
         REQUIRE(pkbManager.getReads() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isReadStmt(stmt[1]));
-        REQUIRE_NOTHROW(pkbManager.registerRead(stmt[1]));
+        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[1]));
         REQUIRE(pkbManager.isReadStmt(stmt[1]));
         REQUIRE(pkbManager.getReads() == FILLED_SET_2);
     }
@@ -107,11 +107,11 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add prints") {
         REQUIRE(pkbManager.getPrints() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isPrintStmt(stmt[0]));
-        REQUIRE_NOTHROW(pkbManager.registerPrint(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerPrintStmt(stmt[0]));
         REQUIRE(pkbManager.isPrintStmt(stmt[0]));
         REQUIRE(pkbManager.getPrints() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isPrintStmt(stmt[1]));
-        REQUIRE_NOTHROW(pkbManager.registerPrint(stmt[1]));
+        REQUIRE_NOTHROW(pkbManager.registerPrintStmt(stmt[1]));
         REQUIRE(pkbManager.isPrintStmt(stmt[1]));
         REQUIRE(pkbManager.getPrints() == FILLED_SET_2);
     }
@@ -119,44 +119,44 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add calls") {
         REQUIRE(pkbManager.getCalls() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isCallStmt(stmt[0]));
-        REQUIRE_NOTHROW(pkbManager.registerCall(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerCallStmt(stmt[0]));
         REQUIRE(pkbManager.isCallStmt(stmt[0]));
         REQUIRE(pkbManager.getCalls() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isCallStmt(stmt[1]));
-        REQUIRE_NOTHROW(pkbManager.registerCall(stmt[1]));
+        REQUIRE_NOTHROW(pkbManager.registerCallStmt(stmt[1]));
         REQUIRE(pkbManager.isCallStmt(stmt[1]));
         REQUIRE(pkbManager.getCalls() == FILLED_SET_2);
     }
 
     SECTION("prevents duplicate") {
-        REQUIRE_NOTHROW(pkbManager.registerRead(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[0]));
 
-        REQUIRE_THROWS(pkbManager.registerAssign(stmt[0]));
-        REQUIRE_THROWS(pkbManager.registerPrint(stmt[0]));
-        REQUIRE_THROWS(pkbManager.registerIf(stmt[0]));
-        REQUIRE_THROWS(pkbManager.registerCall(stmt[0]));
-        REQUIRE_THROWS(pkbManager.registerWhile(stmt[0]));
+        REQUIRE_THROWS(pkbManager.registerAssignStmt(stmt[0]));
+        REQUIRE_THROWS(pkbManager.registerPrintStmt(stmt[0]));
+        REQUIRE_THROWS(pkbManager.registerIfStmt(stmt[0]));
+        REQUIRE_THROWS(pkbManager.registerCallStmt(stmt[0]));
+        REQUIRE_THROWS(pkbManager.registerWhileStmt(stmt[0]));
 
-        REQUIRE_NOTHROW(pkbManager.registerRead(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[0]));
     }
 
     SECTION("correct count") {
         REQUIRE(pkbManager.getStatementCount() == 0);
 
-        pkbManager.registerRead(stmt[0]);
+        pkbManager.registerReadStmt(stmt[0]);
         REQUIRE(pkbManager.getStatementCount() == 1);
 
-        pkbManager.registerIf(stmt[1]);
+        pkbManager.registerIfStmt(stmt[1]);
         REQUIRE(pkbManager.getStatementCount() == 2);
 
         pkbManager.registerVariable("abc");
         REQUIRE(pkbManager.getStatementCount() == 2);
 
-        pkbManager.registerAssign(stmt[2]);
-        pkbManager.registerAssign(stmt[2]);
+        pkbManager.registerAssignStmt(stmt[2]);
+        pkbManager.registerAssignStmt(stmt[2]);
         REQUIRE(pkbManager.getStatementCount() == 3);
 
-        pkbManager.registerPrint(stmt[3]);
+        pkbManager.registerPrintStmt(stmt[3]);
         REQUIRE(pkbManager.getStatementCount() == 4);
     }
 }
@@ -285,6 +285,9 @@ TEST_CASE("PKB: follows abstraction") {
         REQUIRE(pkbManager.getStmtFollowedBy(stmt[0]) == stmt[1]);
         REQUIRE(pkbManager.getStmtFollowing(stmt[1]) == stmt[0]);
         REQUIRE(sortAndCompareVectors(pkbManager.getAllFollows(), entryList));
+
+        REQUIRE(pkbManager.getAllStmtsFollowingSomeStmt() == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getAllStmtsFollowedBySomeStmt() == unordered_set<string>({stmt[1]}));
     }
 
     SECTION("FollowsT") {
@@ -337,6 +340,9 @@ TEST_CASE("PKB: parent abstraction") {
         REQUIRE(pkbManager.getParentOf(stmt[1]) == stmt[0]);
         REQUIRE(pkbManager.getParentOf(stmt[2]) == stmt[0]);
         REQUIRE(sortAndCompareVectors(pkbManager.getAllParent(), entryList));
+
+        REQUIRE(pkbManager.getAllStmtsParentOfSomeStmt() == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getAllStmtsChildOfSomeStmt() == unordered_set<string>({stmt[1], stmt[2]}));
     }
 
     SECTION("ParentT") {

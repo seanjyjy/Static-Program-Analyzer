@@ -14,17 +14,17 @@ using namespace std;
 
 //======================================== Statements ==================================================
 
-void PKBManager::registerAssign(const string& stmtNum) { return stmtTable->setStmt(stmtNum, ASSIGN); }
+void PKBManager::registerAssignStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, ASSIGN); }
 
-void PKBManager::registerWhile(const string& stmtNum) { return stmtTable->setStmt(stmtNum, WHILE); }
+void PKBManager::registerWhileStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, WHILE); }
 
-void PKBManager::registerIf(const string& stmtNum) { return stmtTable->setStmt(stmtNum, IF); }
+void PKBManager::registerIfStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, IF); }
 
-void PKBManager::registerRead(const string& stmtNum) { return stmtTable->setStmt(stmtNum, READ); }
+void PKBManager::registerReadStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, READ); }
 
-void PKBManager::registerPrint(const string& stmtNum) { return stmtTable->setStmt(stmtNum, PRINT); }
+void PKBManager::registerPrintStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, PRINT); }
 
-void PKBManager::registerCall(const string& stmtNum) { return stmtTable->setStmt(stmtNum, CALL); }
+void PKBManager::registerCallStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, CALL); }
 
 //======================================== Entities ==================================================
 

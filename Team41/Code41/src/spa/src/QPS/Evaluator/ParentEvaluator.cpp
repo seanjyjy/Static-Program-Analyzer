@@ -154,7 +154,7 @@ Table* ParentEvaluator::evaluateWildCardInteger(PKBClient *pkb, ClauseVariable r
 
 Table* ParentEvaluator::evaluateWildCardSynonym(PKBClient *pkb, ClauseVariable right) {
     // get list of stmt parented by some stmt
-    unordered_set<string> setOfParentedStmts = pkb->getAllStmtsChildOfBySomeStmt();
+    unordered_set<string> setOfParentedStmts = pkb->getAllStmtsChildOfSomeStmt();
 
     if (setOfParentedStmts.empty()) {
         return new FalseTable();

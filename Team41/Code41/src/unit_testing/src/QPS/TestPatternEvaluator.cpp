@@ -50,7 +50,7 @@ TEST_CASE("Evaluator: Pattern evaluator") {
     // var2 = x+y*z-20;
     pkbManager->registerPattern(lines[3], vars[1], node4);
     for (string l: lines) {
-        pkbManager->registerAssign(l);
+        pkbManager->registerAssignStmt(l);
     }
     pkbManager->registerModifiesS(lines[0], vars[0]);
     pkbManager->registerModifiesS(lines[1], vars[1]);

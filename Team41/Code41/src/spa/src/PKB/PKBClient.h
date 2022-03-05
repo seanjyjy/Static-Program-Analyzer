@@ -76,7 +76,7 @@ public:
     vector<pair<string, string>> getAllParentT() const; // Gets list of parent-child pair where stmt1 is ancestor of stmt2
 
     unordered_set<string> getAllStmtsParentOfSomeStmt() const; // get list of stmt parent of some stmt
-    unordered_set<string> getAllStmtsChildOfBySomeStmt() const; // get list of stmt parented by some stmt
+    unordered_set<string> getAllStmtsChildOfSomeStmt() const; // get list of stmt parented by some stmt
 
     //=========================================== Uses ===================================================
 
