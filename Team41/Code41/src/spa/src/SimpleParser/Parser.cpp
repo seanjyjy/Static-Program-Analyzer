@@ -16,7 +16,6 @@ using namespace std;
 #include "Tokenizer.h"
 #include "Exception/SyntaxException.h"
 #include "Exception/TokenizeException.h"
-#include "Exception/ParseException.h"
 #include "SimpleParser/SPUtils.h"
 
 Parser::Parser() = default;
@@ -120,6 +119,7 @@ TNode *Parser::eatProgram() {
     vector<TNode *> procedures;
     try {
         while (!isEof()) {
+            auto temp = &Parser::eatProcedure;
             procedures.push_back(eatProcedure());
         }
     } catch (SyntaxException &e) {
@@ -132,33 +132,33 @@ TNode *Parser::eatProgram() {
 }
 
 TNode *Parser::eatProcedure() {
-    // eat procedure keyword
-    checkAndAdvance(TokenType::name, "procedure");
-
-    // eat procedure name
-    Token *name = checkAndGetTokenAndAdvance(TokenType::name);
-
+    Token *name = nullptr;
     TNode *stmtLst = nullptr;
+
     try {
+        // eat procedure keyword
+        checkAndAdvance(TokenType::name, "procedure");
+        // eat procedure name
+        name = checkAndGetTokenAndAdvance(TokenType::name);
         // eat {
         checkAndAdvance(TokenType::openingBrace);
         // eat statements
         stmtLst = eatStmtLst();
         // eat }
         checkAndAdvance(TokenType::closingBrace);
+
+        return TNode::makeProcedure(name, stmtLst);
     } catch (SyntaxException &e) {
         delete name;
         delete stmtLst;
         throw;
     }
-
-    return TNode::makeProcedure(name, stmtLst);
 }
 
 TNode *Parser::eatStmtLst() {
     vector<TNode *> stmts;
-    // at least one statement in stmtlist
     try {
+        // at least one statement in stmtlist
         stmts.push_back(eatStmt());
         while (!peekMatchType(TokenType::closingBrace)) {
             stmts.push_back(eatStmt());
@@ -224,11 +224,11 @@ TNode *Parser::eatStmtRead() {
         checkAndAdvance(TokenType::name, "read");
         tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::semicolon);
+        return TNode::makeReadStmt(TNode::makeVarName(tokenBeforeAdv));
     } catch (SyntaxException &e) {
         delete tokenBeforeAdv;
         throw;
     }
-    return TNode::makeReadStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtPrint() {
@@ -237,11 +237,11 @@ TNode *Parser::eatStmtPrint() {
         checkAndAdvance(TokenType::name, "print");
         tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::semicolon);
+        return TNode::makePrintStmt(TNode::makeVarName(tokenBeforeAdv));
     } catch (SyntaxException &e) {
         delete tokenBeforeAdv;
         throw;
     }
-    return TNode::makePrintStmt(TNode::makeVarName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtCall() {
@@ -250,11 +250,11 @@ TNode *Parser::eatStmtCall() {
         checkAndAdvance(TokenType::name, "call");
         tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::semicolon);
+        return TNode::makeCallStmt(TNode::makeProcName(tokenBeforeAdv));
     } catch (SyntaxException &e) {
         delete tokenBeforeAdv;
         throw;
     }
-    return TNode::makeCallStmt(TNode::makeProcName(tokenBeforeAdv));
 }
 
 TNode *Parser::eatStmtWhile() {
@@ -301,18 +301,19 @@ TNode *Parser::eatStmtIf() {
 }
 
 TNode *Parser::eatStmtAssign() {
-    Token *tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
+    Token *tokenBeforeAdv = nullptr;
     TNode *expr = nullptr;
     try {
+        tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::assign);
         expr = eatExpr();
         checkAndAdvance(TokenType::semicolon);
+        return TNode::makeAssignStmt(TNode::makeVarName(tokenBeforeAdv), expr);
     } catch (SyntaxException &e) {
         delete tokenBeforeAdv;
         delete expr;
         throw;
     }
-    return TNode::makeAssignStmt(TNode::makeVarName(tokenBeforeAdv), expr);
 }
 
 TNode *Parser::eatCondExpr() {
@@ -466,7 +467,7 @@ TNode *Parser::eatRelExpr(TokenType type) {
                 return TNode::makeNe(rf1, rf2);
             }
             default: {
-                throw ParseException("incorrect token type given to eatRelExpr");
+                throw runtime_error("incorrect token type given to eatRelExpr");
             }
         }
     } catch (exception &e) {
@@ -773,9 +774,6 @@ TNode *Parser::parse(const string &s) {
     } catch (TokenizeException &e) {
         // tokenize errors are thrown pre-parse
         cout << "parser met an error during tokenizing, aborting" << endl;
-    } catch (ParseException &e) {
-        // parse exceptions means parser business logic is wrong
-        cout << "parser met an error during parsing, aborting" << endl;
     } catch (SyntaxException &e) {
         // syntax errors are only thrown during parsing
         cout << syntaxErrorMsg() << endl;
