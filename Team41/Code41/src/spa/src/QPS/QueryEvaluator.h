@@ -23,16 +23,25 @@
 #include "QueryObject.h"
 #include "QueryClause.h"
 
+using namespace std;
+
 class QueryEvaluator {
 private:
     PKBClient* pkb;
-
     /**
      * Deletes a table after it is not being used.
      *
-     * @param table Table to be deleted.
+     * @param tableToDelete Table to be deleted.
      */
-    void safeDeleteTable(Table* table);
+    void safeDeleteTable(Table* tableToDelete);
+
+    /**
+     * Deletes a table after it is not being used and it is not the same reference as result table.
+     *
+     * @param tableToDelete Table to be deleted.
+     * @param resultTable Table that contains the current result.
+     */
+    void safeDeleteTable(Table* tableToDelete, Table* resultTable);
 public:
     explicit QueryEvaluator(PKBClient* pkb);
 
@@ -42,7 +51,7 @@ public:
      * @param queryObject QueryObject.
      * @return A set of results based on the query provided.
      */
-    std::unordered_set<std::string> evaluateQuery(QueryObject *queryObject);
+    unordered_set<string> evaluateQuery(QueryObject *queryObject);
 
     /**
      * Constructs a table based on the QueryClause provided.
@@ -59,4 +68,6 @@ public:
      * @return A table that contains information based on the PatternClause provided.
      */
     Table* evaluate(PatternClause& clause);
+
+    unordered_set<string> buildResult(QueryObject *queryObject, Table *resultTable);
 };
