@@ -371,6 +371,69 @@ TEST_CASE("PKB: parent abstraction") {
     }
 }
 
+TEST_CASE("PKB: calls abstraction") {
+    vector<pair<string, string>> entryList;
+    string proc[] = {"p0", "p1", "p2", "p3"};
+
+    PKBManager pkbManager;
+
+    SECTION("Calls") {
+        REQUIRE(pkbManager.getAllCalls().empty());
+        REQUIRE(pkbManager.getAllProcCalledBy(proc[0]).empty());
+        REQUIRE(pkbManager.getAllProcCalling(proc[0]).empty());
+        REQUIRE_FALSE(pkbManager.isCalls(proc[0], proc[1]));
+
+        // 0 -> {1, 2}
+        pkbManager.registerCalls(proc[0], proc[1]);
+        pkbManager.registerCalls(proc[0], proc[2]);
+        entryList.push_back(make_pair(proc[0], proc[1]));
+        entryList.push_back(make_pair(proc[0], proc[2]));
+
+        REQUIRE(pkbManager.isCalls(proc[0], proc[1]));
+        REQUIRE(pkbManager.getAllProcCalledBy(proc[0]) == unordered_set<string>({proc[1], proc[2]}));
+        REQUIRE(pkbManager.getAllProcCalling(proc[1]) == unordered_set<string>({proc[0]}));
+        REQUIRE(pkbManager.getAllProcCalling(proc[2]) == unordered_set<string>({proc[0]}));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllCalls(), entryList));
+
+        REQUIRE(pkbManager.getAllProcsCallingSomeProcs() == unordered_set<string>({proc[0]}));
+        REQUIRE(pkbManager.getAllProcsCalledBySomeProcs() == unordered_set<string>({proc[1], proc[2]}));
+    }
+
+    SECTION("CallsT") {
+        REQUIRE(pkbManager.getAllCallsT().empty());
+        REQUIRE(pkbManager.getAllProcCalledTBy(proc[0]).empty());
+        REQUIRE(pkbManager.getAllProcCallingT(proc[0]).empty());
+        REQUIRE_FALSE(pkbManager.isCallsT(proc[0], proc[1]));
+
+        // 0 -> {1, 2}
+        // 1 -> {2, 3}
+        pkbManager.registerCallsT(proc[0], proc[1]);
+        pkbManager.registerCallsT(proc[0], proc[2]);
+        pkbManager.registerCallsT(proc[1], proc[2]);
+        pkbManager.registerCallsT(proc[1], proc[3]);
+        pkbManager.registerCallsT(proc[0], proc[3]);
+        entryList.push_back(make_pair(proc[0], proc[1]));
+        entryList.push_back(make_pair(proc[0], proc[2]));
+        entryList.push_back(make_pair(proc[0], proc[3]));
+        entryList.push_back(make_pair(proc[1], proc[2]));
+        entryList.push_back(make_pair(proc[1], proc[3]));
+
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllCallsT(), entryList));
+        REQUIRE(pkbManager.getAllProcCallingT(proc[3]) == unordered_set<string>({proc[0], proc[1]}));
+        REQUIRE(pkbManager.getAllProcCallingT(proc[2]) == unordered_set<string>({proc[0], proc[1]}));
+        REQUIRE(pkbManager.getAllProcCallingT(proc[1]) == unordered_set<string>({proc[0]}));
+        REQUIRE(pkbManager.getAllProcCallingT(proc[0]).empty());
+
+        REQUIRE(pkbManager.getAllProcCalledTBy(proc[0]) == unordered_set<string>({proc[1], proc[2], proc[3]}));
+        REQUIRE(pkbManager.getAllProcCalledTBy(proc[1]) == unordered_set<string>({proc[2], proc[3]}));
+        REQUIRE(pkbManager.getAllProcCalledTBy(proc[2]).empty());
+        REQUIRE(pkbManager.getAllProcCalledTBy(proc[3]).empty());
+
+        REQUIRE(pkbManager.isCallsT(proc[0], proc[3]));
+        REQUIRE_FALSE(pkbManager.isCallsT(proc[2], proc[3]));
+    }
+}
+
 TEST_CASE("PKB: pattern abstraction") {
     string stmt[] = {"s0", "s1", "s2"};
     string vars[] = {"v0", "v1", "v2"};

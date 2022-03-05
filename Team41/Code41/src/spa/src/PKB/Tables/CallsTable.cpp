@@ -59,3 +59,11 @@ vector<pair<string, string>> CallsTable::getCallsTEntries() {
 bool CallsTable::isCallsT(string caller, string callee) {
     return callsTRelation.hasMapping(caller, callee);
 }
+
+unordered_set<string> CallsTable::getProcsCalledBySomeProc() {
+    return callsRelation.getValues();
+}
+
+unordered_set<string> CallsTable::getProcsCallingSomeProc() {
+    return callsRelation.getKeys();
+}
