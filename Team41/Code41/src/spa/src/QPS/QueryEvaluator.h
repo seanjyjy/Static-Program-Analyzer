@@ -16,6 +16,8 @@
 #include "QPS/Evaluator/ParentEvaluator.h"
 #include "QPS/Evaluator/ParentTEvaluator.h"
 #include "QPS/Evaluator/PatternEvaluator.h"
+#include "QPS/Evaluator/CallsEvaluator.h"
+#include "QPS/Evaluator/CallsTEvaluator.h"
 #include "QueryObject.h"
 #include "QueryClause.h"
 
