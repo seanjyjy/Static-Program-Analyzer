@@ -2,7 +2,7 @@
 //#define NDEBUG
 #include "Tokenizer.h"
 #include "Tokens.h"
-#include "SimpleParser/ParserUtils.h"
+#include "SimpleParser/SPUtils.h"
 #include "Exception/TokenizeException.h"
 
 #include <utility>
@@ -283,7 +283,7 @@ Tokens Tokenizer::tokenize() {
 }
 
 string Tokenizer::highlightSource(int fromRow, int fromCol, int toRow, int toCol) {
-    return ParserUtils::highlightAndBanner(
+    return SPUtils::highlightAndBanner(
             input, fromRow, fromCol, toRow, toCol,
             "vvvvvvvvvvvvvvvvvvvvvvvvvvvvv TOKENIZER ERROR HIGHLIGHT vvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
             "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ END ERROR HIGHLIGHT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"

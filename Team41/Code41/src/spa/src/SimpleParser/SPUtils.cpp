@@ -1,10 +1,10 @@
-#include "ParserUtils.h"
+#include "SPUtils.h"
 
 #include <cctype>
 
 using namespace std;
 
-string ParserUtils::highlight(const string &simple, int fromRow, int fromCol, int toRow, int toCol) {
+string SPUtils::highlight(const string &simple, int fromRow, int fromCol, int toRow, int toCol) {
     int currRow = 0;
     int currCol = 0;
     string ret;
@@ -47,7 +47,7 @@ string ParserUtils::highlight(const string &simple, int fromRow, int fromCol, in
     return ret;
 }
 
-bool ParserUtils::inHighlightZone(int currRow, int currCol, int fromRow, int fromCol, int toRow, int toCol) {
+bool SPUtils::inHighlightZone(int currRow, int currCol, int fromRow, int fromCol, int toRow, int toCol) {
     if (fromRow == toRow) {
         // highlight in the same row
         return (currRow == fromRow) && (currCol >= fromCol) && (currCol <= toCol);
@@ -59,17 +59,17 @@ bool ParserUtils::inHighlightZone(int currRow, int currCol, int fromRow, int fro
     }
 }
 
-bool ParserUtils::inHighlightRow(int currRow, int fromRow, int toRow) {
+bool SPUtils::inHighlightRow(int currRow, int fromRow, int toRow) {
     return currRow >= fromRow && currRow <= toRow;
 }
 
-string ParserUtils::withBanner(const string &msg, const string &topBannerMsg, const string &btmBannerMsg) {
+string SPUtils::withBanner(const string &msg, const string &topBannerMsg, const string &btmBannerMsg) {
     return "\n\n" + topBannerMsg + "\n\n" + msg + "\n" + btmBannerMsg + "\n";
 }
 
 string
-ParserUtils::highlightAndBanner(const string &simple, int fromRow, int fromCol, int toRow, int toCol, const string &top,
-                                const string &btm) {
+SPUtils::highlightAndBanner(const string &simple, int fromRow, int fromCol, int toRow, int toCol, const string &top,
+                            const string &btm) {
     return withBanner(highlight(simple, fromRow, fromCol, toRow, toCol),
                       top,
                       btm);

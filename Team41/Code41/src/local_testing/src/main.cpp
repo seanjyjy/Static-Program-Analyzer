@@ -1,6 +1,6 @@
 #include "SimpleParser/Parser.h"
 #include "Common/AstBuilder.h"
-#include "SimpleParser/ParserUtils.h"
+#include "SimpleParser/SPUtils.h"
 
 using namespace std;
 
@@ -10,7 +10,7 @@ int main() {
     string s = "procedure main {\n"
                " while (0==0) {}\n"
                "}";
-//    cout << ParserUtils::highlight(s, 1, 1, 1, 4) << endl;
+//    cout << SPUtils::highlight(s, 1, 1, 1, 4) << endl;
 //
     Parser p;
     TNode* ast = p.parseProgram(s);

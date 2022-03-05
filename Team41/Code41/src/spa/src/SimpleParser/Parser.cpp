@@ -17,7 +17,7 @@ using namespace std;
 #include "Exception/SyntaxException.h"
 #include "Exception/TokenizeException.h"
 #include "Exception/ParseException.h"
-#include "SimpleParser/ParserUtils.h"
+#include "SimpleParser/SPUtils.h"
 
 Parser::Parser() = default;
 
@@ -92,7 +92,7 @@ string Parser::syntaxErrorMsg() {
 }
 
 string Parser::highlightSource() {
-    return ParserUtils::highlightAndBanner(
+    return SPUtils::highlightAndBanner(
             input, errorStartRow, errorStartCol, errorEndRow, errorEndCol,
             "vvvvvvvvvvvvvvvvvvvvvvvvvvvvv PARSER ERROR HIGHLIGHT vvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
             "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ END ERROR HIGHLIGHT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
