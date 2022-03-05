@@ -76,29 +76,3 @@ SPUtils::highlightAndBanner(const string &simple, int fromRow, int fromCol, int 
                       top,
                       btm);
 }
-
-TNode* SPUtils::withDealloc(TNode *(Parser::&f)()) {
-    TNode* node = nullptr;
-    try {
-        node = f();
-        return node;
-    } catch (SyntaxException &e) {
-        delete node;
-        throw;
-    }
-}
-
-vector<TNode *> SPUtils::withDealloc2(TNode* (&f)(), bool (&isDone)()) {
-    vector<TNode*> nodes;
-    try {
-        while (!isDone()) {
-            nodes.push_back(f());
-        }
-        return nodes;
-    } catch (SyntaxException &e) {
-        for (TNode* ptr: nodes) {
-            delete ptr;
-        }
-        throw;
-    }
-}

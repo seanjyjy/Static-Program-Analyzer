@@ -37,14 +37,4 @@ public:
      * Convenience function that highlights a message, then adds a banner.
      */
     static string highlightAndBanner(const string& simple, int fromRow, int fromCol, int toRow, int toCol, const string& top, const string& btm);
-
-    /**
-     * Wrapper function to ensure memory cleanup if the underlying function call fails.
-     *
-     * @param f the function to wrap in a try-catch.
-     * @return the TNode pointer from the underlying function.
-     */
-    static TNode* withDealloc(TNode* (&f)());
-
-    static vector<TNode*> withDealloc2(TNode* (&f)(), bool (&isDone)());
 };
