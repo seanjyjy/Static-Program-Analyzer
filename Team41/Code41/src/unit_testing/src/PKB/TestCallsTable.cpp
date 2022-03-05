@@ -4,7 +4,7 @@
 
 using namespace std;
 
-TEST_CASE("CallsTable") {
+TEST_CASE("PKB: CallsTable") {
     CallsTable table;
     string proc[] = {"p0", "p1", "p2", "p3", "p4", "p5"};
     unordered_set<string> EMPTY_SET;
@@ -39,6 +39,9 @@ TEST_CASE("CallsTable") {
             REQUIRE(table.getProcsCalling(proc[1]) == unordered_set<string>({proc[0]}));
             REQUIRE(table.getProcsCalling(proc[2]) == unordered_set<string>({proc[0]}));
             REQUIRE(table.getProcsCalling(proc[5]) == unordered_set<string>({proc[2]}));
+
+            REQUIRE(table.getProcsCallingSomeProc() == unordered_set<string>({proc[0], proc[2]}));
+            REQUIRE(table.getProcsCalledBySomeProc() == unordered_set<string>({proc[1], proc[2], proc[5]}));
         }
 
             // domain specific edge cases
@@ -122,5 +125,41 @@ TEST_CASE("CallsTable") {
                                 Catch::Contains("[PKB]") && Catch::Contains("[CallsTable]") &&
                                 Catch::Contains("Cyclic dependency"));
         }
+    }
+
+    SECTION("Combined") {
+        vector<pair<string, string>> callsList;
+        vector<pair<string, string>> callsTList;
+
+        // 0 -> {1, 2}
+        // 1 -> {2, 3}
+        REQUIRE_NOTHROW(table.setCalls(proc[0], proc[1]));
+        REQUIRE_NOTHROW(table.setCalls(proc[0], proc[2]));
+        REQUIRE_NOTHROW(table.setCalls(proc[1], proc[2]));
+        REQUIRE_NOTHROW(table.setCalls(proc[1], proc[3]));
+        REQUIRE_NOTHROW(table.setCallsT(proc[0], proc[1]));
+        REQUIRE_NOTHROW(table.setCallsT(proc[0], proc[2]));
+        REQUIRE_NOTHROW(table.setCallsT(proc[1], proc[2]));
+        REQUIRE_NOTHROW(table.setCallsT(proc[1], proc[3]));
+        REQUIRE_NOTHROW(table.setCallsT(proc[0], proc[3]));
+        callsList.push_back(make_pair(proc[0], proc[1]));
+        callsList.push_back(make_pair(proc[0], proc[2]));
+        callsList.push_back(make_pair(proc[1], proc[2]));
+        callsList.push_back(make_pair(proc[1], proc[3]));
+        callsTList.push_back(make_pair(proc[0], proc[1]));
+        callsTList.push_back(make_pair(proc[0], proc[2]));
+        callsTList.push_back(make_pair(proc[1], proc[2]));
+        callsTList.push_back(make_pair(proc[1], proc[3]));
+        callsTList.push_back(make_pair(proc[0], proc[3]));
+        REQUIRE(sortAndCompareVectors(table.getCallsEntries(), callsList));
+        REQUIRE(sortAndCompareVectors(table.getCallsTEntries(), callsTList));
+        REQUIRE(table.getProcsCalledBy(proc[0]) == unordered_set<string>({proc[1], proc[2]}));
+        REQUIRE(table.getProcsCalledTBy(proc[0]) == unordered_set<string>({proc[1], proc[2], proc[3]}));
+        REQUIRE(table.getProcsCalling(proc[3]) == unordered_set<string>({proc[1]}));
+        REQUIRE(table.getProcsCallingT(proc[3]) == unordered_set<string>({proc[0], proc[1]}));
+        REQUIRE(table.isCalls(proc[0], proc[1]));
+        REQUIRE_FALSE(table.isCalls(proc[0], proc[3]));
+        REQUIRE(table.isCallsT(proc[0], proc[3]));
+        REQUIRE_FALSE(table.isCallsT(proc[2], proc[3]));
     }
 }

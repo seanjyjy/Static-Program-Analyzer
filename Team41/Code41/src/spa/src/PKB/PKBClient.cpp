@@ -79,7 +79,7 @@ vector<pair<string, string>> PKBClient::getAllParentT() const { return parentTab
 
 unordered_set<string> PKBClient::getAllStmtsParentOfSomeStmt() const { return parentTable->getStmtsParentOfSomeStmt(); }
 
-unordered_set<string> PKBClient::getAllStmtsChildOfBySomeStmt() const { return parentTable->getStmtsChildOfSomeStmt(); }
+unordered_set<string> PKBClient::getAllStmtsChildOfSomeStmt() const { return parentTable->getStmtsChildOfSomeStmt(); }
 
 //======================================== Uses ==================================================
 
@@ -160,6 +160,10 @@ unordered_set<string> PKBClient::getAllProcCalledTBy(string procName) {
 }
 
 vector<pair<string, string>> PKBClient::getAllCallsT() { return callsTable->getCallsTEntries(); }
+
+unordered_set<string> PKBClient::getAllProcsCallingSomeProcs() const { return callsTable->getProcsCallingSomeProc(); }
+
+unordered_set<string> PKBClient::getAllProcsCalledBySomeProcs() const { return callsTable->getProcsCalledBySomeProc(); }
 
 //======================================== Pattern ==================================================
 

@@ -14,17 +14,17 @@ void DesignExtractor::extractEntities() {
         TNodeType type = node->getType();
         switch (type) {
             case TNodeType::readStmt:
-                pkb->registerRead(stmtNumStr); break;
+                pkb->registerReadStmt(stmtNumStr); break;
             case TNodeType::printStmt:
-                pkb->registerPrint(stmtNumStr); break;
+                pkb->registerPrintStmt(stmtNumStr); break;
             case TNodeType::callStmt:
-                pkb->registerCall(stmtNumStr); break;
+                pkb->registerCallStmt(stmtNumStr); break;
             case TNodeType::whileStmt:
-                pkb->registerWhile(stmtNumStr); break;
+                pkb->registerWhileStmt(stmtNumStr); break;
             case TNodeType::ifStmt:
-                pkb->registerIf(stmtNumStr); break;
+                pkb->registerIfStmt(stmtNumStr); break;
             case TNodeType::assignStmt:
-                pkb->registerAssign(stmtNumStr); break;
+                pkb->registerAssignStmt(stmtNumStr); break;
         }
     }
     for (string procName : ee.getProcSet())

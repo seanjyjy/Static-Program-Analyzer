@@ -45,6 +45,9 @@ public:
     unordered_set<string> getAllProcCalledTBy(string procName);// Gets list of procedures that is calledT by proc
     vector<pair<string, string>> getAllCallsT(); // Gets list of proc1-proc2 pair where proc1 callsT proc2
 
+    unordered_set<string> getAllProcsCallingSomeProcs() const; // Get list of procedures calling some proc
+    unordered_set<string> getAllProcsCalledBySomeProcs() const; // Get list of procedures called by some proc
+
     //=========================================== Follows ===================================================
 
     bool isFollows(string stmt1, string stmt2) const; // Checks if stmt1 follows stmt2
@@ -73,7 +76,7 @@ public:
     vector<pair<string, string>> getAllParentT() const; // Gets list of parent-child pair where stmt1 is ancestor of stmt2
 
     unordered_set<string> getAllStmtsParentOfSomeStmt() const; // get list of stmt parent of some stmt
-    unordered_set<string> getAllStmtsChildOfBySomeStmt() const; // get list of stmt parented by some stmt
+    unordered_set<string> getAllStmtsChildOfSomeStmt() const; // get list of stmt parented by some stmt
 
     //=========================================== Uses ===================================================
 

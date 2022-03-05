@@ -50,6 +50,6 @@ public:
     vector<pair<string, string>> getCallsTEntries(); // Gets list of ancestor-descendant pair
     bool isCallsT(string caller, string callee); // Checks if the caller callsT the callee proc
 
-    unordered_set<string> getProcsFollowingSomeProc(); // Get set of procs calling some proc
-    unordered_set<string> getProcsFollowedBySomeProc(); // Get set of procs called by some proc
+    unordered_set<string> getProcsCallingSomeProc(); // Get set of procs calling some proc
+    unordered_set<string> getProcsCalledBySomeProc(); // Get set of procs called by some proc
 };
