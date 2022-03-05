@@ -124,8 +124,22 @@ Table *CallsEvaluator::evaluateSynonymSynonym(PKBClient *pkb, ClauseVariable lef
 }
 
 Table *CallsEvaluator::evaluateSynonymWildCard(PKBClient *pkb, ClauseVariable left) {
-    // TODO
-    return nullptr;
+    unordered_set<string> listOfProcCalling = pkb->getAllProcsCallingSomeProcs();
+
+    if (listOfProcCalling.empty()) {
+        return new FalseTable();
+    }
+
+    string column = left.getLabel();
+    Header header = Header({column});
+    Table* table = new PQLTable(header);
+
+    for (auto& proc : listOfProcCalling) {
+        Row* row = new Row(column, proc);
+        table->addRow(row);
+    }
+
+    return table;
 }
 
 Table *CallsEvaluator::evaluateWildCardIdentifier(PKBClient *pkb, ClauseVariable right) {
@@ -139,8 +153,22 @@ Table *CallsEvaluator::evaluateWildCardIdentifier(PKBClient *pkb, ClauseVariable
 }
 
 Table *CallsEvaluator::evaluateWildCardSynonym(PKBClient *pkb, ClauseVariable right) {
-    // TODO
-    return nullptr;
+    unordered_set<string> listOfProcBeingCalled = pkb->getAllProcsCalledBySomeProcs();
+
+    if (listOfProcBeingCalled.empty()) {
+        return new FalseTable();
+    }
+
+    string column = right.getLabel();
+    Header header = Header({column});
+    Table* table = new PQLTable(header);
+
+    for (auto& proc : listOfProcBeingCalled) {
+        Row* row = new Row(column, proc);
+        table->addRow(row);
+    }
+
+    return table;
 }
 
 Table *CallsEvaluator::evaluateWildCardWildCard(PKBClient *pkb) {
