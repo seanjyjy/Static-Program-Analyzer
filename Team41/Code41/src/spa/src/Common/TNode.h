@@ -36,6 +36,8 @@ public:
 
     vector<TNode *> getChildren();
 
+    string getTokenVal();
+
     // setters
     void setParent(TNode *parent);
 

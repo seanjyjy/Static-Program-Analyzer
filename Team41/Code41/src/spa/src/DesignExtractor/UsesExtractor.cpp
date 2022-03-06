@@ -9,7 +9,7 @@ void UsesExtractor::mapUses(TNode *node, unordered_set<string> &usesSet) {
     if (usesSet.empty()) return;
 
     if (node->getType() == TNodeType::procedure) {
-        procUsesMap.insert({node->getVal()->getVal(), usesSet});
+        procUsesMap.insert({node->getTokenVal(), usesSet});
     } else {
         stmtUsesMap.insert({nodeToStmtNumMap[node], usesSet});
     }
@@ -29,7 +29,7 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
             DesignExtractorUtils::combineSetsClear(usesSet, usesSetChild);
         }
     } else if (type == TNodeType::printStmt) {
-        usesSet = {node->getChildren()[0]->getVal()->getVal()}; // only 1 child varName
+        usesSet = {node->getChildren()[0]->getTokenVal()}; // only 1 child varName
         mapUses(node, usesSet);
     } else if (type == TNodeType::whileStmt || type == TNodeType::ifStmt) {
         vector<TNode *> ch = node->getChildren();
@@ -49,7 +49,7 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
             DesignExtractorUtils::combineSetsClear(usesSet, usesSetChild);
         }
     } else if (type == TNodeType::varName) {
-        usesSet = {node->getVal()->getVal()};
+        usesSet = {node->getTokenVal()};
     }
 }
 

@@ -9,7 +9,7 @@ void ModifiesExtractor::mapModifies(TNode *node, unordered_set<string> &modifies
     if (modifiesSet.empty()) return;
 
     if (node->getType() == TNodeType::procedure)
-        procModifiesMap.insert({node->getVal()->getVal(), modifiesSet});
+        procModifiesMap.insert({node->getTokenVal(), modifiesSet});
     else
         stmtModifiesMap.insert({nodeToStmtNumMap[node], modifiesSet});
 }
@@ -28,7 +28,7 @@ void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
             DesignExtractorUtils::combineSetsClear(modifiesSet, modifiesSetChild);
         }
     } else if (type == TNodeType::readStmt || type == TNodeType::assignStmt) {
-        modifiesSet = {node->getChildren()[0]->getVal()->getVal()}; // left child varName
+        modifiesSet = {node->getChildren()[0]->getTokenVal()}; // left child varName
         mapModifies(node, modifiesSet);
     } else if (type == TNodeType::whileStmt) {
         dfs(node->getChildren()[1], modifiesSetChild); // right child stmtLst
