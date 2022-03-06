@@ -13,19 +13,19 @@ void EntitiesExtractor::findProcedures() {
     vector<TNode *> procNodes = ast->getChildren();
     for (TNode *procNode : procNodes) {
         string procName = procNode->getTokenVal();
-        if (procSet.find(procName) != procSet.end()) // Multiple procedures with same name not allowed
+        if (procSet.find(procName) != procSet.end()) // multiple procedures with same name not allowed
             throw SemanticException("Duplicate Procedure Name '" + procName + "' found");
         procSet.insert(procName);
     }
 }
 
-void EntitiesExtractor::recordProcCall(string procCalled, string &procCaller) {
-    if (procSet.find(procCalled) == procSet.end()) // Procedure called not in program
+void EntitiesExtractor::recordProcCall(const string &procCalled, const string &procCaller) {
+    if (procSet.find(procCalled) == procSet.end()) // procedure called not in program
         throw SemanticException(procCaller + " called " + procCalled + ", procedure called not in program");
     procCallMap[procCaller].push_back(procCalled);
 }
 
-void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum, string &procName) {
+void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum, const string &procName) {
     TNodeType type = node->getType();
     if (isStatement(type)) {
         stmtNum += 1;
@@ -60,9 +60,34 @@ void EntitiesExtractor::findEntities() {
     }
 }
 
+void EntitiesExtractor::cycleCheckCall() {
+    unordered_map<string, int> visMap; // UNVISITED = 0, EXPLORED = 1, VISITED = 2
+    for (auto it = procCallMap.begin(); it != procCallMap.end(); ++it)
+        visMap.insert({it->first, 0}); // all procedures start out as unvisited
+    for (auto it = procCallMap.begin(); it != procCallMap.end(); ++it)
+        cycleDFS(it->first, visMap);
+}
+
+void EntitiesExtractor::cycleDFS(const string &proc, unordered_map<string, int> &visMap) {
+    visMap[proc] = 1; // set current proc to EXPLORED
+    for (string &childProc : procCallMap[proc]) {
+        auto childIt = visMap.find(childProc);
+        if (childIt == visMap.end()) // child proc doesn't call anybody
+            continue;
+        int visNum = childIt->second;
+        if (visNum == 0) { // UNVISITED
+            cycleDFS(childProc, visMap);
+        } else if (visNum == 1) { // EXPLORED
+            throw SemanticException("Cyclic procedure call detected");
+        }
+    }
+    visMap[proc] = 2; // set current proc to VISITED
+}
+
 void EntitiesExtractor::extractEntities() {
     findProcedures();
     findEntities();
+    cycleCheckCall();
 }
 
 unordered_map<TNode *, string> EntitiesExtractor::getNodeToStmtNumMap() {

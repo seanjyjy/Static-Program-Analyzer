@@ -22,12 +22,12 @@ private:
     void findProcedures();
 
     /**
-     * Records proc calls proc into procCallMap
+     * Records proc calls proc into procCallMap.
      *
      * @param procCalled procedure name that is being called
      * @param procCaller procedure name that call stmt is inside
      */
-    void recordProcCall(string procCalled, string &procCaller);
+    void recordProcCall(const string &procCalled, const string &procCaller);
 
     /**
      * Records current node into varSet if it's variable, constSet if constant and nodeToStmtNumMap if statement.
@@ -36,12 +36,28 @@ private:
      * @param stmtNum last registered statement number
      * @param procName name of procedure that node is in
      */
-    void recordEntity(TNode *node, int &stmtNum, string &procName);
+    void recordEntity(TNode *node, int &stmtNum, const string &procName);
 
     /**
      * Traverses through AST to record statements, procedure calls, variable names and constants.
      */
     void findEntities(); // statement number, varName, const, procCallProc
+
+    /**
+     * Checks if there is cyclic procedure calls.
+     * Calls cycleDFS which throw SemanticException if cycle detected.
+     */
+    void cycleCheckCall();
+
+    /**
+     * Traverses procedure calls graph through DFS to detect cyclic procedure calls.
+     *
+     * @param proc Current procedure being processed
+     * @param visMap Map of procedure to int which tracks visited state of procedures (UNVISITED = 0, EXPLORED = 1, VISITED = 2)
+     *
+     * @throws SemanticException if cyclic procedure call detected
+     */
+    void cycleDFS(const string &proc, unordered_map<string, int> &visMap);
 
 public:
     EntitiesExtractor(TNode *ast);
