@@ -19,11 +19,19 @@ void EntitiesExtractor::findProcedures() {
     }
 }
 
-void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum) {
+void EntitiesExtractor::recordProcCall(string procCalled, string &procCaller) {
+    if (procSet.find(procCalled) == procSet.end()) // Procedure called not in program
+        throw SemanticException(procCaller + " called " + procCalled + ", procedure called not in program");
+    procCallMap[procCaller].push_back(procCalled);
+}
+
+void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum, string &procName) {
     TNodeType type = node->getType();
     if (isStatement(type)) {
         stmtNum += 1;
         nodeToStmtNumMap.insert({node, to_string(stmtNum)});
+        if (type == TNodeType::callStmt)
+            recordProcCall(node->getChildren()[0]->getTokenVal(), procName); // child is procName node
     } else {
         switch (type) {
             case TNodeType::varName:
@@ -34,17 +42,20 @@ void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum) {
     }
 }
 
-void EntitiesExtractor::findEntities() { // Todo: Register P calls P
+void EntitiesExtractor::findEntities() {
     int stmtNum = 0;
-    stack<TNode *> stk;
-    stk.push(ast);
-    while (!stk.empty()) {
-        TNode *node = stk.top(); stk.pop();
-        recordEntity(node, stmtNum);
-        vector<TNode *> ch = node->getChildren();
-        reverse(ch.begin(), ch.end()); // left to right dfs
-        for (TNode *child : ch) {
-            stk.push(child);
+    vector<TNode *> procNodes = ast->getChildren();
+    for (TNode *procNode : procNodes) { // dfs for every procedure
+        string procName = procNode->getTokenVal();
+        stack<TNode *> stk;
+        stk.push(procNode);
+        while (!stk.empty()) {
+            TNode *node = stk.top(); stk.pop();
+            recordEntity(node, stmtNum, procName);
+            vector<TNode *> ch = node->getChildren();
+            reverse(ch.begin(), ch.end()); // left to right dfs
+            for (TNode *child : ch)
+                stk.push(child);
         }
     }
 }
@@ -56,6 +67,10 @@ void EntitiesExtractor::extractEntities() {
 
 unordered_map<TNode *, string> EntitiesExtractor::getNodeToStmtNumMap() {
     return nodeToStmtNumMap;
+}
+
+unordered_map<string, list<string>> EntitiesExtractor::getProcCallMap() {
+    return procCallMap;
 }
 
 unordered_set<string> EntitiesExtractor::getProcSet() {
