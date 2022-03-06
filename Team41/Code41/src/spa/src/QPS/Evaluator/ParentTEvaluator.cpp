@@ -36,7 +36,7 @@ Table* ParentTEvaluator::evaluate(QueryClause clause, PKBClient *pkb) {
         return evaluateWildCardSynonym(pkb, rightVariable);
     }
 
-    if (EvaluatorUtils::StmtUtils::isWildCardWildCard(&leftVariable, &rightVariable)) {
+    if (EvaluatorUtils::isWildCardWildCard(&leftVariable, &rightVariable)) {
         return evaluateWildCardWildCard(pkb);
     }
 

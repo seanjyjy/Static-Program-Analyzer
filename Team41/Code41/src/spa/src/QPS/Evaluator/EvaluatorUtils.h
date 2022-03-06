@@ -150,6 +150,15 @@ public:
      */
     static bool isSynonymIdentifier(ClauseVariable *left, ClauseVariable *right);
 
+    /**
+     * Checks if the left clause variable is a wildcard and if the right clause variable is a wildcard.
+     *
+     * @param left Clause variable.
+     * @param right Clause variable.
+     * @return True if left clause variable is a wildcard and if right clause variable is a wildcard else false.
+     */
+    static bool isWildCardWildCard(ClauseVariable* left, ClauseVariable* right);
+
     // for Follow, Follow*, Parent, Parent*
     class StmtUtils {
     public:
@@ -234,18 +243,9 @@ public:
          * else false.
          */
         static bool isValidWildCardSynonym(ClauseVariable* left, ClauseVariable* right);
-
-        /**
-         * Checks if the left clause variable is a wildcard and if the right clause variable is a wildcard.
-         *
-         * @param left Clause variable.
-         * @param right Clause variable.
-         * @return True if left clause variable is a wildcard and if right clause variable is a wildcard else false.
-         */
-        static bool isWildCardWildCard(ClauseVariable* left, ClauseVariable* right);
     };
 
-    // for ModifiesP, UsesP
+    // for ModifiesP, UsesP, Calls
     class ProcUtils {
     public:
         /**
@@ -413,5 +413,21 @@ public:
          * else false.
          */
         static bool isValidUsesSynonymWildCard(ClauseVariable* left, ClauseVariable* right);
+    };
+
+    // For Calls, Calls*
+    class CallsUtils {
+    public:
+        static bool isValidCallsIdentifierSynonym(ClauseVariable* left, ClauseVariable* right);
+
+        static bool isValidCallsSynonymIdentifier(ClauseVariable* left, ClauseVariable* right);
+
+        static bool isValidCallsSynonymSynonym(ClauseVariable* left, ClauseVariable* right);
+
+        static bool isValidCallsSynonymWildCard(ClauseVariable* left, ClauseVariable* right);
+
+        static bool isValidCallsWildCardSynonym(ClauseVariable* left, ClauseVariable* right);
+
+        static bool isWildCardIdentifier(ClauseVariable* left, ClauseVariable* right);
     };
 };

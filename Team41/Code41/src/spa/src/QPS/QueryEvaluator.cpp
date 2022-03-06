@@ -117,6 +117,10 @@ Table *QueryEvaluator::evaluate(QueryClause &clause) {
             return ModifiesSEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::modifiesP:
             return ModifiesPEvaluator::evaluate(clause, this->pkb);
+        case QueryClause::clause_type::calls:
+            return CallsEvaluator::evaluate(clause, this->pkb);
+        case QueryClause::clause_type::callsT:
+            return CallsTEvaluator::evaluate(clause, this->pkb);
         default:
             throw std::runtime_error("unknown clause of type " + to_string(clause.type));
     }

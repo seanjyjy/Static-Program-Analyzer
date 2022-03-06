@@ -12,7 +12,7 @@ private:
 public:
     // enum representing possible clause types in PQL
     enum clause_type {
-        follows, followsT, parent, parentT, usesS, usesP, modifiesS, modifiesP
+        follows, followsT, parent, parentT, usesS, usesP, modifiesS, modifiesP, calls, callsT
     };
 
     // clause type of the clause instance
