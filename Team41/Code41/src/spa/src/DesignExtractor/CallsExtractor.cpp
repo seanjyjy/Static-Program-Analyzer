@@ -77,12 +77,10 @@ void CallsExtractor::topoSort(const string &proc, unordered_set<string> &visSet)
 void CallsExtractor::buildCallsT() {
     callsTMap = callsMap;
     for (const string& procParent : procCallOrder) {
-        auto itParent = callsTMap.find(procParent);
-        if (itParent == callsTMap.end()) continue; // parent proc doesn't call(T) anybody
-        for (const string& procChild : itParent->second) {
-            auto itChild = callsTMap.find(procChild);
-            if (itChild == callsTMap.end()) continue; // child proc doesn't call(T) anybody
-            DesignExtractorUtils::copyOverSet(itParent->second, itChild->second);
+        for (const string& procChild : callsMap[procParent]) { // parent proc should always call a proc
+            auto it = callsTMap.find(procChild);
+            if (it == callsTMap.end()) continue; // child proc doesn't call(T) anybody
+            DesignExtractorUtils::copyOverSet(callsTMap[procParent], it->second);
         }
     }
 }

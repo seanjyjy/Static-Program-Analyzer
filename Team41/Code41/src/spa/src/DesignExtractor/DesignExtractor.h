@@ -17,7 +17,7 @@ private:
     PKBManager *pkb; // pointer to PKBManager to store all entities and relationships
     unordered_map<TNode *, string> nodeToStmtNumMap; // mapping of TNode* to statement number
     unordered_set<string> procSet; // set of procedure names
-    unordered_map<string, list<string>> callsMap; // mapping of proc to list of proc it directly calls
+    unordered_map<string, unordered_set<string>> callsMap; // mapping of proc to list of proc it directly calls
     list<string> procCallOrder; // list of procedures in reversed toposort order of calls graph
 
     void extractEntities();

@@ -39,7 +39,9 @@ void DesignExtractor::extractEntities() {
 void DesignExtractor::extractCalls() {
     CallsExtractor ce = CallsExtractor(ast, procSet);
     ce.extractRelationship();
-    for (auto &[procParent, callsSet] : ce.getCallsMap()) {
+    this->callsMap = ce.getCallsMap();
+    this->procCallOrder = ce.getProcCallOrder();
+    for (auto &[procParent, callsSet] : callsMap) {
         for (const string &procChild : callsSet)
             pkb->registerCalls(procParent, procChild);
     }
@@ -50,7 +52,7 @@ void DesignExtractor::extractCalls() {
 }
 
 void DesignExtractor::extractModifies() {
-    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap);
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extractRelationship();
     for (auto &[procName, modifiesSet] : me.getProcModifiesMap()) {
         for (const string &modifiedName : modifiesSet)
