@@ -23,7 +23,7 @@ TEST_CASE("Test 3") {
 
     SECTION("Query 1") {
         string query = "variable v;\n"
-                       "Select v such that Modifies (6, v)";
+                       "Select v such that Modifies (15, v)";
 
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
@@ -37,7 +37,7 @@ TEST_CASE("Test 3") {
 
     SECTION("Query 2") {
         string query = "variable v;\n"
-                       "Select v such that Uses (15, v)";
+                       "Select v such that Uses (24, v)";
 
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
@@ -58,7 +58,7 @@ TEST_CASE("Test 3") {
         QueryEvaluator queryEvaluator(&pkbManager);
         unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
 
-        unordered_set<string> answer{"computeCentroid"};
+        unordered_set<string> answer{"computeCentroid", "main", "readPoint"};
         REQUIRE(result == answer);
         delete queryObject;
     }

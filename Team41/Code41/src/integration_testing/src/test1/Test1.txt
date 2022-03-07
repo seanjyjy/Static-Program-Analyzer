@@ -12,3 +12,7 @@ procedure Example {
     call q;
     i = i - 1; }
   call p; }
+procedure p {
+  x = 2; }
+procedure q {
+  x = 2; }
