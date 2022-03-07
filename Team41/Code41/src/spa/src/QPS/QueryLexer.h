@@ -16,7 +16,9 @@ private:
     // keywords looked for during the clauses part of a query
     const unordered_set<string> clause_keywords =
             {"Follows", "Follows*", "Parent",
-             "Parent*", "Uses", "Modifies"};
+             "Parent*", "Uses", "Modifies",
+             "Calls", "Calls*", "Next", "Next*",
+             "Affects", "Affects*"};
 
     const unordered_set<char> special_char =
             {'(', ')', ';', ',', ' ', '\n'};
