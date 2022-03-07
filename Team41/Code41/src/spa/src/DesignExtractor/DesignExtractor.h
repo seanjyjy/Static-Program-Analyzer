@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include "Common/TNode.h"
 #include "PKB/PKBManager.h"
+#include "CallsExtractor.h"
 #include "EntitiesExtractor.h"
 #include "ModifiesExtractor.h"
 #include "UsesExtractor.h"
@@ -15,13 +16,18 @@ private:
     TNode *ast; // root node of AST
     PKBManager *pkb; // pointer to PKBManager to store all entities and relationships
     unordered_map<TNode *, string> nodeToStmtNumMap; // mapping of TNode* to statement number
+    unordered_set<string> procSet; // set of procedure names
+    unordered_map<string, list<string>> callsMap; // mapping of proc to list of proc it directly calls
+    list<string> procCallOrder; // list of procedures in reversed toposort order of calls graph
 
     void extractEntities();
+    void extractCalls();
     void extractModifies();
     void extractUses();
     void extractFollows();
     void extractParent();
     void extractPattern();
+
 public:
     DesignExtractor(TNode *ast, PKBManager *pkb);
 

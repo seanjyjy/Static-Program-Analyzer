@@ -19,19 +19,11 @@ void EntitiesExtractor::findProcedures() {
     }
 }
 
-void EntitiesExtractor::recordProcCall(const string &procCalled, const string &procCaller) {
-    if (procSet.find(procCalled) == procSet.end()) // procedure called not in program
-        throw SemanticException(procCaller + " called " + procCalled + ", procedure called not in program");
-    procCallMap[procCaller].push_back(procCalled);
-}
-
-void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum, const string &procName) {
+void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum) {
     TNodeType type = node->getType();
     if (isStatement(type)) {
         stmtNum += 1;
         nodeToStmtNumMap.insert({node, to_string(stmtNum)});
-        if (type == TNodeType::callStmt)
-            recordProcCall(node->getChildren()[0]->getTokenVal(), procName); // child is procName node
     } else {
         switch (type) {
             case TNodeType::varName:
@@ -44,58 +36,25 @@ void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum, const string &pr
 
 void EntitiesExtractor::findEntities() {
     int stmtNum = 0;
-    vector<TNode *> procNodes = ast->getChildren();
-    for (TNode *procNode : procNodes) { // dfs for every procedure
-        string procName = procNode->getTokenVal();
-        stack<TNode *> stk;
-        stk.push(procNode);
-        while (!stk.empty()) {
-            TNode *node = stk.top(); stk.pop();
-            recordEntity(node, stmtNum, procName);
-            vector<TNode *> ch = node->getChildren();
-            reverse(ch.begin(), ch.end()); // left to right dfs
-            for (TNode *child : ch)
-                stk.push(child);
-        }
+    stack<TNode *> stk;
+    stk.push(ast);
+    while (!stk.empty()) {
+        TNode *node = stk.top(); stk.pop();
+        recordEntity(node, stmtNum);
+        vector<TNode *> ch = node->getChildren();
+        reverse(ch.begin(), ch.end()); // left to right dfs
+        for (TNode *child : ch)
+            stk.push(child);
     }
-}
-
-void EntitiesExtractor::cycleCheckCall() {
-    unordered_map<string, int> visMap; // UNVISITED = 0, EXPLORED = 1, VISITED = 2
-    for (auto it = procCallMap.begin(); it != procCallMap.end(); ++it)
-        visMap.insert({it->first, 0}); // all procedures start out as unvisited
-    for (auto it = procCallMap.begin(); it != procCallMap.end(); ++it)
-        cycleDFS(it->first, visMap);
-}
-
-void EntitiesExtractor::cycleDFS(const string &proc, unordered_map<string, int> &visMap) {
-    visMap[proc] = 1; // set current proc to EXPLORED
-    for (string &childProc : procCallMap[proc]) {
-        auto childIt = visMap.find(childProc);
-        if (childIt == visMap.end()) // child proc doesn't call anybody
-            continue;
-        int visNum = childIt->second;
-        if (visNum == 0) { // UNVISITED
-            cycleDFS(childProc, visMap);
-        } else if (visNum == 1) { // EXPLORED
-            throw SemanticException("Cyclic procedure call detected");
-        }
-    }
-    visMap[proc] = 2; // set current proc to VISITED
 }
 
 void EntitiesExtractor::extractEntities() {
     findProcedures();
     findEntities();
-    cycleCheckCall();
 }
 
 unordered_map<TNode *, string> EntitiesExtractor::getNodeToStmtNumMap() {
     return nodeToStmtNumMap;
-}
-
-unordered_map<string, list<string>> EntitiesExtractor::getProcCallMap() {
-    return procCallMap;
 }
 
 unordered_set<string> EntitiesExtractor::getProcSet() {

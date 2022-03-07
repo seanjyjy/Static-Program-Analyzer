@@ -10,6 +10,15 @@ class DesignExtractorUtils {
 public:
     /**
      * Takes 2 sets of strings (parentSet and childSet), and copies over all elements in childSet to parentSet.
+     * Does not clear childSet after copying over is done.
+     *
+     * @param parentSet
+     * @param childSet
+     */
+    static void copyOverSet(unordered_set<string> &parentSet, unordered_set<string> &childSet);
+
+    /**
+     * Takes 2 sets of strings (parentSet and childSet), and copies over all elements in childSet to parentSet.
      * Clears the childSet after copying over is done.
      *
      * @param parentSet set of strings that wil be combined into
