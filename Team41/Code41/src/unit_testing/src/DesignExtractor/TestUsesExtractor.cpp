@@ -12,7 +12,8 @@ TEST_CASE("UsesExtractor: Assign") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     unordered_map<string, unordered_set<string>> expectedProcUses = {
@@ -31,7 +32,8 @@ TEST_CASE("UsesExtractor: Read") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     REQUIRE(ue.getProcUsesMap().empty());
@@ -44,7 +46,8 @@ TEST_CASE("UsesExtractor: Print") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     unordered_map<string, unordered_set<string>> expectedProcUses = {
@@ -63,7 +66,8 @@ TEST_CASE("UsesExtractor: While") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     unordered_map<string, unordered_set<string>> expectedProcUses = {
@@ -84,7 +88,8 @@ TEST_CASE("UsesExtractor: If") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     unordered_map<string, unordered_set<string>> expectedProcUses = {
@@ -107,7 +112,8 @@ TEST_CASE("UsesExtractor: Non-nested") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     unordered_map<string, unordered_set<string>> expectedProcUses = {
@@ -127,7 +133,8 @@ TEST_CASE("UsesExtractor: Nested") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     unordered_map<string, unordered_set<string>> expectedProcUses = {
@@ -150,7 +157,8 @@ TEST_CASE("UsesExtractor: n3iif") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     unordered_map<string, unordered_set<string>> expectedProcUses = {
@@ -174,7 +182,8 @@ TEST_CASE("UsesExtractor: n3iwl") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     unordered_map<string, unordered_set<string>> expectedProcUses = {
@@ -196,7 +205,8 @@ TEST_CASE("UsesExtractor: n3wim") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     unordered_map<string, unordered_set<string>> expectedProcUses = {
@@ -218,7 +228,8 @@ TEST_CASE("UsesExtractor: n3wwl") {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
 
     unordered_map<string, unordered_set<string>> expectedProcUses = {
