@@ -19,9 +19,6 @@ bool QueryParser::skipSuchThat() {
 }
 
 bool QueryParser::parseDeclarations() {
-
-    bool isDeclarationEnd = false;
-
     do {
         if (lex->isEndOfQuery()) {
             printf("Query Incomplete.");
@@ -32,44 +29,60 @@ bool QueryParser::parseDeclarations() {
             printf("Syntax Error: Invalid declaration type <%s>\n", lex->nextToken().c_str());
             return false;
         }
-
-        // for same type, same line (TYPE syn1, syn2,...;)
-        bool isSetEnd = false;
-        // Check if is same type, same line (TYPE syn1, syn2,...;)
-        while (!isSetEnd) {
-            // Read a synonym
-            optional<string> synonym = lex->nextSynonym();
-            if (synonym == nullopt) {
-                printf("Syntax Error: Invalid synonym <%s>\n", lex->nextToken().c_str());
-                return false;
-            }
-            // Generate the QueryDeclaration object
-            string syn = synonym->c_str();
-            QueryDeclaration::design_entity_type t = QueryDeclaration::stringToType(type.value());
-            QueryDeclaration qd(t, syn);
-            queryObject->declarations.push_back(qd);
-
-
-            // Check if there's a comma to carry on same line
-            if(lex->peekNextIsString(",")){
-                lex->nextExpected(",");
-            } else {
-                // No comma? Expect a ";" for end of a declaration type
-                if (lex->peekNextIsString(";")) {
-                    lex->nextExpected(";");
-                    isSetEnd = true;
-                } else {
-                    // Neither ',' nor ';'. Syntax error
-                    printf("Syntax error: Expected a ';' for end of declaration.\n");
-                    return false;
-                }
-            }
+        if (!parseDeclarationsOfTypeString(type->c_str())){
+            return false;
         }
-
-        isDeclarationEnd = lex->peekNextIsString("Select");
-    } while (!isDeclarationEnd);
-
+    } while (!lex->peekNextIsString("Select"));
     return true;
+}
+
+bool QueryParser::parseDeclarationsOfTypeString(string type) {
+    // for same type, same line (TYPE syn1, syn2,...;)
+    bool isSetEnd = false;
+    // Check if is same type, same line (TYPE syn1, syn2,...;)
+    while (!isSetEnd) {
+        // Read a synonym
+        optional<string> synonym = lex->nextSynonym();
+        if (synonym == nullopt) {
+            printf("Syntax Error: Invalid synonym <%s>\n", lex->nextToken().c_str());
+            return false;
+        }
+        // Generate the QueryDeclaration object
+        generateDeclarationObject(type, synonym->c_str());
+        // Check if there's a comma to carry on same design-entity declaration
+        if (lookForDeclarationComma()) continue;
+        // No comma? Expect a ";" for end of a declaration type
+        if (lookForDeclarationSemiColon()) {
+            isSetEnd = true;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
+
+void QueryParser::generateDeclarationObject(string type, string synonym) {
+    QueryDeclaration::design_entity_type t = QueryDeclaration::stringToType(type);
+    QueryDeclaration qd(t, synonym);
+    queryObject->declarations.push_back(qd);
+}
+
+bool QueryParser::lookForDeclarationSemiColon() {
+    if (lex->peekNextIsString(";")) {
+        lex->nextExpected(";");
+        return true;
+    } else {
+        printf("Syntax error: Expected a ';' for end of declaration.\n");
+        return false;
+    }
+}
+
+bool QueryParser::lookForDeclarationComma() {
+    if (lex->peekNextIsString(",")) {
+        lex->nextExpected(",");
+        return true;
+    }
+    return false;
 }
 
 optional<QueryDeclaration> QueryParser::findMatchingDeclaration(string synonym) {
@@ -94,13 +107,11 @@ bool QueryParser::parseSelectSynonym() {
     lex->nextExpected("Select");
     optional<string> synonym = lex->nextSynonym();
     if (!synonym.has_value()) {
-        // todo: throw something?
         printf("Syntax Error: Use of select with no synonym.\n");
         return false;
     }
     optional<QueryDeclaration> qd = findMatchingDeclaration(*synonym);
     if (!qd.has_value()) {
-        // todo: throw something?
         printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
         return false;
     }
@@ -147,12 +158,7 @@ bool QueryParser::isDeclaredProcedure(string synonym) {
     return posProc.has_value() && posProc.value().type == QueryDeclaration::PROCEDURE;
 }
 
-bool QueryParser::parseClause() {
-    if (lex->isEndOfQuery()) {
-        printf("Query Incomplete. Expected a clause.\n");
-        return false;
-    }
-    // Get the clause type
+optional<string> QueryParser::parseClauseType() {
     optional<string> clause = lex->nextClause();
     if (clause == nullopt) {
         string cl_bad = lex->nextToken();
@@ -161,49 +167,50 @@ bool QueryParser::parseClause() {
         } else {
             printf("Syntax Error: Invalid clause <%s>\n", cl_bad.c_str());
         }
+    }
+    return clause;
+}
+
+bool QueryParser::lookForClauseGrammarSymbol(string symbol, string notFoundMessage) {
+    optional<string> s = lex->nextExpected(symbol);
+    if (s == nullopt) {
+        printf("%s", &notFoundMessage);
         return false;
     }
-    optional<string> lp = lex->nextExpected("(");
-    if (lp == nullopt) {
-        printf("Syntax Error: Expected '(' for clause declaration.\n");
+    return true;
+}
+
+optional<string> QueryParser::parseClauseVariable(string clause) {
+    optional<string> var = lex->nextClauseVariable();
+    if (var == nullopt) {
+        printf("Syntax Error: No clause variable found.\n");
+        return nullopt;
+    }
+    if (lex->isValidSynonym(var->c_str())) { // check if synonym has been
+        if (!isDeclared(var->c_str())) {
+            printf("Syntax Error: Use of undeclared synonym <%s> for clause %s\n", var->c_str(), clause.c_str());
+            return nullopt;
+        }
+    }
+    return var;
+}
+
+bool QueryParser::parseClause() {
+    if (lex->isEndOfQuery()) {
+        printf("Query Incomplete. Expected a clause.\n");
         return false;
     }
+    optional<string> clause = parseClauseType();
+    if (clause == nullopt) return false;
+    lookForClauseGrammarSymbol("(", "Syntax Error: Expected '(' for clause declaration.\n");
     // left variable
-    optional<string> left = lex->nextClauseVariable();
-    if (left == nullopt) {
-        printf("Syntax Error: No clause variable found.\n");
-        return false;
-    }
-    if (lex->isValidSynonym(left->c_str())) { // check if synonym has been
-        if (!isDeclared(left->c_str())) {
-            printf("Syntax Error: Use of undeclared synonym <%s> for clause %s LHS\n", left->c_str(), clause->c_str());
-            return false;
-        }
-    }
-
-    optional<string> c = lex->nextExpected(",");
-    if (c == nullopt) {
-        printf("Syntax Error: Expected ',' for clause parameter delimiter.\n");
-        return false;
-    }
+    optional<string> left = parseClauseVariable(clause->c_str());
+    if (left == nullopt) return false;
+    lookForClauseGrammarSymbol(",", "Syntax Error: Expected ',' for clause parameter delimiter.\n");
     // right variable
-    optional<string> right = lex->nextClauseVariable();
-    if (right == nullopt) {
-        printf("Syntax Error: No clause variable found.\n");
-        return false;
-    }
-    if (lex->isValidSynonym(right->c_str())) { // check if synonym has been
-        if (!isDeclared(right->c_str())) {
-            printf("Syntax Error: Use of undeclared synonym <%s> for clause %s RHS\n", right->c_str(), clause->c_str());
-            return false;
-        }
-    }
-    optional<string> rp = lex->nextExpected(")");
-    if (rp == nullopt) {
-        printf("Syntax Error: Expected ')' for end of clause declaration\n");
-        return false;
-    }
-
+    optional<string> right = parseClauseVariable(clause->c_str());
+    if (right == nullopt) return false;
+    lookForClauseGrammarSymbol(")", "Syntax Error: Expected ')' for end of clause declaration\n");
     return buildClause(clause->c_str(), left->c_str(), right->c_str());
 }
 
@@ -266,64 +273,53 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
         return QueryClause::modifiesP;
 }
 
-bool QueryParser::parsePatternClause() {
-    TNode *miniAST = nullptr;
-    PatternVariable::pattern_type pt = PatternVariable::wildcard;
-    optional<string> patt = lex->nextExpected("pattern");
-    if (!patt.has_value()) {
-        printf("Malformed input. Expected keyword: pattern\n");
-        return false;
-    }
+bool QueryParser::isValidPatternSynType(QueryDeclaration declared) {
+    return declared.type != QueryDeclaration::ASSIGN &&
+        declared.type != QueryDeclaration::WHILE &&
+        declared.type != QueryDeclaration::IF;
+}
 
+optional<QueryDeclaration> QueryParser::parsePatternSyn() {
     optional<string> patternSyn = lex->nextSynonym();
     if (patternSyn == nullopt) {
         printf("Syntax Error: No pattern synonym was found\n");
-        return false;
+        return nullopt;
     }
-
     optional<QueryDeclaration> declared = findMatchingDeclaration(patternSyn->c_str());
     if (declared == nullopt) {
         printf("Syntax Error: Use of undeclared pattern synonym <%s>\n", patternSyn->c_str());
-        return false;
+        return nullopt;
     } else {
-        if (declared->type != QueryDeclaration::ASSIGN && declared->type != QueryDeclaration::WHILE && declared->type != QueryDeclaration::IF) {
+        if (isValidPatternSynType(declared.value())) {
             printf("Pattern synonym must be of type assign, while or if");
-            return false;
+            return nullopt;
         }
     }
+    return declared;
+}
 
-    optional<string> lp = lex->nextExpected("(");
-    if (lp == nullopt) {
-        printf("Syntax Error: Expected '(' for pattern declaration parameters\n");
-        return false;
-    }
-
+optional<string> QueryParser::parsePatternLHS() {
     optional<string> lhs = lex->nextClauseVariable();
     if (lhs == nullopt) {
         printf("Syntax Error: No clause variable found for pattern LHS.\n");
-        return false;
+        return nullopt;
     }
     if (!(lex->isWildCard(lhs->c_str()) || lex->isIdentifier(lhs->c_str()) || lex->isValidSynonym(lhs->c_str()))) {
-        return false;
+        return nullopt;
     }
     if (lex->isValidSynonym(lhs->c_str())) {
         optional<QueryDeclaration> lhsDeclared = findMatchingDeclaration(lhs->c_str());
         if (lhsDeclared == nullopt) {
             printf("Syntax Error: Use of undeclared pattern LHS synonym <%s>\n", lhs->c_str());
-            return false;
+            return nullopt;
         }
     }
+    return lhs;
+}
 
-    optional<string> c = lex->nextExpected(",");
-    if (c == nullopt) {
-        printf("Syntax Error: Expected ',' for pattern parameter delimiter.\n");
-        return false;
-    }
-
-    if (lex->isEndOfQuery()) {
-        printf("Expected a pattern expression.\n");
-        return false;
-    }
+PatternVariable *QueryParser::parsePatternRHS() {
+    TNode *miniAST = nullptr;
+    PatternVariable::pattern_type pt = PatternVariable::wildcard;
 
     optional<string> patternExpr = lex->nextPatternExpression();
     if (patternExpr != nullopt) {
@@ -341,7 +337,7 @@ bool QueryParser::parsePatternClause() {
                 expr = expr.substr(1, expr.length() - 2);
             } else {
                 printf("Unknown pattern RHS: <%s>\n", patternExpr->c_str());
-                return false;
+                return nullptr;
             }
             try {
                 miniAST = simpleParser.parseExpr(expr);
@@ -350,35 +346,50 @@ bool QueryParser::parsePatternClause() {
             }
             if (miniAST == nullptr) {
                 printf("Invalid pattern RHS: <%s>\n", patternExpr->c_str());
-                return false;
+                return nullptr;
             }
         }
+        PatternVariable *pv = new PatternVariable(pt, miniAST);
+        return pv;
     } else {
         // Invalid RHS
         printf("Syntax Error: No valid pattern expression found in RHS.\n");
+        return nullptr;
+    }
+}
+
+bool QueryParser::parsePatternClause() {
+    optional<string> patt = lex->nextExpected("pattern");
+    if (!patt.has_value()) {
+        printf("Malformed input. Expected keyword: pattern\n");
         return false;
     }
-
-    optional<string> rp = lex->nextExpected(")");
-    if (rp == nullopt) {
-        printf("Syntax Error: Expected ')' for end of pattern declaration.\n");
-        delete miniAST;
+    optional<QueryDeclaration> patternSyn = parsePatternSyn();
+    if (patternSyn == nullopt) return false;
+    lookForClauseGrammarSymbol("(", "Syntax Error: Expected '(' for pattern declaration parameters\n");
+    optional<string> lhs = parsePatternLHS();
+    if (lhs == nullopt) return false;
+    lookForClauseGrammarSymbol(",", "Syntax Error: Expected ',' for pattern parameter delimiter.\n");
+    if (lex->isEndOfQuery()) {
+        printf("Expected a pattern expression.\n");
         return false;
     }
+    PatternVariable* pv = parsePatternRHS();
+    if (pv == nullptr) return false;
+    lookForClauseGrammarSymbol(")", "Syntax Error: Expected ')' for end of pattern declaration.\n");
+    buildPatternClauseObject(patternSyn.value(), lhs->c_str(), pv);
+    return true;
+}
 
-    // build the pattern clause
-    ClauseVariable::variable_type leftType = determineVariableType(lhs->c_str());
-    string l = lhs->c_str();
-
+void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string lhs, PatternVariable *rhs) {
+    ClauseVariable::variable_type leftType = determineVariableType(lhs);
+    string l = lhs;
     if (ClauseVariable::variable_type::identifier == leftType) {
         l = l.substr(1, l.length() - 2);
     }
     ClauseVariable lcv(leftType, l, determineDeclarationType(l));
-    PatternVariable pv(pt, miniAST);
-    PatternClause pc(declared.value(), lcv, pv);
+    PatternClause pc(patternSyn, lcv, *rhs);
     queryObject->patternClauses.push_back(pc);
-
-    return true;
 }
 
 QueryParser::QueryParser(string &input) : input(input) {}

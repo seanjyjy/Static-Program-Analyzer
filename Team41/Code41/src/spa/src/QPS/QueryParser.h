@@ -60,6 +60,14 @@ private:
      */
     bool parseDeclarations();
 
+    bool parseDeclarationsOfTypeString(string type);
+
+    bool lookForDeclarationComma();
+
+    bool lookForDeclarationSemiColon();
+
+    void generateDeclarationObject(string type, string synonym);
+
     /**
      * Parses the synonym that follows a "Select" command.
      * Populates the QueryObject with the select synonym.
@@ -75,6 +83,12 @@ private:
      */
     bool parseClause();
 
+    optional<string> parseClauseType();
+
+    optional<string> parseClauseVariable(string clause);
+
+    bool lookForClauseGrammarSymbol(string symbol, string notFoundMessage);
+
     /**
      * Parses a "pattern" clause of a query
      * Populates the QueryObject with a new pattern clause instance.
@@ -82,6 +96,16 @@ private:
      * @return boolean if parsing was successful.
      */
     bool parsePatternClause();
+
+    bool isValidPatternSynType(QueryDeclaration declared);
+
+    optional<QueryDeclaration> parsePatternSyn();
+
+    optional<string> parsePatternLHS();
+
+    PatternVariable *parsePatternRHS();
+
+    void buildPatternClauseObject(QueryDeclaration patternSyn, string lhs, PatternVariable *rhs);
 
     /**
      * Populates the QueryObject with a new clause instance.
