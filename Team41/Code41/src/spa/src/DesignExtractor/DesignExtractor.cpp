@@ -65,7 +65,7 @@ void DesignExtractor::extractModifies() {
 }
 
 void DesignExtractor::extractUses() {
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
     for (auto &[procName, usesSet] : ue.getProcUsesMap()) {
         for (const string &usedName : usesSet)

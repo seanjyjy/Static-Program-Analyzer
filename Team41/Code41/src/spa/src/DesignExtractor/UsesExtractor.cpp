@@ -2,8 +2,9 @@
 #include "DesignExtractorUtils.h"
 #include "Common/TNodeType.h"
 
-UsesExtractor::UsesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
-        ast(ast), nodeToStmtNumMap(nodeToStmtNumMap) {}
+UsesExtractor::UsesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,
+                             unordered_map<string, unordered_set<string>> &callsMap, list<string> &procCallOrder) :
+        ast(ast), nodeToStmtNumMap(nodeToStmtNumMap), callsMap(callsMap), procCallOrder(procCallOrder) {}
 
 void UsesExtractor::mapUses(TNode *node, unordered_set<string> &usesSet) {
     if (usesSet.empty()) return;
@@ -50,6 +51,27 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
         }
     } else if (type == TNodeType::varName) {
         usesSet = {node->getTokenVal()};
+    } else if (type == TNodeType::callStmt) {
+        callNodeSet.insert(node);
+    }
+}
+
+void UsesExtractor::buildProcUsesCalls() {
+    for (const string &procParent : procCallOrder) {
+        for (const string& procChild : callsMap[procParent]) { // parent proc should always call a proc
+            auto it = procUsesMap.find(procChild);
+            if (it == procUsesMap.end()) continue; // child proc doesn't modify anything
+            DesignExtractorUtils::copyOverSet(procUsesMap[procParent], it->second);
+        }
+    }
+}
+
+void UsesExtractor::buildCallUses() {
+    for (TNode *callNode : callNodeSet) {
+        string procCalled = callNode->getChildren()[0]->getTokenVal();
+        auto it = procUsesMap.find(procCalled);
+        if (it == procUsesMap.end()) continue; // proc called doesn't modify anything
+        stmtUsesMap[nodeToStmtNumMap[callNode]] = it->second;
     }
 }
 
@@ -59,6 +81,8 @@ void UsesExtractor::extractRelationship() {
         unordered_set<string> st;
         dfs(procNode, st);
     }
+    buildProcUsesCalls();
+    buildCallUses();
 }
 
 unordered_map<string, unordered_set<string>> UsesExtractor::getProcUsesMap() {
