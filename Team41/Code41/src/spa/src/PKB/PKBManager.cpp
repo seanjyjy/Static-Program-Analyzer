@@ -78,8 +78,8 @@ void PKBManager::registerUsesS(const string& stmtNum, const string& varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerUsesS] Used variable is not registered" << endl;
     }
-    if (!isAssignStmt(stmtNum) && !isPrintStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum)) {
-        cout << "Warning: " << "[PKB][registerUsesS] Statement is not of type assign/print/if/while" << endl;
+    if (!isAssignStmt(stmtNum) && !isPrintStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum) && !isCallStmt(stmtNum)) {
+        cout << "Warning: " << "[PKB][registerUsesS] Statement is not of type assign/print/if/while/call" << endl;
     }
     return usesTable->setVarUsedInStmt(stmtNum, varName);
 }
@@ -100,8 +100,8 @@ void PKBManager::registerModifiesS(const string& stmtNum, const string& varName)
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerModifiesS] Used variable is not registered" << endl;
     }
-    if (!isAssignStmt(stmtNum) && !isReadStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum)) {
-        cout << "Warning: " << "[PKB][registerModifiesS] Statement is not of type assign/read/if/while" << endl;
+    if (!isAssignStmt(stmtNum) && !isReadStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum) && !isCallStmt(stmtNum)) {
+        cout << "Warning: " << "[PKB][registerModifiesS] Statement is not of type assign/read/if/while/call" << endl;
     }
     return modifiesTable->setVarModifiedInStmt(stmtNum, varName);
 }

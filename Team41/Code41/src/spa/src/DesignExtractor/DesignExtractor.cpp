@@ -110,6 +110,7 @@ void DesignExtractor::extractPattern() {
 
 void DesignExtractor::extractDesign() {
     extractEntities();
+    extractCalls();
     extractModifies();
     extractUses();
     extractFollows();
