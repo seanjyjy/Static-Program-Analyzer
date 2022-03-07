@@ -6,7 +6,7 @@ PatternExtractor::PatternExtractor(TNode *ast, unordered_map<TNode *, string> &n
 
 void PatternExtractor::mapAssignPattern(TNode *node) {
     vector<TNode *> children = node->getChildren();
-    pair<string, TNode *> lhsRhsPair = make_pair(children[0]->getVal()->getVal(), children[1]);
+    pair<string, TNode *> lhsRhsPair = make_pair(children[0]->getTokenVal(), children[1]);
     assignPatternMap.insert({nodeToStmtNumMap[node], lhsRhsPair});
 }
 

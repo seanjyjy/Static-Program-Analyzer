@@ -1,5 +1,6 @@
 #pragma once
 
+#include <list>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -9,6 +10,9 @@ class UsesExtractor {
 private:
     TNode *ast; // root node of AST
     unordered_map<TNode *, string> &nodeToStmtNumMap; // mapping of TNode* to statement number
+    unordered_map<string, unordered_set<string>> &callsMap; // mapping of proc to list of proc it directly calls
+    list<string> &procCallOrder; // list of procedures in reversed toposort order of calls graph
+    unordered_set<TNode *> callNodeSet; // set of call TNodes
     unordered_map<string, unordered_set<string>> procUsesMap; // mapping of procedure to set of variables that are used
     unordered_map<string, unordered_set<string>> stmtUsesMap; // mapping of statement to set of variables that are used
 
@@ -28,8 +32,19 @@ private:
      */
     void dfs(TNode *node, unordered_set<string> &usesSet);
 
+    /**
+     * Adds variables used by proc due to call stmts in the proc.
+     */
+    void buildProcUsesCalls();
+
+    /**
+     * Records call stmts to set of variables it uses, based on the set of variables the procedure called uses.
+     */
+    void buildCallUses();
+
 public:
-    UsesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap);
+    UsesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,
+                  unordered_map<string, unordered_set<string>> &callsMap, list<string> &procCallOrder);
 
     /**
      * Records all uses relationship in procUsesMap and stmtUsesMap.

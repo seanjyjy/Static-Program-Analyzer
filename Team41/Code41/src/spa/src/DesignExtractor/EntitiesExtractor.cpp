@@ -12,8 +12,8 @@ EntitiesExtractor::EntitiesExtractor(TNode *ast) : ast(ast) {}
 void EntitiesExtractor::findProcedures() {
     vector<TNode *> procNodes = ast->getChildren();
     for (TNode *procNode : procNodes) {
-        string procName = procNode->getVal()->getVal();
-        if (procSet.find(procName) != procSet.end()) // Multiple procedures with same name not allowed
+        string procName = procNode->getTokenVal();
+        if (procSet.find(procName) != procSet.end()) // multiple procedures with same name not allowed
             throw SemanticException("Duplicate Procedure Name '" + procName + "' found");
         procSet.insert(procName);
     }
@@ -27,14 +27,14 @@ void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum) {
     } else {
         switch (type) {
             case TNodeType::varName:
-                varSet.insert(node->getVal()->getVal()); break;
+                varSet.insert(node->getTokenVal()); break;
             case TNodeType::constValue:
-                constSet.insert(node->getVal()->getVal()); break;
+                constSet.insert(node->getTokenVal()); break;
         }
     }
 }
 
-void EntitiesExtractor::findEntities() { // Todo: Register P calls P
+void EntitiesExtractor::findEntities() {
     int stmtNum = 0;
     stack<TNode *> stk;
     stk.push(ast);
@@ -43,9 +43,8 @@ void EntitiesExtractor::findEntities() { // Todo: Register P calls P
         recordEntity(node, stmtNum);
         vector<TNode *> ch = node->getChildren();
         reverse(ch.begin(), ch.end()); // left to right dfs
-        for (TNode *child : ch) {
+        for (TNode *child : ch)
             stk.push(child);
-        }
     }
 }
 

@@ -42,6 +42,10 @@ TNodeType TNode::getType() {
     return type;
 }
 
+string TNode::getTokenVal() {
+    return val->getVal();
+}
+
 void TNode::setParent(TNode *par) {
     parent = par;
 }

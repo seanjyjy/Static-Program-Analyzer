@@ -9,6 +9,7 @@ void DesignExtractor::extractEntities() {
     EntitiesExtractor ee = EntitiesExtractor(ast);
     ee.extractEntities();
     this->nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    this->procSet = ee.getProcSet();
 
     for (auto [node, stmtNumStr] : nodeToStmtNumMap) {
         TNodeType type = node->getType();
@@ -27,36 +28,51 @@ void DesignExtractor::extractEntities() {
                 pkb->registerAssignStmt(stmtNumStr); break;
         }
     }
-    for (string procName : ee.getProcSet())
+    for (const string &procName : ee.getProcSet())
         pkb->registerProcedure(procName);
-    for (string varName  : ee.getVarSet())
+    for (const string &varName  : ee.getVarSet())
         pkb->registerVariable(varName);
-    for (string constVal : ee.getConstSet())
+    for (const string &constVal : ee.getConstSet())
         pkb->registerConstant(constVal);
 }
 
+void DesignExtractor::extractCalls() {
+    CallsExtractor ce = CallsExtractor(ast, procSet);
+    ce.extractRelationship();
+    this->callsMap = ce.getCallsMap();
+    this->procCallOrder = ce.getProcCallOrder();
+    for (auto &[procParent, callsSet] : callsMap) {
+        for (const string &procChild : callsSet)
+            pkb->registerCalls(procParent, procChild);
+    }
+    for (auto &[procParent, callsTSet] : ce.getCallsTMap()) {
+        for (const string &procChild : callsTSet)
+            pkb->registerCallsT(procParent, procChild);
+    }
+}
+
 void DesignExtractor::extractModifies() {
-    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap);
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extractRelationship();
     for (auto &[procName, modifiesSet] : me.getProcModifiesMap()) {
-        for (auto modifiedName : modifiesSet)
+        for (const string &modifiedName : modifiesSet)
             pkb->registerModifiesP(procName, modifiedName);
     }
     for (auto &[stmtNum, modifiesSet] : me.getStmtModifiesMap()) {
-        for (auto modifiedName : modifiesSet)
+        for (const string &modifiedName : modifiesSet)
             pkb->registerModifiesS(stmtNum, modifiedName);
     }
 }
 
 void DesignExtractor::extractUses() {
-    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap);
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extractRelationship();
     for (auto &[procName, usesSet] : ue.getProcUsesMap()) {
-        for (auto usedName : usesSet)
+        for (const string &usedName : usesSet)
             pkb->registerUsesP(procName, usedName);
     }
     for (auto &[stmtNum, usesSet] : ue.getStmtUsesMap()) {
-        for (auto usedName : usesSet)
+        for (const string &usedName : usesSet)
             pkb->registerUsesS(stmtNum, usedName);
     }
 }
@@ -66,7 +82,7 @@ void DesignExtractor::extractFollows() {
     fe.extractRelationship();
     for (auto &[followed, followsTLst] : fe.getFollowsTMap()) {
         pkb->registerFollows(followsTLst.front(), followed); // front of list is direct follows
-        for (auto follower : followsTLst)
+        for (const string &follower : followsTLst)
             pkb->registerFollowsT(follower, followed);
     }
 }
@@ -75,11 +91,11 @@ void DesignExtractor::extractParent() {
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extractRelationship();
     for (auto &[parent, parentLst] : pe.getParentMap()) {
-        for (auto child : parentLst)
+        for (const string &child : parentLst)
             pkb->registerParent(parent, child);
     }
     for (auto &[parent, parentTLst] : pe.getParentTMap()) {
-        for (auto child : parentTLst)
+        for (const string &child : parentTLst)
             pkb->registerParentT(parent, child);
     }
 }
