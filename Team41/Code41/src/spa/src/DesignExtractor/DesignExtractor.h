@@ -1,6 +1,9 @@
 #pragma once
 
+#include <list>
 #include <unordered_map>
+#include <unordered_set>
+
 #include "Common/TNode.h"
 #include "PKB/PKBManager.h"
 #include "CallsExtractor.h"
