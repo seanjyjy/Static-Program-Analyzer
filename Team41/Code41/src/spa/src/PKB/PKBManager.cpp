@@ -131,7 +131,7 @@ void PKBManager::registerAssignPattern(const string& stmtNum, const string& lhsV
 }
 
 void PKBManager::registerIfPattern(const string &stmtNum, const string &condVariable) {
-    if (!(isAssignStmt(stmtNum))) {
+    if (!(isIfStmt(stmtNum))) {
         cout << "Warning: " << "[PKB][registerIfPattern] Statement is not of type if" << endl;
     }
     if (!(isVariable(condVariable))) {
@@ -141,7 +141,7 @@ void PKBManager::registerIfPattern(const string &stmtNum, const string &condVari
 }
 
 void PKBManager::registerWhilePattern(const string &stmtNum, const string &condVariable) {
-    if (!(isAssignStmt(stmtNum))) {
+    if (!(isWhileStmt(stmtNum))) {
         cout << "Warning: " << "[PKB][registerWhilePattern] Statement is not of type while" << endl;
     }
     if (!(isVariable(condVariable))) {
