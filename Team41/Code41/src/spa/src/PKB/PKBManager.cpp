@@ -5,8 +5,10 @@
 #include "PKB/Tables/ModifiesTable.h"
 #include "PKB/Tables/FollowsTable.h"
 #include "PKB/Tables/ParentTable.h"
-#include "PKB/Tables/PatternTable.h"
 #include "PKB/Tables/CallsTable.h"
+#include "PKB/Tables/AssignPatternTable.h"
+#include "PKB/Tables/WhilePatternTable.h"
+#include "PKB/Tables/IfPatternTable.h"
 
 using namespace std;
 
@@ -118,6 +120,14 @@ void PKBManager::registerModifiesP(const string& procName, const string& varName
 
 //======================================== Pattern ==================================================
 
-void PKBManager::registerPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST) {
-    return patternTable->setPattern(stmtNum, lhsVariable, rhsAssignAST);
+void PKBManager::registerAssignPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST) {
+    return assignPatternTable->setPattern(stmtNum, lhsVariable, rhsAssignAST);
+}
+
+void PKBManager::registerIfPattern(const string &stmtNum, const string &condVariable) {
+    return ifPatternTable->setPattern(stmtNum, condVariable);
+}
+
+void PKBManager::registerWhilePattern(const string &stmtNum, const string &condVariable) {
+    return whilePatternTable->setPattern(stmtNum, condVariable);
 }

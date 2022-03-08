@@ -8,16 +8,16 @@
 #include "Common/TreeUtils.h"
 
 /**
- * A relational table that stores the Pattern abstractions
+ * A relational table that stores the Pattern abstractions for assign statements
  * - Assign pattern relation maps each expression pattern to a Many-Many relationship mapping
  */
-class PatternTable {
+class AssignPatternTable {
 private:
     // rhs full pattern -> (assignStmt <--> var)
     SingleMap<string, ManyToMany<string, string>> patternRelation;
 
 public:
-    PatternTable();
+    AssignPatternTable();
 
     /**
      * Set the provided assignment pattern into the table

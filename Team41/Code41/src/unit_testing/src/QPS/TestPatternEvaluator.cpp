@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include "PKB/PKBManager.h"
-#include "PKB/Tables/PatternTable.h"
+#include "PKB/Tables/AssignPatternTable.h"
 #include "QPS/Evaluator/PatternEvaluator.h"
 #include "QPS/ClauseVariable.h"
 #include "../Common/AstBuilder/TestAstBuilderUtils.h"
@@ -42,13 +42,13 @@ TEST_CASE("Evaluator: Pattern evaluator") {
     PatternVariable patternWildCard(PatternVariable::wildcard, nullptr);
 
     // var1 = x+y+z;
-    pkbManager->registerPattern(lines[0], vars[0], node1);
+    pkbManager->registerAssignPattern(lines[0], vars[0], node1);
     // var2 = x+y;
-    pkbManager->registerPattern(lines[1], vars[1], node2);
+    pkbManager->registerAssignPattern(lines[1], vars[1], node2);
     // var1 = 2;
-    pkbManager->registerPattern(lines[2], vars[0], node3);
+    pkbManager->registerAssignPattern(lines[2], vars[0], node3);
     // var2 = x+y*z-20;
-    pkbManager->registerPattern(lines[3], vars[1], node4);
+    pkbManager->registerAssignPattern(lines[3], vars[1], node4);
     for (string l: lines) {
         pkbManager->registerAssignStmt(l);
     }
