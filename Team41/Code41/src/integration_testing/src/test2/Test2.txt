@@ -9,3 +9,5 @@ procedure p {
   else {
     z = 1; }
   z = z + x + i; }
+procedure q {
+  x = 2; }

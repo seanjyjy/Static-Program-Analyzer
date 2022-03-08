@@ -1,0 +1,300 @@
+1 - Calls(_, _)
+constant c;
+Select c such that Calls(_, _)
+0,1
+5000
+2 - Calls(computeCentroid, _)
+constant c;
+Select c such that Calls("computeCentroid", _)
+0,1
+5000
+3 - Calls(s, _) - error
+stmt s;
+Select s such that Calls(s, _)
+
+5000
+4 - Calls(pn, _) - error
+print pn;
+Select pn such that Calls(pn, _)
+
+5000
+5 - Calls(r, _) - error
+read r;
+Select r such that Calls(r, _)
+
+5000
+6 - Calls(a, _) - error
+assign a;
+Select a such that Calls(a, _)
+
+5000
+7 - Calls(ifs, _) - error
+if ifs;
+Select ifs such that Calls(ifs, _)
+
+5000
+8 - Calls(w, _) - error
+while w;
+Select w such that Calls(w, _)
+
+5000
+9 - Calls(c, _) - error
+call c;
+Select c such that Calls(c, _)
+
+5000
+10 - Calls(v, _) - error
+variable v;
+Select v such that Calls(v, _)
+
+5000
+11 - Calls(c, _) - error
+constant c;
+Select c such that Calls(c, _)
+
+5000
+12 - Calls(proc, _)
+procedure proc;
+Select proc such that Calls(proc, _)
+computeCentroid, main
+5000
+15 - Calls(_, computeCentroid)
+constant c;
+Select c such that Calls(_, "computeCentroid")
+0,1
+5000
+16 - Calls(_, s) - error
+stmt s;
+Select s such that Calls(_, s)
+
+5000
+17 - Calls(_, pn) - error
+print pn;
+Select pn such that Calls(_, pn)
+
+5000
+18 - Calls(_, r) - error
+read r;
+Select r such that Calls(_, r)
+
+5000
+19 - Calls(_, a) - error
+assign a;
+Select a such that Calls(_, a)
+
+5000
+20 - Calls(_, ifs) - error
+if ifs;
+Select ifs such that Calls(_, ifs)
+
+5000
+21 - Calls(_, w) - error
+while w;
+Select w such that Calls(_, w)
+
+5000
+22 - Calls(_, c) - error
+call c;
+Select c such that Calls(_, c)
+
+5000
+23 - Calls(_, v) - error
+variable v;
+Select v such that Calls(_, v)
+
+5000
+24 - Calls(_, c) - error
+constant c;
+Select c such that Calls(_, c)
+
+5000
+25 - Calls(_, proc)
+procedure proc;
+Select proc such that Calls(_, proc)
+readPoint, printResults, computeCentroid
+5000
+26 - Calls(p, P) get p
+procedure p, P;
+Select p such that Calls(p, P)
+main, computeCentroid
+5000
+27 - Calls(p, P) get P
+procedure p, P;
+Select P such that Calls(p, P)
+readPoint, printResults, computeCentroid
+5000
+28 - Calls(computeCentroid, readPoint)
+constant c;
+Select c such that Calls("computeCentroid", "readPoint")
+0,1
+5000
+29 - Calls(main, readPoint)
+constant c;
+Select c such that Calls("main", "readPoint")
+
+5000
+30 - Calls(main, p)
+procedure p;
+Select p such that Calls("main", p)
+printResults, computeCentroid
+5000
+1 - Calls*(_, _)
+constant c;
+Select c such that Calls*(_, _)
+0,1
+5000
+2 - Calls*(computeCentroid, _)
+constant c;
+Select c such that Calls*("computeCentroid", _)
+0,1
+5000
+3 - Calls*(s, _) - error
+stmt s;
+Select s such that Calls*(s, _)
+
+5000
+4 - Calls*(pn, _) - error
+print pn;
+Select pn such that Calls*(pn, _)
+
+5000
+5 - Calls*(r, _) - error
+read r;
+Select r such that Calls*(r, _)
+
+5000
+6 - Calls*(a, _) - error
+assign a;
+Select a such that Calls*(a, _)
+
+5000
+7 - Calls*(ifs, _) - error
+if ifs;
+Select ifs such that Calls*(ifs, _)
+
+5000
+8 - Calls*(w, _) - error
+while w;
+Select w such that Calls*(w, _)
+
+5000
+9 - Calls*(c, _) - error
+call c;
+Select c such that Calls*(c, _)
+
+5000
+10 - Calls*(v, _) - error
+variable v;
+Select v such that Calls*(v, _)
+
+5000
+11 - Calls*(c, _) - error
+constant c;
+Select c such that Calls*(c, _)
+
+5000
+12 - Calls*(proc, _)
+procedure proc;
+Select proc such that Calls*(proc, _)
+computeCentroid, main
+5000
+15 - Calls*(_, computeCentroid)
+constant c;
+Select c such that Calls*(_, "computeCentroid")
+0,1
+5000
+16 - Calls*(_, s) - error
+stmt s;
+Select s such that Calls*(_, s)
+
+5000
+17 - Calls*(_, pn) - error
+print pn;
+Select pn such that Calls*(_, pn)
+
+5000
+18 - Calls*(_, r) - error
+read r;
+Select r such that Calls*(_, r)
+
+5000
+19 - Calls*(_, a) - error
+assign a;
+Select a such that Calls*(_, a)
+
+5000
+20 - Calls*(_, ifs) - error
+if ifs;
+Select ifs such that Calls*(_, ifs)
+
+5000
+21 - Calls*(_, w) - error
+while w;
+Select w such that Calls*(_, w)
+
+5000
+22 - Calls*(_, c) - error
+call c;
+Select c such that Calls*(_, c)
+
+5000
+23 - Calls*(_, v) - error
+variable v;
+Select v such that Calls*(_, v)
+
+5000
+24 - Calls*(_, c) - error
+constant c;
+Select c such that Calls*(_, c)
+
+5000
+25 - Calls*(_, proc)
+procedure proc;
+Select proc such that Calls*(_, proc)
+readPoint, printResults, computeCentroid
+5000
+26 - Calls*(p, P) get p
+procedure p, P;
+Select p such that Calls*(p, P)
+main, computeCentroid
+5000
+27 - Calls*(p, P) get P
+procedure p, P;
+Select P such that Calls*(p, P)
+readPoint, printResults, computeCentroid
+5000
+28 - Calls*(computeCentroid, readPoint)
+constant c;
+Select c such that Calls*("computeCentroid", "readPoint")
+0,1
+5000
+29 - Calls*(main, readPoint)
+constant c;
+Select c such that Calls*("main", "readPoint")
+0,1
+5000
+30 - Calls*(main, p)
+procedure p;
+Select p such that Calls*("main", p)
+readPoint, printResults, computeCentroid
+5000
+100 - ModifiesP(computeCentroid, v)
+procedure p; variable v;
+Select v such that Modifies("computeCentroid", v)
+count, cenX, cenY, x, y, flag, normSq
+5000
+101 - ModifiesS(call, v)
+procedure p; variable v;
+Select v such that Modifies(13, v)
+x, y
+5000
+103 - UsesP(main, v)
+procedure p; variable v;
+Select v such that Uses("main", v)
+flag, cenX, cenY, normSq, count, x, y
+5000
+104 - UsesS(call, v)
+procedure p; variable v;
+Select v such that Uses(3, v)
+flag, cenX, cenY, normSq
+5000

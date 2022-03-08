@@ -1,0 +1,34 @@
+--. procedure main {
+01.     flag = 0;
+02.     call computeCentroid;
+03.     call printResults;
+--. }
+--. procedure readPoint {
+04.     read x;
+05.     read y;
+--. }
+--. procedure printResults {
+06.     print flag;
+07.     print cenX;
+08.     print cenY;
+09.     print normSq;
+--. }
+--. procedure computeCentroid {
+10.   count = 0;
+11.   cenX = 0;
+12.   cenY = 0;
+13.   call readPoint;
+14.   while ((x != 0) && (y != 0)) {
+15.       count = count + 1;
+16.       cenX = cenX + x;
+17.       cenY = cenY + y;
+18.       call readPoint;
+--.     }
+19.   if (count == 0) then {
+20.       flag = 1;
+--.     } else {
+21.       cenX = cenX / count;
+22.       cenY = cenY / count;
+--.     }
+23.   normSq = cenX * cenX + cenY * cenY;
+--. }

@@ -134,11 +134,26 @@ bool QueryParser::isQueryClauseValid(string type, string left, string right) {
 
     ModifiesS : 'Modifies' '(' stmtRef ',' entRef ')'
     ModifiesP : 'Modifies' '(' entRef ',' entRef ')'
+
+    Calls : 'Calls' '(' entRef ',' entRef ')'
+    CallsT : 'Calls*' '(' entRef ',' entRef ')'
+
+    Next : 'Next' '(' stmtRef ',' stmtRef ')'
+    NextT : 'Next*' '(' stmtRef ',' stmtRef ')'
+
+    Affects : 'Affects' '(' stmtRef ',' stmtRef ')'
+    AffectsT : 'Affects*' '(' stmtRef ',' stmtRef ')'
      */
 
     if (type == "Follows" || type == "Follows*" ||
-        type == "Parent" || type == "Parent*" ) {
+        type == "Parent" || type == "Parent*" ||
+        type == "Next" || type == "Next*" ||
+        type == "Affects" || type == "Affects*" ) {
         return lex->isStmtRef(left) && lex->isStmtRef(right);
+    }
+
+    if (type == "Calls" || type == "Calls*") {
+        return lex->isEntRef(left) && lex->isEntRef(right);
     }
 
     if (type == "Uses" || type == "Modifies") {
@@ -263,6 +278,18 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
         return QueryClause::parent;
     if (type == "Parent*")
         return QueryClause::parentT;
+    if (type == "Calls")
+        return QueryClause::calls;
+    if (type == "Calls*")
+        return QueryClause::callsT;
+    if (type == "Next")
+        return QueryClause::next;
+    if (type == "Next*")
+        return QueryClause::nextT;
+    if (type == "Affects")
+        return QueryClause::affects;
+    if (type == "Affects*")
+        return QueryClause::affectsT;
     if (type == "Uses" && lex->isStmtRef(left) && lex->isEntRef(right))
         return isDeclaredProcedure(left) ? QueryClause::usesP : QueryClause::usesS;
     if (type == "Uses" && lex->isEntRef(left) && lex->isEntRef(right))

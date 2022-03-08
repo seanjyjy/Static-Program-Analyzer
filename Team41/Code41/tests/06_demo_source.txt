@@ -29,7 +29,6 @@ procedure computeCentroid {
     } else {
       cenX = cenX / count;
       cenY = cenY / count;
-      x = 1;
     }
   normSq = cenX * cenX + cenY * cenY;
 }
