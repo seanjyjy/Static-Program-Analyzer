@@ -298,3 +298,83 @@ procedure p; variable v;
 Select v such that Uses(3, v)
 flag, cenX, cenY, normSq
 5000
+201 - Pattern a (v, _) - select a
+assign a; variable v;
+Select a pattern a (v, _)
+1, 10, 11, 12, 15, 16, 17, 20, 21, 22, 23
+5000
+202 - Pattern a (v, _) - select v
+assign a; variable v;
+Select v pattern a (v, _)
+count, cenX, cenY, flag, normSq
+5000
+203 - Pattern a (_, _)
+assign a;
+Select a pattern a (_, _)
+1, 10, 11, 12, 15, 16, 17, 20, 21, 22, 23
+5000
+204 - Pattern a (count, _)
+assign a;
+Select a pattern a ("count", _)
+10, 15
+5000
+205 - Pattern ifs (v, _, _) - select ifs
+if ifs; variable v;
+Select ifs pattern ifs (v, _, _)
+19
+5000
+206 - Pattern ifs (v, _, _) - select v
+if ifs; variable v;
+Select v pattern ifs (v, _, _)
+count
+5000
+207 - Pattern ifs (_, _, _) - select v
+if ifs;
+Select ifs pattern ifs (_, _, _)
+19
+5000
+208 - Pattern ifs (count, _, _) - select v
+if ifs;
+Select ifs pattern ifs ("count", _, _)
+19
+5000
+209 - Pattern ifs (_, _x+1_, _) - select v
+if ifs;
+Select ifs pattern ifs (_, _"x+1"_, _)
+
+5000
+210 - Pattern ifs (_, _, _x+1_) - select v
+if ifs;
+Select ifs pattern ifs (_, _, _"x+1"_)
+
+5000
+211 - Pattern w (v, _) - select w
+while w; variable v;
+Select w pattern w (v, _)
+14
+5000
+212 - Pattern w (v, _) - select v
+while w; variable v;
+Select v pattern w (v, _)
+x, y
+5000
+213 - Pattern w (_, _) - select w
+while w;
+Select w pattern w (_, _)
+14
+5000
+214 - Pattern w (x, _) - select w
+while w;
+Select w pattern w ("x", _)
+14
+5000
+215 - Pattern w (y, _) - select w
+while w;
+Select w pattern w ("y", _)
+14
+5000
+216 - Pattern w (y, _x+1_)
+while w;
+Select w pattern w ("y", _x+1_)
+
+5000

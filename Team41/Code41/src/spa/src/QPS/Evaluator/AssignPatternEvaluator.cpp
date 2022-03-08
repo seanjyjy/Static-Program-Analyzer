@@ -1,10 +1,10 @@
-#include "PatternEvaluator.h"
+#include "AssignPatternEvaluator.h"
 #include "Common/TreeUtils.h"
 
-Table *PatternEvaluator::evaluate(PatternClause clause, PKBClient *pkb) {
-    auto patternSynonym = clause.getSynonym();
-    auto leftVariable = clause.getLHS();
-    auto rightVariable = clause.getRHS();
+Table *AssignPatternEvaluator::evaluate(PatternClause clause, PKBClient *pkb) {
+    QueryDeclaration patternSynonym = clause.getSynonym();
+    ClauseVariable leftVariable = clause.getLHS();
+    PatternVariable rightVariable = clause.getRHS().at(0);
 
     if (leftVariable.isWildCard() && rightVariable.isFullPattern()) {
         return evaluateWildCardFullPattern(pkb, patternSynonym, rightVariable);
@@ -45,8 +45,8 @@ Table *PatternEvaluator::evaluate(PatternClause clause, PKBClient *pkb) {
     throw SemanticException("Invalid query provided for Pattern");
 }
 
-Table *PatternEvaluator::evaluateWildCardFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, PatternVariable right) {
-    unordered_set<string> setOfAssignStmt = pkb->getAllStmtsFromFullPattern(right.getMiniAST());
+Table *AssignPatternEvaluator::evaluateWildCardFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, PatternVariable right) {
+    unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromPattern(right.getMiniAST());
 
     string column = patternSyn.synonym;
     Header header = Header({column});
@@ -60,8 +60,8 @@ Table *PatternEvaluator::evaluateWildCardFullPattern(PKBClient *pkb, QueryDeclar
     return result;
 }
 
-Table *PatternEvaluator::evaluateWildCardSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, PatternVariable right) {
-    unordered_set<string> setOfAssignStmt = pkb->getAllStmtsFromSubPattern(right.getMiniAST());
+Table *AssignPatternEvaluator::evaluateWildCardSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, PatternVariable right) {
+    unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromSubpattern(right.getMiniAST());
 
     string column = patternSyn.synonym;
     Header header = Header({column});
@@ -75,7 +75,7 @@ Table *PatternEvaluator::evaluateWildCardSubPattern(PKBClient *pkb, QueryDeclara
     return result;
 }
 
-Table *PatternEvaluator::evaluateWildCardWildCard(PKBClient *pkb, QueryDeclaration patternSyn) {
+Table *AssignPatternEvaluator::evaluateWildCardWildCard(PKBClient *pkb, QueryDeclaration patternSyn) {
     // return a table with list of assignment statements
     unordered_set<string> setOfAssignStmt = pkb->getAssigns();
 
@@ -91,27 +91,10 @@ Table *PatternEvaluator::evaluateWildCardWildCard(PKBClient *pkb, QueryDeclarati
     return result;
 }
 
-Table *PatternEvaluator::evaluateIdentifierFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
-                                                       PatternVariable right) {
+Table *AssignPatternEvaluator::evaluateIdentifierFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
+                                                             PatternVariable right) {
 
-    unordered_set<string> setOfAssignStmt = pkb->getStmtFromFullPatternNVar(right.getMiniAST(), left.getLabel());
-
-    string column = patternSyn.synonym;
-    Header header = Header({column});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNum: setOfAssignStmt) {
-        Row *row = new Row(column, stmtNum);
-        result->addRow(row);
-    }
-
-    return result;
-}
-
-Table *PatternEvaluator::evaluateIdentifierSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
-                                                      PatternVariable right) {
-
-    unordered_set<string> setOfAssignStmt = pkb->getStmtFromSubPatternNVar(right.getMiniAST(), left.getLabel());
+    unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromPatternNVar(right.getMiniAST(), left.getLabel());
 
     string column = patternSyn.synonym;
     Header header = Header({column});
@@ -125,7 +108,24 @@ Table *PatternEvaluator::evaluateIdentifierSubPattern(PKBClient *pkb, QueryDecla
     return result;
 }
 
-Table *PatternEvaluator::evaluateIdentifierWildCard(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left) {
+Table *AssignPatternEvaluator::evaluateIdentifierSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
+                                                            PatternVariable right) {
+
+    unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromSubpatternNVar(right.getMiniAST(), left.getLabel());
+
+    string column = patternSyn.synonym;
+    Header header = Header({column});
+    Table *result = new PQLTable(header);
+
+    for (auto &stmtNum: setOfAssignStmt) {
+        Row *row = new Row(column, stmtNum);
+        result->addRow(row);
+    }
+
+    return result;
+}
+
+Table *AssignPatternEvaluator::evaluateIdentifierWildCard(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left) {
     unordered_set<string> setOfAssignStmt = pkb->getAssigns();
 
     string column = patternSyn.synonym;
@@ -142,9 +142,9 @@ Table *PatternEvaluator::evaluateIdentifierWildCard(PKBClient *pkb, QueryDeclara
     return result;
 }
 
-Table *PatternEvaluator::evaluateSynonymFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
-                                                    PatternVariable right) {
-    vector<pair<string, string>> listOfStmtNVar = pkb->getStmtNVarFromFullPattern(right.getMiniAST());
+Table *AssignPatternEvaluator::evaluateSynonymFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
+                                                          PatternVariable right) {
+    vector<pair<string, string>> listOfStmtNVar = pkb->getAssignStmtNVarFromPattern(right.getMiniAST());
 
     string firstColumn = patternSyn.synonym;
     string secondColumn = left.getLabel();
@@ -160,9 +160,9 @@ Table *PatternEvaluator::evaluateSynonymFullPattern(PKBClient *pkb, QueryDeclara
     return result;
 }
 
-Table *PatternEvaluator::evaluateSynonymSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
-                                                   PatternVariable right) {
-    vector<pair<string, string>> listOfStmtNVar = pkb->getStmtNVarFromSubPattern(right.getMiniAST());
+Table *AssignPatternEvaluator::evaluateSynonymSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
+                                                         PatternVariable right) {
+    vector<pair<string, string>> listOfStmtNVar = pkb->getAssignStmtNVarFromSubpattern(right.getMiniAST());
 
     string firstColumn = patternSyn.synonym;
     string secondColumn = left.getLabel();
@@ -179,7 +179,7 @@ Table *PatternEvaluator::evaluateSynonymSubPattern(PKBClient *pkb, QueryDeclarat
 
 }
 
-Table *PatternEvaluator::evaluateSynonymWildCard(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left) {
+Table *AssignPatternEvaluator::evaluateSynonymWildCard(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left) {
     unordered_set<string> setOfAssignStmt = pkb->getAssigns();
 
     string firstColumn = patternSyn.synonym;

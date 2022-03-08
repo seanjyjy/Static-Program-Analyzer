@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "Common/TNode.h"
 #include "ClauseVariable.h"
 #include "QueryDeclaration.h"
@@ -14,7 +15,7 @@ private:
     ClauseVariable lhs;
 
     // RHS of the pattern clause
-    PatternVariable rhs; // miniAST exists within
+    vector<PatternVariable> rhs; // miniAST exists within
 
 public:
     /**
@@ -36,7 +37,7 @@ public:
      *
      * @return PatternVariable representing the RHS of the pattern.
      */
-    PatternVariable getRHS() const;
+    vector<PatternVariable> getRHS() const;
 
     /**
      * Constructor for the PatternClause class.
@@ -45,7 +46,7 @@ public:
      * @param left for the LHS ClauseVariable instance.
      * @param right for the RHS PatternVariable instance.
      */
-    PatternClause(QueryDeclaration synonym, ClauseVariable lhs, PatternVariable rhs);
+    PatternClause(QueryDeclaration synonym, ClauseVariable lhs, vector<PatternVariable> rhs);
 };
 
 // todo: Be wary of advanced spa extensions. pattern will support more than just assignment
