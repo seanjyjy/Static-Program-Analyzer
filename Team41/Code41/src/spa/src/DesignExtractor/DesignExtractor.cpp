@@ -106,6 +106,14 @@ void DesignExtractor::extractPattern() {
     for (auto &[stmt, lhsRhsPair] : pe.getAssignPatternMap()) {
         pkb->registerAssignPattern(stmt, lhsRhsPair.first, lhsRhsPair.second);
     }
+    for (auto &[stmt, varSet] : pe.getIfPatternMap()) {
+        for (const string& var: varSet)
+            pkb->registerIfPattern(stmt, var);
+    }
+    for (auto &[stmt, varSet] : pe.getWhilePatternMap()) {
+        for (const string& var: varSet)
+            pkb->registerWhilePattern(stmt, var);
+    }
 }
 
 void DesignExtractor::extractDesign() {

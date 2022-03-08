@@ -121,13 +121,31 @@ void PKBManager::registerModifiesP(const string& procName, const string& varName
 //======================================== Pattern ==================================================
 
 void PKBManager::registerAssignPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST) {
+    if (!(isAssignStmt(stmtNum))) {
+        cout << "Warning: " << "[PKB][registerAssignPattern] Statement is not of type assign" << endl;
+    }
+    if (!(isVariable(lhsVariable))) {
+        cout << "Warning: " << "[PKB][registerAssignPattern] lhs variable is not registered" << endl;
+    }
     return assignPatternTable->setPattern(stmtNum, lhsVariable, rhsAssignAST);
 }
 
 void PKBManager::registerIfPattern(const string &stmtNum, const string &condVariable) {
+    if (!(isAssignStmt(stmtNum))) {
+        cout << "Warning: " << "[PKB][registerIfPattern] Statement is not of type if" << endl;
+    }
+    if (!(isVariable(condVariable))) {
+        cout << "Warning: " << "[PKB][registerIfPattern] cond variable is not registered" << endl;
+    }
     return ifPatternTable->setPattern(stmtNum, condVariable);
 }
 
 void PKBManager::registerWhilePattern(const string &stmtNum, const string &condVariable) {
+    if (!(isAssignStmt(stmtNum))) {
+        cout << "Warning: " << "[PKB][registerWhilePattern] Statement is not of type while" << endl;
+    }
+    if (!(isVariable(condVariable))) {
+        cout << "Warning: " << "[PKB][registerWhilePattern] cond variable is not registered" << endl;
+    }
     return whilePatternTable->setPattern(stmtNum, condVariable);
 }
