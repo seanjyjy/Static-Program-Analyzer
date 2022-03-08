@@ -24,7 +24,7 @@ Table *IfPatternEvaluator::evaluate(PatternClause clause, PKBClient *pkb) {
 
 Table *IfPatternEvaluator::evaluateWildCardWildCard(PKBClient *pkb, QueryDeclaration patternSyn) {
     // return a table with list of if statements
-    unordered_set<string> setOfIfStmt = pkb->getWhileStmtUsingSomeVarCond();
+    unordered_set<string> setOfIfStmt = pkb->getIfStmtUsingSomeVarCond();
 
     string column = patternSyn.synonym;
     Header header = Header({column});

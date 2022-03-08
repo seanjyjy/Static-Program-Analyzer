@@ -26,17 +26,18 @@ void PatternExtractor::dfs(TNode *node) {
     if (type == TNodeType::procedure) {
         dfs(node->getChildren()[0]); // only 1 child stmtLst
     } else if (type == TNodeType::ifStmt) {
-        unordered_set<string> vars;
-        dfsExpr(node, vars);
-        mapIfPattern(node, vars);
         vector<TNode *> ch = node->getChildren();
+        unordered_set<string> vars;
+        dfsExpr(ch[0], vars); // dfs on condition
+        mapIfPattern(node, vars);
         dfs(ch[1]); // 2nd and 3rd child are stmtLst
         dfs(ch[2]);
     } else if (type == TNodeType::whileStmt) {
+        vector<TNode *> ch = node->getChildren();
         unordered_set<string> vars;
-        dfsExpr(node, vars);
+        dfsExpr(ch[0], vars); // dfs on condition
         mapWhilePattern(node, vars);
-        dfs(node->getChildren()[1]); // right child is stmtLst
+        dfs(ch[1]); // dfs on stmtLst
     } else if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = node->getChildren();
         for (TNode *childNode: ch) {
