@@ -46,8 +46,8 @@ Table *IfPatternEvaluator::evaluateIdentifierWildCard(PKBClient *pkb, QueryDecla
     Table *result = new PQLTable(header);
 
     for (auto &stmtNum: setOfIfStmt) {
-            Row *row = new Row(column, stmtNum);
-            result->addRow(row);
+        Row *row = new Row(column, stmtNum);
+        result->addRow(row);
     }
 
     return result;
@@ -62,7 +62,7 @@ Table *IfPatternEvaluator::evaluateSynonymWildCard(PKBClient *pkb, QueryDeclarat
     Table *result = new PQLTable(header);
 
     for (auto &[stmt, var]: listOfStmtNVar) {
-        Row* row = new Row();
+        Row *row = new Row();
         row->addEntry(firstColumn, stmt);
         row->addEntry(secondColumn, var);
         result->addRow(row);
