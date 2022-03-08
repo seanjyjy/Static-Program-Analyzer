@@ -15,9 +15,11 @@
 #include "QPS/Evaluator/FollowsTEvaluator.h"
 #include "QPS/Evaluator/ParentEvaluator.h"
 #include "QPS/Evaluator/ParentTEvaluator.h"
-#include "QPS/Evaluator/PatternEvaluator.h"
 #include "QPS/Evaluator/CallsEvaluator.h"
 #include "QPS/Evaluator/CallsTEvaluator.h"
+#include "QPS/Evaluator/AssignPatternEvaluator.h"
+#include "QPS/Evaluator/IfPatternEvaluator.h"
+#include "QPS/Evaluator/WhilePatternEvaluator.h"
 #include "QueryObject.h"
 #include "QueryClause.h"
 

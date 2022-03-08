@@ -4,7 +4,7 @@
 #include "Common/TNode.h"
 #include "../PatternClause.h"
 
-class PatternEvaluator {
+class AssignPatternEvaluator {
 private:
     /**
      * Construct a table that captures the Pattern relation between a wildcard and a full pattern.
