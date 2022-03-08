@@ -2,9 +2,9 @@
 #include "Common/TreeUtils.h"
 
 Table *WhilePatternEvaluator::evaluate(PatternClause clause, PKBClient *pkb) {
-    auto patternSynonym = clause.getSynonym();
-    auto leftVariable = clause.getLHS();
-    auto rightVariable = clause.getRHS();
+    QueryDeclaration patternSynonym = clause.getSynonym();
+    ClauseVariable leftVariable = clause.getLHS();
+    PatternVariable rightVariable = clause.getRHS().at(0);
 
     if (leftVariable.isWildCard() && rightVariable.isWildcard()) {
         return evaluateWildCardWildCard(pkb, patternSynonym);

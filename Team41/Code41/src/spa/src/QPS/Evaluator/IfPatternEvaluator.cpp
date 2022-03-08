@@ -2,19 +2,20 @@
 #include "Common/TreeUtils.h"
 
 Table *IfPatternEvaluator::evaluate(PatternClause clause, PKBClient *pkb) {
-    auto patternSynonym = clause.getSynonym();
-    auto leftVariable = clause.getLHS();
-    auto rightVariable = clause.getRHS();
+    QueryDeclaration patternSynonym = clause.getSynonym();
+    ClauseVariable leftVariable = clause.getLHS();
+    PatternVariable thenPattern = clause.getRHS().at(0);
+    PatternVariable elsePattern = clause.getRHS().at(1);
 
-    if (leftVariable.isWildCard() && rightVariable.isWildcard()) {
+    if (leftVariable.isWildCard() && thenPattern.isWildcard() && elsePattern.isWildcard()) {
         return evaluateWildCardWildCard(pkb, patternSynonym);
     }
 
-    if (leftVariable.isIdentifier() && rightVariable.isWildcard()) {
+    if (leftVariable.isIdentifier() && thenPattern.isWildcard() && elsePattern.isWildcard()) {
         return evaluateIdentifierWildCard(pkb, patternSynonym, leftVariable);
     }
 
-    if (EvaluatorUtils::isVariableSynonym(&leftVariable) && rightVariable.isWildcard()) {
+    if (EvaluatorUtils::isVariableSynonym(&leftVariable) && thenPattern.isWildcard() && elsePattern.isWildcard()) {
         return evaluateSynonymWildCard(pkb, patternSynonym, leftVariable);
     }
 

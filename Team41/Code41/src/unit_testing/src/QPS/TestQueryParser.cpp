@@ -133,8 +133,8 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
     }
     SECTION("Sub Pattern") {
@@ -144,8 +144,8 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
 
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isSubPattern());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isSubPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isIdentifier());
     }
     SECTION("Wildcard Pattern") {
@@ -154,8 +154,8 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() == nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isWildcard());
         REQUIRE(qo->patternClauses.at(0).getLHS().isSynonym());
     }
     SECTION("TYPE syn1, syn2;") {
@@ -214,8 +214,8 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
     }
     SECTION("Whole shebang 1") {
@@ -225,8 +225,8 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
         REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
         REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
@@ -239,8 +239,8 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
 
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
         REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
         REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);

@@ -301,9 +301,9 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
 }
 
 bool QueryParser::isValidPatternSynType(QueryDeclaration declared) {
-    return declared.type != QueryDeclaration::ASSIGN &&
-        declared.type != QueryDeclaration::WHILE &&
-        declared.type != QueryDeclaration::IF;
+    return declared.type == QueryDeclaration::ASSIGN ||
+        declared.type == QueryDeclaration::WHILE ||
+        declared.type == QueryDeclaration::IF;
 }
 
 optional<QueryDeclaration> QueryParser::parsePatternSyn() {
@@ -316,13 +316,13 @@ optional<QueryDeclaration> QueryParser::parsePatternSyn() {
     if (declared == nullopt) {
         printf("Syntax Error: Use of undeclared pattern synonym <%s>\n", patternSyn->c_str());
         return nullopt;
-    } else {
-        if (isValidPatternSynType(declared.value())) {
-            printf("Pattern synonym must be of type assign, while or if");
-            return nullopt;
-        }
     }
-    return declared;
+
+    if (isValidPatternSynType(declared.value())) {
+        return declared;
+    }
+    printf("Pattern synonym must be of type assign, while or if");
+    return nullopt;
 }
 
 optional<string> QueryParser::parsePatternLHS() {
@@ -344,7 +344,7 @@ optional<string> QueryParser::parsePatternLHS() {
     return lhs;
 }
 
-PatternVariable *QueryParser::parsePatternRHS() {
+optional<PatternVariable> QueryParser::parsePatternRHS() {
     TNode *miniAST = nullptr;
     PatternVariable::pattern_type pt = PatternVariable::wildcard;
 
@@ -364,7 +364,7 @@ PatternVariable *QueryParser::parsePatternRHS() {
                 expr = expr.substr(1, expr.length() - 2);
             } else {
                 printf("Unknown pattern RHS: <%s>\n", patternExpr->c_str());
-                return nullptr;
+                return nullopt;
             }
             try {
                 miniAST = simpleParser.parseExpr(expr);
@@ -373,15 +373,14 @@ PatternVariable *QueryParser::parsePatternRHS() {
             }
             if (miniAST == nullptr) {
                 printf("Invalid pattern RHS: <%s>\n", patternExpr->c_str());
-                return nullptr;
+                return nullopt;
             }
         }
-        PatternVariable *pv = new PatternVariable(pt, miniAST);
-        return pv;
+        return PatternVariable(pt, miniAST);
     } else {
         // Invalid RHS
         printf("Syntax Error: No valid pattern expression found in RHS.\n");
-        return nullptr;
+        return nullopt;
     }
 }
 
@@ -401,21 +400,76 @@ bool QueryParser::parsePatternClause() {
         printf("Expected a pattern expression.\n");
         return false;
     }
-    PatternVariable* pv = parsePatternRHS();
-    if (pv == nullptr) return false;
+    optional<vector<PatternVariable>> pv;
+    switch (patternSyn->type) {
+        case QueryDeclaration::ASSIGN:
+            pv = parseAssignPatternParams();
+            break;
+        case QueryDeclaration::IF:
+            pv = parseIfPatternParams();
+            break;
+        case QueryDeclaration::WHILE:
+            pv = parseWhilePatternParams();
+            break;
+        default:
+            printf("Invalid pattern type");
+            return false;
+    }
+    if (pv == nullopt) return false;
     lookForClauseGrammarSymbol(")", "Syntax Error: Expected ')' for end of pattern declaration.\n");
-    buildPatternClauseObject(patternSyn.value(), lhs->c_str(), pv);
+    buildPatternClauseObject(patternSyn.value(), lhs->c_str(), *pv);
     return true;
 }
 
-void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string lhs, PatternVariable *rhs) {
+optional<vector<PatternVariable>> QueryParser::parseAssignPatternParams() {
+    optional<PatternVariable> pv = parsePatternRHS();
+    if (pv == nullopt) return nullopt;
+    return vector<PatternVariable>({*pv});
+}
+
+optional<vector<PatternVariable>> QueryParser::parseIfPatternParams() {
+    optional<PatternVariable> thenPv = parsePatternRHS();
+    if (thenPv == nullopt) return nullopt;
+    if (!thenPv->isWildcard()) {
+        delete thenPv->getMiniAST();
+        return nullopt;
+    }
+    lookForClauseGrammarSymbol(",", "Syntax Error: Expected ',' for pattern parameter delimiter.\n");
+    if (lex->isEndOfQuery()) {
+        printf("Expected 2 pattern expression.\n");
+        return nullopt;
+    }
+    optional<PatternVariable> elsePv = parsePatternRHS();
+    if (elsePv == nullopt) {
+        delete thenPv->getMiniAST();
+        return nullopt;
+    }
+    if (!elsePv->isWildcard()) {
+        delete thenPv->getMiniAST();
+        delete elsePv->getMiniAST();
+        return nullopt;
+    }
+    return vector<PatternVariable>({*thenPv, *elsePv});
+}
+
+optional<vector<PatternVariable>> QueryParser::parseWhilePatternParams() {
+    optional<PatternVariable> pv = parsePatternRHS();
+    if (pv == nullopt) return nullopt;
+    if (!pv->isWildcard()) {
+        delete pv->getMiniAST();
+        return nullopt;
+    }
+    return vector<PatternVariable>({*pv});
+}
+
+void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string lhs, vector<PatternVariable> rhs) {
     ClauseVariable::variable_type leftType = determineVariableType(lhs);
     string l = lhs;
     if (ClauseVariable::variable_type::identifier == leftType) {
         l = l.substr(1, l.length() - 2);
     }
     ClauseVariable lcv(leftType, l, determineDeclarationType(l));
-    PatternClause pc(patternSyn, lcv, *rhs);
+    PatternClause pc(patternSyn, lcv, rhs);
     queryObject->patternClauses.push_back(pc);
 }
 
