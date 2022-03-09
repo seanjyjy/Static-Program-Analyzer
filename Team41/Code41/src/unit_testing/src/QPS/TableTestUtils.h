@@ -10,13 +10,17 @@
 
 class TableTestUtils {
 public:
-    static bool checkTableMatches(Table* table, vector<string> headers, vector<vector<string>> rows) {
+    static bool checkTableMatches(Table *table, vector<string> headers, vector<vector<string>> rows) {
+        sort(rows.begin(), rows.end(),
+             [](const vector<string> &a, const vector<string> &b) {
+                 return a < b;
+             });
         table->sort(headers);
         if (table->getHeader() != unordered_set<string>{headers.begin(), headers.end()}) {
             return false;
         }
         vector<unordered_map<string, string>> actualRows;
-        for (auto row : table->getRows()) {
+        for (auto row: table->getRows()) {
             actualRows.push_back(row->getRow());
         }
         vector<unordered_map<string, string>> expectedRows;
