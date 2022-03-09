@@ -14,7 +14,26 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
     isQueryValid(isQueryValid) {}
 
 QueryObject::~QueryObject() {
-    for (auto p: patternClauses) {
+    for (const auto& p: patternClauses) {
         p.getRHS().cleanAST();
+    }
+}
+
+void QueryObject::print() {
+    printDeclarations();
+    printClauses();
+}
+
+void QueryObject::printDeclarations() {
+    cout << "*** DECLARATIONS ***" << endl;
+    for (QueryDeclaration &qd: declarations) {
+        qd.print();
+    }
+}
+
+void QueryObject::printClauses() {
+    cout << "*** CLAUSES ***" << endl;
+    for (QueryClause &qc: clauses) {
+        qc.print();
     }
 }

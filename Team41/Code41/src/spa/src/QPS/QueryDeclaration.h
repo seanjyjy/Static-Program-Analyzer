@@ -32,7 +32,26 @@ public:
      * to the system representation using the enum.
      *
      * @param s string representing the declaration type.
-     * @return design_entity_type corressponding to the declaration.
+     * @return design_entity_type corresponding to the declaration.
      */
     static design_entity_type stringToType(string &s);
+
+    /**
+     * Converts the enum design entity type into a human-readable string representation.
+     *
+     * @param d a valid design entity type as specified by the enum.
+     * @return a human-readable string representation.
+     * @throws runtime_error if the given design entity type has no string mapping.
+     */
+    static string typeToString(design_entity_type &d);
+
+    /**
+     * Returns a human-readable string representation of the query declaration.
+     */
+    string toString();
+
+    /**
+     * Prints the query declaration's type and synonym in a human-readable form.
+     */
+    void print();
 };
