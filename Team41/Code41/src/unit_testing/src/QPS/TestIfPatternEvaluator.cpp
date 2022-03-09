@@ -41,6 +41,8 @@ TEST_CASE("Evaluator: If pattern evaluator") {
                                              {lines[3], vars[1]}};
 
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
+
+        delete table1;
     }
 
     SECTION("Identifier WildCards Pair") {
@@ -57,6 +59,9 @@ TEST_CASE("Evaluator: If pattern evaluator") {
         vector<vector<string>> expectedRows2{{lines[1]},
                                              {lines[3]}};
         REQUIRE(TableTestUtils::checkTableMatches(table2, expectedColumns2, expectedRows2));
+
+        delete table1;
+        delete table2;
     }
 
     SECTION("WildCard WildCards Pair") {
@@ -68,6 +73,8 @@ TEST_CASE("Evaluator: If pattern evaluator") {
                                              {lines[2]},
                                              {lines[3]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
+
+        delete table1;
     }
 
     SECTION("Semantically & Syntactically Invalid") {
