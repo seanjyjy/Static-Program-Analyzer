@@ -366,4 +366,6 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
             REQUIRE_THROWS(CallsTEvaluator::evaluate(queryClause3, pkbManager));
         }
     }
+
+    delete pkbManager;
 }
