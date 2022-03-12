@@ -103,9 +103,15 @@ private:
 
     optional<string> parsePatternLHS();
 
-    PatternVariable *parsePatternRHS();
+    optional<PatternVariable> parsePatternRHS();
 
-    void buildPatternClauseObject(QueryDeclaration patternSyn, string lhs, PatternVariable *rhs);
+    optional<vector<PatternVariable>> parseAssignPatternParams();
+
+    optional<vector<PatternVariable>> parseWhilePatternParams();
+
+    optional<vector<PatternVariable>> parseIfPatternParams();
+
+    void buildPatternClauseObject(QueryDeclaration patternSyn, string lhs, vector<PatternVariable> rhs);
 
     /**
      * Populates the QueryObject with a new clause instance.

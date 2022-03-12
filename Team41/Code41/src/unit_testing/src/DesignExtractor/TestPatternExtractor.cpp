@@ -26,6 +26,8 @@ TEST_CASE("PatternExtractor: Assign") {
             {"8", {"q", AstBuilder(TestDesignExtractorUtils::readDePattern("assign", "8.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+    REQUIRE(pe.getIfPatternMap().empty());
+    REQUIRE(pe.getWhilePatternMap().empty());
     for (auto [stmt, expectedPair] : expectedAssignPattern)
         delete expectedPair.second;
     delete ast;
@@ -40,6 +42,8 @@ TEST_CASE("PatternExtractor: Read") {
     pe.extractRelationship();
 
     REQUIRE(pe.getAssignPatternMap().empty());
+    REQUIRE(pe.getIfPatternMap().empty());
+    REQUIRE(pe.getWhilePatternMap().empty());
     delete ast;
 }
 
@@ -52,6 +56,8 @@ TEST_CASE("PatternExtractor: Print") {
     pe.extractRelationship();
 
     REQUIRE(pe.getAssignPatternMap().empty());
+    REQUIRE(pe.getIfPatternMap().empty());
+    REQUIRE(pe.getWhilePatternMap().empty());
     delete ast;
 }
 
@@ -69,6 +75,12 @@ TEST_CASE("PatternExtractor: While") {
             {"11", {"t", AstBuilder(TestDesignExtractorUtils::readDePattern("while", "11.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+    REQUIRE(pe.getIfPatternMap().empty());
+    unordered_map<string, unordered_set<string>> expectedWhilePattern = {
+            {"1", {"a"}}, {"3", {"b"}}, {"5", {"c", "d"}},
+            {"7", {"e"}}, {"8", {"f"}}, {"10", {"g", "h"}}
+    };
+    REQUIRE(pe.getWhilePatternMap() == expectedWhilePattern);
     for (auto [stmt, expectedPair] : expectedAssignPattern)
         delete expectedPair.second;
     delete ast;
@@ -93,6 +105,12 @@ TEST_CASE("PatternExtractor: If") {
             {"19", {"tt", AstBuilder(TestDesignExtractorUtils::readDePattern("if", "19.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+    unordered_map<string, unordered_set<string>> expectedIfPattern = {
+            {"1", {"a"}}, {"4", {"b"}}, {"7", {"c", "d"}}, {"10", {"e"}},
+            {"11", {"f"}}, {"14", {"i"}}, {"17", {"g", "h"}}
+    };
+    REQUIRE(pe.getIfPatternMap() == expectedIfPattern);
+    REQUIRE(pe.getWhilePatternMap().empty());
     for (auto [stmt, expectedPair] : expectedAssignPattern)
         delete expectedPair.second;
     delete ast;
@@ -114,6 +132,10 @@ TEST_CASE("PatternExtractor: Non-nested") {
             {"7", {"j", AstBuilder(TestDesignExtractorUtils::readDePattern("non-nested", "7.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+    unordered_map<string, unordered_set<string>> expectedIfPattern = {{"6", {"g", "h", "i"}}};
+    REQUIRE(pe.getIfPatternMap() == expectedIfPattern);
+    unordered_map<string, unordered_set<string>> expectedWhilePattern = {{"3", {"d"}}};
+    REQUIRE(pe.getWhilePatternMap() == expectedWhilePattern);
     for (auto [stmt, expectedPair] : expectedAssignPattern)
         delete expectedPair.second;
     delete ast;
@@ -134,6 +156,10 @@ TEST_CASE("PatternExtractor: Nested") {
             {"8", {"n", AstBuilder(TestDesignExtractorUtils::readDePattern("nested", "8.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+    unordered_map<string, unordered_set<string>> expectedIfPattern = {{"3", {"c"}}};
+    REQUIRE(pe.getIfPatternMap() == expectedIfPattern);
+    unordered_map<string, unordered_set<string>> expectedWhilePattern = {{"1", {"a"}}, {"7", {"j", "k", "m"}}};
+    REQUIRE(pe.getWhilePatternMap() == expectedWhilePattern);
     for (auto [stmt, expectedPair] : expectedAssignPattern)
         delete expectedPair.second;
     delete ast;
@@ -160,6 +186,11 @@ TEST_CASE("PatternExtractor: n3iif") {
             {"18", {"if", AstBuilder(TestDesignExtractorUtils::readDePattern("n3iif", "18.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+    unordered_map<string, unordered_set<string>> expectedIfPattern = {
+            {"1", {"if", "else", "if", "call", "read", "print", "while"}}, {"6", {"abe"}}
+    };
+    REQUIRE(pe.getIfPatternMap() == expectedIfPattern);
+    REQUIRE(pe.getWhilePatternMap().empty());
     for (auto [stmt, expectedPair] : expectedAssignPattern)
         delete expectedPair.second;
     delete ast;
@@ -180,6 +211,14 @@ TEST_CASE("PatternExtractor: n3iwl") {
             {"12", {"while", AstBuilder(TestDesignExtractorUtils::readDePattern("n3iwl", "12.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+    unordered_map<string, unordered_set<string>> expectedIfPattern = {
+            {"2", {"a", "b", "c", "if", "else", "then"}}
+    };
+    REQUIRE(pe.getIfPatternMap() == expectedIfPattern);
+    unordered_map<string, unordered_set<string>> expectedWhilePattern = {
+            {"4", {"and", "two"}}, {"8", {"bob", "builder"}}, {"11", {"while"}}
+    };
+    REQUIRE(pe.getWhilePatternMap() == expectedWhilePattern);
     for (auto [stmt, expectedPair] : expectedAssignPattern)
         delete expectedPair.second;
     delete ast;
@@ -201,6 +240,14 @@ TEST_CASE("PatternExtractor: n3wim") {
             {"22", {"d", AstBuilder(TestDesignExtractorUtils::readDePattern("n3wim", "22.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+    unordered_map<string, unordered_set<string>> expectedIfPattern = {
+            {"4", {"a", "b"}}, {"8", {"d", "c", "a", "b"}}, {"16", {"a"}}
+    };
+    REQUIRE(pe.getIfPatternMap() == expectedIfPattern);
+    unordered_map<string, unordered_set<string>> expectedWhilePattern = {
+            {"2", {"a", "b", "c", "d"}}, {"6", {"a"}}, {"14", {"a", "b", "c", "d"}}
+    };
+    REQUIRE(pe.getWhilePatternMap() == expectedWhilePattern);
     for (auto [stmt, expectedPair] : expectedAssignPattern)
         delete expectedPair.second;
     delete ast;
@@ -222,6 +269,11 @@ TEST_CASE("PatternExtractor: n3wwl") {
             {"9", {"while", AstBuilder(TestDesignExtractorUtils::readDePattern("n3wwl", "9.txt")).build()}}
     };
     REQUIRE(TestDesignExtractorUtils::isPatternEqual(pe.getAssignPatternMap(), expectedAssignPattern));
+    REQUIRE(pe.getIfPatternMap().empty());
+    unordered_map<string, unordered_set<string>> expectedWhilePattern = {
+            {"2", {"if", "while"}}, {"4", {"e2", "a", "b", "c"}}
+    };
+    REQUIRE(pe.getWhilePatternMap() == expectedWhilePattern);
     for (auto [stmt, expectedPair] : expectedAssignPattern)
         delete expectedPair.second;
     delete ast;

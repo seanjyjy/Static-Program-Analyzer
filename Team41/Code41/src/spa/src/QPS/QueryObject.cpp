@@ -14,8 +14,10 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
     isQueryValid(isQueryValid) {}
 
 QueryObject::~QueryObject() {
-    for (const auto& p: patternClauses) {
-        p.getRHS().cleanAST();
+    for (PatternClause pList: patternClauses) {
+        for (PatternVariable p : pList.getRHS()){
+            p.cleanAST();
+        }
     }
 }
 

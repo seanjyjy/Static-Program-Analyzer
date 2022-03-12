@@ -441,53 +441,80 @@ TEST_CASE("PKB: calls abstraction") {
 }
 
 TEST_CASE("PKB: pattern abstraction") {
+    PKBManager pkbManager;
     string stmt[] = {"s0", "s1", "s2"};
     string vars[] = {"v0", "v1", "v2"};
     unordered_set<string> EMPTY_SET;
     vector<pair<string, string>> EMPTY_SET_PAIR;
 
-    Token* varTok = Token::makeName("v0");
-    Token* oneTok = Token::makeConst("1");
-    Token* twoTok = Token::makeConst("2");
+    SECTION("Assign") {
+        Token *varTok = Token::makeName("v0");
+        Token *oneTok = Token::makeConst("1");
+        Token *twoTok = Token::makeConst("2");
 
-    // 1 + 2 * v0
-    TNode *varNode = TNode::makeVarName(varTok);
-    TNode *one = TNode::makeConstVal(oneTok);
-    TNode *two = TNode::makeConstVal(twoTok);
-    TNode *times = TNode::makeTimes(two, varNode);
-    TNode *plus = TNode::makePlus(one, times);
+        // 1 + 2 * v0
+        TNode *varNode = TNode::makeVarName(varTok);
+        TNode *one = TNode::makeConstVal(oneTok);
+        TNode *two = TNode::makeConstVal(twoTok);
+        TNode *times = TNode::makeTimes(two, varNode);
+        TNode *plus = TNode::makePlus(one, times);
 
-    PKBManager pkbManager;
+        SECTION("Pattern") {
+            REQUIRE(sortAndCompareVectors(pkbManager.getAssignStmtNVarFromPattern(plus), EMPTY_SET_PAIR));
+            REQUIRE(pkbManager.getAssignStmtFromPattern(plus).empty());
+            REQUIRE(pkbManager.getAssignStmtFromPatternNVar(plus, vars[0]).empty());
 
-    SECTION("Pattern") {
-        REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromFullPattern(plus), EMPTY_SET_PAIR));
-        REQUIRE(pkbManager.getAllStmtsFromFullPattern(plus).empty());
-        REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[0]).empty());
-
-        // v0 = 1 + 2 * v0
-        REQUIRE_NOTHROW(pkbManager.registerPattern(stmt[0], vars[0], plus));
-        REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromFullPattern(plus),
-                                      vector<pair<string, string>>({{stmt[0], vars[0]}})));
-        REQUIRE(pkbManager.getAllStmtsFromFullPattern(plus) == unordered_set<string>({stmt[0]}));
-        REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[0]) == unordered_set<string>({stmt[0]}));
-        REQUIRE(pkbManager.getStmtFromFullPatternNVar(plus, vars[1]).empty());
-    }
-
-    SECTION("SubPattern") {
-        REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromSubPattern(plus), EMPTY_SET_PAIR));
-        REQUIRE(pkbManager.getAllStmtsFromSubPattern(plus).empty());
-        REQUIRE(pkbManager.getStmtFromSubPatternNVar(plus, vars[0]).empty());
-        // v0 = 1 + 2 * v0
-        REQUIRE_NOTHROW(pkbManager.registerPattern(stmt[0], vars[0], plus));
-
-        for (TNode *child: {one, two, times, plus, varNode}) {
-            REQUIRE(sortAndCompareVectors(pkbManager.getStmtNVarFromSubPattern(child),
+            // v0 = 1 + 2 * v0
+            REQUIRE_NOTHROW(pkbManager.registerAssignPattern(stmt[0], vars[0], plus));
+            REQUIRE(sortAndCompareVectors(pkbManager.getAssignStmtNVarFromPattern(plus),
                                           vector<pair<string, string>>({{stmt[0], vars[0]}})));
-            REQUIRE(pkbManager.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[0]}));
-            REQUIRE(pkbManager.getStmtFromSubPatternNVar(child, vars[0]) == unordered_set<string>({stmt[0]}));
-            REQUIRE(pkbManager.getStmtFromSubPatternNVar(child, vars[1]).empty());
+            REQUIRE(pkbManager.getAssignStmtFromPattern(plus) == unordered_set<string>({stmt[0]}));
+            REQUIRE(pkbManager.getAssignStmtFromPatternNVar(plus, vars[0]) == unordered_set<string>({stmt[0]}));
+            REQUIRE(pkbManager.getAssignStmtFromPatternNVar(plus, vars[1]).empty());
         }
+
+        SECTION("SubPattern") {
+            REQUIRE(sortAndCompareVectors(pkbManager.getAssignStmtNVarFromSubpattern(plus), EMPTY_SET_PAIR));
+            REQUIRE(pkbManager.getAssignStmtFromSubpattern(plus).empty());
+            REQUIRE(pkbManager.getAssignStmtFromSubpatternNVar(plus, vars[0]).empty());
+            // v0 = 1 + 2 * v0
+            REQUIRE_NOTHROW(pkbManager.registerAssignPattern(stmt[0], vars[0], plus));
+
+            for (TNode *child: {one, two, times, plus, varNode}) {
+                REQUIRE(sortAndCompareVectors(pkbManager.getAssignStmtNVarFromSubpattern(child),
+                                              vector<pair<string, string>>({{stmt[0], vars[0]}})));
+                REQUIRE(pkbManager.getAssignStmtFromSubpattern(child) == unordered_set<string>({stmt[0]}));
+                REQUIRE(pkbManager.getAssignStmtFromSubpatternNVar(child, vars[0]) == unordered_set<string>({stmt[0]}));
+                REQUIRE(pkbManager.getAssignStmtFromSubpatternNVar(child, vars[1]).empty());
+            }
+        }
+
+        delete plus;
     }
 
-    delete plus;
+    SECTION("If") {
+        REQUIRE(pkbManager.getIfStmtNVarPairs().empty());
+        REQUIRE(pkbManager.getIfStmtUsingSomeVarCond().empty());
+        REQUIRE(pkbManager.getIfStmtUsingVarCond(vars[0]).empty());
+
+        REQUIRE_NOTHROW(pkbManager.registerIfPattern(stmt[0], vars[0]));
+        REQUIRE(sortAndCompareVectors(pkbManager.getIfStmtNVarPairs(),
+                                      vector<pair<string, string>>({{stmt[0], vars[0]}})));
+        REQUIRE(pkbManager.getIfStmtUsingSomeVarCond() == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getIfStmtUsingVarCond(vars[0]) == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getIfStmtUsingVarCond(vars[1]).empty());
+    }
+
+    SECTION("While") {
+        REQUIRE(pkbManager.getWhileStmtNVarPairs().empty());
+        REQUIRE(pkbManager.getWhileStmtUsingSomeVarCond().empty());
+        REQUIRE(pkbManager.getWhileStmtUsingVarCond(vars[0]).empty());
+
+        REQUIRE_NOTHROW(pkbManager.registerWhilePattern(stmt[0], vars[0]));
+        REQUIRE(sortAndCompareVectors(pkbManager.getWhileStmtNVarPairs(),
+                                      vector<pair<string, string>>({{stmt[0], vars[0]}})));
+        REQUIRE(pkbManager.getWhileStmtUsingSomeVarCond() == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getWhileStmtUsingVarCond(vars[0]) == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getWhileStmtUsingVarCond(vars[1]).empty());
+    }
 }

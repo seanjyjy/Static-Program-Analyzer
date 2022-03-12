@@ -1,11 +1,11 @@
 #include "catch.hpp"
-#include "PKB/Tables/PatternTable.h"
+#include "PKB/Tables/AssignPatternTable.h"
 #include "../UnitTestUtility.h"
 
 using namespace std;
 
-TEST_CASE("PKB: PatternTable") {
-    PatternTable table;
+TEST_CASE("PKB: AssignPatternTable") {
+    AssignPatternTable table;
     string stmt[] = {"s0", "s1", "s2"};
     string vars[] = {"v0", "v1", "v2"};
     unordered_set<string> EMPTY_SET;

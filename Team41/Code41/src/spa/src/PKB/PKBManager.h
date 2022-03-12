@@ -135,5 +135,21 @@ public:
      * @param lhsVariable the modified variable in the statement
      * @param assignAST the Abstract Syntax Tree for the RHS expression of the statement
      */
-    void registerPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST);
+    void registerAssignPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST);
+
+    /**
+     * Registers to PKBManager that the specified if stmt, uses the variable in its condition block
+     *
+     * @param stmtNum if statement
+     * @param condVariable the variable in the condition block
+     */
+    void registerIfPattern(const string& stmtNum, const string& condVariable);
+
+    /**
+     * Registers to PKBManager that the specified while stmt, uses the variable in its condition block
+     *
+     * @param stmtNum if statement
+     * @param condVariable the variable in the condition block
+     */
+    void registerWhilePattern(const string& stmtNum, const string& condVariable);
 };

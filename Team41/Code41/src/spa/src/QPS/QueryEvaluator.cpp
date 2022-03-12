@@ -130,7 +130,11 @@ Table *QueryEvaluator::evaluate(PatternClause &clause) {
     auto type = clause.getSynonym().type;
     switch (type) {
         case QueryDeclaration::design_entity_type::ASSIGN:
-            return PatternEvaluator::evaluate(clause, this->pkb);
+            return AssignPatternEvaluator::evaluate(clause, this->pkb);
+        case QueryDeclaration::design_entity_type::IF:
+            return IfPatternEvaluator::evaluate(clause, this->pkb);
+        case QueryDeclaration::design_entity_type::WHILE:
+            return WhilePatternEvaluator::evaluate(clause, this->pkb);
         default:
             throw std::runtime_error("unknown pattern clause of type " + to_string(type));
     }

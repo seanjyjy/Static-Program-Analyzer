@@ -170,7 +170,7 @@ optional<string> QueryLexer::nextPatternExpression() {
     string out = "";
     if (peekNextIsString("_")) {
         index++; // advance past first '_'
-        if (peekNextIsString(")")) {
+        if (peekNextIsString(")") || peekNextIsString(",")) {
             // Wildcard encountered
             return "_";
         }

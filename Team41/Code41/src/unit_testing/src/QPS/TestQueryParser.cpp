@@ -126,37 +126,132 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(clauseMatch);
         REQUIRE(vMatch);
     }
-    SECTION("Full Pattern") {
+    SECTION("Assign Full Pattern") {
         string s = "assign a;\n"
                    "Select a pattern a (_, \"count + 1\")";
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
+        REQUIRE(qo->isQueryValid);
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getRHS().size() == 1);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
     }
-    SECTION("Sub Pattern") {
+    SECTION("Assign Sub Pattern") {
         string s = "assign a;\n"
                    "Select a pattern a (\"x\", _\"sub + 1\"_)";
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
 
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isSubPattern());
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->patternClauses.at(0).getRHS().size() == 1);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isSubPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isIdentifier());
     }
-    SECTION("Wildcard Pattern") {
+    SECTION("Assign Wildcard Pattern") {
         string s = "assign a; variable v;\n"
                    "Select a pattern a (v, _)";
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() == nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isWildcard());
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->patternClauses.at(0).getRHS().size() == 1);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isWildcard());
         REQUIRE(qo->patternClauses.at(0).getLHS().isSynonym());
+        REQUIRE(qo->patternClauses.at(0).getLHS().getDesignEntityType() == QueryDeclaration::VARIABLE);
+    }
+    SECTION("If Pattern identifier condVar") {
+        string s = "if ifs;\n"
+                   "Select ifs pattern ifs (\"v\", _, _)";
+
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::IF);
+        REQUIRE(qo->patternClauses.at(0).getRHS().size() == 2);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(1).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(1).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isIdentifier());
+    }
+    SECTION("If Pattern synonym condVar") {
+        string s = "if ifs; variable v;\n"
+                   "Select ifs pattern ifs (v, _, _)";
+
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::IF);
+        REQUIRE(qo->patternClauses.at(0).getRHS().size() == 2);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(1).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(1).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isSynonym());
+        REQUIRE(qo->patternClauses.at(0).getLHS().getDesignEntityType() == QueryDeclaration::VARIABLE);
+    }
+    SECTION("If Pattern Wildcard condVar") {
+        string s = "if ifs;\n"
+                   "Select ifs pattern ifs (_, _, _)";
+
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::IF);
+        REQUIRE(qo->patternClauses.at(0).getRHS().size() == 2);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(1).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(1).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
+    }
+    SECTION("While Pattern identifier condVar") {
+        string s = "while w;\n"
+                   "Select w pattern w (\"v\", _)";
+
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::WHILE);
+        REQUIRE(qo->patternClauses.at(0).getRHS().size() == 1);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isIdentifier());
+    }
+    SECTION("While Pattern synonym condVar") {
+        string s = "while w; variable v;\n"
+                   "Select w pattern w (v, _)";
+
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::WHILE);
+        REQUIRE(qo->patternClauses.at(0).getRHS().size() == 1);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isSynonym());
+        REQUIRE(qo->patternClauses.at(0).getLHS().getDesignEntityType() == QueryDeclaration::VARIABLE);
+    }
+    SECTION("While Pattern Wildcard condVar") {
+        string s = "while w;\n"
+                   "Select w pattern w (_, _)";
+
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::WHILE);
+        REQUIRE(qo->patternClauses.at(0).getRHS().size() == 1);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() == nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isWildcard());
+        REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
     }
     SECTION("TYPE syn1, syn2;") {
         string s = "variable v, v1, v2; assign a, a1;\n"
@@ -214,8 +309,8 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
     }
     SECTION("Whole shebang 1") {
@@ -225,8 +320,8 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
         REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
         REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
@@ -239,8 +334,8 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
 
         REQUIRE(qo->patternClauses.at(0).getSynonym().type == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->patternClauses.at(0).getRHS().getMiniAST() != nullptr);
-        REQUIRE(qo->patternClauses.at(0).getRHS().isFullPattern());
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).getMiniAST() != nullptr);
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->patternClauses.at(0).getLHS().isWildCard());
         REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
         REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
@@ -384,6 +479,55 @@ TEST_CASE("QPS: Parser_INVALID") {
     SECTION("pattern misspelled") {
         string s = "variable v; assign a;\n"
                    "Select v such that Uses(a, v) paddern a (v, _)";
+        QueryParser a = QueryParser{s};
+        qo = a.parse();
+        REQUIRE(!qo->isQueryValid);
+    }
+    SECTION("assign pattern extra arg") {
+        string s = "variable v; assign a;\n"
+                   "Select v such that Uses(a, v) pattern a (v, _, _)";
+        QueryParser a = QueryParser{s};
+        qo = a.parse();
+        REQUIRE(!qo->isQueryValid);
+    }
+    SECTION("while pattern extra arg") {
+        string s = "variable v; while w;\n"
+                   "Select v such that Uses(w, v) pattern w (v, _, _)";
+        QueryParser a = QueryParser{s};
+        qo = a.parse();
+        REQUIRE(!qo->isQueryValid);
+    }
+    SECTION("unknown pattern") {
+        string s = "variable v; call c;\n"
+                   "Select v such that Uses(c, v) pattern w (c, _)";
+        QueryParser a = QueryParser{s};
+        qo = a.parse();
+        REQUIRE(!qo->isQueryValid);
+    }
+    SECTION("while pattern using fullpattern") {
+        string s = "variable v; while w;\n"
+                   "Select v such that Uses(w, v) pattern w (v, \"x+1\")";
+        QueryParser a = QueryParser{s};
+        qo = a.parse();
+        REQUIRE(!qo->isQueryValid);
+    }
+    SECTION("while pattern using subpattern") {
+        string s = "variable v; while w;\n"
+                   "Select v such that Uses(w, v) pattern w (v, _\"x+1\"_)";
+        QueryParser a = QueryParser{s};
+        qo = a.parse();
+        REQUIRE(!qo->isQueryValid);
+    }
+    SECTION("if pattern using fullpattern") {
+        string s = "variable v; if ifs;\n"
+                   "Select v such that Uses(ifs, v) pattern ifs (v, \"x+1\")";
+        QueryParser a = QueryParser{s};
+        qo = a.parse();
+        REQUIRE(!qo->isQueryValid);
+    }
+    SECTION("if pattern using subpattern") {
+        string s = "variable v; if ifs;\n"
+                   "Select v such that Uses(ifs, v) pattern ifs (v, _\"x+1\"_)";
         QueryParser a = QueryParser{s};
         qo = a.parse();
         REQUIRE(!qo->isQueryValid);
