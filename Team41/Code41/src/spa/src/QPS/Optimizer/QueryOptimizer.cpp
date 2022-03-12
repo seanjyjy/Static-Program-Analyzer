@@ -2,7 +2,7 @@
 #include "ClauseGroup.h"
 #include "ClauseGroups.h"
 
-QueryOptimizer::QueryOptimizer(const PKBManager& pkbManager): adapter(PKBAdapter(pkbManager)), clauseDepGraph(adapter) {
+QueryOptimizer::QueryOptimizer(PKBManager *pkbManager): adapter(PKBAdapter(pkbManager)), clauseDepGraph(adapter) {
 }
 
 OptimizedQueryObject QueryOptimizer::optimize(QueryObject &qo, bool isDynamic) {

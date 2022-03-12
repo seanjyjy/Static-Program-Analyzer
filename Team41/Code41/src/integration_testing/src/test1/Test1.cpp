@@ -30,8 +30,8 @@ TEST_CASE("Test 1") {
         QueryObject* queryObject = qp.parse();
 
         // TODO complete this later, once the interface is stable
-        QueryOptimizer qo;
-        OptimizedQueryObject oqo = qo.optimize(*queryObject);
+        QueryOptimizer qo(&pkbManager);
+//        OptimizedQueryObject oqo = qo.optimize(*queryObject);
 
         QueryEvaluator queryEvaluator(&pkbManager);
         unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);

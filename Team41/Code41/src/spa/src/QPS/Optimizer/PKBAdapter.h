@@ -3,11 +3,13 @@
 #include "PKB/PKBManager.h"
 #include "QPS/ClauseVariable.h"
 
+// TODO: destructor
+
 class PKBAdapter {
 private:
-    PKBManager pkb;
+    PKBManager *pkb;
 public:
-    PKBAdapter(PKBManager pkb);
+    PKBAdapter(PKBManager *pkb);
     long long getRowCount(const ClauseVariable &synonym);
     long long getRowCount(const vector<ClauseVariable> &synonyms);
 };

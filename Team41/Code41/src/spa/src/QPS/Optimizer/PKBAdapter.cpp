@@ -1,6 +1,6 @@
 #include "PKBAdapter.h"
 
-PKBAdapter::PKBAdapter(PKBManager pkb): pkb(move(pkb)) {
+PKBAdapter::PKBAdapter(PKBManager *pkb): pkb(pkb) {
 }
 
 long long PKBAdapter::getRowCount(const ClauseVariable &synonym) {

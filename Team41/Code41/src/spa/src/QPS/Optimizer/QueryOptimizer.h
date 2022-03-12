@@ -8,12 +8,14 @@
 
 using namespace std;
 
+// TODO: destructor
+
 class QueryOptimizer {
 private:
     PKBAdapter adapter;
     ClauseDepGraph clauseDepGraph;
     ClauseGroups divideClausesIntoGroups(QueryObject &qo);
 public:
-    QueryOptimizer(const PKBManager& pkbManager);
+    QueryOptimizer(PKBManager *pkbManager);
     OptimizedQueryObject optimize(QueryObject &qo, bool isDynamic=false);
 };
