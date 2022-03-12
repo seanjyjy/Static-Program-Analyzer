@@ -17,9 +17,9 @@ private:
 public:
     ClauseGroup(PKBAdapter pkbAdapter);
     void addClause(const TempClause &c);
-    void sortClauses() const;
+    void sortClauses();
     bool hasNextClause();
     TempClause getNextClauseStatic(); // reads clauses in the same order they were added
     TempClause getNextClauseDynamic(); // gets the clause resulting in the smallest intermediate table
-    [[nodiscard]] long getScore() const;
+    long getScore();
 };

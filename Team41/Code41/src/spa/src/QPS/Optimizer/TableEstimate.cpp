@@ -11,7 +11,7 @@ TableEstimate::TableEstimate(PKBAdapter &pkbAdapter): pkbAdapter(pkbAdapter) {}
 
 void TableEstimate::merge(const vector<ClauseVariable> &sch) {
     // merge with new schema
-    unordered_set<ClauseVariable, cvHasher> a(schema.begin(), schema.end());
+    unordered_set<ClauseVariable, cvHasher, cvEquals> a(schema.begin(), schema.end());
     for (const ClauseVariable &cv: sch) {
         if (a.find(cv) == a.end()) schema.push_back(cv);
     }
@@ -21,7 +21,7 @@ void TableEstimate::merge(const vector<ClauseVariable> &sch) {
 }
 
 bool TableEstimate::hasCommonCol(const vector<ClauseVariable> &sch) {
-    unordered_set<ClauseVariable, cvHasher> a(schema.begin(), schema.end());
+    unordered_set<ClauseVariable, cvHasher, cvEquals> a(schema.begin(), schema.end());
     for (const ClauseVariable &cv: sch) {
         if (a.find(cv) != a.end()) return true;
     }

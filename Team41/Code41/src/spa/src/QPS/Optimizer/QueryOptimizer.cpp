@@ -2,7 +2,8 @@
 #include "ClauseGroup.h"
 #include "ClauseGroups.h"
 
-QueryOptimizer::QueryOptimizer() = default;
+QueryOptimizer::QueryOptimizer(const PKBManager& pkbManager): adapter(PKBAdapter(pkbManager)), clauseDepGraph(adapter) {
+}
 
 OptimizedQueryObject QueryOptimizer::optimize(QueryObject &qo, bool isDynamic) {
     // step 1: Take query object, extract clauses, group them based on synonym dependencies
@@ -14,7 +15,7 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject &qo, bool isDynamic) {
     // step 3: Sort each individual clause group
     clauseGroups.sortEachGroup();
 
-    return { qo, clauseGroups, isDynamic };
+    return { adapter, qo, clauseGroups, isDynamic };
 }
 
 ClauseGroups QueryOptimizer::divideClausesIntoGroups(QueryObject &qo) {

@@ -15,14 +15,14 @@ void ClauseGroup::addClause(const TempClause &c) {
 }
 
 // the score of a clause group is just the sum of scores of its constituent clauses
-long ClauseGroup::getScore() const {
-    return accumulate(clauses.begin(), clauses.end(), 0L, [](const TempClause &a, long currScore) {
+long ClauseGroup::getScore() {
+    return accumulate(clauses.begin(), clauses.end(), 0L, [](long currScore, TempClause &a) {
         return ClauseScorer::score(a) + currScore;
     });
 }
 
-void ClauseGroup::sortClauses() const {
-    sort(clauses.begin(), clauses.end(), [](const TempClause &a, const TempClause &b) {
+void ClauseGroup::sortClauses() {
+    sort(clauses.begin(), clauses.end(), [](TempClause &a, TempClause &b) {
         return ClauseScorer::score(a) < ClauseScorer::score(b);
     });
 }

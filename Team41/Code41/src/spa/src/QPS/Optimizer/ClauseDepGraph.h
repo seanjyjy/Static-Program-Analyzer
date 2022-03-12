@@ -14,13 +14,16 @@ using namespace std;
 class ClauseDepGraph {
 private:
     // used to identify the group of clauses with no synonyms
-    const static string NO_SYNONYM = "NO_SYNONYMS";
+    const string NO_SYNONYM = "NO_SYNONYMS";
 
     SimpleGraph graph;
+    PKBAdapter pkbAdapter;
     unordered_map<string, vector<TempClause>> synonymToClauses;
     bool hasSyn(const string&s);
     vector<TempClause> getClausesOfSyn(const string& syn);
 public:
+    ClauseDepGraph(PKBAdapter pkbAdapter);
+
     void registerClause(TempClause tc);
     ClauseGroups split();
 };

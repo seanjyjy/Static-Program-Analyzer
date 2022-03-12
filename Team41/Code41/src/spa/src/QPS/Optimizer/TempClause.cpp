@@ -1,5 +1,7 @@
 #include "TempClause.h"
 
+TempClause::TempClause() = default;
+
 TempClause::TempClause(QueryClause *queryClause): qc(queryClause) {}
 
 TempClause::TempClause(PatternClause *patternClause): pc(patternClause) {}

@@ -25,10 +25,10 @@ bool ClauseVariable::isInteger() {
     return type == integer;
 }
 
-ClauseVariable::variable_type ClauseVariable::getType() {
+ClauseVariable::variable_type ClauseVariable::getType() const {
     return type;
 }
 
-string ClauseVariable::getLabel() {
+string ClauseVariable::getLabel() const {
     return label;
 }

@@ -7,6 +7,7 @@ class TempClause {
     QueryClause* qc = nullptr;
     PatternClause* pc = nullptr;
 public:
+    TempClause();
     TempClause(QueryClause *qc);
     TempClause(PatternClause *pc);
     vector<ClauseVariable> getSynonyms();

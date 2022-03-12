@@ -1,15 +1,16 @@
 #include <stdexcept>
 #include <algorithm>
+#include <utility>
 
 using namespace std;
 
 #include "ClauseGroups.h"
 #include "TempClause.h"
 
-ClauseGroups::ClauseGroups() = default;
+ClauseGroups::ClauseGroups(PKBAdapter pkbAdapter): pkbAdapter(std::move(pkbAdapter)) {};
 
-ClauseGroups::ClauseGroups(int n) {
-    groups.assign(n, ClauseGroup());
+ClauseGroups::ClauseGroups(int n, PKBAdapter pkbAdapter): pkbAdapter(std::move(pkbAdapter)) {
+    groups.assign(n, ClauseGroup(pkbAdapter));
 }
 
 void ClauseGroups::sortGroups() {
@@ -19,7 +20,7 @@ void ClauseGroups::sortGroups() {
 }
 
 void ClauseGroups::sortEachGroup() {
-    for (const ClauseGroup &cg: groups) {
+    for (ClauseGroup &cg: groups) {
         cg.sortClauses();
     }
 }
