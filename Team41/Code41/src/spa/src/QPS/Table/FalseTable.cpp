@@ -41,3 +41,7 @@ void FalseTable::sort(vector<string> commonHeader) {}
 Table::TableType FalseTable::getType() {
     return Table::FalseTable;
 }
+
+unordered_set<string> FalseTable::getColumns(vector<string> columnNames) {
+    return unordered_set<string>();
+}

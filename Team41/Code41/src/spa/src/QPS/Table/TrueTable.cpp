@@ -41,3 +41,7 @@ void TrueTable::sort(vector<string> commonHeader) {}
 Table::TableType TrueTable::getType() {
     return Table::TrueTable;
 }
+
+unordered_set<string> TrueTable::getColumns(vector<string> columnNames) {
+    return unordered_set<string>();
+}

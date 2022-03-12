@@ -69,5 +69,20 @@ public:
      */
     Table* evaluate(PatternClause& clause);
 
+    /**
+     * Format the resulting query depending on the return type.
+     *
+     * @param queryObject QueryObject.
+     * @param resultTable Table the represents the resultant table from the query itself.
+     * @return An unordered set of strings representing the result.
+     */
     unordered_set<string> buildResult(QueryObject *queryObject, Table *resultTable);
+
+    /**
+     * Extract the vector of synonyms from the query's return type from query object.
+     *
+     * @param queryObject QueryObject.
+     * @return A vector of synonyms from the query's return type.
+     */
+    vector<string> getSynonyms(QueryObject *queryObject);
 };

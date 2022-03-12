@@ -36,4 +36,7 @@ public:
 
     // This is a stub method
     TableType getType() override;
+
+    // This is a stub method
+    unordered_set<string> getColumns(vector<string> columnNames) override;
 };

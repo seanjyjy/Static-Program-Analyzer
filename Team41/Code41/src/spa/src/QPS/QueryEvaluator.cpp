@@ -88,8 +88,10 @@ unordered_set<string> QueryEvaluator::buildResult(QueryObject *queryObject, Tabl
             result.insert("True");
         }
     } else {
+        vector<string> synonyms = getSynonyms(queryObject);
+
         // copy result from resultTable to result here when can think of based on queryObject schema
-        result = resultTable->getColumn(selectSynonym.synonym);
+        result = resultTable->getColumns(synonyms);
     }
     safeDeleteTable(resultTable);
     return result;
@@ -148,4 +150,20 @@ void QueryEvaluator::safeDeleteTable(Table* tableToDelete, Table* resultTable) {
 
 void QueryEvaluator::safeDeleteTable(Table *tableToDelete) {
     safeDeleteTable(tableToDelete, nullptr);
+}
+
+vector<string> QueryEvaluator::getSynonyms(QueryObject *queryObject) {
+    unordered_set<string> seenSynonyms;
+    vector<string> synonyms;
+
+    // TDOO: change to the list of clauses from the Optimized in the future
+    for (auto& queryDeclaration : queryObject->selectSynonyms) {
+        auto synonym = queryDeclaration.synonym;
+        if (seenSynonyms.find(synonym) == seenSynonyms.end()) {
+            seenSynonyms.insert(synonym);
+            synonyms.insert(synonym);
+        }
+    }
+
+    return synonyms;
 }
