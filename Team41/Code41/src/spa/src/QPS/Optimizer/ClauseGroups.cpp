@@ -13,13 +13,15 @@ ClauseGroups::ClauseGroups(int n) {
 }
 
 void ClauseGroups::sortGroups() {
-    sort(groups.begin(), groups.end(), [](const ClauseGroup &a, const ClauseGroup &b) {
+    sort(groups.begin(), groups.end(), [](ClauseGroup &a, ClauseGroup &b) {
        return a.getScore() < b.getScore();
     });
 }
 
 void ClauseGroups::sortEachGroup() {
-    // TODO
+    for (const ClauseGroup &cg: groups) {
+        cg.sortClauses();
+    }
 }
 
 void ClauseGroups::addClause(int idx, const TempClause &clause) {
@@ -29,4 +31,12 @@ void ClauseGroups::addClause(int idx, const TempClause &clause) {
 
 void ClauseGroups::addClauseGroup(const ClauseGroup &cg) {
     groups.push_back(cg);
+}
+
+bool ClauseGroups::hasNextGroup() {
+    return groupsIdx < groups.size();
+}
+
+ClauseGroup ClauseGroups::getNextGroup() {
+    return groups.at(groupsIdx++);
 }

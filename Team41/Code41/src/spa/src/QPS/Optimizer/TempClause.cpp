@@ -4,8 +4,8 @@ TempClause::TempClause(QueryClause *queryClause): qc(queryClause) {}
 
 TempClause::TempClause(PatternClause *patternClause): pc(patternClause) {}
 
-vector<string> TempClause::getSynonyms() {
-    return vector<string>();
+vector<ClauseVariable> TempClause::getSynonyms() {
+    return vector<ClauseVariable>();
 }
 
 bool TempClause::hasSynonyms() const {

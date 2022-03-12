@@ -4,7 +4,7 @@
 
 QueryOptimizer::QueryOptimizer() = default;
 
-OptimizedQueryObject QueryOptimizer::optimize(QueryObject &qo) {
+OptimizedQueryObject QueryOptimizer::optimize(QueryObject &qo, bool isDynamic) {
     // step 1: Take query object, extract clauses, group them based on synonym dependencies
     ClauseGroups clauseGroups = divideClausesIntoGroups(qo);
 
@@ -14,16 +14,15 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject &qo) {
     // step 3: Sort each individual clause group
     clauseGroups.sortEachGroup();
 
-    // TODO: for now, assume the original query object is not needed.
-    return { clauseGroups };
+    return { qo, clauseGroups, isDynamic };
 }
 
 ClauseGroups QueryOptimizer::divideClausesIntoGroups(QueryObject &qo) {
-    for (const QueryClause& qc: qo.clauses) {
-        clauseDepGraph.registerClause(qc);
+    for (QueryClause& qc: qo.clauses) {
+        clauseDepGraph.registerClause(TempClause(&qc));
     }
-    for (const PatternClause& pc: qo.patternClauses) {
-        clauseDepGraph.registerClause(pc);
+    for (PatternClause& pc: qo.patternClauses) {
+        clauseDepGraph.registerClause(TempClause(&pc));
     }
     return clauseDepGraph.split();
 }

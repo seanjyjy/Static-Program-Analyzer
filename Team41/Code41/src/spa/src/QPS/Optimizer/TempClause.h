@@ -9,7 +9,7 @@ class TempClause {
 public:
     TempClause(QueryClause *qc);
     TempClause(PatternClause *pc);
-    vector<string> getSynonyms();
+    vector<ClauseVariable> getSynonyms();
     bool hasSynonyms() const;
     bool isWithClause() const;
     bool isSuchThatClause() const;

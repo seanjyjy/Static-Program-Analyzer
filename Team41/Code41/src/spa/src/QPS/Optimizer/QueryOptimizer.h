@@ -13,5 +13,5 @@ private:
     ClauseGroups divideClausesIntoGroups(QueryObject &qo);
 public:
     QueryOptimizer();
-    OptimizedQueryObject optimize(QueryObject &qo);
+    OptimizedQueryObject optimize(QueryObject &qo, bool isDynamic=false);
 };

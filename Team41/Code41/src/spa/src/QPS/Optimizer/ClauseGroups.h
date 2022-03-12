@@ -10,6 +10,7 @@ using namespace std;
 class ClauseGroups {
 private:
     vector<ClauseGroup> groups;
+    size_t groupsIdx = 0;
 public:
     ClauseGroups();
     ClauseGroups(int n);
@@ -17,4 +18,6 @@ public:
     void sortEachGroup();
     void addClause(int idx, const TempClause &clause);
     void addClauseGroup(const ClauseGroup &cg);
+    bool hasNextGroup();
+    ClauseGroup getNextGroup();
 };
