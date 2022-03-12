@@ -123,6 +123,14 @@ Table *QueryEvaluator::evaluate(QueryClause &clause) {
             return CallsEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::callsT:
             return CallsTEvaluator::evaluate(clause, this->pkb);
+        case QueryClause::clause_type::next:
+            return NextEvaluator::evaluate(clause, this->pkb);
+        case QueryClause::clause_type::nextT: // NextT affects affectsT should take in an extra cache when it is supported
+            return nullptr;
+        case QueryClause::clause_type::affects:
+            return nullptr;
+        case QueryClause::clause_type::affectsT:
+            return nullptr;
         default:
             throw std::runtime_error("unknown clause of type " + to_string(clause.type));
     }
