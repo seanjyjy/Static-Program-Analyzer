@@ -72,6 +72,11 @@ size_t OneToMany<K, V>::size() {
     return entries.size();
 }
 
+template<typename K, typename V>
+size_t OneToMany<K, V>::size(K key) {
+    return keyToValues.size(move(key));
+}
+
 template<class K, class V>
 size_t OneToMany<K, V>::keySize() {
     return keyToValues.keySize();

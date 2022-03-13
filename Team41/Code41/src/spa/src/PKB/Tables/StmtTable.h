@@ -66,9 +66,16 @@ public:
     /**
      * Gets the number of statements stored in table
      *
-     * @return set of statement numbers
+     * @return count of statement numbers
      */
     size_t getStmtCount();
+
+    /**
+     * Gets the count of statements based on type
+     *
+     * @return count of statement numbers of the specific type
+     */
+    size_t getStmtCount(StmtType type);
 
     /**
      * Gets all statements added to the table

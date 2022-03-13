@@ -65,6 +65,11 @@ size_t ManyToMany<K, V>::size() {
 }
 
 template<class K, class V>
+size_t ManyToMany<K, V>::size(K key) {
+    return keyToValues.size(move(key));
+}
+
+template<class K, class V>
 size_t ManyToMany<K, V>::keySize() {
     return keyToValues.keySize();
 }
@@ -73,4 +78,3 @@ template<class K, class V>
 size_t ManyToMany<K, V>::valSize() {
     return valuesToKey.keySize();
 }
-

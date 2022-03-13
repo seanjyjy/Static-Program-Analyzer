@@ -23,6 +23,10 @@ void StmtTable::setStmt(const string& stmtNum, StmtType type) {
     return mapping.addMapping(type, stmtNum);
 }
 
+size_t StmtTable::getStmtCount(StmtType type) {
+    return mapping.size(move(type));
+}
+
 size_t StmtTable::getStmtCount() {
     return mapping.valSize();
 }

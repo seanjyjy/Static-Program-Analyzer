@@ -43,6 +43,13 @@ public:
     size_t keySize();
 
     /**
+     * Get the number of vals for a key
+     *
+     * @return number of vals for a key
+     */
+    size_t size(K key);
+
+    /**
      * Checks if key exists in table
      *
      * @param targetKey the key to query

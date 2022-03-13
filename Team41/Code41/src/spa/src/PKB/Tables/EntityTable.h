@@ -69,5 +69,12 @@ public:
      * Checks if the variable name is in the entity table
      */
     bool isVariable(string varName);
+
+    /**
+     * Gets the count of entity based on type
+     *
+     * @return count of entity of the specific type
+     */
+    size_t getEntityCount(EntityType type);
 };
 

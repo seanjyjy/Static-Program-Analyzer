@@ -13,6 +13,14 @@ unordered_set<K> SetMultiMap<K, V>::keys() {
     return keySet;
 }
 
+template<typename K, typename V>
+size_t SetMultiMap<K, V>::size(K key) {
+    if (!hasKey(key)) {
+        return 0;
+    }
+    return mapping[key].size();
+}
+
 template<class K, class V>
 size_t SetMultiMap<K, V>::keySize() {
     return keySet.size();

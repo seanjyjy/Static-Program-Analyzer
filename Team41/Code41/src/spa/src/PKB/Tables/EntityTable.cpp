@@ -44,3 +44,7 @@ bool EntityTable::isVariable(string varName) {
     unordered_set<string> vars = getVariables();
     return vars.find(move(varName)) != vars.end();
 }
+
+size_t EntityTable::getEntityCount(EntityType type) {
+    return mapping.at(type).size();
+}

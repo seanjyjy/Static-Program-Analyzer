@@ -112,6 +112,13 @@ public:
     size_t size();
 
     /**
+     * Gets the number of values for the specific key
+     *
+     * @return number of vals for the key
+     */
+    size_t size(K key);
+
+    /**
      * Gets the number of keys stored in table
      *
      * @return number of keys

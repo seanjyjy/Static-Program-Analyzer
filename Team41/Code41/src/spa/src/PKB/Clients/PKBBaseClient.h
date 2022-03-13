@@ -45,17 +45,26 @@ public:
      *
      * @return set of statement numbers
      */
-    int getStatementCount() const;
+    size_t getStatementCount() const; // Gets the number of statements stored in table
+    size_t getAssignCount() const; // Gets the number of assign statements stored in table
+    size_t getWhileCount() const; // Gets the number of while statements stored in table
+    size_t getIfCount() const; // Gets the number of if statements stored in table
+    size_t getReadCount() const; // Gets the number of read statements stored in table
+    size_t getPrintCount() const; // Gets the number of print statements stored in table
+    size_t getCallCount() const; // Gets the number of call statements stored in table
 
     //======================================== Entities ==================================================
 
     unordered_set<string> getVariables() const;// Gets list of variables
     unordered_set<string> getConstants() const;// Gets list of constants
     unordered_set<string> getProcedures() const;// Gets list of procedure names
-    // Gets list of statement numbers
+    unordered_set<string> getStatements() const; // Gets list of statement numbers
 
     bool isConstant(string constVal) const;// Checks if specified variable is registered
     bool isProcedure(string procName) const;// Checks if specified constant is registered
     bool isVariable(string varName) const;// Checks if specified procedure is registered
-    unordered_set<string> getStatements() const;
+
+    size_t getConstantCount() const; // Gets the number of constants stored in table
+    size_t getProcedureCount() const; // Gets the number of procedures stored in table
+    size_t getVariableCount() const; // Gets the number of variables stored in table
 };

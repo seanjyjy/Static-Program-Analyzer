@@ -73,6 +73,11 @@ size_t OneToOne<K, V>::size() {
     return entries.size();
 }
 
+template<typename K, typename V>
+size_t OneToOne<K, V>::size(K key) {
+    return hasKey(move(key)) ? 1 : 0;
+}
+
 template<class K, class V>
 size_t OneToOne<K, V>::keySize() {
     return keyToVal.keySize();
