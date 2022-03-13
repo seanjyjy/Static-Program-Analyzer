@@ -18,6 +18,8 @@ public:
 
     void addSelectable(Selectable newSelectable);
 
+    void setType(targetType type);
+
     SelectTarget(targetType type);
 
     vector<Selectable> tuple;

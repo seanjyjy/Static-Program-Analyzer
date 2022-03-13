@@ -105,9 +105,19 @@ QueryDeclaration::design_entity_type QueryParser::determineDeclarationType(strin
 }
 
 bool QueryParser::parseSelectTuple() {
-    printf("Houston we have a tuple.\n");
     lookForClauseGrammarSymbol("<", "Syntax Error: Expected '<' for tuple beginning\n");
-    return false;
+    parseSelectSingle();
+
+    while(lex->peekNextIsString(",")) {
+        lookForClauseGrammarSymbol(",", "Syntax Error: Expected ',' for tuple delimiting\n");
+        if (!parseSelectSingle()) {
+            return false;
+        }
+    }
+
+    lookForClauseGrammarSymbol(">", "Syntax Error: Expected '>' for tuple end.\n");
+
+    return true;
 }
 
 bool QueryParser::parseSelectSingle() {
@@ -116,12 +126,14 @@ bool QueryParser::parseSelectSingle() {
         printf("Syntax Error: Use of select with no synonym.\n");
         return false;
     }
-    ///// LEGACY CODE FROM ITER 1 (todo remove)
+
     optional<QueryDeclaration> qd = findMatchingDeclaration(*synonym);
     if (!qd.has_value()) {
         printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
         return false;
     }
+
+    ///// LEGACY CODE FROM ITER 1 (todo remove)
     queryObject->selectSynonym = qd.value();
     ///// LEGACY CODE ENDS
 
@@ -133,6 +145,7 @@ bool QueryParser::parseSelectSingle() {
         }
         Selectable s(Selectable::ATTR_REF, qd.value(), attr);
         queryObject->selectTarget.addSelectable(s);
+        return true;
     }
 
     // No attribute, just synonym
@@ -167,6 +180,8 @@ bool QueryParser::parseSelectTarget() {
         queryObject->selectTarget = SelectTarget(SelectTarget::BOOLEAN);
         return true;
     }
+
+    queryObject->selectTarget = SelectTarget(SelectTarget::TUPLE);
 
     if (lex->peekNextIsString("<")) {
         return parseSelectTuple();
