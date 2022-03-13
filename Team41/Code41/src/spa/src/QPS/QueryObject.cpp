@@ -28,6 +28,14 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
         isQueryValid(isQueryValid) {
 }
 
+bool QueryObject::isSelectingBoolean() {
+    return selectTarget.isBoolean();
+}
+
+vector<Selectable> QueryObject::getSelectables() {
+    return selectTarget.tuple;
+}
+
 QueryObject::~QueryObject() {
     for (PatternClause pList: patternClauses) {
         for (PatternVariable p : pList.getRHS()){

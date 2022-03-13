@@ -22,6 +22,10 @@ public:
 
     bool isQueryValid; // indicates if query was valid
 
+    bool isSelectingBoolean();
+
+    vector<Selectable> getSelectables();
+
     /**
      * Constructor for the QueryObject class.
      *

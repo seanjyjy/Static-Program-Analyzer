@@ -377,9 +377,9 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->selectTarget.isTuple());
-        REQUIRE(qo->selectTarget.tuple.at(0).getType() == Selectable::ATTR_REF);
-        REQUIRE(qo->selectTarget.tuple.at(0).getSynonym().synonym == "p");
-        REQUIRE(qo->selectTarget.tuple.at(0).getAttr() == Selectable::PROC_NAME);
+        REQUIRE(qo->getSelectables().at(0).getType() == Selectable::ATTR_REF);
+        REQUIRE(qo->getSelectables().at(0).getSynonym().synonym == "p");
+        REQUIRE(qo->getSelectables().at(0).getAttr() == Selectable::PROC_NAME);
         REQUIRE(qo->clauses.at(0).type == QueryClause::calls);
     }
     SECTION("Select tuple") {
@@ -388,15 +388,15 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->selectTarget.isTuple());
-        REQUIRE(qo->selectTarget.tuple.at(0).getType() == Selectable::SYNONYM);
-        REQUIRE(qo->selectTarget.tuple.at(0).getSynonym().synonym == "a1");
-        REQUIRE(qo->selectTarget.tuple.at(1).getType() == Selectable::ATTR_REF);
-        REQUIRE(qo->selectTarget.tuple.at(1).getSynonym().synonym == "a1");
-        REQUIRE(qo->selectTarget.tuple.at(1).getAttr() == Selectable::STMT_NUM);
-        REQUIRE(qo->selectTarget.tuple.at(2).getSynonym().synonym == "a2");
-        REQUIRE(qo->selectTarget.tuple.at(2).getType() == Selectable::SYNONYM);
-        REQUIRE(qo->selectTarget.tuple.at(3).getSynonym().synonym == "a2");
-        REQUIRE(qo->selectTarget.tuple.at(3).getAttr() == Selectable::STMT_NUM);
+        REQUIRE(qo->getSelectables().at(0).getSynonym().synonym == "a1");
+        REQUIRE(qo->getSelectables().at(1).getType() == Selectable::ATTR_REF);
+        REQUIRE(qo->getSelectables().at(0).getType() == Selectable::SYNONYM);
+        REQUIRE(qo->getSelectables().at(1).getSynonym().synonym == "a1");
+        REQUIRE(qo->getSelectables().at(1).getAttr() == Selectable::STMT_NUM);
+        REQUIRE(qo->getSelectables().at(2).getSynonym().synonym == "a2");
+        REQUIRE(qo->getSelectables().at(2).getType() == Selectable::SYNONYM);
+        REQUIRE(qo->getSelectables().at(3).getSynonym().synonym == "a2");
+        REQUIRE(qo->getSelectables().at(3).getAttr() == Selectable::STMT_NUM);
     }
 
     delete qo;
