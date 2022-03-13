@@ -8,15 +8,15 @@ using namespace std;
 StmtTable::StmtTable():mapping("StmtTable") {}
 
 unordered_set<string> StmtTable::getAllStmtsByType(StmtType type) {
-    return mapping.getValuesFromKey(type);
+    return mapping.getValuesFromKey(move(type));
 }
 
 StmtType StmtTable::getStmtType(string stmtNumber) {
-    return mapping.getKeyFromValue(std::move(stmtNumber));
+    return mapping.getKeyFromValue(move(stmtNumber));
 }
 
 bool StmtTable::isStmtType(string stmtNumber, StmtType type) {
-    return mapping.hasMapping(type, std::move(stmtNumber));
+    return mapping.hasMapping(type, move(stmtNumber));
 }
 
 void StmtTable::setStmt(const string& stmtNum, StmtType type) {

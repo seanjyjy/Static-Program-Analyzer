@@ -4,7 +4,7 @@
 
 CallsTable::CallsTable() : callsRelation("Calls"), callsTRelation("CallsT") {}
 
-void CallsTable::setCalls(string caller, string callee) {
+void CallsTable::setCalls(const string& caller, const string& callee) {
     if (caller == callee) { throw domain_error("[PKB][CallsTable] Recursion is not allowed"); }
     if (isCalls(caller, callee)) { return; }
 
@@ -16,7 +16,7 @@ void CallsTable::setCalls(string caller, string callee) {
     callsRelation.addMapping(caller, callee);
 }
 
-void CallsTable::setCallsT(string caller, string callee) {
+void CallsTable::setCallsT(const string& caller, const string& callee) {
     if (caller == callee) { throw domain_error("[PKB][CallsTable] Recursion is not allowed"); }
     if (isCallsT(caller, callee)) { return; }
 
@@ -29,11 +29,11 @@ void CallsTable::setCallsT(string caller, string callee) {
 }
 
 unordered_set<string> CallsTable::getProcsCalledBy(string caller) {
-    return callsRelation.getValuesFromKey(caller);
+    return callsRelation.getValuesFromKey(move(caller));
 }
 
 unordered_set<string> CallsTable::getProcsCalling(string callee) {
-    return callsRelation.getKeysFromValue(callee);
+    return callsRelation.getKeysFromValue(move(callee));
 }
 
 vector<pair<string, string>> CallsTable::getCallsEntries() {
@@ -41,15 +41,15 @@ vector<pair<string, string>> CallsTable::getCallsEntries() {
 }
 
 bool CallsTable::isCalls(string caller, string callee) {
-    return callsRelation.hasMapping(caller, callee);
+    return callsRelation.hasMapping(move(caller), move(callee));
 }
 
 unordered_set<string> CallsTable::getProcsCalledTBy(string caller) {
-    return callsTRelation.getValuesFromKey(caller);
+    return callsTRelation.getValuesFromKey(move(caller));
 }
 
 unordered_set<string> CallsTable::getProcsCallingT(string callee) {
-    return callsTRelation.getKeysFromValue(callee);
+    return callsTRelation.getKeysFromValue(move(callee));
 }
 
 vector<pair<string, string>> CallsTable::getCallsTEntries() {
@@ -57,7 +57,7 @@ vector<pair<string, string>> CallsTable::getCallsTEntries() {
 }
 
 bool CallsTable::isCallsT(string caller, string callee) {
-    return callsTRelation.hasMapping(caller, callee);
+    return callsTRelation.hasMapping(move(caller), move(callee));
 }
 
 unordered_set<string> CallsTable::getProcsCalledBySomeProc() {

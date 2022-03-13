@@ -1,44 +1,46 @@
 #include "EntityTable.h"
 #include <stdexcept>
-#include <utility>
 
-EntityTable::EntityTable() = default;
+EntityTable::EntityTable(): mapping({{}, {}, {}, {}}) {};
 
 unordered_set<string> EntityTable::getConstants() {
-    return mapping.get(CONST);
+    return mapping.at(CONST);
 }
 
 unordered_set<string> EntityTable::getProcedures() {
-    return mapping.get(PROC);
+    return mapping.at(PROC);
 }
 
 unordered_set<string> EntityTable::getVariables() {
-    return mapping.get(VAR);
+    return mapping.at(VAR);
 }
 
 void EntityTable::addConstant(const string& numStr) {
-    mapping.add(CONST, numStr);
+    mapping.at(CONST).insert(numStr);
 }
 
 void EntityTable::addProcedure(const string& procName) {
-    if (mapping.hasKeyValue(PROC, procName)) {
+    if (isProcedure(procName)) {
         throw runtime_error("[PKB][EntityTable] Procedure name already declared");
     }
-    return mapping.add(PROC, procName);
+    mapping.at(PROC).insert(procName);
 }
 
 void EntityTable::addVariable(const string& varName) {
-    mapping.add(VAR, varName);
+    mapping.at(VAR).insert(varName);
 }
 
 bool EntityTable::isConstant(string constVal) {
-    return mapping.hasKeyValue(CONST, move(constVal));
+    unordered_set<string> consts = getConstants();
+    return consts.find(move(constVal)) != consts.end();
 }
 
 bool EntityTable::isProcedure(string procName) {
-    return mapping.hasKeyValue(PROC, move(procName));
+    unordered_set<string> procs = getProcedures();
+    return procs.find(move(procName)) != procs.end();
 }
 
 bool EntityTable::isVariable(string varName) {
-    return mapping.hasKeyValue(VAR, move(varName));
+    unordered_set<string> vars = getVariables();
+    return vars.find(move(varName)) != vars.end();
 }

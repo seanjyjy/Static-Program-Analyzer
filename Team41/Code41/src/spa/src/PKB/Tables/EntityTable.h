@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-
-#include "PKB/Relations/SetMultiMap.h"
+#include <vector>
+#include <unordered_set>
 
 using namespace std;
 
@@ -18,7 +18,7 @@ enum EntityType {
  */
 class EntityTable {
 private:
-    SetMultiMap<EntityType, string> mapping;
+    vector<unordered_set<string>> mapping;
 public:
     EntityTable();
 

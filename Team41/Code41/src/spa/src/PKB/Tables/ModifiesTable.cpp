@@ -9,11 +9,11 @@ void ModifiesTable::setVarModifiedInStmt(const string& stmtNum, const string& va
 }
 
 unordered_set<string> ModifiesTable::getVarsModifiedInStmt(string stmtNum) {
-    return modifyStmtRelation.getValuesFromKey(std::move(stmtNum));
+    return modifyStmtRelation.getValuesFromKey(move(stmtNum));
 }
 
 unordered_set<string> ModifiesTable::getStmtsModifyingVar(string varName) {
-    return modifyStmtRelation.getKeysFromValue(std::move(varName));
+    return modifyStmtRelation.getKeysFromValue(move(varName));
 }
 
 vector<pair<string, string>> ModifiesTable::getStmtsVarEntries() {
@@ -29,7 +29,7 @@ unordered_set<string> ModifiesTable::getStmtsModifyingSomeVar() {
 }
 
 bool ModifiesTable::isModifiesS(string stmtNum, string varName) {
-    return modifyStmtRelation.hasMapping(std::move(stmtNum), std::move(varName));
+    return modifyStmtRelation.hasMapping(move(stmtNum), move(varName));
 }
 
 void ModifiesTable::setVarModifiedInProc(const string& procName, const string& varName) {
@@ -37,11 +37,11 @@ void ModifiesTable::setVarModifiedInProc(const string& procName, const string& v
 }
 
 unordered_set<string> ModifiesTable::getVarsModifiedInProc(string procName) {
-    return modifyProcRelation.getValuesFromKey(std::move(procName));
+    return modifyProcRelation.getValuesFromKey(move(procName));
 }
 
 unordered_set<string> ModifiesTable::getProcsModifyingVar(string varName) {
-    return modifyProcRelation.getKeysFromValue(std::move(varName));
+    return modifyProcRelation.getKeysFromValue(move(varName));
 }
 
 vector<pair<string, string>> ModifiesTable::getProcVarEntries() {
@@ -57,5 +57,5 @@ unordered_set<string> ModifiesTable::getProcsModifyingSomeVar() {
 }
 
 bool ModifiesTable::isModifiesP(string procName, string varName) {
-    return modifyProcRelation.hasMapping(std::move(procName), std::move(varName));
+    return modifyProcRelation.hasMapping(move(procName), move(varName));
 }

@@ -20,7 +20,7 @@ unordered_set<string> AssignPatternTable::getAllStmtsFromFullPattern(TNode *patt
 unordered_set<string> AssignPatternTable::getStmtFromFullPatternNVar(TNode *patternAST, string varName) {
     string pattern = TreeUtils::serialize(patternAST);
     if (!patternRelation.hasKey(pattern)) { return {}; }
-    return patternRelation.get(pattern).getKeysFromValue(std::move(varName));
+    return patternRelation.get(pattern).getKeysFromValue(move(varName));
 }
 
 vector<pair<string, string>> AssignPatternTable::getStmtNVarFromFullPattern(TNode *patternAST) {
@@ -32,7 +32,7 @@ vector<pair<string, string>> AssignPatternTable::getStmtNVarFromFullPattern(TNod
 unordered_set<string> AssignPatternTable::getAllStmtsFromSubPattern(TNode *subPatternAST) {
     string subPattern = TreeUtils::serialize(subPatternAST);
     unordered_set<string> keys = patternRelation.keys();
-    auto containsSubString = [&subPattern](string s) { return s.find(subPattern) != std::string::npos; };
+    auto containsSubString = [&subPattern](string s) { return s.find(subPattern) != string::npos; };
     auto it = find_if(keys.begin(), keys.end(), containsSubString);
     unordered_set<string> res;
 
@@ -47,7 +47,7 @@ unordered_set<string> AssignPatternTable::getAllStmtsFromSubPattern(TNode *subPa
 unordered_set<string> AssignPatternTable::getStmtFromSubPatternNVar(TNode *subPatternAST, const string& varName) {
     string subPattern = TreeUtils::serialize(subPatternAST);
     unordered_set<string> keys = patternRelation.keys();
-    auto containsSubString = [&subPattern](const string& s) { return s.find(subPattern) != std::string::npos; };
+    auto containsSubString = [&subPattern](const string& s) { return s.find(subPattern) != string::npos; };
     auto it = find_if(keys.begin(), keys.end(), containsSubString);
 
     unordered_set<string> res;
@@ -62,7 +62,7 @@ unordered_set<string> AssignPatternTable::getStmtFromSubPatternNVar(TNode *subPa
 vector<pair<string, string>> AssignPatternTable::getStmtNVarFromSubPattern(TNode *subPatternAST) {
     string subPattern = TreeUtils::serialize(subPatternAST);
     unordered_set<string> keys = patternRelation.keys();
-    auto containsSubString = [&subPattern](string s) { return s.find(subPattern) != std::string::npos; };
+    auto containsSubString = [&subPattern](string s) { return s.find(subPattern) != string::npos; };
     auto it = find_if(keys.begin(), keys.end(), containsSubString);
 
     // ensured to be unique

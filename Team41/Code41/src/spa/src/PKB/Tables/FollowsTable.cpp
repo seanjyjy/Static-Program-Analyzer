@@ -22,11 +22,11 @@ void FollowsTable::setFollowsT(const string& follower, const string& followed) {
 }
 
 string FollowsTable::getStmtFollowedBy(string follower) {
-    return followsRelation.getValFromKey(std::move(follower));
+    return followsRelation.getValFromKey(move(follower));
 }
 
 string FollowsTable::getStmtFollowing(string followed) {
-    return followsRelation.getKeyFromValue(std::move(followed));
+    return followsRelation.getKeyFromValue(move(followed));
 }
 
 vector<pair<string, string>> FollowsTable::getFollowEntries() {
@@ -34,15 +34,15 @@ vector<pair<string, string>> FollowsTable::getFollowEntries() {
 }
 
 bool FollowsTable::isFollows(string follower, string followed) {
-    return followsRelation.hasMapping(std::move(follower), std::move(followed));
+    return followsRelation.hasMapping(move(follower), move(followed));
 }
 
 unordered_set<string> FollowsTable::getStmtsFollowedTBy(string follower) {
-    return followsTRelation.getValuesFromKey(std::move(follower));
+    return followsTRelation.getValuesFromKey(move(follower));
 }
 
 unordered_set<string> FollowsTable::getStmtsFollowingT(string followed) {
-    return followsTRelation.getKeysFromValue(std::move(followed));
+    return followsTRelation.getKeysFromValue(move(followed));
 }
 
 vector<pair<string, string>> FollowsTable::getFollowTEntries() {
@@ -50,7 +50,7 @@ vector<pair<string, string>> FollowsTable::getFollowTEntries() {
 }
 
 bool FollowsTable::isFollowsT(string follower, string followed) {
-    return followsTRelation.hasMapping(std::move(follower), std::move(followed));
+    return followsTRelation.hasMapping(move(follower), move(followed));
 }
 
 unordered_set<string> FollowsTable::getStmtsFollowedBySomeStmt() {

@@ -9,7 +9,7 @@ void IfPatternTable::setPattern(const string& stmtNum, const string& predVariabl
 }
 
 unordered_set<string> IfPatternTable::getStmtFromVar(string varName) {
-    return patternRelation.getKeysFromValue(varName);
+    return patternRelation.getKeysFromValue(move(varName));
 }
 
 vector<pair<string, string>> IfPatternTable::getStmtNVar() {
