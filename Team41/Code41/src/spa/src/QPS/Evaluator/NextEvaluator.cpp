@@ -54,14 +54,14 @@ Table *NextEvaluator::evaluateIntegerInteger(NextKBAdapter* nextKBAdapter, Claus
 }
 
 Table *NextEvaluator::evaluateIntegerSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
-    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNext(left.getLabel());
+    vector<CFGNode *> setOfChildren = nextKBAdapter->getNextNodes(left.getLabel());
 
     string column = right.getLabel();
     Header header = Header({column});
     Table* table = new PQLTable(header);
 
-    for (auto& stmt : setOfStmts) {
-        Row* row = new Row(column, stmt);
+    for (auto& child : setOfChildren) {
+        Row* row = new Row(column, child->getStmtNum());
         table->addRow(row);
     }
 
@@ -69,9 +69,9 @@ Table *NextEvaluator::evaluateIntegerSynonym(NextKBAdapter* nextKBAdapter, Claus
 }
 
 Table *NextEvaluator::evaluateIntegerWildCard(NextKBAdapter* nextKBAdapter, ClauseVariable left) {
-    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNext(left.getLabel());
+    vector<CFGNode *> setOfChildren = nextKBAdapter->getNextNodes(left.getLabel());
 
-    if (setOfStmts.empty()) {
+    if (setOfChildren.empty()) {
         return new FalseTable();
     }
 
@@ -79,14 +79,14 @@ Table *NextEvaluator::evaluateIntegerWildCard(NextKBAdapter* nextKBAdapter, Clau
 }
 
 Table *NextEvaluator::evaluateSynonymInteger(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
-    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsBefore(right.getLabel());
+    vector<CFGNode *> setOfParent = nextKBAdapter->getPrevNodes(right.getLabel());
 
     string column = left.getLabel();
     Header header = Header({column});
     Table* table = new PQLTable(header);
 
-    for (auto& stmt : setOfStmts) {
-        Row* row = new Row(column, stmt);
+    for (auto& parent : setOfParent) {
+        Row* row = new Row(column, parent->getStmtNum());
         table->addRow(row);
     }
 
@@ -112,7 +112,7 @@ Table *NextEvaluator::evaluateSynonymSynonym(NextKBAdapter* nextKBAdapter, Claus
 }
 
 Table *NextEvaluator::evaluateSynonymWildCard(NextKBAdapter* nextKBAdapter, ClauseVariable left) {
-    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsThatHaveNextStmt();
+    vector<string> setOfStmts = nextKBAdapter->getAllStmtsThatHaveNextStmt();
 
     string column = left.getLabel();
     Header header = Header({column});
@@ -127,9 +127,9 @@ Table *NextEvaluator::evaluateSynonymWildCard(NextKBAdapter* nextKBAdapter, Clau
 }
 
 Table *NextEvaluator::evaluateWildCardInteger(NextKBAdapter* nextKBAdapter, ClauseVariable right) {
-    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsBefore(right.getLabel());
+    vector<CFGNode *> setOfParent = nextKBAdapter->getPrevNodes(right.getLabel());
 
-    if (setOfStmts.empty()) {
+    if (setOfParent.empty()) {
         return new FalseTable();
     }
 
@@ -137,7 +137,7 @@ Table *NextEvaluator::evaluateWildCardInteger(NextKBAdapter* nextKBAdapter, Clau
 }
 
 Table *NextEvaluator::evaluateWildCardSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable right) {
-    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsThatIsNextOfSomeStmt();
+    vector<string> setOfStmts = nextKBAdapter->getAllStmtsThatIsNextOfSomeStmt();
 
     string column = right.getLabel();
     Header header = Header({column});
