@@ -378,3 +378,8 @@ while w;
 Select w pattern w ("y", _x+1_)
 
 5000
+222 - stmt boolean select boolean - should get statements instead of boolean
+stmt BOOLEAN;
+Select BOOLEAN
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23
+5000
