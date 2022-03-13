@@ -129,7 +129,7 @@ Table *QueryEvaluator::evaluate(QueryClause &clause) {
         case QueryClause::clause_type::next:
             return NextEvaluator::evaluate(clause, this->nextKBAdapter);
         case QueryClause::clause_type::nextT: // NextT affects affectsT should take in an extra cache when it is supported
-            return nullptr;
+            return NextTEvaluator::evaluate(clause, this->nextKBAdapter);
         case QueryClause::clause_type::affects:
             return nullptr;
         case QueryClause::clause_type::affectsT:

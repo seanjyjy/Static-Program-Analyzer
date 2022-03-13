@@ -54,21 +54,24 @@ Table *NextEvaluator::evaluateIntegerInteger(NextKBAdapter* nextKBAdapter, Claus
 }
 
 Table *NextEvaluator::evaluateIntegerSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
-    string nextStatement = nextKBAdapter->getStmtNext(left.getLabel());
+    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNext(left.getLabel());
 
     string column = right.getLabel();
     Header header = Header({column});
     Table* table = new PQLTable(header);
-    Row* row = new Row(column, nextStatement);
-    table->addRow(row);
+
+    for (auto& stmt : setOfStmts) {
+        Row* row = new Row(column, stmt);
+        table->addRow(row);
+    }
 
     return table;
 }
 
 Table *NextEvaluator::evaluateIntegerWildCard(NextKBAdapter* nextKBAdapter, ClauseVariable left) {
-    string nextStatement = nextKBAdapter->getStmtNext(left.getLabel());
+    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNext(left.getLabel());
 
-    if (nextStatement.empty()) {
+    if (setOfStmts.empty()) {
         return new FalseTable();
     }
 
@@ -76,13 +79,16 @@ Table *NextEvaluator::evaluateIntegerWildCard(NextKBAdapter* nextKBAdapter, Clau
 }
 
 Table *NextEvaluator::evaluateSynonymInteger(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
-    string beforeStatement = nextKBAdapter->getStmtBefore(right.getLabel());
+    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsBefore(right.getLabel());
 
     string column = left.getLabel();
     Header header = Header({column});
     Table* table = new PQLTable(header);
-    Row* row = new Row(column, beforeStatement);
-    table->addRow(row);
+
+    for (auto& stmt : setOfStmts) {
+        Row* row = new Row(column, stmt);
+        table->addRow(row);
+    }
 
     return table;
 }
@@ -106,19 +112,24 @@ Table *NextEvaluator::evaluateSynonymSynonym(NextKBAdapter* nextKBAdapter, Claus
 }
 
 Table *NextEvaluator::evaluateSynonymWildCard(NextKBAdapter* nextKBAdapter, ClauseVariable left) {
-    unordered_set<string> setOfStatements = nextKBAdapter->getAllStmtsThatHaveNextStmt();
+    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsThatHaveNextStmt();
 
-    if (setOfStatements.empty()) {
-        return new FalseTable();
+    string column = left.getLabel();
+    Header header = Header({column});
+    Table* table = new PQLTable(header);
+
+    for (auto& stmt : setOfStmts) {
+        Row* row = new Row(column, stmt);
+        table->addRow(row);
     }
 
-    return new TrueTable();
+    return table;
 }
 
 Table *NextEvaluator::evaluateWildCardInteger(NextKBAdapter* nextKBAdapter, ClauseVariable right) {
-    string beforeStatement = nextKBAdapter->getStmtBefore(right.getLabel());
+    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsBefore(right.getLabel());
 
-    if (beforeStatement.empty()) {
+    if (setOfStmts.empty()) {
         return new FalseTable();
     }
 
@@ -126,13 +137,13 @@ Table *NextEvaluator::evaluateWildCardInteger(NextKBAdapter* nextKBAdapter, Clau
 }
 
 Table *NextEvaluator::evaluateWildCardSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable right) {
-    unordered_set<string> setOfStatements = nextKBAdapter->getAllStmtsThatIsNextOfSomeStmt();
+    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsThatIsNextOfSomeStmt();
 
     string column = right.getLabel();
     Header header = Header({column});
     Table* table = new PQLTable(header);
 
-    for (auto& statement : setOfStatements) {
+    for (auto& statement : setOfStmts) {
         Row* row = new Row();
         row->addEntry(column, statement);
         table->addRow(row);
