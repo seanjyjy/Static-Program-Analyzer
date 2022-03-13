@@ -443,3 +443,8 @@ procedure p; read re; print pn; call cl;
 Select <re, pn, cl, p> such that Uses(p, "cenX") such that Uses(pn, "flag")
 4 6 13 computeCentroid,4 6 13 main,4 6 13 printResults,4 6 18 computeCentroid,4 6 18 main,4 6 18 printResults,4 6 2 computeCentroid,4 6 2 main,4 6 2 printResults,4 6 3 computeCentroid,4 6 3 main,4 6 3 printResults,5 6 13 computeCentroid,5 6 13 main,5 6 13 printResults,5 6 18 computeCentroid,5 6 18 main,5 6 18 printResults,5 6 2 computeCentroid,5 6 2 main,5 6 2 printResults,5 6 3 computeCentroid,5 6 3 main,5 6 3 printResults
 5000
+230 - Select duplicate statement in tuple
+stmt s;
+Select <s, s, s>
+1 1 1, 2 2 2, 3 3 3, 4 4 4, 5 5 5, 6 6 6, 7 7 7, 8 8 8, 9 9 9, 10 10 10, 11 11 11, 12 12 12, 13 13 13, 14 14 14, 15 15 15, 16 16 16, 17 17 17, 18 18 18, 19 19 19, 20 20 20, 21 21 21, 22 22 22, 23 23 23
+5000

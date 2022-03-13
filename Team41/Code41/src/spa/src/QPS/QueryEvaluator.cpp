@@ -32,6 +32,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
+                safeDeleteTable(resultTable);
                 return buildResult(queryObject, new FalseTable());
             }
 
@@ -42,6 +43,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             safeDeleteTable(intermediateTable, resultTable);
 
             if (resultTable->isEmpty()) {
+                safeDeleteTable(resultTable);
                 return buildResult(queryObject, new FalseTable());
             }
         }
@@ -51,6 +53,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
+                safeDeleteTable(resultTable);
                 return buildResult(queryObject, new FalseTable());
             }
 
@@ -61,6 +64,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             safeDeleteTable(intermediateTable, resultTable);
 
             if (resultTable->isEmpty()) {
+                safeDeleteTable(resultTable);
                 return buildResult(queryObject, new FalseTable());
             }
         }
@@ -79,7 +83,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
 unordered_set<string> QueryEvaluator::buildResult(QueryObject *queryObject, Table *resultTable) {
     unordered_set<string> result;
-    printf("queryOPBject query type: %s", queryObject->isSelectingBoolean() ? "boolean" : "not boolean");
+
     if (queryObject->isSelectingBoolean()) {
         // Occurs when result table is a false table or pql table which is empty
         if (resultTable->isEmpty()) {
