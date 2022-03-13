@@ -79,13 +79,13 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
 unordered_set<string> QueryEvaluator::buildResult(QueryObject *queryObject, Table *resultTable) {
     unordered_set<string> result;
-
+    printf("queryOPBject query type: %s", queryObject->isSelectingBoolean() ? "boolean" : "not boolean");
     if (queryObject->isSelectingBoolean()) {
         // Occurs when result table is a false table or pql table which is empty
         if (resultTable->isEmpty()) {
-            result.insert("False");
+            result.insert("FALSE");
         } else {
-            result.insert("True");
+            result.insert("TRUE");
         }
     } else {
         vector<string> synonyms = getSynonyms(queryObject);
