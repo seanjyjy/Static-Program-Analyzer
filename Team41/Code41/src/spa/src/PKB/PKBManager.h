@@ -152,4 +152,8 @@ public:
      * @param condVariable the variable in the condition block
      */
     void registerWhilePattern(const string& stmtNum, const string& condVariable);
+
+    //=========================================== CFG ===================================================
+
+    void registerCFG(CFGNode* node, const StmtToNodeMap& stmtToNodeMap);
 };

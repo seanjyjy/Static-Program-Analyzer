@@ -116,6 +116,12 @@ void DesignExtractor::extractPattern() {
     }
 }
 
+void DesignExtractor::extractCFG() {
+    CFGExtractor ce = CFGExtractor(ast);
+    ce.extractCFG();
+    pkb->registerCFG(ce.getCFG(), {});
+}
+
 void DesignExtractor::extractDesign() {
     extractEntities();
     extractCalls();
@@ -124,4 +130,5 @@ void DesignExtractor::extractDesign() {
     extractFollows();
     extractParent();
     extractPattern();
+    extractCFG();
 }

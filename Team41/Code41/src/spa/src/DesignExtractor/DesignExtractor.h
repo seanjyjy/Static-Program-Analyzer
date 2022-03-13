@@ -13,6 +13,7 @@
 #include "FollowsExtractor.h"
 #include "ParentExtractor.h"
 #include "PatternExtractor.h"
+#include "CFGExtractor.h"
 
 class DesignExtractor {
 private:
@@ -30,6 +31,7 @@ private:
     void extractFollows();
     void extractParent();
     void extractPattern();
+    void extractCFG();
 
 public:
     DesignExtractor(TNode *ast, PKBManager *pkb);

@@ -4,6 +4,7 @@
 #include "PKB/Clients/PKBBaseClient.h"
 #include "PKB/Clients/PKBAbstractionClient.h"
 #include "PKB/Clients/PKBPatternClient.h"
+#include "PKB/Clients/PKBCFGClient.h"
 #include "Common/TNode.h"
 
 using namespace std;
@@ -15,4 +16,9 @@ using namespace std;
  * It is used mainly by the query client and provides methods to
  * access the metadata and abstractions stored in various relational tables.
  */
-class PKBClient : public PKBBaseClient, public PKBAbstractionClient, public PKBPatternClient {};
+class PKBClient :
+        public PKBBaseClient,
+        public PKBAbstractionClient,
+        public PKBPatternClient,
+        public PKBCFGClient {
+};
