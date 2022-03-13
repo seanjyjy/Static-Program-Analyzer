@@ -13,14 +13,14 @@ private:
     PKBClient* pkb;
     Cache* cache;
 
-    vector<string> booleanDFSWrapper(string &start, string &end);
-    void booleanDFS(CFGNode *node, vector<string> &path, unordered_set<string> &visited, string &end);
+    void booleanBFSWrapper(string &start, string &end);
+    void booleanBFS(unordered_set<string> &visited, string &end, string& currStmtNum, queue<CFGNode *> &bfsQueue);
 
-    vector<string> forwardDFSWrapper(string &start, string &end);
-    void forwardDFS(CFGNode *node, vector<string> &path, unordered_set<string> &visited, string &end);
+    void forwardDFSWrapper(string &start);
+    void forwardDFS(CFGNode *node, unordered_set<string> &visited);
 
-    vector<string> backwardDFSWrapper(string &start, string &end);
-    void backwardDFS(CFGNode *node, vector<string> &path, unordered_set<string> &visited, string &end);
+    void backwardDFSWrapper(string &end);
+    void backwardDFS(CFGNode *node, unordered_set<string> &visited);
 
     void addBooleanRelation(const string& start, const string& end);
     void addForwardRelation(const string& start, const string& end);

@@ -1,7 +1,46 @@
 #include "NextTEvaluator.h"
 
 Table *NextTEvaluator::evaluate(QueryClause clause, NextKBAdapter* nextKBAdapter) {
-    return nullptr;
+    auto leftVariable = clause.getLeftClauseVariable();
+    auto rightVariable = clause.getRightClauseVariable();
+
+    if (EvaluatorUtils::StmtUtils::isIntegerInteger(&leftVariable, &rightVariable)) {
+        return evaluateIntegerInteger(nextKBAdapter, leftVariable, rightVariable);
+    }
+
+    if (EvaluatorUtils::StmtUtils::isValidIntegerSynonym(&leftVariable, &rightVariable)) {
+        return evaluateIntegerSynonym(nextKBAdapter, leftVariable, rightVariable);
+    }
+
+    if (EvaluatorUtils::StmtUtils::isIntegerWildCard(&leftVariable, &rightVariable)) {
+        return evaluateIntegerWildCard(nextKBAdapter, leftVariable);
+    }
+
+    if (EvaluatorUtils::StmtUtils::isValidSynonymInteger(&leftVariable, &rightVariable)) {
+        return evaluateSynonymInteger(nextKBAdapter, leftVariable, rightVariable);
+    }
+
+    if (EvaluatorUtils::StmtUtils::isValidSynonymSynonym(&leftVariable, &rightVariable)) {
+        return evaluateSynonymSynonym(nextKBAdapter, leftVariable, rightVariable);
+    }
+
+    if (EvaluatorUtils::StmtUtils::isValidSynonymWildCard(&leftVariable, &rightVariable)) {
+        return evaluateSynonymWildCard(nextKBAdapter, leftVariable);
+    }
+
+    if (EvaluatorUtils::StmtUtils::isWildCardInteger(&leftVariable, &rightVariable)) {
+        return evaluateWildCardInteger(nextKBAdapter, rightVariable);
+    }
+
+    if (EvaluatorUtils::StmtUtils::isValidWildCardSynonym(&leftVariable, &rightVariable)) {
+        return evaluateWildCardSynonym(nextKBAdapter, rightVariable);
+    }
+
+    if (EvaluatorUtils::isWildCardWildCard(&leftVariable, &rightVariable)) {
+        return evaluateWildCardWildCard(nextKBAdapter);
+    }
+
+    throw SemanticException("Invalid query provided for NextT");
 }
 
 Table *NextTEvaluator::evaluateIntegerInteger(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
