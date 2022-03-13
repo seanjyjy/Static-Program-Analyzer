@@ -6,7 +6,7 @@
  * Clauses ranked from best (top, highest score) to worst (bottom, lowest score):
  * For suchthat-clauses, additional penalty is applied based on number of synonyms (more synonyms = lower score)
  *
- * 1. All clauses with no synonyms
+ * 1. All clauses with no synonyms (except Next, Next*, Affects, Affects*, since those need CFG traversal)
  * 2. All with-clauses
  * 3. All pattern-clauses
  * 4. Follows
@@ -38,6 +38,7 @@ private:
     static long scoreWithCl(const TempClause &tc);
     static long scoreSuchThatCl(const TempClause &tc);
     static long scorePatternCl(const TempClause &tc);
+    static bool needsCFG(const TempClause &tc);
 public:
     static long score(const TempClause &tc);
 };

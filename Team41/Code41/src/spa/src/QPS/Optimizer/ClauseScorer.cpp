@@ -5,7 +5,7 @@
 using namespace std;
 
 long ClauseScorer::score(const TempClause &tc) {
-    if (!tc.hasSynonyms()) {
+    if (!tc.hasSynonyms() && !needsCFG(tc)) {
         return SCORE_CLAUSE_NO_SYNONYMS;
     } else if (tc.isWithClause()) {
         return scoreWithCl(tc);
@@ -68,4 +68,8 @@ vector<ClauseScorer::SuchThatType> ClauseScorer::getStRanks() {
             SuchThatType::AffectsT
     };
     return stRanks;
+}
+
+bool ClauseScorer::needsCFG(const TempClause &tc) {
+    return tc.isNext() || tc.isNextT() || tc.isAffects() || tc.isAffectsT();
 }
