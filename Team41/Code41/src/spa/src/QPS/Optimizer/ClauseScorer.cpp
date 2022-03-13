@@ -25,6 +25,7 @@ long ClauseScorer::scoreWithCl(const TempClause &tc) {
 long ClauseScorer::scoreSuchThatCl(const TempClause &tc) {
     SuchThatType type = stClauseToType(tc);
     vector<ClauseScorer::SuchThatType> ranks = getStRanks();
+    // TODO can just make a map to speedup ranks
     size_t idx = find(ranks.begin(), ranks.end(), type) - ranks.begin();
     long piece = SCORE_SUCHTHAT_CLAUSE / (long) ranks.size();
     return SCORE_SUCHTHAT_CLAUSE - (idx * piece); // lower index = higher score

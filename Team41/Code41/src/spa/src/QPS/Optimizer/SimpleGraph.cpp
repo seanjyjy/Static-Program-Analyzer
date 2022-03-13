@@ -32,6 +32,7 @@ void SimpleGraph::clear() {
     nodeId = 0;
     seenEdges.clear();
     nameToNodeId.clear();
+    nodeIdToName.clear();
     adjList.clear();
 }
 
