@@ -60,6 +60,11 @@ vector<pair<K, V>> ManyToMany<K, V>::getEntries() {
 }
 
 template<class K, class V>
+size_t ManyToMany<K, V>::size() {
+    return entries.size();
+}
+
+template<class K, class V>
 size_t ManyToMany<K, V>::keySize() {
     return keyToValues.keySize();
 }

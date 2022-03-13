@@ -69,6 +69,11 @@ vector<pair<K, V>> OneToOne<K, V>::getEntries() {
 }
 
 template<class K, class V>
+size_t OneToOne<K, V>::size() {
+    return entries.size();
+}
+
+template<class K, class V>
 size_t OneToOne<K, V>::keySize() {
     return keyToVal.keySize();
 }

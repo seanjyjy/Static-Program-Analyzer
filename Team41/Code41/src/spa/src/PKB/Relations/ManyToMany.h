@@ -100,6 +100,13 @@ public:
     vector<pair<K, V>> getEntries();
 
     /**
+     * Gets the number of relations stored in table
+     *
+     * @return number of relations
+     */
+    size_t size();
+
+    /**
      * Gets the number of keys stored in table
      *
      * @return number of keys

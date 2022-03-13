@@ -68,6 +68,11 @@ vector<pair<K, V>> OneToMany<K, V>::getEntries() {
 }
 
 template<class K, class V>
+size_t OneToMany<K, V>::size() {
+    return entries.size();
+}
+
+template<class K, class V>
 size_t OneToMany<K, V>::keySize() {
     return keyToValues.keySize();
 }

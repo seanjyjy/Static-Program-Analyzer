@@ -28,6 +28,7 @@ TEST_CASE("PKB: OneToOne") {
         // Before adding
         REQUIRE(table.keySize() == 0);
         REQUIRE(table.valSize() == 0);
+        REQUIRE(table.size() == 0);
         REQUIRE(table.getKeys() == unordered_set<TestKeys>());
         REQUIRE(table.getValues() == unordered_set<TestValues>());
         REQUIRE_FALSE(table.hasKey(TEST_KEY_1));
@@ -69,6 +70,7 @@ TEST_CASE("PKB: OneToOne") {
         REQUIRE_FALSE(table.hasMapping(TEST_KEY_4, TEST_VALUE_4));
         REQUIRE(table.valSize() == 2);
         REQUIRE(table.keySize() == 2);
+        REQUIRE(table.size() == 2);
 
         REQUIRE(table.getValFromKey(TEST_KEY_2) == TEST_VALUE_2);
         REQUIRE(table.getValFromKey(TEST_KEY_1) == TEST_VALUE_1);

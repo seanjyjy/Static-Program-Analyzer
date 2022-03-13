@@ -1,7 +1,6 @@
 #include "PKB/Relations/SingleMap.h"
 
 #include "catch.hpp"
-#include "../UnitTestUtility.h"
 #include <unordered_set>
 
 using namespace std;
