@@ -1,6 +1,6 @@
 name: System Test - Windows
 
-on: workflow_dispatch
+on: pull_request
 
 env:
   BUILD_TYPE: Release
