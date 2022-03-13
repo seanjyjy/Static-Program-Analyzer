@@ -454,12 +454,15 @@ optional<PatternVariable> QueryParser::parsePatternRHS() {
     }
 }
 
-bool QueryParser::parsePatternClause() {
+bool QueryParser::skipPattern() {
     optional<string> patt = lex->nextExpected("pattern");
     if (!patt.has_value()) {
         printf("Malformed input. Expected keyword: pattern\n");
         return false;
     }
+}
+
+bool QueryParser::parsePatternClause() {
     optional<QueryDeclaration> patternSyn = parsePatternSyn();
     if (patternSyn == nullopt) return false;
     lookForClauseGrammarSymbol("(", "Syntax Error: Expected '(' for pattern declaration parameters\n");
@@ -545,6 +548,26 @@ void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string l
 
 QueryParser::QueryParser(string &input) : input(input) {}
 
+bool QueryParser::parseSuchThatClauses() {
+    skipSuchThat();
+    do {
+        if (!parseClause()) {
+            return false;
+        }
+    } while (lex->peekNextIsString("and") && lex->nextExpected("and"));
+    return true;
+}
+
+bool QueryParser::parsePatternClauses() {
+    skipPattern();
+    do {
+        if (!parsePatternClause()) {
+            return false;
+        }
+    } while (lex->peekNextIsString("and") && lex->nextExpected("and"));
+    return true;
+}
+
 QueryObject *QueryParser::parse() {
     // Base declaration
     vector<QueryDeclaration> declarations;
@@ -569,14 +592,13 @@ QueryObject *QueryParser::parse() {
 
     while (!lex->isEndOfQuery()) {
         if (lex->peekNextIsString("such")) {
-            skipSuchThat();
-            if (!parseClause()) {
+            if (!parseSuchThatClauses()) {
                 cleanup();
+                queryObject->isQueryValid = false;
                 return queryObject;
             }
         } else if (lex->peekNextIsString("pattern")) {
-            // Do pattern stuff
-            if (!parsePatternClause()) {
+            if (!parsePatternClauses()) {
                 queryObject->isQueryValid = false;
                 cleanup();
                 return queryObject;

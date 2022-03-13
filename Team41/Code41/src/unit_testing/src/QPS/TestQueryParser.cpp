@@ -398,7 +398,35 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getSelectables().at(3).getSynonym().synonym == "a2");
         REQUIRE(qo->getSelectables().at(3).getAttr() == Selectable::STMT_NUM);
     }
+    SECTION("such that and") {
+        string s = "Select BOOLEAN such that Next* (2, 8) and Next* (8, 9)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
 
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->isSelectingBoolean());
+        REQUIRE(qo->clauses.at(0).type == QueryClause::nextT);
+        REQUIRE(qo->clauses.at(1).type == QueryClause::nextT);
+    }
+    SECTION("pattern and") {
+        string s = "assign a1, a2; while w1, w2;\n"
+                   "Select a2 pattern a1 (\"x\", _) and a2 (\"x\", _\"x\"_)\n"
+                   "          such that Affects (a1, a2) and Parent* (w2, a2) and Parent* (w1, w2)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->patternClauses.at(0).getSynonym().synonym == "a1");
+        REQUIRE(qo->patternClauses.at(0).getLHS().isIdentifier());
+        REQUIRE(qo->patternClauses.at(0).getLHS().getLabel() == "x");
+        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isWildcard());
+        REQUIRE(qo->patternClauses.at(1).getSynonym().synonym == "a2");
+        REQUIRE(qo->clauses.at(0).type == QueryClause::affects);
+        REQUIRE(qo->clauses.at(1).type == QueryClause::parentT);
+        REQUIRE(qo->clauses.at(2).type == QueryClause::parentT);
+        REQUIRE(qo->clauses.at(2).getLeftClauseVariable().getLabel() == "w1");
+        REQUIRE(qo->clauses.at(2).getRightClauseVariable().getLabel() == "w2");
+    }
     delete qo;
 }
 

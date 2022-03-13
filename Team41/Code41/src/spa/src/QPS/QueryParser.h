@@ -24,6 +24,8 @@ private:
      */
     bool skipSuchThat();
 
+    bool skipPattern();
+
     /**
      * Checks if the combo of strings
      * constitute a valid PQL clause.
@@ -82,6 +84,10 @@ private:
     bool parseSelectSingle();
 
     Selectable::attributeName parseSelectAttribute();
+
+    bool parseSuchThatClauses();
+
+    bool parsePatternClauses();
 
     /**
      * Parses a clause of a query
