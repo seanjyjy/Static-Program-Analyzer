@@ -36,13 +36,6 @@ public:
     unordered_set<K> keys();
 
     /**
-     * Gets all unique entries used in the table
-     *
-     * @return list of key-value pair
-     */
-    vector<pair<K, V>> entries();
-
-    /**
      * Get the number of keys in table
      *
      * @return number of keys

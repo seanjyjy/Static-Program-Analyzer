@@ -33,7 +33,6 @@ bool OneToMany<K, V>::hasMapping(K key, V val) {
     return keyToValues.hasKeyValue(key, val);
 }
 
-
 template<class K, class V>
 void OneToMany<K, V>::addMapping(K key, V val) {
     // already mapped
@@ -46,8 +45,11 @@ void OneToMany<K, V>::addMapping(K key, V val) {
         throw runtime_error("[PKB][" + relationName + "][One-Many] Multiple keys detected for specified val");
     }
 
-    keyToValues.add(key, val);
-    valuesToKey.put(val, key);
+    if (!hasMapping(key, val)) {
+        keyToValues.add(key, val);
+        valuesToKey.put(val, key);
+        entries.push_back(make_pair(key, val));
+    }
 }
 
 template<class K, class V>
@@ -62,7 +64,7 @@ unordered_set<V> OneToMany<K, V>::getValues() {
 
 template<typename K, typename V>
 vector<pair<K, V>> OneToMany<K, V>::getEntries() {
-    return keyToValues.entries();
+    return entries;
 }
 
 template<class K, class V>

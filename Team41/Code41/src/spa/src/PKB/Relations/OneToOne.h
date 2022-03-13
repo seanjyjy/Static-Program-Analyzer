@@ -27,6 +27,7 @@ private:
     string relationName;
     SingleMap<K, V> keyToVal;
     SingleMap<V, K> valToKey;
+    vector<pair<K, V>> entries;
 public:
     explicit OneToOne(const string &relationName);
 

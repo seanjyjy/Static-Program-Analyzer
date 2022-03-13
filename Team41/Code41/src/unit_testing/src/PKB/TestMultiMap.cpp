@@ -65,7 +65,6 @@ TEST_CASE("PKB: MultiMap") {
         vector<pair<TestKeys, TestValues>> entrySet;
         entrySet.reserve(10);
         REQUIRE(table.keys() == comparisonSet);
-        REQUIRE(sortAndCompareVectors(table.entries(),entrySet));
 
         // populating table
         unordered_set<TestValues> valueSet_1;
@@ -81,7 +80,6 @@ TEST_CASE("PKB: MultiMap") {
         entrySet.push_back(make_pair(TEST_KEY_1, TEST_VALUE_2));
         entrySet.push_back(make_pair(TEST_KEY_2, TEST_VALUE_1));
         REQUIRE(table.keys() == comparisonSet);
-        REQUIRE(sortAndCompareVectors(table.entries(),entrySet));
 
         // correct values set
         unordered_set<TestValues> valueSet_2;

@@ -13,16 +13,6 @@ unordered_set<K> SingleMap<K, V>::keys() {
 }
 
 template<class K, class V>
-vector<pair<K, V>> SingleMap<K, V>::entries() {
-    vector<pair<K, V>> resultSet;
-    resultSet.reserve(mapping.size());
-    for (K key : keySet) {
-        resultSet.push_back(make_pair(key, mapping[key]));
-    }
-    return resultSet;
-}
-
-template<class K, class V>
 size_t SingleMap<K, V>::keySize() {
     return keySet.size();
 }

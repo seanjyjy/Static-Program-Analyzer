@@ -27,6 +27,7 @@ private:
     string relationName;
     SetMultiMap<K, V> keyToValues;
     SingleMap<V, K> valuesToKey;
+    vector<pair<K, V>> entries;
 public:
     explicit OneToMany(const string &relationName);
 
