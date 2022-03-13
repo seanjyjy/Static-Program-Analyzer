@@ -43,3 +43,22 @@ QueryObject::~QueryObject() {
         }
     }
 }
+
+void QueryObject::print() {
+    printDeclarations();
+    printClauses();
+}
+
+void QueryObject::printDeclarations() {
+    cout << "*** DECLARATIONS ***" << endl;
+    for (QueryDeclaration &qd: declarations) {
+        qd.print();
+    }
+}
+
+void QueryObject::printClauses() {
+    cout << "*** CLAUSES ***" << endl;
+    for (QueryClause &qc: clauses) {
+        qc.print();
+    }
+}

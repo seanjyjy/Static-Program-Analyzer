@@ -40,4 +40,19 @@ public:
     // old
     QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, QueryDeclaration selectSynonym, bool isQueryValid);
     ~QueryObject();
+
+    /**
+     * Prints all declarations and clauses in the query object. Mainly for debugging purposes.
+     */
+    void print();
+
+    /**
+     * Prints all declarations in the query object. Mainly for debugging purposes.
+     */
+    void printDeclarations();
+
+    /**
+     * Prints all clauses in the query object. Mainly for debugging purposes.
+     */
+    void printClauses();
 };

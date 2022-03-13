@@ -26,14 +26,14 @@ public:
      *
      * @return variable_type representing the type.
      */
-    variable_type getType();
+    [[nodiscard]] variable_type getType() const;
 
     /**
      * Getter for the label.
      *
      * @return string representing the label.
      */
-    string getLabel();
+    [[nodiscard]] string getLabel() const;
 
     /**
      * Getter for the declaration type.

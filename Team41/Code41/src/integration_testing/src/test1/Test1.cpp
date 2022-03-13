@@ -4,6 +4,7 @@
 #include "QPS/QueryEvaluator.h"
 #include "QPS/QueryParser.h"
 #include "Common/FileReader.h"
+#include "QPS/Optimizer/QueryOptimizer.h"
 #include <filesystem>
 
 using namespace std;
@@ -27,6 +28,11 @@ TEST_CASE("Test 1") {
 
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
+
+        // TODO complete this later, once the interface is stable
+        QueryOptimizer qo(&pkbManager);
+//        OptimizedQueryObject oqo = qo.optimize(*queryObject);
+
         QueryEvaluator queryEvaluator(&pkbManager);
         unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
 
