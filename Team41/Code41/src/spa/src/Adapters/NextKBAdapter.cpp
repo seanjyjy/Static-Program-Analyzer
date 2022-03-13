@@ -8,7 +8,7 @@ vector<string> NextKBAdapter::dfsWrapper(string &start, string &end) {
     unordered_set<string> visited;
     vector<string> path;
     // Assume we have a map
-    CFGNode* startNode = map.get(start);
+    CFGNode* startNode = this->pkb->getCFGForStmt(start);
 
     dfs(startNode, path, visited, end);
 
@@ -17,16 +17,16 @@ vector<string> NextKBAdapter::dfsWrapper(string &start, string &end) {
 
 // Need not be shortest path just any path
 void NextKBAdapter::dfs(CFGNode *node, vector<string> &path, unordered_set<string> &visited, string &end) {
-    if (node->stmtNum == end) {
+    if (node->getStmtNum() == end) {
         return;
     }
 
-    path.insert(node->stmtNum);
-    visited.insert(node->stmtNum);
+    path.insert(node->getStmtNum());
+    visited.insert(node->getStmtNum());
 
     for (auto& child : node->getChildren()) {
-        if (visited.find(child->stmtNum) == visited.end()) {
-            addRelation(node->stmtNum, child->stmtNum);
+        if (visited.find(child->getStmtNum()) == visited.end()) {
+            addBooleanRelation(node->getStmtNum(), child->getStmtNum());
             dfs(child, path, visited, end);
         }
     }
@@ -34,34 +34,40 @@ void NextKBAdapter::dfs(CFGNode *node, vector<string> &path, unordered_set<strin
     path.pop_back();
 }
 
-void NextKBAdapter::addRelation(const string& start, const string& end) {
+void NextKBAdapter::addBooleanRelation(const string& start, const string& end) {
     cache->registerBooleanMapping(start, end);
-    cache->registerForwardMapping(start, end);
-    cache->registerBackwardMapping(end, start);
+}
+
+void NextKBAdapter::addForwardRelation(const string &start, const string &end) {
+
+}
+
+void NextKBAdapter::addBackwardRelation(const string &start, const string &end) {
+
 }
 
 bool NextKBAdapter::isNext(string stmt1, string stmt2) const {
-    return false;
+    return pkb->isNext(move(stmt1), move(stmt2));
 }
 
 unordered_set<string> NextKBAdapter::getAllStmtsNext(string stmtNum) const {
-    return unordered_set<string>();
+    return pkb->getNextStmts(move(stmtNum));
 }
 
 unordered_set<string> NextKBAdapter::getAllStmtsBefore(string stmtNum) const {
-    return unordered_set<string>();
+    return pkb->getPrevStmts(move(stmtNum));
 }
 
 vector<pair<string, string>> NextKBAdapter::getAllNext() const {
-    return vector<pair<string, string>>();
+    return pkb->getAllNext();
 }
 
 unordered_set<string> NextKBAdapter::getAllStmtsThatHaveNextStmt() const {
-    return unordered_set<string>();
+    return pkb->getAllStmtsExecBeforeSomeStmt();
 }
 
 unordered_set<string> NextKBAdapter::getAllStmtsThatIsNextOfSomeStmt() const {
-    return unordered_set<string>();
+    return pkb->getAllStmtsExecAfterSomeStmt();
 }
 
 bool NextKBAdapter::isNextT(string stmt1, string stmt2) const {

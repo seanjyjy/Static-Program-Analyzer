@@ -6,6 +6,7 @@
 
 #include "PKB/PKBClient.h"
 #include "Cache/Cache.h"
+#include "Common/CFGNode.h"
 
 class NextKBAdapter {
 private:
@@ -15,7 +16,9 @@ private:
     vector<string> dfsWrapper(string &start, string &end);
     void dfs(CFGNode *node, vector<string> &path, unordered_set<string> &visited, string &end);
 
-    void addRelation(const string& start, const string& end);
+    void addBooleanRelation(const string& start, const string& end);
+    void addForwardRelation(const string& start, const string& end);
+    void addBackwardRelation(const string& start, const string& end);
 public:
     explicit NextKBAdapter(PKBClient* pkb);
     //=========================================== Next ===================================================
