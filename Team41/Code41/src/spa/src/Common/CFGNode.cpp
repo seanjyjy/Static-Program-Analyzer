@@ -12,12 +12,25 @@ void CFGNode::addChild(CFGNode *node) {
     this->children.push_back(node);
 }
 
+void CFGNode::addParent(CFGNode *node) {
+    this->parent.push_back(node);
+}
+
 TNode *CFGNode::getTNode() {
     return this->tNode;
 }
 
+string CFGNode::getStmtNum() {
+    // TODO
+    return "";
+}
+
 std::vector<CFGNode *> CFGNode::getChildren() {
     return this->children;
+}
+
+std::vector<CFGNode *> CFGNode::getParent() {
+    return this->parent;
 }
 
 void CFGNode::printCFG(CFGNode *node, std::unordered_map<TNode *, string> &nodeToStmtNumMap) {

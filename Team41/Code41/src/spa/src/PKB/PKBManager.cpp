@@ -149,3 +149,11 @@ void PKBManager::registerWhilePattern(const string &stmtNum, const string &condV
     }
     return whilePatternTable->setPattern(stmtNum, condVariable);
 }
+
+//======================================== CFG ==================================================
+
+void PKBManager::registerCFG(CFGNode *node, const StmtToNodeMap& map) {
+    this->rootCFG = node;
+    this->stmtToNodeMap = map;
+    return nextTable->setCFGNode(node, map);
+}
