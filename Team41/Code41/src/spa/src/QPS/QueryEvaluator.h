@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "PKB/PKBClient.h"
+
 #include "QPS/Evaluator/Evaluator.h"
 #include "QPS/Evaluator/UsesSEvaluator.h"
 #include "QPS/Evaluator/UsesPEvaluator.h"
@@ -20,19 +21,30 @@
 #include "QPS/Evaluator/AssignPatternEvaluator.h"
 #include "QPS/Evaluator/IfPatternEvaluator.h"
 #include "QPS/Evaluator/WhilePatternEvaluator.h"
+
 #include "QueryObject.h"
 #include "QueryClause.h"
+#include "Selectable.h"
+
+using namespace std;
 
 class QueryEvaluator {
 private:
     PKBClient* pkb;
-
     /**
      * Deletes a table after it is not being used.
      *
-     * @param table Table to be deleted.
+     * @param tableToDelete Table to be deleted.
      */
-    void safeDeleteTable(Table* table);
+    void safeDeleteTable(Table* tableToDelete);
+
+    /**
+     * Deletes a table after it is not being used and it is not the same reference as result table.
+     *
+     * @param tableToDelete Table to be deleted.
+     * @param resultTable Table that contains the current result.
+     */
+    void safeDeleteTable(Table* tableToDelete, Table* resultTable);
 public:
     explicit QueryEvaluator(PKBClient* pkb);
 
@@ -42,7 +54,7 @@ public:
      * @param queryObject QueryObject.
      * @return A set of results based on the query provided.
      */
-    std::unordered_set<std::string> evaluateQuery(QueryObject *queryObject);
+    unordered_set<string> evaluateQuery(QueryObject *queryObject);
 
     /**
      * Constructs a table based on the QueryClause provided.
@@ -59,4 +71,21 @@ public:
      * @return A table that contains information based on the PatternClause provided.
      */
     Table* evaluate(PatternClause& clause);
+
+    /**
+     * Format the resulting query depending on the return type.
+     *
+     * @param queryObject QueryObject.
+     * @param resultTable Table the represents the resultant table from the query itself.
+     * @return An unordered set of strings representing the result.
+     */
+    unordered_set<string> buildResult(QueryObject *queryObject, Table *resultTable);
+
+    /**
+     * Extract the vector of synonyms from the query's return type from query object.
+     *
+     * @param queryObject QueryObject.
+     * @return A vector of synonyms from the query's return type.
+     */
+    vector<string> getSynonyms(QueryObject *queryObject);
 };

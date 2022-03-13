@@ -76,6 +76,14 @@ public:
     virtual unordered_set<string> getColumn(string columnName) = 0;
 
     /**
+     * Retrieves a set of values from this table based on the column.
+     *
+     * @param columnName The names of the columns to retrieve from.
+     * @return A set of values from this table based on the columns.
+     */
+    virtual unordered_set<string> getColumns(vector<string> columnNames) = 0;
+
+    /**
      * Sort the current table based on the common header provided.
      *
      * @param commonHeader A vector of strings that contains the header information that is used for sorting.

@@ -234,15 +234,29 @@ PQLTable::~PQLTable() {
 }
 
 unordered_set<string> PQLTable::getColumn(string columnName) {
-    unordered_set<string> result;
+    unordered_set<string> results;
 
     for (auto& row : this->getRows()) {
-        result.insert(row->getValueAtColumn(columnName));
+        results.insert(row->getValueAtColumn(columnName));
     }
 
-    return result;
+    return results;
 }
 
 Table::TableType PQLTable::getType() {
     return Table::PQLTable;
+}
+
+unordered_set<string> PQLTable::getColumns(vector<string> columnNames) {
+    unordered_set<string> results;
+
+    for (auto& row : this->getRows()) {
+        string result;
+        for (auto& columnName : columnNames) {
+            result.append(row->getValueAtColumn(columnName)).append(" ");
+        }
+        results.insert(result.substr(0, result.size() - 1));
+    }
+
+    return results;
 }

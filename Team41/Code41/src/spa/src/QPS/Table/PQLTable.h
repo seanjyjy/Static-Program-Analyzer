@@ -135,6 +135,11 @@ public:
     /**
      * @see QPS/Table/Table.h
      */
-    virtual unordered_set<string> getColumn(string columnName) override;
+    unordered_set<string> getColumn(string columnName) override;
+
+    /**
+     * @see QPS/Table/Table.h
+     */
+    unordered_set<string> getColumns(vector<string> columnNames) override;
 };
 

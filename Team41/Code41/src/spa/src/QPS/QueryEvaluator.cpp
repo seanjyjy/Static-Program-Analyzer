@@ -3,17 +3,19 @@
 
 QueryEvaluator::QueryEvaluator(PKBClient *pkb) { this->pkb = pkb; }
 
-std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
-    std::unordered_set<std::string> emptyResult;
+unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
+    unordered_set<string> emptyResult;
+    unordered_set<string> result;
+
     if (!queryObject->isQueryValid) {
         return emptyResult;
     }
 
+    Table *resultTable = new TrueTable();
     auto selectSynonym = queryObject->selectSynonym;
-    Table *resultTable = nullptr;
-
     auto queryClauses = queryObject->clauses;
     auto patternClauses = queryObject->patternClauses;
+
     auto suchThatClPtr = queryClauses.begin();
     auto patternClPtr = patternClauses.begin();
 
@@ -31,26 +33,18 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
                 safeDeleteTable(resultTable);
-                return emptyResult;
-            }
-
-            if (resultTable == nullptr) {
-                resultTable = intermediateTable;
-                continue;
+                return buildResult(queryObject, new FalseTable());
             }
 
             Table *ogTable = resultTable;
             resultTable = resultTable->mergeJoin(intermediateTable);
-            if (ogTable != resultTable) {
-                safeDeleteTable(ogTable);
-            }
-            if (resultTable != intermediateTable) {
-                safeDeleteTable(intermediateTable);
-            }
+
+            safeDeleteTable(ogTable, resultTable);
+            safeDeleteTable(intermediateTable, resultTable);
 
             if (resultTable->isEmpty()) {
                 safeDeleteTable(resultTable);
-                return emptyResult;
+                return buildResult(queryObject, new FalseTable());
             }
         }
 
@@ -60,42 +54,50 @@ std::unordered_set<std::string> QueryEvaluator::evaluateQuery(QueryObject *query
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
                 safeDeleteTable(resultTable);
-                return emptyResult;
-            }
-
-            if (resultTable == nullptr) {
-                resultTable = intermediateTable;
-                continue;
+                return buildResult(queryObject, new FalseTable());
             }
 
             Table *ogTable = resultTable;
             resultTable = resultTable->mergeJoin(intermediateTable);
-            if (ogTable != resultTable) {
-                safeDeleteTable(ogTable);
-            }
-            if (resultTable != intermediateTable) {
-                safeDeleteTable(intermediateTable);
-            }
+
+            safeDeleteTable(ogTable, resultTable);
+            safeDeleteTable(intermediateTable, resultTable);
 
             if (resultTable->isEmpty()) {
                 safeDeleteTable(resultTable);
-                return emptyResult;
+                return buildResult(queryObject, new FalseTable());
             }
         }
     } catch (SemanticException& error) {
         std::cout << error.what() << std::endl;
 
-        return emptyResult;
+        return buildResult(queryObject, new FalseTable());
     } catch (const runtime_error& error) {
         std::cout << error.what() << std::endl;
 
-        return emptyResult;
+        return buildResult(queryObject, new FalseTable());
     }
 
-    // copy result from resultTable to result here when can think of based on queryObject schema
-    unordered_set<string> result = resultTable->getColumn(selectSynonym.synonym);
-    safeDeleteTable(resultTable);
+    return buildResult(queryObject, resultTable);
+}
 
+unordered_set<string> QueryEvaluator::buildResult(QueryObject *queryObject, Table *resultTable) {
+    unordered_set<string> result;
+
+    if (queryObject->isSelectingBoolean()) {
+        // Occurs when result table is a false table or pql table which is empty
+        if (resultTable->isEmpty()) {
+            result.insert("FALSE");
+        } else {
+            result.insert("TRUE");
+        }
+    } else {
+        vector<string> synonyms = getSynonyms(queryObject);
+
+        // copy result from resultTable to result here when can think of based on queryObject schema
+        result = resultTable->getColumns(synonyms);
+    }
+    safeDeleteTable(resultTable);
     return result;
 }
 
@@ -140,8 +142,33 @@ Table *QueryEvaluator::evaluate(PatternClause &clause) {
     }
 }
 
-void QueryEvaluator::safeDeleteTable(Table* table) {
-    if (table != nullptr) {
-        delete table;
+void QueryEvaluator::safeDeleteTable(Table* tableToDelete, Table* resultTable) {
+    if (tableToDelete == resultTable) {
+        return;
     }
+
+    if (tableToDelete != nullptr) {
+        delete tableToDelete;
+    }
+}
+
+void QueryEvaluator::safeDeleteTable(Table *tableToDelete) {
+    safeDeleteTable(tableToDelete, nullptr);
+}
+
+vector<string> QueryEvaluator::getSynonyms(QueryObject *queryObject) {
+    vector<string> synonyms;
+
+    for (auto& selectable : queryObject->getSelectables()) {
+        QueryDeclaration queryDeclaration = selectable.getSynonym();
+        string label = queryDeclaration.synonym;
+
+        if (selectable.getType() == Selectable::ATTR_REF) {
+            label.append(".").append(to_string(selectable.getAttr()));
+        }
+
+        synonyms.push_back(label);
+    }
+
+    return synonyms;
 }
