@@ -6,6 +6,7 @@
 #include "QueryDeclaration.h"
 #include "QueryEvaluator.h"
 #include "QueryLexer.h"
+#include "SelectTarget.h"
 #include "SimpleParser/Parser.h" // for pattern parse
 
 using namespace std;
@@ -74,7 +75,13 @@ private:
      *
      * @return boolean if parsing was successful.
      */
-    bool parseSelectSynonym();
+    bool parseSelectTarget();
+
+    bool parseSelectTuple();
+
+    bool parseSelectSingle();
+
+    Selectable::attributeName parseSelectAttribute();
 
     /**
      * Parses a clause of a query

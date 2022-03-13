@@ -15,7 +15,6 @@ TEST_CASE("QPS: Parser_VALID") {
         bool typeMatch = qo->declarations.at(0).type == QueryDeclaration::VARIABLE;
         bool synMatch = qo->declarations.at(0).synonym == "v";
         bool selectMatch = qo->selectSynonym.synonym == "v";
-
         REQUIRE(qo->isQueryValid);
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
@@ -340,6 +339,66 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
         REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
     }
+    SECTION("SelectTarget test") {
+        string s = "variable v;\n"
+                   "Select v";
+
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        bool typeMatch = qo->declarations.at(0).type == QueryDeclaration::VARIABLE;
+        bool synMatch = qo->declarations.at(0).synonym == "v";
+        bool selectMatch = qo->selectTarget.tuple.at(0).getSynonym().synonym == "v";
+        REQUIRE(qo->isQueryValid);
+        REQUIRE(typeMatch);
+        REQUIRE(synMatch);
+        REQUIRE(selectMatch);
+    }
+    SECTION("Select BOOLEAN") {
+        string s = "Select BOOLEAN such that Next* (2, 9)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->selectTarget.isBoolean());
+        REQUIRE(qo->clauses.at(0).type == QueryClause::nextT);
+    }
+    SECTION("Select attribute") {
+        string s = "procedure p, q;\n"
+                   "Select p.procName such that Calls (p, q)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->selectTarget.isTuple());
+        REQUIRE(qo->selectTarget.tuple.at(0).getType() == Selectable::ATTR_REF);
+        REQUIRE(qo->selectTarget.tuple.at(0).getSynonym().synonym == "p");
+        REQUIRE(qo->selectTarget.tuple.at(0).getAttr() == Selectable::PROC_NAME);
+        REQUIRE(qo->clauses.at(0).type == QueryClause::calls);
+    }
+    SECTION("Select single elem tuple") {
+        string s = "procedure p, q;\n"
+                   "Select <p.procName> such that Calls (p, q)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->selectTarget.isTuple());
+        REQUIRE(qo->getSelectables().at(0).getType() == Selectable::ATTR_REF);
+        REQUIRE(qo->getSelectables().at(0).getSynonym().synonym == "p");
+        REQUIRE(qo->getSelectables().at(0).getAttr() == Selectable::PROC_NAME);
+        REQUIRE(qo->clauses.at(0).type == QueryClause::calls);
+    }
+    SECTION("Select tuple") {
+        string s = "assign a1, a2;\n"
+                   "Select <a1, a1.stmt#, a2, a2.stmt#> such that Affects (a1, a2)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->selectTarget.isTuple());
+        REQUIRE(qo->getSelectables().at(0).getSynonym().synonym == "a1");
+        REQUIRE(qo->getSelectables().at(0).getType() == Selectable::SYNONYM);
+        REQUIRE(qo->getSelectables().at(1).getType() == Selectable::ATTR_REF);
+        REQUIRE(qo->getSelectables().at(1).getSynonym().synonym == "a1");
+        REQUIRE(qo->getSelectables().at(1).getAttr() == Selectable::STMT_NUM);
+        REQUIRE(qo->getSelectables().at(2).getSynonym().synonym == "a2");
+        REQUIRE(qo->getSelectables().at(2).getType() == Selectable::SYNONYM);
+        REQUIRE(qo->getSelectables().at(3).getSynonym().synonym == "a2");
+        REQUIRE(qo->getSelectables().at(3).getAttr() == Selectable::STMT_NUM);
+    }
+
     delete qo;
 }
 

@@ -20,8 +20,11 @@ private:
              "Calls", "Calls*", "Next", "Next*",
              "Affects", "Affects*"};
 
+    const unordered_set<string> attribute_keywords =
+            {"procName", "varName", "value", "stmt#"};
+
     const unordered_set<char> special_char =
-            {'(', ')', ';', ',', ' ', '\n'};
+            {'(', ')', ';', ',', ' ', '<', '>', '.', '\n'};
 
     int index = 0; // tracks position in input
     const string &input; // input string being parsed
@@ -56,6 +59,8 @@ private:
      * @return boolean indicating if parameter is indeed in the vector.
      */
     bool isClauseKeyword(string w);
+
+    bool isValidAttribute(string w);
 
 public:
     /**
@@ -121,6 +126,8 @@ public:
      * @return optional string representing either a found pattern expression or null.
      */
     optional<string> nextPatternExpression();
+
+    optional<string> nextAttribute();
 
     /**
      * Peeks if the next token is a certain string.

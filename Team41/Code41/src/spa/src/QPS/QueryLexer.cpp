@@ -80,6 +80,10 @@ bool QueryLexer::isClauseKeyword(string w) {
     return clause_keywords.find(w) != clause_keywords.end();
 }
 
+bool QueryLexer::isValidAttribute(string w) {
+    return attribute_keywords.find(w) != attribute_keywords.end();
+}
+
 bool QueryLexer::isInteger(string w) {
     string::const_iterator it = w.begin();
     while (it != w.end() && isdigit(*it)) ++it;
@@ -215,6 +219,17 @@ optional<string> QueryLexer::nextPatternExpression() {
         }
         index++; // Skip over closing '"'
         return "\"" + out + "\""; // For parser to recognize pattern
+    }
+}
+
+optional<string> QueryLexer::nextAttribute() {
+    int temp = index;
+    string possibleAttribute = nextToken();
+    if (isValidAttribute(possibleAttribute)) {
+        return possibleAttribute;
+    } else {
+        index = temp; // reset index to stable loc
+        return nullopt;
     }
 }
 
