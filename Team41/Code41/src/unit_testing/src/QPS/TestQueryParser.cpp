@@ -340,6 +340,30 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->clauses.at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
         REQUIRE(qo->clauses.at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
     }
+    SECTION("Select BOOLEAN") {
+        string s = "Select BOOLEAN such that Next* (2, 9)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->selectTarget.isBoolean());
+        REQUIRE(qo->clauses.at(0).type == QueryClause::nextT);
+    }
+    SECTION("Select attribute") {
+        string s = "procedure p, q;\n"
+                   "Select p.procName such that Calls (p, q)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->selectTarget.tuple.at(0).getType() == Selectable::ATTR_REF);
+        REQUIRE(qo->selectTarget.tuple.at(0).getSynonym().synonym == "p");
+        REQUIRE(qo->selectTarget.tuple.at(0).getAttr() == Selectable::PROC_NAME);
+    }
+    SECTION("Select tuple") {
+        string s = "assign a1, a2;\n"
+                   "Select <a1, a2> such that Affects (a1, a2)";
+        QueryParser qp = QueryParser{s};
+        qp.parse();
+        REQUIRE(true);
+    }
+
     delete qo;
 }
 

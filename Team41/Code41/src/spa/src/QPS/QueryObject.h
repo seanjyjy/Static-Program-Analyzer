@@ -5,6 +5,7 @@
 #include "QueryDeclaration.h"
 #include "QueryClause.h"
 #include "PatternClause.h"
+#include "SelectTarget.h"
 
 using namespace std;
 
@@ -13,7 +14,12 @@ public:
     vector<QueryDeclaration> declarations; // collection of declarations in the query
     vector<QueryClause> clauses; // collection of clauses made during the query
     vector<PatternClause> patternClauses; // collection of "pattern" clauses
+
+    // todo: remove selectSynonym after all system convert
     QueryDeclaration selectSynonym; // synonym to select for the query
+    // todo: selectTarget replaces selectSynonym
+    SelectTarget selectTarget = SelectTarget(SelectTarget::TUPLE);
+
     bool isQueryValid; // indicates if query was valid
 
     /**
@@ -25,6 +31,9 @@ public:
      * @param selectSynonym synonym to select for the query.
      * @param isQueryValid query's validity.
      */
+    QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, QueryDeclaration selectSynonym, SelectTarget selectTarget, bool isQueryValid);
+
+    // old
     QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, QueryDeclaration selectSynonym, bool isQueryValid);
     ~QueryObject();
 };

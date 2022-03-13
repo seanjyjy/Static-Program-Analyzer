@@ -19,7 +19,8 @@ bool QueryParser::skipSuchThat() {
 }
 
 bool QueryParser::parseDeclarations() {
-    do {
+
+    while (!lex->peekNextIsString("Select")) {
         if (lex->isEndOfQuery()) {
             printf("Query Incomplete.");
             return false;
@@ -32,7 +33,7 @@ bool QueryParser::parseDeclarations() {
         if (!parseDeclarationsOfTypeString(type->c_str())){
             return false;
         }
-    } while (!lex->peekNextIsString("Select"));
+    };
     return true;
 }
 
@@ -103,21 +104,75 @@ QueryDeclaration::design_entity_type QueryParser::determineDeclarationType(strin
     }
 }
 
-bool QueryParser::parseSelectSynonym() {
-    lex->nextExpected("Select");
+bool QueryParser::parseSelectTuple() {
+    printf("Houston we have a tuple.\n");
+    lookForClauseGrammarSymbol("<", "Syntax Error: Expected '<' for tuple beginning\n");
+    return false;
+}
+
+bool QueryParser::parseSelectSingle() {
     optional<string> synonym = lex->nextSynonym();
     if (!synonym.has_value()) {
         printf("Syntax Error: Use of select with no synonym.\n");
         return false;
     }
+    ///// LEGACY CODE FROM ITER 1 (todo remove)
     optional<QueryDeclaration> qd = findMatchingDeclaration(*synonym);
     if (!qd.has_value()) {
         printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
         return false;
     }
-
     queryObject->selectSynonym = qd.value();
+    ///// LEGACY CODE ENDS
+
+    if (lex->peekNextIsString(".")) {
+        lookForClauseGrammarSymbol(".", "Syntax Error: Expected '.' for attributes\n");
+        Selectable::attributeName attr = parseSelectAttribute();
+        if (attr == Selectable::NONE) {
+            return false;
+        }
+        Selectable s(Selectable::ATTR_REF, qd.value(), attr);
+        queryObject->selectTarget.addSelectable(s);
+    }
+
+    // No attribute, just synonym
+    Selectable s(Selectable::SYNONYM, qd.value(), Selectable::NONE);
+    queryObject->selectTarget.addSelectable(s);
     return true;
+}
+
+Selectable::attributeName QueryParser::parseSelectAttribute() {
+    optional<string> attr = lex->nextAttribute();
+    if (!attr.has_value()) {
+        printf("Syntax Error: Invalid attribute was specified.\n");
+        return Selectable::NONE;
+    }
+    string aT = attr.value();
+    if (aT == "procName") {
+        return Selectable::PROC_NAME;
+    } else if (aT == "varName") {
+        return Selectable::VAR_NAME;
+    } else if (aT == "value") {
+        return Selectable::VALUE;
+    } else if (aT == "stmt#") {
+        return Selectable::STMT_NUM;
+    }
+}
+
+bool QueryParser::parseSelectTarget() {
+    lex->nextExpected("Select");
+
+    if (lex->peekNextIsString("BOOLEAN")) {
+        lex->nextExpected("BOOLEAN");
+        queryObject->selectTarget = SelectTarget(SelectTarget::BOOLEAN);
+        return true;
+    }
+
+    if (lex->peekNextIsString("<")) {
+        return parseSelectTuple();
+    }
+
+    return parseSelectSingle();
 }
 
 bool QueryParser::isQueryClauseValid(string type, string left, string right) {
@@ -482,7 +537,8 @@ QueryObject *QueryParser::parse() {
     vector<PatternClause> patternClauses;
     string a = "";
     QueryDeclaration s(QueryDeclaration::ASSIGN, a);
-    queryObject = new QueryObject(declarations, clauses, patternClauses, s, false);
+    SelectTarget st(SelectTarget::BOOLEAN);
+    queryObject = new QueryObject(declarations, clauses, patternClauses, s, st, false);
 
     lex = new QueryLexer(input);
 
@@ -491,7 +547,7 @@ QueryObject *QueryParser::parse() {
         return queryObject;
     }
 
-    if (!parseSelectSynonym()) {
+    if (!parseSelectTarget()) {
         cleanup();
         return queryObject;
     }
