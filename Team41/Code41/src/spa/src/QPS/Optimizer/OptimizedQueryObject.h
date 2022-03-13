@@ -5,6 +5,7 @@
 #include "QPS/Optimizer/TableEstimate.h"
 #include "QPS/Optimizer/PKBAdapter.h"
 
+// TODO: explore inheritance instead of composition
 class OptimizedQueryObject {
 private:
     QueryObject queryObject;
