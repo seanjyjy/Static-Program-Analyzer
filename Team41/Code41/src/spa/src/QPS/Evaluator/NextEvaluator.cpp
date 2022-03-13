@@ -1,50 +1,50 @@
 #include "NextEvaluator.h"
 
-Table *NextEvaluator::evaluate(QueryClause clause, PKBClient *pkb) {
+Table *NextEvaluator::evaluate(QueryClause clause, NextKBAdapter* nextKBAdapter) {
     auto leftVariable = clause.getLeftClauseVariable();
     auto rightVariable = clause.getRightClauseVariable();
 
     if (EvaluatorUtils::StmtUtils::isIntegerInteger(&leftVariable, &rightVariable)) {
-        return evaluateIntegerInteger(pkb, leftVariable, rightVariable);
+        return evaluateIntegerInteger(nextKBAdapter, leftVariable, rightVariable);
     }
 
     if (EvaluatorUtils::StmtUtils::isValidIntegerSynonym(&leftVariable, &rightVariable)) {
-        return evaluateIntegerSynonym(pkb, leftVariable, rightVariable);
+        return evaluateIntegerSynonym(nextKBAdapter, leftVariable, rightVariable);
     }
 
     if (EvaluatorUtils::StmtUtils::isIntegerWildCard(&leftVariable, &rightVariable)) {
-        return evaluateIntegerWildCard(pkb, leftVariable);
+        return evaluateIntegerWildCard(nextKBAdapter, leftVariable);
     }
 
     if (EvaluatorUtils::StmtUtils::isValidSynonymInteger(&leftVariable, &rightVariable)) {
-        return evaluateSynonymInteger(pkb, leftVariable, rightVariable);
+        return evaluateSynonymInteger(nextKBAdapter, leftVariable, rightVariable);
     }
 
     if (EvaluatorUtils::StmtUtils::isValidSynonymSynonym(&leftVariable, &rightVariable)) {
-        return evaluateSynonymSynonym(pkb, leftVariable, rightVariable);
+        return evaluateSynonymSynonym(nextKBAdapter, leftVariable, rightVariable);
     }
 
     if (EvaluatorUtils::StmtUtils::isValidSynonymWildCard(&leftVariable, &rightVariable)) {
-        return evaluateSynonymWildCard(pkb, leftVariable);
+        return evaluateSynonymWildCard(nextKBAdapter, leftVariable);
     }
 
     if (EvaluatorUtils::StmtUtils::isWildCardInteger(&leftVariable, &rightVariable)) {
-        return evaluateWildCardInteger(pkb, rightVariable);
+        return evaluateWildCardInteger(nextKBAdapter, rightVariable);
     }
 
     if (EvaluatorUtils::StmtUtils::isValidWildCardSynonym(&leftVariable, &rightVariable)) {
-        return evaluateWildCardSynonym(pkb, rightVariable);
+        return evaluateWildCardSynonym(nextKBAdapter, rightVariable);
     }
 
     if (EvaluatorUtils::isWildCardWildCard(&leftVariable, &rightVariable)) {
-        return evaluateWildCardWildCard(pkb);
+        return evaluateWildCardWildCard(nextKBAdapter);
     }
 
     throw SemanticException("Invalid query provided for Next");
 }
 
-Table *NextEvaluator::evaluateIntegerInteger(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
-    bool isNext = pkb->isNext(left.getLabel(), right.getLabel());
+Table *NextEvaluator::evaluateIntegerInteger(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
+    bool isNext = nextKBAdapter->isNext(left.getLabel(), right.getLabel());
 
     if (!isNext) {
         return new FalseTable();
@@ -53,8 +53,8 @@ Table *NextEvaluator::evaluateIntegerInteger(PKBClient *pkb, ClauseVariable left
     return new TrueTable();
 }
 
-Table *NextEvaluator::evaluateIntegerSynonym(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
-    string nextStatement = pkb->getStatementAfter(left.getLabel());
+Table *NextEvaluator::evaluateIntegerSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
+    string nextStatement = nextKBAdapter->getStmtNext(left.getLabel());
 
     string column = right.getLabel();
     Header header = Header({column});
@@ -65,8 +65,8 @@ Table *NextEvaluator::evaluateIntegerSynonym(PKBClient *pkb, ClauseVariable left
     return table;
 }
 
-Table *NextEvaluator::evaluateIntegerWildCard(PKBClient *pkb, ClauseVariable left) {
-    string nextStatement = pkb->getStatementAfter(left.getLabel());
+Table *NextEvaluator::evaluateIntegerWildCard(NextKBAdapter* nextKBAdapter, ClauseVariable left) {
+    string nextStatement = nextKBAdapter->getStmtNext(left.getLabel());
 
     if (nextStatement.empty()) {
         return new FalseTable();
@@ -75,8 +75,8 @@ Table *NextEvaluator::evaluateIntegerWildCard(PKBClient *pkb, ClauseVariable lef
     return new TrueTable();
 }
 
-Table *NextEvaluator::evaluateSynonymInteger(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
-    string beforeStatement = pkb->getStatementBefore(right.getLabel());
+Table *NextEvaluator::evaluateSynonymInteger(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
+    string beforeStatement = nextKBAdapter->getStmtBefore(right.getLabel());
 
     string column = left.getLabel();
     Header header = Header({column});
@@ -87,8 +87,8 @@ Table *NextEvaluator::evaluateSynonymInteger(PKBClient *pkb, ClauseVariable left
     return table;
 }
 
-Table *NextEvaluator::evaluateSynonymSynonym(PKBClient *pkb, ClauseVariable left, ClauseVariable right) {
-    vector<pair<string, string>> listOfStmtToStmt = pkb->getAllNext();
+Table *NextEvaluator::evaluateSynonymSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
+    vector<pair<string, string>> listOfStmtToStmt = nextKBAdapter->getAllNext();
 
     string firstColumn = left.getLabel();
     string secondColumn = right.getLabel();
@@ -105,8 +105,8 @@ Table *NextEvaluator::evaluateSynonymSynonym(PKBClient *pkb, ClauseVariable left
     return table;
 }
 
-Table *NextEvaluator::evaluateSynonymWildCard(PKBClient *pkb, ClauseVariable left) {
-    vector<string> setOfStatements = pkb->getAllStmtsThatHaveNextStmt();
+Table *NextEvaluator::evaluateSynonymWildCard(NextKBAdapter* nextKBAdapter, ClauseVariable left) {
+    unordered_set<string> setOfStatements = nextKBAdapter->getAllStmtsThatHaveNextStmt();
 
     if (setOfStatements.empty()) {
         return new FalseTable();
@@ -115,8 +115,8 @@ Table *NextEvaluator::evaluateSynonymWildCard(PKBClient *pkb, ClauseVariable lef
     return new TrueTable();
 }
 
-Table *NextEvaluator::evaluateWildCardInteger(PKBClient *pkb, ClauseVariable right) {
-    string beforeStatement = pkb->getStatementBefore(right.getLabel());
+Table *NextEvaluator::evaluateWildCardInteger(NextKBAdapter* nextKBAdapter, ClauseVariable right) {
+    string beforeStatement = nextKBAdapter->getStmtBefore(right.getLabel());
 
     if (beforeStatement.empty()) {
         return new FalseTable();
@@ -125,8 +125,8 @@ Table *NextEvaluator::evaluateWildCardInteger(PKBClient *pkb, ClauseVariable rig
     return new TrueTable();
 }
 
-Table *NextEvaluator::evaluateWildCardSynonym(PKBClient *pkb, ClauseVariable right) {
-    unordered_set<string> setOfStatements = pkb->getAllStmtsThatIsNextOfSomeStmt();
+Table *NextEvaluator::evaluateWildCardSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable right) {
+    unordered_set<string> setOfStatements = nextKBAdapter->getAllStmtsThatIsNextOfSomeStmt();
 
     string column = right.getLabel();
     Header header = Header({column});
@@ -141,8 +141,8 @@ Table *NextEvaluator::evaluateWildCardSynonym(PKBClient *pkb, ClauseVariable rig
     return table;
 }
 
-Table *NextEvaluator::evaluateWildCardWildCard(PKBClient *pkb) {
-    vector<pair<string, string>> listOfStmtToStmt = pkb->getAllNext();
+Table *NextEvaluator::evaluateWildCardWildCard(NextKBAdapter* nextKBAdapter) {
+    vector<pair<string, string>> listOfStmtToStmt = nextKBAdapter->getAllNext();
 
     if (listOfStmtToStmt.empty()) {
         return new FalseTable();

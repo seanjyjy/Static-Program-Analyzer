@@ -27,11 +27,15 @@
 #include "QueryClause.h"
 #include "Selectable.h"
 
+#include "Adapters/NextKBAdapter.h"
+
 using namespace std;
 
 class QueryEvaluator {
 private:
     PKBClient* pkb;
+    NextKBAdapter* nextKBAdapter;
+
     /**
      * Deletes a table after it is not being used.
      *
@@ -48,6 +52,7 @@ private:
     void safeDeleteTable(Table* tableToDelete, Table* resultTable);
 public:
     explicit QueryEvaluator(PKBClient* pkb);
+    ~QueryEvaluator();
 
     /**
      * Based on the QueryObject, evaluates the query provided return a set of results.

@@ -4,6 +4,7 @@
 #include "QPS/Table/TrueTable.h"
 #include "QPS/Table/PQLTable.h"
 #include "PKB/PKBClient.h"
+#include "Adapters/NextKBAdapter.h"
 #include "QPS/ClauseVariable.h"
 #include "QPS/QueryClause.h"
 #include "QPS/Evaluator/EvaluatorUtils.h"
