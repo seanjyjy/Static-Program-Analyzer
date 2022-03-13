@@ -106,7 +106,9 @@ QueryDeclaration::design_entity_type QueryParser::determineDeclarationType(strin
 
 bool QueryParser::parseSelectTuple() {
     lookForClauseGrammarSymbol("<", "Syntax Error: Expected '<' for tuple beginning\n");
-    parseSelectSingle();
+    if (!parseSelectSingle()) {
+        return false;
+    }
 
     while(lex->peekNextIsString(",")) {
         lookForClauseGrammarSymbol(",", "Syntax Error: Expected ',' for tuple delimiting\n");
@@ -175,7 +177,7 @@ Selectable::attributeName QueryParser::parseSelectAttribute() {
 bool QueryParser::parseSelectTarget() {
     lex->nextExpected("Select");
 
-    if (lex->peekNextIsString("BOOLEAN")) {
+    if (findMatchingDeclaration("BOOLEAN") == nullopt && lex->peekNextIsString("BOOLEAN")) {
         lex->nextExpected("BOOLEAN");
         queryObject->selectTarget = SelectTarget(SelectTarget::BOOLEAN);
         return true;
@@ -586,6 +588,7 @@ QueryObject *QueryParser::parse() {
     }
 
     if (!parseSelectTarget()) {
+        queryObject->isQueryValid = false;
         cleanup();
         return queryObject;
     }
