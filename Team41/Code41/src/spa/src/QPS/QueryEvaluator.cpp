@@ -153,16 +153,17 @@ void QueryEvaluator::safeDeleteTable(Table *tableToDelete) {
 }
 
 vector<string> QueryEvaluator::getSynonyms(QueryObject *queryObject) {
-    unordered_set<string> seenSynonyms;
     vector<string> synonyms;
 
-    // TDOO: change to the list of clauses from the Optimized in the future
-    for (auto& queryDeclaration : queryObject->selectSynonyms) {
-        auto synonym = queryDeclaration.synonym;
-        if (seenSynonyms.find(synonym) == seenSynonyms.end()) {
-            seenSynonyms.insert(synonym);
-            synonyms.insert(synonym);
+    for (auto& selectable : queryObject->getSelectables()) {
+        QueryDeclaration queryDeclaration = selectable.getSynonym();
+        string label = queryDeclaration.synonym;
+
+        if (selectable.getType() == Selectable::ATTR_REF) {
+            label.append(".").append(to_string(selectable.getAttr()));
         }
+
+        synonyms.push_back(label);
     }
 
     return synonyms;

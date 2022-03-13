@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "PKB/PKBClient.h"
+
 #include "QPS/Evaluator/Evaluator.h"
 #include "QPS/Evaluator/UsesSEvaluator.h"
 #include "QPS/Evaluator/UsesPEvaluator.h"
@@ -20,8 +21,10 @@
 #include "QPS/Evaluator/AssignPatternEvaluator.h"
 #include "QPS/Evaluator/IfPatternEvaluator.h"
 #include "QPS/Evaluator/WhilePatternEvaluator.h"
+
 #include "QueryObject.h"
 #include "QueryClause.h"
+#include "Selectable.h"
 
 using namespace std;
 
