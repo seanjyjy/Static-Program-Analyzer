@@ -7,19 +7,20 @@
 
 class CFGNode {
 private:
-    TNode *tNode; // ast stmt node that corresponds to this cfg node
+    string stmtNum; // statement number that corresponds to this cfg node
+    int numForward = 0; // number of children that are forward (stmt number higher)
     std::vector<CFGNode *> children;
     std::vector<CFGNode *> parent;
 
 public:
-    CFGNode(TNode *tNode);
-    //~CFGNode();
+    CFGNode(string stmtNum);
+    ~CFGNode();
 
-    void addChild(CFGNode *node);
+    void addForwardChild(CFGNode *node);
+
+    void addBackwardChild(CFGNode *node);
 
     void addParent(CFGNode *node);
-
-    TNode *getTNode();
 
     string getStmtNum();
 
@@ -27,6 +28,5 @@ public:
 
     std::vector<CFGNode *> getParent();
 
-    // print CFG for troubleshooting
-    static void printCFG(CFGNode *node, std::unordered_map<TNode *, string> &nodeToStmtNumMap);
+    static void printCFG(CFGNode *node); // print CFG for troubleshooting
 };

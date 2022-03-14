@@ -54,17 +54,17 @@ void EntitiesExtractor::extractEntities() {
 }
 
 unordered_map<TNode *, string> EntitiesExtractor::getNodeToStmtNumMap() {
-    return nodeToStmtNumMap;
+    return this->nodeToStmtNumMap;
 }
 
 unordered_set<string> EntitiesExtractor::getProcSet() {
-    return procSet;
+    return this->procSet;
 }
 
 unordered_set<string> EntitiesExtractor::getVarSet() {
-    return varSet;
+    return this->varSet;
 }
 
 unordered_set<string> EntitiesExtractor::getConstSet() {
-    return constSet;
+    return this->constSet;
 }

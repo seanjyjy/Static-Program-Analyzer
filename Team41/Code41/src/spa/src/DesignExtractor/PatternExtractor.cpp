@@ -71,14 +71,14 @@ void PatternExtractor::extractRelationship() {
 }
 
 unordered_map<string, pair<string, TNode *>> PatternExtractor::getAssignPatternMap() {
-    return assignPatternMap;
+    return this->assignPatternMap;
 }
 
 unordered_map<string, unordered_set<string>> PatternExtractor::getIfPatternMap() {
-    return ifPatternMap;
+    return this->ifPatternMap;
 }
 
 unordered_map<string, unordered_set<string>> PatternExtractor::getWhilePatternMap() {
-    return whilePatternMap;
+    return this->whilePatternMap;
 }
 

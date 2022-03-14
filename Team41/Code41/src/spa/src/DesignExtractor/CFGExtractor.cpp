@@ -3,12 +3,21 @@
 #include "CFGExtractor.h"
 #include "Common/TNodeType.h"
 
-CFGExtractor::CFGExtractor(TNode *ast) : ast(ast) {}
+CFGExtractor::CFGExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
+        ast(ast), nodeToStmtNumMap(nodeToStmtNumMap) {}
 
 CFGNode *CFGExtractor::createCFGNode(TNode *tNode) {
-    CFGNode *cfgNode = new CFGNode(tNode);
-    this->tNodeToCFGNodeMap[tNode] = cfgNode;
+    CFGNode *cfgNode = new CFGNode(nodeToStmtNumMap[tNode]);
+    stmtNumToNodeMap[nodeToStmtNumMap[tNode]] = cfgNode; // set stmtNum to cfgNode
     return cfgNode;
+}
+
+void CFGExtractor::addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode, bool isForward) {
+    if (isForward)
+        parentCFGNode->addForwardChild(childCFGNode);
+    else
+        parentCFGNode->addBackwardChild(childCFGNode);
+    parentCFGNode->addParent(childCFGNode);
 }
 
 void CFGExtractor::buildInitCFG() {
@@ -26,7 +35,7 @@ void CFGExtractor::buildInitCFG() {
             vector<TNode *> ch = curTNode->getChildren();
             CFGNode *childCFGNode = createCFGNode(ch[0]);
             if (parentCFGNode) // IF or WHILE CFGNode point to first stmt in container
-                parentCFGNode->addChild(childCFGNode);
+                addCFGEdge(parentCFGNode, childCFGNode, true); // add forward CFG edge
 
             for (int i = 0; i < ch.size(); ++i) {
                 TNodeType childType = ch[i]->getType();
@@ -36,7 +45,7 @@ void CFGExtractor::buildInitCFG() {
                     bfsQ.push({ch[i], childCFGNode, nullptr});
                 } else {
                     if (neighbourCFGNode)
-                        childCFGNode->addChild(neighbourCFGNode);
+                        addCFGEdge(childCFGNode, neighbourCFGNode, true);
                     if (childType == TNodeType::whileStmt)
                         bfsQ.push({ch[i], childCFGNode, nullptr});
                 }
@@ -50,6 +59,12 @@ void CFGExtractor::buildInitCFG() {
             bfsQ.push({curTNode->getChildren()[1], nullptr, curCFGNode});
         }
     }
+}
+
+void CFGExtractor::addBackEdge(TNode *fromTNode, TNode *toTNode) {
+    const string &fromStmtNum = nodeToStmtNumMap[fromTNode], &toStmtNum = nodeToStmtNumMap[toTNode];
+    CFGNode *fromCFGNode = stmtNumToNodeMap[fromStmtNum], *toCfgNode = stmtNumToNodeMap[toStmtNum];
+    addCFGEdge(fromCFGNode, toCfgNode, false); // backwards edge thus false parameter
 }
 
 void CFGExtractor::linkBackNode() {
@@ -80,7 +95,7 @@ void CFGExtractor::linkBackNode() {
                     bfsQ.push({lastChild, backTNode}); // end of this IF will link to backTNode
             } else {
                 if (backTNode)
-                    tNodeToCFGNodeMap[lastChild]->addChild(tNodeToCFGNodeMap[backTNode]); // other stmts link to backTNode
+                    addBackEdge(lastChild, backTNode); // other stmts link to backTNode
                 if (lastType == TNodeType::whileStmt)
                     bfsQ.push({lastChild, lastChild}); // end of WHILE will link back to WHILE
             }
@@ -101,4 +116,8 @@ void CFGExtractor::extractCFG() {
 
 CFGNode *CFGExtractor::getCFG() {
     return this->cfg;
+}
+
+unordered_map<string, CFGNode *> CFGExtractor::getStmtNumToNodeMap() {
+    return this->stmtNumToNodeMap;
 }
