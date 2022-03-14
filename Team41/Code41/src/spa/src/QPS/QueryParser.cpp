@@ -261,7 +261,7 @@ optional<string> QueryParser::parseClauseType() {
 bool QueryParser::lookForClauseGrammarSymbol(string symbol, string notFoundMessage) {
     optional<string> s = lex->nextExpected(symbol);
     if (s == nullopt) {
-        printf("%s", &notFoundMessage);
+        printf("%s", notFoundMessage.c_str());
         return false;
     }
     return true;
