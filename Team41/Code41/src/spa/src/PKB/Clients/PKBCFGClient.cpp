@@ -51,3 +51,11 @@ vector<string> PKBCFGClient::getAllStmtsExecBeforeSomeStmt() const {
 vector<string> PKBCFGClient::getAllStmtsExecAfterSomeStmt() const {
     return nextTable->getAllStmtsExecAfterSomeStmt();
 }
+
+size_t PKBCFGClient::getNumOfStartNodes() const {
+    return nextTable->getNumOfStartNodes();
+}
+
+size_t PKBCFGClient::getNumOfEndNodes() const {
+    return nextTable->getNumOfEndNodes();
+}

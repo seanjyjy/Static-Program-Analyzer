@@ -60,3 +60,11 @@ vector<string> NextTable::getAllStmtsExecAfterSomeStmt() {
 vector<string> NextTable::getAllStmtsExecBeforeSomeStmt() {
     return allBeforeStmts;
 }
+
+size_t NextTable::getNumOfStartNodes() {
+    return allBeforeStmts.size();
+}
+
+size_t NextTable::getNumOfEndNodes() {
+    return allAfterStmts.size();
+}
