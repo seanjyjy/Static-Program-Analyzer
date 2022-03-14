@@ -7,6 +7,7 @@
 CFGNode::CFGNode(string stmtNum) : stmtNum(stmtNum) {}
 
 CFGNode::~CFGNode() {
+    // all forward children are added before backward children, so only need delete forward children
     for (int i = 0; i < numForward; i++)
         delete this->children[i];
 }

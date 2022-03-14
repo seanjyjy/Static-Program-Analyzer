@@ -22,14 +22,23 @@ private:
     CFGNode *createCFGNode(TNode *tNode);
 
     /**
+     * Adds edge between 2 CFGNodes, both child and parent edges.
+     *
+     * @param parentCFGNode
+     * @param childCFGNode
+     * @param isForward if the edge is a forward edge (from lower to higher stmt number)
+     */
+    void addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode, bool isForward);
+
+    /**
      * Traverses through AST in BFS manner to build the initial CFG,
      * which does not contain edges back due to WHILE loops.
      */
     void buildInitCFG();
 
     /**
-     * Adds an edge in the CFG, from CFGNode that corresponds to one TNode
-     * to another CFGNode that corresponds to another TNode. Assumes all stmts alr have a CFGNode
+     * Adds an edge in the CFG, from CFGNode that corresponds to one TNode to another CFGNode that corresponds
+     * to another TNode. The edge is from higher stmtNum to lower stmtNum.
      *
      * @param fromTNode TNode that edge is from
      * @param toTNode TNode that edge is towards
