@@ -9,8 +9,9 @@
 class CFGExtractor {
 private:
     TNode *ast; // root node of AST
-    CFGNode *cfg = new CFGNode(nullptr); // root node of CFG
-    unordered_map<TNode *, CFGNode *> tNodeToCFGNodeMap; // mapping of TNode* to CFG*
+    unordered_map<TNode *, string> &nodeToStmtNumMap; // mapping of TNode* to statement number
+    CFGNode *cfg = new CFGNode("0"); // root node of CFG
+    unordered_map<string, CFGNode *> stmtNumToNodeMap; // mapping of statement number to CFGNode*
 
     /**
      * Creates CFGNode using the TNode, and adds to the TNode* to CFGNode* mapping.
@@ -27,12 +28,21 @@ private:
     void buildInitCFG();
 
     /**
+     * Adds an edge in the CFG, from CFGNode that corresponds to one TNode
+     * to another CFGNode that corresponds to another TNode. Assumes all stmts alr have a CFGNode
+     *
+     * @param fromTNode TNode that edge is from
+     * @param toTNode TNode that edge is towards
+     */
+    void addBackEdge(TNode *fromTNode, TNode *toTNode);
+
+    /**
      * Traverses through AST to add back edges due to WHILE loops to the initial CFG.
      */
     void linkBackNode();
 
 public:
-    CFGExtractor(TNode *ast);
+    CFGExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap);
 
     /**
      * Builds CFG.
@@ -40,7 +50,12 @@ public:
     void extractCFG();
 
     /**
-     * @return Root of CFG, whose inner TNode is nullptr and children are first stmts of each procedure.
+     * @return Root of CFG, whose inner TNode is nullptr and children are first stmts of each procedure
      */
     CFGNode *getCFG();
+
+    /**
+     * @return Mapping of statement number to CFGNode it corresponds to
+     */
+    unordered_map<string, CFGNode *> getStmtNumToNodeMap();
 };

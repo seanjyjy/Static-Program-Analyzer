@@ -3,11 +3,12 @@
 #include "CFGExtractor.h"
 #include "Common/TNodeType.h"
 
-CFGExtractor::CFGExtractor(TNode *ast) : ast(ast) {}
+CFGExtractor::CFGExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
+        ast(ast), nodeToStmtNumMap(nodeToStmtNumMap) {}
 
 CFGNode *CFGExtractor::createCFGNode(TNode *tNode) {
-    CFGNode *cfgNode = new CFGNode(tNode);
-    this->tNodeToCFGNodeMap[tNode] = cfgNode;
+    CFGNode *cfgNode = new CFGNode(nodeToStmtNumMap[tNode]);
+    stmtNumToNodeMap[nodeToStmtNumMap[tNode]] = cfgNode; // set stmtNum to cfgNode
     return cfgNode;
 }
 
@@ -52,6 +53,12 @@ void CFGExtractor::buildInitCFG() {
     }
 }
 
+void CFGExtractor::addBackEdge(TNode *fromTNode, TNode *toTNode) {
+    const string &fromStmtNum = nodeToStmtNumMap[fromTNode], &toStmtNum = nodeToStmtNumMap[toTNode];
+    CFGNode *fromCFGNode = stmtNumToNodeMap[fromStmtNum], *toCfgNode = stmtNumToNodeMap[toStmtNum];
+    fromCFGNode->addBackwardChild(toCfgNode);
+}
+
 void CFGExtractor::linkBackNode() {
     queue<pair<TNode *, TNode *>> bfsQ; // {curTNode, backTNode}
     for (TNode *procNode : ast->getChildren()) {
@@ -80,7 +87,7 @@ void CFGExtractor::linkBackNode() {
                     bfsQ.push({lastChild, backTNode}); // end of this IF will link to backTNode
             } else {
                 if (backTNode)
-                    tNodeToCFGNodeMap[lastChild]->addBackwardChild(tNodeToCFGNodeMap[backTNode]); // other stmts link to backTNode
+                    addBackEdge(lastChild, backTNode); // other stmts link to backTNode
                 if (lastType == TNodeType::whileStmt)
                     bfsQ.push({lastChild, lastChild}); // end of WHILE will link back to WHILE
             }

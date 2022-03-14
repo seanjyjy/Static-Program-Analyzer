@@ -117,9 +117,9 @@ void DesignExtractor::extractPattern() {
 }
 
 void DesignExtractor::extractCFG() {
-    CFGExtractor ce = CFGExtractor(ast);
+    CFGExtractor ce = CFGExtractor(ast, nodeToStmtNumMap);
     ce.extractCFG();
-    pkb->registerCFG(ce.getCFG(), {});
+    pkb->registerCFG(ce.getCFG(), ce.getStmtNumToNodeMap());
 }
 
 void DesignExtractor::extractDesign() {

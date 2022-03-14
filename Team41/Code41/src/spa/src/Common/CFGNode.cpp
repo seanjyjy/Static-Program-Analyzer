@@ -4,9 +4,8 @@
 
 #include "CFGNode.h"
 
-CFGNode::CFGNode(TNode *tNode) : tNode(tNode) {}
+CFGNode::CFGNode(string stmtNum) : stmtNum(stmtNum) {}
 
-// TODO: delete method here
 CFGNode::~CFGNode() {
     for (int i = 0; i < numForward; i++)
         delete this->children[i];
@@ -14,7 +13,7 @@ CFGNode::~CFGNode() {
 
 void CFGNode::addForwardChild(CFGNode *node) {
     this->children.push_back(node);
-    ++numForward;
+    ++this->numForward;
 }
 
 void CFGNode::addBackwardChild(CFGNode *node) {
@@ -25,13 +24,8 @@ void CFGNode::addParent(CFGNode *node) {
     this->parent.push_back(node);
 }
 
-TNode *CFGNode::getTNode() {
-    return this->tNode;
-}
-
 string CFGNode::getStmtNum() {
-    // TODO
-    return "";
+    return this->stmtNum;
 }
 
 std::vector<CFGNode *> CFGNode::getChildren() {
@@ -42,17 +36,17 @@ std::vector<CFGNode *> CFGNode::getParent() {
     return this->parent;
 }
 
-void CFGNode::printCFG(CFGNode *node, std::unordered_map<TNode *, string> &nodeToStmtNumMap) {
+void CFGNode::printCFG(CFGNode *node) {
     std::unordered_set<CFGNode *> seen;
     std::queue<CFGNode *> q;
     q.push(node);
     seen.insert(node);
     while (!q.empty()) {
         node = q.front(); q.pop();
-        if (node->getTNode()) // will skip root cfg node
-            std::cout << nodeToStmtNumMap[node->getTNode()] << ": ";
+        string stmtNum = node->getStmtNum();
+        std::cout << stmtNum << ": ";
         for (CFGNode *child : node->getChildren()) {
-            std::cout << nodeToStmtNumMap[child->getTNode()] << ", ";
+            std::cout << child->stmtNum << ", ";
             if (seen.find(child) != seen.end()) continue;
             q.push(child);
             seen.insert(child);
