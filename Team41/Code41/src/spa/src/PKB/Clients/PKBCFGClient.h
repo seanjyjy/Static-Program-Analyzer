@@ -37,4 +37,6 @@ public:
     vector<pair<string, string>> getAllNext() const; // Gets stmts pair where stmt1 are executed directly after stmt2
     vector<string> getAllStmtsExecBeforeSomeStmt() const; // get list of stmts that are executed before some stmt
     vector<string> getAllStmtsExecAfterSomeStmt() const; // get list of stmts that are executed after some stmt
+    size_t getNumOfStartNodes() const; // Get the number of stmts that are executed before some stmt
+    size_t getNumOfEndNodes() const; // Get the number of stmts that are executed after some stmt
 };
