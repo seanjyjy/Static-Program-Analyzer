@@ -40,6 +40,10 @@ public:
     bool isPrintStmt(string stmtNum) const;// Checks if statement is a print statement
     bool isCallStmt(string stmtNum) const;// Checks if statement is a call statement
 
+    string getCallsProcNameAttr(string stmtNumber) const; // Gets calls.procName attr
+    string getPrintVarNameAttr(string stmtNumber) const; // Gets print.varName attr
+    string getReadVarNameAttr(string stmtNumber) const; // Gets read.varName attr
+
     /**
      * Gets the number of statements stored in table
      *

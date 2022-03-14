@@ -54,6 +54,7 @@ TEST_CASE("PKB: entities abstraction") {
 TEST_CASE("PKB: statements abstraction") {
     unordered_set<string> EMPTY_SET;
     string stmt[] = {"1", "2", "3", "4"};
+    string attr[] = {"a", "b", "c", "d"};
     unordered_set<string> FILLED_SET_1;
     FILLED_SET_1.insert(stmt[0]);
     unordered_set<string> FILLED_SET_2;
@@ -119,15 +120,18 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add reads") {
         REQUIRE(pkbManager.getReads() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isReadStmt(stmt[0]));
+        REQUIRE(pkbManager.getReadVarNameAttr(stmt[0]).empty());
         REQUIRE(pkbManager.getReadCount() == 0);
 
-        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[0], attr[0]));
+        REQUIRE(pkbManager.getReadVarNameAttr(stmt[0]) == attr[0]);
         REQUIRE(pkbManager.isReadStmt(stmt[0]));
         REQUIRE(pkbManager.getReads() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isReadStmt(stmt[1]));
         REQUIRE(pkbManager.getReadCount() == 1);
 
-        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[1]));
+        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[1], attr[1]));
+        REQUIRE(pkbManager.getReadVarNameAttr(stmt[1]) == attr[1]);
         REQUIRE(pkbManager.isReadStmt(stmt[1]));
         REQUIRE(pkbManager.getReads() == FILLED_SET_2);
         REQUIRE(pkbManager.getReadCount() == 2);
@@ -136,15 +140,18 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add prints") {
         REQUIRE(pkbManager.getPrints() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isPrintStmt(stmt[0]));
+        REQUIRE(pkbManager.getPrintVarNameAttr(stmt[0]).empty());
         REQUIRE(pkbManager.getPrintCount() == 0);
 
-        REQUIRE_NOTHROW(pkbManager.registerPrintStmt(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerPrintStmt(stmt[0], attr[0]));
+        REQUIRE(pkbManager.getPrintVarNameAttr(stmt[0]) == attr[0]);
         REQUIRE(pkbManager.isPrintStmt(stmt[0]));
         REQUIRE(pkbManager.getPrints() == FILLED_SET_1);
         REQUIRE(pkbManager.getPrintCount() == 1);
 
         REQUIRE_FALSE(pkbManager.isPrintStmt(stmt[1]));
-        REQUIRE_NOTHROW(pkbManager.registerPrintStmt(stmt[1]));
+        REQUIRE_NOTHROW(pkbManager.registerPrintStmt(stmt[1], attr[1]));
+        REQUIRE(pkbManager.getPrintVarNameAttr(stmt[1]) == attr[1]);
         REQUIRE(pkbManager.isPrintStmt(stmt[1]));
         REQUIRE(pkbManager.getPrints() == FILLED_SET_2);
         REQUIRE(pkbManager.getPrintCount() == 2);
@@ -153,36 +160,39 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add calls") {
         REQUIRE(pkbManager.getCalls() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isCallStmt(stmt[0]));
+        REQUIRE(pkbManager.getCallsProcNameAttr(stmt[0]).empty());
         REQUIRE(pkbManager.getCallCount() == 0);
 
-        REQUIRE_NOTHROW(pkbManager.registerCallStmt(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerCallStmt(stmt[0], attr[0]));
         REQUIRE(pkbManager.isCallStmt(stmt[0]));
         REQUIRE(pkbManager.getCalls() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isCallStmt(stmt[1]));
+        REQUIRE(pkbManager.getCallsProcNameAttr(stmt[0]) == attr[0]);
         REQUIRE(pkbManager.getCallCount() == 1);
 
-        REQUIRE_NOTHROW(pkbManager.registerCallStmt(stmt[1]));
+        REQUIRE_NOTHROW(pkbManager.registerCallStmt(stmt[1], attr[1]));
         REQUIRE(pkbManager.isCallStmt(stmt[1]));
         REQUIRE(pkbManager.getCalls() == FILLED_SET_2);
+        REQUIRE(pkbManager.getCallsProcNameAttr(stmt[1]) == attr[1]);
         REQUIRE(pkbManager.getCallCount() == 2);
     }
 
     SECTION("prevents duplicate") {
-        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[0], attr[0]));
 
         REQUIRE_THROWS(pkbManager.registerAssignStmt(stmt[0]));
-        REQUIRE_THROWS(pkbManager.registerPrintStmt(stmt[0]));
+        REQUIRE_THROWS(pkbManager.registerPrintStmt(stmt[0], attr[0]));
         REQUIRE_THROWS(pkbManager.registerIfStmt(stmt[0]));
-        REQUIRE_THROWS(pkbManager.registerCallStmt(stmt[0]));
+        REQUIRE_THROWS(pkbManager.registerCallStmt(stmt[0], attr[0]));
         REQUIRE_THROWS(pkbManager.registerWhileStmt(stmt[0]));
 
-        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[0]));
+        REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[0], attr[0]));
     }
 
     SECTION("correct count") {
         REQUIRE(pkbManager.getStatementCount() == 0);
 
-        pkbManager.registerReadStmt(stmt[0]);
+        pkbManager.registerReadStmt(stmt[0], attr[0]);
         REQUIRE(pkbManager.getStatementCount() == 1);
 
         pkbManager.registerIfStmt(stmt[1]);
@@ -195,7 +205,7 @@ TEST_CASE("PKB: statements abstraction") {
         pkbManager.registerAssignStmt(stmt[2]);
         REQUIRE(pkbManager.getStatementCount() == 3);
 
-        pkbManager.registerPrintStmt(stmt[3]);
+        pkbManager.registerPrintStmt(stmt[3], attr[3]);
         REQUIRE(pkbManager.getStatementCount() == 4);
     }
 }
