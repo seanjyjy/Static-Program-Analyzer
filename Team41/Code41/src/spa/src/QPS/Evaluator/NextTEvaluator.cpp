@@ -110,7 +110,7 @@ Table *NextTEvaluator::evaluateSynonymSynonym(NextKBAdapter* nextKBAdapter, Clau
 }
 
 Table *NextTEvaluator::evaluateSynonymWildCard(NextKBAdapter* nextKBAdapter, ClauseVariable left) {
-    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsThatHaveNextTStmt();
+    vector<string> setOfStmts = nextKBAdapter->getAllStmtsThatHaveNextTStmt();
 
     string column = left.getLabel();
     Header header = Header({column});
@@ -135,7 +135,7 @@ Table *NextTEvaluator::evaluateWildCardInteger(NextKBAdapter* nextKBAdapter, Cla
 }
 
 Table *NextTEvaluator::evaluateWildCardSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable right) {
-    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtThatIsNextTOfSomeStmt();
+    vector<string> setOfStmts = nextKBAdapter->getAllStmtsThatIsNextTOfSomeStmt();
 
     string column = right.getLabel();
     Header header = Header({column});
