@@ -26,7 +26,7 @@ void CFGExtractor::buildInitCFG() {
             vector<TNode *> ch = curTNode->getChildren();
             CFGNode *childCFGNode = createCFGNode(ch[0]);
             if (parentCFGNode) // IF or WHILE CFGNode point to first stmt in container
-                parentCFGNode->addChild(childCFGNode);
+                parentCFGNode->addForwardChild(childCFGNode);
 
             for (int i = 0; i < ch.size(); ++i) {
                 TNodeType childType = ch[i]->getType();
@@ -36,7 +36,7 @@ void CFGExtractor::buildInitCFG() {
                     bfsQ.push({ch[i], childCFGNode, nullptr});
                 } else {
                     if (neighbourCFGNode)
-                        childCFGNode->addChild(neighbourCFGNode);
+                        childCFGNode->addForwardChild(neighbourCFGNode);
                     if (childType == TNodeType::whileStmt)
                         bfsQ.push({ch[i], childCFGNode, nullptr});
                 }
@@ -80,7 +80,7 @@ void CFGExtractor::linkBackNode() {
                     bfsQ.push({lastChild, backTNode}); // end of this IF will link to backTNode
             } else {
                 if (backTNode)
-                    tNodeToCFGNodeMap[lastChild]->addChild(tNodeToCFGNodeMap[backTNode]); // other stmts link to backTNode
+                    tNodeToCFGNodeMap[lastChild]->addBackwardChild(tNodeToCFGNodeMap[backTNode]); // other stmts link to backTNode
                 if (lastType == TNodeType::whileStmt)
                     bfsQ.push({lastChild, lastChild}); // end of WHILE will link back to WHILE
             }

@@ -7,8 +7,17 @@
 CFGNode::CFGNode(TNode *tNode) : tNode(tNode) {}
 
 // TODO: delete method here
+CFGNode::~CFGNode() {
+    for (int i = 0; i < numForward; i++)
+        delete this->children[i];
+}
 
-void CFGNode::addChild(CFGNode *node) {
+void CFGNode::addForwardChild(CFGNode *node) {
+    this->children.push_back(node);
+    ++numForward;
+}
+
+void CFGNode::addBackwardChild(CFGNode *node) {
     this->children.push_back(node);
 }
 

@@ -8,14 +8,17 @@
 class CFGNode {
 private:
     TNode *tNode; // ast stmt node that corresponds to this cfg node
+    int numForward = 0;
     std::vector<CFGNode *> children;
     std::vector<CFGNode *> parent;
 
 public:
     CFGNode(TNode *tNode);
-    //~CFGNode();
+    ~CFGNode();
 
-    void addChild(CFGNode *node);
+    void addForwardChild(CFGNode *node);
+
+    void addBackwardChild(CFGNode *node);
 
     void addParent(CFGNode *node);
 
