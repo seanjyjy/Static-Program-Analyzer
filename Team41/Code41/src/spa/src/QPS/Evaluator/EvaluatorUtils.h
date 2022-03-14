@@ -2,6 +2,9 @@
 
 #include "QPS/QueryDeclaration.h"
 #include "QPS/ClauseVariable.h"
+#include "QPS/Selectable.h"
+#include "PKB/PKBClient.h"
+#include <optional>
 
 class EvaluatorUtils {
 public:
@@ -78,6 +81,14 @@ public:
      * @return True if query declaration is a Read type, else false.
      */
     static bool isRead(QueryDeclaration::design_entity_type type);
+
+    /**
+     * Checks if a given query declaration is of a Call type.
+     *
+     * @param type Query Declaration type.
+     * @return True if query declaration is a Call type, else false.
+     */
+    static bool isCall(QueryDeclaration::design_entity_type type);
 
     /**
      * Checks if a given clause variable is of a variable synonym.
@@ -158,6 +169,8 @@ public:
      * @return True if left clause variable is a wildcard and if right clause variable is a wildcard else false.
      */
     static bool isWildCardWildCard(ClauseVariable* left, ClauseVariable* right);
+
+    static optional<string> getAttrFromSelectable(Selectable* target, const string& rawData, PKBClient* pkb);
 
     // for Follow, Follow*, Parent, Parent*
     class StmtUtils {

@@ -28,7 +28,8 @@ TEST_CASE("Test 3") {
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
         QueryEvaluator queryEvaluator(&pkbManager);
-        unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
+        QueryProjector projector = queryEvaluator.evaluateQuery(queryObject);
+        unordered_set<string> result = projector.getResult();
 
         unordered_set<string> answer{"count"};
         REQUIRE(result == answer);
@@ -42,7 +43,8 @@ TEST_CASE("Test 3") {
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
         QueryEvaluator queryEvaluator(&pkbManager);
-        unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
+        QueryProjector projector = queryEvaluator.evaluateQuery(queryObject);
+        unordered_set<string> result = projector.getResult();
 
         unordered_set<string> answer{"cenX", "cenY"};
         REQUIRE(result == answer);
@@ -56,7 +58,8 @@ TEST_CASE("Test 3") {
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
         QueryEvaluator queryEvaluator(&pkbManager);
-        unordered_set<string> result = queryEvaluator.evaluateQuery(queryObject);
+        QueryProjector projector = queryEvaluator.evaluateQuery(queryObject);
+        unordered_set<string> result = projector.getResult();
 
         unordered_set<string> answer{"computeCentroid", "main", "readPoint"};
         REQUIRE(result == answer);
