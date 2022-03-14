@@ -77,9 +77,9 @@ void ModifiesExtractor::extractRelationship() {
 }
 
 unordered_map<string, unordered_set<string>> ModifiesExtractor::getProcModifiesMap() {
-    return procModifiesMap;
+    return this->procModifiesMap;
 }
 
 unordered_map<string, unordered_set<string>> ModifiesExtractor::getStmtModifiesMap() {
-    return stmtModifiesMap;
+    return this->stmtModifiesMap;
 }

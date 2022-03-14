@@ -86,9 +86,9 @@ void UsesExtractor::extractRelationship() {
 }
 
 unordered_map<string, unordered_set<string>> UsesExtractor::getProcUsesMap() {
-    return procUsesMap;
+    return this->procUsesMap;
 }
 
 unordered_map<string, unordered_set<string>> UsesExtractor::getStmtUsesMap() {
-    return stmtUsesMap;
+    return this->stmtUsesMap;
 }

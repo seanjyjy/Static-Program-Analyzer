@@ -67,9 +67,9 @@ void ParentExtractor::extractRelationship() {
 }
 
 unordered_map<string, list<string>> ParentExtractor::getParentMap() {
-    return parentMap;
+    return this->parentMap;
 }
 
 unordered_map<string, list<string>> ParentExtractor::getParentTMap() {
-    return parentTMap;
+    return this->parentTMap;
 }

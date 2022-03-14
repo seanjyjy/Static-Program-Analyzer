@@ -14,7 +14,7 @@ CFGNode::~CFGNode() {
 
 void CFGNode::addForwardChild(CFGNode *node) {
     this->children.push_back(node);
-    ++this->numForward;
+    ++numForward;
 }
 
 void CFGNode::addBackwardChild(CFGNode *node) {

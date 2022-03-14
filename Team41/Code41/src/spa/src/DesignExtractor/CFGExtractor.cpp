@@ -117,3 +117,7 @@ void CFGExtractor::extractCFG() {
 CFGNode *CFGExtractor::getCFG() {
     return this->cfg;
 }
+
+unordered_map<string, CFGNode *> CFGExtractor::getStmtNumToNodeMap() {
+    return this->stmtNumToNodeMap;
+}

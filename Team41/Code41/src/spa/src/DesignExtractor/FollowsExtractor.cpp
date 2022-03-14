@@ -39,5 +39,5 @@ void FollowsExtractor::extractRelationship() {
 }
 
 unordered_map<string, list<string>> FollowsExtractor::getFollowsTMap() {
-    return followsTMap;
+    return this->followsTMap;
 }
