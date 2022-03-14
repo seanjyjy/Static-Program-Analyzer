@@ -259,7 +259,6 @@ unordered_set<string> NextKBAdapter::getAllStmtsTBefore(string stmtNum) {
 
 vector<pair<string, string>> NextKBAdapter::getAllNextT() {
     if (cache->getAllMapping().empty()) {
-        // populate
         fullBFS();
     }
 

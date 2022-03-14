@@ -1,0 +1,530 @@
+1 - Next(int, int)
+
+Select BOOLEAN such that Next(4, 25)
+TRUE
+5000
+2 - Next(int, s) - End of line shouldnt have next
+stmt s;
+Select BOOLEAN such that Next(26, s)
+FALSE
+5000
+3 - Next(int, pn)
+print pn;
+Select pn such that Next(7, pn)
+13
+5000
+3 - Next(int, re)
+read re;
+Select re such that Next(8, re)
+9
+5000
+3 - Next(int, a)
+assign a;
+Select a such that Next(4, a)
+5, 25
+5000
+4 - Next(int, ifs)
+if ifs;
+Select ifs such that Next(6, ifs)
+7
+5000
+3 - Next(int, w)
+while w;
+Select w such that Next(3, w)
+4
+5000
+3 - Next(int, cl)
+call cl;
+Select cl such that Next(18, cl)
+19
+5000
+5 - Next(int, wildcard)
+
+Select BOOLEAN such that Next(27, _)
+FALSE
+5000
+6 - Next(s, int)
+stmt s;
+Select s such that Next(s, 25)
+4, 22
+5000
+6 - Next(pn, int)
+print pn;
+Select pn such that Next(pn, 7)
+6
+5000
+6 - Next(re, int)
+read re;
+Select re such that Next(re, 22)
+24
+5000
+6 - Next(a, int)
+assign a;
+Select a such that Next(a, 25)
+
+5000
+6 - Next(ifs, int)
+if ifs;
+Select ifs such that Next(ifs, 21)
+3
+5000
+6 - Next(w, int)
+while w;
+Select w such that Next(w, 25)
+4, 22
+5000
+6 - Next(cl, int)
+call cl;
+Select cl such that Next(cl, 16)
+19
+5000
+7 - Next(s, s2)
+stmt s, s2;
+Select <s, s2> such that Next(s, s2)
+1 2, 2 3, 3 21, 21 22, 22 23, 23 24, 24 22, 22 25, 25 26, 3 4, 4 25, 4 5, 5 6, 6 7, 7 8, 8 9, 9 10, 10 11, 11 10, 10 12, 12 8, 8 20, 20 4, 7 13, 13 14, 14 15, 15 16, 16 20, 16 17, 17 18, 18 19, 19 16
+5000
+7 - Next(s, pn)
+stmt s; print pn;
+Select <s, pn> such that Next(s, pn)
+5 6, 14 15, 7 13
+5000
+7 - Next(s, re)
+stmt s; read re;
+Select <s, re> such that Next(s, re)
+8 9, 17 18, 22 23, 23 24
+5000
+7 - Next(s, a)
+stmt s; assign a;
+Select <s, a> such that Next(s, a)
+1 2, 3 21, 4 5, 4 25, 8 20, 10 11, 16 17, 16 20, 22 25, 25 26
+5000
+7 - Next(s, ifs)
+stmt s; if ifs;
+Select <s, ifs> such that Next(s, ifs)
+2 3, 6 7
+5000
+7 - Next(s, w)
+stmt s; while w;
+Select <s, w> such that Next(s, w)
+3 4, 7 8, 9 10, 11 10, 12 8, 15 16, 19 16, 20 4, 21 22, 24 22
+5000
+7 - Next(s, cl)
+stmt s; call cl;
+Select <s, cl> such that Next(s, cl)
+10 12, 13 14, 18 19
+5000
+7 - Next(pn, s)
+print pn; stmt s;
+Select <pn, s> such that Next(pn, s)
+6 7, 13 14, 15 16
+5000
+7 - Next(pn, pn2)
+print pn, pn2;
+Select <pn, pn2> such that Next(pn, pn2)
+
+5000
+7 - Next(pn, re)
+print pn; read re;
+Select <pn, re> such that Next(pn, re)
+
+5000
+7 - Next(pn, a)
+print pn; assign a;
+Select <pn, a> such that Next(pn, a)
+
+5000
+7 - Next(pn, ifs)
+print pn; if ifs;
+Select <pn, ifs> such that Next(pn, ifs)
+6 7
+5000
+7 - Next(pn, w)
+print pn; while w;
+Select <pn, w> such that Next(pn, w)
+15 16
+5000
+7 - Next(pn, cl)
+print pn; call cl;
+Select <pn, cl> such that Next(pn, cl)
+13 14
+5000
+7 - Next(re, s)
+read re; stmt s;
+Select <re, s> such that Next(re, s)
+9 10, 18 19, 23 24, 24 22
+5000
+7 - Next(re, pn)
+read re; print pn;
+Select <re, pn> such that Next(re, pn)
+
+5000
+7 - Next(re, re2)
+read re, re2;
+Select <re, re2> such that Next(re, re2)
+23 24
+5000
+7 - Next(re, a)
+read re; assign a;
+Select <re, a> such that Next(re, a)
+
+5000
+7 - Next(re, ifs)
+read re; if ifs;
+Select <re, ifs> such that Next(re, ifs)
+
+5000
+7 - Next(re, w)
+read re; while w;
+Select <re, w> such that Next(re, w)
+9 10, 24 22
+5000
+7 - Next(re, cl)
+read re; call cl;
+Select <re, cl> such that Next(re, cl)
+18 19
+5000
+7 - Next(a, s)
+assign a; stmt s;
+Select <a, s> such that Next(a, s)
+1 2, 2 3, 5 6, 11 10, 17 18, 20 4, 21 22, 25 26
+5000
+7 - Next(a, pn)
+assign a; print pn;
+Select <a, pn> such that Next(a, pn)
+5 6,
+5000
+7 - Next(a, re)
+assign a; read re;
+Select <a, re> such that Next(a, re)
+17 18
+5000
+7 - Next(a, a2)
+assign a, a2;
+Select <a, a2> such that Next(a, a2)
+1 2, 25 26
+5000
+7 - Next(a, ifs)
+assign a; if ifs;
+Select <a, ifs> such that Next(a, ifs)
+2 3
+5000
+7 - Next(a, w)
+assign a; while w;
+Select <a, w> such that Next(a, w)
+11 10,20 4,21 22
+5000
+7 - Next(a, cl)
+assign a; call cl;
+Select <a, cl> such that Next(a, cl)
+
+5000
+7 - Next(ifs, s)
+if ifs; stmt s;
+Select <ifs, s> such that Next(ifs, s)
+3 4, 3 21, 7 8, 7 13
+5000
+7 - Next(ifs, pn)
+if ifs; print pn;
+Select <ifs, pn> such that Next(ifs, pn)
+7 13
+5000
+7 - Next(ifs, re)
+if ifs; read re;
+Select <ifs, re> such that Next(ifs, re)
+
+5000
+7 - Next(ifs, a)
+if ifs; assign a;
+Select <ifs, a> such that Next(ifs, a)
+3 21
+5000
+7 - Next(ifs, ifs2)
+if ifs, ifs2;
+Select <ifs, ifs2> such that Next(ifs, ifs2)
+
+5000
+7 - Next(ifs, w)
+if ifs; while w;
+Select <ifs, w> such that Next(ifs, w)
+3 4, 7 8
+5000
+7 - Next(ifs, cl)
+if ifs; call cl;
+Select <ifs, cl> such that Next(ifs, cl)
+
+5000
+7 - Next(w, s)
+while w; stmt s;
+Select <w, s> such that Next(w, s)
+4 5, 4 25, 8 9, 8 20, 10 11, 10 12, 16 17, 16 20, 22 23, 22 25
+5000
+7 - Next(w, pn)
+while w; print pn;
+Select <w, pn> such that Next(w, pn)
+
+5000
+7 - Next(w, re)
+while w; read re;
+Select <w, re> such that Next(w, re)
+8 9, 22 23
+5000
+7 - Next(w, a)
+while w; assign a;
+Select <w, a> such that Next(w, a)
+4 5, 4 25, 8 20, 10 11, 16 17, 16 20, 22 25
+5000
+7 - Next(w, ifs)
+while w; if ifs;
+Select <w, ifs> such that Next(w, ifs)
+
+5000
+7 - Next(w, w2)
+while w, w2;
+Select<w, w2>c such that Next(w, w2)
+
+5000
+7 - Next(w, cl)
+while w; call cl;
+Select <w, cl> such that Next(w, cl)
+10 12
+5000
+7 - Next(cl, s)
+call cl; stmt s;
+Select <cl, s> such that Next(cl, s)
+12 8, 14 15, 19 16
+5000
+7 - Next(cl, pn)
+call cl; print pn;
+Select <cl, pn> such that Next(cl, pn)
+14 15
+5000
+7 - Next(cl, re)
+call cl; read re;
+Select <cl, re> such that Next(cl, re)
+
+5000
+7 - Next(cl, a)
+call cl; assign a;
+Select <cl, a> such that Next(cl, a)
+
+5000
+7 - Next(cl, ifs)
+call cl; if ifs;
+Select <cl, ifs> such that Next(cl, ifs)
+
+5000
+7 - Next(cl, w)
+call cl; while w;
+Select <cl, w> such that Next(cl, w)
+12 8, 19 16
+5000
+7 - Next(cl, cl2)
+call cl, cl2;
+Select <cl, cl2> such that Next(cl, cl2)
+
+5000
+8 - Next(s, _)
+stmt s;
+Select s such that Next(s, _)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
+5000
+8 - Next(pn, _)
+print pn;
+Select pn such that Next(pn, _)
+6, 13, 15
+5000
+8 - Next(re, _)
+read re;
+Select re such that Next(re, _)
+9, 18, 23, 24
+5000
+8 - Next(a, _)
+assign a;
+Select a such that Next(a, _)
+1, 2, 5, 11, 17, 20, 21, 25
+5000
+8 - Next(ifs, _)
+if ifs;
+Select ifs such that Next(ifs, _)
+3, 7
+5000
+8 - Next(w, _)
+while w;
+Select w such that Next(w, _)
+4, 8, 10, 16, 22
+5000
+8 - Next(cl, _)
+call cl;
+Select cl such that Next(cl, _)
+12, 14, 19
+5000
+9 - Next(_, int)
+
+Select BOOLEAN such that Next(_, 1)
+FALSE
+5000
+10 - Next(_, s)
+stmt s;
+Select s such that Next(_, s)
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
+5000
+10 - Next(_, pn)
+print pn;
+Select pn such that Next(_, pn)
+6, 13, 15
+5000
+10 - Next(_, re)
+read re;
+Select re such that Next(_, re)
+9, 18, 23, 24
+5000
+10 - Next(_, a)
+assign a;
+Select a such that Next(_, a)
+2, 5, 11, 17, 20, 21, 25, 26
+5000
+10 - Next(_, ifs)
+if ifs;
+Select ifs such that Next(_, ifs)
+3, 7
+5000
+10 - Next(_, w)
+while w;
+Select w such that Next(_, w)
+4, 8, 10, 16, 22
+5000
+10 - Next(_, cl)
+call cl;
+Select cl such that Next(_, cl)
+12,14,19
+5000
+11 - Next(_, _)
+
+Select BOOLEAN such that Next(_, _)
+TRUE
+5000
+12 - Semantic invalid - Next(int, p)
+procedure p;
+Select p such that Next(5, p)
+
+5000
+12 - Semantic invalid - Next(int, c)
+constant c;
+Select c such that Next(10, c)
+
+5000
+12 - Semantic invalid - Next(_, p)
+procedure p;
+Select p such that Next(_, p)
+
+5000
+12 - Semantic invalid - Next(_, c)
+constant c;
+Select c such that Next(_, c)
+
+5000
+12 - Semantic invalid - Next(p, _)
+procedure p;
+Select p such that Next(p, _)
+
+5000
+12 - Semantic invalid - Next(c, _)
+constant c;
+Select c such that Next(c, _)
+
+5000
+6 - Semantically invalid - Next(v, int)
+variable v;
+Select v such that Next(v, 7)
+
+5000
+3 - Semantically invalid - Next(int, v)
+variable v;
+Select BOOLEAN such that Next(3, v)
+FALSE
+5000
+7 - Semantically invalid - Next(s, v)
+stmt s; variable v;
+Select <s, v> such that Next(s, v)
+
+5000
+7 - Semantically invalid - Next(pn, v)
+print pn; variable v;
+Select <pn, v> such that Next(pn, v)
+
+5000
+7 - Semantically invalid - Next(re, v)
+read re; variable v;
+Select <re, v> such that Next(re, v)
+
+5000
+7 - Semantically invalid - Next(a, v)
+assign a; variable v;
+Select <a, v> such that Next(a, v)
+
+5000
+7 - Semantically invalid - Next(ifs, v)
+if ifs;
+Select <ifs, v> such that Next(ifs, v)
+
+5000
+7 - Semantically invalid - Next(w, v)
+while w; variable v;
+Select <w, v> such that Next(w, v)
+
+5000
+7 - Semantically invalid - Next(cl, v)
+call cl; variable v;
+Select <cl, v> such that Next(cl, v)
+
+5000
+7 - Semantically invalid - Next(v, s)
+variable v; stmt s;
+Select <v, s> such that Next(v, s)
+
+5000
+7 - Semantically invalid - Next(v, pn)
+variable v; print pn;
+Select <v, pn> such that Next(v, pn)
+
+5000
+7 - Semantically invalid - Next(v, re)
+variable v; read re;
+Select <v, re> such that Next(v, re)
+
+5000
+7 - Semantically invalid - Next(v, a)
+variable v; assign a;
+Select <v, a> such that Next(v, a)
+
+5000
+7 - Semantically invalid - Next(v, ifs)
+variable v; if ifs;
+Select <v, ifs> such that Next(v, ifs)
+
+5000
+7 - Semantically invalid - Next(v, w)
+variable v; while w;
+Select <v, w> such that Next(v, w)
+
+5000
+7 - Semantically invalid - Next(v, cl)
+variable v; call cl;
+Select <v, cl> such that Next(v, cl)
+
+5000
+7 - Semantically invalid - Next(v, v2)
+variable v, v2;
+Select <v, v2> such that Next(v, v2)
+
+5000
+8 - Semantically invalid - Next(v, _)
+variable v;
+Select v such that Next(v, _)
+
+5000
+10 - Semantically invalid - Next(_, v)
+variable v;
+Select v such that Next(_, v)
+
+5000
