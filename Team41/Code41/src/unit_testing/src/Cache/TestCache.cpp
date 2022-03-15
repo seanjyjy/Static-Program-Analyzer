@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "Cache/Cache.h"
+#include "QPS/Cache/Cache.h"
 
 using namespace std;
 

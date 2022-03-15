@@ -5,7 +5,7 @@
 #include <queue>
 
 #include "PKB/PKBClient.h"
-#include "Cache/Cache.h"
+#include "QPS/Cache/Cache.h"
 #include "Common/CFGNode.h"
 
 class NextKBAdapter {
