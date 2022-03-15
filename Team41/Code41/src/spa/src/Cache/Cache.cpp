@@ -53,4 +53,33 @@ void Cache::addAllMappingPair(pair<string, string> pair) {
     allMapping.push_back(pair);
 }
 
+void Cache::printForwardMapping() {
+    for (auto&[key, values] : forwardMapping) {
+        printf("key: %s values: ", key.c_str());
+        for (auto& value : values) {
+            printf("%s ", value.c_str());
+        }
+        printf("\n");
+    }
+}
+
+void Cache::printBooleanMapping() {
+    for (auto&[key, values] : booleanMapping) {
+        printf("key: %s values: ", key.c_str());
+        for (auto& value : values) {
+            printf("%s ", value.c_str());
+        }
+        printf("\n");
+    }
+}
+
+void Cache::printBackwardMapping() {
+    for (auto&[key, values] : backwardMapping) {
+        printf("key: %s values: ", key.c_str());
+        for (auto& value : values) {
+            printf("%s ", value.c_str());
+        }
+        printf("\n");
+    }
+}
 

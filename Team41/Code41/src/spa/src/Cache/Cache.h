@@ -37,5 +37,11 @@ public:
     size_t getForwardMapSize();
 
     size_t getBackwardMapSize();
+
+    void printForwardMapping();
+
+    void printBackwardMapping();
+
+    void printBooleanMapping();
 };
 

@@ -81,7 +81,7 @@ void NextKBAdapter::forwardBFS(string &start) {
             if (visited.find(nextStmtNum) == visited.end()) {
                 unordered_set<string> mapping = cache->getForwardMapping(nextStmtNum);
 
-                if (!mapping.empty()) {
+                if (!mapping.empty() && currStmtNum != nextStmtNum) {
                     addForwardMapping(currStmtNum, mapping);
                     continue;
                 }
@@ -126,7 +126,7 @@ void NextKBAdapter::backwardBFS(string &start) {
             if (visited.find(nextStmtNum) == visited.end()) {
                 unordered_set<string> mapping = cache->getBackwardMapping(nextStmtNum);
 
-                if (!mapping.empty()) {
+                if (!mapping.empty() && currStmtNum != nextStmtNum) {
                     addBackwardMapping(currStmtNum, mapping);
                     continue;
                 }
@@ -170,8 +170,9 @@ void NextKBAdapter::fullBFS() {
             bfsQueue.pop();
             bfsVisited.insert(currNode->getStmtNum());
 
-            for (auto& next : currNode->getParent()) {
+            for (auto& next : currNode->getChildren()) {
                 string nextStmtNum = next->getStmtNum();
+
                 if (bfsVisited.find(nextStmtNum) == bfsVisited.end()) {
                     cache->addAllMappingPair({currStmtNum, nextStmtNum});
                     bfsQueue.push(next);
@@ -237,7 +238,7 @@ bool NextKBAdapter::isNextT(string stmt1, string stmt2) {
     if (!cache->getBooleanMapping(stmt1, stmt2)) {
         booleanBFS(stmt1, stmt2);
     }
-
+    cache->printBooleanMapping();
     return cache->getBooleanMapping(stmt1, stmt2);
 }
 
@@ -245,7 +246,7 @@ unordered_set<string> NextKBAdapter::getAllStmtsNextT(string stmtNum) {
     if (cache->getForwardMapping(stmtNum).empty()) {
         forwardBFS(stmtNum);
     }
-
+    cache->printForwardMapping();
     return cache->getForwardMapping(stmtNum);
 }
 
@@ -253,7 +254,7 @@ unordered_set<string> NextKBAdapter::getAllStmtsTBefore(string stmtNum) {
     if (cache->getBackwardMapping(stmtNum).empty()) {
         backwardBFS(stmtNum);
     }
-
+    cache->printBackwardMapping();
     return cache->getBackwardMapping(stmtNum);
 }
 
