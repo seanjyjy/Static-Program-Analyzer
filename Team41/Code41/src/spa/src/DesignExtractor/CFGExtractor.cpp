@@ -17,7 +17,8 @@ void CFGExtractor::addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode, boo
         parentCFGNode->addForwardChild(childCFGNode);
     else
         parentCFGNode->addBackwardChild(childCFGNode);
-    parentCFGNode->addParent(childCFGNode);
+    if (parentCFGNode->getStmtNum() != "0") // do not add parent edge if parent is root
+        childCFGNode->addParent(parentCFGNode);
 }
 
 void CFGExtractor::buildInitCFG() {
