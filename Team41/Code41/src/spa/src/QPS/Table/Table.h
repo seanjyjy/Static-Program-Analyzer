@@ -94,5 +94,6 @@ public:
 
     friend class TrueTable;
     friend class FalseTable;
+    friend class BooleanTable;
     friend class PQLTable;
 };
