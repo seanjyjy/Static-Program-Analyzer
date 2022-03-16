@@ -1,4 +1,5 @@
 #include <queue>
+#include <iostream>
 
 #include "CFGExtractor.h"
 #include "Common/TNodeType.h"
@@ -94,6 +95,9 @@ void CFGExtractor::linkBackNode() {
             if (lastType == TNodeType::ifStmt) {
                 if (backTNode)
                     bfsQ.push({lastChild, backTNode}); // end of this IF will link to backTNode
+                else
+                    bfsQ.push({lastChild, nullptr}); // end of this IF will link to nothing
+
             } else {
                 if (backTNode)
                     addBackEdge(lastChild, backTNode); // other stmts link to backTNode
