@@ -13,16 +13,12 @@ unordered_set<K> SetMultiMap<K, V>::keys() {
     return keySet;
 }
 
-template<class K, class V>
-vector<pair<K, V>> SetMultiMap<K, V>::entries() {
-    vector<pair<K, V>> resultSet;
-    resultSet.reserve(mapping.size());
-    for (K key: keySet) {
-        for (V val: mapping[key]) {
-            resultSet.push_back(make_pair(key, val));
-        }
+template<typename K, typename V>
+size_t SetMultiMap<K, V>::size(K key) {
+    if (!hasKey(key)) {
+        return 0;
     }
-    return resultSet;
+    return mapping[key].size();
 }
 
 template<class K, class V>

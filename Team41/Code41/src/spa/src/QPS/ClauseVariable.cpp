@@ -5,7 +5,7 @@
 ClauseVariable::ClauseVariable(variable_type type, string label, QueryDeclaration::design_entity_type designEntityType)
     : type(type), label(std::move(label)), designEntityType(designEntityType) {}
 
-QueryDeclaration::design_entity_type ClauseVariable::getDesignEntityType() {
+QueryDeclaration::design_entity_type ClauseVariable::getDesignEntityType() const {
     return designEntityType;
 }
 

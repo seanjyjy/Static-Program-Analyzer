@@ -40,7 +40,7 @@ public:
      *
      * @return QueryDeclaration::design_entity_type representing the declaration type.
      */
-    QueryDeclaration::design_entity_type getDesignEntityType();
+    QueryDeclaration::design_entity_type getDesignEntityType() const;
 
     /**
      * Checks if the variable is an identifier.

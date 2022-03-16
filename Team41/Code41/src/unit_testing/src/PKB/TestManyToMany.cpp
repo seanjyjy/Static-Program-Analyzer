@@ -26,6 +26,7 @@ TEST_CASE("PKB: ManyToMany") {
         // Before adding
         REQUIRE(table.keySize() == 0);
         REQUIRE(table.valSize() == 0);
+        REQUIRE(table.size() == 0);
         REQUIRE(table.getKeys() == unordered_set<TestKeys>());
         REQUIRE(table.getValues() == unordered_set<TestValues>());
         REQUIRE(table.getValuesFromKey(TEST_KEY_1) == unordered_set<TestValues>());
@@ -68,6 +69,7 @@ TEST_CASE("PKB: ManyToMany") {
         REQUIRE_FALSE(table.hasMapping(TEST_KEY_4, TEST_VALUE_4));
         REQUIRE(table.valSize() == 3);
         REQUIRE(table.keySize() == 3);
+        REQUIRE(table.size() == 3);
 
         unordered_set<TestValues> assignValSet;
         assignValSet.insert(TEST_VALUE_2);
@@ -81,6 +83,7 @@ TEST_CASE("PKB: ManyToMany") {
         REQUIRE(table.getKeysFromValue(TEST_VALUE_4) == assignKeySet);
         REQUIRE(table.valSize() == 4);
         REQUIRE(table.keySize() == 3);
+        REQUIRE(table.size() == 4);
 
         unordered_set<TestValues> assignValSet2;
         assignValSet2.insert(TEST_VALUE_4);
@@ -94,6 +97,7 @@ TEST_CASE("PKB: ManyToMany") {
         REQUIRE(table.getKeysFromValue(TEST_VALUE_4) == assignKeySet2);
         REQUIRE(table.valSize() == 4);
         REQUIRE(table.keySize() == 4);
+        REQUIRE(table.size() == 5);
     }
 
     SECTION("immutability") {

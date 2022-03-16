@@ -1,7 +1,6 @@
 #include "PKB/Relations/SingleMap.h"
 
 #include "catch.hpp"
-#include "../UnitTestUtility.h"
 #include <unordered_set>
 
 using namespace std;
@@ -57,21 +56,17 @@ TEST_CASE("PKB: SingleMap") {
         vector<pair<TestKeys, TestValues>> entrySet;
         entrySet.reserve(10);
         REQUIRE(table.keys() == comparisonSet);
-        REQUIRE(sortAndCompareVectors(table.entries(), entrySet));
 
         // populating table
         table.put(TestKeys::TEST_KEY_1, TestValues::TEST_VALUE_1);
         comparisonSet.insert(TestKeys::TEST_KEY_1);
         entrySet.push_back(make_pair(TestKeys::TEST_KEY_1, TestValues::TEST_VALUE_1));
         REQUIRE(table.keys() == comparisonSet);
-        REQUIRE(sortAndCompareVectors(table.entries(), entrySet));
 
         table.put(TestKeys::TEST_KEY_2, TestValues::TEST_VALUE_1);
         REQUIRE_FALSE(table.keys() == comparisonSet);
-        REQUIRE_FALSE(sortAndCompareVectors(table.entries(), entrySet));
         comparisonSet.insert(TestKeys::TEST_KEY_2);
         entrySet.push_back(make_pair(TestKeys::TEST_KEY_2, TestValues::TEST_VALUE_1));
         REQUIRE(table.keys() == comparisonSet);
-        REQUIRE(sortAndCompareVectors(table.entries(), entrySet));
     }
 }

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-
-#include "PKB/Relations/SetMultiMap.h"
+#include <vector>
+#include <unordered_set>
 
 using namespace std;
 
@@ -18,7 +18,7 @@ enum EntityType {
  */
 class EntityTable {
 private:
-    SetMultiMap<EntityType, string> mapping;
+    vector<unordered_set<string>> mapping;
 public:
     EntityTable();
 
@@ -69,5 +69,12 @@ public:
      * Checks if the variable name is in the entity table
      */
     bool isVariable(string varName);
+
+    /**
+     * Gets the count of entity based on type
+     *
+     * @return count of entity of the specific type
+     */
+    size_t getEntityCount(EntityType type);
 };
 

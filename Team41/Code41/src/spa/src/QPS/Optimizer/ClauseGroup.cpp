@@ -2,6 +2,7 @@
 #include "ClauseScorer.h"
 
 #include <algorithm>
+#include <climits>
 #include <functional>
 #include <numeric>
 

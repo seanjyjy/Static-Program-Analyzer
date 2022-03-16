@@ -17,28 +17,37 @@ TEST_CASE("PKB: entities abstraction") {
 
     SECTION("add variables") {
         REQUIRE(pkbManager.getVariables() == EMPTY_SET);
+        REQUIRE(pkbManager.getVariableCount() == 0);
         REQUIRE_NOTHROW(pkbManager.registerVariable(entity[0]));
         REQUIRE(pkbManager.getVariables() == FILLED_SET_1);
+        REQUIRE(pkbManager.getVariableCount() == 1);
         REQUIRE_NOTHROW(pkbManager.registerVariable(entity[1]));
         REQUIRE(pkbManager.getVariables() == FILLED_SET_2);
+        REQUIRE(pkbManager.getVariableCount() == 2);
         // check that other table are not affected
         REQUIRE(pkbManager.getConstants() == EMPTY_SET);
     }
 
     SECTION("add constants") {
         REQUIRE(pkbManager.getConstants() == EMPTY_SET);
+        REQUIRE(pkbManager.getConstantCount() == 0);
         REQUIRE_NOTHROW(pkbManager.registerConstant(entity[0]));
         REQUIRE(pkbManager.getConstants() == FILLED_SET_1);
+        REQUIRE(pkbManager.getConstantCount() == 1);
         REQUIRE_NOTHROW(pkbManager.registerConstant(entity[1]));
         REQUIRE(pkbManager.getConstants() == FILLED_SET_2);
+        REQUIRE(pkbManager.getConstantCount() == 2);
     }
 
     SECTION("add procedure") {
         REQUIRE(pkbManager.getProcedures() == EMPTY_SET);
+        REQUIRE(pkbManager.getProcedureCount() == 0);
         REQUIRE_NOTHROW(pkbManager.registerProcedure(entity[0]));
         REQUIRE(pkbManager.getProcedures() == FILLED_SET_1);
+        REQUIRE(pkbManager.getProcedureCount() == 1);
         REQUIRE_NOTHROW(pkbManager.registerProcedure(entity[1]));
         REQUIRE(pkbManager.getProcedures() == FILLED_SET_2);
+        REQUIRE(pkbManager.getProcedureCount() == 2);
     }
 }
 
@@ -56,13 +65,18 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add assign") {
         REQUIRE(pkbManager.getAssigns() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isAssignStmt(stmt[0]));
+        REQUIRE(pkbManager.getAssignCount() == 0);
+
         REQUIRE_NOTHROW(pkbManager.registerAssignStmt(stmt[0]));
         REQUIRE(pkbManager.isAssignStmt(stmt[0]));
         REQUIRE(pkbManager.getAssigns() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isAssignStmt(stmt[1]));
+        REQUIRE(pkbManager.getAssignCount() == 1);
+
         REQUIRE_NOTHROW(pkbManager.registerAssignStmt(stmt[1]));
         REQUIRE(pkbManager.isAssignStmt(stmt[1]));
         REQUIRE(pkbManager.getAssigns() == FILLED_SET_2);
+        REQUIRE(pkbManager.getAssignCount() == 2);
 
         // check that other table are not affected
         REQUIRE(pkbManager.getCalls() == EMPTY_SET);
@@ -71,61 +85,86 @@ TEST_CASE("PKB: statements abstraction") {
     SECTION("add while") {
         REQUIRE(pkbManager.getWhiles() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isWhileStmt(stmt[0]));
+        REQUIRE(pkbManager.getWhileCount() == 0);
+
         REQUIRE_NOTHROW(pkbManager.registerWhileStmt(stmt[0]));
         REQUIRE(pkbManager.isWhileStmt(stmt[0]));
         REQUIRE(pkbManager.getWhiles() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isWhileStmt(stmt[1]));
+        REQUIRE(pkbManager.getWhileCount() == 1);
+
         REQUIRE_NOTHROW(pkbManager.registerWhileStmt(stmt[1]));
         REQUIRE(pkbManager.isWhileStmt(stmt[1]));
         REQUIRE(pkbManager.getWhiles() == FILLED_SET_2);
+        REQUIRE(pkbManager.getWhileCount() == 2);
     }
 
     SECTION("add ifs") {
         REQUIRE(pkbManager.getIfs() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isIfStmt(stmt[0]));
+        REQUIRE(pkbManager.getIfCount() == 0);
+
         REQUIRE_NOTHROW(pkbManager.registerIfStmt(stmt[0]));
         REQUIRE(pkbManager.isIfStmt(stmt[0]));
         REQUIRE(pkbManager.getIfs() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isIfStmt(stmt[1]));
+        REQUIRE(pkbManager.getIfCount() == 1);
+
         REQUIRE_NOTHROW(pkbManager.registerIfStmt(stmt[1]));
         REQUIRE(pkbManager.isIfStmt(stmt[1]));
         REQUIRE(pkbManager.getIfs() == FILLED_SET_2);
+        REQUIRE(pkbManager.getIfCount() == 2);
     }
 
     SECTION("add reads") {
         REQUIRE(pkbManager.getReads() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isReadStmt(stmt[0]));
+        REQUIRE(pkbManager.getReadCount() == 0);
+
         REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[0]));
         REQUIRE(pkbManager.isReadStmt(stmt[0]));
         REQUIRE(pkbManager.getReads() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isReadStmt(stmt[1]));
+        REQUIRE(pkbManager.getReadCount() == 1);
+
         REQUIRE_NOTHROW(pkbManager.registerReadStmt(stmt[1]));
         REQUIRE(pkbManager.isReadStmt(stmt[1]));
         REQUIRE(pkbManager.getReads() == FILLED_SET_2);
+        REQUIRE(pkbManager.getReadCount() == 2);
     }
 
     SECTION("add prints") {
         REQUIRE(pkbManager.getPrints() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isPrintStmt(stmt[0]));
+        REQUIRE(pkbManager.getPrintCount() == 0);
+
         REQUIRE_NOTHROW(pkbManager.registerPrintStmt(stmt[0]));
         REQUIRE(pkbManager.isPrintStmt(stmt[0]));
         REQUIRE(pkbManager.getPrints() == FILLED_SET_1);
+        REQUIRE(pkbManager.getPrintCount() == 1);
+
         REQUIRE_FALSE(pkbManager.isPrintStmt(stmt[1]));
         REQUIRE_NOTHROW(pkbManager.registerPrintStmt(stmt[1]));
         REQUIRE(pkbManager.isPrintStmt(stmt[1]));
         REQUIRE(pkbManager.getPrints() == FILLED_SET_2);
+        REQUIRE(pkbManager.getPrintCount() == 2);
     }
 
     SECTION("add calls") {
         REQUIRE(pkbManager.getCalls() == EMPTY_SET);
         REQUIRE_FALSE(pkbManager.isCallStmt(stmt[0]));
+        REQUIRE(pkbManager.getCallCount() == 0);
+
         REQUIRE_NOTHROW(pkbManager.registerCallStmt(stmt[0]));
         REQUIRE(pkbManager.isCallStmt(stmt[0]));
         REQUIRE(pkbManager.getCalls() == FILLED_SET_1);
         REQUIRE_FALSE(pkbManager.isCallStmt(stmt[1]));
+        REQUIRE(pkbManager.getCallCount() == 1);
+
         REQUIRE_NOTHROW(pkbManager.registerCallStmt(stmt[1]));
         REQUIRE(pkbManager.isCallStmt(stmt[1]));
         REQUIRE(pkbManager.getCalls() == FILLED_SET_2);
+        REQUIRE(pkbManager.getCallCount() == 2);
     }
 
     SECTION("prevents duplicate") {

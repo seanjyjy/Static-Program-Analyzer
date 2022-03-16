@@ -36,8 +36,11 @@ bool ManyToMany<K, V>::hasMapping(K key, V val) {
 
 template<class K, class V>
 void ManyToMany<K, V>::addMapping(K key, V val) {
-    keyToValues.add(key, val);
-    valuesToKey.add(val, key);
+    if (!hasMapping(key, val)) {
+        keyToValues.add(key, val);
+        valuesToKey.add(val, key);
+        entries.push_back(make_pair(key, val));
+    }
 }
 
 template<class K, class V>
@@ -53,7 +56,17 @@ unordered_set<V> ManyToMany<K, V>::getValues() {
 
 template<typename K, typename V>
 vector<pair<K, V>> ManyToMany<K, V>::getEntries() {
-    return keyToValues.entries();
+    return entries;
+}
+
+template<class K, class V>
+size_t ManyToMany<K, V>::size() {
+    return entries.size();
+}
+
+template<class K, class V>
+size_t ManyToMany<K, V>::size(K key) {
+    return keyToValues.size(move(key));
 }
 
 template<class K, class V>
@@ -65,4 +78,3 @@ template<class K, class V>
 size_t ManyToMany<K, V>::valSize() {
     return valuesToKey.keySize();
 }
-

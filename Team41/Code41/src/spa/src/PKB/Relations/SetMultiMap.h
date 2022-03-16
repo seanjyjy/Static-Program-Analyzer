@@ -36,18 +36,18 @@ public:
     unordered_set<K> keys();
 
     /**
-     * Gets all unique entries used in the table
-     *
-     * @return list of key-value pair
-     */
-    vector<pair<K, V>> entries();
-
-    /**
      * Get the number of keys in table
      *
      * @return number of keys
      */
     size_t keySize();
+
+    /**
+     * Get the number of vals for a key
+     *
+     * @return number of vals for a key
+     */
+    size_t size(K key);
 
     /**
      * Checks if key exists in table

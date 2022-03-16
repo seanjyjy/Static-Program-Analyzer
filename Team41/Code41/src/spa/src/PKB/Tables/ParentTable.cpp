@@ -22,11 +22,11 @@ void ParentTable::setParentT(const string& ancestorStmt, const string& descendan
 }
 
 unordered_set<string> ParentTable::getAllChildrenOf(string parentStmt) {
-    return parentRelation.getValuesFromKey(std::move(parentStmt));
+    return parentRelation.getValuesFromKey(move(parentStmt));
 }
 
 string ParentTable::getParentOf(string childStatement) {
-    return parentRelation.getKeyFromValue(std::move(childStatement));
+    return parentRelation.getKeyFromValue(move(childStatement));
 }
 
 vector<pair<string, string>> ParentTable::getParentEntries() {
@@ -34,15 +34,15 @@ vector<pair<string, string>> ParentTable::getParentEntries() {
 }
 
 bool ParentTable::isParent(string parentStmt, string childStmt) {
-    return parentRelation.hasMapping(std::move(parentStmt), std::move(childStmt));
+    return parentRelation.hasMapping(move(parentStmt), move(childStmt));
 }
 
 unordered_set<string> ParentTable::getAllDescendantsOf(string parentStmt) {
-    return ancestorRelation.getValuesFromKey(std::move(parentStmt));
+    return ancestorRelation.getValuesFromKey(move(parentStmt));
 }
 
 unordered_set<string> ParentTable::getAllAncestorsOf(string childStmt) {
-    return ancestorRelation.getKeysFromValue(std::move(childStmt));
+    return ancestorRelation.getKeysFromValue(move(childStmt));
 }
 
 vector<pair<string, string>> ParentTable::getParentTEntries() {
@@ -50,7 +50,7 @@ vector<pair<string, string>> ParentTable::getParentTEntries() {
 }
 
 bool ParentTable::isParentT(string parentStmt, string childStmt) {
-    return ancestorRelation.hasMapping(std::move(parentStmt), std::move(childStmt));
+    return ancestorRelation.hasMapping(move(parentStmt), move(childStmt));
 }
 
 unordered_set<string> ParentTable::getStmtsParentOfSomeStmt() {

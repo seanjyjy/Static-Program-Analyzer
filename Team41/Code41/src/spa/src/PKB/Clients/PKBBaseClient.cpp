@@ -40,7 +40,19 @@ bool PKBBaseClient::isPrintStmt(string stmtNum) const { return stmtTable->isStmt
 
 bool PKBBaseClient::isCallStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), CALL); }
 
-int PKBBaseClient::getStatementCount() const { return stmtTable->getStmtCount(); }
+size_t PKBBaseClient::getStatementCount() const { return stmtTable->getStmtCount(); }
+
+size_t PKBBaseClient::getAssignCount() const { return stmtTable->getStmtCount(ASSIGN); }
+
+size_t PKBBaseClient::getWhileCount() const { return stmtTable->getStmtCount(WHILE); }
+
+size_t PKBBaseClient::getIfCount() const { return stmtTable->getStmtCount(IF); }
+
+size_t PKBBaseClient::getReadCount() const { return stmtTable->getStmtCount(READ); }
+
+size_t PKBBaseClient::getPrintCount() const { return stmtTable->getStmtCount(PRINT); }
+
+size_t PKBBaseClient::getCallCount() const { return stmtTable->getStmtCount(CALL); }
 
 //======================================== Entities ==================================================
 
@@ -57,3 +69,9 @@ bool PKBBaseClient::isConstant(string constVal) const { return entityTable->isCo
 bool PKBBaseClient::isProcedure(string procName) const { return entityTable->isProcedure(move(procName)); }
 
 bool PKBBaseClient::isVariable(string varName) const { return entityTable->isVariable(move(varName)); }
+
+size_t PKBBaseClient::getConstantCount() const { return entityTable->getEntityCount(CONST); }
+
+size_t PKBBaseClient::getProcedureCount() const { return entityTable->getEntityCount(PROC); }
+
+size_t PKBBaseClient::getVariableCount() const { return entityTable->getEntityCount(VAR); }

@@ -27,6 +27,7 @@ private:
     string relationName;
     SetMultiMap<K, V> keyToValues;
     SingleMap<V, K> valuesToKey;
+    vector<pair<K, V>> entries;
 public:
     explicit OneToMany(const string &relationName);
 
@@ -102,6 +103,20 @@ public:
      * @return list of key-value pair
      */
     vector<pair<K, V>> getEntries();
+
+    /**
+     * Gets the number of relations stored in table
+     *
+     * @return number of relations
+     */
+    size_t size();
+
+    /**
+     * Gets the number of values for the specific key
+     *
+     * @return number of vals for the key
+     */
+    size_t size(K key);
 
     /**
      * Gets the number of keys stored in table

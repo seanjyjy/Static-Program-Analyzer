@@ -46,8 +46,11 @@ void OneToOne<K, V>::addMapping(K key, V val) {
     if (this->hasVal(val)) {
         throw runtime_error("[PKB][" + relationName + "][One-One] Value already mapped from another key");
     }
-    keyToVal.put(key, val);
-    valToKey.put(val, key);
+    if (!hasMapping(key, val)) {
+        keyToVal.put(key, val);
+        valToKey.put(val, key);
+        entries.push_back(make_pair(key, val));
+    }
 }
 
 template<class K, class V>
@@ -62,7 +65,17 @@ unordered_set<V> OneToOne<K, V>::getValues() {
 
 template<typename K, typename V>
 vector<pair<K, V>> OneToOne<K, V>::getEntries() {
-    return keyToVal.entries();
+    return entries;
+}
+
+template<class K, class V>
+size_t OneToOne<K, V>::size() {
+    return entries.size();
+}
+
+template<typename K, typename V>
+size_t OneToOne<K, V>::size(K key) {
+    return hasKey(move(key)) ? 1 : 0;
 }
 
 template<class K, class V>
