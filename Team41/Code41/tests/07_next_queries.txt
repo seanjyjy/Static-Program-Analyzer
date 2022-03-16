@@ -1078,3 +1078,18 @@ variable v;
 Select v such that Next*(_, v)
 
 5000
+217 - Special case of Next*(s, s) - BOOLEAN
+stmt s;
+Select BOOLEAN such that Next*(s, s)
+TRUE
+5000
+218 - Special case of Next*(w, w)
+while w;
+Select w such that Next*(w, w)
+4, 8, 10, 16, 22
+5000
+219 - Special case of Next*(s, s) - RESULT
+stmt s;
+Select s such that Next*(s, s)
+4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24
+5000

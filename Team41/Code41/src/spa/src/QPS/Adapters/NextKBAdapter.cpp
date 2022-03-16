@@ -143,7 +143,12 @@ void NextKBAdapter::fullBFS() {
 
     unordered_set<string> mainVisited;
     queue<CFGNode *> mainQ;
-    mainQ.push(start);
+
+    // we cannot start with root its 0!
+    for (auto& startProc : start->getChildren()) {
+        mainQ.push(startProc);
+        mainVisited.insert(startProc->getStmtNum());
+    }
 
     unordered_set<string> bfsVisited;
     queue<CFGNode *> bfsQueue;
@@ -238,7 +243,7 @@ bool NextKBAdapter::isNextT(string stmt1, string stmt2) {
     if (!cache->getBooleanMapping(stmt1, stmt2)) {
         booleanBFS(stmt1, stmt2);
     }
-    cache->printBooleanMapping();
+
     return cache->getBooleanMapping(stmt1, stmt2);
 }
 
@@ -246,7 +251,7 @@ unordered_set<string> NextKBAdapter::getAllStmtsNextT(string stmtNum) {
     if (cache->getForwardMapping(stmtNum).empty()) {
         forwardBFS(stmtNum);
     }
-    cache->printForwardMapping();
+
     return cache->getForwardMapping(stmtNum);
 }
 
@@ -254,7 +259,7 @@ unordered_set<string> NextKBAdapter::getAllStmtsTBefore(string stmtNum) {
     if (cache->getBackwardMapping(stmtNum).empty()) {
         backwardBFS(stmtNum);
     }
-    cache->printBackwardMapping();
+
     return cache->getBackwardMapping(stmtNum);
 }
 

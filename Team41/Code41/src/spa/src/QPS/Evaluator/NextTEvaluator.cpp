@@ -96,14 +96,28 @@ Table *NextTEvaluator::evaluateSynonymSynonym(NextKBAdapter* nextKBAdapter, Clau
 
     string firstColumn = left.getLabel();
     string secondColumn = right.getLabel();
-    Header header = Header({firstColumn, secondColumn});
-    Table* table = new PQLTable(header);
+    Table* table;
+    if (firstColumn == secondColumn) {
+        Header header = Header({firstColumn});
+        table = new PQLTable(header);
 
-    for (auto&[firstStmt, secondStmt] : listOfStmtToStmt) {
-        Row* row = new Row();
-        row->addEntry(firstColumn, firstStmt);
-        row->addEntry(secondColumn, secondStmt);
-        table->addRow(row);
+        for (auto&[firstStmt, secondStmt] : listOfStmtToStmt) {
+            if (firstStmt == secondStmt) {
+                Row* row = new Row();
+                row->addEntry(firstColumn, firstStmt);
+                table->addRow(row);
+            }
+        }
+    } else {
+        Header header = Header({firstColumn, secondColumn});
+        table = new PQLTable(header);
+
+        for (auto&[firstStmt, secondStmt] : listOfStmtToStmt) {
+            Row* row = new Row();
+            row->addEntry(firstColumn, firstStmt);
+            row->addEntry(secondColumn, secondStmt);
+            table->addRow(row);
+        }
     }
 
     return table;
