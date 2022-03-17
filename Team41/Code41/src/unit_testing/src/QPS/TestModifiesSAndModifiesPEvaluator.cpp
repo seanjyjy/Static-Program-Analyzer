@@ -30,6 +30,17 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
 
     ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", QueryDeclaration::NONE);
 
+    pkbManager->registerVariable(vars[0]);
+    pkbManager->registerVariable(vars[1]);
+    pkbManager->registerAssignStmt(lines[0]);
+    pkbManager->registerAssignStmt(lines[1]);
+    pkbManager->registerModifiesS(lines[0], vars[0]);
+    pkbManager->registerModifiesS(lines[0], declaration[1]);
+    pkbManager->registerModifiesS(lines[1], declaration[1]);
+    pkbManager->registerProcedure(proc[0]);
+    pkbManager->registerProcedure(proc[1]);
+    pkbManager->registerProcedure(proc[2]);
+
     SECTION("ModifiesS Evaluator") {
         pkbManager->registerModifiesS(lines[0], vars[0]);
         pkbManager->registerModifiesS(lines[0], vars[1]);

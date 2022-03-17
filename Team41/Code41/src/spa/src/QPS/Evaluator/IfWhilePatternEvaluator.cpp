@@ -5,11 +5,11 @@ IfWhilePatternEvaluator::IfWhilePatternEvaluator(PKBClient *pkb) : PatternEvalua
 Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
                                                 vector<PatternVariable> &rightPatternVariables) {
 
-    if (EvaluatorUtils::PatternUtils::isValidSynonymWildCards(leftVariable, rightPatternVariables)) {
+    if (EvaluatorUtils::PatternUtils::isValidSynonymWildCards(leftVariable, rightPatternVariables, patternSynonym.type)) {
         return evaluateSynonymWildCard(patternSynonym, leftVariable);
     }
 
-    if (EvaluatorUtils::PatternUtils::isIdentifierWildCards(leftVariable, rightPatternVariables)) {
+    if (EvaluatorUtils::PatternUtils::isIdentifierWildCards(leftVariable, rightPatternVariables, patternSynonym.type)) {
         return evaluateIdentifierWildCard(patternSynonym, leftVariable);
     }
 

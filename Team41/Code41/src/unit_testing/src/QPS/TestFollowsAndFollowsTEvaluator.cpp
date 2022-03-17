@@ -37,6 +37,13 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
 
     ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", QueryDeclaration::NONE);
 
+    pkbManager->registerAssignStmt(stmt[0]);
+    pkbManager->registerAssignStmt(stmt[1]);
+    pkbManager->registerAssignStmt(stmt[2]);
+    pkbManager->registerReadStmt(stmt[3], "re");
+    pkbManager->registerAssignStmt(stmt[4]);
+    pkbManager->registerReadStmt(stmt[5], "re");
+
     SECTION("Follows Evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::follows, integer1, integer2);
@@ -116,9 +123,9 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
         SECTION("Synonym Synonym pair") {
             QueryClause queryClause1(QueryClause::follows, synonymS1, synonymS2);
             Table* table1 = FollowsEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->size() == 4);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"1", "2", "3", "5"}));
-            REQUIRE(table1->getColumn("s2") == unordered_set<string>({"2", "4", "5", "6"}));
+            REQUIRE(table1->size() == 2);
+            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"3", "5"}));
+            REQUIRE(table1->getColumn("s2") == unordered_set<string>({"4", "6"}));
             delete table1;
         }
 
@@ -151,8 +158,8 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
         SECTION("Wildcard Synonym pair") {
             QueryClause queryClause1(QueryClause::follows, wildcard, synonymS1);
             Table* table1 = FollowsEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->size() == 4);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "4", "5", "6"}));
+            REQUIRE(table1->size() == 2);
+            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2",  "5"}));
             delete table1;
         }
 
@@ -203,8 +210,8 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
         SECTION("Integer Synonym pair") {
             QueryClause queryClause1(QueryClause::followsT, integer1, synonymS1);
             Table* table1 = FollowsTEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->size() == 3);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "5", "6"}));
+            REQUIRE(table1->size() == 2);
+            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "5"}));
 
             QueryClause queryClause2(QueryClause::followsT, integer6, synonymS1);
             Table* table2 = FollowsTEvaluator(pkbManager).evaluate(queryClause2);
@@ -249,9 +256,9 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
         SECTION("Synonym Synonym pair") {
             QueryClause queryClause1(QueryClause::followsT, synonymS1, synonymS2);
             Table* table1 = FollowsTEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->size() == 7); // this is larger due to transitive
+            REQUIRE(table1->size() == 4); // this is larger due to transitive
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"1", "2", "3", "5"}));
-            REQUIRE(table1->getColumn("s2") == unordered_set<string>({"2", "4", "5", "6"}));
+            REQUIRE(table1->getColumn("s2") == unordered_set<string>({"4", "6"}));
             delete table1;
         }
 
@@ -284,8 +291,8 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
         SECTION("Wildcard Synonym pair") {
             QueryClause queryClause1(QueryClause::followsT, wildcard, synonymS1);
             Table* table1 = FollowsTEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->size() == 4);
-            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "4", "5", "6"}));
+            REQUIRE(table1->size() == 2);
+            REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2",  "5"}));
             delete table1;
         }
 

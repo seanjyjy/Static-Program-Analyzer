@@ -24,11 +24,18 @@ TEST_CASE("Evaluator: While pattern evaluator") {
     PatternVariable patternFP(PatternVariable::fullpattern, nullptr);
     PatternVariable patternSP(PatternVariable::subpattern, nullptr);
 
+    pkbManager->registerVariable(vars[0]);
+    pkbManager->registerVariable(vars[1]);
+    pkbManager->registerVariable(vars[2]);
     pkbManager->registerWhilePattern(lines[0], vars[0]); // 0: v0
     pkbManager->registerWhilePattern(lines[1], vars[1]); // 1: v1
     pkbManager->registerWhilePattern(lines[2], vars[2]); // 2: v2
     pkbManager->registerWhilePattern(lines[3], vars[0]); // 3: v0
     pkbManager->registerWhilePattern(lines[3], vars[1]); // 3: v1
+    pkbManager->registerWhileStmt(lines[0]);
+    pkbManager->registerWhileStmt(lines[1]);
+    pkbManager->registerWhileStmt(lines[2]);
+    pkbManager->registerWhileStmt(lines[3]);
 
     SECTION("Synonym WildCards Pair") {
         PatternClause patternClause1(whileSyn, variableSyn, vector<PatternVariable>({patternWildCard, patternWildCard}));

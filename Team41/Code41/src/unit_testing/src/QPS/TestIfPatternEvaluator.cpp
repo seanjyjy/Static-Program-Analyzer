@@ -24,11 +24,18 @@ TEST_CASE("Evaluator: If pattern evaluator") {
     PatternVariable patternFP(PatternVariable::fullpattern, nullptr);
     PatternVariable patternSP(PatternVariable::subpattern, nullptr);
 
+    pkbManager->registerVariable(vars[0]);
+    pkbManager->registerVariable(vars[1]);
+    pkbManager->registerVariable(vars[2]);
     pkbManager->registerIfPattern(lines[0], vars[0]); // 0: v0
     pkbManager->registerIfPattern(lines[1], vars[1]); // 1: v1
     pkbManager->registerIfPattern(lines[2], vars[2]); // 2: v2
     pkbManager->registerIfPattern(lines[3], vars[0]); // 3: v0
     pkbManager->registerIfPattern(lines[3], vars[1]); // 3: v1
+    pkbManager->registerIfStmt(lines[0]);
+    pkbManager->registerIfStmt(lines[1]);
+    pkbManager->registerIfStmt(lines[2]);
+    pkbManager->registerIfStmt(lines[3]);
 
     SECTION("Synonym WildCards Pair") {
         PatternClause patternClause1(ifSyn, variableSyn, vector<PatternVariable>({patternWildCard, patternWildCard}));

@@ -8,6 +8,7 @@
 TEST_CASE("Evaluator: Calls and CallsT evaluator") {
     PKBManager* pkbManager = new PKBManager();
     string proc[] = {"p0", "p1", "p2", "p3", "p4", "p5"};
+    string stmt[] = {"1", "2", "3", "4", "5", "6"};
     string lines[] = {"1", "2"}; // for invalid type of params
     string synonyms[] = { "proc1", "proc2", "proc3" };
 
@@ -36,6 +37,10 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
        /    \|
        3     4
      */
+
+    for (auto& p : proc) {
+        pkbManager->registerProcedure(p);
+    }
 
     // p0 -> {p1, p2}
     pkbManager->registerCalls(proc[0], proc[1]);

@@ -53,6 +53,9 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
     for (string l: lines) {
         pkbManager->registerAssignStmt(l);
     }
+
+    pkbManager->registerVariable(vars[0]);
+    pkbManager->registerVariable(vars[1]);
     pkbManager->registerModifiesS(lines[0], vars[0]);
     pkbManager->registerModifiesS(lines[1], vars[1]);
     pkbManager->registerModifiesS(lines[2], vars[0]);

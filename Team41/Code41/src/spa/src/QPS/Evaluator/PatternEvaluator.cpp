@@ -11,7 +11,7 @@ Table *PatternEvaluator::evaluate(PatternClause clause) {
         throw SemanticException("NO SUCH COMBINATION ALLOWED FOR PATTERN");
     }
 
-    if (EvaluatorUtils::PatternUtils::isWildCardWildCards(leftVariable, rightPatternVariables)) {
+    if (EvaluatorUtils::PatternUtils::isWildCardWildCards(leftVariable, rightPatternVariables, patternSynonym.type)) {
         return evaluateWildCardWildCard(patternSynonym);
     }
 

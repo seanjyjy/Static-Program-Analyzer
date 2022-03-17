@@ -539,9 +539,13 @@ public:
 
     class PatternUtils {
     public:
-        static bool isWildCardWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables);
-        static bool isIdentifierWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables);
-        static bool isValidSynonymWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables);
-        static bool isWildCards(const vector<PatternVariable>& patternVariables);
+        static bool isWildCardWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables,
+                                        QueryDeclaration::design_entity_type type);
+        static bool isIdentifierWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables,
+                                          QueryDeclaration::design_entity_type type);
+        static bool isValidSynonymWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables,
+                                            QueryDeclaration::design_entity_type type);
+        static bool isWildCards(const vector<PatternVariable>& patternVariables,
+                                QueryDeclaration::design_entity_type type);
     };
 };
