@@ -515,6 +515,6 @@ Select p.value
 5000
 242 - Select wrong stmt attribute type - invalid attrRef
 constant c;
-Select p.stmt#
+Select c.stmt#
 
 5000
