@@ -493,8 +493,28 @@ if ifs; assign a;
 Select <ifs.stmt#, a.stmt#>
 19 1, 19 10, 19 11, 19 12, 19 15, 19 16, 19 17, 19 20, 19 21, 19 22, 19 23
 5000
-230 - Select attribute names in tuple
+238 - Select attribute names in tuple
 read re; print pn; call cl;
 Select <re.varName, pn.varName, cl.procName>
 x flag computeCentroid, x cenX computeCentroid, x cenY computeCentroid, x normSq computeCentroid, y flag computeCentroid, y cenX computeCentroid, y cenY computeCentroid, y normSq computeCentroid, x flag printResults, x cenX printResults, x cenY printResults, x normSq printResults, y flag printResults, y cenX printResults, y cenY printResults, y normSq printResults, x flag readPoint, x cenX readPoint, x cenY readPoint, x normSq readPoint, y flag readPoint, y cenX readPoint, y cenY readPoint, y normSq readPoint
+5000
+239 - Select wrong procName attribute - invalid attrRef
+stmt s;
+Select s.procName
+
+5000
+240 - Select wrong varName attribute type - invalid attrRef
+assign a;
+Select a.varName
+
+5000
+241 - Select wrong value attribute type - invalid attrRef
+procedure p;
+Select p.value
+
+5000
+242 - Select wrong stmt attribute type - invalid attrRef
+constant c;
+Select c.stmt#
+
 5000
