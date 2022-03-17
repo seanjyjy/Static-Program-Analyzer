@@ -6,6 +6,7 @@
 #include "PKB/PKBClient.h"
 #include "QPS/Adapters/NextKBAdapter.h"
 #include "QPS/ClauseVariable.h"
+#include "QPS/PatternClause.h"
 #include "QPS/QueryClause.h"
 #include "QPS/Evaluator/EvaluatorUtils.h"
 #include "Exception/SemanticException.h"
@@ -25,7 +26,9 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table that contains information based on the query that was executed.
      */
+     // TODO REMOVE BOTH AND BECOME A COMBINED EVALUATE WITH  SUPER CLAUSE
     virtual Table* evaluate(QueryClause clause) = 0;
+    virtual Table* evaluate(PatternClause clause) = 0;
 
     string getClauseType(QueryClause::clause_type clauseType);
 
@@ -40,13 +43,19 @@ public:
     Table* buildSingleSynonymTable(const string &result, ClauseVariable& synonym);
     Table* buildSingleSynonymTable(const vector<CFGNode *>& results, ClauseVariable& synonym);
     Table* buildSingleSynonymTable(const vector<string> results, ClauseVariable& synonym);
+    Table* buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration& patternSynonym);
 
     Table* buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& leftSynonym,
                                     ClauseVariable &rightSynonym);
     Table* buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& synonym);
-
     Table* buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& leftSynonym,
                                       ClauseVariable& rightSynonym);
+
+    Table* buildAssignPatternSSTable(const vector<pair<string, string>> &results, QueryDeclaration& patternSyn,
+                                    ClauseVariable &variable);
+
+    Table* buildAssignPatternSSTable(const unordered_set<string> &results, QueryDeclaration& patternSyn,
+                                    ClauseVariable &variable);
 
     unordered_set<string> getFilters(QueryDeclaration::design_entity_type);
 

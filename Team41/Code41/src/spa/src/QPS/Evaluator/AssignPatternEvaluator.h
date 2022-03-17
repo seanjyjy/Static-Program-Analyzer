@@ -1,11 +1,21 @@
 #pragma once
 
-#include "Evaluator.h"
+#include "PatternEvaluator.h"
 #include "Common/TNode.h"
 #include "../PatternClause.h"
 
-class AssignPatternEvaluator {
+class AssignPatternEvaluator : PatternEvaluator {
 private:
+    PKBClient* pkb;
+public:
+    explicit AssignPatternEvaluator(PKBClient* pkb);
+
+    Table* evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable& leftVariable,
+                                   vector<PatternVariable>& rightPatternVariables) override;
+
+    unordered_set<string> getWildCardWildCardRelation() override;
+    unordered_set<string> getIdentifierWildCardRelation(const string& label) override;
+
     /**
      * Construct a table that captures the Pattern relation between a wildcard and a full pattern.
      *
@@ -14,7 +24,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a wildcard and a full pattern.
      */
-    static Table *evaluateWildCardFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, PatternVariable right);
+    Table *evaluateWildCardFullPattern(QueryDeclaration patternSyn, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between a wildcard and a sub pattern.
@@ -24,17 +34,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a wildcard and a sub pattern.
      */
-    static Table *evaluateWildCardSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, PatternVariable right);
-
-    /**
-     * Construct a table that captures the Pattern relation between two wildcard.
-     *
-     * @param pkb A knowledge base based on the Source Program.
-     * @param patternSyn QueryDeclaration that contains the pattern synonym.
-     * @param right Pattern variable.
-     * @return A table that contains information based on the Pattern relation between two wildcard.
-     */
-    static Table *evaluateWildCardWildCard(PKBClient *pkb, QueryDeclaration patternSyn);
+    Table *evaluateWildCardSubPattern(QueryDeclaration patternSyn, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between an identifier and a full pattern.
@@ -44,8 +44,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a full pattern.
      */
-    static Table *evaluateIdentifierFullPattern(PKBClient *pkb, QueryDeclaration patternSyn,
-                                                ClauseVariable left, PatternVariable right);
+    Table *evaluateIdentifierFullPattern(QueryDeclaration patternSyn, ClauseVariable left, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between an identifier and a sub pattern.
@@ -55,18 +54,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a sub pattern.
      */
-    static Table *evaluateIdentifierSubPattern(PKBClient *pkb, QueryDeclaration patternSyn,
-                                               ClauseVariable left, PatternVariable right);
-
-    /**
-     * Construct a table that captures the Pattern relation between an identifier and a wildcard.
-     *
-     * @param pkb A knowledge base based on the Source Program.
-     * @param patternSyn QueryDeclaration that contains the pattern synonym.
-     * @param right Pattern variable.
-     * @return A table that contains information based on the Pattern relation between an identifier and a wildcard.
-     */
-    static Table *evaluateIdentifierWildCard(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left);
+    Table *evaluateIdentifierSubPattern(QueryDeclaration patternSyn, ClauseVariable left, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a full pattern.
@@ -76,8 +64,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a full pattern.
      */
-    static Table *evaluateSynonymFullPattern(PKBClient *pkb, QueryDeclaration patternSyn,
-                                             ClauseVariable left, PatternVariable right);
+    Table *evaluateSynonymFullPattern(QueryDeclaration patternSyn, ClauseVariable left, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a sub pattern.
@@ -87,8 +74,7 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a sub pattern.
      */
-    static Table *evaluateSynonymSubPattern(PKBClient *pkb, QueryDeclaration patternSyn,
-                                            ClauseVariable left, PatternVariable right);
+    Table *evaluateSynonymSubPattern(QueryDeclaration patternSyn, ClauseVariable left, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a wildcard.
@@ -98,15 +84,5 @@ private:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a wildcard.
      */
-    static Table *evaluateSynonymWildCard(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left);
-
-public:
-    /**
-     * Depending on the QueryClause, choose a certain evaluate method for Pattern to evaluate this clause
-     *
-     * @param clause A QueryClause that contains the clause type, and two clause variable.
-     * @param pkb A knowledge base based on the Source Program.
-     * @return A table depending on the type of Query Clause.
-     */
-    static Table *evaluate(PatternClause clause, PKBClient *pkb);
+    Table *evaluateSynonymWildCard(QueryDeclaration patternSyn, ClauseVariable left);
 };

@@ -303,3 +303,30 @@ optional<string> EvaluatorUtils::AttrUtils::getAttrFromSelectable(Selectable *ta
         return nullopt;
     }
 }
+
+// ============================================ Pattern Utils ====================================================
+
+bool EvaluatorUtils::PatternUtils::isWildCards(const vector<PatternVariable> &patternVariables) {
+    for (auto patternVariable : patternVariables) {
+        if (!patternVariable.isWildcard()) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool EvaluatorUtils::PatternUtils::isWildCardWildCards(ClauseVariable variable,
+                                                       const vector<PatternVariable>& patternVariables) {
+    return variable.isWildCard() && isWildCards(patternVariables);
+}
+
+bool EvaluatorUtils::PatternUtils::isIdentifierWildCards(ClauseVariable variable,
+                                                         const vector<PatternVariable>& patternVariables) {
+    return variable.isWildCard() && isWildCards(patternVariables);
+}
+
+bool EvaluatorUtils::PatternUtils::isValidSynonymWildCards(ClauseVariable variable,
+                                                           const vector<PatternVariable>& patternVariables) {
+    return isVariableSynonym(&variable) && isWildCards(patternVariables);
+}
