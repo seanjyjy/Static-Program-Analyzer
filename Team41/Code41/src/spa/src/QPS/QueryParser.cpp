@@ -600,8 +600,9 @@ bool QueryParser::parseWithClause() {
     if (right == nullopt) {
         return false;
     }
-    WithClause wc(left.value(), right.value());
-    queryObject->getWithClauses().push_back(wc);
+    WithClause* wc = new WithClause(left.value(), right.value());
+    queryObject->getWithClauses().push_back(*wc);
+    queryObject->getSuperClauses().push_back(wc);
 }
 
 // todo: build the with clause somehow
@@ -670,10 +671,11 @@ QueryObject *QueryParser::parse() {
     vector<QueryClause> clauses;
     vector<PatternClause> patternClauses;
     vector<WithClause> withClauses;
+    vector<SuperClause*> superClauses;
     string a = "";
     QueryDeclaration s(QueryDeclaration::ASSIGN, a);
     SelectTarget st(SelectTarget::BOOLEAN);
-    queryObject = new QueryObject(declarations, clauses, patternClauses, withClauses, s, st, false);
+    queryObject = new QueryObject(declarations, clauses, patternClauses, withClauses, superClauses, s, st, false);
 
     lex = new QueryLexer(input);
 

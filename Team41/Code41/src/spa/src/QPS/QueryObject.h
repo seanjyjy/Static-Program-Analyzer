@@ -13,6 +13,7 @@ using namespace std;
 class QueryObject {
 private:
     vector<WithClause> withClauses;
+    vector<SuperClause*> superClauses;
 public:
     // todo: make private after all refactor
     vector<QueryDeclaration> declarations; // collection of declarations in the query
@@ -34,6 +35,7 @@ public:
     vector<QueryClause>& getClauses();
     vector<PatternClause>& getPatternClauses();
     vector<WithClause>& getWithClauses();
+    vector<SuperClause*>& getSuperClauses();
 
     SelectTarget getSelectTarget();
 
@@ -52,7 +54,7 @@ public:
      * @param selectSynonym synonym to select for the query.
      * @param isQueryValid query's validity.
      */
-    QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, vector<WithClause> withClauses, QueryDeclaration selectSynonym, SelectTarget selectTarget, bool isQueryValid);
+    QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, vector<WithClause> withClauses, vector<SuperClause*> superClauses, QueryDeclaration selectSynonym, SelectTarget selectTarget, bool isQueryValid);
 
     // old
     QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, QueryDeclaration selectSynonym, bool isQueryValid);

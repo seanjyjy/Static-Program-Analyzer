@@ -488,11 +488,39 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == 10);
         REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
     }
+    SECTION("superClause test") {
+        string s = "stmt s, s1;\n"
+                   "Select s.stmt# such that Follows* (s, s1) with s1.stmt#=10";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->getSelectables().at(0).getSynonym().getSynonym() == "s");
+        REQUIRE(qo->getSelectables().at(0).getType() == Selectable::ATTR_REF);
+        REQUIRE(qo->getSelectables().at(0).getAttr() == Selectable::STMT_NUM);
+        ////
+        REQUIRE(qo->getWithClauses().at(0).getLeft().getType() == WithVariable::ATTR_REF);
+        REQUIRE(qo->getWithClauses().at(0).getLeft().getSynonym().getSynonym() == "s1");
+        REQUIRE(qo->getWithClauses().at(0).getLeft().getAttr() == WithVariable::STMT_NUM);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getType() == WithVariable::INTEGER);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == 10);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
+        ////
+        REQUIRE(qo->getSuperClauses().at(0)->isWithClause()); // change index after more superclauses
+    }
     delete qo;
 }
 
 TEST_CASE("QPS: Parser_INVALID") {
     QueryObject *qo = nullptr;
+//    SECTION("Repeated declaration name") {
+//        string s = "variable v; assign v;\n"
+//                   "Select v";
+//
+//        QueryParser a = QueryParser{s};
+//        qo = a.parse();
+//
+//        REQUIRE_FALSE(qo->isValid());
+//    }
     SECTION("Bad declaration type") {
         string s = "variable v; asinine a;\n"
                    "Select v such that Kills(a, v)";
