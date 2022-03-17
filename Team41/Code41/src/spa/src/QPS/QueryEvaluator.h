@@ -52,14 +52,6 @@ private:
      * @param resultTable Table that contains the current result.
      */
     void safeDeleteTable(Table* tableToDelete, Table* resultTable);
-
-    /**
-     * Checks if the declarations violates any semantic logic.
-     *
-     * @param declarations vector of QueryDeclarations.
-     * @return True if declarations are semantically valid else false.
-     */
-    bool isDeclarationsSemanticallyValid(const vector<QueryDeclaration>& declarations);
 public:
     explicit QueryEvaluator(PKBClient* pkb);
     ~QueryEvaluator();
