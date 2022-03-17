@@ -95,9 +95,11 @@ private:
 
     bool parseWithClause();
 
-    bool parseWithRef();
+    optional<WithVariable> parseWithRef();
 
     bool isValidAttrName(string w);
+
+    WithVariable::attributeName toAttrName(string w);
 
     /**
      * Parses a clause of a query

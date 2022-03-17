@@ -1,5 +1,9 @@
 #include "QueryDeclaration.h"
 
+QueryDeclaration::QueryDeclaration() {
+    type = NONE;
+}
+
 QueryDeclaration::QueryDeclaration(design_entity_type type, string &synonym) :
     type(type), synonym(synonym) {}
 

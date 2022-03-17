@@ -65,7 +65,7 @@ bool QueryParser::parseDeclarationsOfTypeString(string type) {
 void QueryParser::generateDeclarationObject(string type, string synonym) {
     QueryDeclaration::design_entity_type t = QueryDeclaration::stringToType(type);
     QueryDeclaration qd(t, synonym);
-    queryObject->declarations.push_back(qd);
+    queryObject->getDeclarations().push_back(qd);
 }
 
 bool QueryParser::lookForDeclarationSemiColon() {
@@ -129,7 +129,7 @@ bool QueryParser::parseSelectSingle() {
         return false;
     }
 
-    optional<QueryDeclaration> qd = findMatchingDeclaration(*synonym);
+    optional<QueryDeclaration> qd = findMatchingDeclaration(synonym.value());
     if (!qd.has_value()) {
         printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
         return false;
@@ -322,7 +322,7 @@ bool QueryParser::buildClause(string clause, string left, string right) {
 
         ClauseVariable rcv(rightType, r, determineDeclarationType(r));
         QueryClause clause(type, lcv, rcv);
-        queryObject->clauses.push_back(clause);
+        queryObject->getClauses().push_back(clause);
     } else {
         return false;
     }
@@ -555,7 +555,7 @@ void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string l
     }
     ClauseVariable lcv(leftType, l, determineDeclarationType(l));
     PatternClause pc(patternSyn, lcv, rhs);
-    queryObject->patternClauses.push_back(pc);
+    queryObject->getPatternClauses().push_back(pc);
 }
 
 QueryParser::QueryParser(string &input) : input(input) {}
@@ -591,55 +591,72 @@ bool QueryParser::parseWithClauses() {
 }
 
 bool QueryParser::parseWithClause() {
-    // with-cl : 'with' attrCond
-    // attrCond : attrCompare ( 'and' attrCompare )*
-    // attrCompare : ref '=' ref
-    // ref : '"' IDENT '"' | INTEGER | attrRef
-    // attrRef : synonym '.' attrName
-
-    // expect first ref
-    parseWithRef();
-    // expect '='
+    optional<WithVariable> left = parseWithRef();
+    if (left == nullopt) {
+        return false;
+    }
     lookForClauseGrammarSymbol("=", "Syntax Error: Expected '=' for with clause, following first ref\n");
-    // expect second ref
-    parseWithRef();
+    optional<WithVariable> right = parseWithRef();
+    if (right == nullopt) {
+        return false;
+    }
+    WithClause wc(left.value(), right.value());
+    queryObject->getWithClauses().push_back(wc);
 }
 
 // todo: build the with clause somehow
-bool QueryParser::parseWithRef() {
+optional<WithVariable> QueryParser::parseWithRef() {
     if (lex->peekNextIsString("\"")) {
         // '"' IDENT '"'
         string ident = lex->nextToken();
         if (lex->isIdentifier(ident)) {
-            printf("ident: %s\n", ident.c_str());
+            return WithVariable(ident.substr(1, ident.length() - 2));
+        } else {
+            return nullopt;
         }
-        return true;
     }
     string n = lex->nextToken();
     if (lex->isInteger(n)) {
         // INTEGER
-        printf("int: %s\n", n.c_str());
-        return true;
+        return WithVariable(stoi(n));
     } else if (lex->isValidSynonym(n)) {
         // attrRef : synonym '.' attrName
-        printf("attrRef: %s\n", n.c_str());
+        optional<QueryDeclaration> syn = findMatchingDeclaration(n);
+        if (!syn.has_value()) {
+            printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", n.c_str());
+            return nullopt;
+        }
         if (lex->peekNextIsString(".") && lex->nextExpected(".")) {
             string attr = lex->nextToken();
             if (isValidAttrName(attr)) {
-                printf("attrName: %s\n", attr.c_str());
+                return WithVariable(toAttrName(attr), syn.value());
             } else {
                 printf("Syntax Error: Invalid attribute name <%s> found.\n", attr.c_str());
+                return nullopt;
             }
         } else {
             printf("Syntax Error: Expected an attribute reference denoted by '.'\n");
+            return nullopt;
         }
-        return true;
     } else {
         printf("Syntax Error: Invalid ref term <%s> found.\n", n.c_str());
-        return false;
+        return nullopt;
     }
+    return nullopt;
+}
 
-    return false;
+WithVariable::attributeName QueryParser::toAttrName(string w) {
+    if (w == "procName") {
+        return WithVariable::PROC_NAME;
+    } else if (w == "varName") {
+        return WithVariable::VAR_NAME;
+    } else if (w == "value") {
+        return WithVariable::VALUE;
+    } else if (w == "stmt#") {
+        return WithVariable::STMT_NUM;
+    } else {
+        return WithVariable::NONE;
+    }
 }
 
 bool QueryParser::isValidAttrName(string w) {
@@ -652,10 +669,11 @@ QueryObject *QueryParser::parse() {
     vector<QueryDeclaration> declarations;
     vector<QueryClause> clauses;
     vector<PatternClause> patternClauses;
+    vector<WithClause> withClauses;
     string a = "";
     QueryDeclaration s(QueryDeclaration::ASSIGN, a);
     SelectTarget st(SelectTarget::BOOLEAN);
-    queryObject = new QueryObject(declarations, clauses, patternClauses, s, st, false);
+    queryObject = new QueryObject(declarations, clauses, patternClauses, withClauses, s, st, false);
 
     lex = new QueryLexer(input);
 

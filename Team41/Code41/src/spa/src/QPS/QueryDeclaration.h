@@ -25,6 +25,8 @@ public:
 
     string getSynonym();
 
+    QueryDeclaration();
+
     /**
      * Constructor for the QueryDeclaration class.
      *

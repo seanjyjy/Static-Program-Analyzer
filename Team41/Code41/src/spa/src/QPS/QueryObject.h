@@ -5,11 +5,14 @@
 #include "QueryDeclaration.h"
 #include "QueryClause.h"
 #include "PatternClause.h"
+#include "WithClause.h"
 #include "SelectTarget.h"
 
 using namespace std;
 
 class QueryObject {
+private:
+    vector<WithClause> withClauses;
 public:
     // todo: make private after all refactor
     vector<QueryDeclaration> declarations; // collection of declarations in the query
@@ -27,9 +30,10 @@ public:
     // todo: make private after all refactor
     bool isQueryValid; // indicates if query was valid
 
-    vector<QueryDeclaration> getDeclarations();
-    vector<QueryClause> getClauses();
-    vector<PatternClause> getPatternClauses();
+    vector<QueryDeclaration>& getDeclarations();
+    vector<QueryClause>& getClauses();
+    vector<PatternClause>& getPatternClauses();
+    vector<WithClause>& getWithClauses();
 
     SelectTarget getSelectTarget();
 
@@ -48,7 +52,7 @@ public:
      * @param selectSynonym synonym to select for the query.
      * @param isQueryValid query's validity.
      */
-    QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, QueryDeclaration selectSynonym, SelectTarget selectTarget, bool isQueryValid);
+    QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, vector<WithClause> withClauses, QueryDeclaration selectSynonym, SelectTarget selectTarget, bool isQueryValid);
 
     // old
     QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, QueryDeclaration selectSynonym, bool isQueryValid);

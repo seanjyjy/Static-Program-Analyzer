@@ -5,12 +5,14 @@
 QueryObject::QueryObject(vector<QueryDeclaration> declarations,
                          vector<QueryClause> clauses,
                          vector<PatternClause> patternClauses,
+                         vector<WithClause> withClauses,
                          QueryDeclaration selectSynonym,
                          SelectTarget selectTarget,
                          bool isQueryValid) :
     declarations(std::move(declarations)),
     clauses(std::move(clauses)),
     patternClauses(std::move(patternClauses)),
+    withClauses(std::move(withClauses)),
     selectSynonym(std::move(selectSynonym)),
     selectTarget(std::move(selectTarget)),
     isQueryValid(isQueryValid) {
@@ -28,16 +30,20 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
         isQueryValid(isQueryValid) {
 }
 
-vector<QueryDeclaration> QueryObject::getDeclarations() {
+vector<QueryDeclaration>& QueryObject::getDeclarations() {
     return declarations;
 }
 
-vector<QueryClause> QueryObject::getClauses() {
+vector<QueryClause>& QueryObject::getClauses() {
     return clauses;
 }
 
-vector<PatternClause> QueryObject::getPatternClauses() {
+vector<PatternClause>& QueryObject::getPatternClauses() {
     return patternClauses;
+}
+
+vector<WithClause>& QueryObject::getWithClauses() {
+    return withClauses;
 }
 
 SelectTarget QueryObject::getSelectTarget() {

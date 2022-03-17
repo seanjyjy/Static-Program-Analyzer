@@ -359,11 +359,13 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
         REQUIRE(qo->selectTarget.isBoolean());
         REQUIRE(qo->clauses.at(0).type == QueryClause::nextT);
+        REQUIRE(qo->isQueryValid);
 
         string s2 = "variable v;\n"
-                    "Select BOOLEAN such that Uses(\"printResults\", v);";
+                    "Select BOOLEAN such that Uses(\"printResults\", v)";
         QueryParser qp2 = QueryParser{s2};
         qo = qp2.parse();
+        REQUIRE(qo->isQueryValid);
         REQUIRE(qo->selectTarget.isBoolean());
     }
     SECTION("Select attribute") {
@@ -421,7 +423,7 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
 
-        REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->isValid());
         REQUIRE(qo->patternClauses.at(0).getSynonym().synonym == "a1");
         REQUIRE(qo->patternClauses.at(0).getLHS().isIdentifier());
         REQUIRE(qo->patternClauses.at(0).getLHS().getLabel() == "x");
@@ -438,16 +440,49 @@ TEST_CASE("QPS: Parser_VALID") {
                    "Select BOOLEAN";
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
+        REQUIRE(qo->isValid());
         REQUIRE_FALSE(qo->isSelectingBoolean());
         REQUIRE(qo->selectTarget.tuple.at(0).getSynonym().synonym == "BOOLEAN");
     }
     SECTION("suchthat-with-suchthat ") {
         string s = "procedure p, q;\n"
-                   "Select p such that Calls (p, q) with q.procName = \"Third\" such that Modifies (p, \"i\")";
+                   "Select p such that Calls (p, q) with q.procName=\"Third\" such that Modifies (p, \"i\")";
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
 
-        //REQUIRE(qo->isQueryValid);
+        REQUIRE(qo->isValid());
+        ////
+        REQUIRE(qo->getClauses().at(0).type == QueryClause::calls);
+        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().isSynonym());
+        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getLabel() == "p");
+        REQUIRE(qo->getClauses().at(1).type == QueryClause::modifiesP);
+        REQUIRE(qo->getClauses().at(1).getLeftClauseVariable().isSynonym());
+        REQUIRE(qo->getClauses().at(1).getLeftClauseVariable().getLabel() == "p");
+        REQUIRE(qo->getClauses().at(1).getRightClauseVariable().isIdentifier());
+        REQUIRE(qo->getClauses().at(1).getRightClauseVariable().getLabel() == "i");
+        ////
+        REQUIRE(qo->getWithClauses().at(0).getLeft().getType() == WithVariable::ATTR_REF);
+        REQUIRE(qo->getWithClauses().at(0).getLeft().getSynonym().synonym == "q");
+        REQUIRE(qo->getWithClauses().at(0).getLeft().getAttr() == WithVariable::PROC_NAME);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getType() == WithVariable::IDENT);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getIdent() == "Third");
+    }
+    SECTION("with-integer") {
+        string s = "stmt s, s1;\n"
+                   "Select s.stmt# such that Follows* (s, s1) with s1.stmt#=10";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->getSelectables().at(0).getSynonym().synonym == "s");
+        REQUIRE(qo->getSelectables().at(0).getType() == Selectable::ATTR_REF);
+        REQUIRE(qo->getSelectables().at(0).getAttr() == Selectable::STMT_NUM);
+        ////
+        REQUIRE(qo->getWithClauses().at(0).getLeft().getType() == WithVariable::ATTR_REF);
+        REQUIRE(qo->getWithClauses().at(0).getLeft().getSynonym().synonym == "s1");
+        REQUIRE(qo->getWithClauses().at(0).getLeft().getAttr() == WithVariable::STMT_NUM);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getType() == WithVariable::INTEGER);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == 10);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
     }
     delete qo;
 }
@@ -461,7 +496,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("synonym beginning with '_'") {
         string s = "variable _vlad; assign a;\n"
