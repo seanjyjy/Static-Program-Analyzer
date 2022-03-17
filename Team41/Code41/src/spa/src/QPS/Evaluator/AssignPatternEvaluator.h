@@ -4,7 +4,7 @@
 #include "Common/TNode.h"
 #include "../PatternClause.h"
 
-class AssignPatternEvaluator : PatternEvaluator {
+class AssignPatternEvaluator : public PatternEvaluator {
 public:
     explicit AssignPatternEvaluator(PKBClient* pkb);
 
