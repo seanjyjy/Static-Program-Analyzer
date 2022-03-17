@@ -11,16 +11,29 @@ using namespace std;
 
 class QueryObject {
 public:
+    // todo: make private after all refactor
     vector<QueryDeclaration> declarations; // collection of declarations in the query
+    // todo: make private after all refactor
     vector<QueryClause> clauses; // collection of clauses made during the query
+    // todo: make private after all refactor
     vector<PatternClause> patternClauses; // collection of "pattern" clauses
 
     // todo: remove selectSynonym after all system convert
     QueryDeclaration selectSynonym; // synonym to select for the query
     // todo: selectTarget replaces selectSynonym
+    // todo: make private after all refactor
     SelectTarget selectTarget = SelectTarget(SelectTarget::TUPLE);
 
+    // todo: make private after all refactor
     bool isQueryValid; // indicates if query was valid
+
+    vector<QueryDeclaration> getDeclarations();
+    vector<QueryClause> getClauses();
+    vector<PatternClause> getPatternClauses();
+
+    SelectTarget getSelectTarget();
+
+    bool isValid();
 
     bool isSelectingBoolean();
 

@@ -12,10 +12,10 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        bool typeMatch = qo->declarations.at(0).type == QueryDeclaration::VARIABLE;
-        bool synMatch = qo->declarations.at(0).synonym == "v";
-        bool selectMatch = qo->selectSynonym.synonym == "v";
-        REQUIRE(qo->isQueryValid);
+        bool typeMatch = qo->getDeclarations().at(0).type == QueryDeclaration::VARIABLE;
+        bool synMatch = qo->getDeclarations().at(0).synonym == "v";
+        bool selectMatch = qo->getSelectables().at(0).getSynonym().synonym == "v";
+        REQUIRE(qo->isValid());
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
         REQUIRE(selectMatch);
@@ -26,9 +26,9 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        bool typeMatch = qo->declarations.at(1).type == QueryDeclaration::ASSIGN;
-        bool clauseMatch = qo->clauses.at(0).type == QueryClause::usesS;
-        REQUIRE(qo->isQueryValid);
+        bool typeMatch = qo->getDeclarations().at(1).getType() == QueryDeclaration::ASSIGN;
+        bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::usesS;
+        REQUIRE(qo->isValid());
         REQUIRE(typeMatch);
         REQUIRE(clauseMatch);
     }
@@ -440,6 +440,14 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
         REQUIRE_FALSE(qo->isSelectingBoolean());
         REQUIRE(qo->selectTarget.tuple.at(0).getSynonym().synonym == "BOOLEAN");
+    }
+    SECTION("suchthat-with-suchthat ") {
+        string s = "procedure p, q;\n"
+                   "Select p such that Calls (p, q) with q.procName = \"Third\" such that Modifies (p, \"i\")";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+
+        //REQUIRE(qo->isQueryValid);
     }
     delete qo;
 }

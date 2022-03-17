@@ -28,6 +28,26 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
         isQueryValid(isQueryValid) {
 }
 
+vector<QueryDeclaration> QueryObject::getDeclarations() {
+    return declarations;
+}
+
+vector<QueryClause> QueryObject::getClauses() {
+    return clauses;
+}
+
+vector<PatternClause> QueryObject::getPatternClauses() {
+    return patternClauses;
+}
+
+SelectTarget QueryObject::getSelectTarget() {
+    return selectTarget;
+}
+
+bool QueryObject::isValid() {
+    return isQueryValid;
+}
+
 bool QueryObject::isSelectingBoolean() {
     return selectTarget.isBoolean();
 }
@@ -42,6 +62,14 @@ QueryObject::~QueryObject() {
             p.cleanAST();
         }
     }
+}
+
+QueryDeclaration::design_entity_type QueryDeclaration::getType() {
+    return type;
+}
+
+string QueryDeclaration::getSynonym() {
+    return synonym;
 }
 
 void QueryObject::print() {

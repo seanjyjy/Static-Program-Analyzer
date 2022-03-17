@@ -13,6 +13,10 @@ ClauseVariable QueryClause::getRightClauseVariable() const {
     return right;
 }
 
+QueryClause::clause_type QueryClause::getType() {
+    return type;
+}
+
 string QueryClause::typeToString(QueryClause::clause_type &c) {
     if (c == clause_type::follows) return "Follows";
     if (c == clause_type::followsT) return "Follows*";

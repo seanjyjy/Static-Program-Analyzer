@@ -26,6 +26,8 @@ private:
 
     bool skipPattern();
 
+    bool skipWith();
+
     /**
      * Checks if the combo of strings
      * constitute a valid PQL clause.
@@ -88,6 +90,14 @@ private:
     bool parseSuchThatClauses();
 
     bool parsePatternClauses();
+
+    bool parseWithClauses();
+
+    bool parseWithClause();
+
+    bool parseWithRef();
+
+    bool isValidAttrName(string w);
 
     /**
      * Parses a clause of a query

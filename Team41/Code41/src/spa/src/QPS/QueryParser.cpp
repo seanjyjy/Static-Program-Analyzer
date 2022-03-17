@@ -462,6 +462,16 @@ bool QueryParser::skipPattern() {
         printf("Malformed input. Expected keyword: pattern\n");
         return false;
     }
+    return true;
+}
+
+bool QueryParser::skipWith() {
+    optional<string> w = lex->nextExpected("with");
+    if (!w.has_value()) {
+        printf("Malformed input. Expected keyword: with\n");
+        return false;
+    }
+    return true;
 }
 
 bool QueryParser::parsePatternClause() {
@@ -570,6 +580,73 @@ bool QueryParser::parsePatternClauses() {
     return true;
 }
 
+bool QueryParser::parseWithClauses() {
+    skipWith();
+    do {
+        if (!parseWithClause()) {
+            return false;
+        }
+    } while (lex->peekNextIsString("and") && lex->nextExpected("and"));
+    return true;
+}
+
+bool QueryParser::parseWithClause() {
+    // with-cl : 'with' attrCond
+    // attrCond : attrCompare ( 'and' attrCompare )*
+    // attrCompare : ref '=' ref
+    // ref : '"' IDENT '"' | INTEGER | attrRef
+    // attrRef : synonym '.' attrName
+
+    // expect first ref
+    parseWithRef();
+    // expect '='
+    lookForClauseGrammarSymbol("=", "Syntax Error: Expected '=' for with clause, following first ref\n");
+    // expect second ref
+    parseWithRef();
+}
+
+// todo: build the with clause somehow
+bool QueryParser::parseWithRef() {
+    if (lex->peekNextIsString("\"")) {
+        // '"' IDENT '"'
+        string ident = lex->nextToken();
+        if (lex->isIdentifier(ident)) {
+            printf("ident: %s\n", ident.c_str());
+        }
+        return true;
+    }
+    string n = lex->nextToken();
+    if (lex->isInteger(n)) {
+        // INTEGER
+        printf("int: %s\n", n.c_str());
+        return true;
+    } else if (lex->isValidSynonym(n)) {
+        // attrRef : synonym '.' attrName
+        printf("attrRef: %s\n", n.c_str());
+        if (lex->peekNextIsString(".") && lex->nextExpected(".")) {
+            string attr = lex->nextToken();
+            if (isValidAttrName(attr)) {
+                printf("attrName: %s\n", attr.c_str());
+            } else {
+                printf("Syntax Error: Invalid attribute name <%s> found.\n", attr.c_str());
+            }
+        } else {
+            printf("Syntax Error: Expected an attribute reference denoted by '.'\n");
+        }
+        return true;
+    } else {
+        printf("Syntax Error: Invalid ref term <%s> found.\n", n.c_str());
+        return false;
+    }
+
+    return false;
+}
+
+bool QueryParser::isValidAttrName(string w) {
+    // 'procName'| 'varName' | 'value' | 'stmt#'
+    return w == "procName" || w == "varName" || w == "value" || w == "stmt#";
+}
+
 QueryObject *QueryParser::parse() {
     // Base declaration
     vector<QueryDeclaration> declarations;
@@ -602,6 +679,12 @@ QueryObject *QueryParser::parse() {
             }
         } else if (lex->peekNextIsString("pattern")) {
             if (!parsePatternClauses()) {
+                queryObject->isQueryValid = false;
+                cleanup();
+                return queryObject;
+            }
+        } else if (lex->peekNextIsString("with")) {
+            if (!parseWithClauses()) {
                 queryObject->isQueryValid = false;
                 cleanup();
                 return queryObject;

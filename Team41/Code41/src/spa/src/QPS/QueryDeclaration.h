@@ -13,11 +13,17 @@ public:
         STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN, VARIABLE, CONSTANT, PROCEDURE, NONE
     };
 
+    // todo: make private after all refactor
     // declaration type of the declaration instance
     design_entity_type type;
 
+    // todo: make private after all refactor
     // accompanying synonym of a declaration
     string synonym;
+
+    design_entity_type getType();
+
+    string getSynonym();
 
     /**
      * Constructor for the QueryDeclaration class.

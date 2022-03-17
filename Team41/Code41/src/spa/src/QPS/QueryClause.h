@@ -15,8 +15,11 @@ public:
         follows, followsT, parent, parentT, usesS, usesP, modifiesS, modifiesP, calls, callsT, next, nextT, affects, affectsT
     };
 
+    // todo: make private after all refactor
     // clause type of the clause instance
     clause_type type;
+
+    clause_type getType();
 
     /**
      * Getter for the LHS.
