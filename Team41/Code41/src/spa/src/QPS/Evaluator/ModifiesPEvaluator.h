@@ -2,7 +2,7 @@
 
 #include "ModifiesUsesPEvaluator.h"
 
-class ModifiesPEvaluator : ModifiesUsesPEvaluator {
+class ModifiesPEvaluator : public ModifiesUsesPEvaluator {
 public:
     explicit ModifiesPEvaluator(PKBClient* pkb);
 

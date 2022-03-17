@@ -15,19 +15,14 @@ Table *PatternEvaluator::evaluate(PatternClause clause) {
         return evaluateWildCardWildCard(patternSynonym);
     }
 
-    if (EvaluatorUtils::PatternUtils::isIdentifierWildCards(leftVariable, rightPatternVariables)) {
-        return evaluateIdentifierWildCard(patternSynonym, leftVariable);
-    }
-
     return evaluateFurther(patternSynonym, leftVariable, rightPatternVariables);
+}
+
+Table *PatternEvaluator::evaluate(QueryClause clause) {
+    throw runtime_error("Pattern clause should NEVER COME HERE");
 }
 
 Table *PatternEvaluator::evaluateWildCardWildCard(QueryDeclaration patternSynonym) {
     unordered_set<string> setOfPatternStmt = getWildCardWildCardRelation();
-    return buildSingleSynonymTable(setOfPatternStmt, patternSynonym);
-}
-
-Table *PatternEvaluator::evaluateIdentifierWildCard(QueryDeclaration patternSynonym, const ClauseVariable& leftVariable) {
-    unordered_set<string> setOfPatternStmt = getIdentifierWildCardRelation(leftVariable.getLabel());
     return buildSingleSynonymTable(setOfPatternStmt, patternSynonym);
 }

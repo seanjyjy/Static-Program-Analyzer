@@ -12,7 +12,6 @@ public:
                                    vector<PatternVariable>& rightPatternVariables) override;
 
     unordered_set<string> getWildCardWildCardRelation() override;
-    unordered_set<string> getIdentifierWildCardRelation(const string& label) override;
 
     /**
      * Construct a table that captures the Pattern relation between a wildcard and a full pattern.
@@ -83,4 +82,13 @@ public:
      * @return A table that contains information based on the Pattern relation between a synonym and a wildcard.
      */
     Table *evaluateSynonymWildCard(QueryDeclaration patternSyn, ClauseVariable left);
+
+    /**
+     * Construct a table that captures the Pattern relation between an identifier and a wildcard.
+     *
+     * @param patternSyn QueryDeclaration that contains the pattern synonym.
+     * @param leftVariable Pattern variable.
+     * @return A table that contains information based on the Pattern relation between an identifier and a wildcard.
+     */
+    Table* evaluateIdentifierWildCard(QueryDeclaration patternSynonym, ClauseVariable& leftVariable);
 };

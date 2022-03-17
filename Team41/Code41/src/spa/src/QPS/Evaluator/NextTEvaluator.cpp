@@ -1,9 +1,9 @@
 #include "NextTEvaluator.h"
 
-NextTEvaluator::NextTEvaluator(NextKBAdapter *nextKBAdapter): StmtStmtEvaluator(nextKBAdapter) {}
+NextTEvaluator::NextTEvaluator(PKBClient* pkb, NextKBAdapter *nextKBAdapter): StmtStmtEvaluator(pkb, nextKBAdapter) {}
 
 Table *NextTEvaluator::evaluateIntegerInteger(ClauseVariable left, ClauseVariable right) {
-    bool isNextT = nextKBAdapter->isNext(left.getLabel(), right.getLabel());
+    bool isNextT = nextKBAdapter->isNextT(left.getLabel(), right.getLabel());
     return buildBooleanTable(isNextT);
 }
 

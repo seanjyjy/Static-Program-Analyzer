@@ -2,9 +2,9 @@
 
 #include "StmtStmtEvaluator.h"
 
-class NextEvaluator : StmtStmtEvaluator {
+class NextEvaluator : public StmtStmtEvaluator {
 public:
-    explicit NextEvaluator(NextKBAdapter* nextKBAdapter);
+    explicit NextEvaluator(PKBClient* pkb, NextKBAdapter* nextKBAdapter);
 
     /**
      * Construct a table that captures the Next relation between two statement line.

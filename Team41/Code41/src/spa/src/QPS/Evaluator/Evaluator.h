@@ -18,7 +18,7 @@ public:
     PKBClient* pkb;
     NextKBAdapter* nextKBAdapter;
     Evaluator(PKBClient* pkb);
-    Evaluator(NextKBAdapter* nextKBAdapter);
+    Evaluator(PKBClient* pkb, NextKBAdapter* nextKBAdapter);
     /**
      * Based on the clause, it will determine which evaluator to use to retrieve information from the pkb
      * to build the resultant table.
@@ -33,7 +33,7 @@ public:
 
     string getClauseType(QueryClause::clause_type clauseType);
 
-    // ================================================ TABLE BUILDING ==============================================
+    // ======================================= Generic TABLE BUILDING ==============================================
     Table* buildBooleanTable(bool booleanResult);
     Table* buildBooleanTable(const unordered_set<string> &results);
     Table* buildBooleanTable(const string &result);
@@ -51,12 +51,15 @@ public:
     Table* buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& synonym);
     Table* buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& leftSynonym,
                                       ClauseVariable& rightSynonym);
-    Table* buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results, QueryDeclaration patternSyn,
-                                           ClauseVariable left);
+    Table* buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results, const QueryDeclaration& patternSyn,
+                                           const ClauseVariable& left);
 
+// ======================================= Assign pattern TABLE BUILDING ==============================================
+
+    Table* buildAssignPatternSTable(const unordered_set<string>& reuslts, QueryDeclaration &patternSyn,
+                                    ClauseVariable &variable);
     Table* buildAssignPatternSSTable(const vector<pair<string, string>> &results, QueryDeclaration& patternSyn,
                                     ClauseVariable &variable);
-
     Table* buildAssignPatternSSTable(const unordered_set<string> &results, QueryDeclaration& patternSyn,
                                     ClauseVariable &variable);
 

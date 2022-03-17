@@ -58,23 +58,23 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
     SECTION("Parent Evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::parent, integer1, integer2);
-            Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::parent, integer2, integer3);
-            Table* table2 = ParentEvaluator::evaluate(queryClause2, pkbManager);
+            Table* table2 = ParentEvaluator(pkbManager).evaluate(queryClause2);
             REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::parent, integer2, integer6);
-            Table* table3 = ParentEvaluator::evaluate(queryClause3, pkbManager);
+            Table* table3 = ParentEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->getType() == Table::TrueTable);
 
             QueryClause queryClause4(QueryClause::parent, integer2, integer7);
-            Table* table4 = ParentEvaluator::evaluate(queryClause4, pkbManager);
+            Table* table4 = ParentEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->getType() == Table::FalseTable);
 
             QueryClause queryClause5(QueryClause::parent, integer2, integer8);
-            Table* table5 = ParentEvaluator::evaluate(queryClause5, pkbManager);
+            Table* table5 = ParentEvaluator(pkbManager).evaluate(queryClause5);
             REQUIRE(table5->getType() == Table::FalseTable);
             delete table1;
             delete table2;
@@ -85,20 +85,20 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Integer Synonym pair") {
             QueryClause queryClause1(QueryClause::parent, integer1, synonymS1);
-            Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::parent, integer2, synonymS1);
-            Table* table2 = ParentEvaluator::evaluate(queryClause2, pkbManager);
+            Table* table2 = ParentEvaluator(pkbManager).evaluate(queryClause2);
             REQUIRE(table2->size() == 4);
             REQUIRE(table2->getColumn("s1") == unordered_set<string>({"3", "4", "5", "6"}));
 
             QueryClause queryClause3(QueryClause::parent, integer5, synonymS1);
-            Table* table3 = ParentEvaluator::evaluate(queryClause3, pkbManager);
+            Table* table3 = ParentEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->getType() == Table::FalseTable);
 
             QueryClause queryClause4(QueryClause::parent, integer6, synonymS1);
-            Table* table4 = ParentEvaluator::evaluate(queryClause4, pkbManager);
+            Table* table4 = ParentEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->size() == 2);
             REQUIRE(table4->getColumn("s1") == unordered_set<string>({"7", "8"}));
 
@@ -110,23 +110,23 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Integer Wildcard pair") {
             QueryClause queryClause1(QueryClause::parent, integer1, wildcard);
-            Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::parent, integer2, wildcard);
-            Table* table2 = ParentEvaluator::evaluate(queryClause2, pkbManager);
+            Table* table2 = ParentEvaluator(pkbManager).evaluate(queryClause2);
             REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::parent, integer4, wildcard);
-            Table* table3 = ParentEvaluator::evaluate(queryClause3, pkbManager);
+            Table* table3 = ParentEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->getType() == Table::FalseTable);
 
             QueryClause queryClause4(QueryClause::parent, integer5, wildcard);
-            Table* table4 = ParentEvaluator::evaluate(queryClause4, pkbManager);
+            Table* table4 = ParentEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->getType() == Table::FalseTable);
 
             QueryClause queryClause5(QueryClause::parent, integer6, wildcard);
-            Table* table5 = ParentEvaluator::evaluate(queryClause5, pkbManager);
+            Table* table5 = ParentEvaluator(pkbManager).evaluate(queryClause5);
             REQUIRE(table5->getType() == Table::TrueTable);
             delete table1;
             delete table2;
@@ -137,25 +137,25 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Synonym Integer pair") {
             QueryClause queryClause1(QueryClause::parent, synonymS1, integer1);
-            Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::parent, synonymS1, integer2);
-            Table* table2 = ParentEvaluator::evaluate(queryClause2, pkbManager);
+            Table* table2 = ParentEvaluator(pkbManager).evaluate(queryClause2);
             REQUIRE(table2->getType() == Table::FalseTable);
 
             QueryClause queryClause3(QueryClause::parent, synonymS1, integer5);
-            Table* table3 = ParentEvaluator::evaluate(queryClause3, pkbManager);
+            Table* table3 = ParentEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->size() == 1);
             REQUIRE(table3->getColumn("s1") == unordered_set<string>({"2"}));
 
             QueryClause queryClause4(QueryClause::parent, synonymS1, integer6);
-            Table* table4 = ParentEvaluator::evaluate(queryClause4, pkbManager);
+            Table* table4 = ParentEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->size() == 1);
             REQUIRE(table4->getColumn("s1") == unordered_set<string>({"2"}));
 
             QueryClause queryClause5(QueryClause::parent, synonymS1, integer8);
-            Table* table5 = ParentEvaluator::evaluate(queryClause5, pkbManager);
+            Table* table5 = ParentEvaluator(pkbManager).evaluate(queryClause5);
             REQUIRE(table5->size() == 1);
             REQUIRE(table5->getColumn("s1") == unordered_set<string>({"6"}));
             delete table1;
@@ -167,7 +167,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Synonym Synonym pair") {
             QueryClause queryClause1(QueryClause::parent, synonymS1, synonymS2);
-            Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->size() == 6);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "6"}));
             REQUIRE(table1->getColumn("s2") == unordered_set<string>({"3", "4", "5", "6", "7", "8"}));
@@ -176,7 +176,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Synonym Wildcard pair") {
             QueryClause queryClause1(QueryClause::parent, synonymS1, wildcard);
-            Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->size() == 2);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "6"}));
             delete table1;
@@ -184,23 +184,23 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Wildcard Integer pair") {
             QueryClause queryClause1(QueryClause::parent, wildcard, integer1);
-            Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::parent, wildcard, integer2);
-            Table* table2 = ParentEvaluator::evaluate(queryClause2, pkbManager);
+            Table* table2 = ParentEvaluator(pkbManager).evaluate(queryClause2);
             REQUIRE(table2->getType() == Table::FalseTable);
 
             QueryClause queryClause3(QueryClause::parent, wildcard, integer4);
-            Table* table3 = ParentEvaluator::evaluate(queryClause3, pkbManager);
+            Table* table3 = ParentEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->getType() == Table::TrueTable);
 
             QueryClause queryClause4(QueryClause::parent, wildcard, integer6);
-            Table* table4 = ParentEvaluator::evaluate(queryClause4, pkbManager);
+            Table* table4 = ParentEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->getType() == Table::TrueTable);
 
             QueryClause queryClause5(QueryClause::parent, wildcard, integer8);
-            Table* table5 = ParentEvaluator::evaluate(queryClause5, pkbManager);
+            Table* table5 = ParentEvaluator(pkbManager).evaluate(queryClause5);
             REQUIRE(table5->getType() == Table::TrueTable);
             delete table1;
             delete table2;
@@ -211,7 +211,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Wildcard Synonym pair") {
             QueryClause queryClause1(QueryClause::parent, wildcard, synonymS1);
-            Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->size() == 6);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"3", "4", "5", "6", "7", "8"}));
             delete table1;
@@ -219,7 +219,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Wildcard Wildcard pair") {
             QueryClause queryClause1(QueryClause::parent, wildcard, wildcard);
-            Table* table1 = ParentEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::TrueTable);
             delete table1;
         }
@@ -228,31 +228,31 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
     SECTION("ParentT Evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::parentT, integer1, integer2);
-            Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentTEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::parentT, integer2, integer3);
-            Table* table2 = ParentTEvaluator::evaluate(queryClause2, pkbManager);
+            Table* table2 = ParentTEvaluator(pkbManager).evaluate(queryClause2);
             REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::parentT, integer2, integer6);
-            Table* table3 = ParentTEvaluator::evaluate(queryClause3, pkbManager);
+            Table* table3 = ParentTEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->getType() == Table::TrueTable);
 
             QueryClause queryClause4(QueryClause::parentT, integer2, integer7);
-            Table* table4 = ParentTEvaluator::evaluate(queryClause4, pkbManager);
+            Table* table4 = ParentTEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->getType() == Table::TrueTable);
 
             QueryClause queryClause5(QueryClause::parentT, integer2, integer8);
-            Table* table5 = ParentTEvaluator::evaluate(queryClause5, pkbManager);
+            Table* table5 = ParentTEvaluator(pkbManager).evaluate(queryClause5);
             REQUIRE(table5->getType() == Table::TrueTable);
 
             QueryClause queryClause6(QueryClause::parentT, integer2, integer9);
-            Table* table6 = ParentTEvaluator::evaluate(queryClause6, pkbManager);
+            Table* table6 = ParentTEvaluator(pkbManager).evaluate(queryClause6);
             REQUIRE(table6->getType() == Table::FalseTable);
 
             QueryClause queryClause7(QueryClause::parentT, integer6, integer9);
-            Table* table7 = ParentTEvaluator::evaluate(queryClause7, pkbManager);
+            Table* table7 = ParentTEvaluator(pkbManager).evaluate(queryClause7);
             REQUIRE(table7->getType() == Table::FalseTable);
             delete table1;
             delete table2;
@@ -265,20 +265,20 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Integer Synonym pair") {
             QueryClause queryClause1(QueryClause::parentT, integer1, synonymS1);
-            Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentTEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::parentT, integer2, synonymS1);
-            Table* table2 = ParentTEvaluator::evaluate(queryClause2, pkbManager);
+            Table* table2 = ParentTEvaluator(pkbManager).evaluate(queryClause2);
             REQUIRE(table2->size() == 6); // includes the nested block
             REQUIRE(table2->getColumn("s1") == unordered_set<string>({"3", "4", "5", "6", "7", "8"}));
 
             QueryClause queryClause3(QueryClause::parentT, integer4, synonymS1);
-            Table* table3 = ParentTEvaluator::evaluate(queryClause3, pkbManager);
+            Table* table3 = ParentTEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->getType() == Table::FalseTable);
 
             QueryClause queryClause4(QueryClause::parentT, integer6, synonymS1);
-            Table* table4 = ParentTEvaluator::evaluate(queryClause4, pkbManager);
+            Table* table4 = ParentTEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->size() == 2);
             REQUIRE(table4->getColumn("s1") == unordered_set<string>({"7", "8"}));
             delete table1;
@@ -289,27 +289,27 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Integer Wildcard pair") {
             QueryClause queryClause1(QueryClause::parentT, integer1, wildcard);
-            Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentTEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::parentT, integer2, wildcard);
-            Table* table2 = ParentTEvaluator::evaluate(queryClause2, pkbManager);
+            Table* table2 = ParentTEvaluator(pkbManager).evaluate(queryClause2);
             REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::parentT, integer5, wildcard);
-            Table* table3 = ParentTEvaluator::evaluate(queryClause3, pkbManager);
+            Table* table3 = ParentTEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->getType() == Table::FalseTable);
 
             QueryClause queryClause4(QueryClause::parentT, integer6, wildcard);
-            Table* table4 = ParentTEvaluator::evaluate(queryClause4, pkbManager);
+            Table* table4 = ParentTEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->getType() == Table::TrueTable);
 
             QueryClause queryClause5(QueryClause::parentT, integer8, wildcard);
-            Table* table5 = ParentTEvaluator::evaluate(queryClause5, pkbManager);
+            Table* table5 = ParentTEvaluator(pkbManager).evaluate(queryClause5);
             REQUIRE(table5->getType() == Table::FalseTable);
 
             QueryClause queryClause6(QueryClause::parentT, integer9, wildcard);
-            Table* table6 = ParentTEvaluator::evaluate(queryClause6, pkbManager);
+            Table* table6 = ParentTEvaluator(pkbManager).evaluate(queryClause6);
             REQUIRE(table6->getType() == Table::FalseTable);
 
             delete table1;
@@ -322,35 +322,35 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Synonym Integer pair") {
             QueryClause queryClause1(QueryClause::parentT, synonymS1, integer1);
-            Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentTEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::parentT, synonymS1, integer2);
-            Table* table2 = ParentTEvaluator::evaluate(queryClause2, pkbManager);
+            Table* table2 = ParentTEvaluator(pkbManager).evaluate(queryClause2);
             REQUIRE(table2->getType() == Table::FalseTable);
 
             QueryClause queryClause3(QueryClause::parentT, synonymS1, integer3);
-            Table* table3 = ParentTEvaluator::evaluate(queryClause3, pkbManager);
+            Table* table3 = ParentTEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->size() == 1);
             REQUIRE(table3->getColumn("s1") == unordered_set<string>({"2"}));
 
             QueryClause queryClause4(QueryClause::parentT, synonymS1, integer4);
-            Table* table4 = ParentTEvaluator::evaluate(queryClause4, pkbManager);
+            Table* table4 = ParentTEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->size() == 1);
             REQUIRE(table4->getColumn("s1") == unordered_set<string>({"2"}));
 
             QueryClause queryClause5(QueryClause::parentT, synonymS1, integer6);
-            Table* table5 = ParentTEvaluator::evaluate(queryClause5, pkbManager);
+            Table* table5 = ParentTEvaluator(pkbManager).evaluate(queryClause5);
             REQUIRE(table5->size() == 1);
             REQUIRE(table5->getColumn("s1") == unordered_set<string>({"2"}));
 
             QueryClause queryClause6(QueryClause::parentT, synonymS1, integer8);
-            Table* table6 = ParentTEvaluator::evaluate(queryClause6, pkbManager);
+            Table* table6 = ParentTEvaluator(pkbManager).evaluate(queryClause6);
             REQUIRE(table6->size() == 2);
             REQUIRE(table6->getColumn("s1") == unordered_set<string>({"2", "6"}));
 
             QueryClause queryClause7(QueryClause::parentT, synonymS1, integer9);
-            Table* table7 = ParentTEvaluator::evaluate(queryClause7, pkbManager);
+            Table* table7 = ParentTEvaluator(pkbManager).evaluate(queryClause7);
             REQUIRE(table7->getType() == Table::FalseTable);
             delete table1;
             delete table2;
@@ -363,7 +363,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Synonym Synonym pair") {
             QueryClause queryClause1(QueryClause::parentT, synonymS1, synonymS2);
-            Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentTEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->size() == 8);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "6"}));
             REQUIRE(table1->getColumn("s2") == unordered_set<string>({"3", "4", "5", "6", "7", "8"}));
@@ -372,7 +372,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Synonym Wildcard pair") {
             QueryClause queryClause1(QueryClause::parentT, synonymS1, wildcard);
-            Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentTEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->size() == 2);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"2", "6"}));
             delete table1;
@@ -380,31 +380,31 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Wildcard Integer pair") {
             QueryClause queryClause1(QueryClause::parentT, wildcard, integer1);
-            Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentTEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::parentT, wildcard, integer2);
-            Table* table2 = ParentTEvaluator::evaluate(queryClause2, pkbManager);
+            Table* table2 = ParentTEvaluator(pkbManager).evaluate(queryClause2);
             REQUIRE(table2->getType() == Table::FalseTable);
 
             QueryClause queryClause3(QueryClause::parentT, wildcard, integer3);
-            Table* table3 = ParentTEvaluator::evaluate(queryClause3, pkbManager);
+            Table* table3 = ParentTEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->getType() == Table::TrueTable);
 
             QueryClause queryClause4(QueryClause::parentT, wildcard, integer4);
-            Table* table4 = ParentTEvaluator::evaluate(queryClause4, pkbManager);
+            Table* table4 = ParentTEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->getType() == Table::TrueTable);
 
             QueryClause queryClause5(QueryClause::parentT, wildcard, integer6);
-            Table* table5 = ParentTEvaluator::evaluate(queryClause5, pkbManager);
+            Table* table5 = ParentTEvaluator(pkbManager).evaluate(queryClause5);
             REQUIRE(table5->getType() == Table::TrueTable);
 
             QueryClause queryClause6(QueryClause::parentT, wildcard, integer8);
-            Table* table6 = ParentTEvaluator::evaluate(queryClause6, pkbManager);
+            Table* table6 = ParentTEvaluator(pkbManager).evaluate(queryClause6);
             REQUIRE(table6->getType() == Table::TrueTable);
 
             QueryClause queryClause7(QueryClause::parentT, wildcard, integer9);
-            Table* table7 = ParentTEvaluator::evaluate(queryClause7, pkbManager);
+            Table* table7 = ParentTEvaluator(pkbManager).evaluate(queryClause7);
             REQUIRE(table7->getType() == Table::FalseTable);
             delete table1;
             delete table2;
@@ -417,7 +417,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Wildcard Synonym pair") {
             QueryClause queryClause1(QueryClause::parentT, wildcard, synonymS1);
-            Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentTEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->size() == 6);
             REQUIRE(table1->getColumn("s1") == unordered_set<string>({"3", "4", "5", "6", "7", "8"}));
             delete table1;
@@ -425,7 +425,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
 
         SECTION("Wildcard Wildcard pair") {
             QueryClause queryClause1(QueryClause::parentT, wildcard, wildcard);
-            Table* table1 = ParentTEvaluator::evaluate(queryClause1, pkbManager);
+            Table* table1 = ParentTEvaluator(pkbManager).evaluate(queryClause1);
             REQUIRE(table1->getType() == Table::TrueTable);
             delete table1;
         }

@@ -9,6 +9,10 @@ Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym,
         return evaluateSynonymWildCard(patternSynonym, leftVariable);
     }
 
+    if (EvaluatorUtils::PatternUtils::isIdentifierWildCards(leftVariable, rightPatternVariables)) {
+        return evaluateIdentifierWildCard(patternSynonym, leftVariable);
+    }
+
     throw SemanticException("Invalid query provided for Pattern");
 }
 
@@ -16,3 +20,10 @@ Table *IfWhilePatternEvaluator::evaluateSynonymWildCard(QueryDeclaration& patter
     vector<pair<string, string>> listOfStmtNVar = getSynonymWildCardRelation();
     return buildSynonymSynonymPatternTable(listOfStmtNVar, patternSyn, left);
 }
+
+Table *IfWhilePatternEvaluator::evaluateIdentifierWildCard(QueryDeclaration patternSynonym,
+                                                           const ClauseVariable &leftVariable) {
+    unordered_set<string> setOfPatternStmt = getIdentifierWildCardRelation(leftVariable.getLabel());
+    return buildSingleSynonymTable(setOfPatternStmt, patternSynonym);
+}
+

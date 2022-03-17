@@ -61,14 +61,14 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
     SECTION("Synonym FullPattern Pair") {
         // "x+y+z" ?
         PatternClause patternClause1(assignSyn, variableSyn, vector<PatternVariable>({patternFP1}));
-        Table *table1 = AssignPatternEvaluator::evaluate(patternClause1, pkbManager);
+        Table *table1 = AssignPatternEvaluator(pkbManager).evaluate(patternClause1);
         vector<string> expectedColumns1{ASSIGN_SYN_LBL, VAR_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0], vars[0]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
 
         // "x+y*z-20" ?
         PatternClause patternClause2(assignSyn, variableSyn, vector<PatternVariable>({patternFP3}));
-        Table *table2 = AssignPatternEvaluator::evaluate(patternClause2, pkbManager);
+        Table *table2 = AssignPatternEvaluator(pkbManager).evaluate(patternClause2);
         vector<string> expectedColumns2{ASSIGN_SYN_LBL, VAR_SYN_LBL};
         vector<vector<string>> expectedRows2{{lines[3], vars[1]}};
         REQUIRE(TableTestUtils::checkTableMatches(table2, expectedColumns2, expectedRows2));
@@ -80,14 +80,14 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
     SECTION("Synonym SubPattern Pair") {
         // _x+y_ ?
         PatternClause patternClause1(assignSyn, variableSyn, vector<PatternVariable>({subpatternSP1}));
-        Table *table1 = AssignPatternEvaluator::evaluate(patternClause1, pkbManager);
+        Table *table1 = AssignPatternEvaluator(pkbManager).evaluate(patternClause1);
         vector<string> expectedColumns1{ASSIGN_SYN_LBL, VAR_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0], vars[0]}, {lines[1], vars[1]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
 
         // _2_ ?
         PatternClause patternClause2(assignSyn, variableSyn, vector<PatternVariable>({subpatternSP2}));
-        Table *table2 = AssignPatternEvaluator::evaluate(patternClause2, pkbManager);
+        Table *table2 = AssignPatternEvaluator(pkbManager).evaluate(patternClause2);
         vector<string> expectedColumns2{ASSIGN_SYN_LBL, VAR_SYN_LBL};
         vector<vector<string>> expectedRows2{{lines[2], vars[0]}};
         REQUIRE(TableTestUtils::checkTableMatches(table2, expectedColumns2, expectedRows2));
@@ -98,7 +98,7 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
 
     SECTION("Synonym WildCard Pair") {
         PatternClause patternClause1(assignSyn, variableSyn, vector<PatternVariable>({patternWildCard}));
-        Table *table1 = AssignPatternEvaluator::evaluate(patternClause1, pkbManager);
+        Table *table1 = AssignPatternEvaluator(pkbManager).evaluate(patternClause1);
         vector<string> expectedColumns1{ASSIGN_SYN_LBL, VAR_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0], vars[0]}, {lines[1], vars[1]}, {lines[2], vars[0]}, {lines[3], vars[1]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
@@ -108,13 +108,13 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
 
     SECTION("Identifier FullPattern Pair") {
         PatternClause patternClause1(assignSyn, identifierV1, vector<PatternVariable>({patternFP1}));
-        Table *table1 = AssignPatternEvaluator::evaluate(patternClause1, pkbManager);
+        Table *table1 = AssignPatternEvaluator(pkbManager).evaluate(patternClause1);
         vector<string> expectedColumns1{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
 
         PatternClause patternClause2(assignSyn, identifierV1, vector<PatternVariable>({patternFP2}));
-        Table *table2 = AssignPatternEvaluator::evaluate(patternClause2, pkbManager);
+        Table *table2 = AssignPatternEvaluator(pkbManager).evaluate(patternClause2);
         vector<string> expectedColumns2{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows2{};
         REQUIRE(TableTestUtils::checkTableMatches(table2, expectedColumns2, expectedRows2));
@@ -125,13 +125,13 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
 
     SECTION("Identifier SubPattern Pair") {
         PatternClause patternClause1(assignSyn, identifierV1, vector<PatternVariable>({subpatternSP1}));
-        Table *table1 = AssignPatternEvaluator::evaluate(patternClause1, pkbManager);
+        Table *table1 = AssignPatternEvaluator(pkbManager).evaluate(patternClause1);
         vector<string> expectedColumns1{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
 
         PatternClause patternClause2(assignSyn, identifierV1, vector<PatternVariable>({subpatternSP2}));
-        Table *table2 = AssignPatternEvaluator::evaluate(patternClause2, pkbManager);
+        Table *table2 = AssignPatternEvaluator(pkbManager).evaluate(patternClause2);
         vector<string> expectedColumns2{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows2{{lines[2]}};
         REQUIRE(TableTestUtils::checkTableMatches(table2, expectedColumns2, expectedRows2));
@@ -142,13 +142,13 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
 
     SECTION("Identifier WildCard Pair") {
         PatternClause patternClause1(assignSyn, identifierV1, vector<PatternVariable>({patternWildCard}));
-        Table *table1 = AssignPatternEvaluator::evaluate(patternClause1, pkbManager);
+        Table *table1 = AssignPatternEvaluator(pkbManager).evaluate(patternClause1);
         vector<string> expectedColumns1{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0]}, {lines[2]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
 
         PatternClause patternClause2(assignSyn, identifierV2, vector<PatternVariable>({patternWildCard}));
-        Table *table2 = AssignPatternEvaluator::evaluate(patternClause2, pkbManager);
+        Table *table2 = AssignPatternEvaluator(pkbManager).evaluate(patternClause2);
         vector<string> expectedColumns2{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows2{{lines[1]}, {lines[3]}};
         REQUIRE(TableTestUtils::checkTableMatches(table2, expectedColumns2, expectedRows2));
@@ -159,13 +159,13 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
 
     SECTION("WildCard FullPattern Pair") {
         PatternClause patternClause1(assignSyn, wildcard, vector<PatternVariable>({patternFP1}));
-        Table *table1 = AssignPatternEvaluator::evaluate(patternClause1, pkbManager);
+        Table *table1 = AssignPatternEvaluator(pkbManager).evaluate(patternClause1);
         vector<string> expectedColumns1{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
 
         PatternClause patternClause2(assignSyn, wildcard, vector<PatternVariable>({patternFP3}));
-        Table *table2 = AssignPatternEvaluator::evaluate(patternClause2, pkbManager);
+        Table *table2 = AssignPatternEvaluator(pkbManager).evaluate(patternClause2);
         vector<string> expectedColumns2{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows2{{lines[3]}};
         REQUIRE(TableTestUtils::checkTableMatches(table2, expectedColumns2, expectedRows2));
@@ -176,13 +176,13 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
 
     SECTION("WildCard SubPattern Pair") {
         PatternClause patternClause1(assignSyn, wildcard, vector<PatternVariable>({subpatternSP1}));
-        Table *table1 = AssignPatternEvaluator::evaluate(patternClause1, pkbManager);
+        Table *table1 = AssignPatternEvaluator(pkbManager).evaluate(patternClause1);
         vector<string> expectedColumns1{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0]}, {lines[1]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
 
         PatternClause patternClause2(assignSyn, wildcard, vector<PatternVariable>({subpatternSP2}));
-        Table *table2 = AssignPatternEvaluator::evaluate(patternClause2, pkbManager);
+        Table *table2 = AssignPatternEvaluator(pkbManager).evaluate(patternClause2);
         vector<string> expectedColumns2{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows2{{lines[2]}};
         REQUIRE(TableTestUtils::checkTableMatches(table2, expectedColumns2, expectedRows2));
@@ -193,7 +193,7 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
 
     SECTION("WildCard WildCard Pair") {
         PatternClause patternClause1(assignSyn, wildcard, vector<PatternVariable>({patternWildCard}));
-        Table *table1 = AssignPatternEvaluator::evaluate(patternClause1, pkbManager);
+        Table *table1 = AssignPatternEvaluator(pkbManager).evaluate(patternClause1);
         vector<string> expectedColumns1{ASSIGN_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0]}, {lines[1]}, {lines[2]}, {lines[3]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
@@ -204,11 +204,11 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
     SECTION("Semantically & Syntactically Invalid") {
         ClauseVariable procSyn(ClauseVariable::synonym, "proc", QueryDeclaration::PROCEDURE);
         PatternClause patternClause1(assignSyn, procSyn, vector<PatternVariable>({patternFP1}));
-        REQUIRE_THROWS(AssignPatternEvaluator::evaluate(patternClause1, pkbManager));
+        REQUIRE_THROWS(AssignPatternEvaluator(pkbManager).evaluate(patternClause1));
 
         ClauseVariable readSyn(ClauseVariable::synonym, "proc", QueryDeclaration::READ);
         PatternClause patternClause2(assignSyn, readSyn, vector<PatternVariable>({patternFP1}));
-        REQUIRE_THROWS(AssignPatternEvaluator::evaluate(patternClause2, pkbManager));
+        REQUIRE_THROWS(AssignPatternEvaluator(pkbManager).evaluate(patternClause2));
     }
 
     delete node1;

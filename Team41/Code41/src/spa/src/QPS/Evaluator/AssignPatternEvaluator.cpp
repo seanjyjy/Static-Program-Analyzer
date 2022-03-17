@@ -23,6 +23,10 @@ Table *AssignPatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, 
         return evaluateIdentifierSubPattern(patternSynonym, leftVariable, rightVariable);
     }
 
+    if (leftVariable.isIdentifier() && rightVariable.isWildcard()) {
+        return evaluateIdentifierWildCard(patternSynonym, leftVariable);
+    }
+
     if (EvaluatorUtils::isVariableSynonym(&leftVariable) && rightVariable.isFullPattern()) {
         return evaluateSynonymFullPattern(patternSynonym, leftVariable, rightVariable);
     }
@@ -41,11 +45,6 @@ Table *AssignPatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, 
 unordered_set<string> AssignPatternEvaluator::getWildCardWildCardRelation() {
     return pkb->getAssigns();
 }
-
-unordered_set<string> AssignPatternEvaluator::getIdentifierWildCardRelation(const string &label) {
-    return pkb->getAssigns();
-}
-
 
 Table *AssignPatternEvaluator::evaluateWildCardFullPattern(QueryDeclaration patternSyn, PatternVariable right) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromPattern(right.getMiniAST());
@@ -86,4 +85,10 @@ Table *AssignPatternEvaluator::evaluateSynonymSubPattern(QueryDeclaration patter
 Table *AssignPatternEvaluator::evaluateSynonymWildCard(QueryDeclaration patternSyn, ClauseVariable left) {
     unordered_set<string> setOfAssignStmt = pkb->getAssigns();
     return buildAssignPatternSSTable(setOfAssignStmt, patternSyn, left);
+}
+
+Table *AssignPatternEvaluator::evaluateIdentifierWildCard(QueryDeclaration patternSynonym,
+                                                          ClauseVariable &leftVariable) {
+    unordered_set<string> setOfAssignStmt = pkb->getAssigns();
+    return buildAssignPatternSTable(setOfAssignStmt, patternSynonym, leftVariable);
 }

@@ -15,7 +15,7 @@ Table *ModifiesUsesSEvaluator::evaluateClause(ClauseVariable leftVariable, Claus
         return evaluateIntegerWildCard(leftVariable);
     }
 
-    evaluateClauseFurther(leftVariable, rightVariable);
+    return evaluateClauseFurther(leftVariable, rightVariable);
 }
 
 Table *ModifiesUsesSEvaluator::evaluateIntegerIdentifier(const ClauseVariable& left, const ClauseVariable& right) {
@@ -30,7 +30,7 @@ Table *ModifiesUsesSEvaluator::evaluateIntegerSynonym(const ClauseVariable& left
 
 Table *ModifiesUsesSEvaluator::evaluateIntegerWildCard(const ClauseVariable& left) {
     unordered_set<string> statementUsed = getIntegerWildCardRelation(left.getLabel());
-    return buildBooleanTable(statementUsed)
+    return buildBooleanTable(statementUsed);
 }
 
 Table *ModifiesUsesSEvaluator::evaluateSynonymIdentifier(ClauseVariable left, const ClauseVariable& right) {

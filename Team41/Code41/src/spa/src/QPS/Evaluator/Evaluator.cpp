@@ -4,8 +4,9 @@ Evaluator::Evaluator(PKBClient *pkb) {
     this->pkb = pkb;
 }
 
-Evaluator::Evaluator(NextKBAdapter *nextKBAdapter) {
+Evaluator::Evaluator(PKBClient *pkb, NextKBAdapter *nextKBAdapter) {
     this->nextKBAdapter = nextKBAdapter;
+    this->pkb = pkb;
 }
 
 string Evaluator::getClauseType(QueryClause::clause_type clauseType) {
@@ -279,6 +280,23 @@ Table *Evaluator::buildAssignPatternSSTable(const vector<pair<string, string>> &
     return table;
 }
 
+Table *Evaluator::buildAssignPatternSTable(const unordered_set<string>& results, QueryDeclaration &patternSyn,
+                                           ClauseVariable &variable) {
+    string column = patternSyn.synonym;
+    Header header = Header({column});
+    Table *result = new PQLTable(header);
+
+    for (auto &stmtNum: results) {
+        if (pkb->isModifiesS(stmtNum, variable.getLabel())) {
+            Row *row = new Row(column, stmtNum);
+            result->addRow(row);
+        }
+    }
+
+    return result;
+}
+
+
 Table *Evaluator::buildAssignPatternSSTable(const unordered_set<string> &results, QueryDeclaration &patternSyn,
                                            ClauseVariable &variable) {
     if (results.empty()) {
@@ -313,7 +331,7 @@ Table *Evaluator::buildAssignPatternSSTable(const unordered_set<string> &results
 }
 
 Table *Evaluator::buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results,
-                                                  QueryDeclaration patternSyn, ClauseVariable left) {
+                                                  const QueryDeclaration& patternSyn, const ClauseVariable& left) {
     string firstColumn = patternSyn.synonym;
     string secondColumn = left.getLabel();
     unordered_set<string> leftFilters = getFilters(patternSyn.type);
@@ -324,7 +342,7 @@ Table *Evaluator::buildSynonymSynonymPatternTable(const vector<pair<string, stri
 
     for (auto &[stmt, var] : results) {
         bool isInLeftFilter = leftFilters.find(stmt) != leftFilters.end();
-        bool isInRightFilter = rightFilters.find(stmt) != rightFilters.end();
+        bool isInRightFilter = rightFilters.find(var) != rightFilters.end();
         if (isInLeftFilter && isInRightFilter) {
             Row *row = new Row();
             row->addEntry(firstColumn, stmt);

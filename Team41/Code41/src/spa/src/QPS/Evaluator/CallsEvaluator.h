@@ -2,7 +2,7 @@
 
 #include "ProcProcEvaluator.h"
 
-class CallsEvaluator : ProcProcEvaluator {
+class CallsEvaluator : public ProcProcEvaluator {
 public:
     explicit CallsEvaluator(PKBClient* pkb);
 

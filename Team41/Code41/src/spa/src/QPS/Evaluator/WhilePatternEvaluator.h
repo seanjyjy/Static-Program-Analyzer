@@ -4,7 +4,7 @@
 #include "Common/TNode.h"
 #include "../PatternClause.h"
 
-class WhilePatternEvaluator : IfWhilePatternEvaluator {
+class WhilePatternEvaluator : public IfWhilePatternEvaluator {
 public:
     explicit WhilePatternEvaluator(PKBClient* pkb);
 

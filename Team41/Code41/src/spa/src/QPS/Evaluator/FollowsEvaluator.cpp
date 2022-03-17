@@ -25,7 +25,8 @@ Table *FollowsEvaluator::evaluateSynonymInteger(ClauseVariable left, ClauseVaria
 Table *FollowsEvaluator::evaluateSynonymSynonym(ClauseVariable left, ClauseVariable right) {
     // returns stmt1 follows stmt2
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllFollows();
-    return buildSynonymSynonymTable(listOfStmtToStmt, left, right);
+    // have to flip
+    return buildSynonymSynonymTable(listOfStmtToStmt, right, left);
 }
 
 Table *FollowsEvaluator::evaluateSynonymWildCard(ClauseVariable left) {

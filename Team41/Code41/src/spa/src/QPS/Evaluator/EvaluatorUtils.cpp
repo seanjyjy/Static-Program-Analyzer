@@ -323,7 +323,7 @@ bool EvaluatorUtils::PatternUtils::isWildCardWildCards(ClauseVariable variable,
 
 bool EvaluatorUtils::PatternUtils::isIdentifierWildCards(ClauseVariable variable,
                                                          const vector<PatternVariable>& patternVariables) {
-    return variable.isWildCard() && isWildCards(patternVariables);
+    return variable.isIdentifier() && isWildCards(patternVariables);
 }
 
 bool EvaluatorUtils::PatternUtils::isValidSynonymWildCards(ClauseVariable variable,
