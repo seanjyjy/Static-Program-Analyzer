@@ -28,11 +28,11 @@ void NextKBAdapter::booleanBFS(string &start, string &end) {
 
     while (!bfsQueue.empty()) {
         CFGNode* currNode = bfsQueue.front();
-        bfsQueue.pop();
-        // TODO: why Local variable 'currNode' may point to invalidated memory ?
+        vector<CFGNode* > children = currNode->getChildren();
         visited.insert(currNode->getStmtNum());
+        bfsQueue.pop();
 
-        for (auto& next : currNode->getChildren()) {
+        for (auto& next : children) {
             string nextStmtNum = next->getStmtNum();
             if (visited.find(nextStmtNum) == visited.end()) {
                 bool hasMapping = cache->getBooleanMapping(currStmtNum, nextStmtNum);
@@ -73,10 +73,11 @@ void NextKBAdapter::forwardBFS(string &start) {
 
     while (!bfsQueue.empty()) {
         CFGNode* currNode = bfsQueue.front();
-        bfsQueue.pop();
+        vector<CFGNode* > children = currNode->getChildren();
         visited.insert(currNode->getStmtNum());
+        bfsQueue.pop();
 
-        for (auto& next : currNode->getChildren()) {
+        for (auto& next : children) {
             string nextStmtNum = next->getStmtNum();
             if (visited.find(nextStmtNum) == visited.end()) {
                 unordered_set<string> mapping = cache->getForwardMapping(nextStmtNum);
@@ -118,10 +119,11 @@ void NextKBAdapter::backwardBFS(string &start) {
 
     while (!bfsQueue.empty()) {
         CFGNode* currNode = bfsQueue.front();
-        bfsQueue.pop();
+        vector<CFGNode* > parents = currNode->getParent();
         visited.insert(currNode->getStmtNum());
+        bfsQueue.pop();
 
-        for (auto& next : currNode->getParent()) {
+        for (auto& next : parents) {
             string nextStmtNum = next->getStmtNum();
             if (visited.find(nextStmtNum) == visited.end()) {
                 unordered_set<string> mapping = cache->getBackwardMapping(nextStmtNum);
@@ -155,11 +157,11 @@ void NextKBAdapter::fullBFS() {
 
     while (!mainQ.empty()) {
         CFGNode *curr = mainQ.front();
+        vector<CFGNode* > children = curr->getChildren();
+        string currStmtNum = curr->getStmtNum();
         mainQ.pop();
 
-        string currStmtNum = curr->getStmtNum();
-
-        for (auto& next : curr->getChildren()) {
+        for (auto& next : children) {
             string nextStmtNum = next->getStmtNum();
             cache->addAllMappingPair({currStmtNum, nextStmtNum});
             bfsQueue.push(next);
@@ -172,10 +174,11 @@ void NextKBAdapter::fullBFS() {
 
         while (!bfsQueue.empty()) {
             CFGNode* currNode = bfsQueue.front();
-            bfsQueue.pop();
             bfsVisited.insert(currNode->getStmtNum());
+            vector<CFGNode* > currChildren = currNode->getChildren();
+            bfsQueue.pop();
 
-            for (auto& next : currNode->getChildren()) {
+            for (auto& next : currChildren) {
                 string nextStmtNum = next->getStmtNum();
 
                 if (bfsVisited.find(nextStmtNum) == bfsVisited.end()) {

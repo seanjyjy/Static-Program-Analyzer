@@ -21,7 +21,7 @@ unordered_set<string> Cache::getForwardMapping(const string& key) {
 }
 
 unordered_set<string> Cache::getBackwardMapping(const string& key) {
-    if (backwardMapping.find(key) == forwardMapping.end()) {
+    if (backwardMapping.find(key) == backwardMapping.end()) {
         return {};
     }
 
