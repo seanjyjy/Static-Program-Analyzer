@@ -14,8 +14,8 @@ QueryProjector QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
         return {queryObject->selectTarget, nullptr, pkb, false};
     }
 
-    if (EvaluatorUtils::validateDeclarations(queryObject->declarations) ||
-        EvaluatorUtils::AttrUtils::validateSelectTarget(&queryObject->selectTarget)) {
+    if (!EvaluatorUtils::validateDeclarations(queryObject->declarations) ||
+        !EvaluatorUtils::AttrUtils::validateSelectTarget(&queryObject->selectTarget)) {
         return {queryObject->selectTarget, new FalseTable(), pkb, true};
     }
 
