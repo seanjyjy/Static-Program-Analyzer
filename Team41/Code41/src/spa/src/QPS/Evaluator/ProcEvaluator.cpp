@@ -1,5 +1,7 @@
 #include "ProcEvaluator.h"
 
+ProcEvaluator::ProcEvaluator(PKBClient *pkb) : GenericClauseEvaluator(pkb) {}
+
 Table *ProcEvaluator::evaluateIdentifierIdentifier(const ClauseVariable& left, const ClauseVariable& right) {
     bool isCallRelation = getIdentifierIdentifierRelation(left.getLabel(), right.getLabel());
     return buildBooleanTable(isCallRelation);

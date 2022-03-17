@@ -3,8 +3,6 @@
 #include "ModifiesUsesPEvaluator.h"
 
 class ModifiesPEvaluator : ModifiesUsesPEvaluator {
-private:
-    PKBClient* pkb;
 public:
     explicit ModifiesPEvaluator(PKBClient* pkb);
 

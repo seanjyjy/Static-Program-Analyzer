@@ -1,5 +1,7 @@
 #include "PatternEvaluator.h"
 
+PatternEvaluator::PatternEvaluator(PKBClient *pkb) : Evaluator(pkb) {}
+
 Table *PatternEvaluator::evaluate(PatternClause clause) {
     QueryDeclaration patternSynonym = clause.getSynonym();
     ClauseVariable leftVariable = clause.getLHS();

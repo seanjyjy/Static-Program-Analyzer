@@ -14,10 +14,11 @@
 using namespace std;
 
 class Evaluator {
-    PKBClient* pkb;
 public:
-    explicit Evaluator(PKBClient* pkb);
-
+    PKBClient* pkb;
+    NextKBAdapter* nextKBAdapter;
+    Evaluator(PKBClient* pkb);
+    Evaluator(NextKBAdapter* nextKBAdapter);
     /**
      * Based on the clause, it will determine which evaluator to use to retrieve information from the pkb
      * to build the resultant table.
@@ -50,6 +51,8 @@ public:
     Table* buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& synonym);
     Table* buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& leftSynonym,
                                       ClauseVariable& rightSynonym);
+    Table* buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results, QueryDeclaration patternSyn,
+                                           ClauseVariable left);
 
     Table* buildAssignPatternSSTable(const vector<pair<string, string>> &results, QueryDeclaration& patternSyn,
                                     ClauseVariable &variable);

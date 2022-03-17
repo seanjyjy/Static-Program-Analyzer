@@ -2,8 +2,10 @@
 
 #include "GenericClauseEvaluator.h"
 
-class ProcEvaluator : GenericClauseEvaluator {
+class ProcEvaluator : public GenericClauseEvaluator {
 public:
+    explicit ProcEvaluator(PKBClient* pkb);
+
     Table* evaluateIdentifierIdentifier(const ClauseVariable& left, const ClauseVariable& right);
     Table* evaluateIdentifierSynonym(const ClauseVariable& left, ClauseVariable& right);
     Table* evaluateIdentifierWildCard(const ClauseVariable& left);

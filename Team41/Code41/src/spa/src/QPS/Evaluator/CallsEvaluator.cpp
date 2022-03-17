@@ -1,8 +1,6 @@
 #include "CallsEvaluator.h"
 
-CallsEvaluator::CallsEvaluator(PKBClient *pkb) {
-    this->pkb = pkb;
-}
+CallsEvaluator::CallsEvaluator(PKBClient *pkb): ProcProcEvaluator(pkb) {}
 
 bool CallsEvaluator::getIdentifierIdentifierRelation(const string &leftLabel, const string &rightLabel) {
     return pkb->isCalls(leftLabel, rightLabel);

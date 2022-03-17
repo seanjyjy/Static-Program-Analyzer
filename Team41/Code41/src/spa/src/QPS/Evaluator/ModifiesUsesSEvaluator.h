@@ -1,9 +1,11 @@
 #pragma once
 
-#include "GenericClauseEvaluator.h";
+#include "GenericClauseEvaluator.h"
 
-class ModifiesUsesSEvaluator : GenericClauseEvaluator {
+class ModifiesUsesSEvaluator : public GenericClauseEvaluator {
 public:
+    explicit ModifiesUsesSEvaluator(PKBClient* pkb);
+
     Table* evaluateClause(ClauseVariable left, ClauseVariable right) override;
     Table* evaluateIntegerIdentifier(const ClauseVariable& left, const ClauseVariable& right);
     Table* evaluateIntegerSynonym(const ClauseVariable& left, ClauseVariable right);

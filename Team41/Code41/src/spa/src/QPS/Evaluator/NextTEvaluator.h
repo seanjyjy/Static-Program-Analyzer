@@ -3,8 +3,6 @@
 #include "StmtStmtEvaluator.h"
 
 class NextTEvaluator : StmtStmtEvaluator {
-private:
-    NextKBAdapter* nextKBAdapter;
 public:
     explicit NextTEvaluator(NextKBAdapter* nextKBAdapter);
     /**

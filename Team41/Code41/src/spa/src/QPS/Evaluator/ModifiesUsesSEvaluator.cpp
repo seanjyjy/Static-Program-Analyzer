@@ -1,5 +1,7 @@
 #include "ModifiesUsesSEvaluator.h"
 
+ModifiesUsesSEvaluator::ModifiesUsesSEvaluator(PKBClient *pkb) : GenericClauseEvaluator(pkb) {}
+
 Table *ModifiesUsesSEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVariable rightVariable) {
     if (EvaluatorUtils::SUtils::isIntegerIdentifier(&leftVariable, &rightVariable)) {
         return evaluateIntegerIdentifier(leftVariable, rightVariable);

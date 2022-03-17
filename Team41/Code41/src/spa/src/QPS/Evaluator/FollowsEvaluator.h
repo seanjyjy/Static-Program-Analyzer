@@ -3,8 +3,6 @@
 #include "StmtStmtEvaluator.h"
 
 class FollowsEvaluator : public StmtStmtEvaluator {
-private:
-    PKBClient* pkb;
 public:
     explicit FollowsEvaluator(PKBClient* pkb);
 

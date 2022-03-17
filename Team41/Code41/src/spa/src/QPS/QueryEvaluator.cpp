@@ -57,7 +57,7 @@ QueryProjector QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
         }
 
         for (const auto &declaration: queryObject->declarations) {
-            Table *intermediateTable = SelectSynonymEvaluator::evaluate(declaration, this->pkb);
+            Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(declaration);
 
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);

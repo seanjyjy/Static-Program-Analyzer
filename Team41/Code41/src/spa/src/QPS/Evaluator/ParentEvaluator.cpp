@@ -1,8 +1,6 @@
 #include "ParentEvaluator.h"
 
-ParentEvaluator::ParentEvaluator(PKBClient *pkb) {
-    this->pkb = pkb;
-}
+ParentEvaluator::ParentEvaluator(PKBClient *pkb): StmtStmtEvaluator(pkb) {}
 
 Table* ParentEvaluator::evaluateIntegerInteger(ClauseVariable left, ClauseVariable right) {
     bool isParent = pkb->isParent(left.getLabel(), right.getLabel());

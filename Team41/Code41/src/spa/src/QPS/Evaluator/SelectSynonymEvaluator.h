@@ -1,4 +1,5 @@
 #pragma once
+
 #include "QPS/Table/Table.h"
 #include "QPS/Table/FalseTable.h"
 #include "QPS/Table/TrueTable.h"
@@ -9,6 +10,7 @@
 
 class SelectSynonymEvaluator {
 private:
+    PKBClient* pkb;
     /**
      * Depending on the query declaration select type, select all selected type from the pkb.
      *
@@ -18,6 +20,7 @@ private:
      */
     static unordered_set<string> getResultViaType(QueryDeclaration::design_entity_type type, PKBClient *pkb);
 public:
+    explicit SelectSynonymEvaluator(PKBClient* pkb);
     /**
      * Depending on the select synonym in query declaration , get all values of that synonym from the pkb.
      *
@@ -25,5 +28,5 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table depending on the select synonym.
      */
-    static Table* evaluate(const QueryDeclaration selectSynonym, PKBClient *pkb);
+    Table* evaluate(QueryDeclaration selectSynonym);
 };

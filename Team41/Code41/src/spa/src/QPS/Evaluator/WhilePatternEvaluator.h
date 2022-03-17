@@ -5,8 +5,6 @@
 #include "../PatternClause.h"
 
 class WhilePatternEvaluator : IfWhilePatternEvaluator {
-private:
-    PKBClient* pkb;
 public:
     explicit WhilePatternEvaluator(PKBClient* pkb);
 

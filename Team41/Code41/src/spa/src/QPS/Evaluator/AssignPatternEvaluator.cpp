@@ -1,9 +1,7 @@
 #include "AssignPatternEvaluator.h"
 #include "Common/TreeUtils.h"
 
-AssignPatternEvaluator::AssignPatternEvaluator(PKBClient *pkb) {
-    this->pkb = pkb;
-}
+AssignPatternEvaluator::AssignPatternEvaluator(PKBClient *pkb): PatternEvaluator(pkb) {}
 
 Table *AssignPatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
                                                vector<PatternVariable> &rightPatternVariables) {

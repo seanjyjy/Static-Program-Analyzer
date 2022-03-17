@@ -1,5 +1,7 @@
 #include "ModifiesUsesPEvaluator.h"
 
+ModifiesUsesPEvaluator::ModifiesUsesPEvaluator(PKBClient *pkb) : ProcEvaluator(pkb) {}
+
 Table *ModifiesUsesPEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVariable rightVariable) {
 
     if (EvaluatorUtils::ProcUtils::isIdentifierIdentifier(&leftVariable, &rightVariable)) {

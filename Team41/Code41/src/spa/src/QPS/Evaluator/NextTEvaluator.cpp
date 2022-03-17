@@ -1,8 +1,6 @@
 #include "NextTEvaluator.h"
 
-NextTEvaluator::NextTEvaluator(NextKBAdapter *nextKBAdapter) {
-    this->nextKBAdapter = nextKBAdapter;
-}
+NextTEvaluator::NextTEvaluator(NextKBAdapter *nextKBAdapter): StmtStmtEvaluator(nextKBAdapter) {}
 
 Table *NextTEvaluator::evaluateIntegerInteger(ClauseVariable left, ClauseVariable right) {
     bool isNextT = nextKBAdapter->isNext(left.getLabel(), right.getLabel());

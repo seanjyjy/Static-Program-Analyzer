@@ -5,8 +5,6 @@
 #include "../PatternClause.h"
 
 class IfPatternEvaluator : IfWhilePatternEvaluator {
-private:
-    PKBClient* pkb;
 public:
     explicit IfPatternEvaluator(PKBClient* pkb);
 

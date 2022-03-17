@@ -4,5 +4,6 @@
 
 class ModifiesUsesPEvaluator : public ProcEvaluator  {
 public:
+    explicit ModifiesUsesPEvaluator(PKBClient* pkb);
     Table* evaluateClause(ClauseVariable left, ClauseVariable right) override;
 };

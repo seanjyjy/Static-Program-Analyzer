@@ -4,6 +4,10 @@ Evaluator::Evaluator(PKBClient *pkb) {
     this->pkb = pkb;
 }
 
+Evaluator::Evaluator(NextKBAdapter *nextKBAdapter) {
+    this->nextKBAdapter = nextKBAdapter;
+}
+
 string Evaluator::getClauseType(QueryClause::clause_type clauseType) {
     switch (clauseType) {
         case QueryClause::clause_type::follows:
@@ -306,4 +310,28 @@ Table *Evaluator::buildAssignPatternSSTable(const unordered_set<string> &results
     }
 
     return result;
+}
+
+Table *Evaluator::buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results,
+                                                  QueryDeclaration patternSyn, ClauseVariable left) {
+    string firstColumn = patternSyn.synonym;
+    string secondColumn = left.getLabel();
+    unordered_set<string> leftFilters = getFilters(patternSyn.type);
+    unordered_set<string> rightFilters = getFilters(left.getDesignEntityType());
+
+    Header header({firstColumn, secondColumn});
+    Table *table = new PQLTable(header);
+
+    for (auto &[stmt, var] : results) {
+        bool isInLeftFilter = leftFilters.find(stmt) != leftFilters.end();
+        bool isInRightFilter = rightFilters.find(stmt) != rightFilters.end();
+        if (isInLeftFilter && isInRightFilter) {
+            Row *row = new Row();
+            row->addEntry(firstColumn, stmt);
+            row->addEntry(secondColumn, var);
+            table->addRow(row);
+        }
+    }
+
+    return table;
 }

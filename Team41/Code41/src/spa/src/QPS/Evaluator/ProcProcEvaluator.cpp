@@ -1,5 +1,7 @@
 #include "ProcProcEvaluator.h"
 
+ProcProcEvaluator::ProcProcEvaluator(PKBClient *pkb) : ProcEvaluator(pkb) {}
+
 Table *ProcProcEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVariable rightVariable) {
 
     if (EvaluatorUtils::ProcUtils::isIdentifierIdentifier(&leftVariable, &rightVariable)) {

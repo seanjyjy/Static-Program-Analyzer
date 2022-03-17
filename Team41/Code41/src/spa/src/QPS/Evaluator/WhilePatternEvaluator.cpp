@@ -1,9 +1,7 @@
 #include "WhilePatternEvaluator.h"
 #include "Common/TreeUtils.h"
 
-WhilePatternEvaluator::WhilePatternEvaluator(PKBClient *pkb) {
-    this->pkb = pkb;
-}
+WhilePatternEvaluator::WhilePatternEvaluator(PKBClient *pkb) : IfWhilePatternEvaluator(pkb) {}
 
 unordered_set<string> WhilePatternEvaluator::getWildCardWildCardRelation() {
     return pkb->getWhileStmtUsingSomeVarCond();

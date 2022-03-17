@@ -5,8 +5,6 @@
 #include "../PatternClause.h"
 
 class AssignPatternEvaluator : PatternEvaluator {
-private:
-    PKBClient* pkb;
 public:
     explicit AssignPatternEvaluator(PKBClient* pkb);
 

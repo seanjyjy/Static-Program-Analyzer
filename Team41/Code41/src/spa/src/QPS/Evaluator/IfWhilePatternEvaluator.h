@@ -3,10 +3,12 @@
 #include "PatternEvaluator.h"
 
 class IfWhilePatternEvaluator : PatternEvaluator {
-    Table* evaluateFurther(QueryDeclaration patternSynonym, const ClauseVariable& leftVariable,
+public:
+    explicit IfWhilePatternEvaluator(PKBClient* pkb);
+    Table* evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable& leftVariable,
                            vector<PatternVariable>& rightPatternVariables) override;
 
-    Table* evaluateSynonymWildCard(QueryDeclaration patternSyn, ClauseVariable left);
+    Table* evaluateSynonymWildCard(QueryDeclaration& patternSyn, ClauseVariable& left);
 
     virtual vector<pair<string, string>> getSynonymWildCardRelation() = 0;
 

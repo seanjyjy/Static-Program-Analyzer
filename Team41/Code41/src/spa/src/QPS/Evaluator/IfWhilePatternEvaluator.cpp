@@ -1,6 +1,8 @@
 #include "IfWhilePatternEvaluator.h"
 
-Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, const ClauseVariable &leftVariable,
+IfWhilePatternEvaluator::IfWhilePatternEvaluator(PKBClient *pkb) : PatternEvaluator(pkb) {}
+
+Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
                                                 vector<PatternVariable> &rightPatternVariables) {
 
     if (EvaluatorUtils::PatternUtils::isValidSynonymWildCards(leftVariable, rightPatternVariables)) {
@@ -10,7 +12,7 @@ Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym,
     throw SemanticException("Invalid query provided for Pattern");
 }
 
-Table *IfWhilePatternEvaluator::evaluateSynonymWildCard(QueryDeclaration patternSyn, ClauseVariable left) {
+Table *IfWhilePatternEvaluator::evaluateSynonymWildCard(QueryDeclaration& patternSyn, ClauseVariable& left) {
     vector<pair<string, string>> listOfStmtNVar = getSynonymWildCardRelation();
-    return buildSynonymSynonymTable(listOfStmtNVar, patternSyn, left);
+    return buildSynonymSynonymPatternTable(listOfStmtNVar, patternSyn, left);
 }

@@ -3,8 +3,6 @@
 #include "StmtStmtEvaluator.h"
 
 class ParentTEvaluator: public StmtStmtEvaluator {
-private:
-    PKBClient* pkb;
 public:
     explicit ParentTEvaluator(PKBClient* pkb);
 
