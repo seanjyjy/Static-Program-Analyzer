@@ -5,36 +5,44 @@
 
 using namespace std;
 
-StmtTable::StmtTable():mapping("StmtTable") {}
+StmtTable::StmtTable():stmtMapping("StmtTable") {}
 
 unordered_set<string> StmtTable::getAllStmtsByType(StmtType type) {
-    return mapping.getValuesFromKey(move(type));
+    return stmtMapping.getValuesFromKey(move(type));
 }
 
 StmtType StmtTable::getStmtType(string stmtNumber) {
-    return mapping.getKeyFromValue(move(stmtNumber));
+    return stmtMapping.getKeyFromValue(move(stmtNumber));
+}
+
+string StmtTable::getStmtAttr(string stmtNumber) {
+    return attrMapping.find(stmtNumber) == attrMapping.end() ? "" : attrMapping[stmtNumber];
 }
 
 bool StmtTable::isStmtType(string stmtNumber, StmtType type) {
-    return mapping.hasMapping(type, move(stmtNumber));
+    return stmtMapping.hasMapping(type, move(stmtNumber));
 }
 
 void StmtTable::setStmt(const string& stmtNum, StmtType type) {
-    return mapping.addMapping(type, stmtNum);
+    return stmtMapping.addMapping(type, stmtNum);
+}
+
+void StmtTable::setStmtAttr(const string& stmtNum, const string& attr) {
+    attrMapping.insert({stmtNum, attr});
 }
 
 size_t StmtTable::getStmtCount(StmtType type) {
-    return mapping.size(move(type));
+    return stmtMapping.size(move(type));
 }
 
 size_t StmtTable::getStmtCount() {
-    return mapping.valSize();
+    return stmtMapping.valSize();
 }
 
 unordered_set<string> StmtTable::getAllStmts() {
-    return mapping.getValues();
+    return stmtMapping.getValues();
 }
 
 unordered_set<StmtType> StmtTable::getAllTypes() {
-    return mapping.getKeys();
+    return stmtMapping.getKeys();
 }

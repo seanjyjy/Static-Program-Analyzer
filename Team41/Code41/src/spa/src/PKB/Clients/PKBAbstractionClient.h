@@ -33,15 +33,15 @@ public:
 
     //======================================== Calls ==================================================
 
-    bool isCalls(string proc1, string proc2); // Checks if proc1 calls proc2
-    unordered_set<string> getAllProcCalling(string procName);// Gets list of procedures that calls proc
-    unordered_set<string> getAllProcCalledBy(string procName);// Gets list of procedures that is called by proc
-    vector<pair<string, string>> getAllCalls(); // Gets list of proc1-proc2 pair where proc1 calls proc2
+    bool isCalls(string proc1, string proc2) const; // Checks if proc1 calls proc2
+    unordered_set<string> getAllProcCalling(string procName) const;// Gets list of procedures that calls proc
+    unordered_set<string> getAllProcCalledBy(string procName) const;// Gets list of procedures that is called by proc
+    vector<pair<string, string>> getAllCalls() const; // Gets list of proc1-proc2 pair where proc1 calls proc2
 
-    bool isCallsT(string proc1, string proc2); // Checks if proc1 callsT proc2
-    unordered_set<string> getAllProcCallingT(string procName);// Gets list of procedures that callsT proc
-    unordered_set<string> getAllProcCalledTBy(string procName);// Gets list of procedures that is calledT by proc
-    vector<pair<string, string>> getAllCallsT(); // Gets list of proc1-proc2 pair where proc1 callsT proc2
+    bool isCallsT(string proc1, string proc2) const; // Checks if proc1 callsT proc2
+    unordered_set<string> getAllProcCallingT(string procName) const;// Gets list of procedures that callsT proc
+    unordered_set<string> getAllProcCalledTBy(string procName) const;// Gets list of procedures that is calledT by proc
+    vector<pair<string, string>> getAllCallsT() const; // Gets list of proc1-proc2 pair where proc1 callsT proc2
 
     unordered_set<string> getAllProcsCallingSomeProcs() const; // Get list of procedures calling some proc
     unordered_set<string> getAllProcsCalledBySomeProcs() const; // Get list of procedures called by some proc

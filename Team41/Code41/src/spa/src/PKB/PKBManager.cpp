@@ -22,11 +22,20 @@ void PKBManager::registerWhileStmt(const string& stmtNum) { return stmtTable->se
 
 void PKBManager::registerIfStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, IF); }
 
-void PKBManager::registerReadStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, READ); }
+void PKBManager::registerReadStmt(const string& stmtNum, const string& varName) {
+    stmtTable->setStmt(stmtNum, READ);
+    stmtTable->setStmtAttr(stmtNum, varName);
+}
 
-void PKBManager::registerPrintStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, PRINT); }
+void PKBManager::registerPrintStmt(const string& stmtNum, const string& varName) {
+    stmtTable->setStmt(stmtNum, PRINT);
+    stmtTable->setStmtAttr(stmtNum, varName);
+}
 
-void PKBManager::registerCallStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, CALL); }
+void PKBManager::registerCallStmt(const string& stmtNum, const string& procName) {
+    stmtTable->setStmt(stmtNum, CALL);
+    stmtTable->setStmtAttr(stmtNum, procName);
+}
 
 //======================================== Entities ==================================================
 
@@ -60,9 +69,13 @@ void PKBManager::registerCallsT(const string& proc1, const string& proc2) {
 
 //======================================== Follows ==================================================
 
-void PKBManager::registerFollows(const string& stmt1, const string& stmt2) { return followsTable->setFollows(stmt1, stmt2); }
+void PKBManager::registerFollows(const string& stmt1, const string& stmt2) {
+    return followsTable->setFollows(stmt1, stmt2);
+}
 
-void PKBManager::registerFollowsT(const string& stmt1, const string& stmt2) { return followsTable->setFollowsT(stmt1, stmt2); }
+void PKBManager::registerFollowsT(const string& stmt1, const string& stmt2) {
+    return followsTable->setFollowsT(stmt1, stmt2);
+}
 
 //======================================== Parent ==================================================
 

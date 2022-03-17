@@ -46,6 +46,10 @@ bool EvaluatorUtils::isRead(QueryDeclaration::design_entity_type type) {
     return type == QueryDeclaration::design_entity_type::READ;
 }
 
+bool EvaluatorUtils::isCall(QueryDeclaration::design_entity_type type) {
+    return type == QueryDeclaration::design_entity_type::CALL;
+}
+
 bool EvaluatorUtils::isVariableSynonym(ClauseVariable* var) {
     return var->isSynonym() && isVariable(var->getDesignEntityType());
 }
@@ -80,6 +84,45 @@ bool EvaluatorUtils::isSynonymWildCard(ClauseVariable* left, ClauseVariable* rig
 
 bool EvaluatorUtils::isWildCardWildCard(ClauseVariable* left, ClauseVariable* right) {
     return left->isWildCard() && right->isWildCard();
+}
+
+optional<string> EvaluatorUtils::getAttrFromSelectable(Selectable *target, const string &rawData, PKBClient *pkb) {
+    QueryDeclaration declaration = target->getSynonym();
+    switch (target->getAttr()) {
+        case Selectable::PROC_NAME:
+            if (EvaluatorUtils::isProcedure(declaration.type)) {
+                return rawData;
+            }
+            if (EvaluatorUtils::isCall(declaration.type)) {
+                string procName = pkb->getCallsProcNameAttr(rawData);
+                if (procName.empty()) return nullopt;
+                return procName;
+            }
+        case Selectable::VAR_NAME:
+            if (EvaluatorUtils::isRead(declaration.type)) {
+                string varName = pkb->getReadVarNameAttr(rawData);
+                if (varName.empty()) return nullopt;
+                return varName;
+            }
+            if (EvaluatorUtils::isPrint(declaration.type)) {
+                string varName = pkb->getPrintVarNameAttr(rawData);
+                if (varName.empty()) return nullopt;
+                return varName;
+            }
+            if (EvaluatorUtils::isVariable(declaration.type)) {
+                return rawData;
+            }
+        case Selectable::VALUE:
+            if (EvaluatorUtils::isConstant(declaration.type)) {
+                return rawData;
+            }
+        case Selectable::STMT_NUM:
+            if (EvaluatorUtils::isStmtType(declaration.type)) {
+                return rawData;
+            }
+        default:
+            return nullopt;
+    }
 }
 
 // ============================================= STMT UTILS ======================================================

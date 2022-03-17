@@ -54,6 +54,18 @@ size_t PKBBaseClient::getPrintCount() const { return stmtTable->getStmtCount(PRI
 
 size_t PKBBaseClient::getCallCount() const { return stmtTable->getStmtCount(CALL); }
 
+string PKBBaseClient::getCallsProcNameAttr(string stmtNum) const {
+    return isCallStmt(stmtNum) ? stmtTable->getStmtAttr(move(stmtNum)) : "";
+}
+
+string PKBBaseClient::getPrintVarNameAttr(string stmtNum) const {
+    return isPrintStmt(stmtNum) ? stmtTable->getStmtAttr(move(stmtNum)) : "";
+}
+
+string PKBBaseClient::getReadVarNameAttr(string stmtNum) const {
+    return isReadStmt(stmtNum) ? stmtTable->getStmtAttr(move(stmtNum)) : "";
+}
+
 //======================================== Entities ==================================================
 
 unordered_set<string> PKBBaseClient::getVariables() const { return entityTable->getVariables(); }

@@ -6,12 +6,12 @@ QueryEvaluator::QueryEvaluator(PKBClient *pkb) {
     this->nextKBAdapter = new NextKBAdapter(pkb);
 }
 
-unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
+QueryProjector QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     unordered_set<string> emptyResult;
     unordered_set<string> result;
 
     if (!queryObject->isQueryValid) {
-        return emptyResult;
+        return {queryObject->selectTarget, nullptr, pkb, false};
     }
 
     Table *resultTable = new TrueTable();
@@ -36,7 +36,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
                 safeDeleteTable(resultTable);
-                return buildResult(queryObject, new FalseTable());
+                return {queryObject->selectTarget, new FalseTable(), pkb, true};
             }
 
             Table *ogTable = resultTable;
@@ -47,7 +47,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
             if (resultTable->isEmpty()) {
                 safeDeleteTable(resultTable);
-                return buildResult(queryObject, new FalseTable());
+                return {queryObject->selectTarget, new FalseTable(), pkb, true};
             }
         }
 
@@ -57,7 +57,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
                 safeDeleteTable(resultTable);
-                return buildResult(queryObject, new FalseTable());
+                return {queryObject->selectTarget, new FalseTable(), pkb, true};
             }
 
             Table *ogTable = resultTable;
@@ -68,40 +68,20 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
             if (resultTable->isEmpty()) {
                 safeDeleteTable(resultTable);
-                return buildResult(queryObject, new FalseTable());
+                return {queryObject->selectTarget, new FalseTable(), pkb, true};
             }
         }
     } catch (SemanticException& error) {
         std::cout << error.what() << std::endl;
-
-        return buildResult(queryObject, new FalseTable());
+        delete resultTable;
+        return {queryObject->selectTarget, new FalseTable(), pkb, true};
     } catch (const runtime_error& error) {
         std::cout << error.what() << std::endl;
-
-        return buildResult(queryObject, new FalseTable());
+        delete resultTable;
+        return {queryObject->selectTarget, new FalseTable(), pkb, true};
     }
 
-    return buildResult(queryObject, resultTable);
-}
-
-unordered_set<string> QueryEvaluator::buildResult(QueryObject *queryObject, Table *resultTable) {
-    unordered_set<string> result;
-
-    if (queryObject->isSelectingBoolean()) {
-        // Occurs when result table is a false table or pql table which is empty
-        if (resultTable->isEmpty()) {
-            result.insert("FALSE");
-        } else {
-            result.insert("TRUE");
-        }
-    } else {
-        vector<string> synonyms = getSynonyms(queryObject);
-
-        // copy result from resultTable to result here when can think of based on queryObject schema
-        result = resultTable->getColumns(synonyms);
-    }
-    safeDeleteTable(resultTable);
-    return result;
+    return {queryObject->selectTarget, resultTable, pkb, true};
 }
 
 Table *QueryEvaluator::evaluate(QueryClause &clause) {

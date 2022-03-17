@@ -359,6 +359,7 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
         REQUIRE(qo->selectTarget.isBoolean());
         REQUIRE(qo->clauses.at(0).type == QueryClause::nextT);
+        delete qo;
 
         string s2 = "variable v;\n"
                     "Select BOOLEAN such that Uses(\"printResults\", v);";
