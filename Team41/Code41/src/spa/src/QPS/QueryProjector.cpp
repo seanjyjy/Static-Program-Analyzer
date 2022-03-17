@@ -45,7 +45,7 @@ string QueryProjector::getProjectionFromRow(const Row* row, Selectable* target) 
         return rawData;
     }
 
-    optional<string> result = EvaluatorUtils::getAttrFromSelectable(target, rawData, pkb);
+    optional<string> result = EvaluatorUtils::AttrUtils::getAttrFromSelectable(target, rawData, pkb);
     if (result == nullopt) {
         throw SemanticException("Invalid attribute for declaration: " + declaration.synonym);
     }

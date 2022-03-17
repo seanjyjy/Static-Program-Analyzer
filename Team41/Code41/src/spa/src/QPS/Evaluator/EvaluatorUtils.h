@@ -2,7 +2,7 @@
 
 #include "QPS/QueryDeclaration.h"
 #include "QPS/ClauseVariable.h"
-#include "QPS/Selectable.h"
+#include "QPS/SelectTarget.h"
 #include "PKB/PKBClient.h"
 #include <optional>
 
@@ -170,7 +170,20 @@ public:
      */
     static bool isWildCardWildCard(ClauseVariable* left, ClauseVariable* right);
 
-    static optional<string> getAttrFromSelectable(Selectable* target, const string& rawData, PKBClient* pkb);
+    /**
+     * Checks if the left clause variable is a wildcard and if the right clause variable is a wildcard.
+     *
+     * @param left Clause variable.
+     * @param right Clause variable.
+     * @return True if left clause variable is a wildcard and if right clause variable is a wildcard else false.
+     */
+     /**
+      * Checks that declaration synonyms are unique
+      *
+      * @param declarations the list of declarations defined in the query
+      * @return true if valid, false otherwise
+      */
+    static bool validateDeclarations(vector<QueryDeclaration> declarations);
 
     // for Follow, Follow*, Parent, Parent*
     class StmtUtils {
@@ -442,5 +455,83 @@ public:
         static bool isValidCallsWildCardSynonym(ClauseVariable* left, ClauseVariable* right);
 
         static bool isWildCardIdentifier(ClauseVariable* left, ClauseVariable* right);
+    };
+
+    class AttrUtils {
+    public:
+        /**
+         * Checks that the select target is valid.
+         * Specially checks that the attribute matches the synonym type
+         *
+         * @param target the select target
+         * @return true if valid, false otherwise
+         */
+        static bool validateSelectTarget(SelectTarget* target);
+
+         /**
+          * Maps the raw data to the correct output based on attribute type
+          *
+          * @param target the select target
+          * @param rawData the rawData
+          * @param pkb the knowledge base
+          * @return the correct output based on Selectable
+          */
+        static optional<string> getAttrFromSelectable(Selectable* target, const string& rawData, PKBClient* pkb);
+
+        /**
+         * Checks if the Selectable is a valid synonym or valid attribute ref
+         * @param target the select target
+         * @return true if matches, false otherwise
+         */
+        static bool isValidSelectable(Selectable *target);
+
+        /**
+         * Checks if the Selectable is of type proc.procName
+         * @param target the select target
+         * @return true if matches, false otherwise
+         */
+        static bool isProcProcNameAttr(Selectable *target);
+
+        /**
+         * Checks if the Selectable is of type call.procName
+         * @param target the select target
+         * @return true if matches, false otherwise
+         */
+        static bool isCallProcNameAttr(Selectable *target);
+
+        /**
+         * Checks if the Selectable is of type read.varName
+         * @param target the select target
+         * @return true if matches, false otherwise
+         */
+        static bool isReadVarNameAttr(Selectable *target);
+
+        /**
+         * Checks if the Selectable is of type print.varName
+         * @param target the select target
+         * @return true if matches, false otherwise
+         */
+        static bool isPrintVarNameAttr(Selectable *target);
+
+        /**
+         * Checks if the Selectable is of type var.varName
+         * @param target the select target
+         * @return true if matches, false otherwise
+         */
+        static bool isVarVarNameAttr(Selectable *target);
+
+        /**
+         * Checks if the Selectable is of type const.value
+         * @param target the select target
+         * @return true if matches, false otherwise
+         */
+        static bool isConstantValueAttr(Selectable *target);
+
+        /**
+         * Checks if the Selectable is of type stmt.stmt#
+         * @param target the select target
+         * @return true if matches, false otherwise
+         */
+        static bool isStmtStmtNumAttr(Selectable *target);
     };
 };

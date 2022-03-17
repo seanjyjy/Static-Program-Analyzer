@@ -14,6 +14,11 @@ QueryProjector QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
         return {queryObject->selectTarget, nullptr, pkb, false};
     }
 
+    if (EvaluatorUtils::validateDeclarations(queryObject->declarations) ||
+        EvaluatorUtils::AttrUtils::validateSelectTarget(&queryObject->selectTarget)) {
+        return {queryObject->selectTarget, new FalseTable(), pkb, true};
+    }
+
     Table *resultTable = new TrueTable();
     auto selectSynonym = queryObject->selectSynonym;
     auto queryClauses = queryObject->clauses;
