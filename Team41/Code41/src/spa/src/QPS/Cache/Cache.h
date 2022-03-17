@@ -16,6 +16,10 @@ private:
     Mapping booleanMapping;
 
     vector<pair<string, string>> allMapping; // only populated when getAll* is being called
+
+    void printMapping(Mapping map);
+
+    unordered_set<string> getMapping(Mapping map, const string &key);
 public:
     void registerForwardMapping(const string& key, const string& value); // register key-value pair in forward mapping
 
