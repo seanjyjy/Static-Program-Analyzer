@@ -1,144 +1,10 @@
 #include "NextKBAdapter.h"
 
-NextKBAdapter::NextKBAdapter(PKBClient* pkb) : pkb(pkb) {
+NextKBAdapter::NextKBAdapter(PKBClient *pkb) : pkb(pkb) {
     this->cache = new Cache();
 }
 
-void NextKBAdapter::booleanBFS(string &start, string &end) {
-    CFGNode* startNode = pkb->getCFGForStmt(start);
-
-    if (startNode == nullptr) return;
-
-    queue<CFGNode *> bfsQueue;
-    string currStmtNum = startNode->getStmtNum();
-
-    for (auto& next : startNode->getChildren()) {
-        string nextStmtNum = next->getStmtNum();
-        bool hasMapping = cache->getBooleanMapping(currStmtNum, nextStmtNum);
-
-        if (hasMapping) continue;
-
-        addBooleanRelation(currStmtNum, nextStmtNum);
-        bfsQueue.push(next);
-
-        if (nextStmtNum == end) return;
-    }
-
-    unordered_set<string> visited;
-
-    while (!bfsQueue.empty()) {
-        CFGNode* currNode = bfsQueue.front();
-        vector<CFGNode* > children = currNode->getChildren();
-        visited.insert(currNode->getStmtNum());
-        bfsQueue.pop();
-
-        for (auto& next : children) {
-            string nextStmtNum = next->getStmtNum();
-            if (visited.find(nextStmtNum) == visited.end()) {
-                bool hasMapping = cache->getBooleanMapping(currStmtNum, nextStmtNum);
-
-                if (hasMapping) continue;
-
-                addBooleanRelation(currStmtNum, nextStmtNum);
-                bfsQueue.push(next);
-
-                if (nextStmtNum == end) return;
-            }
-        }
-    }
-}
-
-void NextKBAdapter::forwardBFS(string &start) {
-    CFGNode* startNode = pkb->getCFGForStmt(start);
-
-    if (startNode == nullptr) return;
-
-    queue<CFGNode *> bfsQueue;
-    string currStmtNum = startNode->getStmtNum();
-
-    for (auto& next : startNode->getChildren()) {
-        string nextStmtNum = next->getStmtNum();
-        unordered_set<string> mapping = cache->getForwardMapping(nextStmtNum);
-
-        if (!mapping.empty()) {
-            addForwardMapping(currStmtNum, mapping);
-            continue;
-        }
-
-        addForwardRelation(currStmtNum, nextStmtNum);
-        bfsQueue.push(next);
-    }
-
-    unordered_set<string> visited;
-
-    while (!bfsQueue.empty()) {
-        CFGNode* currNode = bfsQueue.front();
-        vector<CFGNode* > children = currNode->getChildren();
-        visited.insert(currNode->getStmtNum());
-        bfsQueue.pop();
-
-        for (auto& next : children) {
-            string nextStmtNum = next->getStmtNum();
-            if (visited.find(nextStmtNum) == visited.end()) {
-                unordered_set<string> mapping = cache->getForwardMapping(nextStmtNum);
-
-                if (!mapping.empty() && currStmtNum != nextStmtNum) {
-                    addForwardMapping(currStmtNum, mapping);
-                    continue;
-                }
-
-                addForwardRelation(currStmtNum, nextStmtNum);
-                bfsQueue.push(next);
-            }
-        }
-    }
-}
-
-void NextKBAdapter::backwardBFS(string &start) {
-    CFGNode* startNode = pkb->getCFGForStmt(start);
-
-    if (startNode == nullptr) return;
-
-    queue<CFGNode *> bfsQueue;
-    string currStmtNum = startNode->getStmtNum();
-
-    for (auto& next : startNode->getParent()) {
-        string nextStmtNum = next->getStmtNum();
-        unordered_set<string> mapping = cache->getBackwardMapping(nextStmtNum);
-
-        if (!mapping.empty()) {
-            addBackwardMapping(currStmtNum, mapping);
-            continue;
-        }
-
-        addBackwardRelation(currStmtNum, nextStmtNum);
-        bfsQueue.push(next);
-    }
-
-    unordered_set<string> visited;
-
-    while (!bfsQueue.empty()) {
-        CFGNode* currNode = bfsQueue.front();
-        vector<CFGNode* > parents = currNode->getParent();
-        visited.insert(currNode->getStmtNum());
-        bfsQueue.pop();
-
-        for (auto& next : parents) {
-            string nextStmtNum = next->getStmtNum();
-            if (visited.find(nextStmtNum) == visited.end()) {
-                unordered_set<string> mapping = cache->getBackwardMapping(nextStmtNum);
-
-                if (!mapping.empty() && currStmtNum != nextStmtNum) {
-                    addBackwardMapping(currStmtNum, mapping);
-                    continue;
-                }
-
-                addBackwardRelation(currStmtNum, nextStmtNum);
-                bfsQueue.push(next);
-            }
-        }
-    }
-}
+//================================== Private =============================================
 
 void NextKBAdapter::fullBFS() {
     CFGNode *start = pkb->getRootCFG();
@@ -147,7 +13,7 @@ void NextKBAdapter::fullBFS() {
     queue<CFGNode *> mainQ;
 
     // we cannot start with root its 0!
-    for (auto& startProc : start->getChildren()) {
+    for (auto &startProc: start->getChildren()) {
         mainQ.push(startProc);
         mainVisited.insert(startProc->getStmtNum());
     }
@@ -157,11 +23,11 @@ void NextKBAdapter::fullBFS() {
 
     while (!mainQ.empty()) {
         CFGNode *curr = mainQ.front();
-        vector<CFGNode* > children = curr->getChildren();
+        vector<CFGNode *> children = curr->getChildren();
         string currStmtNum = curr->getStmtNum();
         mainQ.pop();
 
-        for (auto& next : children) {
+        for (auto &next: children) {
             string nextStmtNum = next->getStmtNum();
             cache->addAllMappingPair({currStmtNum, nextStmtNum});
             bfsQueue.push(next);
@@ -173,12 +39,12 @@ void NextKBAdapter::fullBFS() {
         }
 
         while (!bfsQueue.empty()) {
-            CFGNode* currNode = bfsQueue.front();
+            CFGNode *currNode = bfsQueue.front();
             bfsVisited.insert(currNode->getStmtNum());
-            vector<CFGNode* > currChildren = currNode->getChildren();
+            vector<CFGNode *> currChildren = currNode->getChildren();
             bfsQueue.pop();
 
-            for (auto& next : currChildren) {
+            for (auto &next: currChildren) {
                 string nextStmtNum = next->getStmtNum();
 
                 if (bfsVisited.find(nextStmtNum) == bfsVisited.end()) {
@@ -192,19 +58,39 @@ void NextKBAdapter::fullBFS() {
     }
 }
 
-// TODO: change when figure out how to use function pointer
-void NextKBAdapter::addForwardMapping(const string &currStmtNum, unordered_set<string> &mapping) {
-    for (auto& savedNext : mapping)
-        addForwardRelation(currStmtNum, savedNext);
+void
+NextKBAdapter::runBFS(const string &start, const string &end, bool isForward, const CacheCallback &cacheAndContinue,
+                      const TerminateCheck &canTerminate) {
+    CFGNode *startNode = pkb->getCFGForStmt(isForward ? start : end);
+
+    if (startNode == nullptr) return;
+
+    queue<CFGNode *> bfsQueue;
+    unordered_set<string> visited;
+    bfsQueue.push(startNode);
+
+    while (!bfsQueue.empty()) {
+        CFGNode *currNode = bfsQueue.front();
+        vector<CFGNode *> nextNodes = isForward ? currNode->getChildren() : currNode->getParent();
+        bfsQueue.pop();
+
+        for (auto &next: nextNodes) {
+            string nextStmtNum = next->getStmtNum();
+            if (visited.find(nextStmtNum) == visited.end()) {
+                // check cache
+                if (cacheAndContinue(nextStmtNum)) {
+                    bfsQueue.push(next);
+                }
+                if (canTerminate(nextStmtNum)) {
+                    return;
+                };
+                visited.insert(nextStmtNum);
+            }
+        }
+    }
 }
 
-// TODO: change when figure out how to use function pointer
-void NextKBAdapter::addBackwardMapping(const string &currStmtNum, unordered_set<string> &mapping) {
-    for (auto& savedNext : mapping)
-        addBackwardRelation(currStmtNum, savedNext);
-}
-
-void NextKBAdapter::addBooleanRelation(const string& start, const string& end) {
+void NextKBAdapter::addBooleanRelation(const string &start, const string &end) {
     cache->registerBooleanMapping(start, end);
 }
 
@@ -217,6 +103,8 @@ void NextKBAdapter::addBackwardRelation(const string &start, const string &end) 
     cache->registerBooleanMapping(end, start); // reverse order!
     cache->registerBackwardMapping(start, end);
 }
+
+//================================== Public =============================================
 
 bool NextKBAdapter::isNext(string stmt1, string stmt2) const {
     return pkb->isNext(move(stmt1), move(stmt2));
@@ -242,25 +130,85 @@ vector<string> NextKBAdapter::getAllStmtsThatIsNextOfSomeStmt() const {
     return pkb->getAllStmtsExecAfterSomeStmt();
 }
 
-bool NextKBAdapter::isNextT(string stmt1, string stmt2) {
+bool NextKBAdapter::isNextT(const string &stmt1, const string &stmt2) {
+    unordered_set<string> backwardCache = cache->getBackwardMapping(stmt2);
+    if (!backwardCache.empty()) {
+        return backwardCache.find(stmt1) != backwardCache.end();
+    }
+
+    unordered_set<string> forwardCache = cache->getForwardMapping(stmt1);
+    if (!forwardCache.empty()) {
+        return forwardCache.find(stmt2) != forwardCache.end();
+    }
+
     if (!cache->getBooleanMapping(stmt1, stmt2)) {
-        booleanBFS(stmt1, stmt2);
+        CacheCallback saveToCache = [&](const string &next) {
+            addBooleanRelation(stmt1, next);
+            return true;
+        };
+
+        TerminateCheck canEnd = [&](const string &next) {
+            if (cache->getBooleanMapping(next, stmt2)) {
+                addBooleanRelation(stmt1, stmt2);
+                return true;
+            };
+            unordered_set<string> forwardCache = cache->getForwardMapping(next);
+            if (!forwardCache.empty()) {
+                bool hasNextT = forwardCache.find(stmt2) != forwardCache.end();
+                if (hasNextT) {
+                    addBooleanRelation(stmt1, stmt2);
+                }
+                return hasNextT;
+            }
+            return false;
+        };
+        runBFS(stmt1, stmt2, true, saveToCache, canEnd);
     }
 
     return cache->getBooleanMapping(stmt1, stmt2);
 }
 
-unordered_set<string> NextKBAdapter::getAllStmtsNextT(string stmtNum) {
+unordered_set<string> NextKBAdapter::getAllStmtsNextT(const string &stmtNum) {
     if (cache->getForwardMapping(stmtNum).empty()) {
-        forwardBFS(stmtNum);
+        CacheCallback saveToCache = [&](const string &next) {
+            unordered_set<string> forwardCache = cache->getForwardMapping(next);
+            bool canUseCache = !forwardCache.empty() && stmtNum != next;
+
+            if (canUseCache) {
+                for (auto &savedNext: forwardCache)
+                    addForwardRelation(stmtNum, savedNext);
+                return false;
+            }
+            addForwardRelation(stmtNum, next);
+            return true;
+        };
+
+        TerminateCheck canEnd = [](const string &next) { return false; };
+
+        runBFS(stmtNum, ROOT_STMT, true, saveToCache, canEnd);
     }
 
     return cache->getForwardMapping(stmtNum);
 }
 
-unordered_set<string> NextKBAdapter::getAllStmtsTBefore(string stmtNum) {
+unordered_set<string> NextKBAdapter::getAllStmtsTBefore(const string &stmtNum) {
     if (cache->getBackwardMapping(stmtNum).empty()) {
-        backwardBFS(stmtNum);
+        CacheCallback saveToCache = [&](const string &next) {
+            unordered_set<string> backwardCache = cache->getBackwardMapping(next);
+            bool canUseCache = !backwardCache.empty() && stmtNum != next;
+
+            if (canUseCache) {
+                for (auto &savedNext: backwardCache)
+                    addBackwardRelation(stmtNum, savedNext);
+                return false;
+            }
+            addBackwardRelation(stmtNum, next);
+            return true;
+        };
+
+        TerminateCheck canEnd = [](const string &next) { return false; };
+
+        runBFS(ROOT_STMT, stmtNum, false, saveToCache, canEnd);
     }
 
     return cache->getBackwardMapping(stmtNum);

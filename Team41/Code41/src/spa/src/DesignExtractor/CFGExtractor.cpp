@@ -18,7 +18,7 @@ void CFGExtractor::addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode, boo
         parentCFGNode->addForwardChild(childCFGNode);
     else
         parentCFGNode->addBackwardChild(childCFGNode);
-    if (parentCFGNode->getStmtNum() != "0") // do not add parent edge if parent is root
+    if (parentCFGNode->getStmtNum() != ROOT_INDEX) // do not add parent edge if parent is root
         childCFGNode->addParent(parentCFGNode);
 }
 
@@ -112,6 +112,7 @@ void CFGExtractor::linkBackNode() {
             bfsQ.push({curTNode->getChildren()[1], backTNode}); // pass to stmtLst to handle
         }
     }
+    stmtNumToNodeMap[ROOT_INDEX] = cfg;
 }
 
 void CFGExtractor::extractCFG() {
