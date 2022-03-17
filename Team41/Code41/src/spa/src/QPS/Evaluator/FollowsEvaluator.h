@@ -5,6 +5,8 @@
 class FollowsEvaluator : public StmtStmtEvaluator {
 private:
     PKBClient* pkb;
+public:
+    explicit FollowsEvaluator(PKBClient* pkb);
 
     /**
      * Construct a table that captures the follow relation between two statement lines.
@@ -81,6 +83,4 @@ private:
      * @return A table that contains information based on the follow relation between two wildcard.
      */
     Table* evaluateWildCardWildCard() override;
-public:
-    explicit FollowsEvaluator(PKBClient* pkb);
 };

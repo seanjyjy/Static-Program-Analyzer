@@ -67,7 +67,7 @@ Table *Evaluator::buildBooleanTable(bool booleanResult) {
     return new FalseTable();
 }
 
-Table *Evaluator::buildBooleanTable(unordered_set<string> &results) {
+Table *Evaluator::buildBooleanTable(const unordered_set<string> &results) {
     if (results.empty()) {
         return new FalseTable();
     }
@@ -75,7 +75,7 @@ Table *Evaluator::buildBooleanTable(unordered_set<string> &results) {
     return new TrueTable();
 }
 
-Table *Evaluator::buildBooleanTable(vector<pair<string, string>> results) {
+Table *Evaluator::buildBooleanTable(const vector<pair<string, string>>& results) {
     if (results.empty()) {
         return new FalseTable();
     }
@@ -110,8 +110,7 @@ Table *Evaluator::buildSingleSynonymTable(const string &result, ClauseVariable &
     return table;
 }
 
-
-Table *Evaluator::buildSingleSynonymTable(unordered_set<string> &results, ClauseVariable &synonym) {
+Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable &synonym) {
     if (results.empty()) {
         return new FalseTable();
     }
@@ -132,7 +131,7 @@ Table *Evaluator::buildSingleSynonymTable(unordered_set<string> &results, Clause
     return table;
 }
 
-Table *Evaluator::buildSynonymSynonymTable(vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
+Table *Evaluator::buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
                                            ClauseVariable &rightSynonym) {
     if (results.empty()) {
         return new FalseTable();
@@ -145,7 +144,7 @@ Table *Evaluator::buildSynonymSynonymTable(vector<pair<string, string>> &results
     return buildDifferentSynonymTable(results, leftSynonym, rightSynonym);
 }
 
-Table *Evaluator::buildSameSynonymTable(vector<pair<string, string>> &results, ClauseVariable &synonym) {
+Table *Evaluator::buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &synonym) {
     string label = synonym.getLabel();
     unordered_set<string> filters = getFilters(synonym.getDesignEntityType());
 
@@ -162,7 +161,7 @@ Table *Evaluator::buildSameSynonymTable(vector<pair<string, string>> &results, C
     return table;
 }
 
-Table *Evaluator::buildDifferentSynonymTable(vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
+Table *Evaluator::buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
                                              ClauseVariable &rightSynonym) {
     string leftLabel = leftSynonym.getLabel();
     string rightLabel = rightSynonym.getLabel();

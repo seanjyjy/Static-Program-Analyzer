@@ -31,17 +31,17 @@ public:
 
     // ================================================ TABLE BUILDING ==============================================
     Table* buildBooleanTable(bool booleanResult);
-    Table* buildBooleanTable(unordered_set<string> &results);
+    Table* buildBooleanTable(const unordered_set<string> &results);
     Table* buildBooleanTable(const string &result);
-    Table* buildBooleanTable(vector<pair<string, string>> results);
+    Table* buildBooleanTable(const vector<pair<string, string>>& results);
 
-    Table* buildSingleSynonymTable(unordered_set<string> &results, ClauseVariable &synonym);
+    Table* buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable &synonym);
     Table* buildSingleSynonymTable(const string &result, ClauseVariable &synonym);
-    Table* buildSynonymSynonymTable(vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
+    Table* buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
                                     ClauseVariable &rightSynonym);
-    Table* buildSameSynonymTable(vector<pair<string, string>> &results, ClauseVariable &synonym;
+    Table* buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &synonym);
 
-    Table* buildDifferentSynonymTable(vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
+    Table* buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
                                       ClauseVariable &rightSynonym);
 
     unordered_set<string> getFilters(QueryDeclaration::design_entity_type);

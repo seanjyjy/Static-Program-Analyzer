@@ -5,6 +5,8 @@
 class ParentEvaluator : public StmtStmtEvaluator {
 private:
     PKBClient* pkb;
+public:
+    explicit ParentEvaluator(PKBClient* pkb);
 
     /**
      * Construct a table that captures the Parent relation between two statement line.
@@ -80,6 +82,4 @@ private:
      * @return A table that contains information based on the Parent relation between two wildcard.
      */
     Table* evaluateWildCardWildCard() override;
-public:
-    explicit ParentEvaluator(PKBClient* pkb);
 };

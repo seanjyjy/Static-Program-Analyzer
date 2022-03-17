@@ -1,7 +1,8 @@
 #pragma once
 
-#include "GenericClauseEvaluator.h"
+#include "ProcEvaluator.h"
 
-class ModifiesUsesPEvaluator : public GenericClauseEvaluator {
-
+class ModifiesUsesPEvaluator : public ProcEvaluator  {
+public:
+    Table* evaluateClause(ClauseVariable left, ClauseVariable right) override;
 };

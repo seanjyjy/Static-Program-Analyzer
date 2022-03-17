@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Evaluator.h"
+#include "ProcProcEvaluator.h"
 
-class CallsTEvaluator {
+class CallsTEvaluator : public ProcProcEvaluator {
 private:
     PKBClient* pkb;
-
+public:
     bool getIdentifierIdentifierRelation(const string& leftLabel, const string& rightLabel) override;
     unordered_set<string> getIdentifierSynonymRelation(const string& label) override;
     unordered_set<string> getIdentifierWildCardRelation(const string& label) override;
@@ -15,6 +15,5 @@ private:
     unordered_set<string> getWildCardIdentifierRelation(const string& label) override;
     unordered_set<string> getWildCardSynonymRelation() override;
     vector<pair<string, string>> getWildCardWildCardRelation() override;
-public:
     explicit CallsTEvaluator(PKBClient* pkb);
 };
