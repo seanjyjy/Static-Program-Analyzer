@@ -1,174 +1,50 @@
 #include "NextTEvaluator.h"
 
-Table *NextTEvaluator::evaluate(QueryClause clause, NextKBAdapter* nextKBAdapter) {
-    auto leftVariable = clause.getLeftClauseVariable();
-    auto rightVariable = clause.getRightClauseVariable();
-
-    if (EvaluatorUtils::StmtUtils::isIntegerInteger(&leftVariable, &rightVariable)) {
-        return evaluateIntegerInteger(nextKBAdapter, leftVariable, rightVariable);
-    }
-
-    if (EvaluatorUtils::StmtUtils::isValidIntegerSynonym(&leftVariable, &rightVariable)) {
-        return evaluateIntegerSynonym(nextKBAdapter, leftVariable, rightVariable);
-    }
-
-    if (EvaluatorUtils::StmtUtils::isIntegerWildCard(&leftVariable, &rightVariable)) {
-        return evaluateIntegerWildCard(nextKBAdapter, leftVariable);
-    }
-
-    if (EvaluatorUtils::StmtUtils::isValidSynonymInteger(&leftVariable, &rightVariable)) {
-        return evaluateSynonymInteger(nextKBAdapter, leftVariable, rightVariable);
-    }
-
-    if (EvaluatorUtils::StmtUtils::isValidSynonymSynonym(&leftVariable, &rightVariable)) {
-        return evaluateSynonymSynonym(nextKBAdapter, leftVariable, rightVariable);
-    }
-
-    if (EvaluatorUtils::StmtUtils::isValidSynonymWildCard(&leftVariable, &rightVariable)) {
-        return evaluateSynonymWildCard(nextKBAdapter, leftVariable);
-    }
-
-    if (EvaluatorUtils::StmtUtils::isWildCardInteger(&leftVariable, &rightVariable)) {
-        return evaluateWildCardInteger(nextKBAdapter, rightVariable);
-    }
-
-    if (EvaluatorUtils::StmtUtils::isValidWildCardSynonym(&leftVariable, &rightVariable)) {
-        return evaluateWildCardSynonym(nextKBAdapter, rightVariable);
-    }
-
-    if (EvaluatorUtils::isWildCardWildCard(&leftVariable, &rightVariable)) {
-        return evaluateWildCardWildCard(nextKBAdapter);
-    }
-
-    throw SemanticException("Invalid query provided for NextT");
+NextTEvaluator::NextTEvaluator(NextKBAdapter *nextKBAdapter) {
+    this->nextKBAdapter = nextKBAdapter;
 }
 
-Table *NextTEvaluator::evaluateIntegerInteger(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
-    if (!nextKBAdapter->isNextT(left.getLabel(), right.getLabel())) {
-        return new FalseTable();
-    }
-
-    return new TrueTable();
+Table *NextTEvaluator::evaluateIntegerInteger(ClauseVariable left, ClauseVariable right) {
+    bool isNextT = nextKBAdapter->isNext(left.getLabel(), right.getLabel());
+    return buildBooleanTable(isNextT);
 }
 
-Table *NextTEvaluator::evaluateIntegerSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
+Table *NextTEvaluator::evaluateIntegerSynonym(ClauseVariable left, ClauseVariable right) {
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNextT(left.getLabel());
-
-    string column = right.getLabel();
-    Header header = Header({column});
-    Table* table = new PQLTable(header);
-
-    for (auto& stmt : setOfStmts) {
-        Row* row = new Row(column, stmt);
-        table->addRow(row);
-    }
-
-    return table;
+    return buildSingleSynonymTable(setOfStmts, right);
 }
 
-Table *NextTEvaluator::evaluateIntegerWildCard(NextKBAdapter* nextKBAdapter, ClauseVariable left) {
+Table *NextTEvaluator::evaluateIntegerWildCard(ClauseVariable left) {
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNextT(left.getLabel());
-
-    if (setOfStmts.empty()) {
-        return new FalseTable();
-    }
-
-    return new TrueTable();
+    return buildBooleanTable(setOfStmts);
 }
 
-Table *NextTEvaluator::evaluateSynonymInteger(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
+Table *NextTEvaluator::evaluateSynonymInteger(ClauseVariable left, ClauseVariable right) {
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsTBefore(right.getLabel());
-
-    string column = left.getLabel();
-    Header header = Header({column});
-    Table* table = new PQLTable(header);
-
-    for (auto& stmt : setOfStmts) {
-        Row* row = new Row(column, stmt);
-        table->addRow(row);
-    }
-
-    return table;
+    return buildSingleSynonymTable(setOfStmts, left);
 }
 
-Table *NextTEvaluator::evaluateSynonymSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable left, ClauseVariable right) {
+Table *NextTEvaluator::evaluateSynonymSynonym(ClauseVariable left, ClauseVariable right) {
     vector<pair<string, string>> listOfStmtToStmt = nextKBAdapter->getAllNextT();
-
-    string firstColumn = left.getLabel();
-    string secondColumn = right.getLabel();
-    Table* table;
-    if (firstColumn == secondColumn) {
-        Header header = Header({firstColumn});
-        table = new PQLTable(header);
-
-        for (auto&[firstStmt, secondStmt] : listOfStmtToStmt) {
-            if (firstStmt == secondStmt) {
-                Row* row = new Row();
-                row->addEntry(firstColumn, firstStmt);
-                table->addRow(row);
-            }
-        }
-    } else {
-        Header header = Header({firstColumn, secondColumn});
-        table = new PQLTable(header);
-
-        for (auto&[firstStmt, secondStmt] : listOfStmtToStmt) {
-            Row* row = new Row();
-            row->addEntry(firstColumn, firstStmt);
-            row->addEntry(secondColumn, secondStmt);
-            table->addRow(row);
-        }
-    }
-
-    return table;
+    return buildSynonymSynonymTable(listOfStmtToStmt, left, right);
 }
 
-Table *NextTEvaluator::evaluateSynonymWildCard(NextKBAdapter* nextKBAdapter, ClauseVariable left) {
+Table *NextTEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
     vector<string> setOfStmts = nextKBAdapter->getAllStmtsThatHaveNextTStmt();
-
-    string column = left.getLabel();
-    Header header = Header({column});
-    Table* table = new PQLTable(header);
-
-    for (auto& stmt : setOfStmts) {
-        Row* row = new Row(column, stmt);
-        table->addRow(row);
-    }
-
-    return table;
+    return buildSingleSynonymTable(setOfStmts, left);
 }
 
-Table *NextTEvaluator::evaluateWildCardInteger(NextKBAdapter* nextKBAdapter, ClauseVariable right) {
+Table *NextTEvaluator::evaluateWildCardInteger(ClauseVariable right) {
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsTBefore(right.getLabel());
-
-    if (setOfStmts.empty()) {
-        return new FalseTable();
-    }
-
-    return new TrueTable();
+    return buildBooleanTable(setOfStmts);
 }
 
-Table *NextTEvaluator::evaluateWildCardSynonym(NextKBAdapter* nextKBAdapter, ClauseVariable right) {
+Table *NextTEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
     vector<string> setOfStmts = nextKBAdapter->getAllStmtsThatIsNextTOfSomeStmt();
-
-    string column = right.getLabel();
-    Header header = Header({column});
-    Table* table = new PQLTable(header);
-
-    for (auto& stmt: setOfStmts) {
-        Row* row = new Row(column, stmt);
-        table->addRow(row);
-    }
-
-    return table;
+    return buildSingleSynonymTable(setOfStmts, right);
 }
 
-Table *NextTEvaluator::evaluateWildCardWildCard(NextKBAdapter* nextKBAdapter) {
+Table *NextTEvaluator::evaluateWildCardWildCard() {
     vector<pair<string, string>> listOfStmts = nextKBAdapter->getAllNextT();
-
-    if (listOfStmts.empty()) {
-        return new FalseTable();
-    }
-
-    return new TrueTable();
+    return buildBooleanTable(listOfStmts);
 }

@@ -34,15 +34,19 @@ public:
     Table* buildBooleanTable(const unordered_set<string> &results);
     Table* buildBooleanTable(const string &result);
     Table* buildBooleanTable(const vector<pair<string, string>>& results);
+    Table* buildBooleanTable(const vector<CFGNode *>& results);
 
-    Table* buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable &synonym);
-    Table* buildSingleSynonymTable(const string &result, ClauseVariable &synonym);
-    Table* buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
+    Table* buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable& synonym);
+    Table* buildSingleSynonymTable(const string &result, ClauseVariable& synonym);
+    Table* buildSingleSynonymTable(const vector<CFGNode *>& results, ClauseVariable& synonym);
+    Table* buildSingleSynonymTable(const vector<string> results, ClauseVariable& synonym);
+
+    Table* buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& leftSynonym,
                                     ClauseVariable &rightSynonym);
-    Table* buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &synonym);
+    Table* buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& synonym);
 
-    Table* buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
-                                      ClauseVariable &rightSynonym);
+    Table* buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& leftSynonym,
+                                      ClauseVariable& rightSynonym);
 
     unordered_set<string> getFilters(QueryDeclaration::design_entity_type);
 
