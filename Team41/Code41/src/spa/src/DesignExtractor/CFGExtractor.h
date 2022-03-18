@@ -8,6 +8,7 @@
 
 class CFGExtractor {
 private:
+    const string ROOT_INDEX = "0";
     TNode *ast; // root node of AST
     unordered_map<TNode *, string> &nodeToStmtNumMap; // mapping of TNode* to statement number
     CFGNode *cfg = new CFGNode("0"); // root node of CFG

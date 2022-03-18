@@ -40,19 +40,19 @@ public:
      * Registers a read statement to PKBManager
      * @throws error if statement already has a type
      */
-    void registerReadStmt(const string& stmtNum);
+    void registerReadStmt(const string& stmtNum, const string& varName);
 
     /**
      * Registers a print statement to PKBManager
      * @throws error if statement already has a type
      */
-    void registerPrintStmt(const string& stmtNum);
+    void registerPrintStmt(const string& stmtNum, const string& varName);
 
     /**
      * Registers a call statement to PKBManager
      * @throws error if statement already has a type
      */
-    void registerCallStmt(const string& stmtNum);
+    void registerCallStmt(const string& stmtNum, const string& procName);
 
     //======================================== Entities ==================================================
 

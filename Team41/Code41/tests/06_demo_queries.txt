@@ -448,3 +448,73 @@ stmt s;
 Select <s, s, s>
 1 1 1, 2 2 2, 3 3 3, 4 4 4, 5 5 5, 6 6 6, 7 7 7, 8 8 8, 9 9 9, 10 10 10, 11 11 11, 12 12 12, 13 13 13, 14 14 14, 15 15 15, 16 16 16, 17 17 17, 18 18 18, 19 19 19, 20 20 20, 21 21 21, 22 22 22, 23 23 23
 5000
+230 - Select attribute names in tuple
+read re; print pn; call cl;
+Select <re.varName, pn.varName, cl.procName>
+x flag computeCentroid, x cenX computeCentroid, x cenY computeCentroid, x normSq computeCentroid, y flag computeCentroid, y cenX computeCentroid, y cenY computeCentroid, y normSq computeCentroid, x flag printResults, x cenX printResults, x cenY printResults, x normSq printResults, y flag printResults, y cenX printResults, y cenY printResults, y normSq printResults, x flag readPoint, x cenX readPoint, x cenY readPoint, x normSq readPoint, y flag readPoint, y cenX readPoint, y cenY readPoint, y normSq readPoint
+5000
+231 - Select more attribute names in tuple
+constant c;
+Select <c.value>
+0, 1
+5000
+232 - Tuple with attr_ref and variable itself
+call cl;
+Select <cl.procName, cl>
+computeCentroid 2, printResults 3, readPoint 13, readPoint 18
+5000
+232 - Attr_ref not in tuple
+variable v;
+Select v.varName
+cenX, cenY, count, flag, normSq, x, y
+5000
+233 - Read x2 in tuple
+read re;
+Select <re.varName, re.varName>
+x x, y y
+5000
+234 - Print x2 in tuple mix with read re
+read re; print pn;
+Select <pn.varName, re.varName, pn.varName>
+cenX x cenX, cenX y cenX, cenY x cenY, cenY y cenY, flag x flag, flag y flag, normSq x normSq, normSq y normSq
+5000
+235 - Stmt num
+stmt s;
+Select stmt.stmt#
+
+5000
+236 - mix stmt num
+read re; print pn; call cl;
+Select <re.stmt#, pn.stmt#, cl.stmt#>
+4 6 13,4 6 18,4 6 2,4 6 3,4 7 13,4 7 18,4 7 2,4 7 3,4 8 13,4 8 18,4 8 2,4 8 3,4 9 13,4 9 18,4 9 2,4 9 3,5 6 13,5 6 18,5 6 2,5 6 3,5 7 13,5 7 18,5 7 2,5 7 3,5 8 13,5 8 18,5 8 2,5 8 3,5 9 13,5 9 18,5 9 2,5 9 3
+5000
+237 - mix stmt num 2
+if ifs; assign a;
+Select <ifs.stmt#, a.stmt#>
+19 1, 19 10, 19 11, 19 12, 19 15, 19 16, 19 17, 19 20, 19 21, 19 22, 19 23
+5000
+238 - Select attribute names in tuple
+read re; print pn; call cl;
+Select <re.varName, pn.varName, cl.procName>
+x flag computeCentroid, x cenX computeCentroid, x cenY computeCentroid, x normSq computeCentroid, y flag computeCentroid, y cenX computeCentroid, y cenY computeCentroid, y normSq computeCentroid, x flag printResults, x cenX printResults, x cenY printResults, x normSq printResults, y flag printResults, y cenX printResults, y cenY printResults, y normSq printResults, x flag readPoint, x cenX readPoint, x cenY readPoint, x normSq readPoint, y flag readPoint, y cenX readPoint, y cenY readPoint, y normSq readPoint
+5000
+239 - Select wrong procName attribute - invalid attrRef
+stmt s;
+Select s.procName
+
+5000
+240 - Select wrong varName attribute type - invalid attrRef
+assign a;
+Select a.varName
+
+5000
+241 - Select wrong value attribute type - invalid attrRef
+procedure p;
+Select p.value
+
+5000
+242 - Select wrong stmt attribute type - invalid attrRef
+constant c;
+Select c.stmt#
+
+5000

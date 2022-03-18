@@ -18,19 +18,26 @@
 #include "QPS/Evaluator/ParentTEvaluator.h"
 #include "QPS/Evaluator/CallsEvaluator.h"
 #include "QPS/Evaluator/CallsTEvaluator.h"
+#include "QPS/Evaluator/NextEvaluator.h"
+#include "QPS/Evaluator/NextTEvaluator.h"
 #include "QPS/Evaluator/AssignPatternEvaluator.h"
 #include "QPS/Evaluator/IfPatternEvaluator.h"
 #include "QPS/Evaluator/WhilePatternEvaluator.h"
 
+#include "QueryProjector.h"
 #include "QueryObject.h"
 #include "QueryClause.h"
 #include "Selectable.h"
+
+#include "Adapters/NextKBAdapter.h"
 
 using namespace std;
 
 class QueryEvaluator {
 private:
     PKBClient* pkb;
+    NextKBAdapter* nextKBAdapter;
+
     /**
      * Deletes a table after it is not being used.
      *
@@ -47,6 +54,7 @@ private:
     void safeDeleteTable(Table* tableToDelete, Table* resultTable);
 public:
     explicit QueryEvaluator(PKBClient* pkb);
+    ~QueryEvaluator();
 
     /**
      * Based on the QueryObject, evaluates the query provided return a set of results.
@@ -54,7 +62,7 @@ public:
      * @param queryObject QueryObject.
      * @return A set of results based on the query provided.
      */
-    unordered_set<string> evaluateQuery(QueryObject *queryObject);
+    QueryProjector evaluateQuery(QueryObject *queryObject);
 
     /**
      * Constructs a table based on the QueryClause provided.
@@ -71,16 +79,6 @@ public:
      * @return A table that contains information based on the PatternClause provided.
      */
     Table* evaluate(PatternClause& clause);
-
-    /**
-     * Format the resulting query depending on the return type.
-     *
-     * @param queryObject QueryObject.
-     * @param resultTable Table the represents the resultant table from the query itself.
-     * @return An unordered set of strings representing the result.
-     */
-    unordered_set<string> buildResult(QueryObject *queryObject, Table *resultTable);
-
     /**
      * Extract the vector of synonyms from the query's return type from query object.
      *

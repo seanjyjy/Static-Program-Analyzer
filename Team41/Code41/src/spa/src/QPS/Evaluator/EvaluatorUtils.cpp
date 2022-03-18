@@ -46,6 +46,10 @@ bool EvaluatorUtils::isRead(QueryDeclaration::design_entity_type type) {
     return type == QueryDeclaration::design_entity_type::READ;
 }
 
+bool EvaluatorUtils::isCall(QueryDeclaration::design_entity_type type) {
+    return type == QueryDeclaration::design_entity_type::CALL;
+}
+
 bool EvaluatorUtils::isVariableSynonym(ClauseVariable* var) {
     return var->isSynonym() && isVariable(var->getDesignEntityType());
 }
@@ -80,6 +84,17 @@ bool EvaluatorUtils::isSynonymWildCard(ClauseVariable* left, ClauseVariable* rig
 
 bool EvaluatorUtils::isWildCardWildCard(ClauseVariable* left, ClauseVariable* right) {
     return left->isWildCard() && right->isWildCard();
+}
+
+bool EvaluatorUtils::validateDeclarations(vector<QueryDeclaration> declarations) {
+    unordered_set<string> set;
+    for (QueryDeclaration &declaration: declarations) {
+        if (set.find(declaration.synonym) != set.end()) {
+            return false;
+        }
+        set.insert(declaration.synonym);
+    }
+    return true;
 }
 
 // ============================================= STMT UTILS ======================================================
@@ -215,4 +230,76 @@ bool EvaluatorUtils::CallsUtils::isValidCallsWildCardSynonym(ClauseVariable *lef
 
 bool EvaluatorUtils::CallsUtils::isWildCardIdentifier(ClauseVariable *left, ClauseVariable *right) {
     return left->isWildCard() && right->isIdentifier();
+}
+
+// ============================================ Attr Utils ====================================================
+
+bool EvaluatorUtils::AttrUtils::isValidSelectable(Selectable *target) {
+    return target->getType() != Selectable::ATTR_REF || isProcProcNameAttr(target) || isCallProcNameAttr(target) ||
+           isReadVarNameAttr(target) || isPrintVarNameAttr(target) || isVarVarNameAttr(target) ||
+           isConstantValueAttr(target) || isStmtStmtNumAttr(target);
+}
+
+bool EvaluatorUtils::AttrUtils::isProcProcNameAttr(Selectable *target) {
+    return target->getAttr() == Selectable::PROC_NAME && EvaluatorUtils::isProcedure(target->getSynonym().type);
+}
+
+bool EvaluatorUtils::AttrUtils::isCallProcNameAttr(Selectable *target) {
+    return target->getAttr() == Selectable::PROC_NAME && EvaluatorUtils::isCall(target->getSynonym().type);
+}
+
+bool EvaluatorUtils::AttrUtils::isReadVarNameAttr(Selectable *target) {
+    return target->getAttr() == Selectable::VAR_NAME && EvaluatorUtils::isRead(target->getSynonym().type);
+}
+
+bool EvaluatorUtils::AttrUtils::isPrintVarNameAttr(Selectable *target) {
+    return target->getAttr() == Selectable::VAR_NAME && EvaluatorUtils::isPrint(target->getSynonym().type);
+}
+
+bool EvaluatorUtils::AttrUtils::isVarVarNameAttr(Selectable *target) {
+    return target->getAttr() == Selectable::VAR_NAME && EvaluatorUtils::isVariable(target->getSynonym().type);
+}
+
+bool EvaluatorUtils::AttrUtils::isConstantValueAttr(Selectable *target) {
+    return target->getAttr() == Selectable::VALUE && EvaluatorUtils::isConstant(target->getSynonym().type);
+}
+
+bool EvaluatorUtils::AttrUtils::isStmtStmtNumAttr(Selectable *target) {
+    return target->getAttr() == Selectable::STMT_NUM && EvaluatorUtils::isStmtType(target->getSynonym().type);
+}
+
+bool EvaluatorUtils::AttrUtils::validateSelectTarget(SelectTarget *selection) {
+    bool valid = selection->isBoolean();
+    for(auto &target: selection->tuple) {
+        valid = valid || isValidSelectable(&target);
+        if (!valid) return false;
+    }
+    return valid;
+}
+
+optional<string> EvaluatorUtils::AttrUtils::getAttrFromSelectable(Selectable *target, const string &rawData, PKBClient *pkb) {
+    QueryDeclaration declaration = target->getSynonym();
+
+    if (isCallProcNameAttr(target)) {
+        string procName = pkb->getCallsProcNameAttr(rawData);
+        if (procName.empty()) return nullopt;
+        return procName;
+
+    } else if (isReadVarNameAttr(target)) {
+        string varName = pkb->getReadVarNameAttr(rawData);
+        if (varName.empty()) return nullopt;
+        return varName;
+
+    } else if (isPrintVarNameAttr(target)) {
+        string varName = pkb->getPrintVarNameAttr(rawData);
+        if (varName.empty()) return nullopt;
+        return varName;
+
+    } else if (isProcProcNameAttr(target) || isVarVarNameAttr(target) || isConstantValueAttr(target) ||
+            isStmtStmtNumAttr(target)) {
+        return rawData;
+
+    } else {
+        return nullopt;
+    }
 }

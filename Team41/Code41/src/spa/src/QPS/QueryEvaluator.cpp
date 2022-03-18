@@ -1,14 +1,22 @@
 #include "QueryEvaluator.h"
 #include "QPS/Evaluator/Evaluator.h"
 
-QueryEvaluator::QueryEvaluator(PKBClient *pkb) { this->pkb = pkb; }
+QueryEvaluator::QueryEvaluator(PKBClient *pkb) {
+    this->pkb = pkb;
+    this->nextKBAdapter = new NextKBAdapter(pkb);
+}
 
-unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
+QueryProjector QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     unordered_set<string> emptyResult;
     unordered_set<string> result;
 
     if (!queryObject->isQueryValid) {
-        return emptyResult;
+        return {queryObject->selectTarget, nullptr, pkb, false};
+    }
+
+    if (!EvaluatorUtils::validateDeclarations(queryObject->declarations) ||
+        !EvaluatorUtils::AttrUtils::validateSelectTarget(&queryObject->selectTarget)) {
+        return {queryObject->selectTarget, new FalseTable(), pkb, true};
     }
 
     Table *resultTable = new TrueTable();
@@ -33,7 +41,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
                 safeDeleteTable(resultTable);
-                return buildResult(queryObject, new FalseTable());
+                return {queryObject->selectTarget, new FalseTable(), pkb, true};
             }
 
             Table *ogTable = resultTable;
@@ -44,7 +52,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
             if (resultTable->isEmpty()) {
                 safeDeleteTable(resultTable);
-                return buildResult(queryObject, new FalseTable());
+                return {queryObject->selectTarget, new FalseTable(), pkb, true};
             }
         }
 
@@ -54,7 +62,7 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
                 safeDeleteTable(resultTable);
-                return buildResult(queryObject, new FalseTable());
+                return {queryObject->selectTarget, new FalseTable(), pkb, true};
             }
 
             Table *ogTable = resultTable;
@@ -65,40 +73,20 @@ unordered_set<string> QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
             if (resultTable->isEmpty()) {
                 safeDeleteTable(resultTable);
-                return buildResult(queryObject, new FalseTable());
+                return {queryObject->selectTarget, new FalseTable(), pkb, true};
             }
         }
     } catch (SemanticException& error) {
         std::cout << error.what() << std::endl;
-
-        return buildResult(queryObject, new FalseTable());
+        delete resultTable;
+        return {queryObject->selectTarget, new FalseTable(), pkb, true};
     } catch (const runtime_error& error) {
         std::cout << error.what() << std::endl;
-
-        return buildResult(queryObject, new FalseTable());
+        delete resultTable;
+        return {queryObject->selectTarget, new FalseTable(), pkb, true};
     }
 
-    return buildResult(queryObject, resultTable);
-}
-
-unordered_set<string> QueryEvaluator::buildResult(QueryObject *queryObject, Table *resultTable) {
-    unordered_set<string> result;
-
-    if (queryObject->isSelectingBoolean()) {
-        // Occurs when result table is a false table or pql table which is empty
-        if (resultTable->isEmpty()) {
-            result.insert("FALSE");
-        } else {
-            result.insert("TRUE");
-        }
-    } else {
-        vector<string> synonyms = getSynonyms(queryObject);
-
-        // copy result from resultTable to result here when can think of based on queryObject schema
-        result = resultTable->getColumns(synonyms);
-    }
-    safeDeleteTable(resultTable);
-    return result;
+    return {queryObject->selectTarget, resultTable, pkb, true};
 }
 
 Table *QueryEvaluator::evaluate(QueryClause &clause) {
@@ -123,6 +111,14 @@ Table *QueryEvaluator::evaluate(QueryClause &clause) {
             return CallsEvaluator::evaluate(clause, this->pkb);
         case QueryClause::clause_type::callsT:
             return CallsTEvaluator::evaluate(clause, this->pkb);
+        case QueryClause::clause_type::next:
+            return NextEvaluator::evaluate(clause, this->nextKBAdapter);
+        case QueryClause::clause_type::nextT: // NextT affects affectsT should take in an extra cache when it is supported
+            return NextTEvaluator::evaluate(clause, this->nextKBAdapter);
+        case QueryClause::clause_type::affects:
+            return nullptr;
+        case QueryClause::clause_type::affectsT:
+            return nullptr;
         default:
             throw std::runtime_error("unknown clause of type " + to_string(clause.type));
     }
@@ -151,6 +147,12 @@ void QueryEvaluator::safeDeleteTable(Table* tableToDelete, Table* resultTable) {
         delete tableToDelete;
     }
 }
+
+QueryEvaluator::~QueryEvaluator() {
+    // TODO: check if this cause an error as this also takes in PKB!
+    delete nextKBAdapter;
+}
+
 
 void QueryEvaluator::safeDeleteTable(Table *tableToDelete) {
     safeDeleteTable(tableToDelete, nullptr);

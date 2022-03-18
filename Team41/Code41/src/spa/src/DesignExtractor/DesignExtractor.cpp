@@ -15,11 +15,14 @@ void DesignExtractor::extractEntities() {
         TNodeType type = node->getType();
         switch (type) {
             case TNodeType::readStmt:
-                pkb->registerReadStmt(stmtNumStr); break;
+                pkb->registerReadStmt(stmtNumStr, node->getChildren()[0]->getTokenVal());
+                break;
             case TNodeType::printStmt:
-                pkb->registerPrintStmt(stmtNumStr); break;
+                pkb->registerPrintStmt(stmtNumStr, node->getChildren()[0]->getTokenVal());
+                break;
             case TNodeType::callStmt:
-                pkb->registerCallStmt(stmtNumStr); break;
+                pkb->registerCallStmt(stmtNumStr, node->getChildren()[0]->getTokenVal());
+                break;
             case TNodeType::whileStmt:
                 pkb->registerWhileStmt(stmtNumStr); break;
             case TNodeType::ifStmt:

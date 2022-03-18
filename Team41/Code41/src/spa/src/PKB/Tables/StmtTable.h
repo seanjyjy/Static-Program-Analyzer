@@ -24,7 +24,8 @@ enum StmtType {
  */
 class StmtTable {
 private:
-    OneToMany<StmtType, string> mapping;
+    OneToMany<StmtType, string> stmtMapping;
+    unordered_map<string, string> attrMapping;
 public:
     StmtTable();
 
@@ -41,9 +42,16 @@ public:
      *
      * @param stmtNumber the target statement number in string
      * @return the statement type
-     * @throws err if stmtNumber does not exist in table
      */
     StmtType getStmtType(string stmtNumber);
+
+    /**
+     * Gets the attribute associated with the stmt number
+     *
+     * @param stmtNumber the target statement number in string
+     * @return the statement type
+     */
+    string getStmtAttr(string stmtNumber);
 
     /**
      * Checks if the statement number match the specified type
@@ -59,9 +67,19 @@ public:
      *
      * @param stmtNum the statement number in string
      * @param type the type of the statement
-     * @throws error if type of stmtNumber is already set
      */
-    void setStmt(const string& stmtNum, StmtType type);
+    void setStmt(const string &stmtNum, StmtType type);
+
+    /**
+     * Set the statement and associated attribute into the table
+     *
+     * Extension: If a stmt can support multiple attr in the future,
+     * store an association object rather than string
+     *
+     * @param stmtNum the statement number in string
+     * @param attr the attribute value associated to stmt
+     */
+    void setStmtAttr(const string &stmtNum, const string& attr);
 
     /**
      * Gets the number of statements stored in table
