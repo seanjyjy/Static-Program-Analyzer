@@ -5,17 +5,11 @@
 using namespace std;
 
 class PatternVariable {
-private:
-    // parsed AST to be compared to the main SIMPLE AST
-    TNode *miniAST;
 public:
     // enum representing possible types of the pattern variable
     enum pattern_type {
         wildcard, fullpattern, subpattern
     };
-
-    // type of this pattern variable instance
-    pattern_type type;
 
     /**
      * Checks if the variable is a wildcard.
@@ -57,4 +51,11 @@ public:
      * @param miniAST representing the parsed SIMPLE code
      */
     PatternVariable(pattern_type type, TNode *miniAST);
+
+private:
+    // parsed AST to be compared to the main SIMPLE AST
+    TNode *miniAST;
+
+    // type of this pattern variable instance
+    pattern_type type;
 };

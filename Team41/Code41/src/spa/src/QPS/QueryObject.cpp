@@ -5,12 +5,16 @@
 QueryObject::QueryObject(vector<QueryDeclaration> declarations,
                          vector<QueryClause> clauses,
                          vector<PatternClause> patternClauses,
+                         vector<WithClause> withClauses,
+                         vector<SuperClause*> superClauses,
                          QueryDeclaration selectSynonym,
                          SelectTarget selectTarget,
                          bool isQueryValid) :
     declarations(std::move(declarations)),
     clauses(std::move(clauses)),
     patternClauses(std::move(patternClauses)),
+    withClauses(std::move(withClauses)),
+    superClauses(std::move(superClauses)),
     selectSynonym(std::move(selectSynonym)),
     selectTarget(std::move(selectTarget)),
     isQueryValid(isQueryValid) {
@@ -28,6 +32,34 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
         isQueryValid(isQueryValid) {
 }
 
+vector<QueryDeclaration>& QueryObject::getDeclarations() {
+    return declarations;
+}
+
+vector<QueryClause>& QueryObject::getClauses() {
+    return clauses;
+}
+
+vector<PatternClause>& QueryObject::getPatternClauses() {
+    return patternClauses;
+}
+
+vector<WithClause>& QueryObject::getWithClauses() {
+    return withClauses;
+}
+
+vector<SuperClause*>& QueryObject::getSuperClauses(){
+    return superClauses;
+}
+
+SelectTarget QueryObject::getSelectTarget() {
+    return selectTarget;
+}
+
+bool QueryObject::isValid() {
+    return isQueryValid;
+}
+
 bool QueryObject::isSelectingBoolean() {
     return selectTarget.isBoolean();
 }
@@ -42,6 +74,14 @@ QueryObject::~QueryObject() {
             p.cleanAST();
         }
     }
+}
+
+QueryDeclaration::design_entity_type QueryDeclaration::getType() {
+    return type;
+}
+
+string QueryDeclaration::getSynonym() {
+    return synonym;
 }
 
 void QueryObject::print() {

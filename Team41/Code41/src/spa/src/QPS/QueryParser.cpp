@@ -65,7 +65,7 @@ bool QueryParser::parseDeclarationsOfTypeString(string type) {
 void QueryParser::generateDeclarationObject(string type, string synonym) {
     QueryDeclaration::design_entity_type t = QueryDeclaration::stringToType(type);
     QueryDeclaration qd(t, synonym);
-    queryObject->declarations.push_back(qd);
+    queryObject->getDeclarations().push_back(qd);
 }
 
 bool QueryParser::lookForDeclarationSemiColon() {
@@ -129,7 +129,7 @@ bool QueryParser::parseSelectSingle() {
         return false;
     }
 
-    optional<QueryDeclaration> qd = findMatchingDeclaration(*synonym);
+    optional<QueryDeclaration> qd = findMatchingDeclaration(synonym.value());
     if (!qd.has_value()) {
         printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
         return false;
@@ -306,23 +306,34 @@ bool QueryParser::buildClause(string clause, string left, string right) {
 
     if (clauseValid) {
         QueryClause::clause_type type = determineClauseType(clause, left, right);
+
         ClauseVariable::variable_type leftType = determineVariableType(left);
         string l = left;
-
-        if (ClauseVariable::variable_type::identifier == leftType) {
+        if (leftType == ClauseVariable::variable_type::identifier) {
             l = l.substr(1, l.length() - 2);
         }
-        ClauseVariable lcv(leftType, l, determineDeclarationType(l));
-        ClauseVariable::variable_type rightType = determineVariableType(right);
-        string r = right;
-
-        if (ClauseVariable::variable_type::identifier == rightType) {
-            r = r.substr(1, r.length() - 2);
+        ClauseVariable lcv;
+        if (leftType == ClauseVariable::synonym) {
+            lcv = ClauseVariable(leftType, l, findMatchingDeclaration(l).value());
+        } else {
+            lcv = ClauseVariable(leftType, l, determineDeclarationType(l));
         }
 
-        ClauseVariable rcv(rightType, r, determineDeclarationType(r));
-        QueryClause clause(type, lcv, rcv);
-        queryObject->clauses.push_back(clause);
+        ClauseVariable::variable_type rightType = determineVariableType(right);
+        string r = right;
+        if (rightType == ClauseVariable::variable_type::identifier) {
+            r = r.substr(1, r.length() - 2);
+        }
+        ClauseVariable rcv;
+        if (rightType == ClauseVariable::synonym) {
+            rcv = ClauseVariable(rightType, r, findMatchingDeclaration(r).value());
+        } else {
+            rcv = ClauseVariable(rightType, r, determineDeclarationType(r));
+        }
+
+        QueryClause *clause = new QueryClause(type, lcv, rcv);
+        queryObject->getClauses().push_back(*clause);
+        queryObject->getSuperClauses().push_back(clause);
     } else {
         return false;
     }
@@ -462,6 +473,16 @@ bool QueryParser::skipPattern() {
         printf("Malformed input. Expected keyword: pattern\n");
         return false;
     }
+    return true;
+}
+
+bool QueryParser::skipWith() {
+    optional<string> w = lex->nextExpected("with");
+    if (!w.has_value()) {
+        printf("Malformed input. Expected keyword: with\n");
+        return false;
+    }
+    return true;
 }
 
 bool QueryParser::parsePatternClause() {
@@ -543,9 +564,17 @@ void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string l
     if (ClauseVariable::variable_type::identifier == leftType) {
         l = l.substr(1, l.length() - 2);
     }
-    ClauseVariable lcv(leftType, l, determineDeclarationType(l));
-    PatternClause pc(patternSyn, lcv, rhs);
-    queryObject->patternClauses.push_back(pc);
+
+    ClauseVariable lcv;
+    if (leftType == ClauseVariable::synonym) {
+        lcv = ClauseVariable(leftType, l, findMatchingDeclaration(l).value());
+    } else {
+        lcv = ClauseVariable(leftType, l, determineDeclarationType(l));
+    }
+
+    PatternClause *pc = new PatternClause(patternSyn, lcv, rhs);
+    queryObject->getPatternClauses().push_back(*pc);
+    queryObject->getSuperClauses().push_back(pc);
 }
 
 QueryParser::QueryParser(string &input) : input(input) {}
@@ -570,15 +599,102 @@ bool QueryParser::parsePatternClauses() {
     return true;
 }
 
+bool QueryParser::parseWithClauses() {
+    skipWith();
+    do {
+        if (!parseWithClause()) {
+            return false;
+        }
+    } while (lex->peekNextIsString("and") && lex->nextExpected("and"));
+    return true;
+}
+
+bool QueryParser::parseWithClause() {
+    optional<WithVariable> left = parseWithRef();
+    if (left == nullopt) {
+        return false;
+    }
+    lookForClauseGrammarSymbol("=", "Syntax Error: Expected '=' for with clause, following first ref\n");
+    optional<WithVariable> right = parseWithRef();
+    if (right == nullopt) {
+        return false;
+    }
+    WithClause* wc = new WithClause(left.value(), right.value());
+    queryObject->getWithClauses().push_back(*wc);
+    queryObject->getSuperClauses().push_back(wc);
+}
+
+// todo: build the with clause somehow
+optional<WithVariable> QueryParser::parseWithRef() {
+    if (lex->peekNextIsString("\"")) {
+        // '"' IDENT '"'
+        string ident = lex->nextToken();
+        if (lex->isIdentifier(ident)) {
+            return WithVariable(ident.substr(1, ident.length() - 2));
+        } else {
+            return nullopt;
+        }
+    }
+    string n = lex->nextToken();
+    if (lex->isInteger(n)) {
+        // INTEGER
+        return WithVariable(stoi(n));
+    } else if (lex->isValidSynonym(n)) {
+        // attrRef : synonym '.' attrName
+        optional<QueryDeclaration> syn = findMatchingDeclaration(n);
+        if (!syn.has_value()) {
+            printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", n.c_str());
+            return nullopt;
+        }
+        if (lex->peekNextIsString(".") && lex->nextExpected(".")) {
+            string attr = lex->nextToken();
+            if (isValidAttrName(attr)) {
+                return WithVariable(toAttrName(attr), syn.value());
+            } else {
+                printf("Syntax Error: Invalid attribute name <%s> found.\n", attr.c_str());
+                return nullopt;
+            }
+        } else {
+            printf("Syntax Error: Expected an attribute reference denoted by '.'\n");
+            return nullopt;
+        }
+    } else {
+        printf("Syntax Error: Invalid ref term <%s> found.\n", n.c_str());
+        return nullopt;
+    }
+    return nullopt;
+}
+
+WithVariable::attributeName QueryParser::toAttrName(string w) {
+    if (w == "procName") {
+        return WithVariable::PROC_NAME;
+    } else if (w == "varName") {
+        return WithVariable::VAR_NAME;
+    } else if (w == "value") {
+        return WithVariable::VALUE;
+    } else if (w == "stmt#") {
+        return WithVariable::STMT_NUM;
+    } else {
+        return WithVariable::NONE;
+    }
+}
+
+bool QueryParser::isValidAttrName(string w) {
+    // 'procName'| 'varName' | 'value' | 'stmt#'
+    return w == "procName" || w == "varName" || w == "value" || w == "stmt#";
+}
+
 QueryObject *QueryParser::parse() {
     // Base declaration
     vector<QueryDeclaration> declarations;
     vector<QueryClause> clauses;
     vector<PatternClause> patternClauses;
+    vector<WithClause> withClauses;
+    vector<SuperClause*> superClauses;
     string a = "";
     QueryDeclaration s(QueryDeclaration::ASSIGN, a);
     SelectTarget st(SelectTarget::BOOLEAN);
-    queryObject = new QueryObject(declarations, clauses, patternClauses, s, st, false);
+    queryObject = new QueryObject(declarations, clauses, patternClauses, withClauses, superClauses, s, st, false);
 
     lex = new QueryLexer(input);
 
@@ -602,6 +718,12 @@ QueryObject *QueryParser::parse() {
             }
         } else if (lex->peekNextIsString("pattern")) {
             if (!parsePatternClauses()) {
+                queryObject->isQueryValid = false;
+                cleanup();
+                return queryObject;
+            }
+        } else if (lex->peekNextIsString("with")) {
+            if (!parseWithClauses()) {
                 queryObject->isQueryValid = false;
                 cleanup();
                 return queryObject;
