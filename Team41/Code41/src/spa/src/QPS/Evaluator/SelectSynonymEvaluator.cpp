@@ -1,7 +1,7 @@
 #include "SelectSynonymEvaluator.h"
 #include <stdexcept>
 
-Table* SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym, PKBClient *pkb) {
+Table* SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym) {
     auto declarationType = selectSynonym.type;
     auto synonym = selectSynonym.synonym;
 
@@ -42,4 +42,8 @@ unordered_set<string> SelectSynonymEvaluator::getResultViaType(QueryDeclaration:
         default:
             throw SemanticException("Invalid query provided for Select");
     }
+}
+
+SelectSynonymEvaluator::SelectSynonymEvaluator(PKBClient *pkb) {
+    this->pkb = pkb;
 }

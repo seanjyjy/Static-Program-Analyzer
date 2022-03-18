@@ -2,6 +2,8 @@
 
 #include "QPS/QueryDeclaration.h"
 #include "QPS/ClauseVariable.h"
+#include "QPS/PatternVariable.h"
+#include "QPS/Selectable.h"
 #include "QPS/SelectTarget.h"
 #include "PKB/PKBClient.h"
 #include <optional>
@@ -533,5 +535,17 @@ public:
          * @return true if matches, false otherwise
          */
         static bool isStmtStmtNumAttr(Selectable *target);
+    };
+
+    class PatternUtils {
+    public:
+        static bool isWildCardWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables,
+                                        QueryDeclaration::design_entity_type type);
+        static bool isIdentifierWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables,
+                                          QueryDeclaration::design_entity_type type);
+        static bool isValidSynonymWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables,
+                                            QueryDeclaration::design_entity_type type);
+        static bool isWildCards(const vector<PatternVariable>& patternVariables,
+                                QueryDeclaration::design_entity_type type);
     };
 };

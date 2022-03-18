@@ -57,7 +57,7 @@ QueryProjector QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
         }
 
         for (const auto &declaration: queryObject->declarations) {
-            Table *intermediateTable = SelectSynonymEvaluator::evaluate(declaration, this->pkb);
+            Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(declaration);
 
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
@@ -92,29 +92,29 @@ QueryProjector QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 Table *QueryEvaluator::evaluate(QueryClause &clause) {
     switch (clause.type) {
         case QueryClause::clause_type::follows:
-            return FollowsEvaluator::evaluate(clause, this->pkb);
+            return FollowsEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::followsT:
-            return FollowsTEvaluator::evaluate(clause, this->pkb);
+            return FollowsTEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::parent:
-            return ParentEvaluator::evaluate(clause, this->pkb);
+            return ParentEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::parentT:
-            return ParentTEvaluator::evaluate(clause, this->pkb);
+            return ParentTEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::usesS:
-            return UsesSEvaluator::evaluate(clause, this->pkb);
+            return UsesSEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::usesP:
-            return UsesPEvaluator::evaluate(clause, this->pkb);
+            return UsesPEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::modifiesS:
-            return ModifiesSEvaluator::evaluate(clause, this->pkb);
+            return ModifiesSEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::modifiesP:
-            return ModifiesPEvaluator::evaluate(clause, this->pkb);
+            return ModifiesPEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::calls:
-            return CallsEvaluator::evaluate(clause, this->pkb);
+            return CallsEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::callsT:
-            return CallsTEvaluator::evaluate(clause, this->pkb);
+            return CallsTEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::next:
-            return NextEvaluator::evaluate(clause, this->nextKBAdapter);
+            return NextEvaluator(pkb, nextKBAdapter).evaluate(clause);
         case QueryClause::clause_type::nextT: // NextT affects affectsT should take in an extra cache when it is supported
-            return NextTEvaluator::evaluate(clause, this->nextKBAdapter);
+            return NextTEvaluator(pkb, nextKBAdapter).evaluate(clause);
         case QueryClause::clause_type::affects:
             return nullptr;
         case QueryClause::clause_type::affectsT:
@@ -128,11 +128,11 @@ Table *QueryEvaluator::evaluate(PatternClause &clause) {
     auto type = clause.getSynonym().type;
     switch (type) {
         case QueryDeclaration::design_entity_type::ASSIGN:
-            return AssignPatternEvaluator::evaluate(clause, this->pkb);
+            return AssignPatternEvaluator(pkb).evaluate(clause);
         case QueryDeclaration::design_entity_type::IF:
-            return IfPatternEvaluator::evaluate(clause, this->pkb);
+            return IfPatternEvaluator(pkb).evaluate(clause);
         case QueryDeclaration::design_entity_type::WHILE:
-            return WhilePatternEvaluator::evaluate(clause, this->pkb);
+            return WhilePatternEvaluator(pkb).evaluate(clause);
         default:
             throw std::runtime_error("unknown pattern clause of type " + to_string(type));
     }

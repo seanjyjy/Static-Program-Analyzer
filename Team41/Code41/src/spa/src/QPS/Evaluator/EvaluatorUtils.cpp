@@ -303,3 +303,43 @@ optional<string> EvaluatorUtils::AttrUtils::getAttrFromSelectable(Selectable *ta
         return nullopt;
     }
 }
+
+// ============================================ Pattern Utils ====================================================
+
+bool EvaluatorUtils::PatternUtils::isWildCards(const vector<PatternVariable> &patternVariables,
+                                               QueryDeclaration::design_entity_type type) {
+
+    int size = type == QueryDeclaration::design_entity_type::IF ? 2 : 1;
+
+    if (patternVariables.size() < size) {
+        return false;
+    }
+
+    for (auto patternVariable : patternVariables) {
+        if (!patternVariable.isWildcard()) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool EvaluatorUtils::PatternUtils::isWildCardWildCards(ClauseVariable variable,
+                                                       const vector<PatternVariable>& patternVariables,
+                                                       QueryDeclaration::design_entity_type type) {
+
+    return variable.isWildCard() && isWildCards(patternVariables, type);
+}
+
+bool EvaluatorUtils::PatternUtils::isIdentifierWildCards(ClauseVariable variable,
+                                                         const vector<PatternVariable>& patternVariables,
+                                                         QueryDeclaration::design_entity_type type) {
+    return variable.isIdentifier() && isWildCards(patternVariables, type);
+}
+
+bool EvaluatorUtils::PatternUtils::isValidSynonymWildCards(ClauseVariable variable,
+                                                           const vector<PatternVariable>& patternVariables,
+                                                           QueryDeclaration::design_entity_type type) {
+
+    return isVariableSynonym(&variable) && isWildCards(patternVariables, type);
+}

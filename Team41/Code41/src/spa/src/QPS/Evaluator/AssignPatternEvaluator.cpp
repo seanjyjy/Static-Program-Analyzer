@@ -1,139 +1,133 @@
 #include "AssignPatternEvaluator.h"
 #include "Common/TreeUtils.h"
 
-Table *AssignPatternEvaluator::evaluate(PatternClause clause, PKBClient *pkb) {
-    QueryDeclaration patternSynonym = clause.getSynonym();
-    ClauseVariable leftVariable = clause.getLHS();
-    PatternVariable rightVariable = clause.getRHS().at(0);
+AssignPatternEvaluator::AssignPatternEvaluator(PKBClient *pkb): PatternEvaluator(pkb) {}
 
+Table *AssignPatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
+                                               vector<PatternVariable> &rightPatternVariables) {
+
+    PatternVariable rightVariable = rightPatternVariables.at(0);
     if (leftVariable.isWildCard() && rightVariable.isFullPattern()) {
-        return evaluateWildCardFullPattern(pkb, patternSynonym, rightVariable);
+        return evaluateWildCardFullPattern(patternSynonym, rightVariable);
     }
 
     if (leftVariable.isWildCard() && rightVariable.isSubPattern()) {
-        return evaluateWildCardSubPattern(pkb, patternSynonym, rightVariable);
-    }
-
-    if (leftVariable.isWildCard() && rightVariable.isWildcard()) {
-        return evaluateWildCardWildCard(pkb, patternSynonym);
+        return evaluateWildCardSubPattern(patternSynonym, rightVariable);
     }
 
     if (leftVariable.isIdentifier() && rightVariable.isFullPattern()) {
-        return evaluateIdentifierFullPattern(pkb, patternSynonym, leftVariable, rightVariable);
+        return evaluateIdentifierFullPattern(patternSynonym, leftVariable, rightVariable);
     }
 
     if (leftVariable.isIdentifier() && rightVariable.isSubPattern()) {
-        return evaluateIdentifierSubPattern(pkb, patternSynonym, leftVariable, rightVariable);
+        return evaluateIdentifierSubPattern(patternSynonym, leftVariable, rightVariable);
     }
 
     if (leftVariable.isIdentifier() && rightVariable.isWildcard()) {
-        return evaluateIdentifierWildCard(pkb, patternSynonym, leftVariable);
+        return evaluateIdentifierWildCard(patternSynonym, leftVariable);
     }
 
     if (EvaluatorUtils::isVariableSynonym(&leftVariable) && rightVariable.isFullPattern()) {
-        return evaluateSynonymFullPattern(pkb, patternSynonym, leftVariable, rightVariable);
+        return evaluateSynonymFullPattern(patternSynonym, leftVariable, rightVariable);
     }
 
     if (EvaluatorUtils::isVariableSynonym(&leftVariable) && rightVariable.isSubPattern()) {
-        return evaluateSynonymSubPattern(pkb, patternSynonym, leftVariable, rightVariable);
+        return evaluateSynonymSubPattern(patternSynonym, leftVariable, rightVariable);
     }
 
     if (EvaluatorUtils::isVariableSynonym(&leftVariable) && rightVariable.isWildcard()) {
-        return evaluateSynonymWildCard(pkb, patternSynonym, leftVariable);
+        return evaluateSynonymWildCard(patternSynonym, leftVariable);
     }
 
     throw SemanticException("Invalid query provided for Pattern");
 }
 
-Table *AssignPatternEvaluator::evaluateWildCardFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, PatternVariable right) {
+unordered_set<string> AssignPatternEvaluator::getWildCardWildCardRelation() {
+    return pkb->getAssigns();
+}
+
+Table *AssignPatternEvaluator::evaluateWildCardFullPattern(QueryDeclaration patternSyn, PatternVariable right) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromPattern(right.getMiniAST());
-
-    string column = patternSyn.synonym;
-    Header header = Header({column});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNum: setOfAssignStmt) {
-        Row *row = new Row(column, stmtNum);
-        result->addRow(row);
-    }
-
-    return result;
+    return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateWildCardSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, PatternVariable right) {
+Table *AssignPatternEvaluator::evaluateWildCardSubPattern(QueryDeclaration patternSyn, PatternVariable right) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromSubpattern(right.getMiniAST());
-
-    string column = patternSyn.synonym;
-    Header header = Header({column});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNum: setOfAssignStmt) {
-        Row *row = new Row(column, stmtNum);
-        result->addRow(row);
-    }
-
-    return result;
+    return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateWildCardWildCard(PKBClient *pkb, QueryDeclaration patternSyn) {
-    // return a table with list of assignment statements
-    unordered_set<string> setOfAssignStmt = pkb->getAssigns();
-
-    string column = patternSyn.synonym;
-    Header header = Header({column});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNum: setOfAssignStmt) {
-        Row *row = new Row(column, stmtNum);
-        result->addRow(row);
-    }
-
-    return result;
-}
-
-Table *AssignPatternEvaluator::evaluateIdentifierFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
+Table *AssignPatternEvaluator::evaluateIdentifierFullPattern(QueryDeclaration patternSyn, ClauseVariable left,
                                                              PatternVariable right) {
-
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromPatternNVar(right.getMiniAST(), left.getLabel());
-
-    string column = patternSyn.synonym;
-    Header header = Header({column});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNum: setOfAssignStmt) {
-        Row *row = new Row(column, stmtNum);
-        result->addRow(row);
-    }
-
-    return result;
+    return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateIdentifierSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
+Table *AssignPatternEvaluator::evaluateIdentifierSubPattern(QueryDeclaration patternSyn, ClauseVariable left,
                                                             PatternVariable right) {
 
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromSubpatternNVar(right.getMiniAST(), left.getLabel());
-
-    string column = patternSyn.synonym;
-    Header header = Header({column});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNum: setOfAssignStmt) {
-        Row *row = new Row(column, stmtNum);
-        result->addRow(row);
-    }
-
-    return result;
+    return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateIdentifierWildCard(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left) {
-    unordered_set<string> setOfAssignStmt = pkb->getAssigns();
+Table *AssignPatternEvaluator::evaluateSynonymFullPattern(QueryDeclaration patternSyn, ClauseVariable left,
+                                                          PatternVariable right) {
+    vector<pair<string, string>> listOfStmtNVar = pkb->getAssignStmtNVarFromPattern(right.getMiniAST());
 
+    return buildAssignPatternSSTable(listOfStmtNVar, patternSyn, left);
+}
+
+Table *AssignPatternEvaluator::evaluateSynonymSubPattern(QueryDeclaration patternSyn, ClauseVariable left,
+                                                         PatternVariable right) {
+    vector<pair<string, string>> listOfStmtNVar = pkb->getAssignStmtNVarFromSubpattern(right.getMiniAST());
+    return buildAssignPatternSSTable(listOfStmtNVar, patternSyn, left);
+}
+
+Table *AssignPatternEvaluator::evaluateSynonymWildCard(QueryDeclaration patternSyn, ClauseVariable left) {
+    unordered_set<string> setOfAssignStmt = pkb->getAssigns();
+    return buildAssignPatternSSTable(setOfAssignStmt, patternSyn, left);
+}
+
+Table *AssignPatternEvaluator::evaluateIdentifierWildCard(QueryDeclaration patternSynonym,
+                                                          ClauseVariable &leftVariable) {
+    unordered_set<string> setOfAssignStmt = pkb->getAssigns();
+    return buildAssignPatternSTable(setOfAssignStmt, patternSynonym, leftVariable);
+}
+
+Table *AssignPatternEvaluator::buildAssignPatternSSTable(const vector<pair<string, string>> &results,
+                                                         QueryDeclaration &patternSyn, ClauseVariable &variable) {
+    if (results.empty()) {
+        return new FalseTable();
+    }
+
+    string firstColumn = patternSyn.synonym;
+    string secondColumn = variable.getLabel();
+    unordered_set<string> leftFilters = getFilters(patternSyn.type);
+    unordered_set<string> rightFilters = getFilters(variable.getDesignEntityType());
+
+    Header header = Header({firstColumn, secondColumn});
+    Table *table = new PQLTable(header);
+
+    for (auto &[leftSyn, rightSyn] : results) {
+        bool isInLeftFilter = leftFilters.find(leftSyn) != leftFilters.end();
+        bool isInRightFilter = rightFilters.find(rightSyn) != rightFilters.end();
+        if (isInLeftFilter && isInRightFilter) {
+            Row* row = new Row();
+            row->addEntry(firstColumn, leftSyn);
+            row->addEntry(secondColumn, rightSyn);
+            table->addRow(row);
+        }
+    }
+    return table;
+}
+
+Table *AssignPatternEvaluator::buildAssignPatternSTable(const unordered_set<string>& results,
+                                                        QueryDeclaration &patternSyn, ClauseVariable &variable) {
     string column = patternSyn.synonym;
     Header header = Header({column});
     Table *result = new PQLTable(header);
 
-    for (auto &stmtNum: setOfAssignStmt) {
-        if (pkb->isModifiesS(stmtNum, left.getLabel())) {
+    for (auto &stmtNum: results) {
+        if (pkb->isModifiesS(stmtNum, variable.getLabel())) {
             Row *row = new Row(column, stmtNum);
             result->addRow(row);
         }
@@ -142,59 +136,34 @@ Table *AssignPatternEvaluator::evaluateIdentifierWildCard(PKBClient *pkb, QueryD
     return result;
 }
 
-Table *AssignPatternEvaluator::evaluateSynonymFullPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
-                                                          PatternVariable right) {
-    vector<pair<string, string>> listOfStmtNVar = pkb->getAssignStmtNVarFromPattern(right.getMiniAST());
 
-    string firstColumn = patternSyn.synonym;
-    string secondColumn = left.getLabel();
-    Header header = Header({firstColumn, secondColumn});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNVar: listOfStmtNVar) {
-        Row* row = new Row();
-        row->addEntry(firstColumn, stmtNVar.first);
-        row->addEntry(secondColumn, stmtNVar.second);
-        result->addRow(row);
+Table *AssignPatternEvaluator::buildAssignPatternSSTable(const unordered_set<string> &results,
+                                                         QueryDeclaration &patternSyn, ClauseVariable &variable) {
+    if (results.empty()) {
+        return new FalseTable();
     }
-    return result;
-}
-
-Table *AssignPatternEvaluator::evaluateSynonymSubPattern(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left,
-                                                         PatternVariable right) {
-    vector<pair<string, string>> listOfStmtNVar = pkb->getAssignStmtNVarFromSubpattern(right.getMiniAST());
 
     string firstColumn = patternSyn.synonym;
-    string secondColumn = left.getLabel();
+    string secondColumn = variable.getLabel();
+
+    unordered_set<string> leftFilters = getFilters(patternSyn.type);
+    unordered_set<string> rightFilters = getFilters(variable.getDesignEntityType());
+
     Header header = Header({firstColumn, secondColumn});
     Table *result = new PQLTable(header);
 
-    for (auto &stmtNVar: listOfStmtNVar) {
-        Row* row = new Row();
-        row->addEntry(firstColumn, stmtNVar.first);
-        row->addEntry(secondColumn, stmtNVar.second);
-        result->addRow(row);
-    }
-    return result;
-
-}
-
-Table *AssignPatternEvaluator::evaluateSynonymWildCard(PKBClient *pkb, QueryDeclaration patternSyn, ClauseVariable left) {
-    unordered_set<string> setOfAssignStmt = pkb->getAssigns();
-
-    string firstColumn = patternSyn.synonym;
-    string secondColumn = left.getLabel();
-    Header header = Header({firstColumn, secondColumn});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNum: setOfAssignStmt) {
+    for (auto &stmtNum: results) {
         unordered_set<string> setOfAssignedVars = pkb->getModifiesByStmt(stmtNum);
         for (auto &varName: setOfAssignedVars) {
             // uniqueness guaranteed
-            Row* row = new Row();
-            row->addEntry(firstColumn, stmtNum);
-            row->addEntry(secondColumn, varName);
-            result->addRow(row);
+            bool isInLeftFilter = leftFilters.find(stmtNum) != leftFilters.end();
+            bool isInRightFilter = rightFilters.find(varName) != rightFilters.end();
+            if (isInLeftFilter && isInRightFilter) {
+                Row* row = new Row();
+                row->addEntry(firstColumn, stmtNum);
+                row->addEntry(secondColumn, varName);
+                result->addRow(row);
+            }
         }
     }
 
