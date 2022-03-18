@@ -30,6 +30,7 @@ void NextKBAdapter::fullBFS() {
         for (auto &next: children) {
             string nextStmtNum = next->getStmtNum();
             cache->addAllMappingPair({currStmtNum, nextStmtNum});
+            addFullMapping(currStmtNum, nextStmtNum);
             bfsQueue.push(next);
 
             if (mainVisited.find(nextStmtNum) == mainVisited.end()) {
@@ -102,6 +103,11 @@ void NextKBAdapter::addForwardRelation(const string &start, const string &end) {
 void NextKBAdapter::addBackwardRelation(const string &start, const string &end) {
     cache->registerBooleanMapping(end, start); // reverse order!
     cache->registerBackwardMapping(start, end);
+}
+
+void NextKBAdapter::addFullMapping(const string &start, const string &end) {
+    addForwardRelation(start, end);
+    addBackwardRelation(start, end);
 }
 
 //================================== Public =============================================

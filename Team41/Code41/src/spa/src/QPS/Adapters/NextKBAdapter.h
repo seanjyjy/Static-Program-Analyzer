@@ -26,6 +26,7 @@ private:
     void addBooleanRelation(const string& start, const string& end);
     void addForwardRelation(const string& start, const string& end);
     void addBackwardRelation(const string& start, const string& end);
+    void addFullMapping(const string& start, const string& end);
 public:
     explicit NextKBAdapter(PKBClient* pkb);
     //=========================================== Next ===================================================
