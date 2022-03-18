@@ -489,8 +489,8 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
     }
     SECTION("superClause test") {
-        string s = "stmt s, s1;\n"
-                   "Select s.stmt# such that Follows* (s, s1) with s1.stmt#=10";
+        string s = "stmt s, s1; while w; variable v;\n"
+                   "Select s.stmt# such that Follows* (s, s1) with s1.stmt#=10 pattern w (v, _)";
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
@@ -505,7 +505,18 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == 10);
         REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
         ////
-        REQUIRE(qo->getSuperClauses().at(0)->isWithClause()); // change index after more superclauses
+        // WithClause super clause
+        REQUIRE(qo->getSuperClauses().at(0)->isWithClause());
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().size() == 1); // Only LHS gets registered
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getType() == QueryDeclaration::STMT);
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getSynonym() == "s1");
+        // PatternClause super clause
+        REQUIRE(qo->getSuperClauses().at(1)->isPatternClause());
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().size() == 2);
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getType() == QueryDeclaration::WHILE);
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getSynonym() == "w");
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(1).getType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(1).getSynonym() == "v");
     }
     delete qo;
 }

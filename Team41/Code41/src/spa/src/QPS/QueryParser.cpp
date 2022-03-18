@@ -554,8 +554,12 @@ void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string l
         l = l.substr(1, l.length() - 2);
     }
     ClauseVariable lcv(leftType, l, determineDeclarationType(l));
-    PatternClause pc(patternSyn, lcv, rhs);
-    queryObject->getPatternClauses().push_back(pc);
+    QueryDeclaration lhsQD;
+    if (lcv.isSynonym())
+        lhsQD = findMatchingDeclaration(lcv.getLabel()).value();
+    PatternClause *pc = new PatternClause(patternSyn, lcv, lhsQD, rhs);
+    queryObject->getPatternClauses().push_back(*pc);
+    queryObject->getSuperClauses().push_back(pc);
 }
 
 QueryParser::QueryParser(string &input) : input(input) {}
