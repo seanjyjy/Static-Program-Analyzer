@@ -14,23 +14,7 @@
 using namespace std;
 
 class Evaluator {
-public:
-    PKBClient* pkb;
-    NextKBAdapter* nextKBAdapter;
-    Evaluator(PKBClient* pkb);
-    Evaluator(PKBClient* pkb, NextKBAdapter* nextKBAdapter);
-    /**
-     * Based on the clause, it will determine which evaluator to use to retrieve information from the pkb
-     * to build the resultant table.
-     *
-     * @param clause A QueryClause that contains the clause type, and two clause variable.
-     * @param pkb A knowledge base based on the Source Program.
-     * @return A table that contains information based on the query that was executed.
-     */
-     // TODO REMOVE BOTH AND BECOME A COMBINED EVALUATE WITH  SUPER CLAUSE
-    virtual Table* evaluate(QueryClause clause) = 0;
-    virtual Table* evaluate(PatternClause clause) = 0;
-
+protected:
     string getClauseType(QueryClause::clause_type clauseType);
 
     // ======================================= Generic TABLE BUILDING ==============================================
@@ -43,7 +27,7 @@ public:
     Table* buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable& synonym);
     Table* buildSingleSynonymTable(const string &result, ClauseVariable& synonym);
     Table* buildSingleSynonymTable(const vector<CFGNode *>& results, ClauseVariable& synonym);
-    Table* buildSingleSynonymTable(const vector<string> results, ClauseVariable& synonym);
+    Table* buildSingleSynonymTable(const vector<string>& results, ClauseVariable& synonym);
     Table* buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration& patternSynonym);
 
     Table* buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& leftSynonym,
@@ -54,16 +38,21 @@ public:
     Table* buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results, const QueryDeclaration& patternSyn,
                                            const ClauseVariable& left);
 
-// ======================================= Assign pattern TABLE BUILDING ==============================================
-
-    Table* buildAssignPatternSTable(const unordered_set<string>& reuslts, QueryDeclaration &patternSyn,
-                                    ClauseVariable &variable);
-    Table* buildAssignPatternSSTable(const vector<pair<string, string>> &results, QueryDeclaration& patternSyn,
-                                    ClauseVariable &variable);
-    Table* buildAssignPatternSSTable(const unordered_set<string> &results, QueryDeclaration& patternSyn,
-                                    ClauseVariable &variable);
-
     unordered_set<string> getFilters(QueryDeclaration::design_entity_type);
+public:
+    PKBClient* pkb;
+    explicit Evaluator(PKBClient* pkb);
+    /**
+     * Based on the clause, it will determine which evaluator to use to retrieve information from the pkb
+     * to build the resultant table.
+     *
+     * @param clause A QueryClause that contains the clause type, and two clause variable.
+     * @param pkb A knowledge base based on the Source Program.
+     * @return A table that contains information based on the query that was executed.
+     */
+     // TODO REMOVE BOTH AND BECOME A COMBINED EVALUATE WITH  SUPER CLAUSE
+    virtual Table* evaluate(QueryClause clause) = 0;
+    virtual Table* evaluate(PatternClause clause) = 0;
 
     friend class GenericClauseEvaluator;
     friend class PatternEvaluator;

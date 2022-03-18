@@ -5,7 +5,6 @@
 class GenericClauseEvaluator : public Evaluator {
 public:
     GenericClauseEvaluator(PKBClient* pkb);
-    GenericClauseEvaluator(PKBClient* pkb, NextKBAdapter* nextKbAdapter);
     Table* evaluate(QueryClause clause) override;
     // TODO REMOVE THIS IN THE FUTURE
     Table* evaluate(PatternClause clause) override;

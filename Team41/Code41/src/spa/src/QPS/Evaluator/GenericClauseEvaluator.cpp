@@ -1,7 +1,6 @@
 #include "GenericClauseEvaluator.h"
 
 GenericClauseEvaluator::GenericClauseEvaluator(PKBClient *pkb) : Evaluator(pkb) {}
-GenericClauseEvaluator::GenericClauseEvaluator(PKBClient *pkb, NextKBAdapter* nextKBAdapter) : Evaluator(pkb, nextKBAdapter) {}
 
 Table *GenericClauseEvaluator::evaluate(QueryClause clause) {
     ClauseVariable leftVariable = clause.getLeftClauseVariable();

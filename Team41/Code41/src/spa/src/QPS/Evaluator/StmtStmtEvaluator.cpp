@@ -1,7 +1,6 @@
 #include "StmtStmtEvaluator.h"
 
 StmtStmtEvaluator::StmtStmtEvaluator(PKBClient *pkb) : GenericClauseEvaluator(pkb) {}
-StmtStmtEvaluator::StmtStmtEvaluator(PKBClient *pkb, NextKBAdapter *nextKBAdapter) : GenericClauseEvaluator(pkb, nextKBAdapter) {}
 
 Table *StmtStmtEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVariable rightVariable) {
     if (EvaluatorUtils::StmtUtils::isIntegerInteger(&leftVariable, &rightVariable)) {

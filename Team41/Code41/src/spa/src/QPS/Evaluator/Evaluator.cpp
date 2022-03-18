@@ -4,11 +4,6 @@ Evaluator::Evaluator(PKBClient *pkb) {
     this->pkb = pkb;
 }
 
-Evaluator::Evaluator(PKBClient *pkb, NextKBAdapter *nextKBAdapter) {
-    this->nextKBAdapter = nextKBAdapter;
-    this->pkb = pkb;
-}
-
 string Evaluator::getClauseType(QueryClause::clause_type clauseType) {
     switch (clauseType) {
         case QueryClause::clause_type::follows:
@@ -161,7 +156,7 @@ Table *Evaluator::buildSingleSynonymTable(const vector<CFGNode *>& results, Clau
     return table;
 }
 
-Table *Evaluator::buildSingleSynonymTable(const vector<string> results, ClauseVariable &synonym) {
+Table *Evaluator::buildSingleSynonymTable(const vector<string>& results, ClauseVariable &synonym) {
     if (results.empty()) {
         return new FalseTable();
     }
@@ -251,83 +246,6 @@ Table *Evaluator::buildDifferentSynonymTable(const vector<pair<string, string>> 
     }
 
     return table;
-}
-
-Table *Evaluator::buildAssignPatternSSTable(const vector<pair<string, string>> &results, QueryDeclaration &patternSyn,
-                                           ClauseVariable &variable) {
-    if (results.empty()) {
-        return new FalseTable();
-    }
-
-    string firstColumn = patternSyn.synonym;
-    string secondColumn = variable.getLabel();
-    unordered_set<string> leftFilters = getFilters(patternSyn.type);
-    unordered_set<string> rightFilters = getFilters(variable.getDesignEntityType());
-
-    Header header = Header({firstColumn, secondColumn});
-    Table *table = new PQLTable(header);
-
-    for (auto &[leftSyn, rightSyn] : results) {
-        bool isInLeftFilter = leftFilters.find(leftSyn) != leftFilters.end();
-        bool isInRightFilter = rightFilters.find(rightSyn) != rightFilters.end();
-        if (isInLeftFilter && isInRightFilter) {
-            Row* row = new Row();
-            row->addEntry(firstColumn, leftSyn);
-            row->addEntry(secondColumn, rightSyn);
-            table->addRow(row);
-        }
-    }
-    return table;
-}
-
-Table *Evaluator::buildAssignPatternSTable(const unordered_set<string>& results, QueryDeclaration &patternSyn,
-                                           ClauseVariable &variable) {
-    string column = patternSyn.synonym;
-    Header header = Header({column});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNum: results) {
-        if (pkb->isModifiesS(stmtNum, variable.getLabel())) {
-            Row *row = new Row(column, stmtNum);
-            result->addRow(row);
-        }
-    }
-
-    return result;
-}
-
-
-Table *Evaluator::buildAssignPatternSSTable(const unordered_set<string> &results, QueryDeclaration &patternSyn,
-                                           ClauseVariable &variable) {
-    if (results.empty()) {
-        return new FalseTable();
-    }
-
-    string firstColumn = patternSyn.synonym;
-    string secondColumn = variable.getLabel();
-
-    unordered_set<string> leftFilters = getFilters(patternSyn.type);
-    unordered_set<string> rightFilters = getFilters(variable.getDesignEntityType());
-
-    Header header = Header({firstColumn, secondColumn});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNum: results) {
-        unordered_set<string> setOfAssignedVars = pkb->getModifiesByStmt(stmtNum);
-        for (auto &varName: setOfAssignedVars) {
-            // uniqueness guaranteed
-            bool isInLeftFilter = leftFilters.find(stmtNum) != leftFilters.end();
-            bool isInRightFilter = rightFilters.find(varName) != rightFilters.end();
-            if (isInLeftFilter && isInRightFilter) {
-                Row* row = new Row();
-                row->addEntry(firstColumn, stmtNum);
-                row->addEntry(secondColumn, varName);
-                result->addRow(row);
-            }
-        }
-    }
-
-    return result;
 }
 
 Table *Evaluator::buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results,
