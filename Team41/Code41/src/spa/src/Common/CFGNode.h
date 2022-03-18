@@ -8,17 +8,14 @@
 class CFGNode {
 private:
     string stmtNum; // statement number that corresponds to this cfg node
-    int numForward = 0; // number of children that are forward (stmt number higher)
     std::vector<CFGNode *> children;
     std::vector<CFGNode *> parent;
 
 public:
     CFGNode(string stmtNum);
-    ~CFGNode();
+    //~CFGNode(); TODO
 
-    void addForwardChild(CFGNode *node);
-
-    void addBackwardChild(CFGNode *node);
+    void addChild(CFGNode *node);
 
     void addParent(CFGNode *node);
 
