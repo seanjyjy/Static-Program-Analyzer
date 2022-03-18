@@ -505,16 +505,48 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == 10);
         REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
         ////
-        // WithClause super clause
-        REQUIRE(qo->getSuperClauses().at(0)->isWithClause());
-        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().size() == 1); // Only LHS gets registered
+        // QueryClause super clause
+        REQUIRE(qo->getSuperClauses().at(0)->isSuchThatClause());
+        REQUIRE(qo->getSuperClauses().at(0)->isFollowsT());
+        REQUIRE(qo->getSuperClauses().at(0)->hasSynonyms());
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().size() == 2);
         REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getType() == QueryDeclaration::STMT);
-        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getSynonym() == "s1");
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getSynonym() == "s");
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(1).getType() == QueryDeclaration::STMT);
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(1).getSynonym() == "s1");
+        // WithClause super clause
+        REQUIRE(qo->getSuperClauses().at(1)->isWithClause());
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().size() == 1); // Only LHS gets registered
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getType() == QueryDeclaration::STMT);
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getSynonym() == "s1");
         // PatternClause super clause
-        REQUIRE(qo->getSuperClauses().at(1)->isPatternClause());
+        REQUIRE(qo->getSuperClauses().at(2)->isPatternClause());
+        REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().size() == 2);
+        REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().at(0).getType() == QueryDeclaration::WHILE);
+        REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().at(0).getSynonym() == "w");
+        REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().at(1).getType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().at(1).getSynonym() == "v");
+    }
+    SECTION("Whole shebang 3") {
+        string s = "assign a; variable v;\n"
+                   "Select a pattern a (_, \"count + 1\") such that Uses(a, v)";
+
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+
+        REQUIRE(qo->isValid());
+        // PatternClause super clause
+        REQUIRE(qo->getSuperClauses().at(0)->isPatternClause());
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().size() == 1);
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getSynonym() == "a");
+        // QueryClause super clause
+        REQUIRE(qo->getSuperClauses().at(1)->isSuchThatClause());
+        REQUIRE(qo->getSuperClauses().at(1)->isUsesS());
+        REQUIRE(qo->getSuperClauses().at(1)->hasSynonyms());
         REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().size() == 2);
-        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getType() == QueryDeclaration::WHILE);
-        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getSynonym() == "w");
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getSynonym() == "a");
         REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(1).getType() == QueryDeclaration::VARIABLE);
         REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(1).getSynonym() == "v");
     }

@@ -12,6 +12,9 @@ private:
 
     // declaration type of the clause variable (must be declared)
     QueryDeclaration::design_entity_type designEntityType;
+
+    QueryDeclaration qd;
+
 public:
     // enum representing possible variable types in PQL
     enum variable_type {
@@ -70,6 +73,8 @@ public:
      */
     bool isInteger();
 
+    QueryDeclaration getQueryDeclaration();
+
     /**
      * Constructor for the ClauseVariable class.
      *
@@ -78,4 +83,6 @@ public:
      * @param designEntityType for the declaration type of the new variable.
      */
     ClauseVariable(variable_type type, string label, QueryDeclaration::design_entity_type designEntityType);
+    ClauseVariable(variable_type type, string label, QueryDeclaration qd);
+    ClauseVariable();
 };

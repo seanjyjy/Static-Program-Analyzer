@@ -3,9 +3,6 @@
 PatternClause::PatternClause(QueryDeclaration synonym, ClauseVariable lhs, vector<PatternVariable> rhs) :
         synonym(synonym), lhs(lhs), rhs(rhs) {}
 
-PatternClause::PatternClause(QueryDeclaration synonym, ClauseVariable lhs, QueryDeclaration lhsQD, vector<PatternVariable> rhs) :
-    synonym(synonym), lhs(lhs), lhsQD(lhsQD), rhs(rhs) {}
-
 QueryDeclaration PatternClause::getSynonym() const { return synonym; }
 ClauseVariable PatternClause::getLHS() const { return lhs; }
 vector<PatternVariable> PatternClause::getRHS() const { return rhs; }
@@ -16,7 +13,7 @@ vector<QueryDeclaration> PatternClause::getSynonyms() {
     vector<QueryDeclaration> out;
     out.push_back(synonym);
     if (lhs.isSynonym())
-        out.push_back(lhsQD);
+        out.push_back(lhs.getQueryDeclaration());
     return out;
 }
 

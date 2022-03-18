@@ -306,23 +306,34 @@ bool QueryParser::buildClause(string clause, string left, string right) {
 
     if (clauseValid) {
         QueryClause::clause_type type = determineClauseType(clause, left, right);
+
         ClauseVariable::variable_type leftType = determineVariableType(left);
         string l = left;
-
-        if (ClauseVariable::variable_type::identifier == leftType) {
+        if (leftType == ClauseVariable::variable_type::identifier) {
             l = l.substr(1, l.length() - 2);
         }
-        ClauseVariable lcv(leftType, l, determineDeclarationType(l));
-        ClauseVariable::variable_type rightType = determineVariableType(right);
-        string r = right;
-
-        if (ClauseVariable::variable_type::identifier == rightType) {
-            r = r.substr(1, r.length() - 2);
+        ClauseVariable lcv;
+        if (leftType == ClauseVariable::synonym) {
+            lcv = ClauseVariable(leftType, l, findMatchingDeclaration(l).value());
+        } else {
+            lcv = ClauseVariable(leftType, l, determineDeclarationType(l));
         }
 
-        ClauseVariable rcv(rightType, r, determineDeclarationType(r));
-        QueryClause clause(type, lcv, rcv);
-        queryObject->getClauses().push_back(clause);
+        ClauseVariable::variable_type rightType = determineVariableType(right);
+        string r = right;
+        if (rightType == ClauseVariable::variable_type::identifier) {
+            r = r.substr(1, r.length() - 2);
+        }
+        ClauseVariable rcv;
+        if (rightType == ClauseVariable::synonym) {
+            rcv = ClauseVariable(rightType, r, findMatchingDeclaration(r).value());
+        } else {
+            rcv = ClauseVariable(rightType, r, determineDeclarationType(r));
+        }
+
+        QueryClause *clause = new QueryClause(type, lcv, rcv);
+        queryObject->getClauses().push_back(*clause);
+        queryObject->getSuperClauses().push_back(clause);
     } else {
         return false;
     }
@@ -553,11 +564,15 @@ void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string l
     if (ClauseVariable::variable_type::identifier == leftType) {
         l = l.substr(1, l.length() - 2);
     }
-    ClauseVariable lcv(leftType, l, determineDeclarationType(l));
-    QueryDeclaration lhsQD;
-    if (lcv.isSynonym())
-        lhsQD = findMatchingDeclaration(lcv.getLabel()).value();
-    PatternClause *pc = new PatternClause(patternSyn, lcv, lhsQD, rhs);
+
+    ClauseVariable lcv;
+    if (leftType == ClauseVariable::synonym) {
+        lcv = ClauseVariable(leftType, l, findMatchingDeclaration(l).value());
+    } else {
+        lcv = ClauseVariable(leftType, l, determineDeclarationType(l));
+    }
+
+    PatternClause *pc = new PatternClause(patternSyn, lcv, rhs);
     queryObject->getPatternClauses().push_back(*pc);
     queryObject->getSuperClauses().push_back(pc);
 }

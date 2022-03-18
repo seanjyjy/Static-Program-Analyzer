@@ -14,8 +14,6 @@ private:
 
     // LHS of the pattern clause
     ClauseVariable lhs;
-    // LHS of pattern clause as a query declaration
-    QueryDeclaration lhsQD;
 
     // RHS of the pattern clause
     vector<PatternVariable> rhs; // miniAST exists within
@@ -49,8 +47,6 @@ public:
      * @param left for the LHS ClauseVariable instance.
      * @param right for the RHS PatternVariable instance.
      */
-    PatternClause(QueryDeclaration synonym, ClauseVariable lhs, QueryDeclaration lhsQD, vector<PatternVariable> rhs);
-
     PatternClause(QueryDeclaration synonym, ClauseVariable lhs, vector<PatternVariable> rhs);
 
     // For SuperClause
