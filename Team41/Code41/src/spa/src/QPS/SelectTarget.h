@@ -22,8 +22,9 @@ public:
 
     SelectTarget(targetType type);
 
-    vector<Selectable> tuple;
+    vector<Selectable> getSelectable();
 
 private:
     targetType type;
+    vector<Selectable> tuple;
 };

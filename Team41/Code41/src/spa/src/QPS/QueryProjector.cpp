@@ -4,21 +4,16 @@
 #include "Evaluator/EvaluatorUtils.h"
 #include "Exception/SemanticException.h"
 
-QueryProjector::QueryProjector(SelectTarget select, Table *table, PKBClient *pkb, bool isValid) :
-        selectTarget(move(select)), table(table), pkb(pkb), isValid(isValid) {}
-
-QueryProjector::~QueryProjector() {
-    delete table;
-}
+QueryProjector::QueryProjector(QueryResult queryResult) : queryResult(move(queryResult)) {}
 
 unordered_set<string> QueryProjector::getResult() {
-    if (!this->isValid) return {};
-    if (this->selectTarget.isBoolean()) return getBooleanResult();
-    if (this->selectTarget.isTuple()) return getTupleResult();
+    if (!queryResult.isValid()) return {};
+    if (queryResult.isBoolean()) return getBooleanResult();
+    if (queryResult.isTuple()) return getTupleResult();
 }
 
 unordered_set<string> QueryProjector::getBooleanResult() {
-    if (table->isEmpty()) {
+    if (queryResult.isEmpty()) {
         // Occurs when result table is a false table or pql table which is empty
         return {"FALSE"};
     }
@@ -26,7 +21,8 @@ unordered_set<string> QueryProjector::getBooleanResult() {
 }
 
 unordered_set<string> QueryProjector::getTupleResult() {
-    vector<Selectable> selectables = selectTarget.tuple;
+    vector<Selectable> selectables = queryResult.getSelectables();
+    Table* table = queryResult.getTable();
     unordered_set<string> results;
     for (auto row: table->getRows()) {
         string result;
@@ -45,7 +41,7 @@ string QueryProjector::getProjectionFromRow(const Row* row, Selectable* target) 
         return rawData;
     }
 
-    optional<string> result = EvaluatorUtils::AttrUtils::getAttrFromSelectable(target, rawData, pkb);
+    optional<string> result = EvaluatorUtils::AttrUtils::getAttrFromSelectable(target, rawData, queryResult.getPKB());
     if (result == nullopt) {
         throw SemanticException("Invalid attribute for declaration: " + declaration.synonym);
     }

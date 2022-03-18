@@ -25,6 +25,7 @@
 #include "QPS/Evaluator/WhilePatternEvaluator.h"
 
 #include "QueryProjector.h"
+#include "QueryResult.h"
 #include "QueryObject.h"
 #include "QueryClause.h"
 #include "Selectable.h"
@@ -62,7 +63,7 @@ public:
      * @param queryObject QueryObject.
      * @return A set of results based on the query provided.
      */
-    QueryProjector evaluateQuery(QueryObject *queryObject);
+    QueryResult evaluateQuery(QueryObject *queryObject);
 
     /**
      * Constructs a table based on the QueryClause provided.

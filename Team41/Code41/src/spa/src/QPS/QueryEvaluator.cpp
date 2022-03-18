@@ -6,7 +6,7 @@ QueryEvaluator::QueryEvaluator(PKBClient *pkb) {
     this->nextKBAdapter = new NextKBAdapter(pkb);
 }
 
-QueryProjector QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
+QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     unordered_set<string> emptyResult;
     unordered_set<string> result;
 
