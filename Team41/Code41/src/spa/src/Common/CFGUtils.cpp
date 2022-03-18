@@ -1,3 +1,4 @@
+#include <iostream>
 #include <queue>
 #include <unordered_set>
 
@@ -44,4 +45,23 @@ bool CFGUtils::isEqual(CFGNode *n1, CFGNode *n2) {
         }
     }
     return true;
+}
+
+void CFGUtils::printCFG(CFGNode *node) {
+    unordered_set<CFGNode *> seen;
+    queue<CFGNode *> bfsQ;
+    bfsQ.push(node);
+    seen.insert(node);
+    while (!bfsQ.empty()) {
+        node = bfsQ.front(); bfsQ.pop();
+        string stmtNum = node->getStmtNum();
+        cout << stmtNum << ": ";
+        for (CFGNode *child : node->getChildren()) {
+            cout << child->getStmtNum() << ", ";
+            if (seen.find(child) != seen.end()) continue;
+            bfsQ.push(child);
+            seen.insert(child);
+        }
+        cout << endl;
+    }
 }

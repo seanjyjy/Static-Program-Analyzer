@@ -24,6 +24,4 @@ public:
     std::vector<CFGNode *> getChildren();
 
     std::vector<CFGNode *> getParent();
-
-    static void printCFG(CFGNode *node); // print CFG for troubleshooting
 };

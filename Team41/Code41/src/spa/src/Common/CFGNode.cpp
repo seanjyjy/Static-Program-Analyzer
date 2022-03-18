@@ -1,7 +1,5 @@
-#include <iostream>
 #include <queue>
 #include <unordered_set>
-#include <cassert>
 
 #include "CFGNode.h"
 
@@ -25,23 +23,4 @@ std::vector<CFGNode *> CFGNode::getChildren() {
 
 std::vector<CFGNode *> CFGNode::getParent() {
     return parent;
-}
-
-void CFGNode::printCFG(CFGNode *node) {
-    std::unordered_set<CFGNode *> seen;
-    std::queue<CFGNode *> q;
-    q.push(node);
-    seen.insert(node);
-    while (!q.empty()) {
-        node = q.front(); q.pop();
-        string stmtNum = node->getStmtNum();
-        std::cout << stmtNum << ": ";
-        for (CFGNode *child : node->getChildren()) {
-            std::cout << child->stmtNum << ", ";
-            if (seen.find(child) != seen.end()) continue;
-            q.push(child);
-            seen.insert(child);
-        }
-        std::cout << endl;
-    }
 }
