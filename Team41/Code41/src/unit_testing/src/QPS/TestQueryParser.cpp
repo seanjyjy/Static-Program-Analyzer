@@ -419,6 +419,13 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->isSelectingBoolean());
         REQUIRE(qo->getClauses().at(0).getType() == QueryClause::nextT);
         REQUIRE(qo->getClauses().at(1).getType() == QueryClause::nextT);
+        ////
+        REQUIRE(qo->getSuperClauses().at(0)->isSuchThatClause());
+        REQUIRE(qo->getSuperClauses().at(0)->isNextT());
+        REQUIRE_FALSE(qo->getSuperClauses().at(0)->hasSynonyms());
+        REQUIRE(qo->getSuperClauses().at(1)->isSuchThatClause());
+        REQUIRE(qo->getSuperClauses().at(1)->isNextT());
+        REQUIRE_FALSE(qo->getSuperClauses().at(1)->hasSynonyms());
     }
     SECTION("pattern and") {
         string s = "assign a1, a2; while w1, w2;\n"

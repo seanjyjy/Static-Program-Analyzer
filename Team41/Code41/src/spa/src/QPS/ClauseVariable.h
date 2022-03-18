@@ -6,23 +6,11 @@
 using namespace std;
 
 class ClauseVariable {
-private:
-    // name of the clause variable
-    string label;
-
-    // declaration type of the clause variable (must be declared)
-    QueryDeclaration::design_entity_type designEntityType;
-
-    QueryDeclaration qd;
-
 public:
     // enum representing possible variable types in PQL
     enum variable_type {
         identifier, wildcard, synonym, integer
     };
-
-    // variable type of the variable instance
-    variable_type type;
 
     /**
      * Getter for the variable type.
@@ -85,4 +73,16 @@ public:
     ClauseVariable(variable_type type, string label, QueryDeclaration::design_entity_type designEntityType);
     ClauseVariable(variable_type type, string label, QueryDeclaration qd);
     ClauseVariable();
+
+private:
+    // name of the clause variable
+    string label;
+
+    // declaration type of the clause variable (must be declared)
+    QueryDeclaration::design_entity_type designEntityType;
+
+    QueryDeclaration qd;
+
+    // variable type of the variable instance
+    variable_type type;
 };
