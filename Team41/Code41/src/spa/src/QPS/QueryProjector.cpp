@@ -4,7 +4,7 @@
 #include "Evaluator/EvaluatorUtils.h"
 #include "Exception/SemanticException.h"
 
-QueryProjector::QueryProjector(QueryResult queryResult) : queryResult(move(queryResult)) {}
+QueryProjector::QueryProjector(const QueryResult& queryResult) : queryResult(queryResult) {}
 
 unordered_set<string> QueryProjector::getResult() {
     if (!queryResult.isValid()) return {};
@@ -46,4 +46,8 @@ string QueryProjector::getProjectionFromRow(const Row* row, Selectable* target) 
         throw SemanticException("Invalid attribute for declaration: " + declaration.synonym);
     }
     return *result;
+}
+
+QueryProjector::~QueryProjector() {
+    delete queryResult.getTable();
 }

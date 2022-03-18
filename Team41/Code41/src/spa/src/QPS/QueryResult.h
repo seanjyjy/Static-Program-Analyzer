@@ -14,7 +14,6 @@ private:
     bool isValidQuery;
 public:
     QueryResult(SelectTarget select, Table* table, PKBClient* pkb, bool isValidQuery);
-    ~QueryResult();
 
     bool isBoolean();
     bool isTuple();

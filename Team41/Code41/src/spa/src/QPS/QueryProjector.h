@@ -13,7 +13,8 @@ private:
     unordered_set<string> getTupleResult();
     string getProjectionFromRow(const Row* row, Selectable* target);
 public:
-    explicit QueryProjector(QueryResult queryResult);
+    explicit QueryProjector(const QueryResult& queryResult);
+    ~QueryProjector();
 
     unordered_set<string> getResult();
 };

@@ -65,7 +65,7 @@ bool QueryObject::isSelectingBoolean() {
 }
 
 vector<Selectable> QueryObject::getSelectables() {
-    return selectTarget.tuple;
+    return selectTarget.getSelectable();
 }
 
 QueryObject::~QueryObject() {

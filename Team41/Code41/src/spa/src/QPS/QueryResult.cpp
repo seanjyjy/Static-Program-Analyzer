@@ -3,10 +3,6 @@
 QueryResult::QueryResult(SelectTarget select, Table *table, PKBClient *pkb, bool isValid) :
         selectTarget(move(select)), table(table), pkb(pkb), isValidQuery(isValid) {}
 
-QueryResult::~QueryResult() {
-    delete table;
-}
-
 bool QueryResult::isBoolean() {
     return selectTarget.isBoolean();
 }
