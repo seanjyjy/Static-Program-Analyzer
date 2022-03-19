@@ -1,11 +1,8 @@
-// remove comment to disable assertions before release
-//#define NDEBUG
 #include <utility>
 #include <stack>
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
-#include <cassert>
 
 #include "SimpleParser/Token.h"
 #include "TNode.h"
@@ -51,7 +48,7 @@ void TNode::setParent(TNode *par) {
 }
 
 void TNode::setLeftChild(TNode *child) {
-    assert(!children.empty());
+    if (children.empty()) throw runtime_error("children should not be empty");
     delete children[0];
     children[0] = child;
 }
@@ -101,7 +98,6 @@ TNode *TNode::makeProgram(vector<TNode *> procedures) {
     return new TNode(TNodeType::program, nullptr, move(procedures));
 }
 
-// TODO: replace name token with procName tnode
 TNode *TNode::makeProcedure(Token *name, TNode *stmtLst) { return new TNode(TNodeType::procedure, name, {stmtLst}); }
 
 TNode *TNode::makeStmtLst(vector<TNode *> stmts) { return new TNode(TNodeType::stmtLst, nullptr, move(stmts)); }

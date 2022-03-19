@@ -1,11 +1,8 @@
-// remove comment to disable assertions before release
-//#define NDEBUG
 #include "AstBuilder.h"
 
 #include <utility>
 #include <algorithm>
 #include <cctype>
-#include <cassert>
 #include <iostream>
 
 using namespace std;
@@ -133,7 +130,7 @@ bool AstBuilder::eatSlashIfExists() {
 }
 
 string AstBuilder::eatName() {
-    assert(!isspace(currToken));
+    if (!isspace(currToken)) throw runtime_error("current token should be <space>");
     string ret;
     while (isalnum(currToken)) {
         ret += currToken;
