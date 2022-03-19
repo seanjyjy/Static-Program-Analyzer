@@ -1,7 +1,4 @@
 #include "Or.h"
 
-#include "Common/TNode.h"
-#include "Common/AstNode/BinaryOp.h"
-
-Or::Or(TNode *lhsCondExpr, TNode *rhsCondExpr): BinaryOp(TNodeType::orOp, lhsCondExpr, rhsCondExpr) {
+Or::Or(CondExpr *lhs, CondExpr *rhs): CondExpr(TNodeType::orOp, {static_cast<TNode*>(lhs), static_cast<TNode*>(rhs)}) {
 }

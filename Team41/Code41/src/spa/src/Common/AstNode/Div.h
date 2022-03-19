@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Common/AstNode/BinaryOp.h"
+#include "Common/AstNode/RelFactor.h"
 
-class Div: public BinaryOp {
+class Div: public RelFactor {
 public:
-    Div(TNode *lhs, TNode *rhs);
+    Div(RelFactor *lhs, RelFactor *rhs);
 };

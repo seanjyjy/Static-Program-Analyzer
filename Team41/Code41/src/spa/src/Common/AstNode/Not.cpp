@@ -1,4 +1,4 @@
 #include "Not.h"
 
-Not::Not(TNode *expr): UnaryOp(TNodeType::notOp, expr) {
+Not::Not(CondExpr *expr): CondExpr(TNodeType::notOp, {static_cast<TNode*>(expr)}) {
 }

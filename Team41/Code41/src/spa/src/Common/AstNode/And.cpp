@@ -1,4 +1,4 @@
 #include "And.h"
 
-And::And(TNode *lhsCondExpr, TNode *rhsCondExpr): BinaryOp(TNodeType::andOp, lhsCondExpr, rhsCondExpr) {
+And::And(CondExpr *lhsCondExpr, CondExpr *rhsCondExpr): CondExpr(TNodeType::andOp, {static_cast<TNode*>(lhsCondExpr), static_cast<TNode*>(rhsCondExpr)}) {
 }

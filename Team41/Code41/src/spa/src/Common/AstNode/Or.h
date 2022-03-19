@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Common/AstNode/BinaryOp.h"
+#include "Common/TNode.h"
+#include "Common/AstNode/CondExpr.h"
 
-class Or: public BinaryOp {
+class Or: public CondExpr {
 public:
-    Or(TNode *lhsCondExpr, TNode *rhsCondExpr);
+    Or(CondExpr *lhs, CondExpr *rhs);
 };

@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <utility>
 
-TNodeType verify(TNodeType type) {
+TNodeType Stmt::verify(TNodeType type) {
     if (type != TNodeType::readStmt &&
         type != TNodeType::printStmt &&
         type != TNodeType::callStmt &&
@@ -16,5 +16,5 @@ TNodeType verify(TNodeType type) {
 }
 
 
-Stmt::Stmt(TNodeType type, vector<TNode *> children): TNode(verify(type), nullptr, move(children)) {
+Stmt::Stmt(TNodeType type, vector<TNode *> children): TNode(Stmt::verify(type), nullptr, move(children)) {
 }

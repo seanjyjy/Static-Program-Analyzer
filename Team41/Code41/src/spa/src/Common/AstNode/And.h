@@ -1,8 +1,8 @@
 #pragma once
 
-#include "BinaryOp.h"
+#include "CondExpr.h"
 
-class And: public BinaryOp {
+class And: public CondExpr {
 public:
-    And(TNode *lhsCondExpr, TNode *rhsCondExpr);
+    And(CondExpr *lhsCondExpr, CondExpr *rhsCondExpr);
 };

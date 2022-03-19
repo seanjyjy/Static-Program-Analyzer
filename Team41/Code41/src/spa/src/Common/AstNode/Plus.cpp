@@ -1,4 +1,4 @@
 #include "Plus.h"
 
-Plus::Plus(TNode *lhs, TNode *rhs): BinaryOp(TNodeType::plus, lhs, rhs) {
+Plus::Plus(RelFactor *lhs, RelFactor *rhs): RelFactor(TNodeType::plus, nullptr, {lhs, rhs}) {
 }

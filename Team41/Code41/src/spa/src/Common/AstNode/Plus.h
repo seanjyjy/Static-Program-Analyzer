@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Common/AstNode/BinaryOp.h"
+#include "Common/AstNode/RelFactor.h"
 
-class Plus: public BinaryOp {
+class Plus: public RelFactor {
 public:
-    Plus(TNode *lhs, TNode *rhs);
+    Plus(RelFactor *lhs, RelFactor *rhs);
 };

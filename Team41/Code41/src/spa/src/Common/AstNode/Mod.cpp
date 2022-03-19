@@ -1,4 +1,4 @@
 #include "Mod.h"
 
-Mod::Mod(TNode *lhs, TNode *rhs): BinaryOp(TNodeType::mod, lhs, rhs) {
+Mod::Mod(RelFactor *lhs, RelFactor *rhs): RelFactor(TNodeType::mod, nullptr, {lhs, rhs}) {
 }

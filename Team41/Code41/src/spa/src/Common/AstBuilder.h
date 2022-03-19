@@ -4,7 +4,6 @@
 #include "Common/AstNode/Program.h"
 #include "Common/AstNode/Procedure.h"
 #include "Common/AstNode/StmtLst.h"
-#include "Common/AstNode/BinaryOp.h"
 #include "Common/AstNode/Read.h"
 #include "Common/AstNode/Print.h"
 #include "Common/AstNode/Call.h"

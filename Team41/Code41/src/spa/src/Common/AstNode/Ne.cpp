@@ -1,4 +1,4 @@
 #include "Ne.h"
 
-Ne::Ne(TNode *lhs, TNode *rhs): BinaryOp(TNodeType::ne, lhs, rhs) {
+Ne::Ne(RelFactor *lhs, RelFactor *rhs): RelExpr(TNodeType::ne, lhs, rhs) {
 }

@@ -1,4 +1,4 @@
 #include "Div.h"
 
-Div::Div(TNode *lhs, TNode *rhs): BinaryOp(TNodeType::div, lhs, rhs) {
+Div::Div(RelFactor *lhs, RelFactor *rhs): RelFactor(TNodeType::div, nullptr, {lhs,rhs}) {
 }

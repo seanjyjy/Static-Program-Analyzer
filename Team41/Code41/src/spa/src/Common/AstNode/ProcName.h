@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common/TNode.h"
+#include "Common/AstNode/RelFactor.h"
 
 class ProcName: public TNode {
 public:

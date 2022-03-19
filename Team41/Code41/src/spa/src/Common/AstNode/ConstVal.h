@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Common/TNode.h"
+#include "Common/AstNode/RelFactor.h"
 
-class ConstVal: public TNode {
+class ConstVal: public RelFactor {
 public:
     ConstVal(Token *val);
 };

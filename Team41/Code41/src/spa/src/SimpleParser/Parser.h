@@ -5,7 +5,6 @@
 #include "Common/AstNode/Program.h"
 #include "Common/AstNode/Procedure.h"
 #include "Common/AstNode/StmtLst.h"
-#include "Common/AstNode/BinaryOp.h"
 #include "Common/AstNode/Read.h"
 #include "Common/AstNode/Print.h"
 #include "Common/AstNode/Call.h"
@@ -31,6 +30,9 @@
 #include "Common/AstNode/Not.h"
 #include "Common/AstNode/And.h"
 #include "Common/AstNode/Or.h"
+#include "Common/AstNode/CondExpr.h"
+#include "Common/AstNode/RelExpr.h"
+#include "Common/AstNode/RelFactor.h"
 
 using namespace std;
 
@@ -241,7 +243,7 @@ private:
      *
      * @return the plus | minus | times | div | mod | not | and | or node with their respective children.
      */
-    TNode *eatCondExpr();
+    CondExpr *eatCondExpr();
 
     /**
      * Parses a relational expression.
@@ -254,12 +256,7 @@ private:
      *
      * @return the > | >= | < | <= | == | != node with their respective left and right child.
      */
-    TNode *eatRelExpr();
-
-    /**
-     * Parses a relational expression. Convenience function for TNode *eatRelExpr().
-     */
-    TNode *eatRelExpr(TokenType type);
+    RelExpr *eatRelExpr();
 
     /**
      * Parses the production rel_expr -> rel_factor '>' rel_factor.
@@ -296,42 +293,42 @@ private:
      *
      * @return the var | const | expr nodes with their respective children.
      */
-    TNode *eatRelFactor();
+    RelFactor *eatRelFactor();
 
     /**
      * Parses an expression. expr -> term expr1 | term
      *
      * @return the + | - node with their respective left and right children.
      */
-    TNode *eatExpr();
+    RelFactor *eatExpr();
 
     /**
      * Parses an intermediate expression. expr1 -> '+' term expr1 | '-' term expr1 | '+' term | '-' term
      *
      * @return the intermediate + | - node with their respective left and right children.
      */
-    TNode *eatExpr1();
+    RelFactor *eatExpr1();
 
     /**
      * Parses a term. term -> factor term1 | factor
      *
      * @return the * | / | % node with their respective left and right children.
      */
-    TNode *eatTerm();
+    RelFactor *eatTerm();
 
     /**
      * Parses a intermediate term. term -> factor term1 | factor
      *
      * @return the intermediate * | / | % node with their respective left and right children.
      */
-    TNode *eatTerm1();
+    RelFactor *eatTerm1();
 
     /**
      * Parses a factor. factor -> var_name | const_value | '(' expr ')'
      *
      * @return the var | const | expr node with their respective children.
      */
-    TNode *eatFactor();
+    RelFactor *eatFactor();
 
     /**
      * Parses a variable name.

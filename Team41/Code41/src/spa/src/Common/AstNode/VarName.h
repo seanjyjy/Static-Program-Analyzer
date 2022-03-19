@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Common/TNode.h"
+#include "Common/AstNode/RelFactor.h"
 
-class VarName: public TNode {
+class VarName: public RelFactor {
 public:
     VarName(Token *val);
 };

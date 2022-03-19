@@ -1,4 +1,4 @@
 #include "ConstVal.h"
 
-ConstVal::ConstVal(Token *val): TNode(TNodeType::constValue, val, {}) {
+ConstVal::ConstVal(Token *val): RelFactor(TNodeType::constValue, val, {}) {
 }

@@ -1,4 +1,4 @@
 #include "Eq.h"
 
-Eq::Eq(TNode *lhs, TNode *rhs): BinaryOp(TNodeType::eq, lhs, rhs) {
+Eq::Eq(RelFactor *lhs, RelFactor *rhs): RelExpr(TNodeType::eq, lhs, rhs) {
 }

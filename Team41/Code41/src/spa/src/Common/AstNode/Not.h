@@ -2,8 +2,9 @@
 
 #include "Common/TNode.h"
 #include "UnaryOp.h"
+#include "CondExpr.h"
 
-class Not: public UnaryOp {
+class Not: public CondExpr {
 public:
-    Not(TNode *expr);
+    Not(CondExpr *expr);
 };

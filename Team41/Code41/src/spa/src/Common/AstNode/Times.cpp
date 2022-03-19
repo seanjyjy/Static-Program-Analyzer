@@ -1,4 +1,4 @@
 #include "Times.h"
 
-Times::Times(TNode *lhs, TNode *rhs): BinaryOp(TNodeType::times, lhs, rhs) {
+Times::Times(RelFactor *lhs, RelFactor *rhs): RelFactor(TNodeType::times, nullptr, {lhs,rhs}) {
 }

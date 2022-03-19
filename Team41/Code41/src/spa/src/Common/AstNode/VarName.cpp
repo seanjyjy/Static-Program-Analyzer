@@ -1,4 +1,4 @@
 #include "VarName.h"
 
-VarName::VarName(Token *val): TNode(TNodeType::varName, val, {}) {
+VarName::VarName(Token *val): RelFactor(TNodeType::varName, val, {}) {
 }
