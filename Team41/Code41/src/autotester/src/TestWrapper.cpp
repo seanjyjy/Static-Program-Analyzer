@@ -48,7 +48,7 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
     QueryObject* queryObject = qp.parse();
     QueryEvaluator queryEvaluator(&pkbManager);
     QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
-    std::unordered_set<std::string> result = QueryProjector(queryResult).getResult();
+    std::unordered_set<std::string> result = QueryProjector(queryResult, &pkbManager).getResult();
     // store the answers to the query in the results list (it is initially empty)
     // each result must be a string.
     std::copy(result.begin(), result.end(), std::back_inserter(results));

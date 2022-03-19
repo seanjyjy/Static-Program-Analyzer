@@ -10,16 +10,14 @@ class QueryResult {
 private:
     SelectTarget selectTarget;
     Table* table;
-    PKBClient* pkb;
     bool isValidQuery;
 public:
-    QueryResult(SelectTarget select, Table* table, PKBClient* pkb, bool isValidQuery);
+    QueryResult(SelectTarget select, Table* table, bool isValidQuery = true);
 
     bool isBoolean();
     bool isTuple();
     bool isEmpty();
     bool isValid() const;
-    PKBClient* getPKB();
     Table* getTable();
     vector<Selectable> getSelectables();
 };

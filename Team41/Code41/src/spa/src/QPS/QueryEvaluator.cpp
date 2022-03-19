@@ -11,12 +11,12 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     unordered_set<string> result;
 
     if (!queryObject->isQueryValid) {
-        return {queryObject->selectTarget, nullptr, pkb, false};
+        return {queryObject->selectTarget, nullptr, false};
     }
 
     if (!EvaluatorUtils::validateDeclarations(queryObject->declarations) ||
         !EvaluatorUtils::AttrUtils::validateSelectTarget(&queryObject->selectTarget)) {
-        return {queryObject->selectTarget, new FalseTable(), pkb, true};
+        return {queryObject->selectTarget, new FalseTable()};
     }
 
     Table *resultTable = new TrueTable();
@@ -41,7 +41,7 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
                 safeDeleteTable(resultTable);
-                return {queryObject->selectTarget, new FalseTable(), pkb, true};
+                return {queryObject->selectTarget, new FalseTable()};
             }
 
             Table *ogTable = resultTable;
@@ -52,7 +52,7 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
             if (resultTable->isEmpty()) {
                 safeDeleteTable(resultTable);
-                return {queryObject->selectTarget, new FalseTable(), pkb, true};
+                return {queryObject->selectTarget, new FalseTable()};
             }
         }
 
@@ -62,7 +62,7 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
                 safeDeleteTable(resultTable);
-                return {queryObject->selectTarget, new FalseTable(), pkb, true};
+                return {queryObject->selectTarget, new FalseTable()};
             }
 
             Table *ogTable = resultTable;
@@ -73,20 +73,20 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
             if (resultTable->isEmpty()) {
                 safeDeleteTable(resultTable);
-                return {queryObject->selectTarget, new FalseTable(), pkb, true};
+                return {queryObject->selectTarget, new FalseTable()};
             }
         }
     } catch (SemanticException& error) {
         std::cout << error.what() << std::endl;
         delete resultTable;
-        return {queryObject->selectTarget, new FalseTable(), pkb, true};
+        return {queryObject->selectTarget, new FalseTable()};
     } catch (const runtime_error& error) {
         std::cout << error.what() << std::endl;
         delete resultTable;
-        return {queryObject->selectTarget, new FalseTable(), pkb, true};
+        return {queryObject->selectTarget, new FalseTable()};
     }
 
-    return {queryObject->selectTarget, resultTable, pkb, true};
+    return {queryObject->selectTarget, resultTable};
 }
 
 Table *QueryEvaluator::evaluate(QueryClause &clause) {

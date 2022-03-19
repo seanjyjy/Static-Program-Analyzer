@@ -1,7 +1,7 @@
 #include "QueryResult.h"
 
-QueryResult::QueryResult(SelectTarget select, Table *table, PKBClient *pkb, bool isValid) :
-        selectTarget(move(select)), table(table), pkb(pkb), isValidQuery(isValid) {}
+QueryResult::QueryResult(SelectTarget select, Table *table, bool isValid) :
+        selectTarget(move(select)), table(table), isValidQuery(isValid) {}
 
 bool QueryResult::isBoolean() {
     return selectTarget.isBoolean();
@@ -25,8 +25,4 @@ vector<Selectable> QueryResult::getSelectables() {
 
 Table *QueryResult::getTable() {
     return table;
-}
-
-PKBClient *QueryResult::getPKB() {
-    return pkb;
 }

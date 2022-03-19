@@ -4,7 +4,7 @@
 #include "Evaluator/EvaluatorUtils.h"
 #include "Exception/SemanticException.h"
 
-QueryProjector::QueryProjector(const QueryResult& queryResult) : queryResult(queryResult) {}
+QueryProjector::QueryProjector(const QueryResult& queryResult, PKBClient* pkb) : queryResult(queryResult), pkb(pkb) {}
 
 unordered_set<string> QueryProjector::getResult() {
     if (!queryResult.isValid()) return {};
@@ -41,7 +41,7 @@ string QueryProjector::getProjectionFromRow(const Row* row, Selectable* target) 
         return rawData;
     }
 
-    optional<string> result = EvaluatorUtils::AttrUtils::getAttrFromSelectable(target, rawData, queryResult.getPKB());
+    optional<string> result = EvaluatorUtils::AttrUtils::getAttrFromSelectable(target, rawData, pkb);
     if (result == nullopt) {
         throw SemanticException("Invalid attribute for declaration: " + declaration.synonym);
     }

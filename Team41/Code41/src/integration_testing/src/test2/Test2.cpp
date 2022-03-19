@@ -29,7 +29,7 @@ TEST_CASE("Test 2") {
         QueryObject* queryObject = qp.parse();
         QueryEvaluator queryEvaluator(&pkbManager);
         QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
-        unordered_set<string> result = QueryProjector(queryResult).getResult();
+        unordered_set<string> result = QueryProjector(queryResult, &pkbManager).getResult();
 
         unordered_set<string> answer{"i", "x", "y", "z"};
         REQUIRE(result == answer);

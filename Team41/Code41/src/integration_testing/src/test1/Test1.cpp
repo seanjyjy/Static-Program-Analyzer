@@ -35,7 +35,7 @@ TEST_CASE("Test 1") {
 
         QueryEvaluator queryEvaluator(&pkbManager);
         QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
-        unordered_set<string> result = QueryProjector(queryResult).getResult();
+        unordered_set<string> result = QueryProjector(queryResult, &pkbManager).getResult();
 
         unordered_set<string> answer{"3", "4", "11"};
         REQUIRE(result == answer);
@@ -50,7 +50,7 @@ TEST_CASE("Test 1") {
         QueryObject* queryObject = qp.parse();
         QueryEvaluator queryEvaluator(&pkbManager);
         QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
-        unordered_set<string> result = QueryProjector(queryResult).getResult();
+        unordered_set<string> result = QueryProjector(queryResult, &pkbManager).getResult();
 
         unordered_set<string> answer{"7", "9"};
         REQUIRE(result == answer);
@@ -65,7 +65,7 @@ TEST_CASE("Test 1") {
         QueryObject* queryObject = qp.parse();
         QueryEvaluator queryEvaluator(&pkbManager);
         QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
-        unordered_set<string> result = QueryProjector(queryResult).getResult();
+        unordered_set<string> result = QueryProjector(queryResult, &pkbManager).getResult();
 
         unordered_set<string> answer{"8", "9"};
         REQUIRE(result == answer);
@@ -80,7 +80,7 @@ TEST_CASE("Test 1") {
         QueryObject* queryObject = qp.parse();
         QueryEvaluator queryEvaluator(&pkbManager);
         QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
-        unordered_set<string> result = QueryProjector(queryResult).getResult();
+        unordered_set<string> result = QueryProjector(queryResult, &pkbManager).getResult();
 
         unordered_set<string> answer{"y", "z"};
         REQUIRE(result == answer);
