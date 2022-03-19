@@ -34,8 +34,8 @@ TEST_CASE("Test 1") {
 //        OptimizedQueryObject oqo = qo.optimize(*queryObject);
 
         QueryEvaluator queryEvaluator(&pkbManager);
-        QueryProjector projector = queryEvaluator.evaluateQuery(queryObject);
-        unordered_set<string> result = projector.getResult();
+        QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
+        unordered_set<string> result = QueryProjector(queryResult, &pkbManager).getResult();
 
         unordered_set<string> answer{"3", "4", "11"};
         REQUIRE(result == answer);
@@ -49,8 +49,8 @@ TEST_CASE("Test 1") {
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
         QueryEvaluator queryEvaluator(&pkbManager);
-        QueryProjector projector = queryEvaluator.evaluateQuery(queryObject);
-        unordered_set<string> result = projector.getResult();
+        QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
+        unordered_set<string> result = QueryProjector(queryResult, &pkbManager).getResult();
 
         unordered_set<string> answer{"7", "9"};
         REQUIRE(result == answer);
@@ -64,8 +64,8 @@ TEST_CASE("Test 1") {
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
         QueryEvaluator queryEvaluator(&pkbManager);
-        QueryProjector projector = queryEvaluator.evaluateQuery(queryObject);
-        unordered_set<string> result = projector.getResult();
+        QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
+        unordered_set<string> result = QueryProjector(queryResult, &pkbManager).getResult();
 
         unordered_set<string> answer{"8", "9"};
         REQUIRE(result == answer);
@@ -79,8 +79,8 @@ TEST_CASE("Test 1") {
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
         QueryEvaluator queryEvaluator(&pkbManager);
-        QueryProjector projector = queryEvaluator.evaluateQuery(queryObject);
-        unordered_set<string> result = projector.getResult();
+        QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
+        unordered_set<string> result = QueryProjector(queryResult, &pkbManager).getResult();
 
         unordered_set<string> answer{"y", "z"};
         REQUIRE(result == answer);

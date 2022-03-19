@@ -270,7 +270,7 @@ bool EvaluatorUtils::AttrUtils::isStmtStmtNumAttr(Selectable *target) {
 
 bool EvaluatorUtils::AttrUtils::validateSelectTarget(SelectTarget *selection) {
     bool valid = selection->isBoolean();
-    for(auto &target: selection->tuple) {
+    for(auto &target: selection->getSelectable()) {
         valid = valid || isValidSelectable(&target);
         if (!valid) return false;
     }
