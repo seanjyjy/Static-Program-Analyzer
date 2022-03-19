@@ -1,10 +1,7 @@
-// remove comment to disable assertions before release
-//#define NDEBUG
 #include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
-#include <cassert>
 #include <climits>
 #include <stdexcept>
 
@@ -22,7 +19,7 @@ Parser::Parser() = default;
 
 void Parser::advance() {
     cursor++;
-    assert(cursor < tokens.size()); // last token is eof
+    if (cursor >= tokens.size()) throw runtime_error("cursor index out of bounds"); // last token is eof
     currToken = tokens[cursor];
 }
 
@@ -31,7 +28,7 @@ int Parser::saveCursor() {
 }
 
 void Parser::backtrack(int to) {
-    assert(to >= 0 && to < tokens.size());
+    if (to < 0 || to >= tokens.size()) throw runtime_error("invalid backtrack index");
     cursor = to;
     currToken = tokens[cursor];
 }
@@ -119,7 +116,6 @@ TNode *Parser::eatProgram() {
     vector<TNode *> procedures;
     try {
         while (!isEof()) {
-            auto temp = &Parser::eatProcedure;
             procedures.push_back(eatProcedure());
         }
     } catch (SyntaxException &e) {

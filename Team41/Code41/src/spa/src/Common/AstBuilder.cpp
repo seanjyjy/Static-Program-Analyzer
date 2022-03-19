@@ -64,9 +64,9 @@ TNode *AstBuilder::build() {
         eatWhitespace();
     }
 
-    assert(stk.size() == 1);
+    if (stk.size() != 1) throw runtime_error("stack size should be 1");
     auto[node, isProcessed] = stk.top();
-    assert(node != nullptr);
+    if (node == nullptr) throw runtime_error("node should not be null");
     return node;
 }
 
@@ -115,12 +115,12 @@ bool AstBuilder::isOpenTag() {
 }
 
 void AstBuilder::eatOpenTag() {
-    assert(currToken == OPEN_TAG);
+    if (!isOpenTag()) throw runtime_error("current token should be open tag");
     advance();
 }
 
 void AstBuilder::eatCloseTag() {
-    assert(isCloseTag());
+    if (!isCloseTag()) throw runtime_error("current token should be close tag)");
     advance();
 }
 
@@ -147,7 +147,7 @@ bool AstBuilder::isEof() {
 }
 
 void AstBuilder::eatAssign() {
-    assert(currToken == '=');
+    if (currToken != '=') throw runtime_error("current token should be '='");
     advance();
 }
 
