@@ -4,10 +4,13 @@
 
 using namespace std;
 
-class TokenizeException: public SPAException {
+class TokenizeException : public SPAException {
 public:
     TokenizeException();
+
     TokenizeException(string message);
+
     string what() override;
+
     ~TokenizeException();
 };

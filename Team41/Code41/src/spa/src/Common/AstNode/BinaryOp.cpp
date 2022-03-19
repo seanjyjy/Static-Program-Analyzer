@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-BinaryOp::BinaryOp(TNodeType type, TNode *lhs, TNode *rhs): TNode(TNode(type, nullptr, {lhs, rhs})) {
+BinaryOp::BinaryOp(TNodeType type, TNode *lhs, TNode *rhs) : TNode(TNode(type, nullptr, {lhs, rhs})) {
     if (type != TNodeType::andOp &&
         type != TNodeType::orOp &&
         type != TNodeType::gt &&

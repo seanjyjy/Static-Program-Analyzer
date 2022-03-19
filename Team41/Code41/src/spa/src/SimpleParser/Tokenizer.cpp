@@ -196,7 +196,7 @@ Token Tokenizer::eatInteger() {
     // 0 allowed, but 01 should not be allowed
     if (val.size() > 1 && val[0] == '0') {
         string msg = withPosition("integers must not have leading zeroes") +
-                highlightSource(start.first, start.second, row, col);
+                     highlightSource(start.first, start.second, row, col);
         throw TokenizeException(msg);
     }
 
@@ -263,7 +263,7 @@ Tokens Tokenizer::tokenize() {
                 tok = eatInteger();
             } else {
                 string msg = withPosition("unknown token " + string(1, currToken)) +
-                        highlightSource(row, col, row, col);
+                             highlightSource(row, col, row, col);
                 throw TokenizeException(msg);
             }
 

@@ -14,7 +14,7 @@ TNode::TNode(TNodeType type, Token *val, vector<TNode *> children) : type(type),
 
 TNode::~TNode() {
     delete val;
-    for(TNode * ch : children) {
+    for (TNode *ch: children) {
         delete ch;
     }
 }

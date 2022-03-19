@@ -99,7 +99,7 @@ private:
      * @param type the token type to match
      * @param val the token value to match
      */
-    void expect(TokenType type, const string& val);
+    void expect(TokenType type, const string &val);
 
     /**
      * Verifies the current token matches the type, advances the cursor and returns the matched token.
@@ -125,7 +125,7 @@ private:
      * @param type the token type to match
      * @param val the token value to match
      */
-    void checkAndAdvance(TokenType type, const string& val);
+    void checkAndAdvance(TokenType type, const string &val);
 
     /**
      * Checks if the current token matches the given type, but does not throw.

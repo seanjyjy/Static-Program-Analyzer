@@ -4,7 +4,7 @@
 #include "Common/AstNode/Stmt.h"
 #include "Common/AstNode/VarName.h"
 
-class Print: public Stmt {
+class Print : public Stmt {
 public:
     Print(VarName *var);
 };

@@ -14,7 +14,7 @@ TNodeType RelFactor::verify(TNodeType type) {
     return type;
 }
 
-vector<TNode*> RelFactor::verify(TNodeType type, vector<TNode*> &children) {
+vector<TNode *> RelFactor::verify(TNodeType type, vector<TNode *> &children) {
     switch (type) {
         case TNodeType::plus:
         case TNodeType::minus:
@@ -39,7 +39,9 @@ Token *RelFactor::verify(TNodeType type, Token *val) {
     return val;
 }
 
-RelFactor::RelFactor(TNodeType type, Token *val, vector<TNode *> children) : TNode(RelFactor::verify(type), RelFactor::verify(type, val), RelFactor::verify(type, children)) {
+RelFactor::RelFactor(TNodeType type, Token *val, vector<TNode *> children) : TNode(RelFactor::verify(type),
+                                                                                   RelFactor::verify(type, val),
+                                                                                   RelFactor::verify(type, children)) {
 }
 
 RelFactor *RelFactor::dummy() {
@@ -48,7 +50,7 @@ RelFactor *RelFactor::dummy() {
 
 void RelFactor::setRelParent(RelFactor *par) {
     parent = par;
-    setParent(static_cast<TNode*>(par));
+    setParent(static_cast<TNode *>(par));
 }
 
 RelFactor *RelFactor::getRelParent() {

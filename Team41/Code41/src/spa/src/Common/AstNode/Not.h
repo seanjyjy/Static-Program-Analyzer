@@ -4,7 +4,7 @@
 #include "UnaryOp.h"
 #include "CondExpr.h"
 
-class Not: public CondExpr {
+class Not : public CondExpr {
 public:
     Not(CondExpr *expr);
 };

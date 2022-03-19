@@ -4,7 +4,7 @@
 #include "Common/AstNode/Stmt.h"
 #include <vector>
 
-class StmtLst: public TNode {
+class StmtLst : public TNode {
 public:
-    StmtLst(const vector<Stmt *>& stmts);
+    StmtLst(const vector<Stmt *> &stmts);
 };

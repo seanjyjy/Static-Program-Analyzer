@@ -45,7 +45,7 @@ private:
     /**
      * Checks that the current token matches the given char.
      */
-     void ensure(char c);
+    void ensure(char c);
 
     /**
      * Adds the current row and col as a prefix to the input string.

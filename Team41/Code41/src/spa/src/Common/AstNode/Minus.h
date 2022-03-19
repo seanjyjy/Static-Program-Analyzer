@@ -2,7 +2,7 @@
 
 #include "Common/AstNode/RelFactor.h"
 
-class Minus: public RelFactor {
+class Minus : public RelFactor {
 public:
     Minus(RelFactor *lhs, RelFactor *rhs);
 };

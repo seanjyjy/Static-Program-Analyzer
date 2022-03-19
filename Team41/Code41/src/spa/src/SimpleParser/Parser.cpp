@@ -35,8 +35,8 @@ void Parser::expect(TokenType type) {
     if (currToken.getType() != type) {
         string expectedType = Token::typeToString(type);
         string gotType = Token::typeToString(currToken.getType());
-        auto [startRow, startCol] = currToken.getStart();
-        auto [endRow, endCol] = currToken.getEnd();
+        auto[startRow, startCol] = currToken.getStart();
+        auto[endRow, endCol] = currToken.getEnd();
         if (startRow < errorStartRow || (startRow == errorStartRow && startCol < errorStartCol)) {
             errorStartRow = startRow;
             errorStartCol = startCol;
@@ -49,12 +49,12 @@ void Parser::expect(TokenType type) {
     }
 }
 
-void Parser::expect(TokenType type, const string& s) {
+void Parser::expect(TokenType type, const string &s) {
     if (currToken.getType() != type || currToken.getVal() != s) {
         string expectedType = Token::typeToString(type);
         string gotType = Token::typeToString(currToken.getType());
-        auto [startRow, startCol] = currToken.getStart();
-        auto [endRow, endCol] = currToken.getEnd();
+        auto[startRow, startCol] = currToken.getStart();
+        auto[endRow, endCol] = currToken.getEnd();
         if (startRow < errorStartRow || (startRow == errorStartRow && startCol < errorStartCol)) {
             errorStartRow = startRow;
             errorStartCol = startCol;
@@ -77,8 +77,8 @@ bool Parser::isEof() {
 
 string Parser::withDetails(const string &s) {
     return s + " - from" +
-           " row " + to_string(errorStartRow+1) + " col " + to_string(errorStartCol+1) +
-           " to row " + to_string(errorEndRow+1) + " col " + to_string(errorEndCol+1);
+           " row " + to_string(errorStartRow + 1) + " col " + to_string(errorStartCol + 1) +
+           " to row " + to_string(errorEndRow + 1) + " col " + to_string(errorEndCol + 1);
 }
 
 string Parser::syntaxErrorMsg() {
@@ -90,7 +90,7 @@ string Parser::highlightSource() {
             input, errorStartRow, errorStartCol, errorEndRow, errorEndCol,
             "vvvvvvvvvvvvvvvvvvvvvvvvvvvvv PARSER ERROR HIGHLIGHT vvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
             "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ END ERROR HIGHLIGHT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-            );
+    );
 }
 
 Token *Parser::checkAndGetTokenAndAdvance(TokenType type) {
@@ -105,7 +105,7 @@ void Parser::checkAndAdvance(TokenType type) {
     advance();
 }
 
-void Parser::checkAndAdvance(TokenType type, const string& val) {
+void Parser::checkAndAdvance(TokenType type, const string &val) {
     expect(type, val);
     advance();
 }
@@ -438,7 +438,8 @@ Lt *Parser::eatLtExpr() {
     RelFactor *rf1 = eatRelFactor();
     checkAndAdvance(TokenType::lt);
     RelFactor *rf2 = eatRelFactor();
-    return new Lt(rf1, rf2);}
+    return new Lt(rf1, rf2);
+}
 
 Le *Parser::eatLeExpr() {
     RelFactor *rf1 = eatRelFactor();

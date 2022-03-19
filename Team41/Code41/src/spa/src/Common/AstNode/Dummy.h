@@ -2,7 +2,7 @@
 
 #include "Common/TNode.h"
 
-class Dummy: public TNode {
+class Dummy : public TNode {
 public:
     Dummy();
 };

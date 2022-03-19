@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class Program: public TNode {
+class Program : public TNode {
 public:
-    Program(const vector<Procedure *>& procedures);
+    Program(const vector<Procedure *> &procedures);
 };

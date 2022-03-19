@@ -12,6 +12,6 @@ TNodeType RelExpr::verify(TNodeType type) {
     return type;
 }
 
-RelExpr::RelExpr(TNodeType type, RelFactor *lhs, RelFactor *rhs): CondExpr(RelExpr::verify(type), {lhs, rhs}) {
+RelExpr::RelExpr(TNodeType type, RelFactor *lhs, RelFactor *rhs) : CondExpr(RelExpr::verify(type), {lhs, rhs}) {
 }
 

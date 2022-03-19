@@ -6,7 +6,7 @@ using namespace std;
 
 SyntaxException::SyntaxException(string message) : SPAException(move(message)) {}
 
-SyntaxException::SyntaxException(): SPAException("") {}
+SyntaxException::SyntaxException() : SPAException("") {}
 
 string SyntaxException::what() { return errorMessage; }
 

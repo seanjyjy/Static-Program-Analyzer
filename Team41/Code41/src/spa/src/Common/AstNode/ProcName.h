@@ -2,7 +2,7 @@
 
 #include "Common/AstNode/RelFactor.h"
 
-class ProcName: public TNode {
+class ProcName : public TNode {
 public:
     ProcName(Token *val);
 };

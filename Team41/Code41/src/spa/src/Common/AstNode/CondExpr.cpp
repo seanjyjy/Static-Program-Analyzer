@@ -15,5 +15,5 @@ TNodeType CondExpr::verify(TNodeType type) {
     return type;
 }
 
-CondExpr::CondExpr(TNodeType type, vector<TNode *> children): TNode(CondExpr::verify(type), nullptr, move(children)) {
+CondExpr::CondExpr(TNodeType type, vector<TNode *> children) : TNode(CondExpr::verify(type), nullptr, move(children)) {
 }

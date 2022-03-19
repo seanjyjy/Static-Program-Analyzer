@@ -1,4 +1,4 @@
 #include "Dummy.h"
 
-Dummy::Dummy(): TNode(TNodeType::dummy, nullptr, {}) {
+Dummy::Dummy() : TNode(TNodeType::dummy, nullptr, {}) {
 }
