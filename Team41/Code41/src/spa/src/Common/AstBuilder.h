@@ -1,6 +1,32 @@
 #pragma once
 
 #include "TNode.h"
+#include "Common/AstNode/Program.h"
+#include "Common/AstNode/Procedure.h"
+#include "Common/AstNode/StmtLst.h"
+#include "Common/AstNode/BinaryOp.h"
+#include "Common/AstNode/Read.h"
+#include "Common/AstNode/Print.h"
+#include "Common/AstNode/Call.h"
+#include "Common/AstNode/While.h"
+#include "Common/AstNode/If.h"
+#include "Common/AstNode/Assign.h"
+#include "Common/AstNode/UnaryOp.h"
+#include "Common/AstNode/Gt.h"
+#include "Common/AstNode/Ge.h"
+#include "Common/AstNode/Lt.h"
+#include "Common/AstNode/Le.h"
+#include "Common/AstNode/Ne.h"
+#include "Common/AstNode/Eq.h"
+#include "Common/AstNode/VarName.h"
+#include "Common/AstNode/ConstVal.h"
+#include "Common/AstNode/ProcName.h"
+#include "Common/AstNode/Dummy.h"
+#include "Common/AstNode/Plus.h"
+#include "Common/AstNode/Minus.h"
+#include "Common/AstNode/Times.h"
+#include "Common/AstNode/Div.h"
+#include "Common/AstNode/Mod.h"
 #include <stack>
 #include <unordered_map>
 

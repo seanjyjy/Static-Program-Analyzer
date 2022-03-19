@@ -156,8 +156,6 @@ TNode *TNode::makeProcName(Token *val) { return new TNode(TNodeType::procName, v
 
 TNode *TNode::makeConstVal(Token *val) { return new TNode(TNodeType::constValue, val, {}); }
 
-TNode *TNode::makeDummy() { return new TNode{TNodeType::dummy, nullptr, {}}; }
-
 string TNode::typeToString(TNodeType type) {
     switch (type) {
         case TNodeType::program:

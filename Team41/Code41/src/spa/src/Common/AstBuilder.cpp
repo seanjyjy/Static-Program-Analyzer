@@ -130,7 +130,7 @@ bool AstBuilder::eatSlashIfExists() {
 }
 
 string AstBuilder::eatName() {
-    if (!isspace(currToken)) throw runtime_error("current token should be <space>");
+    if (isspace(currToken)) throw runtime_error("current token should not be <space>");
     string ret;
     while (isalnum(currToken)) {
         ret += currToken;
