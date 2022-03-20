@@ -58,7 +58,6 @@ unordered_set<string> Evaluator::getFilters(QueryDeclaration::design_entity_type
     }
 }
 
-
 Table *Evaluator::buildBooleanTable(bool booleanResult) {
     if (booleanResult) {
         return new TrueTable();
@@ -178,8 +177,8 @@ Table *Evaluator::buildSingleSynonymTable(const vector<string>& results, ClauseV
 }
 
 Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration &patternSynonym) {
-    string column = patternSynonym.synonym;
-    unordered_set<string> filters = getFilters(patternSynonym.type);
+    string column = patternSynonym.getSynonym();
+    unordered_set<string> filters = getFilters(patternSynonym.getType());
 
     Header header = Header({column});
     Table *result = new PQLTable(header);
@@ -249,10 +248,10 @@ Table *Evaluator::buildDifferentSynonymTable(const vector<pair<string, string>> 
 }
 
 Table *Evaluator::buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results,
-                                                  const QueryDeclaration& patternSyn, const ClauseVariable& left) {
-    string firstColumn = patternSyn.synonym;
+                                                  QueryDeclaration& patternSyn, const ClauseVariable& left) {
+    string firstColumn = patternSyn.getSynonym();
     string secondColumn = left.getLabel();
-    unordered_set<string> leftFilters = getFilters(patternSyn.type);
+    unordered_set<string> leftFilters = getFilters(patternSyn.getType());
     unordered_set<string> rightFilters = getFilters(left.getDesignEntityType());
 
     Header header({firstColumn, secondColumn});

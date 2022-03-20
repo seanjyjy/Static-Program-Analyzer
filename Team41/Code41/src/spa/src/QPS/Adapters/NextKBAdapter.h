@@ -29,6 +29,7 @@ private:
     void addFullMapping(const string& start, const string& end);
 public:
     explicit NextKBAdapter(PKBClient* pkb);
+    ~NextKBAdapter();
     //=========================================== Next ===================================================
 
     bool isNext(string stmt1, string stmt2) const; // Checks if stmt2 can be executed immediately after stmt1

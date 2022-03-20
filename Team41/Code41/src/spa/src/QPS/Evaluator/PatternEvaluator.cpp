@@ -2,10 +2,10 @@
 
 PatternEvaluator::PatternEvaluator(PKBClient *pkb) : Evaluator(pkb) {}
 
-Table *PatternEvaluator::evaluate(PatternClause clause) {
-    QueryDeclaration patternSynonym = clause.getSynonym();
-    ClauseVariable leftVariable = clause.getLHS();
-    vector<PatternVariable> rightPatternVariables = clause.getRHS();
+Table *PatternEvaluator::evaluate(PatternClause *clause) {
+    QueryDeclaration patternSynonym = clause->getSynonym();
+    ClauseVariable leftVariable = clause->getLHS();
+    vector<PatternVariable> rightPatternVariables = clause->getRHS();
 
     if (leftVariable.getLabel() == patternSynonym.synonym) {
         throw SemanticException("NO SUCH COMBINATION ALLOWED FOR PATTERN");
@@ -16,10 +16,6 @@ Table *PatternEvaluator::evaluate(PatternClause clause) {
     }
 
     return evaluateFurther(patternSynonym, leftVariable, rightPatternVariables);
-}
-
-Table *PatternEvaluator::evaluate(QueryClause clause) {
-    throw runtime_error("Pattern clause should NEVER COME HERE");
 }
 
 Table *PatternEvaluator::evaluateWildCardWildCard(QueryDeclaration patternSynonym) {

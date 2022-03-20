@@ -6,6 +6,8 @@ autotestorPath="../cmake-build-debug/src/autotester/autotester"
 
 num=1
 
+open -a Firefox
+
 for i in *; do
   if [[ $i == *_source.txt ]]; then
     queries="${i/source/queries}"

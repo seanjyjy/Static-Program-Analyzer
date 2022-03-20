@@ -68,23 +68,23 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
     SECTION("Calls Evaluator") {
         SECTION("Identifier Identifier Pair") {
             QueryClause queryClause1(QueryClause::calls, proc0, proc3);
-            Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::calls, proc0, proc1);
-            Table* table2 = CallsEvaluator(pkbManager).evaluate(queryClause2);
+            Table* table2 = CallsEvaluator(pkbManager).evaluate(&queryClause2);
             REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::calls, proc2, proc5);
-            Table* table3 = CallsEvaluator(pkbManager).evaluate(queryClause3);
+            Table* table3 = CallsEvaluator(pkbManager).evaluate(&queryClause3);
             REQUIRE(table3->getType() == Table::TrueTable);
 
             QueryClause queryClause4(QueryClause::calls, proc5, proc4);
-            Table* table4 = CallsEvaluator(pkbManager).evaluate(queryClause4);
+            Table* table4 = CallsEvaluator(pkbManager).evaluate(&queryClause4);
             REQUIRE(table4->getType() == Table::TrueTable);
 
             QueryClause queryClause5(QueryClause::calls, proc2, proc4);
-            Table* table5 = CallsEvaluator(pkbManager).evaluate(queryClause5);
+            Table* table5 = CallsEvaluator(pkbManager).evaluate(&queryClause5);
             REQUIRE(table5->getType() == Table::FalseTable);
 
             delete table1;
@@ -96,17 +96,17 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Identifier Synonym Pair") {
             QueryClause queryClause1(QueryClause::calls, proc0, procSyn1);
-            Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->size() == 2);
             REQUIRE(table1->getColumn("proc1") == unordered_set<string>({"p1", "p2"}));
 
             QueryClause queryClause2(QueryClause::calls, proc2, procSyn1);
-            Table* table2 = CallsEvaluator(pkbManager).evaluate(queryClause2);
+            Table* table2 = CallsEvaluator(pkbManager).evaluate(&queryClause2);
             REQUIRE(table2->size() == 1);
             REQUIRE(table2->getColumn("proc1") == unordered_set<string>({"p5"}));
 
             QueryClause queryClause3(QueryClause::calls, proc3, procSyn1);
-            Table* table3 = CallsEvaluator(pkbManager).evaluate(queryClause3);
+            Table* table3 = CallsEvaluator(pkbManager).evaluate(&queryClause3);
             REQUIRE(table3->size() == 0);
 
             delete table1;
@@ -116,11 +116,11 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Identifier WildCard Pair") {
             QueryClause queryClause1(QueryClause::calls, proc0, wildcard);
-            Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::calls, proc4, wildcard);
-            Table* table2 = CallsEvaluator(pkbManager).evaluate(queryClause2);
+            Table* table2 = CallsEvaluator(pkbManager).evaluate(&queryClause2);
             REQUIRE(table2->getType() == Table::FalseTable);
 
             delete table1;
@@ -129,16 +129,16 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Synonym Identifier Pair") {
             QueryClause queryClause1(QueryClause::calls, procSyn1, proc0);
-            Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->size() == 0);
 
             QueryClause queryClause2(QueryClause::calls, procSyn1, proc4);
-            Table* table2 = CallsEvaluator(pkbManager).evaluate(queryClause2);
+            Table* table2 = CallsEvaluator(pkbManager).evaluate(&queryClause2);
             REQUIRE(table2->size() == 2);
             REQUIRE(table2->getColumn("proc1") == unordered_set<string>({"p1", "p5"}));
 
             QueryClause queryClause3(QueryClause::calls, procSyn1, proc5);
-            Table* table3 = CallsEvaluator(pkbManager).evaluate(queryClause3);
+            Table* table3 = CallsEvaluator(pkbManager).evaluate(&queryClause3);
             REQUIRE(table3->size() == 1);
             REQUIRE(table3->getColumn("proc1") == unordered_set<string>({"p2"}));
 
@@ -149,7 +149,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Synonym Synonym Pair") {
             QueryClause queryClause1(QueryClause::calls, procSyn1, procSyn2);
-            Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->size() == 6);
             REQUIRE(table1->getColumn("proc1") == unordered_set<string>({"p0", "p1", "p2", "p5"}));
             REQUIRE(table1->getColumn("proc2") == unordered_set<string>({"p1", "p2", "p3", "p4", "p5"}));
@@ -159,7 +159,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Synonym WildCard Pair") {
             QueryClause queryClause1(QueryClause::calls, procSyn1, wildcard);
-            Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->size() == 4);
             REQUIRE(table1->getColumn("proc1") == unordered_set<string>({"p0", "p1", "p2", "p5"}));
 
@@ -168,15 +168,15 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("WildCard Identifier Pair") {
             QueryClause queryClause1(QueryClause::calls, wildcard, proc0);
-            Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::calls, wildcard, proc3);
-            Table* table2 = CallsEvaluator(pkbManager).evaluate(queryClause2);
+            Table* table2 = CallsEvaluator(pkbManager).evaluate(&queryClause2);
             REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::calls, wildcard, proc4);
-            Table* table3 = CallsEvaluator(pkbManager).evaluate(queryClause3);
+            Table* table3 = CallsEvaluator(pkbManager).evaluate(&queryClause3);
             REQUIRE(table3->getType() == Table::TrueTable);
 
             delete table1;
@@ -186,7 +186,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("WildCard Synonym Pair") {
             QueryClause queryClause1(QueryClause::calls, wildcard, procSyn1);
-            Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->size() == 5);
             REQUIRE(table1->getColumn("proc1") == unordered_set<string>({"p1", "p2", "p3", "p4", "p5"}));
 
@@ -195,7 +195,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("WildCard WildCard Pair") {
             QueryClause queryClause1(QueryClause::calls, wildcard, wildcard);
-            Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->getType() == Table::TrueTable);
 
             delete table1;
@@ -203,40 +203,40 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Semantically Invalid") {
             QueryClause queryClause1(QueryClause::calls, integer1, wildcard);
-            REQUIRE_THROWS(CallsEvaluator(pkbManager).evaluate(queryClause1));
+            REQUIRE_THROWS(CallsEvaluator(pkbManager).evaluate(&queryClause1));
 
             QueryClause queryClause2(QueryClause::calls, procSyn1,integer1);
-            REQUIRE_THROWS(CallsEvaluator(pkbManager).evaluate(queryClause2));
+            REQUIRE_THROWS(CallsEvaluator(pkbManager).evaluate(&queryClause2));
 
             QueryClause queryClause3(QueryClause::calls, integer1, integer2);
-            REQUIRE_THROWS(CallsEvaluator(pkbManager).evaluate(queryClause3));
+            REQUIRE_THROWS(CallsEvaluator(pkbManager).evaluate(&queryClause3));
         }
     }
 
     SECTION("CallsT Evaluator") {
         SECTION("Identifier Identifier Pair") {
             QueryClause queryClause1(QueryClause::callsT, proc0, proc3);
-            Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsTEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::callsT, proc0, proc1);
-            Table* table2 = CallsTEvaluator(pkbManager).evaluate(queryClause2);
+            Table* table2 = CallsTEvaluator(pkbManager).evaluate(&queryClause2);
             REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::callsT, proc2, proc5);
-            Table* table3 = CallsTEvaluator(pkbManager).evaluate(queryClause3);
+            Table* table3 = CallsTEvaluator(pkbManager).evaluate(&queryClause3);
             REQUIRE(table3->getType() == Table::TrueTable);
 
             QueryClause queryClause4(QueryClause::callsT, proc5, proc4);
-            Table* table4 = CallsTEvaluator(pkbManager).evaluate(queryClause4);
+            Table* table4 = CallsTEvaluator(pkbManager).evaluate(&queryClause4);
             REQUIRE(table4->getType() == Table::TrueTable);
 
             QueryClause queryClause5(QueryClause::callsT, proc2, proc4);
-            Table* table5 = CallsTEvaluator(pkbManager).evaluate(queryClause5);
+            Table* table5 = CallsTEvaluator(pkbManager).evaluate(&queryClause5);
             REQUIRE(table5->getType() == Table::TrueTable);
 
             QueryClause queryClause6(QueryClause::callsT, proc4, proc3);
-            Table* table6 = CallsTEvaluator(pkbManager).evaluate(queryClause6);
+            Table* table6 = CallsTEvaluator(pkbManager).evaluate(&queryClause6);
             REQUIRE(table6->getType() == Table::FalseTable);
 
             delete table1;
@@ -249,17 +249,17 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Identifier Synonym Pair") {
             QueryClause queryClause1(QueryClause::callsT, proc0, procSyn1);
-            Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsTEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->size() == 5);
             REQUIRE(table1->getColumn("proc1") == unordered_set<string>({"p1", "p2", "p3", "p4", "p5"}));
 
             QueryClause queryClause2(QueryClause::callsT, proc1, procSyn1);
-            Table* table2 = CallsTEvaluator(pkbManager).evaluate(queryClause2);
+            Table* table2 = CallsTEvaluator(pkbManager).evaluate(&queryClause2);
             REQUIRE(table2->size() == 2);
             REQUIRE(table2->getColumn("proc1") == unordered_set<string>({"p3", "p4"}));
 
             QueryClause queryClause3(QueryClause::callsT, proc2, procSyn1);
-            Table* table3 = CallsTEvaluator(pkbManager).evaluate(queryClause3);
+            Table* table3 = CallsTEvaluator(pkbManager).evaluate(&queryClause3);
             REQUIRE(table3->size() == 2);
             REQUIRE(table3->getColumn("proc1") == unordered_set<string>({"p4", "p5"}));
 
@@ -270,15 +270,15 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Identifier WildCard Pair") {
             QueryClause queryClause1(QueryClause::callsT, proc0, wildcard);
-            Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsTEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::callsT, proc3, wildcard);
-            Table* table2 = CallsTEvaluator(pkbManager).evaluate(queryClause2);
+            Table* table2 = CallsTEvaluator(pkbManager).evaluate(&queryClause2);
             REQUIRE(table2->getType() == Table::FalseTable);
 
             QueryClause queryClause3(QueryClause::callsT, proc2, wildcard);
-            Table* table3 = CallsTEvaluator(pkbManager).evaluate(queryClause3);
+            Table* table3 = CallsTEvaluator(pkbManager).evaluate(&queryClause3);
             REQUIRE(table3->getType() == Table::TrueTable);
 
             delete table1;
@@ -288,16 +288,16 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Synonym Identifier Pair") {
             QueryClause queryClause1(QueryClause::callsT, procSyn1, proc0);
-            Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsTEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->size() == 0);
 
             QueryClause queryClause2(QueryClause::callsT, procSyn1, proc4);
-            Table* table2 = CallsTEvaluator(pkbManager).evaluate(queryClause2);
+            Table* table2 = CallsTEvaluator(pkbManager).evaluate(&queryClause2);
             REQUIRE(table2->size() == 4);
             REQUIRE(table2->getColumn("proc1") == unordered_set<string>({"p0", "p1", "p2", "p5"}));
 
             QueryClause queryClause3(QueryClause::callsT, procSyn1, proc5);
-            Table* table3 = CallsTEvaluator(pkbManager).evaluate(queryClause3);
+            Table* table3 = CallsTEvaluator(pkbManager).evaluate(&queryClause3);
             REQUIRE(table3->size() == 2);
             REQUIRE(table3->getColumn("proc1") == unordered_set<string>({"p0", "p2"}));
 
@@ -308,7 +308,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Synonym Synonym Pair") {
             QueryClause queryClause1(QueryClause::callsT, procSyn1, procSyn2);
-            Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsTEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->size() == 10);
             REQUIRE(table1->getColumn("proc1") == unordered_set<string>({"p0", "p1", "p2", "p5"}));
             REQUIRE(table1->getColumn("proc2") == unordered_set<string>({"p1", "p2", "p3", "p4", "p5"}));
@@ -318,7 +318,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Synonym WildCard Pair") {
             QueryClause queryClause1(QueryClause::callsT, procSyn1, wildcard);
-            Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsTEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->size() == 4);
             REQUIRE(table1->getColumn("proc1") == unordered_set<string>({"p0", "p1", "p2", "p5"}));
 
@@ -327,15 +327,15 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("WildCard Identifier Pair") {
             QueryClause queryClause1(QueryClause::callsT, wildcard, proc0);
-            Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsTEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
             QueryClause queryClause2(QueryClause::callsT, wildcard, proc3);
-            Table* table2 = CallsTEvaluator(pkbManager).evaluate(queryClause2);
+            Table* table2 = CallsTEvaluator(pkbManager).evaluate(&queryClause2);
             REQUIRE(table2->getType() == Table::TrueTable);
 
             QueryClause queryClause3(QueryClause::callsT, wildcard, proc4);
-            Table* table3 = CallsTEvaluator(pkbManager).evaluate(queryClause3);
+            Table* table3 = CallsTEvaluator(pkbManager).evaluate(&queryClause3);
             REQUIRE(table3->getType() == Table::TrueTable);
 
             delete table1;
@@ -345,7 +345,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("WildCard Synonym Pair") {
             QueryClause queryClause1(QueryClause::callsT, wildcard, procSyn1);
-            Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsTEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->size() == 5);
             REQUIRE(table1->getColumn("proc1") == unordered_set<string>({"p1", "p2", "p3", "p4", "p5"}));
 
@@ -354,7 +354,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("WildCard WildCard Pair") {
             QueryClause queryClause1(QueryClause::callsT, wildcard, wildcard);
-            Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
+            Table* table1 = CallsTEvaluator(pkbManager).evaluate(&queryClause1);
             REQUIRE(table1->getType() == Table::TrueTable);
 
             delete table1;
@@ -362,13 +362,13 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
         SECTION("Semantically Invalid") {
             QueryClause queryClause1(QueryClause::callsT, integer1, wildcard);
-            REQUIRE_THROWS(CallsTEvaluator(pkbManager).evaluate(queryClause1));
+            REQUIRE_THROWS(CallsTEvaluator(pkbManager).evaluate(&queryClause1));
 
             QueryClause queryClause2(QueryClause::callsT, procSyn1,integer1);
-            REQUIRE_THROWS(CallsTEvaluator(pkbManager).evaluate(queryClause2));
+            REQUIRE_THROWS(CallsTEvaluator(pkbManager).evaluate(&queryClause2));
 
             QueryClause queryClause3(QueryClause::callsT, integer1, integer2);
-            REQUIRE_THROWS(CallsTEvaluator(pkbManager).evaluate(queryClause3));
+            REQUIRE_THROWS(CallsTEvaluator(pkbManager).evaluate(&queryClause3));
         }
     }
 
