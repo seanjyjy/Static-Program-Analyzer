@@ -20,13 +20,7 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     }
 
     Table *resultTable = new TrueTable();
-
-    auto queryClauses = queryObject->getClauses();
-    auto patternClauses = queryObject->getPatternClauses();
     vector<SuperClause *> clauses = queryObject->getSuperClauses();
-
-    auto suchThatClPtr = queryClauses.begin();
-    auto patternClPtr = patternClauses.begin();
 
     try {
         for (auto clause : clauses) {
@@ -70,11 +64,11 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             }
         }
     } catch (SemanticException& error) {
-        std::cout << error.what() << std::endl;
+        cout << error.what() << endl;
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     } catch (const runtime_error& error) {
-        std::cout << error.what() << std::endl;
+        cout << error.what() << endl;
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     }
