@@ -51,7 +51,7 @@ public:
 
     // For SuperClause
     vector<QueryDeclaration> getSynonyms();
-    bool hasSynonyms();
+    bool hasSynonyms() const;
     bool isWithClause() const;
     bool isSuchThatClause() const;
     bool isPatternClause() const;

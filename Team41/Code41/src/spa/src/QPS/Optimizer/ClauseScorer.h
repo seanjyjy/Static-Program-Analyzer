@@ -1,6 +1,7 @@
 #pragma once
 
-#include "TempClause.h"
+#include "QPS/SuperClause.h"
+#include "unordered_map"
 
 /**
  * Clauses ranked from best (top, highest score) to worst (bottom, lowest score):
@@ -31,14 +32,13 @@ private:
     const static long SCORE_WITH_CLAUSE = 700;
     const static long SCORE_PATTERN_CLAUSE = 500;
     const static long SCORE_SUCHTHAT_CLAUSE = 300;
-    const static vector<SuchThatType> stRanks; // should not accessed directly, use getStRanks()
 
-    static vector<SuchThatType> getStRanks();
-    static SuchThatType stClauseToType(const TempClause &tc);
-    static long scoreWithCl(const TempClause &tc);
-    static long scoreSuchThatCl(const TempClause &tc);
-    static long scorePatternCl(const TempClause &tc);
-    static bool needsCFG(const TempClause &tc);
+    static unordered_map<SuchThatType, long> getStRanks();
+    static SuchThatType stClauseToType(SuperClause* tc);
+    static long scoreWithCl(SuperClause *tc);
+    static long scoreSuchThatCl(SuperClause *tc);
+    static long scorePatternCl(SuperClause *tc);
+    static bool needsCFG(SuperClause *tc);
 public:
-    static long score(const TempClause &tc);
+    static long score(SuperClause *tc);
 };

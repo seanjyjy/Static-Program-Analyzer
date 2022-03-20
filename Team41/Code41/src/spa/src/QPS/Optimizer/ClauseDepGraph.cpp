@@ -1,26 +1,29 @@
 #include "ClauseDepGraph.h"
-#include "TempClause.h"
+#include "QPS/SuperClause.h"
 #include "QPS/ClauseVariable.h"
 #include <stdexcept>
-#include <utility>
 
 using namespace std;
 
-ClauseDepGraph::ClauseDepGraph(PKBAdapter adapter): pkbAdapter(std::move(adapter)) {
+ClauseDepGraph::ClauseDepGraph(PKBAdapter adapter): pkbAdapter(adapter) {
 }
 
-void ClauseDepGraph::registerClause(TempClause qc) {
-    vector<ClauseVariable> synonyms = qc.getSynonyms();
+void ClauseDepGraph::registerClause(SuperClause *cl) {
+    vector<QueryDeclaration> synonyms = cl->getSynonyms();
 
     // clauses without synonyms go into one group
     if (synonyms.empty()) {
-        synonymToClauses[NO_SYNONYM].push_back(qc);
+        synonymToClauses[NO_SYNONYM].push_back(cl);
         return;
     }
 
+    // if the clause has synonyms, connect all pairs of synonyms
     for (int i = 0; i < synonyms.size(); i++) {
-        if (i != 0) graph.addEdge(synonyms[i-1].getLabel(), synonyms[i].getLabel());
-        synonymToClauses[synonyms[i].getLabel()].push_back(qc);
+        for (int j = i+1; j < synonyms.size(); j++) {
+            graph.addUndirectedEdge(synonyms[i].getSynonym(), synonyms[j].getSynonym());
+        }
+        // map clause synonyms to the original clause, so we can retrieve them later
+        synonymToClauses[synonyms[i].getSynonym()].push_back(cl);
     }
 }
 
@@ -32,7 +35,7 @@ ClauseGroups ClauseDepGraph::split() {
     ClauseGroups clauseGroups(N, pkbAdapter);
     for (int gid = 0; gid < N; gid++) { // loop all groups of synonyms
         for (int cid = 0; cid < groups[gid].size(); cid++) { // loop one group of syns
-            for (const TempClause &cl: getClausesOfSyn(groups[gid][cid])) {
+            for (SuperClause* cl: getClausesOfSyn(groups[gid][cid])) {
                 clauseGroups.addClause(gid, cl);
             }
         }
@@ -40,7 +43,7 @@ ClauseGroups ClauseDepGraph::split() {
 
     // populate the final group - with no clauses
     ClauseGroup noSynClauses(pkbAdapter);
-    for (const TempClause &tc: synonymToClauses[NO_SYNONYM]) {
+    for (SuperClause* tc: synonymToClauses[NO_SYNONYM]) {
         noSynClauses.addClause(tc);
     }
     clauseGroups.addClauseGroup(noSynClauses);
@@ -52,7 +55,7 @@ bool ClauseDepGraph::hasSyn(const string &syn) {
     return synonymToClauses.find(syn) != synonymToClauses.end();
 }
 
-vector<TempClause> ClauseDepGraph::getClausesOfSyn(const string &syn) {
+vector<SuperClause*> ClauseDepGraph::getClausesOfSyn(const string &syn) {
     if (!hasSyn(syn)) throw runtime_error("syn does not exist");
     return synonymToClauses[syn];
 }

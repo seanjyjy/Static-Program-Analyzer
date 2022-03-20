@@ -23,7 +23,7 @@ private:
 public:
     SimpleGraph();
     void addVertex(string n1);
-    void addEdge(string n1, string n2);
+    void addUndirectedEdge(string n1, string n2);
     void clear();
     vector<vector<string>> getDisjointComponents();
 };

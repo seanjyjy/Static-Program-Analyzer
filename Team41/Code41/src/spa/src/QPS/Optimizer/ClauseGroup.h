@@ -4,22 +4,23 @@
 
 using namespace std;
 
-#include "TempClause.h"
+#include "QPS/SuperClause.h"
 #include "QPS/Optimizer/PKBAdapter.h"
 #include "QPS/Optimizer/TableEstimate.h"
 
 // TODO maybe subclass clause groups into static/dynamic?
 class ClauseGroup {
 private:
-    vector<TempClause> clauses;
+    vector<SuperClause*> clauses;
     vector<bool> isUsed;
     TableEstimate table;
 public:
+    ClauseGroup();
     ClauseGroup(PKBAdapter pkbAdapter);
-    void addClause(const TempClause &c);
+    void addClause(SuperClause *c);
     void sortClauses();
     bool hasNextClause();
-    TempClause getNextClauseStatic(); // reads clauses in the same order they were added
-    TempClause getNextClauseDynamic(); // gets the clause resulting in the smallest intermediate table
+    SuperClause* getNextClauseStatic(); // reads clauses in the same order they were added
+    SuperClause* getNextClauseDynamic(); // gets the clause resulting in the smallest intermediate table
     long getScore();
 };

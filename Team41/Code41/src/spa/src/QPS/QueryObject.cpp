@@ -48,7 +48,7 @@ vector<WithClause>& QueryObject::getWithClauses() {
     return withClauses;
 }
 
-vector<SuperClause*>& QueryObject::getSuperClauses(){
+vector<SuperClause*>& QueryObject::getSuperClauses() {
     return superClauses;
 }
 
@@ -76,11 +76,11 @@ QueryObject::~QueryObject() {
     }
 }
 
-QueryDeclaration::design_entity_type QueryDeclaration::getType() {
+QueryDeclaration::design_entity_type QueryDeclaration::getType() const {
     return type;
 }
 
-string QueryDeclaration::getSynonym() {
+string QueryDeclaration::getSynonym() const {
     return synonym;
 }
 

@@ -11,7 +11,7 @@ void SimpleGraph::addVertex(string n1) {
     adjList[id] = vector<int>();
 }
 
-void SimpleGraph::addEdge(string n1, string n2) {
+void SimpleGraph::addUndirectedEdge(string n1, string n2) {
     if (!hasNode(n1)) addVertex(n1);
     if (!hasNode(n2)) addVertex(n2);
     int id1 = getNodeId(n1);

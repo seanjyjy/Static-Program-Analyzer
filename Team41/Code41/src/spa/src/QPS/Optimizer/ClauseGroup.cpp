@@ -8,22 +8,24 @@
 
 using namespace std;
 
+ClauseGroup::ClauseGroup() = default;
+
 ClauseGroup::ClauseGroup(PKBAdapter pkbAdapter): table(TableEstimate(pkbAdapter)) {};
 
-void ClauseGroup::addClause(const TempClause &c) {
+void ClauseGroup::addClause(SuperClause *c) {
     clauses.push_back(c);
     isUsed.push_back(false);
 }
 
 // the score of a clause group is just the sum of scores of its constituent clauses
 long ClauseGroup::getScore() {
-    return accumulate(clauses.begin(), clauses.end(), 0L, [](long currScore, TempClause &a) {
+    return accumulate(clauses.begin(), clauses.end(), 0L, [](long currScore, SuperClause* a) {
         return ClauseScorer::score(a) + currScore;
     });
 }
 
 void ClauseGroup::sortClauses() {
-    sort(clauses.begin(), clauses.end(), [](TempClause &a, TempClause &b) {
+    sort(clauses.begin(), clauses.end(), [](SuperClause *a, SuperClause *b) {
         return ClauseScorer::score(a) < ClauseScorer::score(b);
     });
 }
@@ -33,26 +35,26 @@ bool ClauseGroup::hasNextClause() {
     return any_of(isUsed.begin(), isUsed.end(), [](const bool used) { return !used; });
 }
 
-TempClause ClauseGroup::getNextClauseStatic() {
+SuperClause* ClauseGroup::getNextClauseStatic() {
     // TODO speedup with bit manipulation
     for (int i = 0; i < isUsed.size(); i++) {
         if (!isUsed[i]) {
             isUsed[i] = true;
-            table.merge(clauses[i].getSynonyms());
-            return clauses[i];
+            table.merge(clauses[i]->getSynonyms());
+            return clauses.at(i);
         }
     }
     throw runtime_error("no more clauses left!");
 }
 
-TempClause ClauseGroup::getNextClauseDynamic() {
+SuperClause* ClauseGroup::getNextClauseDynamic() {
     // find the clause giving the smallest new intermediate table
     int bestIdx = -1;
     long long bestRows = LLONG_MAX;
     // TODO use priority queue?
     for (int i = 0; i < isUsed.size(); i++) {
         if (isUsed[i]) continue;
-        long long rows = table.estimateMergeCost(clauses[i].getSynonyms());
+        long long rows = table.estimateMergeCost(clauses[i]->getSynonyms());
         if (rows < bestRows) {
             bestRows = rows;
             bestIdx = i;
@@ -65,4 +67,3 @@ TempClause ClauseGroup::getNextClauseDynamic() {
     }
     throw runtime_error("no more clauses left");
 }
-

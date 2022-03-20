@@ -2,6 +2,7 @@
 
 #include "QPS/QueryObject.h"
 #include "QPS/Optimizer/PKBAdapter.h"
+#include "QPS/SuperClause.h"
 #include "ClauseDepGraph.h"
 #include "OptimizedQueryObject.h"
 #include "ClauseGroups.h"
@@ -14,8 +15,11 @@ class QueryOptimizer {
 private:
     PKBAdapter adapter;
     ClauseDepGraph clauseDepGraph;
+    OptimizedQueryObject optimizedQueryObject;
     ClauseGroups divideClausesIntoGroups(QueryObject &qo);
 public:
     QueryOptimizer(PKBManager *pkbManager);
-    OptimizedQueryObject optimize(QueryObject &qo, bool isDynamic=false);
+    void optimize(QueryObject &qo, bool isDynamic=false);
+    OptimizedQueryObject getOptimizedQueryObject();
+    void printPlan();
 };

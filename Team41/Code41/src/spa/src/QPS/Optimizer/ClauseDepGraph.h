@@ -7,10 +7,11 @@
 #include "QPS/PatternClause.h"
 #include "QPS/Optimizer/ClauseGroups.h"
 #include "QPS/Optimizer/SimpleGraph.h"
-#include "TempClause.h"
+#include "QPS/SuperClause.h"
 
 using namespace std;
 
+// TODO desstructor
 class ClauseDepGraph {
 private:
     // used to identify the group of clauses with no synonyms
@@ -18,12 +19,12 @@ private:
 
     SimpleGraph graph;
     PKBAdapter pkbAdapter;
-    unordered_map<string, vector<TempClause>> synonymToClauses;
+    unordered_map<string, vector<SuperClause*>> synonymToClauses;
     bool hasSyn(const string&s);
-    vector<TempClause> getClausesOfSyn(const string& syn);
+    vector<SuperClause*> getClausesOfSyn(const string& syn);
 public:
     ClauseDepGraph(PKBAdapter pkbAdapter);
 
-    void registerClause(TempClause tc);
+    void registerClause(SuperClause* cl);
     ClauseGroups split();
 };

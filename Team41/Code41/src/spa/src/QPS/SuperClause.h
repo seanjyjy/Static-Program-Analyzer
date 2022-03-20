@@ -6,7 +6,7 @@
 class SuperClause {
 public:
     virtual vector<QueryDeclaration> getSynonyms() = 0;
-    virtual bool hasSynonyms() = 0;
+    virtual bool hasSynonyms() const = 0;
     virtual bool isWithClause() const = 0;
     virtual bool isSuchThatClause() const = 0;
     virtual bool isPatternClause() const = 0;

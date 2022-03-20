@@ -10,12 +10,12 @@ private:
     WithVariable left, right;
 public:
     WithClause(WithVariable, WithVariable);
-    WithVariable getLeft();
-    WithVariable getRight();
+    WithVariable getLeft() const;
+    WithVariable getRight() const;
 
     // For SuperClause
     vector<QueryDeclaration> getSynonyms();
-    bool hasSynonyms();
+    bool hasSynonyms() const;
     bool isWithClause() const;
     bool isSuchThatClause() const;
     bool isPatternClause() const;

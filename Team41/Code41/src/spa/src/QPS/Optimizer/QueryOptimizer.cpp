@@ -5,7 +5,7 @@
 QueryOptimizer::QueryOptimizer(PKBManager *pkbManager): adapter(PKBAdapter(pkbManager)), clauseDepGraph(adapter) {
 }
 
-OptimizedQueryObject QueryOptimizer::optimize(QueryObject &qo, bool isDynamic) {
+void QueryOptimizer::optimize(QueryObject &qo, bool isDynamic) {
     // step 1: Take query object, extract clauses, group them based on synonym dependencies
     ClauseGroups clauseGroups = divideClausesIntoGroups(qo);
 
@@ -15,15 +15,21 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject &qo, bool isDynamic) {
     // step 3: Sort each individual clause group
     clauseGroups.sortEachGroup();
 
-    return { adapter, qo, clauseGroups, isDynamic };
+    optimizedQueryObject = {adapter, qo, clauseGroups, isDynamic};
 }
 
 ClauseGroups QueryOptimizer::divideClausesIntoGroups(QueryObject &qo) {
-    for (QueryClause& qc: qo.clauses) {
-        clauseDepGraph.registerClause(TempClause(&qc));
-    }
-    for (PatternClause& pc: qo.patternClauses) {
-        clauseDepGraph.registerClause(TempClause(&pc));
+    for (SuperClause* cl: qo.getSuperClauses()) {
+        clauseDepGraph.registerClause(cl);
     }
     return clauseDepGraph.split();
+}
+
+OptimizedQueryObject QueryOptimizer::getOptimizedQueryObject() {
+    return optimizedQueryObject;
+}
+
+void QueryOptimizer::printPlan() {
+    // TODO implement
+    cout << "print plan not implemented" << endl;
 }

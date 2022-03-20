@@ -21,9 +21,9 @@ public:
     // accompanying synonym of a declaration
     string synonym;
 
-    design_entity_type getType();
+    design_entity_type getType() const;
 
-    string getSynonym();
+    string getSynonym() const;
 
     QueryDeclaration();
 

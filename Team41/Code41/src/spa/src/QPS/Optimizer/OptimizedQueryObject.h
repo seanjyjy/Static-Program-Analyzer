@@ -4,22 +4,21 @@
 #include "QPS/QueryObject.h"
 #include "QPS/Optimizer/TableEstimate.h"
 #include "QPS/Optimizer/PKBAdapter.h"
+#include "QPS/SuperClause.h"
+#include "QPS/Selectable.h"
 
 // TODO: explore inheritance instead of composition
-class OptimizedQueryObject {
+class OptimizedQueryObject: QueryObject {
 private:
-    QueryObject queryObject;
     ClauseGroups clauseGroups;
     ClauseGroup currSource;
 
     // for dynamic optimization
     bool isDynamic = false;
 public:
-    OptimizedQueryObject(PKBAdapter &pkb, QueryObject &qo, ClauseGroups &cg, bool isDynamic=false);
+    OptimizedQueryObject();
+    OptimizedQueryObject(PKBAdapter &pkb, const QueryObject &qo, ClauseGroups &cg, bool isDynamic=false);
 
-    TempClause nextClause();
+    SuperClause* nextClause();
     bool hasNextClause();
-    bool isQueryValid();
-    bool isSelectingBoolean();
-    vector<ClauseVariable> getSelectSynonyms();
 };

@@ -8,16 +8,16 @@
 using namespace std;
 
 struct cvHasher {
-    size_t operator() (const ClauseVariable &cv) const {
+    size_t operator() (const QueryDeclaration &cv) const {
         size_t a = hash<int>{}(cv.getType());
-        size_t b = hash<string>{}(cv.getLabel());
+        size_t b = hash<string>{}(cv.getSynonym());
         return a ^ (b << 1);
     }
 };
 
 struct cvEquals {
-    size_t operator() (const ClauseVariable &a, const ClauseVariable &b) const {
-        if (a.getType() == b.getType() && a.getLabel() == b.getLabel()) return true;
+    size_t operator() (const QueryDeclaration &a, const QueryDeclaration &b) const {
+        if (a.getType() == b.getType() && a.getSynonym() == b.getSynonym()) return true;
         return false;
     }
 };
@@ -25,17 +25,17 @@ struct cvEquals {
 class TableEstimate {
 private:
     PKBAdapter pkbAdapter;
-    vector<ClauseVariable> schema;
+    vector<QueryDeclaration> schema;
     long long estRows;
 
-    bool hasCommonCol(const vector<ClauseVariable>& sch);
+    bool hasCommonCol(const vector<QueryDeclaration>& sch);
 public:
-
+    TableEstimate();
     TableEstimate(PKBAdapter &pkbAdapter);
-    long long estimateMergeCost(const vector<ClauseVariable> &sch);
-    void merge(const vector<ClauseVariable> &sch);
+    long long estimateMergeCost(const vector<QueryDeclaration> &sch);
+    void merge(const vector<QueryDeclaration> &sch);
 
     // getters and setters
     long long getEstimatedRows();
-    vector<ClauseVariable> getSchema();
+    vector<QueryDeclaration> getSchema();
 };

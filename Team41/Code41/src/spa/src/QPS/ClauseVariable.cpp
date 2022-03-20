@@ -14,19 +14,19 @@ QueryDeclaration::design_entity_type ClauseVariable::getDesignEntityType() const
     return designEntityType;
 }
 
-bool ClauseVariable::isIdentifier() {
+bool ClauseVariable::isIdentifier() const {
     return type == identifier;
 }
 
-bool ClauseVariable::isWildCard() {
+bool ClauseVariable::isWildCard() const {
     return type == wildcard;
 }
 
-bool ClauseVariable::isSynonym() {
+bool ClauseVariable::isSynonym() const {
     return type == synonym;
 }
 
-bool ClauseVariable::isInteger() {
+bool ClauseVariable::isInteger() const {
     return type == integer;
 }
 
@@ -38,6 +38,6 @@ string ClauseVariable::getLabel() const {
     return label;
 }
 
-QueryDeclaration ClauseVariable::getQueryDeclaration() {
+QueryDeclaration ClauseVariable::getQueryDeclaration() const {
     return qd;
 }
