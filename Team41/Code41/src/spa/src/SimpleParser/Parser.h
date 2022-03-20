@@ -21,7 +21,6 @@
 #include "Common/AstNode/VarName.h"
 #include "Common/AstNode/ConstVal.h"
 #include "Common/AstNode/ProcName.h"
-#include "Common/AstNode/Dummy.h"
 #include "Common/AstNode/Plus.h"
 #include "Common/AstNode/Minus.h"
 #include "Common/AstNode/Times.h"
