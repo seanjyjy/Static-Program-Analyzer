@@ -13,11 +13,13 @@ TEST_CASE("CFGBuilder") {
     vector<string> firstStmts = {"1", "13"};
     CFGBuilder cfgBuilder = CFGBuilder(stmtNextMap, firstStmts);
     cfgBuilder.build();
-    CFGNode *cfgBuilt = cfgBuilder.getCFG();
 
+    unordered_map<string, CFGNode *> expectedMap;
     vector<CFGNode *> cfgNodes;
-    for (int i = 0; i <= 13; ++i)
+    for (int i = 0; i <= 13; ++i) {
         cfgNodes.push_back(new CFGNode(to_string(i)));
+        expectedMap[to_string(i)] = cfgNodes[i];
+    }
     cfgNodes[0]->addChild(cfgNodes[1]); cfgNodes[0]->addChild(cfgNodes[13]);
 
     cfgNodes[1]->addChild(cfgNodes[2]); cfgNodes[2]->addParent(cfgNodes[1]);
@@ -34,7 +36,8 @@ TEST_CASE("CFGBuilder") {
     cfgNodes[10]->addChild(cfgNodes[11]); cfgNodes[11]->addParent(cfgNodes[10]);
     cfgNodes[11]->addChild(cfgNodes[12]); cfgNodes[12]->addParent(cfgNodes[11]);
 
-    REQUIRE(CFGUtils::isEqual(cfgBuilt, cfgNodes[0]));
+    REQUIRE(CFGUtils::isEqual(cfgBuilder.getCFG(), cfgNodes[0]));
+    REQUIRE(cfgBuilder.getStmtNumToNodeMap().size() == expectedMap.size());
     // delete cfgBuilt;
     // delete cfgNodes[0];
 }

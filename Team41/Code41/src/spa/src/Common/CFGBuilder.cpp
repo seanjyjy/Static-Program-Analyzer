@@ -7,6 +7,7 @@ CFGBuilder::CFGBuilder(unordered_map<string, vector<string>> stmtNextMap, vector
         stmtNextMap(stmtNextMap), firstStmts(firstStmts) {}
 
 void CFGBuilder::instantiateMap() {
+    stmtNumToNodeMap["0"] = cfg;
     for (auto &[stmtNum, ch] : stmtNextMap)
         stmtNumToNodeMap[stmtNum] = new CFGNode(stmtNum);
 }
