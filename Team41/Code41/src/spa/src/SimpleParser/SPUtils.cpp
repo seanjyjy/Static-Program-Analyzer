@@ -24,10 +24,10 @@ string SPUtils::highlight(const string &simple, int fromRow, int fromCol, int to
             // build the highlight as long as we are within range
             if (inHighlightZone(currRow, currCol, fromRow, fromCol, toRow, toCol)) {
                 highlight += (isspace(simple[i]) && simple[i] != ' ') ? simple[i] : '^';
-            } else if (inHighlightRow(currRow, fromRow, toRow)){
+            } else if (inHighlightRow(currRow, fromRow, toRow)) {
                 highlight += (isspace(simple[i])) ? simple[i] : ' ';
             }
-            
+
             // update row, col and index
             currCol++;
             if (simple[i] == '\n') {

@@ -140,23 +140,23 @@ unordered_set<string> PKBAbstractionClient::getAllProcsModifyingSomeVar() const 
 
 //======================================== Calls ==================================================
 
-bool PKBAbstractionClient::isCalls(string proc1, string proc2) { return callsTable->isCalls(move(proc1), move(proc2)); }
+bool PKBAbstractionClient::isCalls(string proc1, string proc2) const { return callsTable->isCalls(move(proc1), move(proc2)); }
 
-unordered_set<string> PKBAbstractionClient::getAllProcCalling(string procName) { return callsTable->getProcsCalling(move(procName)); }
+unordered_set<string> PKBAbstractionClient::getAllProcCalling(string procName) const { return callsTable->getProcsCalling(move(procName)); }
 
-unordered_set<string> PKBAbstractionClient::getAllProcCalledBy(string procName) { return callsTable->getProcsCalledBy(move(procName)); }
+unordered_set<string> PKBAbstractionClient::getAllProcCalledBy(string procName) const { return callsTable->getProcsCalledBy(move(procName)); }
 
-vector<pair<string, string>> PKBAbstractionClient::getAllCalls() { return callsTable->getCallsEntries(); }
+vector<pair<string, string>> PKBAbstractionClient::getAllCalls() const { return callsTable->getCallsEntries(); }
 
-bool PKBAbstractionClient::isCallsT(string proc1, string proc2) { return callsTable->isCallsT(move(proc1), move(proc2)); }
+bool PKBAbstractionClient::isCallsT(string proc1, string proc2) const { return callsTable->isCallsT(move(proc1), move(proc2)); }
 
-unordered_set<string> PKBAbstractionClient::getAllProcCallingT(string procName) { return callsTable->getProcsCallingT(move(procName)); }
+unordered_set<string> PKBAbstractionClient::getAllProcCallingT(string procName) const { return callsTable->getProcsCallingT(move(procName)); }
 
-unordered_set<string> PKBAbstractionClient::getAllProcCalledTBy(string procName) {
+unordered_set<string> PKBAbstractionClient::getAllProcCalledTBy(string procName) const {
     return callsTable->getProcsCalledTBy(move(procName));
 }
 
-vector<pair<string, string>> PKBAbstractionClient::getAllCallsT() { return callsTable->getCallsTEntries(); }
+vector<pair<string, string>> PKBAbstractionClient::getAllCallsT() const { return callsTable->getCallsTEntries(); }
 
 unordered_set<string> PKBAbstractionClient::getAllProcsCallingSomeProcs() const { return callsTable->getProcsCallingSomeProc(); }
 

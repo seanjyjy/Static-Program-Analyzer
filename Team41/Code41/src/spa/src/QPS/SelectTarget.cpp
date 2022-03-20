@@ -18,3 +18,7 @@ void SelectTarget::addSelectable(Selectable newSelectable) {
 void SelectTarget::setType(targetType type) {
     this->type = type;
 }
+
+vector<Selectable> SelectTarget::getSelectable() {
+    return tuple;
+}

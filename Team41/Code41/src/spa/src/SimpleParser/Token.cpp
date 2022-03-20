@@ -41,8 +41,8 @@ Token *Token::copy() const {
 
 string Token::toString() const {
     return "Token{" + typeToString(type) + ", '" + val + "'" +
-            ", " + "{" + to_string(start.first) + "," + to_string(start.second) + "}" +
-            ", " + "{" + to_string(end.first) + "," + to_string(end.second) + "}" + "'}";
+           ", " + "{" + to_string(start.first) + "," + to_string(start.second) + "}" +
+           ", " + "{" + to_string(end.first) + "," + to_string(end.second) + "}" + "'}";
 }
 
 string Token::typeToString(TokenType type) {

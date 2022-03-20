@@ -8,7 +8,9 @@ using namespace std;
 class SPUtils {
 private:
     static bool inHighlightZone(int currRow, int currCol, int fromRow, int fromCol, int toRow, int toCol);
+
     static bool inHighlightRow(int currRow, int fromRow, int toRow);
+
 public:
     /**
      * Highlights a SIMPLE source from a starting row and column (inclusive) to an ending row and column (inclusive).
@@ -21,7 +23,7 @@ public:
      * @param toCol ending row, 0-indexed
      * @return the highlighted SIMPLE source
      */
-    static string highlight(const string& simple, int fromRow, int fromCol, int toRow, int toCol);
+    static string highlight(const string &simple, int fromRow, int fromCol, int toRow, int toCol);
 
     /**
      * Adds a very prominent banner to the top and bottom of a string to make it more noticeable.
@@ -31,10 +33,12 @@ public:
      * @param btmBannerMsg the message enclosed in the bottom banner.
      * @return the bannerized message.
      */
-    static string withBanner(const string& msg, const string& topBannerMsg, const string& btmBannerMsg);
+    static string withBanner(const string &msg, const string &topBannerMsg, const string &btmBannerMsg);
 
     /**
      * Convenience function that highlights a message, then adds a banner.
      */
-    static string highlightAndBanner(const string& simple, int fromRow, int fromCol, int toRow, int toCol, const string& top, const string& btm);
+    static string
+    highlightAndBanner(const string &simple, int fromRow, int fromCol, int toRow, int toCol, const string &top,
+                       const string &btm);
 };

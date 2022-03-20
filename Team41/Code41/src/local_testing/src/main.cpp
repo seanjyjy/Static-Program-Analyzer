@@ -11,67 +11,25 @@ using namespace std;
 #include <iostream>
 
 int main() {
-    string s = "procedure main {\n"
-               "call q; call p; a = b + 1; c = d;\n"
-               "}\n"
-               "procedure q { e = f * g; call p; }\n"
-               "procedure p { h = i; call s; }\n"
-               "procedure s { j = k + l; }\n"
-               "procedure pp { call p; }";
-//    cout << SPUtils::highlight(s, 1, 1, 1, 4) << endl;
-//
+    string s = "procedure ceeS33see {\n"
+               "    if (LONG11ass22VARIABLE33in44PROCEDURE55three == GGDoTc0m) then {\n"
+               "        read a0a;\n"
+               "        print GGDoTc0m;\n"
+               "    } else {\n"
+               "        read GGDoTc0m;\n"
+               "        while ((1*2-3>=4%5/Dvar1)||(((!(6==(7+8)))&&(9<=10)))) {\n"
+               "            print print;\n"
+               "        }\n"
+               "        while ((11*12-13>=14%15/16)||(((!(17==(18+19)))&&(20<=21)))) {\n"
+               "            print a0a;\n"
+               "        }\n"
+               "        read GGDoTc0m;\n"
+               "        print GGDoTc0m;\n"
+               "        call deeDEEd330987654321;\n"
+               "    }\n"
+               "}";
+
     Parser p;
-    TNode* ast = p.parseProgram(s);
-    cout << "passing ast" << endl;
-    EntitiesExtractor ee = EntitiesExtractor(ast);
-    try {
-        ee.extractEntities();
-    }
-    catch (SemanticException e) {
-        cout << e.what() << endl;
-        return 0;
-    }
-    cout << "entities extracted" << endl;
-    auto stmtMp = ee.getNodeToStmtNumMap();
-    auto procSet = ee.getProcSet();
-    CallsExtractor ce = CallsExtractor(ast, procSet);
-    ce.extractRelationship();
+    TNode *ast = p.parseProgram(s);
 
-    for (auto [p, st] : ce.getCallsMap()) {
-        cout << p << ":" << endl;
-        for (auto s : st)
-            cout << s << " ";
-        cout << endl;
-    }
-    cout << endl;
-    for (auto [p, st] : ce.getCallsTMap()) {
-        cout << p << ":" << endl;
-        for (auto s : st)
-            cout << s << " ";
-        cout << endl;
-    }
-    cout << endl;
-    for (auto p : ce.getProcCallOrder())
-        cout << p << " ";
-    cout << endl << endl;
-
-    auto callsMap = ce.getCallsMap();
-    auto lst = ce.getProcCallOrder();
-    ModifiesExtractor me = ModifiesExtractor(ast, stmtMp, callsMap, lst);
-    me.extractRelationship();
-
-    for (auto [proc, st] : me.getProcModifiesMap()) {
-        cout << proc << endl;
-        for (auto s : st)
-            cout << s << " ";
-        cout << endl;
-    }
-    cout << endl;
-    for (auto [stmt, st] : me.getStmtModifiesMap()) {
-        cout << stmt << endl;
-        for (auto s : st)
-            cout << s << " ";
-        cout << endl;
-    }
-    cout << endl;
 }
