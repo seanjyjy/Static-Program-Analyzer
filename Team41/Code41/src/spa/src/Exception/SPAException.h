@@ -1,4 +1,5 @@
 #pragma once
+
 #include <exception>
 #include <string>
 
@@ -12,5 +13,6 @@ public:
     virtual string what() = 0;
 
     SPAException(string errorMessage);
+
     virtual ~SPAException() noexcept {}
 };

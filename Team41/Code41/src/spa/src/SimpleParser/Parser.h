@@ -2,6 +2,35 @@
 
 #include "Tokens.h"
 #include "Common/TNode.h"
+#include "Common/AstNode/Program.h"
+#include "Common/AstNode/Procedure.h"
+#include "Common/AstNode/StmtLst.h"
+#include "Common/AstNode/Read.h"
+#include "Common/AstNode/Print.h"
+#include "Common/AstNode/Call.h"
+#include "Common/AstNode/While.h"
+#include "Common/AstNode/If.h"
+#include "Common/AstNode/Assign.h"
+#include "Common/AstNode/Gt.h"
+#include "Common/AstNode/Ge.h"
+#include "Common/AstNode/Lt.h"
+#include "Common/AstNode/Le.h"
+#include "Common/AstNode/Ne.h"
+#include "Common/AstNode/Eq.h"
+#include "Common/AstNode/VarName.h"
+#include "Common/AstNode/ConstVal.h"
+#include "Common/AstNode/ProcName.h"
+#include "Common/AstNode/Plus.h"
+#include "Common/AstNode/Minus.h"
+#include "Common/AstNode/Times.h"
+#include "Common/AstNode/Div.h"
+#include "Common/AstNode/Mod.h"
+#include "Common/AstNode/Not.h"
+#include "Common/AstNode/And.h"
+#include "Common/AstNode/Or.h"
+#include "Common/AstNode/CondExpr.h"
+#include "Common/AstNode/RelExpr.h"
+#include "Common/AstNode/RelFactor.h"
 
 using namespace std;
 
@@ -68,7 +97,7 @@ private:
      * @param type the token type to match
      * @param val the token value to match
      */
-    void expect(TokenType type, const string& val);
+    void expect(TokenType type, const string &val);
 
     /**
      * Verifies the current token matches the type, advances the cursor and returns the matched token.
@@ -94,7 +123,7 @@ private:
      * @param type the token type to match
      * @param val the token value to match
      */
-    void checkAndAdvance(TokenType type, const string& val);
+    void checkAndAdvance(TokenType type, const string &val);
 
     /**
      * Checks if the current token matches the given type, but does not throw.
@@ -138,70 +167,70 @@ private:
      *
      * @return a program node with children procedure nodes.
      */
-    TNode *eatProgram();
+    Program *eatProgram();
 
     /**
      * Parses a procedure. procedure -> 'procedure' proc_name '{' stmtLst '}'
      *
      * @return a procedure node with a child stmtLst node.
      */
-    TNode *eatProcedure();
+    Procedure *eatProcedure();
 
     /**
      * Parses a statement list. stmtLst -> stmt+
      *
      * @return a stmtLst node with children read/print/call/while/if/assign nodes.
      */
-    TNode *eatStmtLst();
+    StmtLst *eatStmtLst();
 
     /**
      * Parses a statement. stmt -> read | print | call | while | if | assign
      *
      * @return the read/print/call/while/if/assign node.
      */
-    TNode *eatStmt();
+    Stmt *eatStmt();
 
     /**
      * Parses a read statement. read -> 'read' var_name ';'
      *
      * @return the read node with a child var node.
      */
-    TNode *eatStmtRead();
+    Read *eatStmtRead();
 
     /**
      * Parses a print statement. print -> 'print' var_name ';'
      *
      * @return the print node with a child var node.
      */
-    TNode *eatStmtPrint();
+    Print *eatStmtPrint();
 
     /**
      * Parses a call statement. call -> 'call' proc_name ';'
      *
      * @return the call node with a child var node.
      */
-    TNode *eatStmtCall();
+    Call *eatStmtCall();
 
     /**
      * Parses a while statement. while -> 'while' '(' cond_expr ')' '{' stmtLst '}'
      *
      * @return the while node with children condexpr and stmtlst nodes.
      */
-    TNode *eatStmtWhile();
+    While *eatStmtWhile();
 
     /**
      * Parses an if statement. if -> 'if' '(' cond_expr ')' 'then' '{' stmtLst '}' 'else' '{' stmtLst '}'
      *
      * @return the if node with children condexpr, stmtlst and stmtlst nodes.
      */
-    TNode *eatStmtIf();
+    If *eatStmtIf();
 
     /**
      * Parses an assign statement. assign -> var_name '=' expr ';'
      *
      * @return the assign node with children var and expr nodes.
      */
-    TNode *eatStmtAssign();
+    Assign *eatStmtAssign();
 
     /**
      * Parses a conditional expression.
@@ -212,7 +241,7 @@ private:
      *
      * @return the plus | minus | times | div | mod | not | and | or node with their respective children.
      */
-    TNode *eatCondExpr();
+    CondExpr *eatCondExpr();
 
     /**
      * Parses a relational expression.
@@ -225,99 +254,93 @@ private:
      *
      * @return the > | >= | < | <= | == | != node with their respective left and right child.
      */
-    TNode *eatRelExpr();
-
-    /**
-     * Parses a relational expression. Convenience function for TNode *eatRelExpr().
-     */
-    TNode *eatRelExpr(TokenType type);
+    RelExpr *eatRelExpr();
 
     /**
      * Parses the production rel_expr -> rel_factor '>' rel_factor.
      */
-    TNode *eatGtExpr();
+    Gt *eatGtExpr();
 
     /**
      * Parses the production rel_expr -> rel_factor '>=' rel_factor.
      */
-    TNode *eatGeExpr();
+    Ge *eatGeExpr();
 
     /**
      * Parses the production rel_expr -> rel_factor '<' rel_factor.
      */
-    TNode *eatLtExpr();
+    Lt *eatLtExpr();
 
     /**
      * Parses the production rel_expr -> rel_factor '<=' rel_factor.
      */
-    TNode *eatLeExpr();
+    Le *eatLeExpr();
 
     /**
      * Parses the production rel_expr -> rel_factor '==' rel_factor.
      */
-    TNode *eatEqExpr();
+    Eq *eatEqExpr();
 
     /**
      * Parses the production rel_expr -> rel_factor 'Ne' rel_factor.
      */
-    TNode *eatNeExpr();
+    Ne *eatNeExpr();
 
     /**
      * Parses a relational factor. rel_factor -> var_name | const_value | expr
      *
      * @return the var | const | expr nodes with their respective children.
      */
-    TNode *eatRelFactor();
+    RelFactor *eatRelFactor();
 
     /**
      * Parses an expression. expr -> term expr1 | term
      *
      * @return the + | - node with their respective left and right children.
      */
-    TNode *eatExpr();
+    RelFactor *eatExpr();
 
     /**
      * Parses an intermediate expression. expr1 -> '+' term expr1 | '-' term expr1 | '+' term | '-' term
      *
      * @return the intermediate + | - node with their respective left and right children.
      */
-    TNode *eatExpr1();
+    RelFactor *eatExpr1();
 
     /**
      * Parses a term. term -> factor term1 | factor
      *
      * @return the * | / | % node with their respective left and right children.
      */
-    TNode *eatTerm();
+    RelFactor *eatTerm();
 
     /**
      * Parses a intermediate term. term -> factor term1 | factor
      *
      * @return the intermediate * | / | % node with their respective left and right children.
      */
-    TNode *eatTerm1();
+    RelFactor *eatTerm1();
 
     /**
      * Parses a factor. factor -> var_name | const_value | '(' expr ')'
      *
      * @return the var | const | expr node with their respective children.
      */
-    TNode *eatFactor();
+    RelFactor *eatFactor();
 
     /**
      * Parses a variable name.
      *
      * @return the var node, which has no children.
      */
-    TNode *eatVarName();
+    VarName *eatVarName();
 
     /**
      * Parses a constant value.
      *
      * @return the const node, which has no children.
      */
-    TNode *eatConstVal();
-
+    ConstVal *eatConstVal();
 
     /**
      * Sets up parse state. Must be called before parse for correct behaviour.

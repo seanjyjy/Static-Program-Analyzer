@@ -16,6 +16,7 @@ private:
     TNode *parent = nullptr; // will be set after ast is parsed
 public:
     TNode(TNodeType type, Token *val, vector<TNode *> children);
+
     ~TNode();
 
     // appends a child to rightmost end of children.
@@ -52,86 +53,83 @@ public:
     // convenience method that calls toStringRecursive() and prints to cout, for debugging purposes.
     void printRecursive();
 
-    // convenience method to make a program node.
+    // convenience method to make a program node. Used for testing purposes (including ASTBuilder).
     static TNode *makeProgram(vector<TNode *> procedures);
 
-    // convenience method to make a procedure node.
+    // convenience method to make a procedure node. Used for testing purposes (including ASTBuilder).
     static TNode *makeProcedure(Token *name, TNode *stmtLst);
 
-    // convenience method to make a statement list node.
+    // convenience method to make a statement list node. Used for testing purposes (including ASTBuilder).
     static TNode *makeStmtLst(vector<TNode *> stmts);
 
-    // convenience method to make a read node.
+    // convenience method to make a read node. Used for testing purposes (including ASTBuilder).
     static TNode *makeReadStmt(TNode *var);
 
-    // convenience method to make a print node.
+    // convenience method to make a print node. Used for testing purposes (including ASTBuilder).
     static TNode *makePrintStmt(TNode *var);
 
-    // convenience method to make a call node.
+    // convenience method to make a call node. Used for testing purposes (including ASTBuilder).
     static TNode *makeCallStmt(TNode *procedure);
 
-    // convenience method to make a while node.
+    // convenience method to make a while node. Used for testing purposes (including ASTBuilder).
     static TNode *makeWhileStmt(TNode *condExpr, TNode *stmtLst);
 
-    // convenience method to make an if node.
+    // convenience method to make an if node. Used for testing purposes (including ASTBuilder).
     static TNode *makeIfStmt(TNode *condExpr, TNode *ifStmtLst, TNode *elseStmtLst);
 
-    // convenience method to make an assignment node.
+    // convenience method to make an assignment node. Used for testing purposes (including ASTBuilder).
     static TNode *makeAssignStmt(TNode *var, TNode *expr);
 
-    // convenience method to make a ! node.
+    // convenience method to make a ! node. Used for testing purposes (including ASTBuilder).
     static TNode *makeNot(TNode *expr);
 
-    // convenience method to make an && node.
+    // convenience method to make an && node. Used for testing purposes (including ASTBuilder).
     static TNode *makeAnd(TNode *lhsCondExpr, TNode *rhsCondExpr);
 
-    // convenience method to make a || node.
+    // convenience method to make a || node. Used for testing purposes (including ASTBuilder).
     static TNode *makeOr(TNode *lhsCondExpr, TNode *rhsCondExpr);
 
-    // convenience method to make a > node.
+    // convenience method to make a > node. Used for testing purposes (including ASTBuilder).
     static TNode *makeGt(TNode *lhs, TNode *rhs);
 
-    // convenience method to make a >= node.
+    // convenience method to make a >= node. Used for testing purposes (including ASTBuilder).
     static TNode *makeGe(TNode *lhs, TNode *rhs);
 
-    // convenience method to make a < node.
+    // convenience method to make a < node. Used for testing purposes (including ASTBuilder).
     static TNode *makeLt(TNode *lhs, TNode *rhs);
 
-    // convenience method to make a <= node.
+    // convenience method to make a <= node. Used for testing purposes (including ASTBuilder).
     static TNode *makeLe(TNode *lhs, TNode *rhs);
 
-    // convenience method to make an == node.
+    // convenience method to make an == node. Used for testing purposes (including ASTBuilder).
     static TNode *makeEq(TNode *lhs, TNode *rhs);
 
-    // convenience method to make a != node.
+    // convenience method to make a != node. Used for testing purposes (including ASTBuilder).
     static TNode *makeNe(TNode *lhs, TNode *rhs);
 
-    // convenience method to make a + node.
+    // convenience method to make a + node. Used for testing purposes (including ASTBuilder).
     static TNode *makePlus(TNode *lhs, TNode *rhs);
 
-    // convenience method to make a - node.
+    // convenience method to make a - node. Used for testing purposes (including ASTBuilder).
     static TNode *makeMinus(TNode *lhs, TNode *rhs);
 
-    // convenience method to make a * node.
+    // convenience method to make a * node. Used for testing purposes (including ASTBuilder).
     static TNode *makeTimes(TNode *lhs, TNode *rhs);
 
-    // convenience method to make a / node.
+    // convenience method to make a / node. Used for testing purposes (including ASTBuilder).
     static TNode *makeDiv(TNode *lhs, TNode *rhs);
 
-    // convenience method to make a % node.
+    // convenience method to make a % node. Used for testing purposes (including ASTBuilder).
     static TNode *makeMod(TNode *lhs, TNode *rhs);
 
-    // convenience method to make a variable node.
+    // convenience method to make a variable node. Used for testing purposes (including ASTBuilder).
     static TNode *makeVarName(Token *val);
 
-    // convenience method to make a process name node.
+    // convenience method to make a process name node. Used for testing purposes (including ASTBuilder).
     static TNode *makeProcName(Token *val);
 
-    // convenience method to make a constant node.
+    // convenience method to make a constant node. Used for testing purposes (including ASTBuilder).
     static TNode *makeConstVal(Token *val);
-
-    // makes an empty node, used when creating the intermediate <expr> ast.
-    static TNode *makeDummy();
 
     // returns a human-readable representation of the given type.
     static string typeToString(TNodeType type);

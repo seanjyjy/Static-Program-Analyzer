@@ -1,5 +1,3 @@
-// remove comment to disable assertions before release
-//#define NDEBUG
 #include "Tokenizer.h"
 #include "Tokens.h"
 #include "SimpleParser/SPUtils.h"
@@ -8,7 +6,6 @@
 #include <utility>
 #include <cctype>
 #include <stdexcept>
-#include <cassert>
 #include <iostream>
 
 // member initialization
@@ -68,112 +65,112 @@ Token Tokenizer::eatN(TokenType type, int n) {
 }
 
 Token Tokenizer::eatOpeningBrace() {
-    assert(currToken == '{');
+    ensure('{');
     return eatN(TokenType::openingBrace, 1);
 }
 
 Token Tokenizer::eatClosingBrace() {
-    assert(currToken == '}');
+    ensure('}');
     return eatN(TokenType::closingBrace, 1);
 }
 
 void Tokenizer::eatWhitespace() {
-    assert(isspace(currToken));
+    if (!isspace(currToken)) throw runtime_error("current token should be <space>");
     advance();
 }
 
 Token Tokenizer::eatOpeningBracket() {
-    assert(currToken == '(');
+    ensure('(');
     return eatN(TokenType::openingBracket, 1);
 }
 
 Token Tokenizer::eatClosingBracket() {
-    assert(currToken == ')');
+    ensure(')');
     return eatN(TokenType::closingBracket, 1);
 }
 
 Token Tokenizer::eatSemicolon() {
-    assert(currToken == ';');
+    ensure(';');
     return eatN(TokenType::semicolon, 1);
 }
 
 Token Tokenizer::eatPlus() {
-    assert(currToken == '+');
+    ensure('+');
     return eatN(TokenType::plus, 1);
 }
 
 Token Tokenizer::eatMinus() {
-    assert(currToken == '-');
+    ensure('-');
     return eatN(TokenType::minus, 1);
 }
 
 Token Tokenizer::eatTimes() {
-    assert(currToken == '*');
+    ensure('*');
     return eatN(TokenType::times, 1);
 }
 
 Token Tokenizer::eatDiv() {
-    assert(currToken == '/');
+    ensure('/');
     return eatN(TokenType::div, 1);
 }
 
 Token Tokenizer::eatMod() {
-    assert(currToken == '%');
+    ensure('%');
     return eatN(TokenType::mod, 1);
 }
 
 Token Tokenizer::eatAnd() {
-    assert(currToken == '&');
+    ensure('&');
     return eatN(TokenType::andOp, 2);
 }
 
 Token Tokenizer::eatOr() {
-    assert(currToken == '|');
+    ensure('|');
     return eatN(TokenType::orOp, 2);
 }
 
 Token Tokenizer::eatGe() {
-    assert(currToken == '>');
+    ensure('>');
     return eatN(TokenType::ge, 2);
 }
 
 Token Tokenizer::eatGt() {
-    assert(currToken == '>');
+    ensure('>');
     return eatN(TokenType::gt, 1);
 }
 
 Token Tokenizer::eatLe() {
-    assert(currToken == '<');
+    ensure('<');
     return eatN(TokenType::le, 2);
 }
 
 Token Tokenizer::eatLt() {
-    assert(currToken == '<');
+    ensure('<');
     return eatN(TokenType::lt, 1);
 }
 
 Token Tokenizer::eatEq() {
-    assert(currToken == '=');
+    ensure('=');
     return eatN(TokenType::eq, 2);
 }
 
 Token Tokenizer::eatAssign() {
-    assert(currToken == '=');
+    ensure('=');
     return eatN(TokenType::assign, 1);
 }
 
 Token Tokenizer::eatNe() {
-    assert(currToken == '!');
+    ensure('!');
     return eatN(TokenType::ne, 2);
 }
 
 Token Tokenizer::eatNot() {
-    assert(currToken == '!');
+    ensure('!');
     return eatN(TokenType::notOp, 1);
 }
 
 Token Tokenizer::eatName() {
-    assert(isalpha(currToken));
+    if (!isalpha(currToken)) throw runtime_error("current token should be alphabet");
     pair<int, int> start = {row, col};
 
     string val;
@@ -187,7 +184,7 @@ Token Tokenizer::eatName() {
 }
 
 Token Tokenizer::eatInteger() {
-    assert(isdigit(currToken));
+    if (!isdigit(currToken)) throw runtime_error("current token should be digit");
     pair<int, int> start = {row, col};
 
     string val;
@@ -199,7 +196,7 @@ Token Tokenizer::eatInteger() {
     // 0 allowed, but 01 should not be allowed
     if (val.size() > 1 && val[0] == '0') {
         string msg = withPosition("integers must not have leading zeroes") +
-                highlightSource(start.first, start.second, row, col);
+                     highlightSource(start.first, start.second, row, col);
         throw TokenizeException(msg);
     }
 
@@ -266,7 +263,7 @@ Tokens Tokenizer::tokenize() {
                 tok = eatInteger();
             } else {
                 string msg = withPosition("unknown token " + string(1, currToken)) +
-                        highlightSource(row, col, row, col);
+                             highlightSource(row, col, row, col);
                 throw TokenizeException(msg);
             }
 
@@ -288,4 +285,8 @@ string Tokenizer::highlightSource(int fromRow, int fromCol, int toRow, int toCol
             "vvvvvvvvvvvvvvvvvvvvvvvvvvvvv TOKENIZER ERROR HIGHLIGHT vvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
             "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ END ERROR HIGHLIGHT ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
     );
+}
+
+void Tokenizer::ensure(char c) {
+    if (currToken != c) throw runtime_error("current token should be " + string(1, c));
 }

@@ -6,7 +6,7 @@ using namespace std;
 
 TokenizeException::TokenizeException(string message) : SPAException(move(message)) {}
 
-TokenizeException::TokenizeException(): SPAException("") {}
+TokenizeException::TokenizeException() : SPAException("") {}
 
 string TokenizeException::what() { return errorMessage; }
 
