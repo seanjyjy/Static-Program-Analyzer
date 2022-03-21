@@ -235,3 +235,7 @@ vector<string> NextKBAdapter::getAllStmtsThatHaveNextTStmt() {
 vector<string> NextKBAdapter::getAllStmtsThatIsNextTOfSomeStmt() {
     return pkb->getAllStmtsExecAfterSomeStmt();
 }
+
+NextKBAdapter::~NextKBAdapter() {
+    delete cache;
+}

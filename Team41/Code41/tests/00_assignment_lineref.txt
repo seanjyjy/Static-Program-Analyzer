@@ -1,32 +1,27 @@
---. procedure Peter {
-01.    print present;
-02.    future = 8 * present;
-03.    if (future > y) then {
-04.       present = z - 8 * present;
---.    } else {
-05.     future = 4 + present * future;
---.    }
-06.   read x;
-07.   read y;
-08.    y = present - 4;
-09.    z = future + 2;
-10.    while (present < 0) {
-11.        x = z - present;
-12.        if (present > x) then {
-13.            present = z - 8 - (x * y) * z;
-14.          x = x - 1;
---.       } else {
-15.          y = present * y * z;
-16.          if (future > y) then {
-17.             present = z - 8 * present;
---.          } else {
-18.             future = 4 + present * future;
---.          }
-19.          read x;
-20.          read y;
---.     }
---.   }
-21.    future = x * y * z * present * future;
-22.    print future;
---.}
+procedure Peter {
+1.    print present;
+2.    future = 8 * present;
+3.    call Stephen;
+4.    y = present - 4;
+5.    z = future + 2;
+6.    while (present < 0) {
+7.        x = z - present;
+8.        if (present > x) then {
+9.            present = z - 8 - (x * y) * z;
+10.          x = x - 1; }
+            else {
+11.          y = present * y * z;
+12.          call Stephen; }}
+13.    future = x * y * z * present * future;
+14.    print future; }
 
+procedure Stephen {
+15.    if (future > y) then {
+16.	        present = z - 8 * present; }
+          else {
+17.	        future = 4 + present * future; }
+18.     call Wong; }
+
+procedure Wong {
+19.    read x;
+20.    read y; }

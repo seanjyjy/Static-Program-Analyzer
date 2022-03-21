@@ -52,7 +52,7 @@ vector<SuperClause*>& QueryObject::getSuperClauses(){
     return superClauses;
 }
 
-SelectTarget QueryObject::getSelectTarget() {
+SelectTarget& QueryObject::getSelectTarget() {
     return selectTarget;
 }
 

@@ -8,6 +8,7 @@
 #include "QPS/ClauseVariable.h"
 #include "QPS/PatternClause.h"
 #include "QPS/QueryClause.h"
+#include "QPS/WithClause.h"
 #include "QPS/Evaluator/EvaluatorUtils.h"
 #include "Exception/SemanticException.h"
 
@@ -35,7 +36,7 @@ protected:
     Table* buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& synonym);
     Table* buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& leftSynonym,
                                       ClauseVariable& rightSynonym);
-    Table* buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results, const QueryDeclaration& patternSyn,
+    Table* buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results, QueryDeclaration& patternSyn,
                                            const ClauseVariable& left);
 
     unordered_set<string> getFilters(QueryDeclaration::design_entity_type);
@@ -50,9 +51,6 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table that contains information based on the query that was executed.
      */
-     // TODO REMOVE BOTH AND BECOME A COMBINED EVALUATE WITH  SUPER CLAUSE
-    virtual Table* evaluate(QueryClause clause) = 0;
-    virtual Table* evaluate(PatternClause clause) = 0;
 
     friend class GenericClauseEvaluator;
     friend class PatternEvaluator;

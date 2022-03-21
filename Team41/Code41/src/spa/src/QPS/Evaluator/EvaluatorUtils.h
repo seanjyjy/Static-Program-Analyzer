@@ -8,6 +8,7 @@
 #include "PKB/PKBClient.h"
 #include <optional>
 
+// TODO shift to correct class later?
 class EvaluatorUtils {
 public:
     // General utils
@@ -19,6 +20,30 @@ public:
      * @return True if query declaration is a Statement type, else false.
      */
     static bool isStmtType(QueryDeclaration::design_entity_type type);
+
+    /**
+     * Checks if a given query declaration is a Statement.
+     *
+     * @param type Query Declaration type.
+     * @return True if query declaration is a Statement, else false.
+     */
+    static bool isStmt(QueryDeclaration::design_entity_type type);
+
+    /**
+     * Checks if a given query declaration is a While statement type.
+     *
+     * @param type Query Declaration type.
+     * @return True if query declaration is a While statement type, else false.
+     */
+    static bool isWhile(QueryDeclaration::design_entity_type type);
+
+    /**
+     * Checks if a given query declaration is an If statement type.
+     *
+     * @param type Query Declaration type.
+     * @return True if query declaration is a If statement type, else false.
+     */
+    static bool isIf(QueryDeclaration::design_entity_type type);
 
     /**
      * Checks if a given query declaration is of a Modifies statement type.

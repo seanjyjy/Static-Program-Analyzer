@@ -39,7 +39,7 @@ TEST_CASE("Evaluator: If pattern evaluator") {
 
     SECTION("Synonym WildCards Pair") {
         PatternClause patternClause1(ifSyn, variableSyn, vector<PatternVariable>({patternWildCard, patternWildCard}));
-        Table *table1 = IfPatternEvaluator(pkbManager).evaluate(patternClause1);
+        Table *table1 = IfPatternEvaluator(pkbManager).evaluate(&patternClause1);
         vector<string> expectedColumns1{IF_SYN_LBL, VAR_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0], vars[0]},
                                              {lines[1], vars[1]},
@@ -54,14 +54,14 @@ TEST_CASE("Evaluator: If pattern evaluator") {
 
     SECTION("Identifier WildCards Pair") {
         PatternClause patternClause1(ifSyn, identifierV0, vector<PatternVariable>({patternWildCard, patternWildCard}));
-        Table *table1 = IfPatternEvaluator(pkbManager).evaluate(patternClause1);
+        Table *table1 = IfPatternEvaluator(pkbManager).evaluate(&patternClause1);
         vector<string> expectedColumns1{IF_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0]},
                                              {lines[3]}};
         REQUIRE(TableTestUtils::checkTableMatches(table1, expectedColumns1, expectedRows1));
 
         PatternClause patternClause2(ifSyn, identifierV1, vector<PatternVariable>({patternWildCard, patternWildCard}));
-        Table *table2 = IfPatternEvaluator(pkbManager).evaluate(patternClause2);
+        Table *table2 = IfPatternEvaluator(pkbManager).evaluate(&patternClause2);
         vector<string> expectedColumns2{IF_SYN_LBL};
         vector<vector<string>> expectedRows2{{lines[1]},
                                              {lines[3]}};
@@ -73,7 +73,7 @@ TEST_CASE("Evaluator: If pattern evaluator") {
 
     SECTION("WildCard WildCards Pair") {
         PatternClause patternClause1(ifSyn, wildcard, vector<PatternVariable>({patternWildCard, patternWildCard}));
-        Table *table1 = IfPatternEvaluator(pkbManager).evaluate(patternClause1);
+        Table *table1 = IfPatternEvaluator(pkbManager).evaluate(&patternClause1);
         vector<string> expectedColumns1{IF_SYN_LBL};
         vector<vector<string>> expectedRows1{{lines[0]},
                                              {lines[1]},
@@ -86,36 +86,36 @@ TEST_CASE("Evaluator: If pattern evaluator") {
 
     SECTION("Semantically & Syntactically Invalid") {
         PatternClause patternClause1(ifSyn, variableSyn, vector<PatternVariable>({patternWildCard}));
-        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause1));
+        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(&patternClause1));
 
         ClauseVariable procSyn(ClauseVariable::synonym, "proc", QueryDeclaration::PROCEDURE);
         PatternClause patternClause2(ifSyn, procSyn, vector<PatternVariable>({patternWildCard, patternWildCard}));
-        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause2));
+        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(&patternClause2));
 
         ClauseVariable readSyn(ClauseVariable::synonym, "read", QueryDeclaration::READ);
         PatternClause patternClause3(ifSyn, readSyn, vector<PatternVariable>({patternWildCard, patternWildCard}));
-        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause3));
+        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(&patternClause3));
 
         PatternClause patternClause4(ifSyn, variableSyn, vector<PatternVariable>({patternFP, patternWildCard}));
-        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause4));
+        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(&patternClause4));
 
         PatternClause patternClause5(ifSyn, variableSyn, vector<PatternVariable>({patternSP, patternWildCard}));
-        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause5));
+        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(&patternClause5));
 
         PatternClause patternClause6(ifSyn, variableSyn, vector<PatternVariable>({patternWildCard, patternFP}));
-        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause6));
+        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(&patternClause6));
 
         PatternClause patternClause7(ifSyn, variableSyn, vector<PatternVariable>({patternWildCard, patternSP}));
-        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause7));
+        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(&patternClause7));
 
         PatternClause patternClause8(ifSyn, variableSyn, vector<PatternVariable>({patternFP, patternFP}));
-        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause8));
+        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(&patternClause8));
 
         PatternClause patternClause9(ifSyn, variableSyn, vector<PatternVariable>({patternSP, patternSP}));
-        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause9));
+        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(&patternClause9));
 
         PatternClause patternClause10(ifSyn, variableSyn, vector<PatternVariable>({patternFP, patternSP}));
-        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause10));
+        REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(&patternClause10));
     }
 
     delete pkbManager;

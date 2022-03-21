@@ -24,6 +24,9 @@ public:
     int getInteger();
     string getIntegerAsString();
 
+    bool isIdentifier();
+    bool isInteger();
+    bool isAttrRef();
 private:
     withRefType type;
     attributeName attr;
