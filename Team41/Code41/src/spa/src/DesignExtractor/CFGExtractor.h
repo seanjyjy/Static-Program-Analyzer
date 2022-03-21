@@ -27,9 +27,8 @@ private:
      *
      * @param parentCFGNode
      * @param childCFGNode
-     * @param isForward if the edge is a forward edge (from lower to higher stmt number)
      */
-    void addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode, bool isForward);
+    void addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode);
 
     /**
      * Traverses through AST in BFS manner to build the initial CFG,
