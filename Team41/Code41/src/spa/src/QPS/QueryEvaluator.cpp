@@ -44,6 +44,10 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
         }
 
         for (const auto &declaration: queryObject->getDeclarations()) {
+            if (resultTable->getHeader().find(declaration.synonym) != resultTable->getHeader().end()) {
+                continue;
+            }
+
             Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(declaration);
 
             if (intermediateTable->isEmpty()) {
