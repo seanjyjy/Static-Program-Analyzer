@@ -30,10 +30,9 @@ private:
     void addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode);
 
     /**
-     * Traverses through AST in BFS manner to build the initial CFG,
-     * which does not contain edges back due to WHILE loops.
+     * Traverses through AST to build the initial CFG, which does not contain edges back due to WHILE loops.
      */
-    void buildInitCFG();
+    void dfsInitCFG(TNode *curTNode, CFGNode *curCFGNode, CFGNode *parentCFGNode);
 
     /**
      * Adds an edge in the CFG, from CFGNode that corresponds to one TNode to another CFGNode that corresponds
@@ -47,7 +46,7 @@ private:
     /**
      * Traverses through AST to add back edges due to WHILE loops to the initial CFG.
      */
-    void linkBackNode();
+    void dfsLinkBack(TNode *curTNode, TNode *backTNode);
 
 public:
     CFGExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap);
