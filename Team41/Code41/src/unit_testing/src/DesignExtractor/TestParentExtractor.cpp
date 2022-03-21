@@ -10,10 +10,10 @@ using namespace std;
 TEST_CASE("ParentExtractor: Assign") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     REQUIRE(pe.getParentMap().empty());
     REQUIRE(pe.getParentTMap().empty());
@@ -23,10 +23,10 @@ TEST_CASE("ParentExtractor: Assign") {
 TEST_CASE("ParentExtractor: Read") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     REQUIRE(pe.getParentMap().empty());
     REQUIRE(pe.getParentTMap().empty());
@@ -36,10 +36,10 @@ TEST_CASE("ParentExtractor: Read") {
 TEST_CASE("ParentExtractor: Print") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     REQUIRE(pe.getParentMap().empty());
     REQUIRE(pe.getParentTMap().empty());
@@ -49,10 +49,10 @@ TEST_CASE("ParentExtractor: Print") {
 TEST_CASE("ParentExtractor: While") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, list<string>> expectedParent = {
             {"1", {"2"}}, {"3", {"4"}}, {"5", {"6"}}, {"7", {"8"}}, {"8", {"9"}}, {"10", {"11"}}
@@ -68,10 +68,10 @@ TEST_CASE("ParentExtractor: While") {
 TEST_CASE("ParentExtractor: If") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, list<string>> expectedParent = {
             {"1", {"2", "3"}}, {"4", {"5", "6"}}, {"7", {"8", "9"}},
@@ -90,10 +90,10 @@ TEST_CASE("ParentExtractor: Non-nested") {
     // non_nested-simple.txt
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, list<string>> expectedParent = {
             {"3", {"4", "5"}}, {"6", {"7", "8", "9"}}
@@ -110,10 +110,10 @@ TEST_CASE("ParentExtractor: Nested") {
     // nested-simple.txt
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, list<string>> expectedParent = {
             {"1", {"2", "3"}}, {"3", {"4", "5", "6", "7"}}, {"7", {"8", "9", "10"}}
@@ -130,10 +130,10 @@ TEST_CASE("ParentExtractor: Nested") {
 TEST_CASE("ParentExtractor: n3iif") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iif.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, list<string>> expectedParent = {
             {"1", {"2", "3", "4"}}, {"4", {"5", "11", "12", "13", "16"}}, {"5", {"6", "9", "10"}},
@@ -152,10 +152,10 @@ TEST_CASE("ParentExtractor: n3iif") {
 TEST_CASE("ParentExtractor: n3iwl") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iwl.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, list<string>> expectedParent = {
             {"2", {"3", "4", "13"}}, {"4", {"5", "6"}}, {"6", {"7", "8", "10", "11"}}, {"8", {"9"}}, {"11", {"12"}}
@@ -173,10 +173,10 @@ TEST_CASE("ParentExtractor: n3iwl") {
 TEST_CASE("ParentExtractor: n3wim") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wim.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, list<string>> expectedParent = {
             {"2", {"3", "4", "21"}}, {"4", {"5", "6", "12", "13", "14", "20"}}, {"6", {"7", "8", "11"}},
@@ -196,10 +196,10 @@ TEST_CASE("ParentExtractor: n3wim") {
 TEST_CASE("ParentExtractor: n3wwl") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, list<string>> expectedParent = {
             {"2", {"3", "4"}}, {"4", {"5", "6"}}, {"6", {"7", "8"}}, {"8", {"9"}}

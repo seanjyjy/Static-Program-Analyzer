@@ -10,11 +10,11 @@ using namespace std;
 TEST_CASE("ModifiesExtractor: Assign") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     unordered_map<string, unordered_set<string>> expectedProcModifies = {
             {"main", {"a", "b", "d", "e", "g", "i", "m", "q"}}
@@ -31,11 +31,11 @@ TEST_CASE("ModifiesExtractor: Assign") {
 TEST_CASE("ModifiesExtractor: Read") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     unordered_map<string, unordered_set<string>> expectedProcModifies = {
             {"main", {"a", "bcd", "e1fg5"}}
@@ -51,11 +51,11 @@ TEST_CASE("ModifiesExtractor: Read") {
 TEST_CASE("ModifiesExtractor: Print") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     REQUIRE(me.getProcModifiesMap().empty());
     REQUIRE(me.getStmtModifiesMap().empty());
@@ -65,11 +65,11 @@ TEST_CASE("ModifiesExtractor: Print") {
 TEST_CASE("ModifiesExtractor: While") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     unordered_map<string, unordered_set<string>> expectedProcModifies = {
             {"main", {"x", "y", "w", "t"}}
@@ -86,11 +86,11 @@ TEST_CASE("ModifiesExtractor: While") {
 TEST_CASE("ModifiesExtractor: If") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     unordered_map<string, unordered_set<string>> expectedProcModifies = {
             {"main", {"x", "xx", "y", "yy", "w", "ww", "r", "rr", "t", "tt"}}
@@ -111,11 +111,11 @@ TEST_CASE("ModifiesExtractor: Non-nested") {
     // non_nested-simple.txt
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     unordered_map<string, unordered_set<string>> expectedProcModifies = {
             {"main", {"a", "b", "e", "f", "j", "m"}}
@@ -133,11 +133,11 @@ TEST_CASE("ModifiesExtractor: Nested") {
     // nested-simple.txt
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     unordered_map<string, unordered_set<string>> expectedProcModifies = {
             {"main", {"b", "d", "i", "n", "s"}}
@@ -154,11 +154,11 @@ TEST_CASE("ModifiesExtractor: Nested") {
 TEST_CASE("ModifiesExtractor: n3iif") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iif.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     unordered_map<string, unordered_set<string>> expectedProcModifies = {
             {"n3iif", {"if", "read", "print", "else", "then", "cream"}}
@@ -178,11 +178,11 @@ TEST_CASE("ModifiesExtractor: n3iif") {
 TEST_CASE("ModifiesExtractor: n3iwl") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iwl.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     unordered_map<string, unordered_set<string>> expectedProcModifies = {
             {"n3iwl", {"procedure", "print", "read", "try", "reader", "while"}}
@@ -200,11 +200,11 @@ TEST_CASE("ModifiesExtractor: n3iwl") {
 TEST_CASE("ModifiesExtractor: n3wim") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wim.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     unordered_map<string, unordered_set<string>> expectedProcModifies = {
             {"n3wim", {"a", "b", "c", "x", "d"}}
@@ -222,11 +222,11 @@ TEST_CASE("ModifiesExtractor: n3wim") {
 TEST_CASE("ModifiesExtractor: n3wwl") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap; list<string> procCallOrder; // TODO: DUMMY FOR NOW
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
 
     unordered_map<string, unordered_set<string>> expectedProcModifies = {
             {"n3wwl", {"while"}}

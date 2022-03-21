@@ -9,7 +9,7 @@ using namespace std;
 TEST_CASE("EntitiesExtractor: Assign") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 8);
@@ -33,7 +33,7 @@ TEST_CASE("EntitiesExtractor: Assign") {
 TEST_CASE("EntitiesExtractor: Read") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 3);
@@ -55,7 +55,7 @@ TEST_CASE("EntitiesExtractor: Read") {
 TEST_CASE("EntitiesExtractor: Print") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 3);
@@ -77,7 +77,7 @@ TEST_CASE("EntitiesExtractor: Print") {
 TEST_CASE("EntitiesExtractor: While") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 11);
@@ -100,7 +100,7 @@ TEST_CASE("EntitiesExtractor: While") {
 TEST_CASE("EntitiesExtractor: If") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 19);
@@ -125,7 +125,7 @@ TEST_CASE("EntitiesExtractor: Non-Nested") {
     // non_nested-simple.txt
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 10);
@@ -149,7 +149,7 @@ TEST_CASE("EntitiesExtractor: Nested") {
     // nested-simple.txt
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 10);
@@ -173,7 +173,7 @@ TEST_CASE("EntitiesExtractor: Nested") {
 TEST_CASE("EntitiesExtractor: n3iif") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iif.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 18);
@@ -197,7 +197,7 @@ TEST_CASE("EntitiesExtractor: n3iif") {
 TEST_CASE("EntitiesExtractor: n3iwl") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iwl.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 13);
@@ -221,7 +221,7 @@ TEST_CASE("EntitiesExtractor: n3iwl") {
 TEST_CASE("EntitiesExtractor: n3wim") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wim.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 22);
@@ -244,7 +244,7 @@ TEST_CASE("EntitiesExtractor: n3wim") {
 TEST_CASE("EntitiesExtractor: n3wwl") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 9);

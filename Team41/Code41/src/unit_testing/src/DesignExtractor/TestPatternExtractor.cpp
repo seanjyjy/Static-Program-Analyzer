@@ -10,10 +10,10 @@ using namespace std;
 TEST_CASE("PatternExtractor: Assign") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, pair<string, TNode *>> expectedAssignPattern = {
             {"1", {"a", AstBuilder(TestDesignExtractorUtils::readDePattern("assign", "1.txt")).build()}},
@@ -36,10 +36,10 @@ TEST_CASE("PatternExtractor: Assign") {
 TEST_CASE("PatternExtractor: Read") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     REQUIRE(pe.getAssignPatternMap().empty());
     REQUIRE(pe.getIfPatternMap().empty());
@@ -50,10 +50,10 @@ TEST_CASE("PatternExtractor: Read") {
 TEST_CASE("PatternExtractor: Print") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     REQUIRE(pe.getAssignPatternMap().empty());
     REQUIRE(pe.getIfPatternMap().empty());
@@ -64,10 +64,10 @@ TEST_CASE("PatternExtractor: Print") {
 TEST_CASE("PatternExtractor: While") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, pair<string, TNode *>> expectedAssignPattern = {
             {"2", {"x", AstBuilder(TestDesignExtractorUtils::readDePattern("while", "2.txt")).build()}},
@@ -89,10 +89,10 @@ TEST_CASE("PatternExtractor: While") {
 TEST_CASE("PatternExtractor: If") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, pair<string, TNode *>> expectedAssignPattern = {
             {"2", {"x", AstBuilder(TestDesignExtractorUtils::readDePattern("if", "2.txt")).build()}},
@@ -120,10 +120,10 @@ TEST_CASE("PatternExtractor: Non-nested") {
     // non_nested-simple.txt
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, pair<string, TNode *>> expectedAssignPattern = {
             {"2", {"b", AstBuilder(TestDesignExtractorUtils::readDePattern("non-nested", "2.txt")).build()}},
@@ -145,10 +145,10 @@ TEST_CASE("PatternExtractor: Nested") {
     // nested-simple.txt
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, pair<string, TNode *>> expectedAssignPattern = {
             {"4", {"d", AstBuilder(TestDesignExtractorUtils::readDePattern("nested", "4.txt")).build()}},
@@ -168,10 +168,10 @@ TEST_CASE("PatternExtractor: Nested") {
 TEST_CASE("PatternExtractor: n3iif") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iif.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, pair<string, TNode *>> expectedAssignPattern = {
             {"2", {"if", AstBuilder(TestDesignExtractorUtils::readDePattern("n3iif", "2.txt")).build()}},
@@ -199,10 +199,10 @@ TEST_CASE("PatternExtractor: n3iif") {
 TEST_CASE("PatternExtractor: n3iwl") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iwl.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, pair<string, TNode *>> expectedAssignPattern = {
             {"1", {"procedure", AstBuilder(TestDesignExtractorUtils::readDePattern("n3iwl", "1.txt")).build()}},
@@ -227,10 +227,10 @@ TEST_CASE("PatternExtractor: n3iwl") {
 TEST_CASE("PatternExtractor: n3wim") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wim.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, pair<string, TNode *>> expectedAssignPattern = {
             {"1", {"a", AstBuilder(TestDesignExtractorUtils::readDePattern("n3wim", "1.txt")).build()}},
@@ -256,10 +256,10 @@ TEST_CASE("PatternExtractor: n3wim") {
 TEST_CASE("PatternExtractor: n3wwl") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
 
     unordered_map<string, pair<string, TNode *>> expectedAssignPattern = {
             {"1", {"while", AstBuilder(TestDesignExtractorUtils::readDePattern("n3wwl", "1.txt")).build()}},

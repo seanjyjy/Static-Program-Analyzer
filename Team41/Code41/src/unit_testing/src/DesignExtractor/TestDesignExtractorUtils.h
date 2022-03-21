@@ -39,7 +39,7 @@ public:
         if (mp1.size() != mp2.size()) return false;
         for (auto &[stmt, p1] : mp1) {
             if (mp2.find(stmt) == mp2.end()) return false;
-            pair<string, TNode *> p2 = mp2[stmt];
+            pair<string, TNode *> p2 = mp2.at(stmt);
             if (p1.first != p2.first || !TreeUtils::isEqual(p1.second, p2.second))
                 return false;
         }
