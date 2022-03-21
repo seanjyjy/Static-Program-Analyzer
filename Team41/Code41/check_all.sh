@@ -9,7 +9,8 @@ num=1
 open -a Firefox
 
 for i in *; do
-  if [[ $i == *_source.txt ]]; then
+  regex1="[0-9]+_.*_source.txt"
+  if [[ $i =~ $regex1 ]]; then
     queries="${i/source/queries}"
     outFile="out$num.xml"
     eval "$autotestorPath $i $queries $outFile"
@@ -19,8 +20,8 @@ for i in *; do
 done
 
 for i in *; do
-  regex="out[0-9]+.xml"
-  if [[ $i =~ $regex ]]; then
+  regex2="out[0-9]+.xml"
+  if [[ $i =~ $regex2 ]]; then
     url="http://localhost:63342/SPA/Team41/Code41/tests/$i"
     if [[ "$OSTYPE" == "darwin"* ]]; then
       /Applications/Firefox.app/Contents/MacOS/firefox -new-tab "$url"
