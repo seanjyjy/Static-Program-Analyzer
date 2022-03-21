@@ -14,7 +14,7 @@ Table *ProcEvaluator::evaluateIdentifierSynonym(const ClauseVariable& left, Clau
 
 Table *ProcEvaluator::evaluateIdentifierWildCard(const ClauseVariable& left) {
     unordered_set<string> procCalledBy = getIdentifierWildCardRelation(left.getLabel());
-    return buildBooleanTable(procCalledBy);
+    return buildBooleanTable(!procCalledBy.empty());
 }
 
 Table *ProcEvaluator::evaluateSynonymIdentifier(ClauseVariable& left, const ClauseVariable& right) {

@@ -16,7 +16,7 @@ Table *NextEvaluator::evaluateIntegerSynonym(ClauseVariable left, ClauseVariable
 
 Table *NextEvaluator::evaluateIntegerWildCard(ClauseVariable left) {
     vector<CFGNode *> setOfChildren = nextKBAdapter->getNextNodes(left.getLabel());
-    return buildBooleanTable(setOfChildren);
+    return buildBooleanTable(!setOfChildren.empty());
 }
 
 Table *NextEvaluator::evaluateSynonymInteger(ClauseVariable left, ClauseVariable right) {
@@ -36,7 +36,7 @@ Table *NextEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
 
 Table *NextEvaluator::evaluateWildCardInteger(ClauseVariable right) {
     vector<CFGNode *> setOfParent = nextKBAdapter->getPrevNodes(right.getLabel());
-    return buildBooleanTable(setOfParent);
+    return buildBooleanTable(!setOfParent.empty());
 }
 
 Table *NextEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
@@ -46,5 +46,5 @@ Table *NextEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
 
 Table *NextEvaluator::evaluateWildCardWildCard() {
     vector<pair<string, string>> listOfStmtToStmt = nextKBAdapter->getAllNext();
-    return buildBooleanTable(listOfStmtToStmt);
+    return buildBooleanTable(!listOfStmtToStmt.empty());
 }

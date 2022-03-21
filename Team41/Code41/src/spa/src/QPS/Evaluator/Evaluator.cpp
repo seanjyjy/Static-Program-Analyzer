@@ -4,33 +4,6 @@ Evaluator::Evaluator(PKBClient *pkb) {
     this->pkb = pkb;
 }
 
-string Evaluator::getClauseType(QueryClause::clause_type clauseType) {
-    switch (clauseType) {
-        case QueryClause::clause_type::follows:
-            return "Follows";
-        case QueryClause::clause_type::followsT:
-            return "Follows*";
-        case QueryClause::clause_type::parent:
-            return "Parent";
-        case QueryClause::clause_type::parentT:
-            return "Parent*";
-        case QueryClause::clause_type::usesS:
-            return "UsesS";
-        case QueryClause::clause_type::usesP:
-            return "UsesP";
-        case QueryClause::clause_type::modifiesS:
-            return "ModifiesS";
-        case QueryClause::clause_type::modifiesP:
-            return "ModfiesP";
-        case QueryClause::clause_type::calls:
-            return "Calls";
-        case QueryClause::clause_type::callsT:
-            return "Calls*";
-        default:
-            throw std::runtime_error("unknown clause of type");
-    }
-}
-
 unordered_set<string> Evaluator::getFilters(QueryDeclaration::design_entity_type types) {
     switch (types) {
         case QueryDeclaration::design_entity_type::ASSIGN:
@@ -66,38 +39,6 @@ Table *Evaluator::buildBooleanTable(bool booleanResult) {
     return new FalseTable();
 }
 
-Table *Evaluator::buildBooleanTable(const unordered_set<string> &results) {
-    if (results.empty()) {
-        return new FalseTable();
-    }
-
-    return new TrueTable();
-}
-
-Table *Evaluator::buildBooleanTable(const vector<pair<string, string>>& results) {
-    if (results.empty()) {
-        return new FalseTable();
-    }
-
-    return new TrueTable();
-}
-
-Table *Evaluator::buildBooleanTable(const string &result) {
-    if (result.empty()) {
-        return new FalseTable();
-    }
-
-    return new TrueTable();
-}
-
-Table *Evaluator::buildBooleanTable(const vector<CFGNode *> &results) {
-    if (results.empty()) {
-        return new FalseTable();
-    }
-
-    return new TrueTable();
-}
-
 Table *Evaluator::buildSingleSynonymTable(const string &result, ClauseVariable &synonym) {
     if (result.empty()) {
         return new FalseTable();
@@ -117,20 +58,29 @@ Table *Evaluator::buildSingleSynonymTable(const string &result, ClauseVariable &
     return table;
 }
 
+Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration &patternSynonym) {
+    return buildSingleSynonymTable(results, patternSynonym.getSynonym(), patternSynonym.getType());
+}
+
 Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable &synonym) {
+    return buildSingleSynonymTable(results, synonym.getLabel(), synonym.getDesignEntityType());
+}
+
+Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, const string& label,
+                                          QueryDeclaration::design_entity_type type) {
+
     if (results.empty()) {
         return new FalseTable();
     }
 
-    string column = synonym.getLabel();
-    unordered_set<string> filters = getFilters(synonym.getDesignEntityType());
+    unordered_set<string> filters = getFilters(type);
 
-    Header header({column});
+    Header header({label});
     Table* table = new PQLTable(header);
 
     for (auto& child : results) {
         if (filters.find(child) != filters.end()) {
-            Row* row = new Row(column, child);
+            Row* row = new Row(label, child);
             table->addRow(row);
         }
     }

@@ -30,10 +30,10 @@ Table *ModifiesUsesSEvaluator::evaluateIntegerSynonym(const ClauseVariable& left
 
 Table *ModifiesUsesSEvaluator::evaluateIntegerWildCard(const ClauseVariable& left) {
     unordered_set<string> statementUsed = getIntegerWildCardRelation(left.getLabel());
-    return buildBooleanTable(statementUsed);
+    return buildBooleanTable(!statementUsed.empty());
 }
 
-Table *ModifiesUsesSEvaluator::evaluateSynonymIdentifier(ClauseVariable left, const ClauseVariable& right) {
+Table *ModifiesUsesSEvaluator::evaluateSynonymIdentifier(ClauseVariable& left, ClauseVariable& right) {
     unordered_set<string> statementBeingUsed = getSynonymIdentifierRelation(right.getLabel());
     return buildSingleSynonymTable(statementBeingUsed, left);
 }
@@ -43,7 +43,7 @@ Table *ModifiesUsesSEvaluator::evaluateSynonymSynonym(ClauseVariable left, Claus
     return buildSynonymSynonymTable(listOfStmtStmt, left, right);
 }
 
-Table *ModifiesUsesSEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
+Table *ModifiesUsesSEvaluator::evaluateSynonymWildCard(ClauseVariable& left) {
     unordered_set<string> statementUsed = getSynonymWildCardRelation();
     return buildSingleSynonymTable(statementUsed, left);
 }

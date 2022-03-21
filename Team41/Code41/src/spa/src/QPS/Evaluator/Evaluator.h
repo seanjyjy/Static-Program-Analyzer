@@ -15,21 +15,19 @@
 using namespace std;
 
 class Evaluator {
+private:
+    Table* buildSingleSynonymTable(const unordered_set<string> &results, const string& label,
+                                   QueryDeclaration::design_entity_type type);
 protected:
-    string getClauseType(QueryClause::clause_type clauseType);
-
     // ======================================= Generic TABLE BUILDING ==============================================
     Table* buildBooleanTable(bool booleanResult);
-    Table* buildBooleanTable(const unordered_set<string> &results);
-    Table* buildBooleanTable(const string &result);
-    Table* buildBooleanTable(const vector<pair<string, string>>& results);
-    Table* buildBooleanTable(const vector<CFGNode *>& results);
 
+    Table* buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration& patternSynonym);
     Table* buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable& synonym);
+
     Table* buildSingleSynonymTable(const string &result, ClauseVariable& synonym);
     Table* buildSingleSynonymTable(const vector<CFGNode *>& results, ClauseVariable& synonym);
     Table* buildSingleSynonymTable(const vector<string>& results, ClauseVariable& synonym);
-    Table* buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration& patternSynonym);
 
     Table* buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable& leftSynonym,
                                     ClauseVariable &rightSynonym);

@@ -48,7 +48,7 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a full pattern.
      */
-    Table *evaluateIdentifierFullPattern(QueryDeclaration patternSyn, ClauseVariable left, PatternVariable right);
+    Table *evaluateIdentifierFullPattern(QueryDeclaration patternSyn, const ClauseVariable& left, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between an identifier and a sub pattern.
@@ -58,7 +58,7 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a sub pattern.
      */
-    Table *evaluateIdentifierSubPattern(QueryDeclaration patternSyn, ClauseVariable left, PatternVariable right);
+    Table *evaluateIdentifierSubPattern(QueryDeclaration patternSyn, const ClauseVariable& left, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a full pattern.
