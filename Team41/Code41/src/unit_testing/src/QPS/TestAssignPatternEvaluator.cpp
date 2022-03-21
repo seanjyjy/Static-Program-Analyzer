@@ -118,7 +118,7 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
 
         PatternClause patternClause2(assignSyn, identifierV1, vector<PatternVariable>({patternFP2}));
         Table *table2 = AssignPatternEvaluator(pkbManager).evaluate(&patternClause2);
-        vector<string> expectedColumns2{ASSIGN_SYN_LBL};
+        vector<string> expectedColumns2{};
         vector<vector<string>> expectedRows2{};
         REQUIRE(TableTestUtils::checkTableMatches(table2, expectedColumns2, expectedRows2));
 
