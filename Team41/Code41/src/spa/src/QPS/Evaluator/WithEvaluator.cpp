@@ -142,8 +142,8 @@ Table *WithEvaluator::buildSynonymSynonymTable(unordered_set<string> &leftResult
 }
 
 Table *WithEvaluator::buildDiffSynonymTable(unordered_set<string> &leftResults, unordered_set<string> &rightResults,
-                                            string firstColumn, string secondColumn, const ValueMapping &leftMapping,
-                                            const ValueMapping &rightMapping) {
+                                            const string& firstColumn, const string& secondColumn,
+                                            const ValueMapping &leftMapping, const ValueMapping &rightMapping) {
     Header header = Header({firstColumn, secondColumn});
     Table* table = new PQLTable(header);
 
@@ -161,7 +161,7 @@ Table *WithEvaluator::buildDiffSynonymTable(unordered_set<string> &leftResults, 
     return table;
 }
 
-Table *WithEvaluator::buildSameSynonymTable(unordered_set<string> &results, string column) {
+Table *WithEvaluator::buildSameSynonymTable(unordered_set<string> &results, const string& column) {
     Header header = Header({column});
     Table* table = new PQLTable(header);
 

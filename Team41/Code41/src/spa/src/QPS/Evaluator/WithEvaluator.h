@@ -40,10 +40,10 @@ private:
                                    QueryDeclaration& leftSynonym, QueryDeclaration& rightSynonym,
                                    const ValueMapping& leftMapping, const ValueMapping& rightMapping);
 
-    Table* buildSameSynonymTable(unordered_set<string>& results, string column);
+    Table* buildSameSynonymTable(unordered_set<string>& results, const string& column);
 
     Table* buildDiffSynonymTable(unordered_set<string>& leftResults, unordered_set<string>& rightResults,
-                                    string firstColumn, string secondColumn,
+                                    const string& firstColumn, const string& secondColumn,
                                     const ValueMapping& leftMapping, const ValueMapping& rightMapping);
 
     ValueMapping sameMapper = [&](const string &stmtNum) { return stmtNum; };
