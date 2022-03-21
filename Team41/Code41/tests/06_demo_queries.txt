@@ -518,132 +518,132 @@ constant c;
 Select c.stmt#
 
 5000
-7 - proc wrong attr ref Semantically invalid
+243 - proc wrong attr ref Semantically invalid
 procedure p;
 Select p.varName
 
 5000
-7 - proc wrong attr ref Semantically invalid
+244 - proc wrong attr ref Semantically invalid
 procedure p;
 Select p.value
 
 5000
-7 - proc wrong attr ref Semantically invalid
+245 - proc wrong attr ref Semantically invalid
 procedure p;
 Select p.stmt#
 
 5000
-7 - call wrong attr ref Semantically invalid
+246 - call wrong attr ref Semantically invalid
 call cl;
 Select cl.varName
 
 5000
-7 - call wrong attr ref Semantically invalid
+247 - call wrong attr ref Semantically invalid
 call cl;
 Select cl.value
 
 5000
-7 - variable wrong attr ref Semantically invalid
+248 - variable wrong attr ref Semantically invalid
 variable v;
 Select v.procName
 
 5000
-7 - variable wrong attr ref Semantically invalid
+249 - variable wrong attr ref Semantically invalid
 variable v;
 Select v.value
 
 5000
-7 - variable wrong attr ref Semantically invalid
+250 - variable wrong attr ref Semantically invalid
 variable v;
 Select v.stmt#
 
 5000
-7 - read wrong attr ref Semantically invalid
+251 - read wrong attr ref Semantically invalid
 read re;
 Select re.procName
 
 5000
-7 - read wrong attr ref Semantically invalid
+252 - read wrong attr ref Semantically invalid
 read re;
 Select re.value
 
 5000
-7 - print wrong attr ref Semantically invalid
+253 - print wrong attr ref Semantically invalid
 print pn;
 Select pn.procName
 
 5000
-7 - print wrong attr ref Semantically invalid
+254 - print wrong attr ref Semantically invalid
 print pn;
 Select pn.value
 
 5000
-7 - constant wrong attr ref Semantically invalid
+255 - constant wrong attr ref Semantically invalid
 constant c;
 Select c.procName
 
 5000
-7 - constant wrong attr ref Semantically invalid
+256 - constant wrong attr ref Semantically invalid
 constant c;
 Select c.varName
 
 5000
-7 - stmt wrong attr ref Semantically invalid
+257 - stmt wrong attr ref Semantically invalid
 stmt s;
 Select s.procName
 
 5000
-7 - stmt wrong attr ref Semantically invalid
+258 - stmt wrong attr ref Semantically invalid
 stmt s;
 Select s.varName
 
 5000
-7 - stmt wrong attr ref Semantically invalid
+259 - stmt wrong attr ref Semantically invalid
 stmt s;
 Select s.value
 
 5000
-7 - assign wrong attr ref Semantically invalid
+260 - assign wrong attr ref Semantically invalid
 assign a;
 Select a.procName
 
 5000
-7 - assign wrong attr ref Semantically invalid
+261 - assign wrong attr ref Semantically invalid
 assign a;
 Select a.varName
 
 5000
-7 - assign wrong attr ref Semantically invalid
+262 - assign wrong attr ref Semantically invalid
 assign a;
 Select a.value
 
 5000
-7 - while wrong attr ref Semantically invalid
+263 - while wrong attr ref Semantically invalid
 while w;
 Select w.procName
 
 5000
-7 - while wrong attr ref Semantically invalid
+264 - while wrong attr ref Semantically invalid
 while w;
 Select w.varName
 
 5000
-7 - while wrong attr ref Semantically invalid
+265 - while wrong attr ref Semantically invalid
 while w;
 Select w.value
 
 5000
-7 - if wrong attr ref Semantically invalid
+266 - if wrong attr ref Semantically invalid
 if ifs;
 Select ifs.procName
 
 5000
-7 - if wrong attr ref Semantically invalid
+267 - if wrong attr ref Semantically invalid
 if ifs;
 Select ifs.varName
 
 5000
-7 - if wrong attr ref Semantically invalid
+268 - if wrong attr ref Semantically invalid
 if ifs;
 Select ifs.value
 
