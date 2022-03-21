@@ -4,7 +4,7 @@
 #include <functional>
 
 // If required is a stmt, return back the stmt provided, else get its required mapping thru the function provided
-typedef std::function<string (const string&)> ValueMapping;
+typedef std::function<string (const string&, PKBClient* pkb)> ValueMapping;
 
 class WithEvaluator : Evaluator {
 private:
@@ -46,7 +46,7 @@ private:
                                     const string& firstColumn, const string& secondColumn,
                                     const ValueMapping& leftMapping, const ValueMapping& rightMapping);
 
-    ValueMapping sameMapper = [&](const string &stmtNum) { return stmtNum; };
+    ValueMapping sameMapper = [&](const string &stmtNum, PKBClient* pkb) { return stmtNum; };
     ValueMapping getMapper(QueryDeclaration::design_entity_type type);
 public:
     explicit WithEvaluator(PKBClient* pkb);

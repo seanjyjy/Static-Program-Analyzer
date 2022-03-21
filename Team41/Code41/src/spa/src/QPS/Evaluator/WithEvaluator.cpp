@@ -119,7 +119,7 @@ Table *WithEvaluator::buildSingleSynonymTableWithSingleFilter(unordered_set<stri
     Header header = Header({column});
     Table* table = new PQLTable(header);
     for (auto& result : results) {
-        if (mapping(result) == filter) {
+        if (mapping(result, pkb) == filter) {
             Row* row = new Row(column, result);
             table->addRow(row);
         }
@@ -149,7 +149,7 @@ Table *WithEvaluator::buildDiffSynonymTable(unordered_set<string> &leftResults, 
 
     for (auto& leftResult : leftResults) {
         for (auto& rightResult : rightResults) {
-            if (leftMapping(leftResult) == rightMapping(rightResult)) {
+            if (leftMapping(leftResult, pkb) == rightMapping(rightResult, pkb)) {
                 Row* row = new Row();
                 row->addEntry(firstColumn, leftResult);
                 row->addEntry(secondColumn, rightResult);
@@ -308,15 +308,15 @@ ValueMapping WithEvaluator::getMapper(QueryDeclaration::design_entity_type type)
     }
 
     if (EvaluatorUtils::isCall(type)) {
-        return [&](const string &stmtNum) { return pkb->getCallsProcNameAttr(stmtNum); };
+        return [](const string &stmtNum, PKBClient* pkb) { return pkb->getCallsProcNameAttr(stmtNum); };
     }
 
     if (EvaluatorUtils::isPrint(type)) {
-        return [&](const string &stmtNum) { return pkb->getPrintVarNameAttr(stmtNum); };
+        return [](const string &stmtNum, PKBClient* pkb) { return pkb->getPrintVarNameAttr(stmtNum); };
     }
 
     if (EvaluatorUtils::isRead(type)) {
-        return [&](const string &stmtNum) { return pkb->getReadVarNameAttr(stmtNum); };
+        return [](const string &stmtNum, PKBClient* pkb) { return pkb->getReadVarNameAttr(stmtNum); };
     }
 
     string errorMessage = "You shouldnt be calling getMapper with this type: " + to_string(type);
