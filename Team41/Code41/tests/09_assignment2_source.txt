@@ -1,0 +1,38 @@
+procedure Monk {
+      a = 4;
+      read t;
+      c = a * b + 3 * a;
+      call Pig;
+      y = a + 2 * c;
+      while (d != 1)  {
+          d = a + y;
+          while (y < c) {
+              x = b + 5 * y;
+            t = 1;
+            call Monkey; }
+        v = d + 25; }
+    x = 2 * t + v;
+    if (a > 0) then {
+        x = x * a; }
+      else {
+       x = x + a; }
+    y = x + 2;
+    call Kappa; }
+procedure Pig {
+    while (c > 0) {
+        if (b > 0) then {
+            d = v + a; }
+           else {
+            a = x * y + v * y + d; } } }
+procedure Monkey {
+    t = d + y;
+    if (t > 0) then {
+        while (x > 0) {
+            call Pig;
+            d = d + a; } }
+       else {
+            t = d + 21 + t; } }
+procedure Kappa {
+    print x;
+    call Monkey;
+    }
