@@ -44,7 +44,8 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
         }
 
         for (const auto &declaration: queryObject->getDeclarations()) {
-            if (resultTable->getHeader().find(declaration.synonym) != resultTable->getHeader().end()) {
+            Header header = resultTable->getHeader();
+            if (header.find(declaration.synonym) != header.end()) {
                 continue;
             }
 
