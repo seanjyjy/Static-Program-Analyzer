@@ -126,23 +126,6 @@ Table *Evaluator::buildSingleSynonymTable(const vector<string>& results, ClauseV
     return table;
 }
 
-Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration &patternSynonym) {
-    string column = patternSynonym.getSynonym();
-    unordered_set<string> filters = getFilters(patternSynonym.getType());
-
-    Header header = Header({column});
-    Table *result = new PQLTable(header);
-
-    for (auto &stmtNum: results) {
-        if (filters.find(stmtNum) != filters.end()) {
-            Row *row = new Row(column, stmtNum);
-            result->addRow(row);
-        }
-    }
-
-    return result;
-}
-
 Table *Evaluator::buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
                                            ClauseVariable &rightSynonym) {
     if (results.empty()) {
