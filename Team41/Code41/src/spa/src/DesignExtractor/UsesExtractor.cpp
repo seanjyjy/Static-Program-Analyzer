@@ -10,9 +10,19 @@ void UsesExtractor::mapUses(TNode *node, unordered_set<string> &usesSet) {
     if (usesSet.empty()) return;
 
     if (node->getType() == TNodeType::procedure) {
-        procUsesMap.insert({node->getTokenVal(), usesSet});
+        string procName = node->getTokenVal();
+        auto it = procUsesMap.find(procName);
+        if (it == procUsesMap.end()) // proc doesn't use anything yet
+            procUsesMap.insert({node->getTokenVal(), usesSet});
+        else // proc alr uses something
+            DesignExtractorUtils::copyOverSet(it->second, usesSet);
     } else {
-        stmtUsesMap.insert({nodeToStmtNumMap[node], usesSet});
+        string stmtNum = nodeToStmtNumMap[node];
+        auto it = stmtUsesMap.find(stmtNum);
+        if (it == stmtUsesMap.end()) // stmt doesn't use anything yet
+            stmtUsesMap.insert({stmtNum, usesSet});
+        else // stmt alr uses something
+            DesignExtractorUtils::copyOverSet(it->second, usesSet);
     }
 }
 
@@ -20,8 +30,7 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
     unordered_set<string> usesSetChild;
     TNodeType type = node->getType();
     if (type == TNodeType::procedure) {
-        dfs(node->getChildren()[0], usesSetChild); // only 1 child stmtLst
-        usesSet = usesSetChild;
+        dfs(node->getChildren()[0], usesSet); // only 1 child stmtLst
         mapUses(node, usesSet);
     } else if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = node->getChildren();
@@ -51,8 +60,6 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
         }
     } else if (type == TNodeType::varName) {
         usesSet = {node->getTokenVal()};
-    } else if (type == TNodeType::callStmt) {
-        callNodeSet.insert(node);
     }
 }
 
@@ -66,12 +73,34 @@ void UsesExtractor::buildProcUsesCalls() {
     }
 }
 
-void UsesExtractor::buildCallUses() {
-    for (TNode *callNode : callNodeSet) {
-        string procCalled = callNode->getChildren()[0]->getTokenVal();
+void UsesExtractor::dfsCalls(TNode *node, unordered_set<string> &usesSet) {
+    TNodeType type = node->getType();
+    if (type == TNodeType::procedure) {
+        dfsCalls(node->getChildren()[0], usesSet); // only 1 child stmtLst
+    } else if (type == TNodeType::stmtLst) {
+        unordered_set<string> usesSetChild;
+        vector<TNode *> ch = node->getChildren();
+        for (TNode *child : ch) {
+            dfsCalls(child, usesSetChild);
+            DesignExtractorUtils::combineSetsClear(usesSet, usesSetChild);
+        }
+    } else if (type == TNodeType::whileStmt) {
+        dfsCalls(node->getChildren()[1], usesSet); // right child stmtLst
+        mapUses(node,usesSet);
+    } else if (type == TNodeType::ifStmt) {
+        unordered_set<string> usesSetChild;
+        vector<TNode *> ch = node->getChildren();
+        for (size_t i = 1; i <= 2; i++) { // if stmt has stmtLst on 2nd and 3rd child
+            dfsCalls(ch[i], usesSetChild);
+            DesignExtractorUtils::combineSetsClear(usesSet, usesSetChild);
+        }
+        mapUses(node, usesSet);
+    }  else if (type == TNodeType::callStmt) {
+        string procCalled = node->getChildren()[0]->getTokenVal();
         auto it = procUsesMap.find(procCalled);
-        if (it == procUsesMap.end()) continue; // proc called doesn't modify anything
-        stmtUsesMap[nodeToStmtNumMap[callNode]] = it->second;
+        if (it != procUsesMap.end()) // procCalled uses some variables
+            usesSet = it->second;
+        mapUses(node, usesSet);
     }
 }
 
@@ -82,7 +111,10 @@ void UsesExtractor::extractRelationship() {
         dfs(procNode, st);
     }
     buildProcUsesCalls();
-    buildCallUses();
+    for (TNode *procNode : procNodes) { // build stmt uses due to calls
+        unordered_set<string> st;
+        dfsCalls(procNode, st);
+    }
 }
 
 unordered_map<string, unordered_set<string>> UsesExtractor::getProcUsesMap() {

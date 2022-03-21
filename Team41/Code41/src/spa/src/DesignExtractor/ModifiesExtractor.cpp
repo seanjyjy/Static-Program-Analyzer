@@ -2,6 +2,8 @@
 #include "DesignExtractorUtils.h"
 #include "Common/TNodeType.h"
 
+#include <iostream>
+
 ModifiesExtractor::ModifiesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,
                                      unordered_map<string, unordered_set<string>> &callsMap, list<string> &procCallOrder) :
         ast(ast), nodeToStmtNumMap(nodeToStmtNumMap), callsMap(callsMap), procCallOrder(procCallOrder) {}
@@ -9,20 +11,30 @@ ModifiesExtractor::ModifiesExtractor(TNode *ast, unordered_map<TNode *, string> 
 void ModifiesExtractor::mapModifies(TNode *node, unordered_set<string> &modifiesSet) {
     if (modifiesSet.empty()) return;
 
-    if (node->getType() == TNodeType::procedure)
-        procModifiesMap.insert({node->getTokenVal(), modifiesSet});
-    else
-        stmtModifiesMap.insert({nodeToStmtNumMap[node], modifiesSet});
+    if (node->getType() == TNodeType::procedure) {
+        string procName = node->getTokenVal();
+        auto it = procModifiesMap.find(procName);
+        if (it == procModifiesMap.end()) // proc doesn't modify anything yet
+            procModifiesMap.insert({node->getTokenVal(), modifiesSet});
+        else // proc alr modifies something
+            DesignExtractorUtils::copyOverSet(it->second, modifiesSet);
+    } else {
+        string stmtNum = nodeToStmtNumMap[node];
+        auto it = stmtModifiesMap.find(stmtNum);
+        if (it == stmtModifiesMap.end()) // stmt doesn't modify anything yet
+            stmtModifiesMap.insert({stmtNum, modifiesSet});
+        else // stmt alr modifies something
+            DesignExtractorUtils::copyOverSet(it->second, modifiesSet);
+    }
 }
 
 void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
-    unordered_set<string> modifiesSetChild;
     TNodeType type = node->getType();
     if (type == TNodeType::procedure) {
-        dfs(node->getChildren()[0], modifiesSetChild); // only 1 child stmtLst
-        modifiesSet = modifiesSetChild;
+        dfs(node->getChildren()[0], modifiesSet); // only 1 child stmtLst
         mapModifies(node, modifiesSet);
     } else if (type == TNodeType::stmtLst) {
+        unordered_set<string> modifiesSetChild;
         vector<TNode *> ch = node->getChildren();
         for (TNode *child : ch) {
             dfs(child, modifiesSetChild);
@@ -32,18 +44,16 @@ void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
         modifiesSet = {node->getChildren()[0]->getTokenVal()}; // left child varName
         mapModifies(node, modifiesSet);
     } else if (type == TNodeType::whileStmt) {
-        dfs(node->getChildren()[1], modifiesSetChild); // right child stmtLst
-        modifiesSet = modifiesSetChild;
+        dfs(node->getChildren()[1], modifiesSet); // right child stmtLst
         mapModifies(node, modifiesSet);
     } else if (type == TNodeType::ifStmt) {
+        unordered_set<string> modifiesSetChild;
         vector<TNode *> ch = node->getChildren();
         for (size_t i = 1; i <= 2; i++) { // if stmt has stmtLst on 2nd and 3rd child
             dfs(ch[i], modifiesSetChild);
             DesignExtractorUtils::combineSetsClear(modifiesSet, modifiesSetChild);
         }
         mapModifies(node, modifiesSet);
-    } else if (type == TNodeType::callStmt) {
-        callNodeSet.insert(node);
     }
 }
 
@@ -57,23 +67,48 @@ void ModifiesExtractor::buildProcModifiesCalls() {
     }
 }
 
-void ModifiesExtractor::buildCallModifies() {
-    for (TNode *callNode : callNodeSet) {
-        string procCalled = callNode->getChildren()[0]->getTokenVal();
+void ModifiesExtractor::dfsCalls(TNode *node, unordered_set<string> &modifiesSet) {
+    TNodeType type = node->getType();
+    if (type == TNodeType::procedure) {
+        dfsCalls(node->getChildren()[0], modifiesSet); // only 1 child stmtLst
+    } else if (type == TNodeType::stmtLst) {
+        unordered_set<string> modifiesSetChild;
+        vector<TNode *> ch = node->getChildren();
+        for (TNode *child : ch) {
+            dfsCalls(child, modifiesSetChild);
+            DesignExtractorUtils::combineSetsClear(modifiesSet, modifiesSetChild);
+        }
+    } else if (type == TNodeType::whileStmt) {
+        dfsCalls(node->getChildren()[1], modifiesSet); // right child stmtLst
+        mapModifies(node, modifiesSet);
+    } else if (type == TNodeType::ifStmt) {
+        unordered_set<string> modifiesSetChild;
+        vector<TNode *> ch = node->getChildren();
+        for (size_t i = 1; i <= 2; i++) { // if stmt has stmtLst on 2nd and 3rd child
+            dfsCalls(ch[i], modifiesSetChild);
+            DesignExtractorUtils::combineSetsClear(modifiesSet, modifiesSetChild);
+        }
+        mapModifies(node, modifiesSet);
+    } else if (type == TNodeType::callStmt) {
+        string procCalled = node->getChildren()[0]->getTokenVal();
         auto it = procModifiesMap.find(procCalled);
-        if (it == procModifiesMap.end()) continue; // proc called doesn't modify anything
-        stmtModifiesMap[nodeToStmtNumMap[callNode]] = it->second;
+        if (it != procModifiesMap.end()) // procCalled modifies some variables
+            modifiesSet = it->second;
+        mapModifies(node, modifiesSet);
     }
 }
 
 void ModifiesExtractor::extractRelationship() {
     vector<TNode *> procNodes = ast->getChildren();
-    for (TNode *procNode : procNodes) {
+    for (TNode *procNode : procNodes) { // map directly modifies first
         unordered_set<string> st;
         dfs(procNode, st);
     }
-    buildProcModifiesCalls();
-    buildCallModifies();
+    buildProcModifiesCalls(); // build proc modifies due to calls
+    for (TNode *procNode : procNodes) { // build stmt modifies due to calls
+        unordered_set<string> st;
+        dfsCalls(procNode, st);
+    }
 }
 
 unordered_map<string, unordered_set<string>> ModifiesExtractor::getProcModifiesMap() {
