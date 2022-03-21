@@ -3,7 +3,7 @@
 #include "Common/TNodeType.h"
 
 ParentExtractor::ParentExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
-        ast(ast), nodeToStmtNumMap(nodeToStmtNumMap) {}
+        StmtNumExtractor(ast, nodeToStmtNumMap) {}
 
 void ParentExtractor::mapParent(TNode *node) {
     list<string> parentLst;
@@ -12,33 +12,34 @@ void ParentExtractor::mapParent(TNode *node) {
         for (size_t i = 1; i <= 2; i++) {
             vector<TNode *> ch = node->getChildren()[i]->getChildren();
             for (TNode *child : ch)
-                parentLst.push_back(nodeToStmtNumMap[child]);
+                parentLst.push_back(nodeToStmtNumMap.at(child));
         }
     } else { // TNodeType::whileStmt
         vector<TNode *> ch = node->getChildren()[1]->getChildren();
         for (TNode *child : ch)
-            parentLst.push_back(nodeToStmtNumMap[child]);
+            parentLst.push_back(nodeToStmtNumMap.at(child));
     }
-    parentMap.insert({nodeToStmtNumMap[node], parentLst});
+    parentMap.insert({nodeToStmtNumMap.at(node), parentLst});
 }
 
 void ParentExtractor::mapParentT(TNode *node, list<string> &parentLst) {
     if (parentLst.empty()) return;
-    parentTMap.insert({nodeToStmtNumMap[node], parentLst});
+    parentTMap.insert({nodeToStmtNumMap.at(node), parentLst});
 }
 
 void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
-    list<string> parentLstChild;
     TNodeType type = node->getType();
     if (type == TNodeType::procedure) {
-        dfs(node->getChildren()[0], parentLstChild); // only 1 child stmtLst
+        dfs(node->getChildren()[0], parentLst); // only 1 child stmtLst
     } else if (type == TNodeType::stmtLst) {
+        list<string> parentLstChild;
         vector<TNode *> ch = node->getChildren();
         for (TNode *child : ch) {
             dfs(child, parentLstChild);
             DesignExtractorUtils::combineListsClear(parentLst, parentLstChild);
         }
     } else if (type == TNodeType::ifStmt) {
+        list<string> parentLstChild;
         vector<TNode *> ch = node->getChildren();
         for (size_t i = 1; i <= 2; i++) { // ifStmt has stmtLst on 2nd and 3rd child
             dfs(ch[i], parentLstChild);
@@ -46,19 +47,18 @@ void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
         }
         mapParent(node);
         mapParentT(node, parentLst);
-        parentLst.push_front(nodeToStmtNumMap[node]);
+        parentLst.push_front(nodeToStmtNumMap.at(node));
     } else if (type == TNodeType::whileStmt) {
-        dfs(node->getChildren()[1], parentLstChild); // right child stmtLst
-        parentLst = parentLstChild;
+        dfs(node->getChildren()[1], parentLst); // right child stmtLst
         mapParent(node);
         mapParentT(node, parentLst);
-        parentLst.push_front(nodeToStmtNumMap[node]);
+        parentLst.push_front(nodeToStmtNumMap.at(node));
     } else if (isStatement(type)) { // read, print, call, assign
-        parentLst = {nodeToStmtNumMap[node]};
+        parentLst = {nodeToStmtNumMap.at(node)};
     }
 }
 
-void ParentExtractor::extractRelationship() {
+void ParentExtractor::extract() {
     vector<TNode *> procNodes = ast->getChildren();
     for (TNode *procNode : procNodes) {
         list<string> lst;

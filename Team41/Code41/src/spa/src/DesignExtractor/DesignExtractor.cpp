@@ -7,7 +7,7 @@ DesignExtractor::DesignExtractor(TNode *ast, PKBManager *pkb) : ast(ast), pkb(pk
 
 void DesignExtractor::extractEntities() {
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extractEntities();
+    ee.extract();
     this->nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     this->procSet = ee.getProcSet();
 
@@ -41,7 +41,7 @@ void DesignExtractor::extractEntities() {
 
 void DesignExtractor::extractCalls() {
     CallsExtractor ce = CallsExtractor(ast, procSet);
-    ce.extractRelationship();
+    ce.extract();
     this->callsMap = ce.getCallsMap();
     this->procCallOrder = ce.getProcCallOrder();
     for (auto &[procParent, callsSet] : callsMap) {
@@ -56,7 +56,7 @@ void DesignExtractor::extractCalls() {
 
 void DesignExtractor::extractModifies() {
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    me.extractRelationship();
+    me.extract();
     for (auto &[procName, modifiesSet] : me.getProcModifiesMap()) {
         for (const string &modifiedName : modifiesSet)
             pkb->registerModifiesP(procName, modifiedName);
@@ -69,7 +69,7 @@ void DesignExtractor::extractModifies() {
 
 void DesignExtractor::extractUses() {
     UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
-    ue.extractRelationship();
+    ue.extract();
     for (auto &[procName, usesSet] : ue.getProcUsesMap()) {
         for (const string &usedName : usesSet)
             pkb->registerUsesP(procName, usedName);
@@ -82,7 +82,7 @@ void DesignExtractor::extractUses() {
 
 void DesignExtractor::extractFollows() {
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
-    fe.extractRelationship();
+    fe.extract();
     for (auto &[followed, followsTLst] : fe.getFollowsTMap()) {
         pkb->registerFollows(followsTLst.front(), followed); // front of list is direct follows
         for (const string &follower : followsTLst)
@@ -92,7 +92,7 @@ void DesignExtractor::extractFollows() {
 
 void DesignExtractor::extractParent() {
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
     for (auto &[parent, parentLst] : pe.getParentMap()) {
         for (const string &child : parentLst)
             pkb->registerParent(parent, child);
@@ -105,7 +105,7 @@ void DesignExtractor::extractParent() {
 
 void DesignExtractor::extractPattern() {
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
-    pe.extractRelationship();
+    pe.extract();
     for (auto &[stmt, lhsRhsPair] : pe.getAssignPatternMap()) {
         pkb->registerAssignPattern(stmt, lhsRhsPair.first, lhsRhsPair.second);
     }
@@ -121,17 +121,17 @@ void DesignExtractor::extractPattern() {
 
 void DesignExtractor::extractCFG() {
     CFGExtractor ce = CFGExtractor(ast, nodeToStmtNumMap);
-    ce.extractCFG();
+    ce.extract();
     pkb->registerCFG(ce.getCFG(), ce.getStmtNumToNodeMap());
 }
 
 void DesignExtractor::extractDesign() {
     extractEntities();
+    extractFollows();
+    extractParent();
     extractCalls();
     extractModifies();
     extractUses();
-    extractFollows();
-    extractParent();
     extractPattern();
     extractCFG();
 }

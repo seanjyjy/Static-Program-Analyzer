@@ -1,15 +1,13 @@
 #pragma once
 
-#include <list>
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Base/StmtNumExtractor.h"
 #include "Common/TNode.h"
 
-class PatternExtractor {
+class PatternExtractor: public StmtNumExtractor {
 private:
-    TNode *ast; // root node of AST
-    unordered_map<TNode *, string> &nodeToStmtNumMap; // mapping of TNode* to statement number
     unordered_map<string, pair<string, TNode *>> assignPatternMap; // mapping of statement number of assign statement to
                                                                    // pair of <lhs variable, TNode* of rhs of assign>
     unordered_map<string, unordered_set<string>> ifPatternMap; // mapping of statement number of if statement to set of condVariables
@@ -59,7 +57,7 @@ public:
     /**
      * Records all patterns.
      */
-    void extractRelationship();
+    void extract() override;
 
     unordered_map<string, pair<string, TNode *>> getAssignPatternMap();
 

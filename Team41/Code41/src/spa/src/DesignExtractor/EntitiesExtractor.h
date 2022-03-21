@@ -3,11 +3,11 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Base/BaseExtractor.h"
 #include "Common/TNode.h"
 
-class EntitiesExtractor {
+class EntitiesExtractor: public BaseExtractor {
 private:
-    TNode *ast; // root node of AST
     unordered_map<TNode *, string> nodeToStmtNumMap; // mapping of TNode* to statement number
     unordered_set<string> procSet; // set of procedure names
     unordered_set<string> varSet; // set of variable names
@@ -30,8 +30,11 @@ private:
 
     /**
      * Traverses through AST to record statements, variable names and constants.
+     *
+     * @param node current TNode being processed in tree traversal
+     * @param stmtNum last registered statement number
      */
-    void findEntities(); // statement number, varName, const
+    void dfs(TNode* node, int &stmtNum); // statement number, varName, const
 
 public:
     EntitiesExtractor(TNode *ast);
@@ -39,7 +42,7 @@ public:
     /**
      * Records procedure names, statements, variable names and constants into respective sets/maps.
      */
-    void extractEntities();
+    void extract() override;
 
     /**
      * @return Map of TNode* of AST to statement numbers

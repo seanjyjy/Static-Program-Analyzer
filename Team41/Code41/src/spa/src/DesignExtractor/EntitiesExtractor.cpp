@@ -1,13 +1,10 @@
-#include <algorithm>
-#include <stack>
-
 #include "Common/TNodeType.h"
 #include <DesignExtractor/EntitiesExtractor.h>
 #include <Exception/SemanticException.h>
 
 using namespace std;
 
-EntitiesExtractor::EntitiesExtractor(TNode *ast) : ast(ast) {}
+EntitiesExtractor::EntitiesExtractor(TNode *ast) : BaseExtractor(ast) {}
 
 void EntitiesExtractor::findProcedures() {
     vector<TNode *> procNodes = ast->getChildren();
@@ -34,23 +31,16 @@ void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum) {
     }
 }
 
-void EntitiesExtractor::findEntities() {
-    int stmtNum = 0;
-    stack<TNode *> stk;
-    stk.push(ast);
-    while (!stk.empty()) {
-        TNode *node = stk.top(); stk.pop();
-        recordEntity(node, stmtNum);
-        vector<TNode *> ch = node->getChildren();
-        reverse(ch.begin(), ch.end()); // left to right dfs
-        for (TNode *child : ch)
-            stk.push(child);
-    }
+void EntitiesExtractor::dfs(TNode* node, int &stmtNum) {
+    recordEntity(node, stmtNum);
+    for (TNode* child : node->getChildren())
+        dfs(child, stmtNum);
 }
 
-void EntitiesExtractor::extractEntities() {
+void EntitiesExtractor::extract() {
     findProcedures();
-    findEntities();
+    int stmtNum = 0;
+    dfs(ast, stmtNum);
 }
 
 unordered_map<TNode *, string> EntitiesExtractor::getNodeToStmtNumMap() {

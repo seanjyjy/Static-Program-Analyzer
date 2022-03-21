@@ -5,11 +5,11 @@
 #include "Common/TNodeType.h"
 
 CFGExtractor::CFGExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
-        ast(ast), nodeToStmtNumMap(nodeToStmtNumMap) {}
+        StmtNumExtractor(ast, nodeToStmtNumMap) {}
 
 CFGNode *CFGExtractor::createCFGNode(TNode *tNode) {
-    CFGNode *cfgNode = new CFGNode(nodeToStmtNumMap[tNode]);
-    stmtNumToNodeMap[nodeToStmtNumMap[tNode]] = cfgNode; // set stmtNum to cfgNode
+    CFGNode *cfgNode = new CFGNode(nodeToStmtNumMap.at(tNode));
+    stmtNumToNodeMap[nodeToStmtNumMap.at(tNode)] = cfgNode; // set stmtNum to cfgNode
     return cfgNode;
 }
 
@@ -61,7 +61,7 @@ void CFGExtractor::buildInitCFG() {
 }
 
 void CFGExtractor::addBackEdge(TNode *fromTNode, TNode *toTNode) {
-    const string &fromStmtNum = nodeToStmtNumMap[fromTNode], &toStmtNum = nodeToStmtNumMap[toTNode];
+    const string &fromStmtNum = nodeToStmtNumMap.at(fromTNode), &toStmtNum = nodeToStmtNumMap.at(toTNode);
     CFGNode *fromCFGNode = stmtNumToNodeMap[fromStmtNum], *toCfgNode = stmtNumToNodeMap[toStmtNum];
     addCFGEdge(fromCFGNode, toCfgNode);
 }
@@ -73,7 +73,7 @@ void CFGExtractor::linkBackNode() {
     }
 
     while (!bfsQ.empty()) {
-        auto [curTNode, backTNode] = bfsQ.front();
+        auto[curTNode, backTNode] = bfsQ.front();
         bfsQ.pop();
 
         TNodeType type = curTNode->getType();
@@ -82,12 +82,12 @@ void CFGExtractor::linkBackNode() {
             for (int i = 0; i < ch.size() - 1; ++i) {
                 TNodeType childType = ch[i]->getType();
                 if (childType == TNodeType::ifStmt)
-                    bfsQ.push({ch[i], ch[i+1]}); // end of IF will link to IF's neighbour node
+                    bfsQ.push({ch[i], ch[i + 1]}); // end of IF will link to IF's neighbour node
                 else if (childType == TNodeType::whileStmt)
                     bfsQ.push({ch[i], ch[i]}); // end of WHILE will link back to WHILE
             }
 
-            TNode* lastChild = ch.back();
+            TNode *lastChild = ch.back();
             TNodeType lastType = lastChild->getType();
             if (lastType == TNodeType::ifStmt) {
                 if (backTNode)
@@ -109,10 +109,10 @@ void CFGExtractor::linkBackNode() {
             bfsQ.push({curTNode->getChildren()[1], backTNode}); // pass to stmtLst to handle
         }
     }
-    stmtNumToNodeMap[ROOT_INDEX] = cfg;
 }
 
-void CFGExtractor::extractCFG() {
+void CFGExtractor::extract() {
+    stmtNumToNodeMap.insert({ROOT_INDEX, cfg});
     buildInitCFG();
     linkBackNode();
 }

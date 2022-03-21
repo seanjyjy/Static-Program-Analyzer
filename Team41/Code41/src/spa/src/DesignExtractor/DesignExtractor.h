@@ -39,7 +39,7 @@ public:
     /**
      * Extracts all entities (procedures, statements, variables and constants) and relationships
      * and stores them in the PKBManager sequentially.
-     * Supported relationships: Modifies, Uses, Follows(T) and Parent(T)
+     * Supported relationships: Modifies, Uses, Follows(T) and Parent(T), Calls(T)
      */
     void extractDesign();
 };

@@ -3,7 +3,7 @@
 #include "CallsExtractor.h"
 #include <Exception/SemanticException.h>
 
-CallsExtractor::CallsExtractor(TNode *ast, unordered_set<string> &procSet) : ast(ast), procSet(procSet) {}
+CallsExtractor::CallsExtractor(TNode *ast, unordered_set<string> &procSet) : BaseExtractor(ast), procSet(procSet) {}
 
 void CallsExtractor::mapCalls(const string &procCalled, const string &procCaller) {
     if (procSet.find(procCalled) == procSet.end()) // procedure called not in program
@@ -85,7 +85,7 @@ void CallsExtractor::buildCallsT() {
     }
 }
 
-void CallsExtractor::extractRelationship() {
+void CallsExtractor::extract() {
     vector<TNode *> procNodes = ast->getChildren();
     for (TNode *procNode : procNodes) {
         dfs(procNode, procNode->getTokenVal());

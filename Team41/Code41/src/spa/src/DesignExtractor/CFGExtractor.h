@@ -3,15 +3,14 @@
 #include <vector>
 #include <unordered_map>
 
+#include "Base/StmtNumExtractor.h"
 #include "Common/CFGNode.h"
 #include "Common/TNode.h"
 
-class CFGExtractor {
+class CFGExtractor: public StmtNumExtractor {
 private:
     const string ROOT_INDEX = "0";
-    TNode *ast; // root node of AST
-    unordered_map<TNode *, string> &nodeToStmtNumMap; // mapping of TNode* to statement number
-    CFGNode *cfg = new CFGNode("0"); // root node of CFG
+    CFGNode *cfg = new CFGNode(ROOT_INDEX); // root node of CFG
     unordered_map<string, CFGNode *> stmtNumToNodeMap; // mapping of statement number to CFGNode*
 
     /**
@@ -56,7 +55,7 @@ public:
     /**
      * Builds CFG.
      */
-    void extractCFG();
+    void extract() override;
 
     /**
      * @return Root of CFG, whose inner TNode is nullptr and children are first stmts of each procedure

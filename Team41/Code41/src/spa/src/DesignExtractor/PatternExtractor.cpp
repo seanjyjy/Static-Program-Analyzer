@@ -3,22 +3,22 @@
 #include "DesignExtractorUtils.h"
 
 PatternExtractor::PatternExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
-        ast(ast), nodeToStmtNumMap(nodeToStmtNumMap) {}
+        StmtNumExtractor(ast, nodeToStmtNumMap) {}
 
 void PatternExtractor::mapAssignPattern(TNode *node) {
-    vector<TNode *> children = node->getChildren();
-    pair<string, TNode *> lhsRhsPair = make_pair(children[0]->getTokenVal(), children[1]);
-    assignPatternMap.insert({nodeToStmtNumMap[node], lhsRhsPair});
+    vector<TNode *> ch = node->getChildren();
+    pair<string, TNode *> lhsRhsPair = make_pair(ch[0]->getTokenVal(), ch[1]);
+    assignPatternMap.insert({nodeToStmtNumMap.at(node), lhsRhsPair});
 }
 
 void PatternExtractor::mapIfPattern(TNode *node, unordered_set<string> &varSet) {
     if (varSet.empty()) return;
-    ifPatternMap.insert({nodeToStmtNumMap[node], varSet});
+    ifPatternMap.insert({nodeToStmtNumMap.at(node), varSet});
 }
 
 void PatternExtractor::mapWhilePattern(TNode *node, unordered_set<string> &varSet) {
     if (varSet.empty()) return;
-    whilePatternMap.insert({nodeToStmtNumMap[node], varSet});
+    whilePatternMap.insert({nodeToStmtNumMap.at(node), varSet});
 }
 
 void PatternExtractor::dfs(TNode *node) {
@@ -27,24 +27,23 @@ void PatternExtractor::dfs(TNode *node) {
         dfs(node->getChildren()[0]); // only 1 child stmtLst
     } else if (type == TNodeType::ifStmt) {
         vector<TNode *> ch = node->getChildren();
+        dfs(ch[1]); // 2nd and 3rd child are stmtLst
+        dfs(ch[2]);
         unordered_set<string> vars;
         dfsExpr(ch[0], vars); // dfs on condition
         mapIfPattern(node, vars);
-        dfs(ch[1]); // 2nd and 3rd child are stmtLst
-        dfs(ch[2]);
     } else if (type == TNodeType::whileStmt) {
         vector<TNode *> ch = node->getChildren();
+        dfs(ch[1]); // dfs on stmtLst
         unordered_set<string> vars;
         dfsExpr(ch[0], vars); // dfs on condition
         mapWhilePattern(node, vars);
-        dfs(ch[1]); // dfs on stmtLst
     } else if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = node->getChildren();
         for (TNode *childNode: ch) {
             dfs(childNode);
-            if (childNode->getType() == TNodeType::assignStmt) {
+            if (childNode->getType() == TNodeType::assignStmt)
                 mapAssignPattern(childNode);
-            }
         }
     }
 }
@@ -63,7 +62,7 @@ void PatternExtractor::dfsExpr(TNode *node, unordered_set<string> &varSet) {
     }
 }
 
-void PatternExtractor::extractRelationship() {
+void PatternExtractor::extract() {
     vector<TNode *> procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) {
         dfs(procNode);
