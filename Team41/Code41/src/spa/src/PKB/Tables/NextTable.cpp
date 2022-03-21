@@ -11,12 +11,15 @@ void NextTable::setCFGNode(CFGNode *node, const StmtToNodeMap &map) {
     }
 
     for (auto[stmt, cfgNode]: stmtToNodeMap) {
+        if (stmt == ROOT_STMT) {
+            continue;
+        }
         vector<CFGNode *> children = cfgNode->getChildren();
         if (!children.empty()) {
             this->allBeforeStmts.push_back(stmt);
         }
         vector<CFGNode *> parents = cfgNode->getParent();
-        if (!parents.empty() && parents[0]->getStmtNum() != "0") {
+        if (!parents.empty()) {
             this->allAfterStmts.push_back(stmt);
         }
         for (auto child: children) {

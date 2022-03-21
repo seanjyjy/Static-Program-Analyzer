@@ -12,6 +12,7 @@ using StmtToNodeMap = unordered_map<string, CFGNode *>;
  */
 class NextTable {
 private:
+    const string ROOT_STMT = "0";
     CFGNode *rootCFG;
     StmtToNodeMap stmtToNodeMap;
     vector<string> allAfterStmts; // set of stmts that can be executed after some stmts
