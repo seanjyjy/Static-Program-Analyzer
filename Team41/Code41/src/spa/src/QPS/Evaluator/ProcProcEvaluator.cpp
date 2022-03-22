@@ -45,15 +45,15 @@ Table *ProcProcEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVari
 
 Table *ProcProcEvaluator::evaluateWildCardIdentifier(const ClauseVariable& right) {
     unordered_set<string> procCalling = getWildCardIdentifierRelation(right.getLabel());
-    return buildBooleanTable(procCalling);
+    return buildBooleanTable(!procCalling.empty());
 }
 
-Table *ProcProcEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
+Table *ProcProcEvaluator::evaluateWildCardSynonym(ClauseVariable& right) {
     unordered_set<string> listOfProcBeingCalled = getWildCardSynonymRelation();
     return buildSingleSynonymTable(listOfProcBeingCalled, right);
 }
 
 Table *ProcProcEvaluator::evaluateWildCardWildCard() {
     vector<pair<string, string>> listOfProcToProc = getWildCardWildCardRelation();
-    return buildBooleanTable(listOfProcToProc);
+    return buildBooleanTable(!listOfProcToProc.empty());
 }

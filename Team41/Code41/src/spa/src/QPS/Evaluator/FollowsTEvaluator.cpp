@@ -14,7 +14,7 @@ Table* FollowsTEvaluator::evaluateIntegerSynonym(ClauseVariable left, ClauseVari
 
 Table* FollowsTEvaluator::evaluateIntegerWildCard(ClauseVariable left) {
     unordered_set<string> followers = pkb->getAllStmtsFollowingT(left.getLabel());
-    return buildBooleanTable(followers);
+    return buildBooleanTable(!followers.empty());
 }
 
 Table* FollowsTEvaluator::evaluateSynonymInteger(ClauseVariable left, ClauseVariable right) {
@@ -35,7 +35,7 @@ Table* FollowsTEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
 
 Table* FollowsTEvaluator::evaluateWildCardInteger(ClauseVariable right) {
     unordered_set<string> followedByCurrent = pkb->getAllStmtsFollowedTBy(right.getLabel());
-    return buildBooleanTable(followedByCurrent);
+    return buildBooleanTable(!followedByCurrent.empty());
 }
 
 Table* FollowsTEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
@@ -45,5 +45,5 @@ Table* FollowsTEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
 
 Table* FollowsTEvaluator::evaluateWildCardWildCard() {
     vector<pair<string, string>> listOfStmtStmt = pkb->getAllFollowsT();
-    return buildBooleanTable(listOfStmtStmt);
+    return buildBooleanTable(!listOfStmtStmt.empty());
 }

@@ -56,13 +56,13 @@ Table *AssignPatternEvaluator::evaluateWildCardSubPattern(QueryDeclaration patte
     return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateIdentifierFullPattern(QueryDeclaration patternSyn, ClauseVariable left,
+Table *AssignPatternEvaluator::evaluateIdentifierFullPattern(QueryDeclaration patternSyn, const ClauseVariable& left,
                                                              PatternVariable right) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromPatternNVar(right.getMiniAST(), left.getLabel());
     return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateIdentifierSubPattern(QueryDeclaration patternSyn, ClauseVariable left,
+Table *AssignPatternEvaluator::evaluateIdentifierSubPattern(QueryDeclaration patternSyn, const ClauseVariable& left,
                                                             PatternVariable right) {
 
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromSubpatternNVar(right.getMiniAST(), left.getLabel());

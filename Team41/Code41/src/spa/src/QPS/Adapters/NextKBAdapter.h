@@ -10,8 +10,8 @@
 #include "Common/CFGNode.h"
 
 //typedef bool (*CacheCallback)(Cache* cache, const string& next);
-typedef std::function<bool (const string&)> CacheCallback;
-typedef std::function<bool (const string&)> TerminateCheck;
+typedef std::function<bool (const string&, Cache* cache)> CacheCallback;
+typedef std::function<bool (const string&, Cache* cache)> TerminateCheck;
 
 class NextKBAdapter {
 private:
@@ -23,9 +23,6 @@ private:
     void runBFS(const string &start, const string &end, bool isForward, const CacheCallback& cacheAndContinue,
                 const TerminateCheck& canTerminate);
 
-    void addBooleanRelation(const string& start, const string& end);
-    void addForwardRelation(const string& start, const string& end);
-    void addBackwardRelation(const string& start, const string& end);
     void addFullMapping(const string& start, const string& end);
 public:
     explicit NextKBAdapter(PKBClient* pkb);

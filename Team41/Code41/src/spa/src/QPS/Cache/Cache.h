@@ -17,8 +17,6 @@ private:
 
     vector<pair<string, string>> allMapping; // only populated when getAll* is being called
 
-    void printMapping(Mapping map);
-
     unordered_set<string> getMapping(Mapping map, const string &key);
 public:
     void registerForwardMapping(const string& key, const string& value); // register key-value pair in forward mapping
@@ -36,15 +34,5 @@ public:
     vector<pair<string, string>> getAllMapping(); // retrieves all mapping
 
     void addAllMappingPair(pair<string, string> pair); // add a pair into the vector of mappings
-
-    size_t getForwardMapSize();
-
-    size_t getBackwardMapSize();
-
-    void printForwardMapping();
-
-    void printBackwardMapping();
-
-    void printBooleanMapping();
 };
 
