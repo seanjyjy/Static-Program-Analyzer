@@ -7,7 +7,7 @@ using namespace std;
 QueryLexer::QueryLexer(const string &input) : input(input) {}
 
 int QueryLexer::skipSpaces() {
-    int len =  input.length();
+    int len =  (int) input.length();
     if (index >= len) {
         return index;
     }
@@ -26,7 +26,7 @@ bool QueryLexer::isSpecialChar(char w) {
 }
 
 string QueryLexer::nextToken() {
-    int len =  input.length();
+    int len = (int) input.length();
     if (index >= len) {
         return "";
     }

@@ -50,7 +50,8 @@ TempClause ClauseGroup::getNextClauseDynamic() {
     int bestIdx = -1;
     long long bestRows = LLONG_MAX;
     // TODO use priority queue?
-    for (size_t i = 0; i < isUsed.size(); i++) {
+    int isUsedSize = (int) isUsed.size();
+    for (int i = 0; i < isUsedSize; i++) {
         if (isUsed[i]) continue;
         long long rows = table.estimateMergeCost(clauses[i].getSynonyms());
         if (rows < bestRows) {

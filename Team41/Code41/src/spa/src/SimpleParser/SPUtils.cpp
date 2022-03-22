@@ -14,7 +14,7 @@ string SPUtils::highlight(const string &simple, int fromRow, int fromCol, int to
     string prog;
 
     int i = 0;
-    int n = simple.size();
+    int n = (int) simple.size();
     while (i < n) {
         // highlight row by row
         int row = currRow;

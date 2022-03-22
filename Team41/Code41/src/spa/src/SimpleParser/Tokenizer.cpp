@@ -16,7 +16,7 @@ Tokenizer::Tokenizer(string s) : input(s), idx(0), row(0), col(0) {
 
 // private functions
 void Tokenizer::advance() {
-    int len = input.size();
+    int len = (int) input.size();
     if (idx >= len) {
         currToken = EOF_CHAR;
         return;
