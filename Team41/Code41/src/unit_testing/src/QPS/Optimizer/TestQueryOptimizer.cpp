@@ -26,11 +26,11 @@ TEST_CASE("Query Optimizer") {
 
     // parse program
     Parser p;
-    unique_ptr<TNode> ast(p.parseProgram(simple));
+    TNode *ast(p.parseProgram(simple));
 
     // extract relations into pkb
     PKBManager pkbManager = PKBManager();
-    DesignExtractor designExtractor(ast.get(), &pkbManager);
+    DesignExtractor designExtractor(ast, &pkbManager);
     designExtractor.extractDesign();
 
     // answer pql
@@ -38,16 +38,11 @@ TEST_CASE("Query Optimizer") {
                  "Select v such that Uses(\"p\", v)";
 
     QueryParser qp = QueryParser{pql};
-    unique_ptr<QueryObject> queryObject(qp.parse());
+    QueryObject *queryObject(qp.parse());
     OptimizedQueryObject oqo = QueryOptimizer::create()
             .setClauseGrouping(true)
             .setInterGroupSort(true)
             .setIntraGroupSort(true)
-            .optimize(queryObject.get());
-    oqo.print();
-//    QueryOptimizer optimizer(&pkbManager);
-//    optimizer.optimize(*queryObject);
-//    optimizer.printPlan();
-    // TODO complete
-    delete &oqo;
+            .optimize(queryObject);
+    oqo.printPlan();
 }

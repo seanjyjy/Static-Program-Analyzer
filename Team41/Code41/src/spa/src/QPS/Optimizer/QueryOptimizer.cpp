@@ -29,7 +29,7 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
 
     // step 2: Add clause groups
     for (vector<SuperClause *> &clauseGroup: clauseGroups) {
-        clauseGroup = QueryOptimizer::removeDuplicates(clauseGroup);
+        clauseGroup = OptimizerUtils::removeDuplicates(clauseGroup);
 
         if (isIntraGroupSortEnabled && isDynamicPollingEnabled) {
             groups->addGroup(new PKBAwareGroup(clauseGroup, adapter));
@@ -47,10 +47,7 @@ QueryOptimizer QueryOptimizer::create() {
     return QueryOptimizer{};
 }
 
-vector<SuperClause *> QueryOptimizer::removeDuplicates(const vector<SuperClause *> &clauses) {
-    // TODO: implement after superclause refactor to use composition
-    return clauses;
-}
+
 
 void QueryOptimizer::print() {
     cout << "isClauseGroupingEnabled: " << isClauseGroupingEnabled << endl

@@ -19,4 +19,6 @@ public:
     SuperClause *popClause();
 
     bool empty();
+
+    void printPlan();
 };

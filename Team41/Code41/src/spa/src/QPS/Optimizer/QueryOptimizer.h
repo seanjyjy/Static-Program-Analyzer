@@ -5,11 +5,8 @@
 #include "QPS/SuperClause.h"
 #include "ClauseDepGraph.h"
 #include "OptimizedQueryObject.h"
-#include "ClauseGroups.h"
-//#include "QueryOptimizerBuilder.h"
+#include "OptimizerUtils.h"
 #include "AbstractGroups.h"
-#include "ClauseGroup.h"
-#include "ClauseGroups.h"
 #include "SortedGroups.h"
 #include "FifoGroups.h"
 #include "SortedGroup.h"
@@ -32,9 +29,6 @@ private:
     ClauseDepGraph clauseDepGraph;
 
     QueryOptimizer();
-
-    static vector<SuperClause *> removeDuplicates(const vector<SuperClause *> &clauses);
-
 public:
 
     static QueryOptimizer create();

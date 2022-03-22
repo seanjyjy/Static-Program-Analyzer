@@ -18,8 +18,12 @@ void ClauseDepGraph::registerClause(SuperClause *cl) {
 
     // if the clause has synonyms, connect all pairs of synonyms
     for (int i = 0; i < (int) synonyms.size(); i++) {
+        string iSyn = synonyms[i].getSynonym();
+        graph.addVertex(iSyn);
         for (int j = i + 1; j < (int) synonyms.size(); j++) {
-            graph.addUndirectedEdge(synonyms[i].getSynonym(), synonyms[j].getSynonym());
+            string jSyn = synonyms[j].getSynonym();
+            graph.addVertex(jSyn);
+            graph.addUndirectedEdge(iSyn, jSyn);
         }
         // map clause synonyms to the original clause, so we can retrieve them later
         synonymToClauses[synonyms[i].getSynonym()].push_back(cl);
@@ -30,7 +34,8 @@ vector<vector<SuperClause *>> ClauseDepGraph::split() {
     vector<vector<SuperClause *>> ret;
 
     // populate the first group - with no synonyms
-    ret.push_back(synonymToClauses[NO_SYNONYM]);
+    vector<SuperClause*> noSyns = synonymToClauses[NO_SYNONYM];
+    if (!noSyns.empty()) ret.push_back(noSyns);
 
     // populate all other groups based on components
     vector<vector<string>> groups = graph.getDisjointComponents();
