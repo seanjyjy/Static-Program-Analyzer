@@ -2,11 +2,11 @@
 #include "Common/TNodeType.h"
 
 FollowsExtractor::FollowsExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
-        ast(ast), nodeToStmtNumMap(nodeToStmtNumMap) {}
+        StmtNumExtractor(ast, nodeToStmtNumMap) {}
 
 void FollowsExtractor::mapFollows(TNode *node, list<string> &followsLst) {
     if (followsLst.empty()) return;
-    followsTMap.insert({nodeToStmtNumMap[node], followsLst});
+    followsTMap.insert({nodeToStmtNumMap.at(node), followsLst});
 }
 
 void FollowsExtractor::dfs(TNode *node) {
@@ -26,14 +26,14 @@ void FollowsExtractor::dfs(TNode *node) {
             TNode *childNode = ch[i];
             dfs(childNode);
             mapFollows(childNode, followsLst);
-            followsLst.push_front(nodeToStmtNumMap[childNode]);
+            followsLst.push_front(nodeToStmtNumMap.at(childNode));
         }
     }
 }
 
-void FollowsExtractor::extractRelationship() {
+void FollowsExtractor::extract() {
     vector<TNode *> procNodes = ast->getChildren();
-    for (TNode *procNode : procNodes) {
+    for (TNode *procNode: procNodes) {
         dfs(procNode);
     }
 }

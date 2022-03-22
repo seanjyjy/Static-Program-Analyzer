@@ -19,7 +19,7 @@ bool TreeUtils::isEqual(TNode *n1, TNode *n2) {
   }
 
   // then compare children equality
-  for (int i = 0; i < (int) n1->getChildren().size(); i++) {
+  for (size_t i = 0; i < (int) n1->getChildren().size(); i++) {
 	isEq = isEq && isEqual(n1->getChildren()[i], n2->getChildren()[i]);
   }
   return isEq;

@@ -25,12 +25,19 @@ private:
     list<string> procCallOrder; // list of procedures in reversed toposort order of calls graph
 
     void extractEntities();
+
     void extractCalls();
+
     void extractModifies();
+
     void extractUses();
+
     void extractFollows();
+
     void extractParent();
+
     void extractPattern();
+
     void extractCFG();
 
 public:
@@ -39,7 +46,7 @@ public:
     /**
      * Extracts all entities (procedures, statements, variables and constants) and relationships
      * and stores them in the PKBManager sequentially.
-     * Supported relationships: Modifies, Uses, Follows(T) and Parent(T)
+     * Supported relationships: Modifies, Uses, Follows(T) and Parent(T), Calls(T)
      */
     void extractDesign();
 };

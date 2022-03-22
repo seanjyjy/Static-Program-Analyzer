@@ -3,15 +3,14 @@
 #include <vector>
 #include <unordered_map>
 
+#include "Base/StmtNumExtractor.h"
 #include "Common/CFGNode.h"
 #include "Common/TNode.h"
 
-class CFGExtractor {
+class CFGExtractor : public StmtNumExtractor {
 private:
     const string ROOT_INDEX = "0";
-    TNode *ast; // root node of AST
-    unordered_map<TNode *, string> &nodeToStmtNumMap; // mapping of TNode* to statement number
-    CFGNode *cfg = new CFGNode("0"); // root node of CFG
+    CFGNode *cfg = new CFGNode(ROOT_INDEX); // root node of CFG
     unordered_map<string, CFGNode *> stmtNumToNodeMap; // mapping of statement number to CFGNode*
 
     /**
@@ -31,10 +30,9 @@ private:
     void addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode);
 
     /**
-     * Traverses through AST in BFS manner to build the initial CFG,
-     * which does not contain edges back due to WHILE loops.
+     * Traverses through AST to build the initial CFG, which does not contain edges back due to WHILE loops.
      */
-    void buildInitCFG();
+    void dfsInitCFG(TNode *curTNode, CFGNode *curCFGNode, CFGNode *parentCFGNode);
 
     /**
      * Adds an edge in the CFG, from CFGNode that corresponds to one TNode to another CFGNode that corresponds
@@ -48,7 +46,7 @@ private:
     /**
      * Traverses through AST to add back edges due to WHILE loops to the initial CFG.
      */
-    void linkBackNode();
+    void dfsLinkBack(TNode *curTNode, TNode *backTNode);
 
 public:
     CFGExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap);
@@ -56,7 +54,7 @@ public:
     /**
      * Builds CFG.
      */
-    void extractCFG();
+    void extract() override;
 
     /**
      * @return Root of CFG, whose inner TNode is nullptr and children are first stmts of each procedure

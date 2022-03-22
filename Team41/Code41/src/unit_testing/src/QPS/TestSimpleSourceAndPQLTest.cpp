@@ -3,8 +3,6 @@
 #include "Common/TreeUtils.h"
 #include "DesignExtractor/DesignExtractor.h"
 #include "QPS/QueryParser.h"
-#include <iterator>
-
 
 TEST_CASE("Integration test for simple source and PQL") {
     string s = "procedure main {"
@@ -27,27 +25,7 @@ TEST_CASE("Integration test for simple source and PQL") {
     QueryParser qp = QueryParser{query};
     QueryObject* queryObject = qp.parse();
     QueryEvaluator queryEvaluator(pkbManager);
-
-    // SIMULATE FEEDING IN QUERY OBJECT FIRST
-    vector<QueryClause> queryClauseList;
-    string a = "a";
-    string v = "v";
-    ClauseVariable left(ClauseVariable::variable_type::synonym, a, QueryDeclaration::NONE);
-    ClauseVariable right(ClauseVariable::variable_type::synonym, v, QueryDeclaration::NONE);
-    QueryClause queryClause(QueryClause::clause_type::usesS, left, right);
-    queryClauseList.push_back(queryClause);
-
-    vector<QueryDeclaration> declarationList;
-    QueryDeclaration queryDeclaration1(QueryDeclaration::design_entity_type::ASSIGN, a);
-    QueryDeclaration queryDeclaration2(QueryDeclaration::design_entity_type::VARIABLE, v);
-    declarationList.push_back(queryDeclaration1);
-    declarationList.push_back(queryDeclaration2);
-
-    QueryDeclaration selectSynonym(QueryDeclaration::design_entity_type::VARIABLE, v);
-
-    vector<PatternClause> pc;
-    auto *queryObjectMock = new QueryObject(declarationList, queryClauseList, pc, selectSynonym, true);
-    QueryResult queryResult = queryEvaluator.evaluateQuery(queryObjectMock);
+    QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
     unordered_set<string> result = QueryProjector(queryResult, pkbManager).getResult();
     string stringRepresentation;
     for (auto& res : result) {
@@ -58,7 +36,6 @@ TEST_CASE("Integration test for simple source and PQL") {
     printf("Answer: %s", stringRepresentation.c_str());
 
     delete queryObject;
-    delete queryObjectMock;
     delete pkbManager;
     delete ast;
 }

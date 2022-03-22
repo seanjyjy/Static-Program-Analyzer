@@ -5,10 +5,10 @@
 ClauseVariable::ClauseVariable() {}
 
 ClauseVariable::ClauseVariable(variable_type type, string label, QueryDeclaration::design_entity_type designEntityType)
-    : type(type), label(std::move(label)), designEntityType(designEntityType) {}
+    : label(std::move(label)), designEntityType(designEntityType), type(type) {}
 
 ClauseVariable::ClauseVariable(variable_type type, string label, QueryDeclaration qd)
-    : type(type), label(std::move(label)), qd(std::move(qd)), designEntityType(qd.getType()) {}
+    : label(std::move(label)), designEntityType(qd.getType()), qd(std::move(qd)), type(type) {}
 
 QueryDeclaration::design_entity_type ClauseVariable::getDesignEntityType() const {
     return designEntityType;

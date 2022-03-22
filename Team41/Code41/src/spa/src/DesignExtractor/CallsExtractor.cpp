@@ -3,7 +3,7 @@
 #include "CallsExtractor.h"
 #include <Exception/SemanticException.h>
 
-CallsExtractor::CallsExtractor(TNode *ast, unordered_set<string> &procSet) : ast(ast), procSet(procSet) {}
+CallsExtractor::CallsExtractor(TNode *ast, unordered_set<string> &procSet) : BaseExtractor(ast), procSet(procSet) {}
 
 void CallsExtractor::mapCalls(const string &procCalled, const string &procCaller) {
     if (procSet.find(procCalled) == procSet.end()) // procedure called not in program
@@ -17,7 +17,7 @@ void CallsExtractor::dfs(TNode *node, const string &proc) {
         dfs(node->getChildren()[0], proc); // only 1 child stmtLst
     } else if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = node->getChildren();
-        for (TNode *child : ch)
+        for (TNode *child: ch)
             dfs(child, proc);
     } else if (type == TNodeType::whileStmt) {
         dfs(node->getChildren()[1], proc); // right child stmtLst
@@ -40,7 +40,7 @@ void CallsExtractor::cycleCheck() {
 
 void CallsExtractor::cycleCheckDfs(const string &proc, unordered_map<string, int> &visMap) {
     visMap[proc] = 1; // set current proc to EXPLORED
-    for (const string &childProc : callsMap[proc]) {
+    for (const string &childProc: callsMap[proc]) {
         auto childIt = visMap.find(childProc);
         if (childIt == visMap.end()) // child proc doesn't call anybody
             continue;
@@ -64,7 +64,7 @@ void CallsExtractor::revTopoSort() {
 
 void CallsExtractor::topoSort(const string &proc, unordered_set<string> &visSet) {
     visSet.insert(proc);
-    for (const string &childProc : callsMap[proc]) {
+    for (const string &childProc: callsMap[proc]) {
         auto childIt = callsMap.find(childProc);
         if (childIt == callsMap.end()) // child proc doesn't call anybody
             continue;
@@ -76,8 +76,8 @@ void CallsExtractor::topoSort(const string &proc, unordered_set<string> &visSet)
 
 void CallsExtractor::buildCallsT() {
     callsTMap = callsMap;
-    for (const string& procParent : procCallOrder) {
-        for (const string& procChild : callsMap[procParent]) { // parent proc should always call a proc
+    for (const string &procParent: procCallOrder) {
+        for (const string &procChild: callsMap[procParent]) { // parent proc should always call a proc
             auto it = callsTMap.find(procChild);
             if (it == callsTMap.end()) continue; // child proc doesn't call(T) anybody
             DesignExtractorUtils::copyOverSet(callsTMap[procParent], it->second);
@@ -85,9 +85,9 @@ void CallsExtractor::buildCallsT() {
     }
 }
 
-void CallsExtractor::extractRelationship() {
+void CallsExtractor::extract() {
     vector<TNode *> procNodes = ast->getChildren();
-    for (TNode *procNode : procNodes) {
+    for (TNode *procNode: procNodes) {
         dfs(procNode, procNode->getTokenVal());
     }
     cycleCheck();

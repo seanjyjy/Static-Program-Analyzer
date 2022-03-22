@@ -15,7 +15,7 @@ public:
         if (!folder.empty())
             paths.push_back(folder);
         paths.push_back(filename);
-        for (const string& p: paths) {
+        for (const string &p: paths) {
             cwd /= p;
         }
         string path = cwd.string();
@@ -35,11 +35,12 @@ public:
         return readFile("simple/program", filename);
     }
 
-    static bool isPatternEqual(unordered_map<string, pair<string, TNode *>> mp1, unordered_map<string, pair<string, TNode *>> mp2) {
+    static bool
+    isPatternEqual(unordered_map<string, pair<string, TNode *>> mp1, unordered_map<string, pair<string, TNode *>> mp2) {
         if (mp1.size() != mp2.size()) return false;
-        for (auto &[stmt, p1] : mp1) {
+        for (auto &[stmt, p1]: mp1) {
             if (mp2.find(stmt) == mp2.end()) return false;
-            pair<string, TNode *> p2 = mp2[stmt];
+            pair<string, TNode *> p2 = mp2.at(stmt);
             if (p1.first != p2.first || !TreeUtils::isEqual(p1.second, p2.second))
                 return false;
         }

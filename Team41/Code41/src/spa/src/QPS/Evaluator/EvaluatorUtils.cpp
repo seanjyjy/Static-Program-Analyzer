@@ -322,7 +322,7 @@ optional<string> EvaluatorUtils::AttrUtils::getAttrFromSelectable(Selectable *ta
 bool EvaluatorUtils::PatternUtils::isWildCards(const vector<PatternVariable> &patternVariables,
                                                QueryDeclaration::design_entity_type type) {
 
-    int size = type == QueryDeclaration::design_entity_type::IF ? 2 : 1;
+    size_t size = type == QueryDeclaration::design_entity_type::IF ? 2 : 1;
 
     if ((int) patternVariables.size() < size) {
         return false;

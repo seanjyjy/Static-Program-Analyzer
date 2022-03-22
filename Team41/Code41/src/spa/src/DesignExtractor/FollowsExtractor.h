@@ -3,12 +3,11 @@
 #include <list>
 #include <unordered_map>
 
+#include "Base/StmtNumExtractor.h"
 #include "Common/TNode.h"
 
-class FollowsExtractor {
+class FollowsExtractor : public StmtNumExtractor {
 private:
-    TNode *ast; // root node of AST
-    unordered_map<TNode *, string> &nodeToStmtNumMap; // mapping of TNode* to statement number
     unordered_map<string, list<string>> followsTMap; // mapping of statement to list of statements that followsT it
 
     /**
@@ -32,7 +31,7 @@ public:
     /**
      * Records all statements' followsT relationship in followsTMap.
      */
-    void extractRelationship();
+    void extract() override;
 
     /**
      * For each mapping of statement S to list of statements L that followsT,

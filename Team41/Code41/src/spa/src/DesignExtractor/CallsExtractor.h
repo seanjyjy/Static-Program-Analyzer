@@ -4,12 +4,12 @@
 #include <unordered_set>
 #include <unordered_map>
 
+#include "Base/BaseExtractor.h"
 #include "Common/TNode.h"
 
-class CallsExtractor {
+class CallsExtractor : BaseExtractor {
 private:
-    TNode *ast; // root node of AST
-    unordered_set<string> &procSet; // set of procedure names
+    const unordered_set<string> &procSet; // set of procedure names
     unordered_map<string, unordered_set<string>> callsMap; // mapping of proc to set of proc it directly calls
     unordered_map<string, unordered_set<string>> callsTMap; // mapping of proc to set of proc it callsT
     list<string> procCallOrder; // list of procedures in reversed toposort order of calls graph
@@ -57,7 +57,7 @@ private:
      * @param proc Current procedure being processed
      * @param visSet Set of procedures visited in Calls graph
      */
-    void topoSort(const string& proc, unordered_set<string> &visSet);
+    void topoSort(const string &proc, unordered_set<string> &visSet);
 
     /**
      * Builds proc callsT proc mapping, using callsMap and procCallOrder.
@@ -67,9 +67,14 @@ private:
 public:
     CallsExtractor(TNode *ast, unordered_set<string> &procSet);
 
-    void extractRelationship();
+    /**
+     * Records all calls and callsT relationship in callsMap and callsTMap.
+     */
+    void extract() override;
 
     unordered_map<string, unordered_set<string>> getCallsMap();
+
     unordered_map<string, unordered_set<string>> getCallsTMap();
+
     list<string> getProcCallOrder();
 };
