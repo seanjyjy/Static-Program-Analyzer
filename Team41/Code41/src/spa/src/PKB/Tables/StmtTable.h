@@ -17,7 +17,6 @@ enum StmtType {
     CALL
 };
 
-
 /**
  * Store list of statement used in the SIMPLE program and their respective types
  * - uses One-Many relation to map statement type to statements and vice versa
@@ -79,7 +78,7 @@ public:
      * @param stmtNum the statement number in string
      * @param attr the attribute value associated to stmt
      */
-    void setStmtAttr(const string &stmtNum, const string& attr);
+    void setStmtAttr(const string &stmtNum, const string &attr);
 
     /**
      * Gets the number of statements stored in table

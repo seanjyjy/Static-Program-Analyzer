@@ -27,6 +27,7 @@ private:
     vector<pair<K, V>> entries;
 public:
     ManyToMany();
+
     explicit ManyToMany(const string &relationName);
 
     /**

@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 
 #include "Common/TNode.h"
 #include <string>

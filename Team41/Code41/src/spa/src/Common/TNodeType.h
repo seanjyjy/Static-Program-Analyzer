@@ -32,8 +32,7 @@ enum class TNodeType {
   dummy, // for parsing to ast
 };
 
-// TODO: refactor: this could be moved into the TNode class instead.
-static bool isStatement(TNodeType type) {
+inline bool isStatement(TNodeType type) {
   switch (type) {
 	case TNodeType::readStmt:
 	case TNodeType::printStmt:
@@ -45,7 +44,7 @@ static bool isStatement(TNodeType type) {
   }
 }
 
-static bool isCondExpr(TNodeType type) {
+inline bool isCondExpr(TNodeType type) {
   switch (type) {
 	case TNodeType::notOp:
 	case TNodeType::andOp:
@@ -60,7 +59,7 @@ static bool isCondExpr(TNodeType type) {
   }
 }
 
-static bool isOp(TNodeType type) {
+inline bool isOp(TNodeType type) {
   switch (type) {
 	case TNodeType::plus:
 	case TNodeType::minus:

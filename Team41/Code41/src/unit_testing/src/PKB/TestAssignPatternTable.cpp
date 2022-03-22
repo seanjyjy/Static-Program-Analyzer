@@ -11,10 +11,10 @@ TEST_CASE("PKB: AssignPatternTable") {
     unordered_set<string> EMPTY_SET;
     vector<pair<string, string>> EMPTY_SET_PAIR;
 
-    Token* varTok = Token::makeName("v0");
-    Token* oneTok = Token::makeConst("1");
+    Token *varTok = Token::makeName("v0");
+    Token *oneTok = Token::makeConst("1");
     Token *oneTok_copy = oneTok->copy();
-    Token* twoTok = Token::makeConst("2");
+    Token *twoTok = Token::makeConst("2");
     Token *threeTok = Token::makeConst("3");
     Token *threeTok_copy = threeTok->copy();
     Token *fourTok = Token::makeConst("4");
@@ -86,13 +86,14 @@ TEST_CASE("PKB: AssignPatternTable") {
                 // v0 = 1 + 2 * 3 - 1 / 3 + v0
                 REQUIRE_NOTHROW(table.setPattern(stmt[0], vars[0], plusVar));
                 // v1 = 2 * 3 - 1 / 3
-                TNode* timesMinusDivide = TNode::makeMinus(times, divide);
+                TNode *timesMinusDivide = TNode::makeMinus(times, divide);
                 REQUIRE_NOTHROW(table.setPattern(stmt[1], vars[1], timesMinusDivide));
 
                 // with both statements
                 for (TNode *child: {one, two, three, divide, times}) {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
-                                                  vector<pair<string, string>>({{stmt[0], vars[0]}, {stmt[1], vars[1]}})));
+                                                  vector<pair<string, string>>({{stmt[0], vars[0]},
+                                                                                {stmt[1], vars[1]}})));
                     REQUIRE(table.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[0], stmt[1]}));
                     REQUIRE(table.getStmtFromSubPatternNVar(child, vars[0]) == unordered_set<string>({stmt[0]}));
                     REQUIRE(table.getStmtFromSubPatternNVar(child, vars[1]) == unordered_set<string>({stmt[1]}));
@@ -108,7 +109,7 @@ TEST_CASE("PKB: AssignPatternTable") {
                 }
 
                 // unique to stmt[1]
-                for (TNode *child: { timesMinusDivide }) {
+                for (TNode *child: {timesMinusDivide}) {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
                                                   vector<pair<string, string>>({{stmt[1], vars[1]}})));
                     REQUIRE(table.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[1]}));
@@ -117,9 +118,9 @@ TEST_CASE("PKB: AssignPatternTable") {
                 }
 
                 // v0 + 1 + 2 * 3 - 1 / 3
-                TNode* swappedOperands = TNode::makePlus(varNode, minus);
+                TNode *swappedOperands = TNode::makePlus(varNode, minus);
                 // unique to none
-                for (TNode *child: { four, swappedOperands }) {
+                for (TNode *child: {four, swappedOperands}) {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
                                                   vector<pair<string, string>>()));
                     REQUIRE(table.getAllStmtsFromSubPattern(child).empty());
@@ -128,8 +129,8 @@ TEST_CASE("PKB: AssignPatternTable") {
                 }
 
                 // clean up newly created nodes
-                timesMinusDivide->setChildren(vector<TNode*>());
-                swappedOperands->setChildren(vector<TNode*>());
+                timesMinusDivide->setChildren(vector<TNode *>());
+                swappedOperands->setChildren(vector<TNode *>());
                 delete swappedOperands;
                 delete timesMinusDivide;
             }

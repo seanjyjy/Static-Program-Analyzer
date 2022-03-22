@@ -32,11 +32,16 @@ public:
     //=========================================== Next ===================================================
 
     bool isNext(string stmt1, string stmt2) const; // Checks if stmt2 can be executed immediately after stmt1
-    vector<CFGNode *> getNextNodes(string stmt) const; // Get the nodes that are executed directly after stmt
-    vector<CFGNode *> getPrevNodes(string stmt) const; // Gets the nodes that are executed directly before stmt
-    vector<pair<string, string>> getAllNext() const; // Gets stmts pair where stmt1 are executed directly after stmt2
-    vector<string> getAllStmtsExecBeforeSomeStmt() const; // get list of stmts that are executed before some stmt
-    vector<string> getAllStmtsExecAfterSomeStmt() const; // get list of stmts that are executed after some stmt
+    [[nodiscard]] vector<CFGNode *>
+    getNextNodes(string stmt) const; // Get the nodes that are executed directly after stmt
+    [[nodiscard]] vector<CFGNode *>
+    getPrevNodes(string stmt) const; // Gets the nodes that are executed directly before stmt
+    [[nodiscard]] vector<pair<string, string>>
+    getAllNext() const; // Gets stmts pair where stmt1 are executed directly after stmt2
+    [[nodiscard]] vector<string>
+    getAllStmtsExecBeforeSomeStmt() const; // get list of stmts that are executed before some stmt
+    [[nodiscard]] vector<string>
+    getAllStmtsExecAfterSomeStmt() const; // get list of stmts that are executed after some stmt
     size_t getNumOfStartNodes() const; // Get the number of stmts that are executed before some stmt
     size_t getNumOfEndNodes() const; // Get the number of stmts that are executed after some stmt
 };

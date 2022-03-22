@@ -4,7 +4,7 @@
 
 AssignPatternTable::AssignPatternTable() = default;
 
-void AssignPatternTable::setPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST) {
+void AssignPatternTable::setPattern(const string &stmtNum, const string &lhsVariable, TNode *rhsAssignAST) {
     string rhsPattern = TreeUtils::serialize(rhsAssignAST);
     auto stmtVarMapping = patternRelation.get(rhsPattern);
     stmtVarMapping.addMapping(stmtNum, lhsVariable);
@@ -44,10 +44,10 @@ unordered_set<string> AssignPatternTable::getAllStmtsFromSubPattern(TNode *subPa
     return res;
 }
 
-unordered_set<string> AssignPatternTable::getStmtFromSubPatternNVar(TNode *subPatternAST, const string& varName) {
+unordered_set<string> AssignPatternTable::getStmtFromSubPatternNVar(TNode *subPatternAST, const string &varName) {
     string subPattern = TreeUtils::serialize(subPatternAST);
     unordered_set<string> keys = patternRelation.keys();
-    auto containsSubString = [&subPattern](const string& s) { return s.find(subPattern) != string::npos; };
+    auto containsSubString = [&subPattern](const string &s) { return s.find(subPattern) != string::npos; };
     auto it = find_if(keys.begin(), keys.end(), containsSubString);
 
     unordered_set<string> res;

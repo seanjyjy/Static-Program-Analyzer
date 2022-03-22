@@ -28,7 +28,7 @@ public:
      * @param followed the followed statement
      * @throws domain_error if relation violates the table relational constraint
      */
-    void setFollows(const string& follower, const string& followed);
+    void setFollows(const string &follower, const string &followed);
 
     /**
      * Set stmt1 followsT stmt2 relation in the table
@@ -37,7 +37,7 @@ public:
      * @param followed the followed statement
      * @throws domain_error if relation violates the table relational constraint
      */
-    void setFollowsT(const string& follower, const string& followed);
+    void setFollowsT(const string &follower, const string &followed);
 
     string getStmtFollowedBy(string follower); // Gets the stmt that is followed by this follower
     string getStmtFollowing(string followed); // Gets the stmt that follows this followed stmt

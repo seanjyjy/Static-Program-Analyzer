@@ -5,7 +5,7 @@
 
 using namespace std;
 
-StmtTable::StmtTable():stmtMapping("StmtTable") {}
+StmtTable::StmtTable() : stmtMapping("StmtTable") {}
 
 unordered_set<string> StmtTable::getAllStmtsByType(StmtType type) {
     return stmtMapping.getValuesFromKey(move(type));
@@ -23,11 +23,11 @@ bool StmtTable::isStmtType(string stmtNumber, StmtType type) {
     return stmtMapping.hasMapping(type, move(stmtNumber));
 }
 
-void StmtTable::setStmt(const string& stmtNum, StmtType type) {
+void StmtTable::setStmt(const string &stmtNum, StmtType type) {
     return stmtMapping.addMapping(type, stmtNum);
 }
 
-void StmtTable::setStmtAttr(const string& stmtNum, const string& attr) {
+void StmtTable::setStmtAttr(const string &stmtNum, const string &attr) {
     attrMapping.insert({stmtNum, attr});
 }
 

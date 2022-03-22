@@ -28,7 +28,6 @@ bool ManyToMany<K, V>::hasVal(V targetVal) {
     return valuesToKey.hasKey(targetVal);
 }
 
-
 template<class K, class V>
 bool ManyToMany<K, V>::hasMapping(K key, V val) {
     return keyToValues.hasKeyValue(key, val);
@@ -47,7 +46,6 @@ template<class K, class V>
 unordered_set<K> ManyToMany<K, V>::getKeys() {
     return keyToValues.keys();
 }
-
 
 template<class K, class V>
 unordered_set<V> ManyToMany<K, V>::getValues() {

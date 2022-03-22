@@ -54,8 +54,7 @@ TEST_CASE("PKB: UsesTable") {
             REQUIRE(table.getStmtsUsingSomeVar() == unordered_set<string>({lines[0], lines[1]}));
             REQUIRE(table.getVarsUsedInSomeStmt() == unordered_set<string>({vars[0], vars[1]}));
         }
-    }
-    SECTION("UsesP") {
+    }SECTION("UsesP") {
         string proc[] = {"proc1", "proc2"};
 
         SECTION("Initial State") {

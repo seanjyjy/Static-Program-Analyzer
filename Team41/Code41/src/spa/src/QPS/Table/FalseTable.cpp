@@ -7,7 +7,7 @@ bool FalseTable::isEmpty() {
     return true;
 }
 
-Table* FalseTable::mergeJoin(Table* intermediatePQLTable) {
+Table* FalseTable::mergeJoin(Table*) {
     return this;
 }
 

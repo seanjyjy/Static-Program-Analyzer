@@ -21,7 +21,7 @@ public:
      * @param stmtNum while statement
      * @param predVariable the variable in the condition block
      */
-    void setPattern(const string& stmtNum, const string& predVariable);
+    void setPattern(const string &stmtNum, const string &predVariable);
 
     /**
      * Gets all whileStmts that has the variable in the condition block

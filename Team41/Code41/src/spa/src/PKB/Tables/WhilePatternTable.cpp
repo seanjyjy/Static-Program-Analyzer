@@ -4,7 +4,7 @@
 
 WhilePatternTable::WhilePatternTable() = default;
 
-void WhilePatternTable::setPattern(const string& stmtNum, const string& predVariable) {
+void WhilePatternTable::setPattern(const string &stmtNum, const string &predVariable) {
     patternRelation.addMapping(stmtNum, predVariable);
 }
 

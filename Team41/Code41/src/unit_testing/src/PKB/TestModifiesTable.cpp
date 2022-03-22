@@ -54,8 +54,7 @@ TEST_CASE("PKB: ModifiesTable") {
             REQUIRE(table.getStmtsModifyingSomeVar() == unordered_set<string>({lines[0], lines[1]}));
             REQUIRE(table.getVarsModifiedInSomeStmt() == unordered_set<string>({vars[0], vars[1]}));
         }
-    }
-    SECTION("ModifiesP") {
+    }SECTION("ModifiesP") {
         string proc[] = {"proc1", "proc2"};
 
         SECTION("Initial State") {

@@ -39,7 +39,6 @@ public:
      */
     unordered_set<V> getValuesFromKey(K key);
 
-
     /**
      * Gets the key that the value belong to
      *

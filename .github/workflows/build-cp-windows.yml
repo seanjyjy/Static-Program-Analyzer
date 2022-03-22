@@ -48,3 +48,9 @@ jobs:
           cd Team41/Code41/build
           ctest -C Release -R integration_testing --output-on-failure
           cd ../../..
+      - name: Run System Tests
+        shell: bash
+        run: |
+          cd Team41/Code41/build
+          ctest -C Release -R autotester --output-on-failure
+          cd ../../..
