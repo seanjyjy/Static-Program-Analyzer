@@ -5,6 +5,7 @@
 #include "QPS/Table/PQLTable.h"
 #include "PKB/PKBClient.h"
 #include "QPS/Adapters/NextKBAdapter.h"
+#include "QPS/Adapters/AffectsKBAdapter.h"
 #include "QPS/ClauseVariable.h"
 #include "QPS/PatternClause.h"
 #include "QPS/QueryClause.h"

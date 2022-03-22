@@ -3,6 +3,7 @@
 QueryEvaluator::QueryEvaluator(PKBClient *pkb) {
     this->pkb = pkb;
     this->nextKBAdapter = new NextKBAdapter(pkb);
+    this->affectsKBAdapter = new AffectsKBAdapter(pkb);
 }
 
 QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
@@ -117,7 +118,7 @@ Table *QueryEvaluator::evaluate(const QueryClause &clause) {
         case QueryClause::clause_type::nextT: // NextT affects affectsT should take in an extra cache when it is supported
             return NextTEvaluator(pkb, nextKBAdapter).evaluate(clause);
         case QueryClause::clause_type::affects:
-            return nullptr;
+            return AffectsEvaluator(pkb, );
         case QueryClause::clause_type::affectsT:
             return nullptr;
         default:
@@ -156,6 +157,7 @@ void QueryEvaluator::safeDeleteTable(Table* tableToDelete, Table* resultTable) {
 QueryEvaluator::~QueryEvaluator() {
     // TODO: check if this cause an error as this also takes in PKB!
     delete nextKBAdapter;
+    delete affectsKBAdapter;
 }
 
 

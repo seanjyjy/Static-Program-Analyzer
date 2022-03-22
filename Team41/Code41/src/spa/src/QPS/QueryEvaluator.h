@@ -21,6 +21,7 @@
 #include "QPS/Evaluator/NextEvaluator.h"
 #include "QPS/Evaluator/NextTEvaluator.h"
 #include "QPS/Evaluator/WithEvaluator.h"
+#include "QPS/Evaluator/AffectsEvaluator.h"
 #include "QPS/Evaluator/AssignPatternEvaluator.h"
 #include "QPS/Evaluator/IfPatternEvaluator.h"
 #include "QPS/Evaluator/WhilePatternEvaluator.h"
@@ -40,6 +41,7 @@ class QueryEvaluator {
 private:
     PKBClient* pkb;
     NextKBAdapter* nextKBAdapter;
+    AffectsKBAdapter* affectsKBAdapter;
 
     /**
      * Deletes a table after it is not being used.
