@@ -3,6 +3,6 @@
 #include "Common/AstNode/RelFactor.h"
 
 class VarName : public RelFactor {
- public:
-  VarName(Token *val);
+public:
+    VarName(Token *val);
 };

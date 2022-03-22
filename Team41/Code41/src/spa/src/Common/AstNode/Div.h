@@ -3,6 +3,6 @@
 #include "Common/AstNode/RelFactor.h"
 
 class Div : public RelFactor {
- public:
-  Div(RelFactor *lhs, RelFactor *rhs);
+public:
+    Div(RelFactor *lhs, RelFactor *rhs);
 };

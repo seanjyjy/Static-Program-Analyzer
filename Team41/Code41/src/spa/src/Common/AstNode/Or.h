@@ -4,6 +4,6 @@
 #include "Common/AstNode/CondExpr.h"
 
 class Or : public CondExpr {
- public:
-  Or(CondExpr *lhs, CondExpr *rhs);
+public:
+    Or(CondExpr *lhs, CondExpr *rhs);
 };

@@ -5,6 +5,6 @@
 #include "Common/AstNode/StmtLst.h"
 
 class While : public Stmt {
- public:
-  While(TNode *condExpr, StmtLst *stmtLst);
+public:
+    While(TNode *condExpr, StmtLst *stmtLst);
 };

@@ -4,6 +4,6 @@
 #include "Common/AstNode/RelFactor.h"
 
 class Ge : public RelExpr {
- public:
-  Ge(RelFactor *lhs, RelFactor *rhs);
+public:
+    Ge(RelFactor *lhs, RelFactor *rhs);
 };

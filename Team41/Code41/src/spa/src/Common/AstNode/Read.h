@@ -5,6 +5,6 @@
 #include "Common/AstNode/VarName.h"
 
 class Read : public Stmt {
- public:
-  Read(VarName *var);
+public:
+    Read(VarName *var);
 };

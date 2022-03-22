@@ -9,9 +9,9 @@
 using namespace std;
 
 class RelExpr : public CondExpr {
- private:
-  static TNodeType verify(TNodeType type);
+private:
+    static TNodeType verify(TNodeType type);
 
- public:
-  RelExpr(TNodeType type, RelFactor *lhs, RelFactor *rhs);
+public:
+    RelExpr(TNodeType type, RelFactor *lhs, RelFactor *rhs);
 };

@@ -34,12 +34,17 @@ private:
     QueryOptimizer();
 
     static vector<SuperClause *> removeDuplicates(const vector<SuperClause *> &clauses);
+
 public:
 
     static QueryOptimizer create();
+
     QueryOptimizer &setIntraGroupSort(bool isOn);
+
     QueryOptimizer &setInterGroupSort(bool isOn);
+
     QueryOptimizer &setClauseGrouping(bool isOn);
+
     QueryOptimizer &enableDynamicPolling(const PKBAdapter &pkbAdapter);
 
     OptimizedQueryObject optimize(QueryObject *qo);

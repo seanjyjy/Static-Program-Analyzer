@@ -4,9 +4,9 @@
 #include "Common/TNodeType.h"
 
 class Stmt : public TNode {
- private:
-  static TNodeType verify(TNodeType type);
+private:
+    static TNodeType verify(TNodeType type);
 
- public:
-  Stmt(TNodeType type, vector<TNode *> children);
+public:
+    Stmt(TNodeType type, vector<TNode *> children);
 };

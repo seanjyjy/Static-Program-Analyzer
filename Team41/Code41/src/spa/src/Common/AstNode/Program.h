@@ -8,6 +8,6 @@
 using namespace std;
 
 class Program : public TNode {
- public:
-  Program(const vector<Procedure *> &procedures);
+public:
+    Program(const vector<Procedure *> &procedures);
 };
