@@ -15,9 +15,7 @@ private:
     mutable multiset<AbstractGroup *>::iterator it;
     multiset<AbstractGroup *, AbstractGroupComparator> sortedGroups;
 public:
-    SortedGroups();
-
-    void addGroup(AbstractGroup *group) override;
+    SortedGroups(vector<AbstractGroup*> groups);
 
     SuperClause *pop() override;
 

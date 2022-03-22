@@ -39,7 +39,7 @@ public:
 
     QueryOptimizer &setClauseGrouping(bool isOn);
 
-    QueryOptimizer &enableDynamicPolling(const PKBAdapter &pkbAdapter);
+    QueryOptimizer &enableDynamicPolling(PKBManager *pkbManager);
 
     OptimizedQueryObject optimize(QueryObject *qo);
 

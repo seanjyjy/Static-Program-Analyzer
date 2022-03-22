@@ -2,8 +2,9 @@
 
 #include <limits>
 
-PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter) : clauses(move(initClauses)),
-                                                                                         table(pkbAdapter) {
+PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter) {
+    table = TableEstimate(pkbAdapter);
+    clauses = vector<SuperClause*>(initClauses.begin(), initClauses.end());
     isClauseUsed.assign(initClauses.size(), false);
     clauseScoreSum = accumulate(clauses.begin(), clauses.end(), 0L, [](long currScore, SuperClause *a) {
         return ClauseScorer::score(a) + currScore;

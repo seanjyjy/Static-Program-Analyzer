@@ -2,6 +2,7 @@
 
 SortedGroup::SortedGroup(vector<SuperClause *> initClauses) {
     clauses = multiset<SuperClause *, ClauseComparator>(initClauses.begin(), initClauses.end());
+    it = clauses.begin();
     clauseScoreSum = accumulate(initClauses.begin(), initClauses.end(), 0L, [](long currScore, SuperClause *a) {
         return ClauseScorer::score(a) + currScore;
     });

@@ -43,6 +43,15 @@ TEST_CASE("Query Optimizer") {
             .setClauseGrouping(true)
             .setInterGroupSort(true)
             .setIntraGroupSort(true)
+            .enableDynamicPolling(&pkbManager)
             .optimize(queryObject);
     oqo.printPlan();
+
+    int count = 0;
+    while (!oqo.empty()) {
+        oqo.popClause();
+        count++;
+    }
+
+    REQUIRE(count == 1);
 }

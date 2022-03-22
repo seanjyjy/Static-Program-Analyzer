@@ -4,8 +4,6 @@
 
 class AbstractGroups {
 public:
-    virtual void addGroup(AbstractGroup *group) = 0;
-
     virtual AbstractGroup *front() = 0;
 
     virtual SuperClause *pop() = 0;

@@ -9,7 +9,7 @@ using namespace std;
 
 TableEstimate::TableEstimate() = default;
 
-TableEstimate::TableEstimate(PKBAdapter &pkbAdapter) : pkbAdapter(pkbAdapter) {}
+TableEstimate::TableEstimate(const PKBAdapter &pkbAdapter) : pkbAdapter(pkbAdapter) {}
 
 void TableEstimate::merge(const vector<QueryDeclaration> &sch) {
     // merge with new schema
@@ -30,15 +30,17 @@ bool TableEstimate::hasCommonCol(const vector<QueryDeclaration> &sch) {
     return false;
 }
 
-long long TableEstimate::getEstimatedRows() {
+long long TableEstimate::getEstimatedRows() const {
     return estRows;
 }
 
-vector<QueryDeclaration> TableEstimate::getSchema() {
+vector<QueryDeclaration> TableEstimate::getSchema() const {
     return schema;
 }
 
 long long TableEstimate::estimateMergeCost(const vector<QueryDeclaration> &newSch) {
+    if (schema.empty()) return pkbAdapter.getRowCount(newSch);
+
     if (hasCommonCol(newSch)) {
         return max(estRows, pkbAdapter.getRowCount(newSch));
     } else {

@@ -1,11 +1,10 @@
 #include "FifoGroups.h"
 
-FifoGroups::FifoGroups() {
-    it = groups.begin();
-}
+#include <utility>
 
-void FifoGroups::addGroup(AbstractGroup *group) {
-    groups.push_back(group);
+FifoGroups::FifoGroups(vector<AbstractGroup *> initGroups) {
+    groups = vector<AbstractGroup*>(move(initGroups));
+    it = groups.begin();
 }
 
 SuperClause *FifoGroups::pop() {

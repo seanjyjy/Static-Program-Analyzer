@@ -26,21 +26,19 @@ class TableEstimate {
 private:
     PKBAdapter pkbAdapter;
     vector<QueryDeclaration> schema;
-    long long estRows;
-
+    long long estRows = 0;
     bool hasCommonCol(const vector<QueryDeclaration> &sch);
-
 public:
     TableEstimate();
 
-    TableEstimate(PKBAdapter &pkbAdapter);
+    TableEstimate(const PKBAdapter &pkbAdapter);
 
     long long estimateMergeCost(const vector<QueryDeclaration> &sch);
 
     void merge(const vector<QueryDeclaration> &sch);
 
     // getters and setters
-    long long getEstimatedRows();
+    long long getEstimatedRows() const;
 
-    vector<QueryDeclaration> getSchema();
+    vector<QueryDeclaration> getSchema() const;
 };

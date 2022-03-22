@@ -1,7 +1,8 @@
 #include "FifoGroup.h"
 
-
-FifoGroup::FifoGroup(vector<SuperClause *> clauses) : clauses(move(clauses)) {
+FifoGroup::FifoGroup(vector<SuperClause *> initClauses) {
+    clauses = vector<SuperClause*>(initClauses.begin(), initClauses.end());
+    idx = 0;
     clauseScoreSum = accumulate(clauses.begin(), clauses.end(), 0L, [](long currScore, SuperClause *a) {
         return ClauseScorer::score(a) + currScore;
     });

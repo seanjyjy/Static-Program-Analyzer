@@ -1,8 +1,10 @@
 #include "PKBAdapter.h"
 
+#include <utility>
+
 PKBAdapter::PKBAdapter() = default;
 
-PKBAdapter::PKBAdapter(PKBManager *pkb) : pkb(pkb) {
+PKBAdapter::PKBAdapter(PKBManager *pkbMgr) : pkb(pkbMgr) {
 }
 
 long long PKBAdapter::getRowCount(const QueryDeclaration &synonym) {
@@ -34,6 +36,8 @@ long long PKBAdapter::getRowCount(const QueryDeclaration &synonym) {
 
 long long PKBAdapter::getRowCount(const vector<QueryDeclaration> &synonyms) {
     long long rows = 0;
-    for (const QueryDeclaration &cv: synonyms) rows *= getRowCount(cv);
+    for (const QueryDeclaration &cv: synonyms) {
+        rows = (rows == 0) ? getRowCount(cv) : rows * getRowCount(cv);
+    }
     return rows;
 }

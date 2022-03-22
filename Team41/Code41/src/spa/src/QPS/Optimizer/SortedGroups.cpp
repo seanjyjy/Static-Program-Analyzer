@@ -1,12 +1,9 @@
 
 #include "SortedGroups.h"
 
-SortedGroups::SortedGroups() {
+SortedGroups::SortedGroups(vector<AbstractGroup*> groups) {
+    sortedGroups = multiset<AbstractGroup *, AbstractGroupComparator>(groups.begin(), groups.end());
     it = sortedGroups.begin();
-}
-
-void SortedGroups::addGroup(AbstractGroup *group) {
-    sortedGroups.insert(group);
 }
 
 SuperClause *SortedGroups::pop() {
@@ -15,8 +12,8 @@ SuperClause *SortedGroups::pop() {
 }
 
 bool SortedGroups::empty() {
-    // ensure invariant - first group always has a clause to take (unless
-    while (it != sortedGroups.end() && front()->empty()) it++;
+    // ensure invariant - first group always has a clause to take
+    while (it != sortedGroups.end() && (*it)->empty()) it = next(it);
     return it == sortedGroups.end();
 }
 
@@ -36,4 +33,3 @@ string SortedGroups::toString() const {
 void SortedGroups::print() const {
     cout << toString() << endl;
 }
-

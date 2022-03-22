@@ -1,18 +1,19 @@
 #include "QueryOptimizer.h"
 
+#include <utility>
+
 QueryOptimizer::QueryOptimizer() = default;
 
 OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
     // do some preliminary checks
     if (isDynamicPollingEnabled && !isPkbAdapterSet) throw runtime_error("pkb adapter not set");
 
-    // first initialize the groups container
-    AbstractGroups *groups = nullptr;
-    if (isInterGroupSortEnabled) {
-        groups = new SortedGroups();
-    } else {
-        groups = new FifoGroups();
-    }
+//    AbstractGroups *groups = nullptr;
+//    if (isInterGroupSortEnabled) {
+//        groups = new SortedGroups();
+//    } else {
+//        groups = new FifoGroups();
+//    }
 
     // step 1: Take query object, extract clauses, group them based on synonym dependencies
     vector<vector<SuperClause *>> clauseGroups;
@@ -28,19 +29,25 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
     }
 
     // step 2: Add clause groups
+    vector<AbstractGroup*> groups;
     for (vector<SuperClause *> &clauseGroup: clauseGroups) {
         clauseGroup = OptimizerUtils::removeDuplicates(clauseGroup);
 
         if (isIntraGroupSortEnabled && isDynamicPollingEnabled) {
-            groups->addGroup(new PKBAwareGroup(clauseGroup, adapter));
+            groups.push_back(new PKBAwareGroup(clauseGroup, adapter));
         } else if (isIntraGroupSortEnabled) {
-            groups->addGroup(new SortedGroup(clauseGroup));
+            groups.push_back(new SortedGroup(clauseGroup));
         } else {
-            groups->addGroup(new FifoGroup(clauseGroup));
+            groups.push_back(new FifoGroup(clauseGroup));
         }
     }
 
-    return {qo, groups};
+    // initialize the groups container
+    if (isInterGroupSortEnabled) {
+        return {qo, new SortedGroups(groups)};
+    } else {
+        return {qo, new FifoGroups(groups)};
+    }
 }
 
 QueryOptimizer QueryOptimizer::create() {
@@ -71,8 +78,9 @@ QueryOptimizer &QueryOptimizer::setClauseGrouping(bool isOn) {
     return *this;
 }
 
-QueryOptimizer &QueryOptimizer::enableDynamicPolling(const PKBAdapter &pkbAdapter) {
-    adapter = pkbAdapter;
+QueryOptimizer &QueryOptimizer::enableDynamicPolling(PKBManager *pkbManager) {
+    // for some reason, accepting a const reference to pkbmanager causes some error >:(
+    adapter = PKBAdapter(pkbManager);
     isDynamicPollingEnabled = true;
     isPkbAdapterSet = true;
     return *this;

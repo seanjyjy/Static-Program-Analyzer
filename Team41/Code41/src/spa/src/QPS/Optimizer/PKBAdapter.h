@@ -7,11 +7,11 @@
 
 class PKBAdapter {
 private:
-    PKBManager *pkb = nullptr;
+    PKBManager *pkb;
 public:
     PKBAdapter();
 
-    PKBAdapter(PKBManager *pkb);
+    PKBAdapter(PKBManager *pkbMgr);
 
     long long getRowCount(const QueryDeclaration &synonym);
 

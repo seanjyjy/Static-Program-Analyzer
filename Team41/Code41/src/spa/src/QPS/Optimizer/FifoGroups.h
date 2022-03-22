@@ -8,9 +8,7 @@ private:
     vector<AbstractGroup *> groups;
     vector<AbstractGroup *>::iterator it;
 public:
-    FifoGroups();
-
-    void addGroup(AbstractGroup *group) override;
+    FifoGroups(vector<AbstractGroup*> groups);
 
     SuperClause *pop() override;
 
