@@ -126,7 +126,9 @@ TEST_CASE("PKB: ParentTable") {
             entryList.push_back(make_pair(stmt[3], stmt[4]));
             entryList.push_back(make_pair(stmt[3], stmt[5]));
 
-            REQUIRE(table.getAllDescendantsOf(stmt[0]) == unordered_set<string>({stmt[1], stmt[2], stmt[3], stmt[4], stmt[5]}));
+            REQUIRE(
+                    table.getAllDescendantsOf(stmt[0]) ==
+                    unordered_set<string>({stmt[1], stmt[2], stmt[3], stmt[4], stmt[5]}));
             REQUIRE(table.getAllDescendantsOf(stmt[1]).empty());
             REQUIRE(table.getAllDescendantsOf(stmt[2]) == unordered_set<string>({stmt[3], stmt[4], stmt[5]}));
             REQUIRE(table.getAllDescendantsOf(stmt[3]) == unordered_set<string>({stmt[4], stmt[5]}));

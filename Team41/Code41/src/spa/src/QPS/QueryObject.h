@@ -37,7 +37,7 @@ public:
     vector<WithClause>& getWithClauses();
     vector<SuperClause*>& getSuperClauses();
 
-    SelectTarget getSelectTarget();
+    SelectTarget& getSelectTarget();
 
     bool isValid();
 

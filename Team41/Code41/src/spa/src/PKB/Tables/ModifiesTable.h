@@ -25,7 +25,8 @@ public:
      * @param stmtNum the modifying statement
      * @param varName the modified variable
      */
-    void setVarModifiedInStmt(const string& stmtNum, const string& varName);
+    void setVarModifiedInStmt(const string &stmtNum, const string &varName);
+
     unordered_set<string> getVarsModifiedInStmt(string stmtNum); // Gets set of variables that is modified by statement
     unordered_set<string> getStmtsModifyingVar(string varName); // Gets set of statements that modifies variable
     vector<pair<string, string>> getStmtsVarEntries(); // Gets list of stmt-var pair where stmt modifies var
@@ -39,9 +40,11 @@ public:
      * @param procName the modifying procedure
      * @param varName the modified variable
      */
-    void setVarModifiedInProc(const string& procName, const string& varName);
+    void setVarModifiedInProc(const string &procName, const string &varName);
+
     unordered_set<string> getVarsModifiedInProc(string procName);// Gets set of variables that is modified by procedure
-    unordered_set<string> getProcsModifyingVar(string varName);// Gets set of procedures that modifies specified variable
+    unordered_set<string>
+    getProcsModifyingVar(string varName);// Gets set of procedures that modifies specified variable
     vector<pair<string, string>> getProcVarEntries(); // Gets list of proc-var pair where proc modifies var
     unordered_set<string> getVarsModifiedInSomeProc(); // Gets set of var where var is modified by some proc
     unordered_set<string> getProcsModifyingSomeVar(); // Gets set of proc where proc modifies some var

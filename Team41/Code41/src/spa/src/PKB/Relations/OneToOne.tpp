@@ -32,7 +32,6 @@ bool OneToOne<K, V>::hasMapping(K key, V val) {
     return keyToVal.hasKeyValue(key, val);
 }
 
-
 template<class K, class V>
 void OneToOne<K, V>::addMapping(K key, V val) {
     if (this->hasMapping(key, val)) {

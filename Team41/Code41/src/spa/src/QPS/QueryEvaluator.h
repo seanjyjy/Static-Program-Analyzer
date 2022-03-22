@@ -20,6 +20,7 @@
 #include "QPS/Evaluator/CallsTEvaluator.h"
 #include "QPS/Evaluator/NextEvaluator.h"
 #include "QPS/Evaluator/NextTEvaluator.h"
+#include "QPS/Evaluator/WithEvaluator.h"
 #include "QPS/Evaluator/AssignPatternEvaluator.h"
 #include "QPS/Evaluator/IfPatternEvaluator.h"
 #include "QPS/Evaluator/WhilePatternEvaluator.h"
@@ -71,15 +72,11 @@ public:
      * @param clause QueryClause.
      * @return A table that contains information based on the QueryClause provided.
      */
-    Table* evaluate(QueryClause& clause);
+    Table* evaluate(SuperClause* clause);
+    Table* evaluate(QueryClause* clause);
+    Table* evaluate(PatternClause* clause);
+    Table* evaluate(WithClause* clause);
 
-    /**
-     * Constructs a table based on the PatternClause provided.
-     *
-     * @param clause PatternClause.
-     * @return A table that contains information based on the PatternClause provided.
-     */
-    Table* evaluate(PatternClause& clause);
     /**
      * Extract the vector of synonyms from the query's return type from query object.
      *

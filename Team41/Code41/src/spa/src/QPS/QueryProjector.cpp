@@ -10,6 +10,7 @@ unordered_set<string> QueryProjector::getResult() {
     if (!queryResult.isValid()) return {};
     if (queryResult.isBoolean()) return getBooleanResult();
     if (queryResult.isTuple()) return getTupleResult();
+    return {};
 }
 
 unordered_set<string> QueryProjector::getBooleanResult() {

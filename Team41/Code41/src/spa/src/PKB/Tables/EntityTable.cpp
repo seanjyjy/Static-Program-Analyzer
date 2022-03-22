@@ -1,7 +1,10 @@
 #include "EntityTable.h"
 #include <stdexcept>
 
-EntityTable::EntityTable(): mapping({{}, {}, {}, {}}) {};
+EntityTable::EntityTable() : mapping({{},
+                                      {},
+                                      {},
+                                      {}}) {};
 
 unordered_set<string> EntityTable::getConstants() {
     return mapping.at(CONST);
@@ -15,18 +18,18 @@ unordered_set<string> EntityTable::getVariables() {
     return mapping.at(VAR);
 }
 
-void EntityTable::addConstant(const string& numStr) {
+void EntityTable::addConstant(const string &numStr) {
     mapping.at(CONST).insert(numStr);
 }
 
-void EntityTable::addProcedure(const string& procName) {
+void EntityTable::addProcedure(const string &procName) {
     if (isProcedure(procName)) {
         throw runtime_error("[PKB][EntityTable] Procedure name already declared");
     }
     mapping.at(PROC).insert(procName);
 }
 
-void EntityTable::addVariable(const string& varName) {
+void EntityTable::addVariable(const string &varName) {
     mapping.at(VAR).insert(varName);
 }
 

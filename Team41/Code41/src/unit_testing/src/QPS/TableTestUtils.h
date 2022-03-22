@@ -17,6 +17,7 @@ public:
              });
         table->sort(headers);
         if (table->getHeader() != unordered_set<string>{headers.begin(), headers.end()}) {
+            printf("exited from here\n");
             return false;
         }
         vector<unordered_map<string, string>> actualRows;

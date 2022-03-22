@@ -1,5 +1,6 @@
 #include "catch.hpp"
 #include "PKB/PKBManager.h"
+#include "Common/CFGBuilder.h"
 #include "../UnitTestUtility.h"
 
 using namespace std;
@@ -323,8 +324,8 @@ TEST_CASE("PKB: follows abstraction") {
 
     SECTION("Follows") {
         REQUIRE(sortAndCompareVectors(pkbManager.getAllFollows(), entryList));
-        REQUIRE(pkbManager.getStmtFollowing(stmt[0]) == "");
-        REQUIRE(pkbManager.getStmtFollowedBy(stmt[0]) == "");
+        REQUIRE(pkbManager.getStmtFollowing(stmt[0]).empty());
+        REQUIRE(pkbManager.getStmtFollowedBy(stmt[0]).empty());
         REQUIRE_FALSE(pkbManager.isFollows(stmt[0], stmt[1]));
 
         pkbManager.registerFollows(stmt[0], stmt[1]);
@@ -375,7 +376,7 @@ TEST_CASE("PKB: parent abstraction") {
     SECTION("Parent") {
         REQUIRE(sortAndCompareVectors(pkbManager.getAllParent(), entryList));
         REQUIRE(pkbManager.getChildStmtsOf(stmt[0]) == EMPTY_LIST);
-        REQUIRE(pkbManager.getParentOf(stmt[0]) == "");
+        REQUIRE(pkbManager.getParentOf(stmt[0]).empty());
         REQUIRE_FALSE(pkbManager.isParent(stmt[0], stmt[1]));
 
         // 0 -> {1, 2}
@@ -566,4 +567,62 @@ TEST_CASE("PKB: pattern abstraction") {
         REQUIRE(pkbManager.getWhileStmtUsingVarCond(vars[0]) == unordered_set<string>({stmt[0]}));
         REQUIRE(pkbManager.getWhileStmtUsingVarCond(vars[1]).empty());
     }
+}
+
+TEST_CASE("PKB: next abstraction") {
+    PKBManager pkbManager;
+    unordered_map<string, vector<string>> stmtNextMap = {
+            {"1", {"2", "5"}},
+            {"2", {"3"}},
+            {"3", {"1", "4"}},
+            {"4", {"5"}},
+            {"5", {}},
+    };
+    string startStmt = "1";
+    string endStmt = "5";
+    CFGBuilder cfgBuilder = CFGBuilder(stmtNextMap, {startStmt, endStmt});
+    cfgBuilder.build();
+    CFGNode *rootNode = cfgBuilder.getCFG();
+    unordered_map<string, CFGNode *> stmtToCFG = cfgBuilder.getStmtNumToNodeMap();
+
+    SECTION("Next") {
+        REQUIRE(pkbManager.getAllNext().empty());
+        REQUIRE(pkbManager.getNextNodes(startStmt).empty());
+        REQUIRE(pkbManager.getPrevNodes(endStmt).empty());
+        REQUIRE(pkbManager.getAllStmtsExecBeforeSomeStmt().empty());
+        REQUIRE(pkbManager.getAllStmtsExecAfterSomeStmt().empty());
+        REQUIRE(pkbManager.getNumOfEndNodes() == 0);
+        REQUIRE(pkbManager.getNumOfStartNodes() == 0);
+        REQUIRE_FALSE(pkbManager.isNext(startStmt, endStmt));
+        REQUIRE_FALSE(pkbManager.isNext(endStmt, startStmt));
+
+        pkbManager.registerCFG(rootNode, stmtToCFG);
+
+        // ┌─────────┐
+        // V         │
+        // 1 -> 2 -> 3 -> 4 -> 5
+        // │                   ^
+        // └───────────────────┘
+        REQUIRE(pkbManager.isNext("1", "2"));
+        REQUIRE(pkbManager.isNext("1", "5"));
+        REQUIRE(pkbManager.isNext("3", "1"));
+        REQUIRE_FALSE(pkbManager.isNext("5", "1"));
+        REQUIRE_FALSE(pkbManager.isNext("0", "1"));
+        REQUIRE_FALSE(pkbManager.isNext("5", "6"));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllNext(), {
+                {"1", "2"},
+                {"2", "3"},
+                {"3", "4"},
+                {"4", "5"},
+                {"3", "1"},
+                {"1", "5"}
+        }));
+        REQUIRE(sortAndCompareVectors(pkbManager.getNextNodes(startStmt), {stmtToCFG["2"], stmtToCFG["5"]}));
+        REQUIRE(sortAndCompareVectors(pkbManager.getPrevNodes(endStmt), {stmtToCFG["1"], stmtToCFG["4"]}));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllStmtsExecBeforeSomeStmt(), {"1", "2", "3", "4"}));
+        REQUIRE(sortAndCompareVectors(pkbManager.getAllStmtsExecAfterSomeStmt(), {"1", "2", "3", "4", "5"}));
+        REQUIRE(pkbManager.getNumOfStartNodes() == 4);
+        REQUIRE(pkbManager.getNumOfEndNodes() == 5);
+    }
+
 }

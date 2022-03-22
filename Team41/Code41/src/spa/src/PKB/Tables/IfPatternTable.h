@@ -21,7 +21,7 @@ public:
      * @param stmtNum if statement
      * @param predVariable the variable in the condition block
      */
-    void setPattern(const string& stmtNum, const string& predVariable);
+    void setPattern(const string &stmtNum, const string &predVariable);
 
     /**
      * Gets all ifStmts that has the variable in the condition block

@@ -22,7 +22,7 @@ void FollowsExtractor::dfs(TNode *node) {
     } else if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = node->getChildren();
         list<string> followsLst;
-        for (int i = ch.size() - 1; i >= 0; i--) {
+        for (int i = (int) ch.size() - 1; i >= 0; i--) {
             TNode *childNode = ch[i];
             dfs(childNode);
             mapFollows(childNode, followsLst);

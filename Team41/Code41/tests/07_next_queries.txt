@@ -1093,3 +1093,38 @@ stmt s;
 Select s such that Next*(s, s)
 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24
 5000
+220 - Next(0, s) - out of bounds
+stmt s;
+Select BOOLEAN such that Next(0, s)
+FALSE
+5000
+221 - Next(29, s) - out of bounds
+stmt s;
+Select BOOLEAN such that Next(29, s)
+FALSE
+5000
+222 - Next(-1, s)
+stmt s;
+Select BOOLEAN such that Next(-1, s)
+
+5000
+223 - Next(s, 0) - out of bounds
+stmt s;
+Select BOOLEAN such that Next(s, 0)
+FALSE
+5000
+224 - Next(s, 29) - out of bounds
+stmt s;
+Select BOOLEAN such that Next(s, 29)
+FALSE
+5000
+225 - Next(s, -1)
+stmt s;
+Select BOOLEAN such that Next(-1, s)
+
+5000
+226 - Next(0, 1) - out of bounds
+stmt s;
+Select BOOLEAN such that Next(0, 1)
+FALSE
+5000

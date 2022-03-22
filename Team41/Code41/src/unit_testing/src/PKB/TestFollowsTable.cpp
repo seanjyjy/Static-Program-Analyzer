@@ -13,8 +13,8 @@ TEST_CASE("PKB: FollowsTable") {
     SECTION("Follows") {
         SECTION("Initial State") {
             REQUIRE(sortAndCompareVectors(table.getFollowEntries(), EMPTY_SET_PAIR));
-            REQUIRE(table.getStmtFollowedBy(stmt[0]) == "");
-            REQUIRE(table.getStmtFollowing(stmt[0]) == "");
+            REQUIRE(table.getStmtFollowedBy(stmt[0]).empty());
+            REQUIRE(table.getStmtFollowing(stmt[0]).empty());
 
             REQUIRE_FALSE(table.isFollows(stmt[1], stmt[2]));
             REQUIRE_FALSE(table.isFollows(stmt[1], stmt[1]));
@@ -37,10 +37,10 @@ TEST_CASE("PKB: FollowsTable") {
             REQUIRE(table.getStmtFollowedBy(stmt[0]) == stmt[1]);
             REQUIRE(table.getStmtFollowedBy(stmt[1]) == stmt[2]);
             REQUIRE(table.getStmtFollowedBy(stmt[2]) == stmt[5]);
-            REQUIRE(table.getStmtFollowedBy(stmt[5]) == "");
+            REQUIRE(table.getStmtFollowedBy(stmt[5]).empty());
 
             // 0 <- 1 <- 2 <- 5
-            REQUIRE(table.getStmtFollowing(stmt[0]) == "");
+            REQUIRE(table.getStmtFollowing(stmt[0]).empty());
             REQUIRE(table.getStmtFollowing(stmt[1]) == stmt[0]);
             REQUIRE(table.getStmtFollowing(stmt[2]) == stmt[1]);
             REQUIRE(table.getStmtFollowing(stmt[5]) == stmt[2]);

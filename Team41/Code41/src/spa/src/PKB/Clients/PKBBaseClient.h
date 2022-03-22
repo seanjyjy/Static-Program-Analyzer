@@ -6,6 +6,7 @@
 using namespace std;
 
 class StmtTable;
+
 class EntityTable;
 
 /**

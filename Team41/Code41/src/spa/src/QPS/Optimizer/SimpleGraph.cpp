@@ -57,14 +57,14 @@ vector<vector<string>> SimpleGraph::getDisjointComponents() {
     return components;
 }
 
-int SimpleGraph::getNodeId(string node) {
-    if (nameToNodeId.find(node) == nameToNodeId.end()) return -1;
-    return nameToNodeId[node];
+int SimpleGraph::getNodeId(string nodeStmt) {
+    if (nameToNodeId.find(nodeStmt) == nameToNodeId.end()) return -1;
+    return nameToNodeId[nodeStmt];
 }
 
-string SimpleGraph::getName(int nodeId) {
-    if (nodeIdToName.find(nodeId) == nodeIdToName.end()) throw runtime_error("no name for given nodeId");
-    return nodeIdToName[nodeId];
+string SimpleGraph::getName(int nodeIdArg) {
+    if (nodeIdToName.find(nodeIdArg) == nodeIdToName.end()) throw runtime_error("no name for given nodeId");
+    return nodeIdToName[nodeIdArg];
 }
 
 int SimpleGraph::genId() {

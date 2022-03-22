@@ -117,8 +117,8 @@ TEST_CASE("PKB: ManyToMany") {
         table.getValues().insert(TEST_VALUE_1);
         REQUIRE(table.getValues() == unordered_set<TestValues>());
 
-        REQUIRE(sortAndCompareVectors(table.getEntries(), vector<pair<TestKeys,  TestValues>>()));
+        REQUIRE(sortAndCompareVectors(table.getEntries(), vector<pair<TestKeys, TestValues>>()));
         table.getEntries().push_back(make_pair(TEST_KEY_1, TEST_VALUE_1));
-        REQUIRE(sortAndCompareVectors(table.getEntries(), vector<pair<TestKeys,  TestValues>>()));
+        REQUIRE(sortAndCompareVectors(table.getEntries(), vector<pair<TestKeys, TestValues>>()));
     }
 }

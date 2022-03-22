@@ -28,7 +28,7 @@ public:
      * @throws domain_error if relation violates the table relational constraint
      * @throws domain_error if recursion is detected
      */
-    void setCalls(const string& caller, const string& callee);
+    void setCalls(const string &caller, const string &callee);
 
     /**
      * Set caller callsT callee relation in the table
@@ -38,7 +38,7 @@ public:
      * @throws domain_error if relation violates the table relational constraint
      * @throws domain_error if recursion is detected
      */
-    void setCallsT(const string& caller, const string& callee);
+    void setCallsT(const string &caller, const string &callee);
 
     unordered_set<string> getProcsCalledBy(string caller); // Gets the proc that is called by this caller
     unordered_set<string> getProcsCalling(string callee); // Gets the proc that calls this proc

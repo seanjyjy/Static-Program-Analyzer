@@ -172,6 +172,7 @@ Selectable::attributeName QueryParser::parseSelectAttribute() {
     } else if (aT == "stmt#") {
         return Selectable::STMT_NUM;
     }
+    throw runtime_error("Internal Error: Invalid select attribute type");
 }
 
 bool QueryParser::parseSelectTarget() {
@@ -301,11 +302,11 @@ bool QueryParser::parseClause() {
     return buildClause(clause->c_str(), left->c_str(), right->c_str());
 }
 
-bool QueryParser::buildClause(string clause, string left, string right) {
-    bool clauseValid = isQueryClauseValid(clause, left, right);
+bool QueryParser::buildClause(string clauseStr, string left, string right) {
+    bool clauseValid = isQueryClauseValid(clauseStr, left, right);
 
     if (clauseValid) {
-        QueryClause::clause_type type = determineClauseType(clause, left, right);
+        QueryClause::clause_type type = determineClauseType(clauseStr, left, right);
 
         ClauseVariable::variable_type leftType = determineVariableType(left);
         string l = left;
@@ -331,9 +332,9 @@ bool QueryParser::buildClause(string clause, string left, string right) {
             rcv = ClauseVariable(rightType, r, determineDeclarationType(r));
         }
 
-        QueryClause *clause = new QueryClause(type, lcv, rcv);
-        queryObject->getClauses().push_back(*clause);
-        queryObject->getSuperClauses().push_back(clause);
+        QueryClause *queryClause = new QueryClause(type, lcv, rcv);
+        queryObject->getClauses().push_back(*queryClause);
+        queryObject->getSuperClauses().push_back(queryClause);
     } else {
         return false;
     }
@@ -350,6 +351,7 @@ ClauseVariable::variable_type QueryParser::determineVariableType(string w) {
         return ClauseVariable::integer;
     if (lex->isValidSynonym(w))
         return ClauseVariable::synonym;
+    throw runtime_error("Internal Error: Invalid variable type");
 }
 
 QueryClause::clause_type QueryParser::determineClauseType(string type, string left, string right) {
@@ -381,6 +383,7 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
         return isDeclaredProcedure(left) ? QueryClause::modifiesP : QueryClause::modifiesS;
     if (type == "Modifies" && lex->isEntRef(left) && lex->isEntRef(right))
         return QueryClause::modifiesP;
+    throw runtime_error("Internal Error: Invalid clause type");
 }
 
 bool QueryParser::isValidPatternSynType(QueryDeclaration declared) {
@@ -451,7 +454,7 @@ optional<PatternVariable> QueryParser::parsePatternRHS() {
             }
             try {
                 miniAST = simpleParser.parseExpr(expr);
-            } catch (exception &e) {
+            } catch (exception &) {
                 miniAST = nullptr;
             }
             if (miniAST == nullptr) {
@@ -622,6 +625,7 @@ bool QueryParser::parseWithClause() {
     WithClause* wc = new WithClause(left.value(), right.value());
     queryObject->getWithClauses().push_back(*wc);
     queryObject->getSuperClauses().push_back(wc);
+    return true;
 }
 
 // todo: build the with clause somehow
@@ -662,7 +666,6 @@ optional<WithVariable> QueryParser::parseWithRef() {
         printf("Syntax Error: Invalid ref term <%s> found.\n", n.c_str());
         return nullopt;
     }
-    return nullopt;
 }
 
 WithVariable::attributeName QueryParser::toAttrName(string w) {

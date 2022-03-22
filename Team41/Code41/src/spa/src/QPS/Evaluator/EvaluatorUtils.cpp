@@ -22,6 +22,19 @@ bool EvaluatorUtils::isUsesStmtType(QueryDeclaration::design_entity_type type) {
     return isStmtType(type) && !isRead(type);
 }
 
+// Difference between isStmtType and isStmt is isStmtType checks for all different stmt type
+bool EvaluatorUtils::isStmt(QueryDeclaration::design_entity_type type) {
+    return type == QueryDeclaration::design_entity_type::STMT;
+}
+
+bool EvaluatorUtils::isWhile(QueryDeclaration::design_entity_type type) {
+    return type == QueryDeclaration::design_entity_type::WHILE;
+}
+
+bool EvaluatorUtils::isIf(QueryDeclaration::design_entity_type type) {
+    return type == QueryDeclaration::design_entity_type::IF;
+}
+
 bool EvaluatorUtils::isVariable(QueryDeclaration::design_entity_type type) {
     return type == QueryDeclaration::design_entity_type::VARIABLE;
 }
