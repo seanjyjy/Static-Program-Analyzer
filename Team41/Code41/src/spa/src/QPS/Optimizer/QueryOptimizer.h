@@ -6,6 +6,12 @@
 #include "ClauseDepGraph.h"
 #include "OptimizedQueryObject.h"
 #include "ClauseGroups.h"
+#include "QueryOptimizerBuilder.h"
+#include "AbstractGroups.h"
+#include "ClauseGroup.h"
+#include "ClauseGroups.h"
+#include "SortedGroups.h"
+#include "FifoGroups.h"
 
 using namespace std;
 
@@ -13,14 +19,25 @@ using namespace std;
 
 class QueryOptimizer {
  private:
+  // configuration options
+  bool isClauseGroupingEnabled = false;
+  bool isIntraGroupSortEnabled = false;
+  bool isInterGroupSortEnabled = false;
+  bool isDynamicPollingEnabled = false;
+
+  bool isPkbAdapterSet = false;
+
   PKBAdapter adapter;
   ClauseDepGraph clauseDepGraph;
   OptimizedQueryObject optimizedQueryObject;
-  ClauseGroups divideClausesIntoGroups(QueryObject &qo);
- public:
+  QueryOptimizer();
 
-  QueryOptimizer(PKBManager *pkbManager);
-  void optimize(QueryObject &qo, bool isDynamic = false);
+ public:
+  friend class QueryOptimizerBuilder;
+  friend ostream& operator<<(ostream &os, const QueryOptimizer& obj);
+  static QueryOptimizerBuilder create();
+  OptimizedQueryObject optimize(QueryObject &qo);
+
   OptimizedQueryObject getOptimizedQueryObject();
   void printPlan();
 };
