@@ -1,7 +1,7 @@
 #include "OptimizedQueryObject.h"
 
 OptimizedQueryObject::OptimizedQueryObject(PKBAdapter &pkb, QueryObject &qo, ClauseGroups &cg, bool isDynamic):
-queryObject(qo), clauseGroups(cg), isDynamic(isDynamic), currSource(ClauseGroup(pkb)) {}
+queryObject(qo), clauseGroups(cg), currSource(ClauseGroup(pkb)), isDynamic(isDynamic) {}
 
 bool OptimizedQueryObject::isQueryValid() {
     // TODO stub

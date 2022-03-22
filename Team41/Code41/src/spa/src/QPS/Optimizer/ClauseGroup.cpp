@@ -8,7 +8,7 @@
 
 using namespace std;
 
-ClauseGroup::ClauseGroup(PKBAdapter pkbAdapter): table(TableEstimate(pkbAdapter)) {};
+ClauseGroup::ClauseGroup(PKBAdapter pkbAdapter): table(TableEstimate(pkbAdapter)) {}
 
 void ClauseGroup::addClause(const TempClause &c) {
     clauses.push_back(c);
@@ -35,7 +35,7 @@ bool ClauseGroup::hasNextClause() {
 
 TempClause ClauseGroup::getNextClauseStatic() {
     // TODO speedup with bit manipulation
-    for (int i = 0; i < isUsed.size(); i++) {
+    for (size_t i = 0; i < isUsed.size(); i++) {
         if (!isUsed[i]) {
             isUsed[i] = true;
             table.merge(clauses[i].getSynonyms());
@@ -50,7 +50,8 @@ TempClause ClauseGroup::getNextClauseDynamic() {
     int bestIdx = -1;
     long long bestRows = LLONG_MAX;
     // TODO use priority queue?
-    for (int i = 0; i < isUsed.size(); i++) {
+    int isUsedSize = (int) isUsed.size();
+    for (int i = 0; i < isUsedSize; i++) {
         if (isUsed[i]) continue;
         long long rows = table.estimateMergeCost(clauses[i].getSynonyms());
         if (rows < bestRows) {

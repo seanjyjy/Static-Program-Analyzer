@@ -4,7 +4,7 @@
 EntityTable::EntityTable() : mapping({{},
                                       {},
                                       {},
-                                      {}}) {};
+                                      {}}) {}
 
 unordered_set<string> EntityTable::getConstants() {
     return mapping.at(CONST);

@@ -29,6 +29,8 @@ void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum) {
             case TNodeType::constValue:
                 constSet.insert(node->getTokenVal());
                 break;
+            default:
+                break;
         }
     }
 }

@@ -11,7 +11,8 @@ void TestTokenizerUtils::tokenizeAndCompare(string s, vector<pair<TokenType, str
     Tokenizer tokenizer(move(s));
     Tokens tokens = tokenizer.tokenize();
     REQUIRE(tokens.size() == expected.size());
-    for (int i = 0; i < tokens.size(); i++) {
+    int len = (int) tokens.size();
+    for (int i = 0; i < len; i++) {
         auto [expectedType, expectedVal] = expected[i];
         Token t = tokens[i];
         TokenType gotType = t.getType();

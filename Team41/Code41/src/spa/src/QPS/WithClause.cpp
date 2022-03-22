@@ -27,7 +27,7 @@ bool WithClause::hasSynonyms() {
 
 bool WithClause::isWithClause() const {
     return true;
-};
+}
 
 bool WithClause::isSuchThatClause() const {
     return false;

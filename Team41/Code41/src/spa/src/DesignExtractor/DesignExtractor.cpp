@@ -32,6 +32,8 @@ void DesignExtractor::extractEntities() {
             case TNodeType::assignStmt:
                 pkb->registerAssignStmt(stmtNumStr);
                 break;
+            default:
+                break;
         }
     }
     for (const string &procName: ee.getProcSet())

@@ -17,8 +17,8 @@ void ClauseDepGraph::registerClause(TempClause qc) {
         synonymToClauses[NO_SYNONYM].push_back(qc);
         return;
     }
-
-    for (int i = 0; i < synonyms.size(); i++) {
+    int len = (int) synonyms.size();
+    for (int i = 0; i < len; i++) {
         if (i != 0) graph.addEdge(synonyms[i-1].getLabel(), synonyms[i].getLabel());
         synonymToClauses[synonyms[i].getLabel()].push_back(qc);
     }
@@ -31,7 +31,8 @@ ClauseGroups ClauseDepGraph::split() {
     // populate clause groups based on components
     ClauseGroups clauseGroups(N, pkbAdapter);
     for (int gid = 0; gid < N; gid++) { // loop all groups of synonyms
-        for (int cid = 0; cid < groups[gid].size(); cid++) { // loop one group of syns
+        int len = (int) groups[gid].size();
+        for (int cid = 0; cid < len; cid++) { // loop one group of syns
             for (const TempClause &cl: getClausesOfSyn(groups[gid][cid])) {
                 clauseGroups.addClause(gid, cl);
             }

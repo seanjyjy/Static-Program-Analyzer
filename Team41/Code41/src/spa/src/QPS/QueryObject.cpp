@@ -10,11 +10,11 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
                          QueryDeclaration selectSynonym,
                          SelectTarget selectTarget,
                          bool isQueryValid) :
+    withClauses(std::move(withClauses)),
+    superClauses(std::move(superClauses)),
     declarations(std::move(declarations)),
     clauses(std::move(clauses)),
     patternClauses(std::move(patternClauses)),
-    withClauses(std::move(withClauses)),
-    superClauses(std::move(superClauses)),
     selectSynonym(std::move(selectSynonym)),
     selectTarget(std::move(selectTarget)),
     isQueryValid(isQueryValid) {
