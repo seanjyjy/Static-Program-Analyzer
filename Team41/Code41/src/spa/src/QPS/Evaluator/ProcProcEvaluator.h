@@ -8,7 +8,7 @@ public:
 
     Table* evaluateClause(ClauseVariable left, ClauseVariable right) override;
     Table* evaluateWildCardIdentifier(const ClauseVariable& right);
-    Table* evaluateWildCardSynonym(ClauseVariable right);
+    Table* evaluateWildCardSynonym(ClauseVariable& right);
     Table* evaluateWildCardWildCard();
 
     virtual unordered_set<string> getWildCardIdentifierRelation(const string& label) = 0;

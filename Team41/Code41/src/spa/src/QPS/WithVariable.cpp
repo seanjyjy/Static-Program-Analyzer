@@ -38,3 +38,15 @@ string WithVariable::getIntegerAsString() {
     return to_string(integer);
 }
 
+bool WithVariable::isIdentifier() {
+    return type == IDENT;
+}
+
+bool WithVariable::isInteger() {
+    return type == INTEGER;
+}
+
+bool WithVariable::isAttrRef() {
+    return type == ATTR_REF;
+}
+

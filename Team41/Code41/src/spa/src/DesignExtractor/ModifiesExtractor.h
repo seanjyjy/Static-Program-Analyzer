@@ -12,7 +12,6 @@ private:
     unordered_map<TNode *, string> &nodeToStmtNumMap; // mapping of TNode* to statement number
     unordered_map<string, unordered_set<string>> &callsMap; // mapping of proc to list of proc it directly calls
     list<string> &procCallOrder; // list of procedures in reversed toposort order of calls graph
-    unordered_set<TNode *> callNodeSet; // set of call TNodes
     unordered_map<string, unordered_set<string>> procModifiesMap; // mapping of procedure to set of variables that are modified
     unordered_map<string, unordered_set<string>> stmtModifiesMap; // mapping of statement to set of variables that are modified
 
@@ -38,9 +37,9 @@ private:
     void buildProcModifiesCalls();
 
     /**
-     * Records call stmts to set of variables it modifies, based on the set of variables the procedure called modifies.
+     * Records stmts to set of variables it modifies, based on the set of variables the procedures called modifies.
      */
-    void buildCallModifies();
+    void dfsCalls(TNode *node, unordered_set<string> &modifiesSet);
 
 public:
     ModifiesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,

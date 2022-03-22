@@ -10,9 +10,9 @@ public:
     Table* evaluateIntegerIdentifier(const ClauseVariable& left, const ClauseVariable& right);
     Table* evaluateIntegerSynonym(const ClauseVariable& left, ClauseVariable right);
     Table* evaluateIntegerWildCard(const ClauseVariable& left);
-    Table* evaluateSynonymIdentifier(ClauseVariable left, const ClauseVariable& right);
+    Table* evaluateSynonymIdentifier(ClauseVariable& left, ClauseVariable& right);
     Table* evaluateSynonymSynonym(ClauseVariable left, ClauseVariable right);
-    Table* evaluateSynonymWildCard(ClauseVariable left);
+    Table* evaluateSynonymWildCard(ClauseVariable& left);
 
     virtual Table* evaluateClauseFurther(ClauseVariable left, ClauseVariable right) = 0;
 

@@ -13,11 +13,8 @@ CFGNode *CFGExtractor::createCFGNode(TNode *tNode) {
     return cfgNode;
 }
 
-void CFGExtractor::addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode, bool isForward) {
-    if (isForward)
-        parentCFGNode->addForwardChild(childCFGNode);
-    else
-        parentCFGNode->addBackwardChild(childCFGNode);
+void CFGExtractor::addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode) {
+    parentCFGNode->addChild(childCFGNode);
     if (parentCFGNode->getStmtNum() != ROOT_INDEX) // do not add parent edge if parent is root
         childCFGNode->addParent(parentCFGNode);
 }
@@ -37,7 +34,7 @@ void CFGExtractor::buildInitCFG() {
             vector<TNode *> ch = curTNode->getChildren();
             CFGNode *childCFGNode = createCFGNode(ch[0]);
             if (parentCFGNode) // IF or WHILE CFGNode point to first stmt in container
-                addCFGEdge(parentCFGNode, childCFGNode, true); // add forward CFG edge
+                addCFGEdge(parentCFGNode, childCFGNode); // add forward CFG edge
 
             for (int i = 0; i < ch.size(); ++i) {
                 TNodeType childType = ch[i]->getType();
@@ -47,7 +44,7 @@ void CFGExtractor::buildInitCFG() {
                     bfsQ.push({ch[i], childCFGNode, nullptr});
                 } else {
                     if (neighbourCFGNode)
-                        addCFGEdge(childCFGNode, neighbourCFGNode, true);
+                        addCFGEdge(childCFGNode, neighbourCFGNode);
                     if (childType == TNodeType::whileStmt)
                         bfsQ.push({ch[i], childCFGNode, nullptr});
                 }
@@ -66,7 +63,7 @@ void CFGExtractor::buildInitCFG() {
 void CFGExtractor::addBackEdge(TNode *fromTNode, TNode *toTNode) {
     const string &fromStmtNum = nodeToStmtNumMap[fromTNode], &toStmtNum = nodeToStmtNumMap[toTNode];
     CFGNode *fromCFGNode = stmtNumToNodeMap[fromStmtNum], *toCfgNode = stmtNumToNodeMap[toStmtNum];
-    addCFGEdge(fromCFGNode, toCfgNode, false); // backwards edge thus false parameter
+    addCFGEdge(fromCFGNode, toCfgNode);
 }
 
 void CFGExtractor::linkBackNode() {

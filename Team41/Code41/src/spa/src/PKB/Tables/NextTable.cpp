@@ -11,12 +11,15 @@ void NextTable::setCFGNode(CFGNode *node, const StmtToNodeMap &map) {
     }
 
     for (auto[stmt, cfgNode]: stmtToNodeMap) {
+        if (stmt == ROOT_STMT || cfgNode == nullptr) {
+            continue;
+        }
         vector<CFGNode *> children = cfgNode->getChildren();
         if (!children.empty()) {
             this->allBeforeStmts.push_back(stmt);
         }
         vector<CFGNode *> parents = cfgNode->getParent();
-        if (!parents.empty() && parents[0]->getStmtNum() != "0") {
+        if (!parents.empty()) {
             this->allAfterStmts.push_back(stmt);
         }
         for (auto child: children) {
@@ -26,8 +29,8 @@ void NextTable::setCFGNode(CFGNode *node, const StmtToNodeMap &map) {
 }
 
 bool NextTable::isNext(const string& stmt1, const string& stmt2) {
-    if (stmtToNodeMap.find(stmt1) == stmtToNodeMap.end()) {
-        return {};
+    if (stmt1 == ROOT_STMT || stmtToNodeMap.find(stmt1) == stmtToNodeMap.end()) {
+        return false;
     }
     for (CFGNode *child: stmtToNodeMap[stmt1]->getChildren()) {
         if (child->getStmtNum() == stmt2) return true;
@@ -36,14 +39,14 @@ bool NextTable::isNext(const string& stmt1, const string& stmt2) {
 }
 
 vector<CFGNode *> NextTable::getNextNodes(const string& stmt) {
-    if (stmtToNodeMap.find(stmt) == stmtToNodeMap.end()) {
+    if (stmt == ROOT_STMT || stmtToNodeMap.find(stmt) == stmtToNodeMap.end()) {
         return {};
     }
     return stmtToNodeMap[stmt]->getChildren();
 }
 
 vector<CFGNode *> NextTable::getPrevNodes(const string& stmt) {
-    if (stmtToNodeMap.find(stmt) == stmtToNodeMap.end()) {
+    if (stmt == ROOT_STMT || stmtToNodeMap.find(stmt) == stmtToNodeMap.end()) {
         return {};
     }
     return stmtToNodeMap[stmt]->getParent();

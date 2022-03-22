@@ -14,7 +14,7 @@ Table* ParentTEvaluator::evaluateIntegerSynonym(ClauseVariable left, ClauseVaria
 
 Table* ParentTEvaluator::evaluateIntegerWildCard(ClauseVariable left) {
     unordered_set<string> setOfDescendants = pkb->getDescendantStmtsOf(left.getLabel());
-    return buildBooleanTable(setOfDescendants);
+    return buildBooleanTable(!setOfDescendants.empty());
 }
 
 Table* ParentTEvaluator::evaluateSynonymInteger(ClauseVariable left, ClauseVariable right) {
@@ -36,7 +36,7 @@ Table* ParentTEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
 
 Table* ParentTEvaluator::evaluateWildCardInteger(ClauseVariable right) {
     unordered_set<string> setOfAncestors = pkb->getAncestorStmtsOf(right.getLabel());
-    return buildBooleanTable(setOfAncestors);
+    return buildBooleanTable(!setOfAncestors.empty());
 }
 
 Table* ParentTEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
@@ -47,5 +47,5 @@ Table* ParentTEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
 
 Table* ParentTEvaluator::evaluateWildCardWildCard() {
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllParentT();
-    return buildBooleanTable(listOfStmtToStmt);
+    return buildBooleanTable(!listOfStmtToStmt.empty());
 }

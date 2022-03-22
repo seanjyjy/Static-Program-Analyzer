@@ -4,10 +4,8 @@
 
 class GenericClauseEvaluator : public Evaluator {
 public:
-    GenericClauseEvaluator(PKBClient* pkb);
-    Table* evaluate(QueryClause clause) override;
-    // TODO REMOVE THIS IN THE FUTURE
-    Table* evaluate(PatternClause clause) override;
+    explicit GenericClauseEvaluator(PKBClient* pkb);
+    Table* evaluate(QueryClause *clause);
     virtual Table* evaluateClause(ClauseVariable left, ClauseVariable right) = 0;
 
     friend class ProcEvaluator;

@@ -16,7 +16,7 @@ Table *NextTEvaluator::evaluateIntegerSynonym(ClauseVariable left, ClauseVariabl
 
 Table *NextTEvaluator::evaluateIntegerWildCard(ClauseVariable left) {
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNextT(left.getLabel());
-    return buildBooleanTable(setOfStmts);
+    return buildBooleanTable(!setOfStmts.empty());
 }
 
 Table *NextTEvaluator::evaluateSynonymInteger(ClauseVariable left, ClauseVariable right) {
@@ -36,7 +36,7 @@ Table *NextTEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
 
 Table *NextTEvaluator::evaluateWildCardInteger(ClauseVariable right) {
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsTBefore(right.getLabel());
-    return buildBooleanTable(setOfStmts);
+    return buildBooleanTable(!setOfStmts.empty());
 }
 
 Table *NextTEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
@@ -46,5 +46,5 @@ Table *NextTEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
 
 Table *NextTEvaluator::evaluateWildCardWildCard() {
     vector<pair<string, string>> listOfStmts = nextKBAdapter->getAllNextT();
-    return buildBooleanTable(listOfStmts);
+    return buildBooleanTable(!listOfStmts.empty());
 }

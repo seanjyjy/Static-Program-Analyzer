@@ -12,7 +12,6 @@ private:
     unordered_map<TNode *, string> &nodeToStmtNumMap; // mapping of TNode* to statement number
     unordered_map<string, unordered_set<string>> &callsMap; // mapping of proc to list of proc it directly calls
     list<string> &procCallOrder; // list of procedures in reversed toposort order of calls graph
-    unordered_set<TNode *> callNodeSet; // set of call TNodes
     unordered_map<string, unordered_set<string>> procUsesMap; // mapping of procedure to set of variables that are used
     unordered_map<string, unordered_set<string>> stmtUsesMap; // mapping of statement to set of variables that are used
 
@@ -38,9 +37,9 @@ private:
     void buildProcUsesCalls();
 
     /**
-     * Records call stmts to set of variables it uses, based on the set of variables the procedure called uses.
-     */
-    void buildCallUses();
+    * Records stmts to set of variables it uses, based on the set of variables the procedures called uses.
+    */
+    void dfsCalls(TNode *node, unordered_set<string> &usesSet);
 
 public:
     UsesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,

@@ -59,9 +59,8 @@ void NextKBAdapter::fullBFS() {
     }
 }
 
-void
-NextKBAdapter::runBFS(const string &start, const string &end, bool isForward, const CacheCallback &cacheAndContinue,
-                      const TerminateCheck &canTerminate) {
+void NextKBAdapter::runBFS(const string &start, const string &end, bool isForward,
+                           const CacheCallback &cacheAndContinue, const TerminateCheck &canTerminate) {
     CFGNode *startNode = pkb->getCFGForStmt(isForward ? start : end);
 
     if (startNode == nullptr) return;
@@ -79,10 +78,10 @@ NextKBAdapter::runBFS(const string &start, const string &end, bool isForward, co
             string nextStmtNum = next->getStmtNum();
             if (visited.find(nextStmtNum) == visited.end()) {
                 // check cache
-                if (cacheAndContinue(nextStmtNum)) {
+                if (cacheAndContinue(nextStmtNum, cache)) {
                     bfsQueue.push(next);
                 }
-                if (canTerminate(nextStmtNum)) {
+                if (canTerminate(nextStmtNum, cache)) {
                     return;
                 };
                 visited.insert(nextStmtNum);
@@ -91,23 +90,14 @@ NextKBAdapter::runBFS(const string &start, const string &end, bool isForward, co
     }
 }
 
-void NextKBAdapter::addBooleanRelation(const string &start, const string &end) {
-    cache->registerBooleanMapping(start, end);
-}
-
-void NextKBAdapter::addForwardRelation(const string &start, const string &end) {
+void NextKBAdapter::addFullMapping(const string &start, const string &end) {
+    // Add forward Mapping
     cache->registerBooleanMapping(start, end);
     cache->registerForwardMapping(start, end);
-}
 
-void NextKBAdapter::addBackwardRelation(const string &start, const string &end) {
-    cache->registerBooleanMapping(end, start); // reverse order!
+    // Add backwardMapping
+    cache->registerBooleanMapping(end, start); // reverseOrder
     cache->registerBackwardMapping(start, end);
-}
-
-void NextKBAdapter::addFullMapping(const string &start, const string &end) {
-    addForwardRelation(start, end);
-    addBackwardRelation(start, end);
 }
 
 //================================== Public =============================================
@@ -148,21 +138,21 @@ bool NextKBAdapter::isNextT(const string &stmt1, const string &stmt2) {
     }
 
     if (!cache->getBooleanMapping(stmt1, stmt2)) {
-        CacheCallback saveToCache = [&](const string &next) {
-            addBooleanRelation(stmt1, next);
+        CacheCallback saveToCache = [stmt1](const string &next, Cache* cache) {
+            cache->registerBooleanMapping(stmt1, next);
             return true;
         };
 
-        TerminateCheck canEnd = [&](const string &next) {
+        TerminateCheck canEnd = [stmt1, stmt2](const string &next, Cache* cache) {
             if (cache->getBooleanMapping(next, stmt2)) {
-                addBooleanRelation(stmt1, stmt2);
+                cache->registerBooleanMapping(stmt1, stmt2);
                 return true;
             };
             unordered_set<string> forwardCache = cache->getForwardMapping(next);
             if (!forwardCache.empty()) {
                 bool hasNextT = forwardCache.find(stmt2) != forwardCache.end();
                 if (hasNextT) {
-                    addBooleanRelation(stmt1, stmt2);
+                    cache->registerBooleanMapping(stmt1, stmt2);
                 }
                 return hasNextT;
             }
@@ -176,20 +166,24 @@ bool NextKBAdapter::isNextT(const string &stmt1, const string &stmt2) {
 
 unordered_set<string> NextKBAdapter::getAllStmtsNextT(const string &stmtNum) {
     if (cache->getForwardMapping(stmtNum).empty()) {
-        CacheCallback saveToCache = [&](const string &next) {
+        CacheCallback saveToCache = [stmtNum](const string &next, Cache* cache) {
             unordered_set<string> forwardCache = cache->getForwardMapping(next);
             bool canUseCache = !forwardCache.empty() && stmtNum != next;
 
             if (canUseCache) {
-                for (auto &savedNext: forwardCache)
-                    addForwardRelation(stmtNum, savedNext);
+                for (auto &savedNext: forwardCache) {
+                    cache->registerBooleanMapping(stmtNum, savedNext);
+                    cache->registerForwardMapping(stmtNum, savedNext);
+                }
                 return false;
             }
-            addForwardRelation(stmtNum, next);
+
+            cache->registerBooleanMapping(stmtNum, next);
+            cache->registerForwardMapping(stmtNum, next);
             return true;
         };
 
-        TerminateCheck canEnd = [](const string &next) { return false; };
+        TerminateCheck canEnd = [](const string &next, Cache* cache) { return false; };
 
         runBFS(stmtNum, ROOT_STMT, true, saveToCache, canEnd);
     }
@@ -199,20 +193,24 @@ unordered_set<string> NextKBAdapter::getAllStmtsNextT(const string &stmtNum) {
 
 unordered_set<string> NextKBAdapter::getAllStmtsTBefore(const string &stmtNum) {
     if (cache->getBackwardMapping(stmtNum).empty()) {
-        CacheCallback saveToCache = [&](const string &next) {
+        CacheCallback saveToCache = [stmtNum](const string &next, Cache* cache) {
             unordered_set<string> backwardCache = cache->getBackwardMapping(next);
             bool canUseCache = !backwardCache.empty() && stmtNum != next;
 
             if (canUseCache) {
-                for (auto &savedNext: backwardCache)
-                    addBackwardRelation(stmtNum, savedNext);
+                for (auto &savedNext: backwardCache) {
+                    cache->registerBooleanMapping(savedNext, stmtNum);
+                    cache->registerBackwardMapping(stmtNum, savedNext);
+                }
                 return false;
             }
-            addBackwardRelation(stmtNum, next);
+
+            cache->registerBooleanMapping(next, stmtNum);
+            cache->registerBackwardMapping(stmtNum, next);
             return true;
         };
 
-        TerminateCheck canEnd = [](const string &next) { return false; };
+        TerminateCheck canEnd = [](const string &next, Cache* cache) { return false; };
 
         runBFS(ROOT_STMT, stmtNum, false, saveToCache, canEnd);
     }
@@ -234,4 +232,8 @@ vector<string> NextKBAdapter::getAllStmtsThatHaveNextTStmt() {
 
 vector<string> NextKBAdapter::getAllStmtsThatIsNextTOfSomeStmt() {
     return pkb->getAllStmtsExecAfterSomeStmt();
+}
+
+NextKBAdapter::~NextKBAdapter() {
+    delete cache;
 }

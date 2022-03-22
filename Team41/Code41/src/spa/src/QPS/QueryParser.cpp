@@ -622,6 +622,7 @@ bool QueryParser::parseWithClause() {
     WithClause* wc = new WithClause(left.value(), right.value());
     queryObject->getWithClauses().push_back(*wc);
     queryObject->getSuperClauses().push_back(wc);
+    return true;
 }
 
 // todo: build the with clause somehow

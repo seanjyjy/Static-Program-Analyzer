@@ -35,8 +35,8 @@ Select ifs
 5000
 8 - Uses with invalid wildcard
 variable v;
-Select v such that Uses(_, v)
-
+Select BOOLEAN such that Uses(_, v)
+FALSE
 5000
 9 - Uses with statement and wildcard
 stmt s;
@@ -100,8 +100,8 @@ none
 5000
 21 - Modifies with invalid wildcard
 variable v;
-Select v such that Modifies(_, v)
-
+Select BOOLEAN such that Modifies(_, v)
+FALSE
 5000
 22 - Modifies with statement and wildcard
 stmt s;
@@ -160,66 +160,186 @@ none
 5000
 33 - Invalid case - Syntax error
 stmts s;
-Select s
+Select BOOLEAN
 
 5000
 34 - Invalid case - Syntax error
 prints p;
-Select p
+Select BOOLEAN
 
 5000
 35 - Invalid case - Syntax error
 red r;
-Select r
+Select BOOLEAN
 
 5000
 36 - Invalid case - Syntax error
 whil w;
-Select w
+Select BOOLEAN
 
 5000
 37 - Invalid case - Syntax error
 iff ifs;
-Select ifs
+Select BOOLEAN
 
 5000
 38 - Invalid case - Syntax error
 var v;
-Select v
+Select BOOLEAN
 
 5000
 39 - Invalid case - Syntax error
 prop p;
-Select p
+Select BOOLEAN
 
 5000
 40 - Invalid case - Syntax error
 cost c;
-Select c
+Select BOOLEAN
 
 5000
 41 - Invalid case - Uses with read
 read r;
-Select r such that Uses(r,_)
-
+Select BOOLEAN such that Uses(r,_)
+FALSE
 5000
 42 - Invalid case - Modifies with print
 print pn;
-Select pn such that Modifies(pn,_)
-
+Select BOOLEAN such that Modifies(pn,_)
+FALSE
 5000
 43 - Invalid case - Case sensitive Uses
 stmt s; variable v;
-Select r such that uses(s,v)
+Select BOOLEAN such that uses(s,v)
 
 5000
 44 - Invalid case - Case sensitive Modify
 stmt s; variable v;
-Select r such that modifies(s,v)
+Select BOOLEAN such that modifies(s,v)
 
 5000
 45 - Invalid case - Ends with semicolon
 stmt s; variable v;
-Select r such that modifies(s,v);
+Select BOOLEAN such that modifies(s,v);
 
+5000
+46 - Uses('procedure', _)
+
+Select BOOLEAN such that Uses("procedure", _)
+TRUE
+5000
+47 - Uses('procedure', 'x')
+
+Select BOOLEAN such that Uses("procedure", "x")
+TRUE
+5000
+48 - Uses('procedure', 'x')
+variable v;
+Select BOOLEAN such that Uses("procedure", "x")
+TRUE
+5000
+49 - Uses('procedure', proc)
+procedure Uses;
+Select BOOLEAN such that Uses("procedure", Uses)
+FALSE
+5000
+50 - Uses('procedure', v)
+variable Select;
+Select Select such that Uses("procedure", Select)
+y132, x, x411, foo, a, bar, temp, tmp, X, chArlie, A1pH3, z, c, var, while, read, print
+5000
+51 - Uses('procedure', 1)
+
+Select BOOLEAN such that Uses("procedure", 1)
+
+5000
+52 - Uses(proc, v) - select proc
+variable Uses; procedure such;
+Select such such that Uses(such, Uses)
+procedure
+5000
+53 - Uses(proc, 'chArlie')
+variable Select; procedure proc;
+Select proc such that Uses(proc, "chArlie")
+procedure
+5000
+54 - Uses(proc, v) - select v
+variable variable; procedure procedure;
+Select variable such that Uses(procedure, variable)
+y132, x, x411, foo, a, bar, temp, tmp, X, chArlie, A1pH3, z, c, var, while, read, print
+5000
+55 - Uses(s, 'X')
+stmt stmt;
+Select stmt such that Uses(stmt, "X")
+13, 14, 16, 17
+5000
+56 - Modifies('procedure', _)
+
+Select BOOLEAN such that Modifies("procedure", _)
+TRUE
+5000
+57 - Modifies('procedure', 'x')
+
+Select BOOLEAN such that Modifies("procedure", "x")
+TRUE
+5000
+58 - Modifies('procedure', 'x')
+variable v;
+Select BOOLEAN such that Modifies("procedure", "x")
+TRUE
+5000
+59 - Modifies('procedure', proc)
+procedure Modifies;
+Select BOOLEAN such that Modifies("procedure", Modifies)
+FALSE
+5000
+60 - Modifies('procedure', v)
+variable Select;
+Select Select such that Modifies("procedure", Select)
+x411, y132, x1c2v3b4, x, var, foo, bar, X, oSCar, b, c, a, while, then, else, temp, read, print
+5000
+61 - Modifies('procedure', 1)
+
+Select BOOLEAN such that Modifies("procedure", 1)
+
+5000
+62 - Modifies(proc, v) - select proc
+variable Modifies; procedure such;
+Select such such that Modifies(such, Modifies)
+procedure
+5000
+63 - Modifies(proc, 'x1c2v3b4')
+variable Select; procedure proc;
+Select proc such that Modifies(proc, "x1c2v3b4")
+procedure
+5000
+64 - Modifies(proc, v) - select v
+variable variable; procedure procedure;
+Select variable such that Modifies(procedure, variable)
+x411, y132, x1c2v3b4, x, var, foo, bar, X, oSCar, b, c, a, while, then, else, temp, read, print
+5000
+65 - Modifies(s, 'temp')
+stmt stmt;
+Select stmt such that Modifies(stmt, "temp")
+29, 30, 37, 43, 44, 49
+5000
+66 - Modifies(s, v)
+stmt stmt; variable variable;
+Select <stmt, variable> such that Modifies(stmt, variable)
+1 x411, 2 y132, 3 x1c2v3b4, 4 x, 5 x, 6 x, 7 var, 8 foo, 9 bar, 10 X, 11 bar, 12 bar, 13 a, 13 b, 13 c, 13 oSCar, 13 x, 14 oSCar, 15 oSCar, 16 oSCar, 17 oSCar, 18 b, 18 c, 18 x, 19 x, 20 b, 20 c, 20 x, 21 b, 21 c, 23 b, 24 c, 25 c, 26 c, 27 x, 28 a, 29 bar, 29 else, 29 foo, 29 print, 29 read, 29 temp, 29 then, 29 var, 29 while, 30 bar, 30 else, 30 foo, 30 print, 30 read, 30 temp, 30 then, 30 var, 30 while, 31 var, 32 bar, 33 var, 34 foo, 35 var, 36 while, 37 else, 37 print, 37 read, 37 temp, 37 then, 37 while, 38 while, 39 read, 40 print, 41 then, 42 else, 43 temp, 43 while, 44 temp, 45 while, 46 while, 48 while, 49 temp
+5000
+67 - Modifies(proc, v)
+procedure procedure; variable variable;
+Select <procedure, variable> such that Modifies(procedure, variable)
+procedure x411, procedure y132, procedure x1c2v3b4, procedure x, procedure var, procedure foo, procedure bar, procedure X, procedure oSCar, procedure b, procedure c, procedure a, procedure while, procedure then, procedure else, procedure temp, procedure read, procedure print
+5000
+68 - Uses(s, v)
+stmt stmt; variable variable;
+Select <stmt, variable> such that Uses(stmt, variable)
+4 y132, 5 x, 6 x411, 9 foo, 12 foo, 13 A1pH3, 13 X, 13 a, 13 bar, 13 c, 13 chArlie, 13 foo, 13 temp, 13 tmp, 13 x, 13 x411, 13 z, 14 X, 14 bar, 14 chArlie, 14 foo, 14 temp, 14 tmp, 15 bar, 15 tmp, 16 X, 16 bar, 16 chArlie, 16 foo, 16 tmp, 17 X, 17 bar, 17 chArlie, 17 foo, 18 A1pH3, 18 bar, 18 c, 18 foo, 18 x, 18 x411, 18 z, 19 x, 20 A1pH3, 20 bar, 20 c, 20 foo, 20 x, 20 x411, 20 z, 21 A1pH3, 21 bar, 21 x411, 21 z, 22 A1pH3, 24 A1pH3, 24 x411, 24 z, 25 c, 26 c, 27 x, 29 bar, 29 foo, 29 print, 29 read, 29 temp, 29 var, 29 while, 30 bar, 30 foo, 30 print, 30 read, 30 temp, 30 var, 30 while, 31 var, 32 bar, 33 var, 34 foo, 35 var, 37 bar, 37 foo, 37 print, 37 read, 37 temp, 37 var, 37 while, 38 while, 41 read, 42 print, 43 bar, 43 foo, 43 temp, 43 var, 43 while, 44 while, 46 bar, 46 foo, 46 var, 47 while, 48 temp, 50 temp, 51 read, 52 print, 53 var, 54 foo, 55 bar
+5000
+69 - Uses(proc, v)
+procedure procedure; variable variable;
+Select <procedure, variable> such that Uses(procedure, variable)
+procedure y132, procedure x, procedure x411, procedure foo, procedure a, procedure bar, procedure temp, procedure tmp, procedure X, procedure chArlie, procedure A1pH3, procedure z, procedure c, procedure var, procedure while, procedure read, procedure print
 5000

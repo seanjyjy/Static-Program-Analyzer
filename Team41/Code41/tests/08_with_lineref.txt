@@ -1,0 +1,49 @@
+--. procedure procedure {
+01.    x = 1 + 9 * (y - 3) + (x - (a + 412341235));
+02.    read procedur3;
+03.    print procedur3;
+04.    call if;
+05.    procedur3 = ifs + 4;
+06.    while = while - procedur3;
+07.    procedure = 10;
+08.    if = (if + while) * procedur3;
+09.    while (while > 10) {
+10.        if (if == 3) then {
+11.            read a;
+12.            read = read + while + if - 2304 + y - x * 12342 + procedure;
+--.        } else {
+13.            while (procedur3 < 15) {
+14.                print procedur3;
+--.            }
+--.        }
+15.        read x;
+16.        print y;
+17.        y = mx + c;
+18.        read a;
+--.    }
+19.    call while;
+20.    call procedur3;
+--.}
+
+--. procedure procedur3 {
+21.    while (test != what) {
+22.        if (true == false) then {
+23.            print true;
+24.            else = else - 1;
+--.        } else {
+25.            then = print + false;
+26.            print false;
+--.        }
+--.    }
+--.}
+
+--. procedure if {
+27.    call while;
+28.    call procedur3;
+--.}
+
+--. procedure while {
+29.   call procedur3;
+30.   print helloWorld;
+31.   read helloWorld;
+--.}

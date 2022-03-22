@@ -5,9 +5,8 @@
 class PatternEvaluator : public Evaluator {
 public:
     explicit PatternEvaluator(PKBClient *pkb);
-    Table* evaluate(PatternClause clause) override;
-    // TODO REMOVE THIS IN THE FUTURE
-    Table* evaluate(QueryClause clause) override;
+    Table* evaluate(PatternClause *clause);
+
     Table* evaluateWildCardWildCard(QueryDeclaration patternSynonym);
 
     virtual Table* evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable& leftVariable,
