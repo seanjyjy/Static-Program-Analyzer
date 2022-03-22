@@ -12,8 +12,8 @@ TEST_CASE("AST Builder: procedure") {
         // manually build actual AST
         TNode *procedure = TNode::makeProcedure(
                 Token::makeName("main"),
-                TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x")))})
-                );
+                TNode::makeStmtLst({TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x")))})
+        );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);

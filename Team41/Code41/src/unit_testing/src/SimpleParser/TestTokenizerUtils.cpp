@@ -13,7 +13,7 @@ void TestTokenizerUtils::tokenizeAndCompare(string s, vector<pair<TokenType, str
     REQUIRE(tokens.size() == expected.size());
     int len = (int) tokens.size();
     for (int i = 0; i < len; i++) {
-        auto [expectedType, expectedVal] = expected[i];
+        auto[expectedType, expectedVal] = expected[i];
         Token t = tokens[i];
         TokenType gotType = t.getType();
         string gotVal = t.getVal();
