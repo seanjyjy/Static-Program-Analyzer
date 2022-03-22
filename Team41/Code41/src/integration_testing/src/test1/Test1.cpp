@@ -29,10 +29,6 @@ TEST_CASE("Test 1") {
         QueryParser qp = QueryParser{query};
         QueryObject* queryObject = qp.parse();
 
-        // TODO complete this later, once the interface is stable
-        QueryOptimizer qo(&pkbManager);
-//        OptimizedQueryObject oqo = qo.optimize(*queryObject);
-
         QueryEvaluator queryEvaluator(&pkbManager);
         QueryResult queryResult = queryEvaluator.evaluateQuery(queryObject);
         unordered_set<string> result = QueryProjector(queryResult, &pkbManager).getResult();
