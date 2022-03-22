@@ -2,50 +2,81 @@
 
 QueryOptimizer::QueryOptimizer() = default;
 
-OptimizedQueryObject QueryOptimizer::optimize(QueryObject &qo) {
-  const AbstractGroups& groups = isInterGroupSortEnabled
-	  ? static_cast<const AbstractGroups&>(SortedGroups())
-	  : static_cast<const AbstractGroups&>(FifoGroups());
+OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
+    // do some preliminary checks
+    if (isDynamicPollingEnabled && !isPkbAdapterSet) throw runtime_error("pkb adapter not set");
 
-  // step 1: Take query object, extract clauses, group them based on synonym dependencies
-  vector<vector<SuperClause*>> clauseGroups;
-  if (isClauseGroupingEnabled) {
-	// clause grouping enabled - form dependency graph and split clauses
-	for (SuperClause *cl : qo.getSuperClauses()) {
-	  clauseDepGraph.registerClause(cl);
-	}
-	clauseGroups = clauseDepGraph.split();
-  } else {
-	// no clause grouping - just one group of all clauses
-	clauseGroups.push_back(qo.getSuperClauses());
-  }
+    // first initialize the groups container
+    AbstractGroups *groups = nullptr;
+    if (isInterGroupSortEnabled) {
+        groups = new SortedGroups();
+    } else {
+        groups = new FifoGroups();
+    }
 
-  // step 2: Add clause groups
-  for (auto &clauseGroup: clauseGroups) {
+    // step 1: Take query object, extract clauses, group them based on synonym dependencies
+    vector<vector<SuperClause *>> clauseGroups;
+    if (isClauseGroupingEnabled) {
+        // clause grouping enabled - form dependency graph and split clauses
+        for (SuperClause *cl: qo->getSuperClauses()) {
+            clauseDepGraph.registerClause(cl);
+        }
+        clauseGroups = clauseDepGraph.split();
+    } else {
+        // no clause grouping - just one group of all clauses
+        clauseGroups.push_back(qo->getSuperClauses());
+    }
 
-  }
-//  clauseGroups.sortGroups();
-//
-//  // step 3: Sort each individual clause group
-//  clauseGroups.sortEachGroup();
+    // step 2: Add clause groups
+    for (vector<SuperClause *> &clauseGroup: clauseGroups) {
+        clauseGroup = QueryOptimizer::removeDuplicates(clauseGroup);
 
-  return {adapter, qo, clauseGroups};
+        if (isIntraGroupSortEnabled && isDynamicPollingEnabled) {
+            groups->addGroup(new PKBAwareGroup(clauseGroup, adapter));
+        } else if (isIntraGroupSortEnabled) {
+            groups->addGroup(new SortedGroup(clauseGroup));
+        } else {
+            groups->addGroup(new FifoGroup(clauseGroup));
+        }
+    }
+
+    return {qo, groups};
 }
 
-OptimizedQueryObject QueryOptimizer::getOptimizedQueryObject() {
-  return optimizedQueryObject;
+QueryOptimizer QueryOptimizer::create() {
+    return QueryOptimizer{};
 }
 
-void QueryOptimizer::printPlan() {
-  // TODO implement
-  cout << "print plan not implemented" << endl;
+vector<SuperClause *> QueryOptimizer::removeDuplicates(const vector<SuperClause *> &clauses) {
+    // TODO: implement after superclause refactor to use composition
+    return clauses;
 }
-ostream &operator<<(ostream &os, const QueryOptimizer &obj) {
-	return os << "isClauseGroupingEnabled: " << obj.isClauseGroupingEnabled << endl
-				<< "isIntraGroupSortEnabled: " << obj.isIntraGroupSortEnabled << endl
-				<< "isInterGroupSortEnabled: " << obj.isInterGroupSortEnabled << endl
-				<< "isDynamicPollingEnabled: " << obj.isDynamicPollingEnabled << endl;
+
+void QueryOptimizer::print() {
+    cout << "isClauseGroupingEnabled: " << isClauseGroupingEnabled << endl
+         << "isIntraGroupSortEnabled: " << isIntraGroupSortEnabled << endl
+         << "isInterGroupSortEnabled: " << isInterGroupSortEnabled << endl
+         << "isDynamicPollingEnabled: " << isDynamicPollingEnabled << endl;
 }
-QueryOptimizerBuilder QueryOptimizer::create() {
-  return QueryOptimizerBuilder{};
+
+QueryOptimizer &QueryOptimizer::setInterGroupSort(bool isOn) {
+    isInterGroupSortEnabled = isOn;
+    return *this;
+}
+
+QueryOptimizer &QueryOptimizer::setIntraGroupSort(bool isOn) {
+    isIntraGroupSortEnabled = isOn;
+    return *this;
+}
+
+QueryOptimizer &QueryOptimizer::setClauseGrouping(bool isOn) {
+    isClauseGroupingEnabled = isOn;
+    return *this;
+}
+
+QueryOptimizer &QueryOptimizer::enableDynamicPolling(const PKBAdapter &pkbAdapter) {
+    adapter = pkbAdapter;
+    isDynamicPollingEnabled = true;
+    isPkbAdapterSet = true;
+    return *this;
 }

@@ -2,23 +2,38 @@
 #include "SortedGroups.h"
 
 SortedGroups::SortedGroups() {
-  it = sortedGroups.begin();
-};
+    it = sortedGroups.begin();
+}
 
-void SortedGroups::addGroup(const AbstractGroup &group) {
-  sortedGroups.insert(group);
+void SortedGroups::addGroup(AbstractGroup *group) {
+    sortedGroups.insert(group);
 }
+
 SuperClause *SortedGroups::pop() {
-  if (empty()) throw runtime_error("no more groups");
-  return it->pop();
+    if (empty()) throw runtime_error("no more groups");
+    return (*it)->pop();
 }
+
 bool SortedGroups::empty() {
-  // ensure invariant - first group always has a clause to take (unless
-  while (it != sortedGroups.end() && front().empty()) it++;
-  return it == sortedGroups.end();
+    // ensure invariant - first group always has a clause to take (unless
+    while (it != sortedGroups.end() && front()->empty()) it++;
+    return it == sortedGroups.end();
 }
-const AbstractGroup &SortedGroups::front() {
-  if (empty()) throw runtime_error("no more groups");
-  return *it;
+
+AbstractGroup *SortedGroups::front() {
+    if (empty()) throw runtime_error("no more groups");
+    return *it;
+}
+
+string SortedGroups::toString() const {
+    string ret;
+    for (AbstractGroup *a: sortedGroups) {
+        ret += a->toString();
+    }
+    return ret;
+}
+
+void SortedGroups::print() const {
+    cout << toString() << endl;
 }
 

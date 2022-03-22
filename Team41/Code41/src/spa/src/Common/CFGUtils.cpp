@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 #include <unordered_set>
+#include <algorithm>
 
 #include "CFGUtils.h"
 
@@ -15,7 +16,7 @@ bool CFGUtils::isVecSortSame(vector<CFGNode *> &v1, vector<CFGNode *> &v2) {
     if (v1.empty()) return true;
     sort(v1.begin(), v1.end(), compareCFGNodes);
     sort(v2.begin(), v2.end(), compareCFGNodes);
-    for (int i = 0; i < v1.size(); ++i)
+    for (int i = 0; i < (int) v1.size(); ++i)
         if (v1[i]->getStmtNum() != v2[i]->getStmtNum())
             return false;
     return true;
@@ -34,12 +35,12 @@ bool CFGUtils::isEqual(CFGNode *n1, CFGNode *n2) {
         v1 = n1->getChildren(); v2 = n2->getChildren();
         if (!isVecSortSame(v1, v2)) return false;
 
-        for (int i = 0; i < v1.size(); ++i) { // both children all contain same stmtNum
+        for (int i = 0; i < (int) v1.size(); ++i) { // both children all contain same stmtNum
             auto it1 = seen.find(v1[i]), it2 = seen.find(v2[i]);
             if (it1 == seen.end() && it2 == seen.end()) {
                 seen.insert(v1[i]); seen.insert(v2[i]);
                 bfsQ.push({v1[i], v2[i]});
-            } else if (it1 == seen.end() ^ it2 == seen.end()) { // one exists while other doesn't
+            } else if ((it1 == seen.end()) ^ (it2 == seen.end())) { // one exists while other doesn't
                 return false;
             }
         }

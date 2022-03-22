@@ -16,8 +16,7 @@ TNode *PatternVariable::getMiniAST() {
     return miniAST;
 }
 
-PatternVariable::PatternVariable(pattern_type type, TNode *miniAST) :
-    type(type), miniAST(miniAST) {}
+PatternVariable::PatternVariable(pattern_type type, TNode *miniAST) : miniAST(miniAST), type(type) {}
 
 void PatternVariable::cleanAST() {
     delete miniAST;

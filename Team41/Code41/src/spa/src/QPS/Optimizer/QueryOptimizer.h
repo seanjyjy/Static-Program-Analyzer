@@ -6,38 +6,43 @@
 #include "ClauseDepGraph.h"
 #include "OptimizedQueryObject.h"
 #include "ClauseGroups.h"
-#include "QueryOptimizerBuilder.h"
+//#include "QueryOptimizerBuilder.h"
 #include "AbstractGroups.h"
 #include "ClauseGroup.h"
 #include "ClauseGroups.h"
 #include "SortedGroups.h"
 #include "FifoGroups.h"
+#include "SortedGroup.h"
+#include "FifoGroup.h"
+#include "PKBAwareGroup.h"
 
 using namespace std;
 
 // TODO: destructor
 
 class QueryOptimizer {
- private:
-  // configuration options
-  bool isClauseGroupingEnabled = false;
-  bool isIntraGroupSortEnabled = false;
-  bool isInterGroupSortEnabled = false;
-  bool isDynamicPollingEnabled = false;
+private:
+    // default configuration options
+    bool isClauseGroupingEnabled = true;
+    bool isIntraGroupSortEnabled = true;
+    bool isInterGroupSortEnabled = true;
+    bool isDynamicPollingEnabled = false;
+    bool isPkbAdapterSet = false;
+    PKBAdapter adapter;
+    ClauseDepGraph clauseDepGraph;
 
-  bool isPkbAdapterSet = false;
+    QueryOptimizer();
 
-  PKBAdapter adapter;
-  ClauseDepGraph clauseDepGraph;
-  OptimizedQueryObject optimizedQueryObject;
-  QueryOptimizer();
+    static vector<SuperClause *> removeDuplicates(const vector<SuperClause *> &clauses);
+public:
 
- public:
-  friend class QueryOptimizerBuilder;
-  friend ostream& operator<<(ostream &os, const QueryOptimizer& obj);
-  static QueryOptimizerBuilder create();
-  OptimizedQueryObject optimize(QueryObject &qo);
+    static QueryOptimizer create();
+    QueryOptimizer &setIntraGroupSort(bool isOn);
+    QueryOptimizer &setInterGroupSort(bool isOn);
+    QueryOptimizer &setClauseGrouping(bool isOn);
+    QueryOptimizer &enableDynamicPolling(const PKBAdapter &pkbAdapter);
 
-  OptimizedQueryObject getOptimizedQueryObject();
-  void printPlan();
+    OptimizedQueryObject optimize(QueryObject *qo);
+
+    void print();
 };

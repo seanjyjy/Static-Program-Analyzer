@@ -1,5 +1,5 @@
-#include <stdio.h>
-
+#include <cstdio>
+#include <stdexcept>
 #include "QueryParser.h"
 
 using namespace std;
@@ -172,7 +172,7 @@ Selectable::attributeName QueryParser::parseSelectAttribute() {
     } else if (aT == "stmt#") {
         return Selectable::STMT_NUM;
     }
-    throw exception("Internal Error: Invalid select attribute type");
+    throw runtime_error("Internal Error: Invalid select attribute type");
 }
 
 bool QueryParser::parseSelectTarget() {
@@ -351,7 +351,7 @@ ClauseVariable::variable_type QueryParser::determineVariableType(string w) {
         return ClauseVariable::integer;
     if (lex->isValidSynonym(w))
         return ClauseVariable::synonym;
-    throw exception("Internal Error: Invalid variable type");
+    throw runtime_error("Internal Error: Invalid variable type");
 }
 
 QueryClause::clause_type QueryParser::determineClauseType(string type, string left, string right) {
@@ -383,7 +383,7 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
         return isDeclaredProcedure(left) ? QueryClause::modifiesP : QueryClause::modifiesS;
     if (type == "Modifies" && lex->isEntRef(left) && lex->isEntRef(right))
         return QueryClause::modifiesP;
-    throw exception("Internal Error: Invalid clause type");
+    throw runtime_error("Internal Error: Invalid clause type");
 }
 
 bool QueryParser::isValidPatternSynType(QueryDeclaration declared) {

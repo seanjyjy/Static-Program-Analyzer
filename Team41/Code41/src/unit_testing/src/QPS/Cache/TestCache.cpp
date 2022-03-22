@@ -19,7 +19,7 @@ TEST_CASE("Cache") {
             {values[0], values[1], values[2], values[5]}
     };
 
-    for (int i = 0; i < fixedTestCase.size(); i++) {
+    for (int i = 0; i < (int) fixedTestCase.size(); i++) {
         for (auto& value : fixedTestCase.at(i)) {
             cache.registerForwardMapping(keys[i], value);
             cache.registerBooleanMapping(keys[i], value);

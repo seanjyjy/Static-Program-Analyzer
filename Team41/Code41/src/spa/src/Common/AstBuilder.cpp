@@ -69,7 +69,7 @@ TNode *AstBuilder::build() {
 
 void AstBuilder::advance() {
   idx++;
-  currToken = (idx >= xml.size()) ? EOF_TOKEN : xml[idx];
+  currToken = (idx >= (int) xml.size()) ? EOF_TOKEN : xml[idx];
 }
 
 XmlTag AstBuilder::eatXmlTag() {

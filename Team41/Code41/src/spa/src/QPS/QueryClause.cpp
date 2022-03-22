@@ -3,7 +3,7 @@
 #include <utility>
 
 QueryClause::QueryClause(clause_type type, ClauseVariable left, ClauseVariable right) :
-    type(type), left(std::move(left)), right(std::move(right)) {}
+    left(std::move(left)), right(std::move(right)), type(type) {}
 
 ClauseVariable QueryClause::getLeftClauseVariable() const {
     return left;
@@ -62,7 +62,7 @@ bool QueryClause::hasSynonyms() const {
 
 bool QueryClause::isWithClause() const {
     return false;
-};
+}
 
 bool QueryClause::isSuchThatClause() const {
     return true;

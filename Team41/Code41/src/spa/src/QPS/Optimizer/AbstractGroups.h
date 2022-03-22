@@ -3,9 +3,16 @@
 #include "AbstractGroup.h"
 
 class AbstractGroups {
- public:
-  virtual void addGroup(const AbstractGroup& group) = 0;
-  virtual const AbstractGroup &front() = 0;
-  virtual SuperClause* pop() = 0;
-  virtual bool empty() = 0;
+public:
+    virtual void addGroup(AbstractGroup *group) = 0;
+
+    virtual AbstractGroup *front() = 0;
+
+    virtual SuperClause *pop() = 0;
+
+    virtual bool empty() = 0;
+
+    virtual string toString() const = 0;
+
+    virtual void print() const = 0;
 };

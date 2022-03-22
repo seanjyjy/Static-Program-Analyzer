@@ -39,8 +39,15 @@ TEST_CASE("Query Optimizer") {
 
     QueryParser qp = QueryParser{pql};
     unique_ptr<QueryObject> queryObject(qp.parse());
-    QueryOptimizer optimizer(&pkbManager);
-    optimizer.optimize(*queryObject);
-    optimizer.printPlan();
+    OptimizedQueryObject oqo = QueryOptimizer::create()
+            .setClauseGrouping(true)
+            .setInterGroupSort(true)
+            .setIntraGroupSort(true)
+            .optimize(queryObject.get());
+    oqo.print();
+//    QueryOptimizer optimizer(&pkbManager);
+//    optimizer.optimize(*queryObject);
+//    optimizer.printPlan();
     // TODO complete
+    delete &oqo;
 }

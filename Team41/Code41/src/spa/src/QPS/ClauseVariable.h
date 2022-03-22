@@ -75,14 +75,14 @@ public:
     ClauseVariable();
 
 private:
+    // variable type of the variable instance
+    variable_type type;
+
     // name of the clause variable
     string label;
 
-    // declaration type of the clause variable (must be declared)
-    QueryDeclaration::design_entity_type designEntityType;
-
     QueryDeclaration qd;
 
-    // variable type of the variable instance
-    variable_type type;
+    // declaration type of the clause variable (must be declared)
+    QueryDeclaration::design_entity_type designEntityType;
 };

@@ -4,20 +4,28 @@
 #include <functional>
 #include <set>
 
-struct abstractGroupComparator {
-  bool operator()(const AbstractGroup &lhs,const AbstractGroup &rhs) const {
-	return lhs.score() < rhs.score();
-  }
+struct AbstractGroupComparator {
+    bool operator()(AbstractGroup *lhs, AbstractGroup *rhs) const {
+        return lhs->score() < rhs->score();
+    }
 };
 
-class SortedGroups: public AbstractGroups {
- private:
-  multiset<AbstractGroup, abstractGroupComparator>::iterator it;
-  multiset<AbstractGroup, abstractGroupComparator> sortedGroups;
- public:
-  SortedGroups();
-  void addGroup(const AbstractGroup& group) override;
-  SuperClause* pop() override;
-  bool empty() override;
-  const AbstractGroup &front() override;
+class SortedGroups : public AbstractGroups {
+private:
+    mutable multiset<AbstractGroup *>::iterator it;
+    multiset<AbstractGroup *, AbstractGroupComparator> sortedGroups;
+public:
+    SortedGroups();
+
+    void addGroup(AbstractGroup *group) override;
+
+    SuperClause *pop() override;
+
+    bool empty() override;
+
+    AbstractGroup *front() override;
+
+    string toString() const override;
+
+    void print() const override;
 };

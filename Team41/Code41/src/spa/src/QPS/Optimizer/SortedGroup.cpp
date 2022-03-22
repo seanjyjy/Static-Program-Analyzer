@@ -1,5 +1,36 @@
-//
-// Created by Kendrick on 22/3/2022.
-//
-
 #include "SortedGroup.h"
+
+SortedGroup::SortedGroup(vector<SuperClause *> initClauses) {
+    clauses = multiset<SuperClause *, ClauseComparator>(initClauses.begin(), initClauses.end());
+    clauseScoreSum = accumulate(initClauses.begin(), initClauses.end(), 0L, [](long currScore, SuperClause *a) {
+        return ClauseScorer::score(a) + currScore;
+    });
+}
+
+SuperClause *SortedGroup::pop() const {
+    if (empty()) throw runtime_error("SortedGroup: no more clauses to pop");
+    return *(it++);
+}
+
+bool SortedGroup::empty() const {
+    return it == clauses.end();
+}
+
+size_t SortedGroup::score() const {
+    return clauseScoreSum;
+}
+
+void SortedGroup::print() const {
+    cout << toString() << endl;
+}
+
+string SortedGroup::toString() const {
+    // TODO implement after superclause refactor
+    string ret;
+    ret += "\n***** SORTED GROUP *****\n";
+    for ([[maybe_unused]] SuperClause *cl: clauses) {
+        ret += "WIP\n";
+    }
+    ret += "************************";
+    return ret;
+}

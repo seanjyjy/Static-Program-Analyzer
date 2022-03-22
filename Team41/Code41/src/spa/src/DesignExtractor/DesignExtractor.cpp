@@ -1,5 +1,6 @@
 #include "DesignExtractor.h"
 #include "Common/TNodeType.h"
+#include <stdexcept>
 
 using namespace std;
 
@@ -29,6 +30,8 @@ void DesignExtractor::extractEntities() {
                 pkb->registerIfStmt(stmtNumStr); break;
             case TNodeType::assignStmt:
                 pkb->registerAssignStmt(stmtNumStr); break;
+            default:
+                break; // do nothing
         }
     }
     for (const string &procName : ee.getProcSet())
