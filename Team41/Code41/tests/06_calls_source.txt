@@ -25,10 +25,13 @@ procedure computeCentroid {
       call readPoint;
     }
   if (count == 0) then {
-      flag = 1;
+       call printFlag;
     } else {
       cenX = cenX / count;
       cenY = cenY / count;
     }
   normSq = cenX * cenX + cenY * cenY;
+}
+procedure printFlag {
+    print flag;
 }

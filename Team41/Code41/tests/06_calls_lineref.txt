@@ -25,10 +25,13 @@
 18.       call readPoint;
 --.     }
 19.   if (count == 0) then {
-20.       flag = 1;
+20.       call printFlag;
 --.     } else {
 21.       cenX = cenX / count;
 22.       cenY = cenY / count;
 --.     }
 23.   normSq = cenX * cenX + cenY * cenY;
+--. }
+--. procedure printFlag {
+24.     print flag;
 --. }
