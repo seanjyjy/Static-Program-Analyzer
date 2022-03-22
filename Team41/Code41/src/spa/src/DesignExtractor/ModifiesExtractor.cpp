@@ -3,7 +3,8 @@
 #include "Common/TNodeType.h"
 
 ModifiesExtractor::ModifiesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,
-                                     unordered_map<string, unordered_set<string>> &callsMap, list<string> &procCallOrder) :
+                                     unordered_map<string, unordered_set<string>> &callsMap,
+                                     list<string> &procCallOrder) :
         VarRelationExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder) {}
 
 void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
@@ -14,7 +15,7 @@ void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
     } else if (type == TNodeType::stmtLst) {
         unordered_set<string> modifiesSetChild;
         vector<TNode *> ch = node->getChildren();
-        for (TNode *child : ch) {
+        for (TNode *child: ch) {
             dfs(child, modifiesSetChild);
             DesignExtractorUtils::combineSetsClear(modifiesSet, modifiesSetChild);
         }

@@ -6,10 +6,10 @@
 #include "Base/StmtNumExtractor.h"
 #include "Common/TNode.h"
 
-class PatternExtractor: public StmtNumExtractor {
+class PatternExtractor : public StmtNumExtractor {
 private:
     unordered_map<string, pair<string, TNode *>> assignPatternMap; // mapping of statement number of assign statement to
-                                                                   // pair of <lhs variable, TNode* of rhs of assign>
+    // pair of <lhs variable, TNode* of rhs of assign>
     unordered_map<string, unordered_set<string>> ifPatternMap; // mapping of statement number of if statement to set of condVariables
     unordered_map<string, unordered_set<string>> whilePatternMap; // mapping of statement number of while statement to set of condVariables
 

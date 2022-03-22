@@ -6,7 +6,7 @@
 #include "Base/BaseExtractor.h"
 #include "Common/TNode.h"
 
-class EntitiesExtractor: public BaseExtractor {
+class EntitiesExtractor : public BaseExtractor {
 private:
     unordered_map<TNode *, string> nodeToStmtNumMap; // mapping of TNode* to statement number
     unordered_set<string> procSet; // set of procedure names
@@ -34,7 +34,7 @@ private:
      * @param node current TNode being processed in tree traversal
      * @param stmtNum last registered statement number
      */
-    void dfs(TNode* node, int &stmtNum); // statement number, varName, const
+    void dfs(TNode *node, int &stmtNum); // statement number, varName, const
 
 public:
     EntitiesExtractor(TNode *ast);

@@ -14,7 +14,7 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
         mapRelation(node, usesSet);
     } else if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = node->getChildren();
-        for (TNode *child : ch) {
+        for (TNode *child: ch) {
             dfs(child, usesSetChild);
             DesignExtractorUtils::combineSetsClear(usesSet, usesSetChild);
         }
@@ -23,7 +23,7 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
         mapRelation(node, usesSet);
     } else if (type == TNodeType::whileStmt || type == TNodeType::ifStmt) {
         vector<TNode *> ch = node->getChildren();
-        for (TNode *child : ch) { // 1st child is condExpr, rest are stmtLst
+        for (TNode *child: ch) { // 1st child is condExpr, rest are stmtLst
             dfs(child, usesSetChild);
             DesignExtractorUtils::combineSetsClear(usesSet, usesSetChild);
         }
@@ -34,7 +34,7 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
         mapRelation(node, usesSet);
     } else if (isCondExpr(type) || isOp(type)) {
         vector<TNode *> ch = node->getChildren();
-        for (TNode *child : ch) { // 1st child is condExpr, rest are stmtLst
+        for (TNode *child: ch) { // 1st child is condExpr, rest are stmtLst
             dfs(child, usesSetChild);
             DesignExtractorUtils::combineSetsClear(usesSet, usesSetChild);
         }

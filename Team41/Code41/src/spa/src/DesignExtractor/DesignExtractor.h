@@ -25,12 +25,19 @@ private:
     list<string> procCallOrder; // list of procedures in reversed toposort order of calls graph
 
     void extractEntities();
+
     void extractCalls();
+
     void extractModifies();
+
     void extractUses();
+
     void extractFollows();
+
     void extractParent();
+
     void extractPattern();
+
     void extractCFG();
 
 public:

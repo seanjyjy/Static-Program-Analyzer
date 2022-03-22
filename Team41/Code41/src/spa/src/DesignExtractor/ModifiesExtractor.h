@@ -7,7 +7,7 @@
 #include "Base/VarRelationExtractor.h"
 #include "Common/TNode.h"
 
-class ModifiesExtractor: public VarRelationExtractor {
+class ModifiesExtractor : public VarRelationExtractor {
 private:
     /**
      * Traverses through AST, building modifies set upwards and recording them for procedures and statements.
@@ -27,5 +27,6 @@ public:
     void extract() override;
 
     unordered_map<string, unordered_set<string>> getProcModifiesMap();
+
     unordered_map<string, unordered_set<string>> getStmtModifiesMap();
 };

@@ -53,7 +53,7 @@ void PatternExtractor::dfsExpr(TNode *node, unordered_set<string> &varSet) {
     TNodeType type = node->getType();
     if (isCondExpr(type) || isOp(type)) {
         vector<TNode *> ch = node->getChildren();
-        for (TNode *child : ch) {
+        for (TNode *child: ch) {
             dfsExpr(child, varSetChild);
             DesignExtractorUtils::combineSetsClear(varSet, varSetChild);
         }

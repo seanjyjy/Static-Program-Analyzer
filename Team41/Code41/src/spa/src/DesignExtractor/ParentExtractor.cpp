@@ -11,12 +11,12 @@ void ParentExtractor::mapParent(TNode *node) {
     if (type == TNodeType::ifStmt) {
         for (size_t i = 1; i <= 2; i++) {
             vector<TNode *> ch = node->getChildren()[i]->getChildren();
-            for (TNode *child : ch)
+            for (TNode *child: ch)
                 parentLst.push_back(nodeToStmtNumMap.at(child));
         }
     } else { // TNodeType::whileStmt
         vector<TNode *> ch = node->getChildren()[1]->getChildren();
-        for (TNode *child : ch)
+        for (TNode *child: ch)
             parentLst.push_back(nodeToStmtNumMap.at(child));
     }
     parentMap.insert({nodeToStmtNumMap.at(node), parentLst});
@@ -34,7 +34,7 @@ void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
     } else if (type == TNodeType::stmtLst) {
         list<string> parentLstChild;
         vector<TNode *> ch = node->getChildren();
-        for (TNode *child : ch) {
+        for (TNode *child: ch) {
             dfs(child, parentLstChild);
             DesignExtractorUtils::combineListsClear(parentLst, parentLstChild);
         }
@@ -60,7 +60,7 @@ void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
 
 void ParentExtractor::extract() {
     vector<TNode *> procNodes = ast->getChildren();
-    for (TNode *procNode : procNodes) {
+    for (TNode *procNode: procNodes) {
         list<string> lst;
         dfs(procNode, lst);
     }

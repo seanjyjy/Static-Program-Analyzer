@@ -7,7 +7,7 @@
 #include "Base/BaseExtractor.h"
 #include "Common/TNode.h"
 
-class CallsExtractor: BaseExtractor {
+class CallsExtractor : BaseExtractor {
 private:
     const unordered_set<string> &procSet; // set of procedure names
     unordered_map<string, unordered_set<string>> callsMap; // mapping of proc to set of proc it directly calls
@@ -57,7 +57,7 @@ private:
      * @param proc Current procedure being processed
      * @param visSet Set of procedures visited in Calls graph
      */
-    void topoSort(const string& proc, unordered_set<string> &visSet);
+    void topoSort(const string &proc, unordered_set<string> &visSet);
 
     /**
      * Builds proc callsT proc mapping, using callsMap and procCallOrder.
@@ -73,6 +73,8 @@ public:
     void extract() override;
 
     unordered_map<string, unordered_set<string>> getCallsMap();
+
     unordered_map<string, unordered_set<string>> getCallsTMap();
+
     list<string> getProcCallOrder();
 };

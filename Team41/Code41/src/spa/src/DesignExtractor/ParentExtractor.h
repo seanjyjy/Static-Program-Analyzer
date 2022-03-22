@@ -6,7 +6,7 @@
 #include "Base/StmtNumExtractor.h"
 #include "Common/TNode.h"
 
-class ParentExtractor: public StmtNumExtractor {
+class ParentExtractor : public StmtNumExtractor {
 private:
     unordered_map<string, list<string>> parentMap; // mapping of statement to list of statements that it is parent of
     unordered_map<string, list<string>> parentTMap;// mapping of statement to list of statements that it is parentT of
@@ -43,6 +43,7 @@ public:
     void extract() override;
 
     unordered_map<string, list<string>> getParentMap();
+
     unordered_map<string, list<string>> getParentTMap();
 };
 

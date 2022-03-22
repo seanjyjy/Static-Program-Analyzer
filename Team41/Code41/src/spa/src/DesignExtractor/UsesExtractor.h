@@ -7,7 +7,7 @@
 #include "Base/VarRelationExtractor.h"
 #include "Common/TNode.h"
 
-class UsesExtractor: public VarRelationExtractor {
+class UsesExtractor : public VarRelationExtractor {
 private:
     /**
      * Traverses through AST, building uses set upwards and recording them for procedures and statements.
@@ -27,5 +27,6 @@ public:
     void extract() override;
 
     unordered_map<string, unordered_set<string>> getProcUsesMap();
+
     unordered_map<string, unordered_set<string>> getStmtUsesMap();
 };

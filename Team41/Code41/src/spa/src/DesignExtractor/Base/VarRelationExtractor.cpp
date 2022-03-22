@@ -3,7 +3,8 @@
 #include "DesignExtractor/DesignExtractorUtils.h"
 
 VarRelationExtractor::VarRelationExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,
-                                           unordered_map<string, unordered_set<string>> &callsMap, list<string> &procCallOrder) :
+                                           unordered_map<string, unordered_set<string>> &callsMap,
+                                           list<string> &procCallOrder) :
         StmtNumExtractor(ast, nodeToStmtNumMap), callsMap(callsMap), procCallOrder(procCallOrder) {}
 
 void VarRelationExtractor::mapRelation(TNode *node, unordered_set<string> &relationSet) {
@@ -27,8 +28,8 @@ void VarRelationExtractor::mapRelation(TNode *node, unordered_set<string> &relat
 }
 
 void VarRelationExtractor::buildProcRelationCalls() {
-    for (const string &procParent : procCallOrder) {
-        for (const string& procChild : callsMap.at(procParent)) { // parent proc should always call a proc
+    for (const string &procParent: procCallOrder) {
+        for (const string &procChild: callsMap.at(procParent)) { // parent proc should always call a proc
             auto it = procRelationMap.find(procChild);
             if (it == procRelationMap.end()) continue; // child proc doesn't <relation> anything
             DesignExtractorUtils::copyOverSet(procRelationMap[procParent], it->second);
@@ -43,7 +44,7 @@ void VarRelationExtractor::dfsCalls(TNode *node, unordered_set<string> &relation
     } else if (type == TNodeType::stmtLst) {
         unordered_set<string> usesSetChild;
         vector<TNode *> ch = node->getChildren();
-        for (TNode *child : ch) {
+        for (TNode *child: ch) {
             dfsCalls(child, usesSetChild);
             DesignExtractorUtils::combineSetsClear(relationSet, usesSetChild);
         }
@@ -58,7 +59,7 @@ void VarRelationExtractor::dfsCalls(TNode *node, unordered_set<string> &relation
             DesignExtractorUtils::combineSetsClear(relationSet, usesSetChild);
         }
         mapRelation(node, relationSet);
-    }  else if (type == TNodeType::callStmt) {
+    } else if (type == TNodeType::callStmt) {
         string procCalled = node->getChildren()[0]->getTokenVal();
         auto it = procRelationMap.find(procCalled);
         if (it != procRelationMap.end()) // procCalled <relation> some variables
@@ -69,12 +70,12 @@ void VarRelationExtractor::dfsCalls(TNode *node, unordered_set<string> &relation
 
 void VarRelationExtractor::extract() {
     vector<TNode *> procNodes = ast->getChildren();
-    for (TNode *procNode : procNodes) { // build stmt <relation> w/o calls
+    for (TNode *procNode: procNodes) { // build stmt <relation> w/o calls
         unordered_set<string> st;
         dfs(procNode, st);
     }
     buildProcRelationCalls();
-    for (TNode *procNode : procNodes) { // build stmt <relation> due to calls
+    for (TNode *procNode: procNodes) { // build stmt <relation> due to calls
         unordered_set<string> st;
         dfsCalls(procNode, st);
     }

@@ -6,7 +6,7 @@
 #include "Base/StmtNumExtractor.h"
 #include "Common/TNode.h"
 
-class FollowsExtractor: public StmtNumExtractor {
+class FollowsExtractor : public StmtNumExtractor {
 private:
     unordered_map<string, list<string>> followsTMap; // mapping of statement to list of statements that followsT it
 

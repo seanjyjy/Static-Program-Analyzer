@@ -29,7 +29,7 @@ void CFGExtractor::dfsInitCFG(TNode *curTNode, CFGNode *curCFGNode, CFGNode *par
 
         for (int i = 0; i < ch.size(); ++i) {
             TNodeType childType = ch[i]->getType();
-            CFGNode *neighbourCFGNode = (i != ch.size() - 1) ? createCFGNode(ch[i+1])
+            CFGNode *neighbourCFGNode = (i != ch.size() - 1) ? createCFGNode(ch[i + 1])
                                                              : nullptr; // last child has no neighbour
             if (childType == TNodeType::ifStmt) {
                 dfsInitCFG(ch[i], childCFGNode, nullptr);
@@ -94,10 +94,10 @@ void CFGExtractor::dfsLinkBack(TNode *curTNode, TNode *backTNode) {
 void CFGExtractor::extract() {
     stmtNumToNodeMap.insert({ROOT_INDEX, cfg});
     vector<TNode *> procTNodes = ast->getChildren();
-    for (TNode *procNode : procTNodes) { // start dfs from stmtLst of each procedure
+    for (TNode *procNode: procTNodes) { // start dfs from stmtLst of each procedure
         dfsInitCFG(procNode->getChildren()[0], nullptr, cfg); // {stmtLst, nullptr, root CFG}
     }
-    for (TNode *procNode : procTNodes) {
+    for (TNode *procNode: procTNodes) {
         dfsLinkBack(procNode->getChildren()[0], nullptr); // {stmtLst, nullptr, root CFG}
     }
 }

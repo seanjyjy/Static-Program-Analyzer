@@ -33,7 +33,7 @@ void FollowsExtractor::dfs(TNode *node) {
 
 void FollowsExtractor::extract() {
     vector<TNode *> procNodes = ast->getChildren();
-    for (TNode *procNode : procNodes) {
+    for (TNode *procNode: procNodes) {
         dfs(procNode);
     }
 }

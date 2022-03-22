@@ -8,7 +8,7 @@ EntitiesExtractor::EntitiesExtractor(TNode *ast) : BaseExtractor(ast) {}
 
 void EntitiesExtractor::findProcedures() {
     vector<TNode *> procNodes = ast->getChildren();
-    for (TNode *procNode : procNodes) {
+    for (TNode *procNode: procNodes) {
         string procName = procNode->getTokenVal();
         if (procSet.find(procName) != procSet.end()) // multiple procedures with same name not allowed
             throw SemanticException("Duplicate Procedure Name '" + procName + "' found");
@@ -24,16 +24,18 @@ void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum) {
     } else {
         switch (type) {
             case TNodeType::varName:
-                varSet.insert(node->getTokenVal()); break;
+                varSet.insert(node->getTokenVal());
+                break;
             case TNodeType::constValue:
-                constSet.insert(node->getTokenVal()); break;
+                constSet.insert(node->getTokenVal());
+                break;
         }
     }
 }
 
-void EntitiesExtractor::dfs(TNode* node, int &stmtNum) {
+void EntitiesExtractor::dfs(TNode *node, int &stmtNum) {
     recordEntity(node, stmtNum);
-    for (TNode* child : node->getChildren())
+    for (TNode *child: node->getChildren())
         dfs(child, stmtNum);
 }
 

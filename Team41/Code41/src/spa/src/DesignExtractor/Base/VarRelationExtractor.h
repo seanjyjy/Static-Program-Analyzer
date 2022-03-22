@@ -10,7 +10,7 @@
 /**
  * Abstract class for extractor that do Variable Relation (Currently Modifies and Uses)
  */
-class VarRelationExtractor: public StmtNumExtractor {
+class VarRelationExtractor : public StmtNumExtractor {
 protected:
     const unordered_map<string, unordered_set<string>> &callsMap; // mapping of proc to list of proc it directly calls
     const list<string> &procCallOrder; // list of procedures in reversed toposort order of calls graph
@@ -53,5 +53,6 @@ public:
     void extract() override;
 
     unordered_map<string, unordered_set<string>> getProcRelationMap();
+
     unordered_map<string, unordered_set<string>> getStmtRelationMap();
 };

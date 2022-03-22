@@ -7,7 +7,7 @@
 #include "Common/CFGNode.h"
 #include "Common/TNode.h"
 
-class CFGExtractor: public StmtNumExtractor {
+class CFGExtractor : public StmtNumExtractor {
 private:
     const string ROOT_INDEX = "0";
     CFGNode *cfg = new CFGNode(ROOT_INDEX); // root node of CFG
