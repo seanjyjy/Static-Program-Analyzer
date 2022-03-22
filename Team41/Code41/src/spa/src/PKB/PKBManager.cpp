@@ -16,38 +16,38 @@ using namespace std;
 
 //======================================== Statements ==================================================
 
-void PKBManager::registerAssignStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, ASSIGN); }
+void PKBManager::registerAssignStmt(const string &stmtNum) { return stmtTable->setStmt(stmtNum, ASSIGN); }
 
-void PKBManager::registerWhileStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, WHILE); }
+void PKBManager::registerWhileStmt(const string &stmtNum) { return stmtTable->setStmt(stmtNum, WHILE); }
 
-void PKBManager::registerIfStmt(const string& stmtNum) { return stmtTable->setStmt(stmtNum, IF); }
+void PKBManager::registerIfStmt(const string &stmtNum) { return stmtTable->setStmt(stmtNum, IF); }
 
-void PKBManager::registerReadStmt(const string& stmtNum, const string& varName) {
+void PKBManager::registerReadStmt(const string &stmtNum, const string &varName) {
     stmtTable->setStmt(stmtNum, READ);
     stmtTable->setStmtAttr(stmtNum, varName);
 }
 
-void PKBManager::registerPrintStmt(const string& stmtNum, const string& varName) {
+void PKBManager::registerPrintStmt(const string &stmtNum, const string &varName) {
     stmtTable->setStmt(stmtNum, PRINT);
     stmtTable->setStmtAttr(stmtNum, varName);
 }
 
-void PKBManager::registerCallStmt(const string& stmtNum, const string& procName) {
+void PKBManager::registerCallStmt(const string &stmtNum, const string &procName) {
     stmtTable->setStmt(stmtNum, CALL);
     stmtTable->setStmtAttr(stmtNum, procName);
 }
 
 //======================================== Entities ==================================================
 
-void PKBManager::registerVariable(const string& varName) { return entityTable->addVariable(varName); }
+void PKBManager::registerVariable(const string &varName) { return entityTable->addVariable(varName); }
 
-void PKBManager::registerConstant(const string& constVal) { return entityTable->addConstant(constVal); }
+void PKBManager::registerConstant(const string &constVal) { return entityTable->addConstant(constVal); }
 
-void PKBManager::registerProcedure(const string& procName) { return entityTable->addProcedure(procName); }
+void PKBManager::registerProcedure(const string &procName) { return entityTable->addProcedure(procName); }
 
 //======================================== Calls ==================================================
 
-void PKBManager::registerCalls(const string& proc1, const string& proc2) {
+void PKBManager::registerCalls(const string &proc1, const string &proc2) {
     if (!(isProcedure(proc1))) {
         cout << "Warning: " << "[PKB][registerCalls] Caller is not a registered procedure" << endl;
     }
@@ -57,7 +57,7 @@ void PKBManager::registerCalls(const string& proc1, const string& proc2) {
     callsTable->setCalls(proc1, proc2);
 }
 
-void PKBManager::registerCallsT(const string& proc1, const string& proc2) {
+void PKBManager::registerCallsT(const string &proc1, const string &proc2) {
     if (!(isProcedure(proc1))) {
         cout << "Warning: " << "[PKB][registerCallsT] Caller is not a registered procedure" << endl;
     }
@@ -69,37 +69,38 @@ void PKBManager::registerCallsT(const string& proc1, const string& proc2) {
 
 //======================================== Follows ==================================================
 
-void PKBManager::registerFollows(const string& stmt1, const string& stmt2) {
+void PKBManager::registerFollows(const string &stmt1, const string &stmt2) {
     return followsTable->setFollows(stmt1, stmt2);
 }
 
-void PKBManager::registerFollowsT(const string& stmt1, const string& stmt2) {
+void PKBManager::registerFollowsT(const string &stmt1, const string &stmt2) {
     return followsTable->setFollowsT(stmt1, stmt2);
 }
 
 //======================================== Parent ==================================================
 
-void PKBManager::registerParent(const string& parentStmt, const string& childStmt) {
+void PKBManager::registerParent(const string &parentStmt, const string &childStmt) {
     return parentTable->setParent(parentStmt, childStmt);
 }
 
-void PKBManager::registerParentT(const string& parentStmt, const string& childStmt) {
+void PKBManager::registerParentT(const string &parentStmt, const string &childStmt) {
     return parentTable->setParentT(parentStmt, childStmt);
 }
 
 //======================================== Uses ==================================================
 
-void PKBManager::registerUsesS(const string& stmtNum, const string& varName) {
+void PKBManager::registerUsesS(const string &stmtNum, const string &varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerUsesS] Used variable is not registered" << endl;
     }
-    if (!isAssignStmt(stmtNum) && !isPrintStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum) && !isCallStmt(stmtNum)) {
+    if (!isAssignStmt(stmtNum) && !isPrintStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum)
+        && !isCallStmt(stmtNum)) {
         cout << "Warning: " << "[PKB][registerUsesS] Statement is not of type assign/print/if/while/call" << endl;
     }
     return usesTable->setVarUsedInStmt(stmtNum, varName);
 }
 
-void PKBManager::registerUsesP(const string& procName, const string& varName) {
+void PKBManager::registerUsesP(const string &procName, const string &varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerUsesP] Used variable is not registered" << endl;
     }
@@ -111,17 +112,18 @@ void PKBManager::registerUsesP(const string& procName, const string& varName) {
 
 //======================================== Modifies ==================================================
 
-void PKBManager::registerModifiesS(const string& stmtNum, const string& varName) {
+void PKBManager::registerModifiesS(const string &stmtNum, const string &varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerModifiesS] Used variable is not registered" << endl;
     }
-    if (!isAssignStmt(stmtNum) && !isReadStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum) && !isCallStmt(stmtNum)) {
+    if (!isAssignStmt(stmtNum) && !isReadStmt(stmtNum) && !isIfStmt(stmtNum) && !isWhileStmt(stmtNum)
+        && !isCallStmt(stmtNum)) {
         cout << "Warning: " << "[PKB][registerModifiesS] Statement is not of type assign/read/if/while/call" << endl;
     }
     return modifiesTable->setVarModifiedInStmt(stmtNum, varName);
 }
 
-void PKBManager::registerModifiesP(const string& procName, const string& varName) {
+void PKBManager::registerModifiesP(const string &procName, const string &varName) {
     if (!(isVariable(varName))) {
         cout << "Warning: " << "[PKB][registerModifiesP] Used variable is not registered" << endl;
     }
@@ -133,7 +135,7 @@ void PKBManager::registerModifiesP(const string& procName, const string& varName
 
 //======================================== Pattern ==================================================
 
-void PKBManager::registerAssignPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST) {
+void PKBManager::registerAssignPattern(const string &stmtNum, const string &lhsVariable, TNode *rhsAssignAST) {
     if (!(isAssignStmt(stmtNum))) {
         cout << "Warning: " << "[PKB][registerAssignPattern] Statement is not of type assign" << endl;
     }
@@ -165,7 +167,7 @@ void PKBManager::registerWhilePattern(const string &stmtNum, const string &condV
 
 //======================================== CFG ==================================================
 
-void PKBManager::registerCFG(CFGNode *node, const StmtToNodeMap& map) {
+void PKBManager::registerCFG(CFGNode *node, const StmtToNodeMap &map) {
     this->rootCFG = node;
     this->stmtToNodeMap = map;
     return nextTable->setCFGNode(node, map);

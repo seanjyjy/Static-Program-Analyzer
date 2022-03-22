@@ -4,7 +4,7 @@
 
 UsesTable::UsesTable() : usesStmtRelation("UsesS"), usesProcRelation("UsesP") {}
 
-void UsesTable::setVarUsedInStmt(const string& stmtNum, const string& varName) {
+void UsesTable::setVarUsedInStmt(const string &stmtNum, const string &varName) {
     usesStmtRelation.addMapping(stmtNum, varName);
 }
 
@@ -32,7 +32,7 @@ bool UsesTable::isUsesS(string stmtNum, string varName) {
     return usesStmtRelation.hasMapping(move(stmtNum), move(varName));
 }
 
-void UsesTable::setVarUsedInProc(const string& procName, const string& varName) {
+void UsesTable::setVarUsedInProc(const string &procName, const string &varName) {
     usesProcRelation.addMapping(procName, varName);
 }
 

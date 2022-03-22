@@ -4,7 +4,7 @@
 
 ModifiesTable::ModifiesTable() : modifyStmtRelation("ModifiesS"), modifyProcRelation("ModifiesP") {}
 
-void ModifiesTable::setVarModifiedInStmt(const string& stmtNum, const string& varName) {
+void ModifiesTable::setVarModifiedInStmt(const string &stmtNum, const string &varName) {
     modifyStmtRelation.addMapping(stmtNum, varName);
 }
 
@@ -32,7 +32,7 @@ bool ModifiesTable::isModifiesS(string stmtNum, string varName) {
     return modifyStmtRelation.hasMapping(move(stmtNum), move(varName));
 }
 
-void ModifiesTable::setVarModifiedInProc(const string& procName, const string& varName) {
+void ModifiesTable::setVarModifiedInProc(const string &procName, const string &varName) {
     modifyProcRelation.addMapping(procName, varName);
 }
 

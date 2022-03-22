@@ -26,7 +26,7 @@ public:
      * @param lhsVariable the modified variable in the statement
      * @param assignAST the AST for the RHS expression of the statement
      */
-    void setPattern(const string& stmtNum, const string& lhsVariable, TNode *rhsAssignAST);
+    void setPattern(const string &stmtNum, const string &lhsVariable, TNode *rhsAssignAST);
 
     /**
      * Gets all assignStmts that matches the provided full pattern
@@ -68,7 +68,7 @@ public:
      * @param varName the LHS variable name
      * @return the set of assignment statements that matches the subpattern and modifies the variable
      */
-    unordered_set<string> getStmtFromSubPatternNVar(TNode *subPatternAST, const string& varName);
+    unordered_set<string> getStmtFromSubPatternNVar(TNode *subPatternAST, const string &varName);
 
     /**
      * Get assignStmt-variable pair based on sub pattern

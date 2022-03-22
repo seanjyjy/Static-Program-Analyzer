@@ -27,9 +27,9 @@ public:
      */
     void setCFGNode(CFGNode *rootCFG, const StmtToNodeMap &stmtToNodeMap);
 
-    bool isNext(const string& stmt1, const string& stmt2); // Checks if stmt2 can be executed immediately after stmt1
-    vector<CFGNode*> getNextNodes(const string& stmt); // Get the stmts that are executed directly after stmt
-    vector<CFGNode*> getPrevNodes(const string& stmt); // Gets the stmts that are executed directly before stmt
+    bool isNext(const string &stmt1, const string &stmt2); // Checks if stmt2 can be executed immediately after stmt1
+    vector<CFGNode *> getNextNodes(const string &stmt); // Get the stmts that are executed directly after stmt
+    vector<CFGNode *> getPrevNodes(const string &stmt); // Gets the stmts that are executed directly before stmt
     vector<pair<string, string>> getAllNext(); // Gets stmts pair where stmt1 are executed directly after stmt2
     vector<string> getAllStmtsExecBeforeSomeStmt(); // Get list of stmts that are executed before some stmt
     vector<string> getAllStmtsExecAfterSomeStmt(); // Get list of stmts that are executed after some stmt

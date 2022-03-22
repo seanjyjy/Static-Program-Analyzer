@@ -4,7 +4,7 @@
 
 IfPatternTable::IfPatternTable() = default;
 
-void IfPatternTable::setPattern(const string& stmtNum, const string& predVariable) {
+void IfPatternTable::setPattern(const string &stmtNum, const string &predVariable) {
     patternRelation.addMapping(stmtNum, predVariable);
 }
 

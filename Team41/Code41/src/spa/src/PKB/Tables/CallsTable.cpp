@@ -4,7 +4,7 @@
 
 CallsTable::CallsTable() : callsRelation("Calls"), callsTRelation("CallsT") {}
 
-void CallsTable::setCalls(const string& caller, const string& callee) {
+void CallsTable::setCalls(const string &caller, const string &callee) {
     if (caller == callee) { throw domain_error("[PKB][CallsTable] Recursion is not allowed"); }
     if (isCalls(caller, callee)) { return; }
 
@@ -16,7 +16,7 @@ void CallsTable::setCalls(const string& caller, const string& callee) {
     callsRelation.addMapping(caller, callee);
 }
 
-void CallsTable::setCallsT(const string& caller, const string& callee) {
+void CallsTable::setCallsT(const string &caller, const string &callee) {
     if (caller == callee) { throw domain_error("[PKB][CallsTable] Recursion is not allowed"); }
     if (isCallsT(caller, callee)) { return; }
 

@@ -116,7 +116,7 @@ Program *Parser::eatProgram() {
         while (!isEof()) {
             procedures.push_back(eatProcedure());
         }
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         for (TNode *proc: procedures) {
             delete proc;
         }
@@ -142,7 +142,7 @@ Procedure *Parser::eatProcedure() {
         checkAndAdvance(TokenType::closingBrace);
 
         return new Procedure(name, stmtLst);
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete name;
         delete stmtLst;
         throw;
@@ -158,7 +158,7 @@ StmtLst *Parser::eatStmtLst() {
             stmts.push_back(eatStmt());
         }
         return new StmtLst(stmts);
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         for (TNode *stmt: stmts) {
             delete stmt;
         }
@@ -170,42 +170,42 @@ Stmt *Parser::eatStmt() {
     int c = saveCursor();
     try {
         return eatStmtRead();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatStmtPrint();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatStmtCall();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatStmtWhile();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatStmtIf();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatStmtAssign();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
@@ -219,7 +219,7 @@ Read *Parser::eatStmtRead() {
         tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::semicolon);
         return new Read(new VarName(tokenBeforeAdv));
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete tokenBeforeAdv;
         throw;
     }
@@ -232,7 +232,7 @@ Print *Parser::eatStmtPrint() {
         tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::semicolon);
         return new Print(new VarName(tokenBeforeAdv));
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete tokenBeforeAdv;
         throw;
     }
@@ -245,7 +245,7 @@ Call *Parser::eatStmtCall() {
         tokenBeforeAdv = checkAndGetTokenAndAdvance(TokenType::name);
         checkAndAdvance(TokenType::semicolon);
         return new Call(new ProcName(tokenBeforeAdv));
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete tokenBeforeAdv;
         throw;
     }
@@ -263,7 +263,7 @@ While *Parser::eatStmtWhile() {
         stmtLst = eatStmtLst();
         checkAndAdvance(TokenType::closingBrace);
         return new While(condExpr, stmtLst);
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete condExpr;
         delete stmtLst;
         throw;
@@ -288,7 +288,7 @@ If *Parser::eatStmtIf() {
         elseStmtLst = eatStmtLst();
         checkAndAdvance(TokenType::closingBrace);
         return new If(condExpr, ifStmtLst, elseStmtLst);
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete condExpr;
         delete ifStmtLst;
         delete elseStmtLst;
@@ -305,7 +305,7 @@ Assign *Parser::eatStmtAssign() {
         expr = eatExpr();
         checkAndAdvance(TokenType::semicolon);
         return new Assign(new VarName(tokenBeforeAdv), expr);
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete tokenBeforeAdv;
         delete expr;
         throw;
@@ -316,7 +316,7 @@ CondExpr *Parser::eatCondExpr() {
     int c = saveCursor();
     try {
         return eatRelExpr();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
@@ -328,7 +328,7 @@ CondExpr *Parser::eatCondExpr() {
         condExpr = eatCondExpr();
         checkAndAdvance(TokenType::closingBracket);
         return new Not(condExpr);
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete condExpr;
         backtrack(c);
     }
@@ -345,7 +345,7 @@ CondExpr *Parser::eatCondExpr() {
         condExpr2 = eatCondExpr();
         checkAndAdvance(TokenType::closingBracket);
         return new And(condExpr1, condExpr2);
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete condExpr1;
         delete condExpr2;
         backtrack(c);
@@ -363,7 +363,7 @@ CondExpr *Parser::eatCondExpr() {
         condExpr2 = eatCondExpr();
         checkAndAdvance(TokenType::closingBracket);
         return new Or(condExpr1, condExpr2);
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete condExpr1;
         delete condExpr2;
         backtrack(c);
@@ -378,42 +378,42 @@ RelExpr *Parser::eatRelExpr() {
 
     try {
         return eatGtExpr();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatGeExpr();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatLtExpr();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatLeExpr();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatEqExpr();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatNeExpr();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
@@ -466,21 +466,21 @@ RelFactor *Parser::eatRelFactor() {
     int c = saveCursor();
     try {
         return eatExpr();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatVarName();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatConstVal();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
@@ -498,7 +498,7 @@ RelFactor *Parser::eatExpr() {
         expr1->setLeftChild(term);
         while (expr1->getRelParent() != nullptr) expr1 = expr1->getRelParent();
         return expr1;
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete expr1;
         backtrack(c);
     }
@@ -519,7 +519,7 @@ RelFactor *Parser::eatExpr1() {
             expr1->setLeftChild(pl);
             pl->setRelParent(expr1);
             return pl;
-        } catch (SyntaxException &e) {
+        } catch (SyntaxException &) {
             delete expr1;
             backtrack(c);
         }
@@ -537,7 +537,7 @@ RelFactor *Parser::eatExpr1() {
             expr1->setLeftChild(pl);
             pl->setRelParent(expr1);
             return pl;
-        } catch (SyntaxException &e) {
+        } catch (SyntaxException &) {
             delete expr1;
             backtrack(c);
         }
@@ -557,7 +557,7 @@ RelFactor *Parser::eatTerm() {
         term1->setLeftChild(factor);
         while (term1->getRelParent() != nullptr) term1 = term1->getRelParent();
         return term1;
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete term1;
         backtrack(c);
     }
@@ -578,7 +578,7 @@ RelFactor *Parser::eatTerm1() {
             term1->setLeftChild(times);
             times->setRelParent(term1);
             return times;
-        } catch (SyntaxException &e) {
+        } catch (SyntaxException &) {
             delete term1;
             backtrack(c);
         }
@@ -597,7 +597,7 @@ RelFactor *Parser::eatTerm1() {
             term1->setLeftChild(dv);
             dv->setRelParent(term1);
             return dv;
-        } catch (SyntaxException &e) {
+        } catch (SyntaxException &) {
             delete term1;
             delete dv;
             backtrack(c);
@@ -616,7 +616,7 @@ RelFactor *Parser::eatTerm1() {
             term1->setLeftChild(md);
             md->setRelParent(term1);
             return md;
-        } catch (SyntaxException &e) {
+        } catch (SyntaxException &) {
             delete term1;
             backtrack(c);
         }
@@ -634,7 +634,7 @@ RelFactor *Parser::eatFactor() {
         expr = eatExpr();
         checkAndAdvance(TokenType::closingBracket);
         return expr;
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         delete expr;
         backtrack(c);
     }
@@ -642,14 +642,14 @@ RelFactor *Parser::eatFactor() {
     c = saveCursor();
     try {
         return eatVarName();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
     c = saveCursor();
     try {
         return eatConstVal();
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         backtrack(c);
     }
 
@@ -732,10 +732,10 @@ TNode *Parser::parse(const string &s) {
         // success, now set all parent pointers
         ast->setAllParents();
         return ast;
-    } catch (TokenizeException &e) {
+    } catch (TokenizeException &) {
         // tokenize errors are thrown pre-parse
         cout << "parser met an error during tokenizing, aborting" << endl;
-    } catch (SyntaxException &e) {
+    } catch (SyntaxException &) {
         // syntax errors are only thrown during parsing
         cout << syntaxErrorMsg() << endl;
         cout << endl << highlightSource() << endl;

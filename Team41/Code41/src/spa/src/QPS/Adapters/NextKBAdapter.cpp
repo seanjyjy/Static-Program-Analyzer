@@ -183,7 +183,7 @@ unordered_set<string> NextKBAdapter::getAllStmtsNextT(const string &stmtNum) {
             return true;
         };
 
-        TerminateCheck canEnd = [](const string &next, Cache* cache) { return false; };
+        TerminateCheck canEnd = [](const string&, Cache*) { return false; };
 
         runBFS(stmtNum, ROOT_STMT, true, saveToCache, canEnd);
     }
@@ -210,7 +210,7 @@ unordered_set<string> NextKBAdapter::getAllStmtsTBefore(const string &stmtNum) {
             return true;
         };
 
-        TerminateCheck canEnd = [](const string &next, Cache* cache) { return false; };
+        TerminateCheck canEnd = [](const string &, Cache*) { return false; };
 
         runBFS(ROOT_STMT, stmtNum, false, saveToCache, canEnd);
     }

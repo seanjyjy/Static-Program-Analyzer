@@ -37,7 +37,8 @@ unordered_set<string> PKBPatternClient::getAssignStmtFromSubpattern(TNode *subPa
     return assignPatternTable->getAllStmtsFromSubPattern(subPatternAST);
 }
 
-unordered_set<string> PKBPatternClient::getAssignStmtFromSubpatternNVar(TNode *subPatternAST, const string& varName) const {
+unordered_set<string> PKBPatternClient::getAssignStmtFromSubpatternNVar(TNode *subPatternAST,
+                                                                        const string &varName) const {
     return assignPatternTable->getStmtFromSubPatternNVar(subPatternAST, varName);
 }
 

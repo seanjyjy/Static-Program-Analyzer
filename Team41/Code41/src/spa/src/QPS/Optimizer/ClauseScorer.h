@@ -31,7 +31,6 @@ private:
     const static long SCORE_WITH_CLAUSE = 700;
     const static long SCORE_PATTERN_CLAUSE = 500;
     const static long SCORE_SUCHTHAT_CLAUSE = 300;
-    const static vector<SuchThatType> stRanks; // should not accessed directly, use getStRanks()
 
     static vector<SuchThatType> getStRanks();
     static SuchThatType stClauseToType(const TempClause &tc);

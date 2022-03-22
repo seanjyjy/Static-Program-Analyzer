@@ -308,15 +308,15 @@ ValueMapping WithEvaluator::getMapper(QueryDeclaration::design_entity_type type)
     }
 
     if (EvaluatorUtils::isCall(type)) {
-        return [](const string &stmtNum, PKBClient* pkb) { return pkb->getCallsProcNameAttr(stmtNum); };
+        return [](const string &stmtNum, PKBClient* pkbCli) { return pkbCli->getCallsProcNameAttr(stmtNum); };
     }
 
     if (EvaluatorUtils::isPrint(type)) {
-        return [](const string &stmtNum, PKBClient* pkb) { return pkb->getPrintVarNameAttr(stmtNum); };
+        return [](const string &stmtNum, PKBClient* pkbCli) { return pkbCli->getPrintVarNameAttr(stmtNum); };
     }
 
     if (EvaluatorUtils::isRead(type)) {
-        return [](const string &stmtNum, PKBClient* pkb) { return pkb->getReadVarNameAttr(stmtNum); };
+        return [](const string &stmtNum, PKBClient* pkbCli) { return pkbCli->getReadVarNameAttr(stmtNum); };
     }
 
     string errorMessage = "You shouldnt be calling getMapper with this type: " + to_string(type);

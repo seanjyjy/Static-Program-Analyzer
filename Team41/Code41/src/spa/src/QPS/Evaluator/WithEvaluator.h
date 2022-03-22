@@ -46,7 +46,7 @@ private:
                                     const string& firstColumn, const string& secondColumn,
                                     const ValueMapping& leftMapping, const ValueMapping& rightMapping);
 
-    ValueMapping sameMapper = [&](const string &stmtNum, PKBClient* pkb) { return stmtNum; };
+    ValueMapping sameMapper = [&](const string &stmtNum, PKBClient*) { return stmtNum; };
     ValueMapping getMapper(QueryDeclaration::design_entity_type type);
 public:
     explicit WithEvaluator(PKBClient* pkb);

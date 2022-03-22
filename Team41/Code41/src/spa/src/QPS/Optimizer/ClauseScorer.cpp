@@ -19,7 +19,7 @@ long ClauseScorer::score(const TempClause &tc) {
 }
 
 // all with-clauses are treated the same, i.e assigned the same score
-long ClauseScorer::scoreWithCl(const TempClause &tc) {
+long ClauseScorer::scoreWithCl(const TempClause&) {
     return SCORE_WITH_CLAUSE;
 }
 
@@ -27,13 +27,13 @@ long ClauseScorer::scoreSuchThatCl(const TempClause &tc) {
     SuchThatType type = stClauseToType(tc);
     vector<ClauseScorer::SuchThatType> ranks = getStRanks();
     // TODO can just make a map to speedup ranks
-    size_t idx = find(ranks.begin(), ranks.end(), type) - ranks.begin();
+    long idx = (long) (find(ranks.begin(), ranks.end(), type) - ranks.begin());
     long piece = SCORE_SUCHTHAT_CLAUSE / (long) ranks.size();
     return SCORE_SUCHTHAT_CLAUSE - (idx * piece); // lower index = higher score
 }
 
 // all pattern-clauses are treated the same, i.e assigned the same score
-long ClauseScorer::scorePatternCl(const TempClause &tc) {
+long ClauseScorer::scorePatternCl(const TempClause &) {
     return SCORE_PATTERN_CLAUSE;
 }
 

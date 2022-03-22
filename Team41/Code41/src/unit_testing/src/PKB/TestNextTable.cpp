@@ -91,7 +91,6 @@ TEST_CASE("PKB: NextTable") {
             REQUIRE(table.getNumOfStartNodes() == expected.size());
         }
 
-
         unordered_map<string, vector<string>> stmtPrevMap;
         for (auto[from, next]: stmtNextMap) {
             for (const auto &to: next) {
