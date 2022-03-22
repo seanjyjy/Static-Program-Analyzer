@@ -9,10 +9,10 @@ class SPAException : public exception {
 protected:
     string errorMessage;
 public:
-
+    using exception::what;
     virtual string what() = 0;
 
-    SPAException(string errorMessage);
+    explicit SPAException(string errorMessage);
 
     virtual ~SPAException() noexcept {}
 };
