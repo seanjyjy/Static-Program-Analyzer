@@ -8,7 +8,7 @@ CFGBuilder::CFGBuilder(unordered_map<string, vector<string>> stmtNextMap, vector
 
 void CFGBuilder::instantiateMap() {
     stmtNumToNodeMap["0"] = cfg;
-    for (auto &[stmtNum, ch] : stmtNextMap)
+    for (auto &[stmtNum, ch]: stmtNextMap)
         stmtNumToNodeMap[stmtNum] = new CFGNode(stmtNum);
 }
 
@@ -18,14 +18,14 @@ void CFGBuilder::addEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode) {
 }
 
 void CFGBuilder::buildCFG() {
-    for (auto &[stmtNum, ch] : stmtNextMap) {
-        for (const string& child : ch) { // child in decreasing stmtNum
+    for (auto &[stmtNum, ch]: stmtNextMap) {
+        for (const string &child: ch) { // child in decreasing stmtNum
             if (stmtNum == child)
                 throw runtime_error(stmtNum + " Next itself");
             addEdge(stmtNumToNodeMap[stmtNum], stmtNumToNodeMap[child]);
         }
     }
-    for (const string& stmtNum : firstStmts) // link root to first statement numbers
+    for (const string &stmtNum: firstStmts) // link root to first statement numbers
         cfg->addChild(stmtNumToNodeMap[stmtNum]);
 }
 

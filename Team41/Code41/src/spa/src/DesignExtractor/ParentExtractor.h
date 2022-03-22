@@ -3,12 +3,11 @@
 #include <list>
 #include <unordered_map>
 
+#include "Base/StmtNumExtractor.h"
 #include "Common/TNode.h"
 
-class ParentExtractor {
+class ParentExtractor : public StmtNumExtractor {
 private:
-    TNode *ast; // root node of AST
-    unordered_map<TNode *, string> &nodeToStmtNumMap; // mapping of TNode* to statement number
     unordered_map<string, list<string>> parentMap; // mapping of statement to list of statements that it is parent of
     unordered_map<string, list<string>> parentTMap;// mapping of statement to list of statements that it is parentT of
 
@@ -41,9 +40,10 @@ public:
     /**
      * Records all parent and parentT relationship in parentMap and parentTMap.
      */
-    void extractRelationship();
+    void extract() override;
 
     unordered_map<string, list<string>> getParentMap();
+
     unordered_map<string, list<string>> getParentTMap();
 };
 
