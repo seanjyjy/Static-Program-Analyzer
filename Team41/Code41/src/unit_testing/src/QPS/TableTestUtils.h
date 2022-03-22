@@ -27,7 +27,7 @@ public:
         vector<unordered_map<string, string>> expectedRows;
         for (vector<string> r: rows) {
             unordered_map<string, string> curr;
-            for (size_t i = 0; i < (int) headers.size(); ++i) {
+            for (size_t i = 0; i < headers.size(); ++i) {
                 curr[headers.at(i)] = r.at(i);
             }
             expectedRows.push_back(curr);

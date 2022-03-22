@@ -324,7 +324,7 @@ bool EvaluatorUtils::PatternUtils::isWildCards(const vector<PatternVariable> &pa
 
     size_t size = type == QueryDeclaration::design_entity_type::IF ? 2 : 1;
 
-    if ((int) patternVariables.size() < size) {
+    if (patternVariables.size() < size) {
         return false;
     }
 

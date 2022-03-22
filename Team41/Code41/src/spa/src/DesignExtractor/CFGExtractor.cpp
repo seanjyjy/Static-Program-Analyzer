@@ -27,9 +27,10 @@ void CFGExtractor::dfsInitCFG(TNode *curTNode, CFGNode *curCFGNode, CFGNode *par
         if (parentCFGNode) // IF or WHILE CFGNode point to first stmt in container
             addCFGEdge(parentCFGNode, childCFGNode); // add forward CFG edge
 
-        for (size_t i = 0; i < (int) ch.size(); ++i) {
+        for (size_t i = 0; i < ch.size(); ++i) {
             TNodeType childType = ch[i]->getType();
-            CFGNode *neighbourCFGNode = (i != (int) ch.size() - 1) ? createCFGNode(ch[i + 1])
+            // TODO ch.size() - 1 may cause unsigned integer overflow, dangerous?
+            CFGNode *neighbourCFGNode = (i != ch.size() - 1) ? createCFGNode(ch[i + 1])
                                                              : nullptr; // last child has no neighbour
             if (childType == TNodeType::ifStmt) {
                 dfsInitCFG(ch[i], childCFGNode, nullptr);
