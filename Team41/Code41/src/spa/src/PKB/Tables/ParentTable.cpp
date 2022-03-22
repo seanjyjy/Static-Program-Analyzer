@@ -5,7 +5,7 @@
 
 ParentTable::ParentTable() : parentRelation("Parent"), ancestorRelation("ParentT") {}
 
-void ParentTable::setParent(const string& parentStmt, const string& childStmt) {
+void ParentTable::setParent(const string &parentStmt, const string &childStmt) {
     // NOTE: does not check if follower is a numeric string
     if (parentStmt == childStmt) { throw domain_error("[PKB][ParentTable] Statements cannot parent self"); }
     if (isParent(parentStmt, childStmt)) { return; }
@@ -13,7 +13,7 @@ void ParentTable::setParent(const string& parentStmt, const string& childStmt) {
     parentRelation.addMapping(parentStmt, childStmt);
 }
 
-void ParentTable::setParentT(const string& ancestorStmt, const string& descendantStmt) {
+void ParentTable::setParentT(const string &ancestorStmt, const string &descendantStmt) {
     // NOTE: does not check if follower is a numeric string
     if (ancestorStmt == descendantStmt) { throw domain_error("[PKB][ParentTable] Statements cannot parentT self"); }
     if (isParentT(ancestorStmt, descendantStmt)) { return; }

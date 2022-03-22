@@ -40,7 +40,6 @@ public:
      */
     V getValFromKey(K key);
 
-
     /**
      * Gets the key that the value belong to
      *

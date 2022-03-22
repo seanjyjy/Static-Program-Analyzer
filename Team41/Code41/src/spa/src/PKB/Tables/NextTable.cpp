@@ -28,7 +28,7 @@ void NextTable::setCFGNode(CFGNode *node, const StmtToNodeMap &map) {
     }
 }
 
-bool NextTable::isNext(const string& stmt1, const string& stmt2) {
+bool NextTable::isNext(const string &stmt1, const string &stmt2) {
     if (stmt1 == ROOT_STMT || stmtToNodeMap.find(stmt1) == stmtToNodeMap.end()) {
         return false;
     }
@@ -38,14 +38,14 @@ bool NextTable::isNext(const string& stmt1, const string& stmt2) {
     return false;
 }
 
-vector<CFGNode *> NextTable::getNextNodes(const string& stmt) {
+vector<CFGNode *> NextTable::getNextNodes(const string &stmt) {
     if (stmt == ROOT_STMT || stmtToNodeMap.find(stmt) == stmtToNodeMap.end()) {
         return {};
     }
     return stmtToNodeMap[stmt]->getChildren();
 }
 
-vector<CFGNode *> NextTable::getPrevNodes(const string& stmt) {
+vector<CFGNode *> NextTable::getPrevNodes(const string &stmt) {
     if (stmt == ROOT_STMT || stmtToNodeMap.find(stmt) == stmtToNodeMap.end()) {
         return {};
     }

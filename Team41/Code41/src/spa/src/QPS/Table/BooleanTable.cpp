@@ -4,7 +4,7 @@ vector<const Row *> BooleanTable::getRows() {
     return {};
 }
 
-void BooleanTable::addRow(const Row *row) {
+void BooleanTable::addRow(const Row *) {
     throw runtime_error("Not allow to use addRow on boolean tabls");
 }
 
@@ -12,7 +12,7 @@ Header BooleanTable::getHeader() const {
     return {};
 }
 
-bool BooleanTable::hasRow(const Row *row) {
+bool BooleanTable::hasRow(const Row *) {
     return false;
 }
 
