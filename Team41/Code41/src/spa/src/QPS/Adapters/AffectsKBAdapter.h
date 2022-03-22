@@ -1,5 +1,7 @@
 #pragma once
 
+#include <queue>
+
 #include "PKB/PKBClient.h"
 #include "QPS/Cache/Cache.h"
 
@@ -7,6 +9,11 @@ class AffectsKBAdapter {
 private:
     PKBClient* pkb;
     Cache* cache;
+    bool bfs(CFGNode* start, const string& modifiedVar, const string& end);
+    void bfs(CFGNode* start, const string& modifiedVar, unordered_set<string>& affected);
+    void bfs(CFGNode *start, unordered_set<string>& affectedVars, unordered_set<string> &affecting);
+
+    bool isModifyStmt(const string& stmtNum);
 public:
     explicit AffectsKBAdapter(PKBClient* pkb);
     ~AffectsKBAdapter();

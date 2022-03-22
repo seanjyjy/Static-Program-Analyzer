@@ -19,7 +19,7 @@ Affects(a1, a2)
  wildcard vs synonym -> SINGLE SYNONYM TABLE (find any assignment statement that is affected by someone)
  wildcard vs wildcard -> BOOLEAN TABLE
  */
-AffectsEvaluator::AffectsEvaluator(PKBClient *pkb, AffectsKBAdapter *affectsKBAdapter): StmtStmtEvaluator(pkb) {
+AffectsEvaluator::AffectsEvaluator(PKBClient *pkb, AffectsKBAdapter *affectsKBAdapter): AffectEvaluator(pkb) {
     this->affectsKBAdapter = affectsKBAdapter;
 }
 

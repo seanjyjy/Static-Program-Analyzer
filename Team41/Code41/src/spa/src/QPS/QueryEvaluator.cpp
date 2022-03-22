@@ -118,7 +118,7 @@ Table *QueryEvaluator::evaluate(const QueryClause &clause) {
         case QueryClause::clause_type::nextT: // NextT affects affectsT should take in an extra cache when it is supported
             return NextTEvaluator(pkb, nextKBAdapter).evaluate(clause);
         case QueryClause::clause_type::affects:
-            return AffectsEvaluator(pkb, );
+            return AffectsEvaluator(pkb, affectsKBAdapter).evaluate(clause);
         case QueryClause::clause_type::affectsT:
             return nullptr;
         default:

@@ -2,7 +2,9 @@
 
 #include "GenericClauseEvaluator.h"
 
-class StmtStmtEvaluator : public GenericClauseEvaluator {
+class AffectEvaluator : public GenericClauseEvaluator {
+private:
+    unordered_set<string> assignStmts;
 protected:
     virtual Table* evaluateIntegerInteger(ClauseVariable left, ClauseVariable right) = 0;
     virtual Table* evaluateIntegerSynonym(ClauseVariable left, ClauseVariable right) = 0;
@@ -13,8 +15,13 @@ protected:
     virtual Table* evaluateWildCardInteger(ClauseVariable right) = 0;
     virtual Table* evaluateWildCardSynonym(ClauseVariable right) = 0;
     virtual Table* evaluateWildCardWildCard() = 0;
+
+    bool isValidAssignAssign(const string& stmt1, const string& stmt2);
+    bool isValidAssignStmt(const string& stmt);
+    bool isValidAssignSyn(ClauseVariable &left);
+    bool isValidAssignSynSyn(ClauseVariable &left, ClauseVariable &right);
 public:
-    StmtStmtEvaluator(PKBClient* pkb);
+    explicit AffectEvaluator(PKBClient* pkb);
 
     Table* evaluateClause(ClauseVariable left, ClauseVariable right) override;
 };

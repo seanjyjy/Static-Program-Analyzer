@@ -1,8 +1,8 @@
 #pragma once
 
-#include "StmtStmtEvaluator.h"
+#include "AffectEvaluator.h"
 
-class AffectsEvaluator : public StmtStmtEvaluator {
+class AffectsEvaluator : public AffectEvaluator {
 private:
     AffectsKBAdapter* affectsKBAdapter;
 public:
