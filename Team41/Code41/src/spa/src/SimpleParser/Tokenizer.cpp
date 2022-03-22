@@ -16,12 +16,13 @@ Tokenizer::Tokenizer(string s) : input(s), idx(0), row(0), col(0) {
 
 // private functions
 void Tokenizer::advance() {
-    if (idx >= input.size()) {
+    int len = input.size();
+    if (idx >= len) {
         currToken = EOF_CHAR;
         return;
     }
     advancePosition();
-    if (idx >= input.size()) {
+    if (idx >= len) {
         currToken = EOF_CHAR;
     } else {
         currToken = input[idx];
@@ -52,7 +53,7 @@ string Tokenizer::withPosition(const string &s) {
 }
 
 Token Tokenizer::eatN(TokenType type, int n) {
-    if (n > (input.size() - idx)) throw TokenizeException("eating too many characters: " + to_string(n));
+    if (n > ((int) input.size() - idx)) throw TokenizeException("eating too many characters: " + to_string(n));
 
     pair<int, int> start = {row, col};
     string val;

@@ -7,13 +7,14 @@ using namespace std;
 QueryLexer::QueryLexer(const string &input) : input(input) {}
 
 int QueryLexer::skipSpaces() {
-    if (index >= input.length()) {
+    int len =  input.length();
+    if (index >= len) {
         return index;
     }
     char curr = input.at(index);
     while (curr == ' ' || curr == '\n') {
         index++;
-        if (index < input.length()) {
+        if (index < len) {
             curr = input.at(index);
         } else { break; }
     }
@@ -25,7 +26,8 @@ bool QueryLexer::isSpecialChar(char w) {
 }
 
 string QueryLexer::nextToken() {
-    if (index >= input.length()) {
+    int len =  input.length();
+    if (index >= len) {
         return "";
     }
     string out = "";
@@ -44,7 +46,7 @@ string QueryLexer::nextToken() {
             out.push_back(curr);
         }
         index++;
-        if (index >= input.length()) {
+        if (index >= len) {
             break;
         }
         curr = input.at(index);
@@ -57,7 +59,7 @@ bool QueryLexer::isValidSynonym(string w) {
      IDENT : LETTER ( LETTER | DIGIT )*
      synonym : IDENT
      */
-    for (int i = 0; i < w.length(); i++) {
+    for (size_t i = 0; i < w.length(); i++) {
         char c = w.at(i);
         if (i == 0) { // first char must be LETTER
             if (!isalpha(c)) {
@@ -235,13 +237,13 @@ optional<string> QueryLexer::nextAttribute() {
 
 bool QueryLexer::isEndOfQuery() {
     skipSpaces();
-    return index == input.length();
+    return index == (int) input.length();
 }
 
 bool QueryLexer::peekNextIsString(string w) {
     skipSpaces();
-    for (int i = 0; i < w.length(); i++) {
-        int j = index + i;
+    for (size_t i = 0; i < w.length(); i++) {
+        size_t j = index + i;
         if (j >= input.length()) {
             return false;
         }

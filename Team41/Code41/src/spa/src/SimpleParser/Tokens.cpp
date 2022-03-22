@@ -20,7 +20,7 @@ bool Tokens::empty() {
 }
 
 Token &Tokens::operator[](int idx) {
-    if (idx < 0 || idx >= tokens.size()) throw out_of_range("vector out of bounds");
+    if (idx < 0 || idx >= (int) tokens.size()) throw out_of_range("vector out of bounds");
     return tokens[idx];
 }
 

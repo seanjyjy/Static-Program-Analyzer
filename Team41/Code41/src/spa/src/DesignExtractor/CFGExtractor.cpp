@@ -27,7 +27,7 @@ void CFGExtractor::dfsInitCFG(TNode *curTNode, CFGNode *curCFGNode, CFGNode *par
         if (parentCFGNode) // IF or WHILE CFGNode point to first stmt in container
             addCFGEdge(parentCFGNode, childCFGNode); // add forward CFG edge
 
-        for (int i = 0; i < ch.size(); ++i) {
+        for (size_t i = 0; i < ch.size(); ++i) {
             TNodeType childType = ch[i]->getType();
             CFGNode *neighbourCFGNode = (i != ch.size() - 1) ? createCFGNode(ch[i + 1])
                                                              : nullptr; // last child has no neighbour
@@ -60,7 +60,8 @@ void CFGExtractor::dfsLinkBack(TNode *curTNode, TNode *backTNode) {
     TNodeType type = curTNode->getType();
     if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = curTNode->getChildren();
-        for (int i = 0; i < ch.size() - 1; ++i) {
+        int len = ch.size();
+        for (int i = 0; i < len - 1; ++i) {
             TNodeType childType = ch[i]->getType();
             if (childType == TNodeType::ifStmt)
                 dfsLinkBack(ch[i], ch[i + 1]); // end of IF will link to IF's neighbour node

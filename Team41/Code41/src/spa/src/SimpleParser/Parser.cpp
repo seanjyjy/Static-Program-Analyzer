@@ -17,7 +17,7 @@ Parser::Parser() = default;
 
 void Parser::advance() {
     cursor++;
-    if (cursor >= tokens.size()) throw runtime_error("cursor index out of bounds"); // last token is eof
+    if (cursor >= (int) tokens.size()) throw runtime_error("cursor index out of bounds"); // last token is eof
     currToken = tokens[cursor];
 }
 
@@ -26,7 +26,7 @@ int Parser::saveCursor() {
 }
 
 void Parser::backtrack(int to) {
-    if (to < 0 || to >= tokens.size()) throw runtime_error("invalid backtrack index");
+    if (to < 0 || to >= (int) tokens.size()) throw runtime_error("invalid backtrack index");
     cursor = to;
     currToken = tokens[cursor];
 }

@@ -23,7 +23,7 @@ bool PatternClause::hasSynonyms() {
 
 bool PatternClause::isWithClause() const {
     return false;
-};
+}
 
 bool PatternClause::isSuchThatClause() const {
     return false;

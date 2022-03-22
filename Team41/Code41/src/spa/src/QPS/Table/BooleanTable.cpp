@@ -20,12 +20,12 @@ size_t BooleanTable::size() {
     return 0;
 }
 
-unordered_set<string> BooleanTable::getColumn(string columnName) {
+unordered_set<string> BooleanTable::getColumn(string) {
     return {};
 }
 
-void BooleanTable::sort(vector<string> commonHeader) {}
+void BooleanTable::sort(vector<string>) {}
 
-unordered_set<string> BooleanTable::getColumns(vector<string> columnNames) {
+unordered_set<string> BooleanTable::getColumns(vector<string>) {
     return {};
 }
