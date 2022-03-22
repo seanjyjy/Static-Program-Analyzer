@@ -60,7 +60,7 @@ void CFGExtractor::dfsLinkBack(TNode *curTNode, TNode *backTNode) {
     TNodeType type = curTNode->getType();
     if (type == TNodeType::stmtLst) {
         vector<TNode *> ch = curTNode->getChildren();
-        int len = ch.size();
+        int len = (int) ch.size();
         for (int i = 0; i < len - 1; ++i) {
             TNodeType childType = ch[i]->getType();
             if (childType == TNodeType::ifStmt)
