@@ -12,14 +12,15 @@ using namespace std;
 // TODO: destructor
 
 class QueryOptimizer {
-private:
-    PKBAdapter adapter;
-    ClauseDepGraph clauseDepGraph;
-    OptimizedQueryObject optimizedQueryObject;
-    ClauseGroups divideClausesIntoGroups(QueryObject &qo);
-public:
-    QueryOptimizer(PKBManager *pkbManager);
-    void optimize(QueryObject &qo, bool isDynamic=false);
-    OptimizedQueryObject getOptimizedQueryObject();
-    void printPlan();
+ private:
+  PKBAdapter adapter;
+  ClauseDepGraph clauseDepGraph;
+  OptimizedQueryObject optimizedQueryObject;
+  ClauseGroups divideClausesIntoGroups(QueryObject &qo);
+ public:
+
+  QueryOptimizer(PKBManager *pkbManager);
+  void optimize(QueryObject &qo, bool isDynamic = false);
+  OptimizedQueryObject getOptimizedQueryObject();
+  void printPlan();
 };

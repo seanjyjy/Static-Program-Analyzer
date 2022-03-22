@@ -24,21 +24,21 @@
  * 15. Affects*
  */
 class ClauseScorer {
-private:
-    enum class SuchThatType {
-        Follows, FollowsT, Parent, ParentT, Uses, Modifies, Calls, CallsT, Next, NextT, Affects, AffectsT
-    };
-    const static long SCORE_CLAUSE_NO_SYNONYMS = 1000;
-    const static long SCORE_WITH_CLAUSE = 700;
-    const static long SCORE_PATTERN_CLAUSE = 500;
-    const static long SCORE_SUCHTHAT_CLAUSE = 300;
+ private:
+  enum class SuchThatType {
+	Follows, FollowsT, Parent, ParentT, Uses, Modifies, Calls, CallsT, Next, NextT, Affects, AffectsT
+  };
+  const static long SCORE_CLAUSE_NO_SYNONYMS = 1000;
+  const static long SCORE_WITH_CLAUSE = 700;
+  const static long SCORE_PATTERN_CLAUSE = 500;
+  const static long SCORE_SUCHTHAT_CLAUSE = 300;
 
-    static unordered_map<SuchThatType, long> getStRanks();
-    static SuchThatType stClauseToType(SuperClause* tc);
-    static long scoreWithCl(SuperClause *tc);
-    static long scoreSuchThatCl(SuperClause *tc);
-    static long scorePatternCl(SuperClause *tc);
-    static bool needsCFG(SuperClause *tc);
-public:
-    static long score(SuperClause *tc);
+  static unordered_map<SuchThatType, long> getStRanks();
+  static SuchThatType stClauseToType(SuperClause *tc);
+  static long scoreWithCl(SuperClause *tc);
+  static long scoreSuchThatCl(SuperClause *tc);
+  static long scorePatternCl(SuperClause *tc);
+  static bool needsCFG(SuperClause *tc);
+ public:
+  static long score(SuperClause *tc);
 };

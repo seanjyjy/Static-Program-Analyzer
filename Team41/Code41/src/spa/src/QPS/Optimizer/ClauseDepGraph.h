@@ -13,18 +13,18 @@ using namespace std;
 
 // TODO desstructor
 class ClauseDepGraph {
-private:
-    // used to identify the group of clauses with no synonyms
-    const string NO_SYNONYM = "NO_SYNONYMS";
+ private:
+  // used to identify the group of clauses with no synonyms
+  const string NO_SYNONYM = "NO_SYNONYMS";
 
-    SimpleGraph graph;
-    PKBAdapter pkbAdapter;
-    unordered_map<string, vector<SuperClause*>> synonymToClauses;
-    bool hasSyn(const string&s);
-    vector<SuperClause*> getClausesOfSyn(const string& syn);
-public:
-    ClauseDepGraph(PKBAdapter pkbAdapter);
+  SimpleGraph graph;
+  PKBAdapter pkbAdapter;
+  unordered_map<string, vector<SuperClause *>> synonymToClauses;
+  bool hasSyn(const string &s);
+  vector<SuperClause *> getClausesOfSyn(const string &syn);
+ public:
+  ClauseDepGraph(PKBAdapter pkbAdapter);
 
-    void registerClause(SuperClause* cl);
-    ClauseGroups split();
+  void registerClause(SuperClause *cl);
+  ClauseGroups split();
 };

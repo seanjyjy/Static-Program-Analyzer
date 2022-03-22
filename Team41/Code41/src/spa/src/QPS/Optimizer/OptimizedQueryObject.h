@@ -8,17 +8,17 @@
 #include "QPS/Selectable.h"
 
 // TODO: explore inheritance instead of composition
-class OptimizedQueryObject: QueryObject {
-private:
-    ClauseGroups clauseGroups;
-    ClauseGroup currSource;
+class OptimizedQueryObject : QueryObject {
+ private:
+  ClauseGroups clauseGroups;
+  ClauseGroup currSource;
 
-    // for dynamic optimization
-    bool isDynamic = false;
-public:
-    OptimizedQueryObject();
-    OptimizedQueryObject(PKBAdapter &pkb, const QueryObject &qo, ClauseGroups &cg, bool isDynamic=false);
+  // for dynamic optimization
+  bool isDynamic = false;
+ public:
+  OptimizedQueryObject();
+  OptimizedQueryObject(PKBAdapter &pkb, const QueryObject &qo, ClauseGroups &cg, bool isDynamic = false);
 
-    SuperClause* nextClause();
-    bool hasNextClause();
+  SuperClause *nextClause();
+  bool hasNextClause();
 };

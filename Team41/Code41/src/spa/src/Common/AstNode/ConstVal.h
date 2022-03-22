@@ -3,6 +3,6 @@
 #include "Common/AstNode/RelFactor.h"
 
 class ConstVal : public RelFactor {
-public:
-    ConstVal(Token *val);
+ public:
+  ConstVal(Token *val);
 };

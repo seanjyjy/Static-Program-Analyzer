@@ -5,6 +5,6 @@
 #include "Common/AstNode/StmtLst.h"
 
 class If : public Stmt {
-public:
-    If(TNode *condExpr, StmtLst *ifStmtLst, StmtLst *elseStmtLst);
+ public:
+  If(TNode *condExpr, StmtLst *ifStmtLst, StmtLst *elseStmtLst);
 };

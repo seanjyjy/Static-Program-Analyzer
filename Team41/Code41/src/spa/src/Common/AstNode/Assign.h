@@ -5,6 +5,6 @@
 #include "Common/AstNode/VarName.h"
 
 class Assign : public Stmt {
-public:
-    Assign(VarName *var, TNode *expr);
+ public:
+  Assign(VarName *var, TNode *expr);
 };

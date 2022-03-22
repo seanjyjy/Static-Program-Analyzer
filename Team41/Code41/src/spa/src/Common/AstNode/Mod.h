@@ -3,6 +3,6 @@
 #include "Common/AstNode/RelFactor.h"
 
 class Mod : public RelFactor {
-public:
-    Mod(RelFactor *lhs, RelFactor *rhs);
+ public:
+  Mod(RelFactor *lhs, RelFactor *rhs);
 };

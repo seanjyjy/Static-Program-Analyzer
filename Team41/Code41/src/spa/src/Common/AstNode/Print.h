@@ -5,7 +5,7 @@
 #include "Common/AstNode/VarName.h"
 
 class Print : public Stmt {
-public:
-    Print(VarName *var);
+ public:
+  Print(VarName *var);
 };
 

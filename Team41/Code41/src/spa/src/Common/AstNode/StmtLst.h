@@ -5,6 +5,6 @@
 #include <vector>
 
 class StmtLst : public TNode {
-public:
-    StmtLst(const vector<Stmt *> &stmts);
+ public:
+  StmtLst(const vector<Stmt *> &stmts);
 };

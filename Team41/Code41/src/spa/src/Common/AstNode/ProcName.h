@@ -3,6 +3,6 @@
 #include "Common/AstNode/RelFactor.h"
 
 class ProcName : public TNode {
-public:
-    ProcName(Token *val);
+ public:
+  ProcName(Token *val);
 };
