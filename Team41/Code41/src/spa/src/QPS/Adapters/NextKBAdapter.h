@@ -8,20 +8,17 @@
 #include "PKB/PKBClient.h"
 #include "QPS/Cache/Cache.h"
 #include "Common/CFGNode.h"
+#include "AdaptersUtils.h"
 
-//typedef bool (*CacheCallback)(Cache* cache, const string& next);
 typedef std::function<bool (const string&, Cache* cache)> CacheCallback;
 typedef std::function<bool (const string&, Cache* cache)> TerminateCheck;
 
 class NextKBAdapter {
 private:
-    const string ROOT_STMT = "0";
     PKBClient* pkb;
     Cache* cache;
 
     void fullBFS();
-    void runBFS(const string &start, const string &end, bool isForward, const CacheCallback& cacheAndContinue,
-                const TerminateCheck& canTerminate);
 
     void addFullMapping(const string& start, const string& end);
 public:

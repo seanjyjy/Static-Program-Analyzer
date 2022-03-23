@@ -22,6 +22,7 @@
 #include "QPS/Evaluator/NextTEvaluator.h"
 #include "QPS/Evaluator/WithEvaluator.h"
 #include "QPS/Evaluator/AffectsEvaluator.h"
+#include "QPS/Evaluator/AffectsTEvaluator.h"
 #include "QPS/Evaluator/AssignPatternEvaluator.h"
 #include "QPS/Evaluator/IfPatternEvaluator.h"
 #include "QPS/Evaluator/WhilePatternEvaluator.h"

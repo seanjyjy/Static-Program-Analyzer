@@ -115,12 +115,12 @@ Table *QueryEvaluator::evaluate(const QueryClause &clause) {
             return CallsTEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::next:
             return NextEvaluator(pkb, nextKBAdapter).evaluate(clause);
-        case QueryClause::clause_type::nextT: // NextT affects affectsT should take in an extra cache when it is supported
+        case QueryClause::clause_type::nextT:
             return NextTEvaluator(pkb, nextKBAdapter).evaluate(clause);
         case QueryClause::clause_type::affects:
             return AffectsEvaluator(pkb, affectsKBAdapter).evaluate(clause);
         case QueryClause::clause_type::affectsT:
-            return nullptr;
+            return AffectsTEvaluator(pkb, affectsKBAdapter).evaluate(clause);
         default:
             throw std::runtime_error("unknown clause of type " + to_string(clause.type));
     }

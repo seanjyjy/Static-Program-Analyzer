@@ -4,6 +4,7 @@
 
 #include "PKB/PKBClient.h"
 #include "QPS/Cache/Cache.h"
+#include "AdaptersUtils.h"
 
 class AffectsKBAdapter {
 private:
@@ -29,10 +30,17 @@ public:
     explicit AffectsKBAdapter(PKBClient* pkb);
     ~AffectsKBAdapter();
 
-    bool isAffects(const string& stmt1, const string& stmt2);
-    unordered_set<string> getDirectAffectsBy(const string& stmt);
-    unordered_set<string> getDirectAffecting(const string& stmt);
+    bool isAffects(const string& stmtNum1, const string& stmtNum2);
+    unordered_set<string> getDirectAffectsBy(const string& stmtNum);
+    unordered_set<string> getDirectAffecting(const string& stmtNum);
     unordered_set<string> getAllStmtAffectingOther();
     unordered_set<string> getAllStmtAffectedByOther();
     vector<pair<string, string>> getDirectAffectsAll();
+
+    bool isAffectsT(const string& stmtNum1, const string& stmtNum2);
+    unordered_set<string> getAffectsTBy(const string& stmtNum);
+    unordered_set<string> getAffectingT(const string& stmtNum);
+    unordered_set<string> getAllStmtAffectingTOther();
+    unordered_set<string> getAllStmtAffectedTByOther();
+    vector<pair<string, string>> getAffectsTAll();
 };
