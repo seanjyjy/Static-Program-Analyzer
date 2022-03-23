@@ -20,7 +20,7 @@ public:
     // clause type of the clause instance
     clause_type type;
 
-    clause_type getType();
+    clause_type getType() const;
 
     /**
      * Getter for the LHS.
@@ -66,7 +66,7 @@ public:
 
     // For SuperClause
     vector<QueryDeclaration> getSynonyms();
-    bool hasSynonyms();
+    bool hasSynonyms() const;
     bool isWithClause() const;
     bool isSuchThatClause() const;
     bool isPatternClause() const;

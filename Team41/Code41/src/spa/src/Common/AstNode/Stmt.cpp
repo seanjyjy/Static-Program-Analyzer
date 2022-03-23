@@ -15,6 +15,5 @@ TNodeType Stmt::verify(TNodeType type) {
     return type;
 }
 
-
 Stmt::Stmt(TNodeType type, vector<TNode *> children) : TNode(Stmt::verify(type), nullptr, move(children)) {
 }

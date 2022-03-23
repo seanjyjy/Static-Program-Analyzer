@@ -1,29 +1,87 @@
 #include "QueryOptimizer.h"
-#include "ClauseGroup.h"
-#include "ClauseGroups.h"
 
-QueryOptimizer::QueryOptimizer(PKBManager *pkbManager): adapter(PKBAdapter(pkbManager)), clauseDepGraph(adapter) {
-}
+#include <utility>
 
-OptimizedQueryObject QueryOptimizer::optimize(QueryObject &qo, bool isDynamic) {
+QueryOptimizer::QueryOptimizer() = default;
+
+OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
+    // do some preliminary checks
+    if (isDynamicPollingEnabled && !isPkbAdapterSet) throw runtime_error("pkb adapter not set");
+
+//    AbstractGroups *groups = nullptr;
+//    if (isInterGroupSortEnabled) {
+//        groups = new SortedGroups();
+//    } else {
+//        groups = new FifoGroups();
+//    }
+
     // step 1: Take query object, extract clauses, group them based on synonym dependencies
-    ClauseGroups clauseGroups = divideClausesIntoGroups(qo);
+    vector<vector<SuperClause *>> clauseGroups;
+    if (isClauseGroupingEnabled) {
+        // clause grouping enabled - form dependency graph and split clauses
+        for (SuperClause *cl: qo->getSuperClauses()) {
+            clauseDepGraph.registerClause(cl);
+        }
+        clauseGroups = clauseDepGraph.split();
+    } else {
+        // no clause grouping - just one group of all clauses
+        clauseGroups.push_back(qo->getSuperClauses());
+    }
 
-    // step 2: Take clause groups, sort each groups by group characteristics
-    clauseGroups.sortGroups();
+    // step 2: Add clause groups
+    vector<AbstractGroup*> groups;
+    for (vector<SuperClause *> &clauseGroup: clauseGroups) {
+        clauseGroup = OptimizerUtils::removeDuplicates(clauseGroup);
 
-    // step 3: Sort each individual clause group
-    clauseGroups.sortEachGroup();
+        if (isIntraGroupSortEnabled && isDynamicPollingEnabled) {
+            groups.push_back(new PKBAwareGroup(clauseGroup, adapter));
+        } else if (isIntraGroupSortEnabled) {
+            groups.push_back(new SortedGroup(clauseGroup));
+        } else {
+            groups.push_back(new FifoGroup(clauseGroup));
+        }
+    }
 
-    return { adapter, qo, clauseGroups, isDynamic };
+    // initialize the groups container
+    if (isInterGroupSortEnabled) {
+        return {qo, new SortedGroups(groups)};
+    } else {
+        return {qo, new FifoGroups(groups)};
+    }
 }
 
-ClauseGroups QueryOptimizer::divideClausesIntoGroups(QueryObject &qo) {
-    for (QueryClause& qc: qo.clauses) {
-        clauseDepGraph.registerClause(TempClause(&qc));
-    }
-    for (PatternClause& pc: qo.patternClauses) {
-        clauseDepGraph.registerClause(TempClause(&pc));
-    }
-    return clauseDepGraph.split();
+QueryOptimizer QueryOptimizer::create() {
+    return QueryOptimizer{};
+}
+
+
+
+void QueryOptimizer::print() {
+    cout << "isClauseGroupingEnabled: " << isClauseGroupingEnabled << endl
+         << "isIntraGroupSortEnabled: " << isIntraGroupSortEnabled << endl
+         << "isInterGroupSortEnabled: " << isInterGroupSortEnabled << endl
+         << "isDynamicPollingEnabled: " << isDynamicPollingEnabled << endl;
+}
+
+QueryOptimizer &QueryOptimizer::setInterGroupSort(bool isOn) {
+    isInterGroupSortEnabled = isOn;
+    return *this;
+}
+
+QueryOptimizer &QueryOptimizer::setIntraGroupSort(bool isOn) {
+    isIntraGroupSortEnabled = isOn;
+    return *this;
+}
+
+QueryOptimizer &QueryOptimizer::setClauseGrouping(bool isOn) {
+    isClauseGroupingEnabled = isOn;
+    return *this;
+}
+
+QueryOptimizer &QueryOptimizer::enableDynamicPolling(PKBManager *pkbManager) {
+    // for some reason, accepting a const reference to pkbmanager causes some error >:(
+    adapter = PKBAdapter(pkbManager);
+    isDynamicPollingEnabled = true;
+    isPkbAdapterSet = true;
+    return *this;
 }

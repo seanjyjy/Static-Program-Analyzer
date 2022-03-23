@@ -5,23 +5,27 @@
 SimpleGraph::SimpleGraph() = default;
 
 void SimpleGraph::addVertex(string n1) {
+    // don't add the same vertex more than one
+    if (nameToNodeId.find(n1) != nameToNodeId.end()) return;
     int id = genId();
     nameToNodeId[n1] = id;
     nodeIdToName[id] = n1;
     adjList[id] = vector<int>();
 }
 
-void SimpleGraph::addEdge(string n1, string n2) {
+void SimpleGraph::addUndirectedEdge(string n1, string n2) {
     if (!hasNode(n1)) addVertex(n1);
     if (!hasNode(n2)) addVertex(n2);
     int id1 = getNodeId(n1);
     int id2 = getNodeId(n2);
     pair<int, int> e1 = {id1, id2};
     pair<int, int> e2 = {id2, id1};
+    // don't add the same edge more than once
     if (seenEdges.find(e1) == seenEdges.end()) {
         seenEdges.insert(e1);
         adjList[id1].push_back(id2);
     }
+    // don't add the same edge more than once
     if (seenEdges.find(e2) == seenEdges.end()) {
         seenEdges.insert(e2);
         adjList[id2].push_back(id1);

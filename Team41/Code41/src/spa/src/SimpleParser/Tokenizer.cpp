@@ -16,13 +16,12 @@ Tokenizer::Tokenizer(string s) : input(s), idx(0), row(0), col(0) {
 
 // private functions
 void Tokenizer::advance() {
-    int len = (int) input.size();
-    if (idx >= len) {
+    if (idx >= (int) input.size()) {
         currToken = EOF_CHAR;
         return;
     }
     advancePosition();
-    if (idx >= len) {
+    if (idx >= (int) input.size()) {
         currToken = EOF_CHAR;
     } else {
         currToken = input[idx];

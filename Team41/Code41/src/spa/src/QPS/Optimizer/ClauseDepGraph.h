@@ -5,25 +5,21 @@
 #include <vector>
 #include "QPS/QueryClause.h"
 #include "QPS/PatternClause.h"
-#include "QPS/Optimizer/ClauseGroups.h"
 #include "QPS/Optimizer/SimpleGraph.h"
-#include "TempClause.h"
+#include "QPS/SuperClause.h"
 
 using namespace std;
 
 class ClauseDepGraph {
 private:
     // used to identify the group of clauses with no synonyms
-    const string NO_SYNONYM = "NO_SYNONYMS";
-
+    const string NO_SYNONYM = "_NO_SYNONYMS";
     SimpleGraph graph;
-    PKBAdapter pkbAdapter;
-    unordered_map<string, vector<TempClause>> synonymToClauses;
-    bool hasSyn(const string&s);
-    vector<TempClause> getClausesOfSyn(const string& syn);
+    unordered_map<string, vector<SuperClause *>> synonymToClauses;
 public:
-    ClauseDepGraph(PKBAdapter pkbAdapter);
+    ClauseDepGraph();
 
-    void registerClause(TempClause tc);
-    ClauseGroups split();
+    void registerClause(SuperClause *cl);
+
+    vector<vector<SuperClause *>> split();
 };

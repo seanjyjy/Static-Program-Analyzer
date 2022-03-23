@@ -1,32 +1,19 @@
 #include "OptimizedQueryObject.h"
 
-OptimizedQueryObject::OptimizedQueryObject(PKBAdapter &pkb, QueryObject &qo, ClauseGroups &cg, bool isDynamic):
-queryObject(qo), clauseGroups(cg), currSource(ClauseGroup(pkb)), isDynamic(isDynamic) {}
+OptimizedQueryObject::OptimizedQueryObject() : QueryObject({}, {}, {}, {}, false) {}
 
-bool OptimizedQueryObject::isQueryValid() {
-    // TODO stub
-    return false;
+OptimizedQueryObject::OptimizedQueryObject(QueryObject *qo, AbstractGroups *cg) :
+        QueryObject(*qo), clauseGroups(cg) {}
+
+bool OptimizedQueryObject::empty() {
+    return clauseGroups->empty();
 }
 
-bool OptimizedQueryObject::isSelectingBoolean() {
-    // TODO stub
-    return false;
+SuperClause *OptimizedQueryObject::popClause() {
+    if (empty()) throw runtime_error("OptimizedQueryObject: no more clauses left to consume");
+    return clauseGroups->pop();
 }
 
-vector<ClauseVariable> OptimizedQueryObject::getSelectSynonyms() {
-    // TODO stub
-    return {};
+void OptimizedQueryObject::printPlan() {
+    clauseGroups->print();
 }
-
-bool OptimizedQueryObject::hasNextClause() {
-    if (!currSource.hasNextClause() && !clauseGroups.hasNextGroup()) return false;
-    return true;
-}
-
-TempClause OptimizedQueryObject::nextClause() {
-    // no more clauses in current clause group, no more clause groups -> throw error
-    if (!hasNextClause()) throw runtime_error("no more clauses left to consume");
-    if (!currSource.hasNextClause() && clauseGroups.hasNextGroup()) currSource = clauseGroups.getNextGroup();
-    return isDynamic ? currSource.getNextClauseDynamic() : currSource.getNextClauseStatic();
-}
-

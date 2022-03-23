@@ -14,9 +14,9 @@ TEST_CASE("AST Builder: while statement") {
                 TNode::makeEq(
                         TNode::makeConstVal(Token::makeConst("1")),
                         TNode::makeConstVal(Token::makeConst("1"))
-                        ),
-                TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x")))})
-                );
+                ),
+                TNode::makeStmtLst({TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x")))})
+        );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);

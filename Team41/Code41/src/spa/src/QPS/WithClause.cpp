@@ -2,11 +2,11 @@
 
 WithClause::WithClause(WithVariable left, WithVariable right):SuperClause(), left(left), right(right){}
 
-WithVariable WithClause::getLeft() {
+WithVariable WithClause::getLeft() const {
     return left;
 }
 
-WithVariable WithClause::getRight() {
+WithVariable WithClause::getRight() const {
     return right;
 }
 
@@ -21,7 +21,7 @@ vector<QueryDeclaration> WithClause::getSynonyms() {
     return out;
 }
 
-bool WithClause::hasSynonyms() {
+bool WithClause::hasSynonyms() const {
     return left.getType() == WithVariable::ATTR_REF || right.getType() == WithVariable::ATTR_REF;
 }
 

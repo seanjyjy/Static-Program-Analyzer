@@ -1,5 +1,5 @@
-#include <stdio.h>
-
+#include <cstdio>
+#include <stdexcept>
 #include "QueryParser.h"
 
 using namespace std;

@@ -1,25 +1,24 @@
 #pragma once
 
-#include "ClauseGroups.h"
 #include "QPS/QueryObject.h"
 #include "QPS/Optimizer/TableEstimate.h"
 #include "QPS/Optimizer/PKBAdapter.h"
+#include "QPS/SuperClause.h"
+#include "QPS/Selectable.h"
+#include "AbstractGroups.h"
 
-// TODO: explore inheritance instead of composition
-class OptimizedQueryObject {
+class OptimizedQueryObject : public QueryObject {
 private:
-    QueryObject queryObject;
-    ClauseGroups clauseGroups;
-    ClauseGroup currSource;
+    AbstractGroups *clauseGroups;
 
-    // for dynamic optimization
-    bool isDynamic = false;
 public:
-    OptimizedQueryObject(PKBAdapter &pkb, QueryObject &qo, ClauseGroups &cg, bool isDynamic=false);
+    OptimizedQueryObject();
 
-    TempClause nextClause();
-    bool hasNextClause();
-    bool isQueryValid();
-    bool isSelectingBoolean();
-    vector<ClauseVariable> getSelectSynonyms();
+    OptimizedQueryObject(QueryObject *qo, AbstractGroups *cg);
+
+    SuperClause *popClause();
+
+    bool empty();
+
+    void printPlan();
 };

@@ -13,7 +13,7 @@ ClauseVariable QueryClause::getRightClauseVariable() const {
     return right;
 }
 
-QueryClause::clause_type QueryClause::getType() {
+QueryClause::clause_type QueryClause::getType() const {
     return type;
 }
 
@@ -56,7 +56,7 @@ vector<QueryDeclaration> QueryClause::getSynonyms() {
     return out;
 }
 
-bool QueryClause::hasSynonyms() {
+bool QueryClause::hasSynonyms() const {
     return left.isSynonym() || right.isSynonym();
 }
 

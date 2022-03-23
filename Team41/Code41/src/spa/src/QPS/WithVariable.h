@@ -17,7 +17,7 @@ public:
     WithVariable(int);
     WithVariable(string);
     WithVariable(attributeName, QueryDeclaration);
-    withRefType getType();
+    withRefType getType() const;
     attributeName getAttr();
     QueryDeclaration getSynonym();
     string getIdent();

@@ -9,7 +9,11 @@ class PKBAdapter {
 private:
     PKBManager *pkb;
 public:
-    PKBAdapter(PKBManager *pkb);
-    long long getRowCount(const ClauseVariable &synonym);
-    long long getRowCount(const vector<ClauseVariable> &synonyms);
+    PKBAdapter();
+
+    PKBAdapter(PKBManager *pkbMgr);
+
+    long long getRowCount(const QueryDeclaration &synonym);
+
+    long long getRowCount(const vector<QueryDeclaration> &synonyms);
 };

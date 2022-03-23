@@ -14,7 +14,7 @@ WithVariable::WithVariable(attributeName attr, QueryDeclaration syn):
     type = ATTR_REF;
 }
 
-WithVariable::withRefType WithVariable::getType() {
+WithVariable::withRefType WithVariable::getType() const {
     return type;
 }
 

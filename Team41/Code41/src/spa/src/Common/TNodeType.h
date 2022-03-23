@@ -32,7 +32,6 @@ enum class TNodeType {
     dummy, // for parsing to ast
 };
 
-// TODO: refactor: this could be moved into the TNode class instead.
 inline bool isStatement(TNodeType type) {
     switch (type) {
         case TNodeType::readStmt:

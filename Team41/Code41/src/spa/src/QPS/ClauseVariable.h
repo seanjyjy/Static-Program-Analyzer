@@ -38,30 +38,30 @@ public:
      *
      * @return boolean indicating if identifier.
      */
-    bool isIdentifier();
+    bool isIdentifier() const;
 
     /**
      * Checks if the variable is a wildcard.
      *
      * @return boolean indicating if wildcard.
      */
-    bool isWildCard();
+    bool isWildCard() const;
 
     /**
      * Checks if the variable is an synonym.
      *
      * @return boolean indicating if synonym.
      */
-    bool isSynonym();
+    bool isSynonym() const;
 
     /**
      * Checks if the variable is an integer.
      *
      * @return boolean indicating if integer.
      */
-    bool isInteger();
+    bool isInteger() const;
 
-    QueryDeclaration getQueryDeclaration();
+    QueryDeclaration getQueryDeclaration() const;
 
     /**
      * Constructor for the ClauseVariable class.
@@ -75,14 +75,14 @@ public:
     ClauseVariable();
 
 private:
+    // variable type of the variable instance
+    variable_type type;
+
     // name of the clause variable
     string label;
 
-    // declaration type of the clause variable (must be declared)
-    QueryDeclaration::design_entity_type designEntityType;
-
     QueryDeclaration qd;
 
-    // variable type of the variable instance
-    variable_type type;
+    // declaration type of the clause variable (must be declared)
+    QueryDeclaration::design_entity_type designEntityType;
 };

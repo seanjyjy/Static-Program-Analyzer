@@ -17,7 +17,7 @@ vector<QueryDeclaration> PatternClause::getSynonyms() {
     return out;
 }
 
-bool PatternClause::hasSynonyms() {
+bool PatternClause::hasSynonyms() const {
     return true; // A pattern clause should always have synonyms
 }
 

@@ -10,8 +10,8 @@ TEST_CASE("AST Builder: print statement") {
         string simple = TestAstBuilderUtils::readFile("print", "1-simple.txt");
         string xml = TestAstBuilderUtils::readFile("print", "1-xml.txt");
         // manually build actual AST
-        Token* var = Token::makeName("x");
-        TNode* pn = TNode::makePrintStmt(
+        Token *var = Token::makeName("x");
+        TNode *pn = TNode::makePrintStmt(
                 TNode::makeVarName(var));
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);

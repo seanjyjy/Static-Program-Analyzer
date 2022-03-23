@@ -14,15 +14,17 @@ TEST_CASE("AST Builder: program") {
         string xml = TestAstBuilderUtils::readFile("program", "1-xml.txt");
         // manually build actual AST
         TNode *prog = TNode::makeProgram({
-             TNode::makeProcedure(
-                     Token::makeName("first"),
-                     TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x")))})
-             ),
-             TNode::makeProcedure(
-                     Token::makeName("second"),
-                     TNode::makeStmtLst({ TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x")))})
-             )
-        });
+                                                 TNode::makeProcedure(
+                                                         Token::makeName("first"),
+                                                         TNode::makeStmtLst({TNode::makePrintStmt(
+                                                                 TNode::makeVarName(Token::makeName("x")))})
+                                                 ),
+                                                 TNode::makeProcedure(
+                                                         Token::makeName("second"),
+                                                         TNode::makeStmtLst({TNode::makePrintStmt(
+                                                                 TNode::makeVarName(Token::makeName("x")))})
+                                                 )
+                                         });
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);

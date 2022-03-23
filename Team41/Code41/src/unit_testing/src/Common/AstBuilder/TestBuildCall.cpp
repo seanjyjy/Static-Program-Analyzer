@@ -9,8 +9,8 @@ TEST_CASE("AST Builder: call") {
         string simple = TestAstBuilderUtils::readFile("call", "1-simple.txt");
         string xml = TestAstBuilderUtils::readFile("call", "1-xml.txt");
         // manually build actual AST
-        Token* name = Token::makeName("main");
-        TNode* call = TNode::makeCallStmt(
+        Token *name = Token::makeName("main");
+        TNode *call = TNode::makeCallStmt(
                 TNode::makeProcName(name));
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);

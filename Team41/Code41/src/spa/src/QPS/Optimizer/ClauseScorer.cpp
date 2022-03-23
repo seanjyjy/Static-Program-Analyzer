@@ -5,73 +5,73 @@
 
 using namespace std;
 
-long ClauseScorer::score(const TempClause &tc) {
-    if (!tc.hasSynonyms() && !needsCFG(tc)) {
+long ClauseScorer::score(SuperClause *tc) {
+    if (!tc->hasSynonyms() && !needsCFG(tc)) {
         return SCORE_CLAUSE_NO_SYNONYMS;
-    } else if (tc.isWithClause()) {
+    } else if (tc->isWithClause()) {
         return scoreWithCl(tc);
-    } else if (tc.isSuchThatClause()) {
+    } else if (tc->isSuchThatClause()) {
         return scoreSuchThatCl(tc);
-    } else if (tc.isPatternClause()) {
+    } else if (tc->isPatternClause()) {
         return scorePatternCl(tc);
     }
     return 0;
 }
 
 // all with-clauses are treated the same, i.e assigned the same score
-long ClauseScorer::scoreWithCl(const TempClause&) {
+long ClauseScorer::scoreWithCl(SuperClause *) {
     return SCORE_WITH_CLAUSE;
 }
 
-long ClauseScorer::scoreSuchThatCl(const TempClause &tc) {
+long ClauseScorer::scoreSuchThatCl(SuperClause *tc) {
     SuchThatType type = stClauseToType(tc);
-    vector<ClauseScorer::SuchThatType> ranks = getStRanks();
-    // TODO can just make a map to speedup ranks
-    long idx = (long) (find(ranks.begin(), ranks.end(), type) - ranks.begin());
+    unordered_map<ClauseScorer::SuchThatType, long> ranks = getStRanks();
+    long idx = ranks[type];
     long piece = SCORE_SUCHTHAT_CLAUSE / (long) ranks.size();
     return SCORE_SUCHTHAT_CLAUSE - (idx * piece); // lower index = higher score
 }
 
 // all pattern-clauses are treated the same, i.e assigned the same score
-long ClauseScorer::scorePatternCl(const TempClause &) {
+long ClauseScorer::scorePatternCl(SuperClause *) {
     return SCORE_PATTERN_CLAUSE;
 }
 
-ClauseScorer::SuchThatType ClauseScorer::stClauseToType(const TempClause &tc) {
-    if (!tc.isSuchThatClause()) throw runtime_error("cannot convert non-suchthat clause to its type");
-    if (tc.isAffects()) return SuchThatType::Affects;
-    if (tc.isAffectsT()) return SuchThatType::AffectsT;
-    if (tc.isCalls()) return SuchThatType::Calls;
-    if (tc.isCallsT()) return SuchThatType::CallsT;
-    if (tc.isFollows()) return SuchThatType::Follows;
-    if (tc.isFollowsT()) return SuchThatType::FollowsT;
-    if (tc.isModifiesP() || tc.isModifiesS()) return SuchThatType::Modifies;
-    if (tc.isNext()) return SuchThatType::Next;
-    if (tc.isNextT()) return SuchThatType::NextT;
-    if (tc.isParent()) return SuchThatType::Parent;
-    if (tc.isParentT()) return SuchThatType::ParentT;
-    if (tc.isUsesP() || tc.isUsesS()) return SuchThatType::Uses;
+ClauseScorer::SuchThatType ClauseScorer::stClauseToType(SuperClause *tc) {
+    if (!tc->isSuchThatClause()) throw runtime_error("cannot convert non-suchthat clause to its type");
+    if (tc->isAffects()) return SuchThatType::Affects;
+    if (tc->isAffectsT()) return SuchThatType::AffectsT;
+    if (tc->isCalls()) return SuchThatType::Calls;
+    if (tc->isCallsT()) return SuchThatType::CallsT;
+    if (tc->isFollows()) return SuchThatType::Follows;
+    if (tc->isFollowsT()) return SuchThatType::FollowsT;
+    if (tc->isModifiesP() || tc->isModifiesS()) return SuchThatType::Modifies;
+    if (tc->isNext()) return SuchThatType::Next;
+    if (tc->isNextT()) return SuchThatType::NextT;
+    if (tc->isParent()) return SuchThatType::Parent;
+    if (tc->isParentT()) return SuchThatType::ParentT;
+    if (tc->isUsesP() || tc->isUsesS()) return SuchThatType::Uses;
     throw runtime_error("could not find matching for suchthat clause");
 }
 
-vector<ClauseScorer::SuchThatType> ClauseScorer::getStRanks() {
-    const static vector<ClauseScorer::SuchThatType> stRanks = {
-            SuchThatType::Follows,
-            SuchThatType::Parent,
-            SuchThatType::Calls,
-            SuchThatType::ParentT,
-            SuchThatType::CallsT,
-            SuchThatType::Uses,
-            SuchThatType::Modifies,
-            SuchThatType::FollowsT,
-            SuchThatType::Next,
-            SuchThatType::NextT,
-            SuchThatType::Affects,
-            SuchThatType::AffectsT
+unordered_map<ClauseScorer::SuchThatType, long> ClauseScorer::getStRanks() {
+    static long rank = 1;
+    const static unordered_map<ClauseScorer::SuchThatType, long> stRanks = {
+            {SuchThatType::Follows,  rank++},
+            {SuchThatType::Parent,   rank++},
+            {SuchThatType::Calls,    rank++},
+            {SuchThatType::ParentT,  rank++},
+            {SuchThatType::CallsT,   rank++},
+            {SuchThatType::Uses,     rank++},
+            {SuchThatType::Modifies, rank++},
+            {SuchThatType::FollowsT, rank++},
+            {SuchThatType::Next,     rank++},
+            {SuchThatType::NextT,    rank++},
+            {SuchThatType::Affects,  rank++},
+            {SuchThatType::AffectsT, rank++}
     };
     return stRanks;
 }
 
-bool ClauseScorer::needsCFG(const TempClause &tc) {
-    return tc.isNext() || tc.isNextT() || tc.isAffects() || tc.isAffectsT();
+bool ClauseScorer::needsCFG(SuperClause *tc) {
+    return tc->isNext() || tc->isNextT() || tc->isAffects() || tc->isAffectsT();
 }

@@ -11,7 +11,7 @@ bool TreeUtils::isEqual(TNode *n1, TNode *n2) {
     Token *val2 = n2->getVal();
     if (val1 == nullptr && val2 == nullptr) {
         isEq = true;
-    } else if (val1 != nullptr && val2 != nullptr){
+    } else if (val1 != nullptr && val2 != nullptr) {
         isEq = val1->getVal() == val2->getVal();
     } else {
         // one nullptr, other is not nullptr
