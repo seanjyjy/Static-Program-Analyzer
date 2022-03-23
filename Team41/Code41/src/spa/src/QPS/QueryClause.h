@@ -2,11 +2,10 @@
 
 #include "QueryDeclaration.h"
 #include "ClauseVariable.h"
-#include "SuperClause.h"
 
 using namespace std;
 
-class QueryClause :public SuperClause {
+class QueryClause {
 private:
     // The LHS and RHS of a clause in PQL
     ClauseVariable left, right;
@@ -64,24 +63,5 @@ public:
      */
     QueryClause(clause_type type, ClauseVariable left, ClauseVariable right);
 
-    // For SuperClause
-    vector<QueryDeclaration> getSynonyms();
-    bool hasSynonyms() const;
-    bool isWithClause() const;
-    bool isSuchThatClause() const;
-    bool isPatternClause() const;
-    bool isFollows() const;
-    bool isFollowsT() const;
-    bool isParent() const;
-    bool isParentT() const;
-    bool isUsesS() const;
-    bool isUsesP() const;
-    bool isModifiesS() const;
-    bool isModifiesP() const;
-    bool isCalls() const;
-    bool isCallsT() const;
-    bool isNext() const;
-    bool isNextT() const;
-    bool isAffects() const;
-    bool isAffectsT() const;
+    QueryClause();
 };
