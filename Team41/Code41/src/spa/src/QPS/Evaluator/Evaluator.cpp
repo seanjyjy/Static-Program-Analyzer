@@ -89,6 +89,10 @@ Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, 
 }
 
 Table *Evaluator::buildSingleSynonymTable(const vector<CFGNode *>& results, ClauseVariable &synonym) {
+    if (results.empty()) {
+        return new FalseTable();
+    }
+
     string column = synonym.getLabel();
     unordered_set<string> filters = getFilters(synonym.getDesignEntityType());
 

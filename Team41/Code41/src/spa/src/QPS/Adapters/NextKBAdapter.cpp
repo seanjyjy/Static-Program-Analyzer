@@ -170,6 +170,9 @@ unordered_set<string> NextKBAdapter::getAllStmtsNextT(const string &stmtNum) {
             unordered_set<string> forwardCache = cache->getForwardMapping(next);
             bool canUseCache = !forwardCache.empty() && stmtNum != next;
 
+            cache->registerBooleanMapping(stmtNum, next);
+            cache->registerForwardMapping(stmtNum, next);
+
             if (canUseCache) {
                 for (auto &savedNext: forwardCache) {
                     cache->registerBooleanMapping(stmtNum, savedNext);
@@ -177,9 +180,6 @@ unordered_set<string> NextKBAdapter::getAllStmtsNextT(const string &stmtNum) {
                 }
                 return false;
             }
-
-            cache->registerBooleanMapping(stmtNum, next);
-            cache->registerForwardMapping(stmtNum, next);
             return true;
         };
 
@@ -197,6 +197,9 @@ unordered_set<string> NextKBAdapter::getAllStmtsTBefore(const string &stmtNum) {
             unordered_set<string> backwardCache = cache->getBackwardMapping(next);
             bool canUseCache = !backwardCache.empty() && stmtNum != next;
 
+            cache->registerBooleanMapping(next, stmtNum);
+            cache->registerBackwardMapping(stmtNum, next);
+
             if (canUseCache) {
                 for (auto &savedNext: backwardCache) {
                     cache->registerBooleanMapping(savedNext, stmtNum);
@@ -204,9 +207,6 @@ unordered_set<string> NextKBAdapter::getAllStmtsTBefore(const string &stmtNum) {
                 }
                 return false;
             }
-
-            cache->registerBooleanMapping(next, stmtNum);
-            cache->registerBackwardMapping(stmtNum, next);
             return true;
         };
 
