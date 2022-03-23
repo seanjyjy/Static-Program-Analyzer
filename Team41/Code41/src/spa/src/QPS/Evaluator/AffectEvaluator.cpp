@@ -89,3 +89,48 @@ bool AffectEvaluator::isValidAssignSynSyn(ClauseVariable &left, ClauseVariable &
     return (EvaluatorUtils::isAssign(leftType) || EvaluatorUtils::isStmt(leftType))
         && (EvaluatorUtils::isAssign(rightType) || EvaluatorUtils::isStmt(rightType));
 }
+
+Table *AffectEvaluator::evaluateIntegerInteger(const ClauseVariable& left, const ClauseVariable& right) {
+    bool affectResult = getIntegerIntegerRelation(left.getLabel(), right.getLabel());
+    return buildBooleanTable(affectResult);
+}
+
+Table *AffectEvaluator::evaluateIntegerSynonym(const ClauseVariable& left, ClauseVariable right) {
+    unordered_set<string> affecteds = getIntegerSynonymRelation(left.getLabel());
+    return buildSingleSynonymTable(affecteds, right);
+}
+
+Table *AffectEvaluator::evaluateIntegerWildCard(const ClauseVariable& left) {
+    unordered_set<string> affecteds = getIntegerSynonymRelation(left.getLabel());
+    return buildBooleanTable(!affecteds.empty());
+}
+
+Table *AffectEvaluator::evaluateSynonymInteger(ClauseVariable left, const ClauseVariable& right) {
+    unordered_set<string> affectings = getSynonymIntegerRelation(right.getLabel());
+    return buildSingleSynonymTable(affectings, left);
+}
+
+Table *AffectEvaluator::evaluateSynonymSynonym(ClauseVariable left, ClauseVariable right) {
+    vector<pair<string, string>> affectingAffectedPairs = getSynonymSynonymRelation();
+    return buildSynonymSynonymTable(affectingAffectedPairs, left, right);
+}
+
+Table *AffectEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
+    unordered_set<string> affectings = getSynonymWildCardRelation();
+    return buildSingleSynonymTable(affectings, left);
+}
+
+Table *AffectEvaluator::evaluateWildCardInteger(const ClauseVariable& right) {
+    unordered_set<string> affectings = getWildCardIntegerRelation(right.getLabel());
+    return buildBooleanTable(!affectings.empty());
+}
+
+Table *AffectEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
+    unordered_set<string> affecteds = getWildCardSynonymRelation();
+    return buildSingleSynonymTable(affecteds, right);
+}
+
+Table *AffectEvaluator::evaluateWildCardWildCard() {
+    vector<pair<string, string>> affectingAffectedPairs = getWildCardWildCardRelation();
+    return buildBooleanTable(!affectingAffectedPairs.empty());
+}
