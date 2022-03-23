@@ -83,6 +83,9 @@ vector<pair<string, string>> AffectsKBAdapter::getDirectAffectsAll() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
+    if ((int) affectingAffectedPairs.size() == 0)
+        buildAllAffectsMapping();
+
     return affectingAffectedPairs;
 }
 
@@ -100,6 +103,11 @@ bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2
 
     if (!cache->getBooleanMapping(stmtNum1, stmtNum2)) {
         CFGNode* startNode = stmtNumToNodeMap.at(stmtNum1);
+
+        // TODO: I am not sure if this is default behaviour
+        if (startNode == nullptr)
+            return false;
+
         AdaptersUtils::runBoolBFS(stmtNum1, stmtNum2, cache, startNode);
     }
 
@@ -111,7 +119,11 @@ unordered_set<string> AffectsKBAdapter::getAffectsTBy(const string &stmtNum) {
         buildAffectsGraph();
 
     if (cache->getForwardMapping(stmtNum).empty()) {
-        CFGNode *startNode = pkb->getCFGForStmt(stmtNum);
+        CFGNode* startNode = stmtNumToNodeMap.at(stmtNum);
+
+        if (startNode == nullptr)
+            return {};
+
         AdaptersUtils::runDownBFS(stmtNum, cache, startNode);
     }
 
@@ -123,7 +135,11 @@ unordered_set<string> AffectsKBAdapter::getAffectingT(const string &stmtNum) {
         buildAffectsGraph();
 
     if (cache->getBackwardMapping(stmtNum).empty()) {
-        CFGNode *endNode = pkb->getCFGForStmt(stmtNum);
+        CFGNode *endNode = stmtNumToNodeMap.at(stmtNum);
+
+        if (endNode == nullptr)
+            return {};
+
         AdaptersUtils::runUpBFS(stmtNum, cache, endNode);
     }
 
@@ -148,7 +164,10 @@ vector<pair<string, string>> AffectsKBAdapter::getAffectsTAll() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
-    return affectingAffectedPairs;
+    if ((int) affectingAffectedTPairs.size() == 0)
+        buildAllAffectsMapping();
+
+    return affectingAffectedTPairs;
 }
 
 bool AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, const string& end) {
@@ -253,11 +272,8 @@ bool AffectsKBAdapter::hasAffectsGraph() {
 void AffectsKBAdapter::buildAffectsGraph() {
     CFGNode* root = pkb->getRootCFG();
 
-    for (auto& child : root->getChildren()) {
-        CFGNode* affectsGraphForProc = buildAffectsGraphForProc(child);
-        if (affectsGraphForProc != nullptr)
-            affectsGraph->addChild(affectsGraphForProc);
-    }
+    for (auto& child : root->getChildren())
+        buildAffectsGraphForProc(child);
 }
 
 void AffectsKBAdapter::addAllStarting(CFGNode* node, queue<CFGNode *> &mainQ) {
@@ -285,7 +301,7 @@ void AffectsKBAdapter::addAllStarting(CFGNode* node, queue<CFGNode *> &mainQ) {
     }
 }
 
-CFGNode* AffectsKBAdapter::buildAffectsGraphForProc(CFGNode* start) {
+void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode* start) {
     queue<CFGNode* > mainQ;
     unordered_set<string> mainVisited;
     queue<CFGNode *> queue;
@@ -293,17 +309,11 @@ CFGNode* AffectsKBAdapter::buildAffectsGraphForProc(CFGNode* start) {
 
     addAllStarting(start, mainQ);
 
-    // Group Representative
-    CFGNode* procRoot = nullptr;
-
     while (!mainQ.empty()) {
         CFGNode* affectingNode = mainQ.front();
         // TODO WHY local variable 'affectingNode' may point to invalidated memory
         string affectingStmtNum = affectingNode->getStmtNum();
         vector<CFGNode *> nextChildren = pkb->getCFGForStmt(affectingStmtNum)->getChildren();
-
-        if (procRoot == nullptr)
-            procRoot = affectingNode;
 
         for (auto& child : nextChildren)
             queue.push(child);
@@ -324,7 +334,6 @@ CFGNode* AffectsKBAdapter::buildAffectsGraphForProc(CFGNode* start) {
                 childNode->addParent(affectingNode);
                 affectings.insert(affectingStmtNum);
                 affecteds.insert(stmtNum);
-                affectingAffectedPairs.emplace_back(affectingStmtNum, stmtNum);
             }
 
             if (visited.find(stmtNum) != visited.end())
@@ -342,6 +351,25 @@ CFGNode* AffectsKBAdapter::buildAffectsGraphForProc(CFGNode* start) {
         mainQ.pop();
         visited.clear();
     }
+}
 
-    return procRoot;
+void AffectsKBAdapter::buildAffectsMapping(const string &stmtNum, CFGNode *node, unordered_set<CFGNode *> visited) {
+    affectingAffectedTPairs.emplace_back(stmtNum, node->getStmtNum());
+    for (auto& child : node->getChildren()) {
+        if (visited.find(child) != visited.end()) continue;
+        visited.insert(child);
+        buildAffectsMapping(stmtNum, child, visited);
+        visited.erase(child);
+    }
+}
+
+void AffectsKBAdapter::buildAllAffectsMapping() {
+    unordered_set<CFGNode *> visited;
+    for (auto&[stmtNum, node] : stmtNumToNodeMap) {
+        for (auto& child : node->getChildren()) {
+            visited.insert(child);
+            affectingAffectedPairs.emplace_back(stmtNum, child->getStmtNum());
+            buildAffectsMapping(stmtNum, child, visited);
+        }
+    }
 }

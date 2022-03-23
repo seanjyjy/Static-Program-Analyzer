@@ -1,6 +1,7 @@
 #pragma once
 
 #include <queue>
+#include <iostream>
 
 #include "PKB/PKBClient.h"
 #include "QPS/Cache/Cache.h"
@@ -10,11 +11,11 @@ class AffectsKBAdapter {
 private:
     PKBClient* pkb;
     Cache* cache;
-    CFGNode* affectsGraph = new CFGNode("0");
     unordered_map<string, CFGNode *> stmtNumToNodeMap;
     unordered_set<string> affectings;
     unordered_set<string> affecteds;
     vector<pair<string, string>> affectingAffectedPairs;
+    vector<pair<string, string>> affectingAffectedTPairs;
 
     bool bfs(CFGNode* start, const string& modifiedVar, const string& end);
     void bfs(CFGNode* start, const string& modifiedVar, unordered_set<string>& affected);
@@ -22,8 +23,10 @@ private:
 
     bool hasAffectsGraph();
     void addAllStarting(CFGNode* node, queue<CFGNode *> &mainQ);
-    CFGNode* buildAffectsGraphForProc(CFGNode* start);
+    void buildAffectsGraphForProc(CFGNode* start);
     void buildAffectsGraph();
+    void buildAllAffectsMapping();
+    void buildAffectsMapping(const string& stmtNum, CFGNode * node, unordered_set<CFGNode *> visited);
 
     bool isModifyStmt(const string& stmtNum);
 public:
