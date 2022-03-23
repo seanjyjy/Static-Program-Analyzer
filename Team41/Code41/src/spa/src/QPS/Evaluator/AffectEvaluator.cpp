@@ -1,8 +1,6 @@
 #include "AffectEvaluator.h"
 
-AffectEvaluator::AffectEvaluator(PKBClient *pkb) : GenericClauseEvaluator(pkb) {
-    this->assignStmts = pkb->getAssigns();
-}
+AffectEvaluator::AffectEvaluator(PKBClient *pkb) : GenericClauseEvaluator(pkb) {}
 
 Table *AffectEvaluator::evaluateClause(ClauseVariable left, ClauseVariable right) {
     if (EvaluatorUtils::StmtUtils::isIntegerInteger(&left, &right) &&
@@ -49,7 +47,7 @@ Table *AffectEvaluator::evaluateClause(ClauseVariable left, ClauseVariable right
 
 bool AffectEvaluator::isValidAssignAssign(const string &stmt1, const string &stmt2) {
     // checks if both statements are an assign statement
-    if (assignStmts.find(stmt1) == assignStmts.end() || assignStmts.find(stmt2) == assignStmts.end()) {
+    if (!pkb->isAssignStmt(stmt1) || !pkb->isAssignStmt(stmt2)) {
         return false;
     }
 
@@ -69,11 +67,7 @@ bool AffectEvaluator::isValidAssignAssign(const string &stmt1, const string &stm
 }
 
 bool AffectEvaluator::isValidAssignStmt(const string &stmt) {
-    if (assignStmts.find(stmt) == assignStmts.end()) {
-        return false;
-    }
-
-    return true;
+    return pkb->isAssignStmt(stmt);
 }
 
 bool AffectEvaluator::isValidAssignSyn(ClauseVariable &left) {

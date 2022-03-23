@@ -4,7 +4,6 @@
 
 class AffectEvaluator : public GenericClauseEvaluator {
 private:
-    unordered_set<string> assignStmts;
     Table* evaluateIntegerInteger(const ClauseVariable& left, const ClauseVariable& right);
     Table* evaluateIntegerSynonym(const ClauseVariable& left, ClauseVariable right);
     Table* evaluateIntegerWildCard(const ClauseVariable& left);
