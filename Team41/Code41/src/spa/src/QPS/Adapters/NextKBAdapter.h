@@ -3,15 +3,11 @@
 #include <string>
 #include <unordered_set>
 #include <queue>
-#include <functional>
 
 #include "PKB/PKBClient.h"
 #include "QPS/Cache/Cache.h"
 #include "Common/CFGNode.h"
 #include "AdaptersUtils.h"
-
-typedef std::function<bool (const string&, Cache* cache)> CacheCallback;
-typedef std::function<bool (const string&, Cache* cache)> TerminateCheck;
 
 class NextKBAdapter {
 private:
