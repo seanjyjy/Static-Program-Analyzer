@@ -29,7 +29,6 @@ void CFGExtractor::dfsInitCFG(TNode *curTNode, CFGNode *curCFGNode, CFGNode *par
 
         for (size_t i = 0; i < ch.size(); ++i) {
             TNodeType childType = ch[i]->getType();
-            // TODO ch.size() - 1 may cause unsigned integer overflow, dangerous?
             CFGNode *neighbourCFGNode = (i != ch.size() - 1) ? createCFGNode(ch[i + 1])
                                                              : nullptr; // last child has no neighbour
             if (childType == TNodeType::ifStmt) {
