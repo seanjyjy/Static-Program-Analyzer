@@ -1,6 +1,6 @@
 #include "WithClause.h"
 
-WithClause::WithClause(WithVariable left, WithVariable right):SuperClause(), left(left), right(right){}
+WithClause::WithClause(WithVariable left, WithVariable right): left(std::move(left)), right(std::move(right)){}
 
 WithVariable WithClause::getLeft() const {
     return left;
@@ -10,9 +10,7 @@ WithVariable WithClause::getRight() const {
     return right;
 }
 
-//// For SuperClause
-
-vector<QueryDeclaration> WithClause::getSynonyms() {
+vector<QueryDeclaration> WithClause::getSynonyms() const {
     vector<QueryDeclaration> out;
     if (left.getType() == WithVariable::ATTR_REF)
         out.push_back(left.getSynonym());
@@ -25,69 +23,34 @@ bool WithClause::hasSynonyms() const {
     return left.getType() == WithVariable::ATTR_REF || right.getType() == WithVariable::ATTR_REF;
 }
 
-bool WithClause::isWithClause() const {
-    return true;
+int WithClause::hash() const {
+    int out = std::hash<string>{}("with")
+        ^ std::hash<int>{} (left.getType())
+        ^ std::hash<int>{} (right.getType());
+
+    if (left.isIdentifier())
+        out ^= std::hash<string>{} (left.getIdent());
+    if (right.isIdentifier())
+        out ^= std::hash<string>{} (right.getIdent());
+
+    if (left.isInteger())
+        out ^= std::hash<int>{} (left.getInteger());
+    if (right.isInteger())
+        out ^= std::hash<int>{} (right.getInteger());
+
+    if (left.isAttrRef())
+        out ^= std::hash<int>{} (left.getAttr());
+    if (right.isAttrRef())
+        out ^= std::hash<int>{} (right.getAttr());
+
+    return out;
 }
 
-bool WithClause::isSuchThatClause() const {
-    return false;
+bool WithClause::equals(WithClause other) const {
+    return left.equals(other.getLeft())
+        && right.equals(other.getRight());
 }
 
-bool WithClause::isPatternClause() const {
-    return false;
-}
-
-bool WithClause::isFollows() const {
-    return false;
-}
-
-bool WithClause::isFollowsT() const {
-    return false;
-}
-
-bool WithClause::isParent() const {
-    return false;
-}
-bool WithClause::isParentT() const {
-    return false;
-}
-
-bool WithClause::isUsesS() const {
-    return false;
-}
-
-bool WithClause::isUsesP() const {
-    return false;
-}
-
-bool WithClause::isModifiesS() const {
-    return false;
-}
-
-bool WithClause::isModifiesP() const {
-    return false;
-}
-
-bool WithClause::isCalls() const {
-    return false;
-}
-
-bool WithClause::isCallsT() const {
-    return false;
-}
-
-bool WithClause::isNext() const {
-    return false;
-}
-
-bool WithClause::isNextT() const {
-    return false;
-}
-
-bool WithClause::isAffects() const {
-    return false;
-}
-
-bool WithClause::isAffectsT() const {
-    return false;
+string WithClause::toString() const {
+    return "with " + left.toString() + " " + right.toString();
 }

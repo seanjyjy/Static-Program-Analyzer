@@ -62,4 +62,6 @@ public:
      * Prints the query declaration's type and synonym in a human-readable form.
      */
     void print();
+
+    bool equals(QueryDeclaration) const;
 };

@@ -26,25 +26,39 @@ const QueryClause& SuperClause::getSuchThatClause() const {
 
 int SuperClause::hash() const {
     // todo: make use of underlying clause data
+    if (isWithClause())
+        return withClause.hash();
+
     return 0;
 }
 
 bool SuperClause::equals(SuperClause other) const {
+    if (isWithClause() && other.isWithClause())
+        return withClause.equals(other.getWithClause());
+
     // todo: compare underlying clause type and data
     return false;
 }
 
 string SuperClause::toString() const {
+    if (isWithClause())
+        return withClause.toString();
+
     // todo: print data of underlying clause
     return "help me\n";
 }
 
 vector<QueryDeclaration> SuperClause::getSynonyms() const {
+    if (isWithClause())
+        return withClause.getSynonyms();
+
     // todo
     return vector<QueryDeclaration>();
 }
 
 bool SuperClause::hasSynonyms() const {
+    if (isWithClause())
+        return withClause.hasSynonyms();
     return false;
 }
 

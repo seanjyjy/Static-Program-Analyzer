@@ -18,15 +18,18 @@ public:
     WithVariable(string);
     WithVariable(attributeName, QueryDeclaration);
     withRefType getType() const;
-    attributeName getAttr();
-    QueryDeclaration getSynonym();
-    string getIdent();
-    int getInteger();
-    string getIntegerAsString();
+    attributeName getAttr() const;
+    QueryDeclaration getSynonym() const;
+    string getIdent() const;
+    int getInteger() const;
+    string getIntegerAsString() const;
 
-    bool isIdentifier();
-    bool isInteger();
-    bool isAttrRef();
+    bool isIdentifier() const;
+    bool isInteger() const;
+    bool isAttrRef() const;
+
+    bool equals(WithVariable) const;
+    string toString() const;
 private:
     withRefType type;
     attributeName attr;
