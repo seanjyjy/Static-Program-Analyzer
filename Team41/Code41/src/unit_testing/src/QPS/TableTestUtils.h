@@ -17,7 +17,6 @@ public:
              });
         table->sort(headers);
         if (table->getHeader() != unordered_set<string>{headers.begin(), headers.end()}) {
-            printf("exited from here\n");
             return false;
         }
         vector<unordered_map<string, string>> actualRows;
@@ -32,6 +31,10 @@ public:
             }
             expectedRows.push_back(curr);
         }
+
+        // remove duplicate rows
+        actualRows.erase( unique( actualRows.begin(), actualRows.end() ), actualRows.end() );
+
         return actualRows == expectedRows;
     }
 };
