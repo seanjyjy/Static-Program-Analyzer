@@ -1,6 +1,6 @@
 #include "FollowsEvaluator.h"
 
-FollowsEvaluator::FollowsEvaluator(PKBClient *pkb): StmtStmtEvaluator(pkb) {}
+FollowsEvaluator::FollowsEvaluator(PKBClient *pkb) : StmtStmtEvaluator(pkb) {}
 
 Table *FollowsEvaluator::evaluateIntegerInteger(ClauseVariable left, ClauseVariable right) {
     bool isFollows = pkb->isFollows(left.getLabel(), right.getLabel());

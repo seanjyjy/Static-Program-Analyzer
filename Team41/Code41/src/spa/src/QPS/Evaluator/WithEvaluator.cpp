@@ -74,9 +74,9 @@ bool WithEvaluator::isAttrRefValid(WithVariable &variable) {
         return EvaluatorUtils::isVariable(type) || EvaluatorUtils::isRead(type) || EvaluatorUtils::isPrint(type);
     }
 
-    return EvaluatorUtils::isStmt(type) ||  EvaluatorUtils::isRead(type) || EvaluatorUtils::isPrint(type)
-        || EvaluatorUtils::isCall(type) || EvaluatorUtils::isWhile(type) || EvaluatorUtils::isIf(type)
-        || EvaluatorUtils::isAssign(type);
+    return EvaluatorUtils::isStmt(type) || EvaluatorUtils::isRead(type) || EvaluatorUtils::isPrint(type)
+           || EvaluatorUtils::isCall(type) || EvaluatorUtils::isWhile(type) || EvaluatorUtils::isIf(type)
+           || EvaluatorUtils::isAssign(type);
 }
 
 bool WithEvaluator::isIntegerInteger(WithVariable &left, WithVariable &right) {
@@ -85,7 +85,7 @@ bool WithEvaluator::isIntegerInteger(WithVariable &left, WithVariable &right) {
 
 bool WithEvaluator::isValidIntegerAttrRef(WithVariable &left, WithVariable &right) {
     return left.isInteger() && right.isAttrRef() && isAttrRefValid(right)
-        && (isStmtNumVar(right) || isValueVar(right)); // extra check to terminate early if needed
+           && (isStmtNumVar(right) || isValueVar(right)); // extra check to terminate early if needed
 }
 
 bool WithEvaluator::isIdentifierIdentifier(WithVariable &left, WithVariable &right) {
@@ -94,17 +94,17 @@ bool WithEvaluator::isIdentifierIdentifier(WithVariable &left, WithVariable &rig
 
 bool WithEvaluator::isValidIdentifierAttrRef(WithVariable &left, WithVariable &right) {
     return left.isIdentifier() && right.isAttrRef() && isAttrRefValid(right)
-        && (isProcVar(right) || isVarNameVar(right)); // extra check to terminate early if needed
+           && (isProcVar(right) || isVarNameVar(right)); // extra check to terminate early if needed
 }
 
 bool WithEvaluator::isValidAttrRefInteger(WithVariable &left, WithVariable &right) {
     return left.isAttrRef() && right.isInteger() && isAttrRefValid(left)
-        && (isStmtNumVar(left) || isValueVar(left)); // extra check to terminate early if needed
+           && (isStmtNumVar(left) || isValueVar(left)); // extra check to terminate early if needed
 }
 
 bool WithEvaluator::isValidAttrRefIdentifier(WithVariable &left, WithVariable &right) {
     return left.isAttrRef() && right.isIdentifier() && isAttrRefValid(left)
-        && (isProcVar(left) || isVarNameVar(left)); // extra check to terminate early if needed
+           && (isProcVar(left) || isVarNameVar(left)); // extra check to terminate early if needed
 }
 
 bool WithEvaluator::isValidAttrRefAttrRef(WithVariable &left, WithVariable &right) {
@@ -113,14 +113,14 @@ bool WithEvaluator::isValidAttrRefAttrRef(WithVariable &left, WithVariable &righ
 
 // ==================================== TABLE BUILDERS ==================================================
 
-Table *WithEvaluator::buildSingleSynonymTableWithSingleFilter(unordered_set<string>& results, QueryDeclaration& synonym,
-                                                              const string& filter, const ValueMapping& mapping) {
+Table *WithEvaluator::buildSingleSynonymTableWithSingleFilter(unordered_set<string> &results, QueryDeclaration &synonym,
+                                                              const string &filter, const ValueMapping &mapping) {
     string column = synonym.getSynonym();
     Header header = Header({column});
-    Table* table = new PQLTable(header);
-    for (auto& result : results) {
+    Table *table = new PQLTable(header);
+    for (auto &result: results) {
         if (mapping(result, pkb) == filter) {
-            Row* row = new Row(column, result);
+            Row *row = new Row(column, result);
             table->addRow(row);
         }
     }
@@ -128,9 +128,9 @@ Table *WithEvaluator::buildSingleSynonymTableWithSingleFilter(unordered_set<stri
     return table;
 }
 
-Table *WithEvaluator::buildSynonymSynonymTable(unordered_set<string> &leftResults, unordered_set<string>& rightResults,
-                                              QueryDeclaration &leftSynonym, QueryDeclaration &rightSynonym,
-                                              const ValueMapping &leftMapping, const ValueMapping &rightMapping) {
+Table *WithEvaluator::buildSynonymSynonymTable(unordered_set<string> &leftResults, unordered_set<string> &rightResults,
+                                               QueryDeclaration &leftSynonym, QueryDeclaration &rightSynonym,
+                                               const ValueMapping &leftMapping, const ValueMapping &rightMapping) {
     string firstColumn = leftSynonym.getSynonym();
     string secondColumn = rightSynonym.getSynonym();
 
@@ -142,15 +142,15 @@ Table *WithEvaluator::buildSynonymSynonymTable(unordered_set<string> &leftResult
 }
 
 Table *WithEvaluator::buildDiffSynonymTable(unordered_set<string> &leftResults, unordered_set<string> &rightResults,
-                                            const string& firstColumn, const string& secondColumn,
+                                            const string &firstColumn, const string &secondColumn,
                                             const ValueMapping &leftMapping, const ValueMapping &rightMapping) {
     Header header = Header({firstColumn, secondColumn});
-    Table* table = new PQLTable(header);
+    Table *table = new PQLTable(header);
 
-    for (auto& leftResult : leftResults) {
-        for (auto& rightResult : rightResults) {
+    for (auto &leftResult: leftResults) {
+        for (auto &rightResult: rightResults) {
             if (leftMapping(leftResult, pkb) == rightMapping(rightResult, pkb)) {
-                Row* row = new Row();
+                Row *row = new Row();
                 row->addEntry(firstColumn, leftResult);
                 row->addEntry(secondColumn, rightResult);
                 table->addRow(row);
@@ -161,12 +161,12 @@ Table *WithEvaluator::buildDiffSynonymTable(unordered_set<string> &leftResults, 
     return table;
 }
 
-Table *WithEvaluator::buildSameSynonymTable(unordered_set<string> &results, const string& column) {
+Table *WithEvaluator::buildSameSynonymTable(unordered_set<string> &results, const string &column) {
     Header header = Header({column});
-    Table* table = new PQLTable(header);
+    Table *table = new PQLTable(header);
 
-    for (auto& result : results) {
-        Row* row = new Row(column, result);
+    for (auto &result: results) {
+        Row *row = new Row(column, result);
         table->addRow(row);
     }
 
@@ -308,15 +308,15 @@ ValueMapping WithEvaluator::getMapper(QueryDeclaration::design_entity_type type)
     }
 
     if (EvaluatorUtils::isCall(type)) {
-        return [](const string &stmtNum, PKBClient* pkbCli) { return pkbCli->getCallsProcNameAttr(stmtNum); };
+        return [](const string &stmtNum, PKBClient *pkbCli) { return pkbCli->getCallsProcNameAttr(stmtNum); };
     }
 
     if (EvaluatorUtils::isPrint(type)) {
-        return [](const string &stmtNum, PKBClient* pkbCli) { return pkbCli->getPrintVarNameAttr(stmtNum); };
+        return [](const string &stmtNum, PKBClient *pkbCli) { return pkbCli->getPrintVarNameAttr(stmtNum); };
     }
 
     if (EvaluatorUtils::isRead(type)) {
-        return [](const string &stmtNum, PKBClient* pkbCli) { return pkbCli->getReadVarNameAttr(stmtNum); };
+        return [](const string &stmtNum, PKBClient *pkbCli) { return pkbCli->getReadVarNameAttr(stmtNum); };
     }
 
     string errorMessage = "You shouldnt be calling getMapper with this type: " + to_string(type);

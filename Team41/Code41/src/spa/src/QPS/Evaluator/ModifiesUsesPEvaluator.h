@@ -2,8 +2,9 @@
 
 #include "ProcEvaluator.h"
 
-class ModifiesUsesPEvaluator : public ProcEvaluator  {
+class ModifiesUsesPEvaluator : public ProcEvaluator {
 public:
-    explicit ModifiesUsesPEvaluator(PKBClient* pkb);
-    Table* evaluateClause(ClauseVariable left, ClauseVariable right) override;
+    explicit ModifiesUsesPEvaluator(PKBClient *pkb);
+
+    Table *evaluateClause(ClauseVariable left, ClauseVariable right) override;
 };

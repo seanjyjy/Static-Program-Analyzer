@@ -16,6 +16,7 @@ public:
     enum TableType {
         TrueTable, FalseTable, PQLTable
     };
+
     /**
      * Checks if a table is empty.
      *
@@ -29,7 +30,7 @@ public:
      * @param intermediatePQLTable The other table to join with the current table.
      * @return A combined table based on the sort-merge join algorithm on common headers.
      */
-    virtual Table* mergeJoin(Table* intermediatePQLTable) = 0;
+    virtual Table *mergeJoin(Table *intermediatePQLTable) = 0;
 
     /**
      * Retrieves a vector of rows in this table.
@@ -43,7 +44,7 @@ public:
      *
      * @param row Row to be added to the table.
      */
-    virtual void addRow(const Row* row) = 0;
+    virtual void addRow(const Row *row) = 0;
 
     /**
      * Retrieves the header of the table.
@@ -58,7 +59,7 @@ public:
      * @param row The row to be checked.
      * @return True if the table contains this row, else false.
      */
-    virtual bool hasRow(const Row* row) = 0;
+    virtual bool hasRow(const Row *row) = 0;
 
     /**
      * Retrieves the size of this table based on the number of rows.
@@ -89,11 +90,16 @@ public:
      * @param commonHeader A vector of strings that contains the header information that is used for sorting.
      */
     virtual void sort(vector<string> commonHeader) = 0;
+
     virtual TableType getType() = 0;
+
     virtual ~Table() = default;
 
     friend class TrueTable;
+
     friend class FalseTable;
+
     friend class BooleanTable;
+
     friend class PQLTable;
 };

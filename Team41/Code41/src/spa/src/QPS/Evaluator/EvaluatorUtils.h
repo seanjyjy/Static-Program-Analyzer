@@ -195,7 +195,7 @@ public:
      * @param right Clause variable.
      * @return True if left clause variable is a wildcard and if right clause variable is a wildcard else false.
      */
-    static bool isWildCardWildCard(ClauseVariable* left, ClauseVariable* right);
+    static bool isWildCardWildCard(ClauseVariable *left, ClauseVariable *right);
 
     /**
      * Checks if the left clause variable is a wildcard and if the right clause variable is a wildcard.
@@ -204,12 +204,12 @@ public:
      * @param right Clause variable.
      * @return True if left clause variable is a wildcard and if right clause variable is a wildcard else false.
      */
-     /**
-      * Checks that declaration synonyms are unique
-      *
-      * @param declarations the list of declarations defined in the query
-      * @return true if valid, false otherwise
-      */
+    /**
+     * Checks that declaration synonyms are unique
+     *
+     * @param declarations the list of declarations defined in the query
+     * @return true if valid, false otherwise
+     */
     static bool validateDeclarations(vector<QueryDeclaration> declarations);
 
     // for Follow, Follow*, Parent, Parent*
@@ -222,7 +222,7 @@ public:
          * @param right Clause variable.
          * @return True if left clause variable is an integer and if right clause variable is an integer else false.
          */
-        static bool isIntegerInteger(ClauseVariable* left, ClauseVariable* right);
+        static bool isIntegerInteger(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is an integer and if the right clause variable is a synonym. Also it
@@ -233,7 +233,7 @@ public:
          * @return True if left clause variable is an integer and if right clause variable is a valid synonym
          * else false.
          */
-        static bool isValidIntegerSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidIntegerSynonym(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is an integer and if the right clause variable is a wildcard.
@@ -242,7 +242,7 @@ public:
          * @param right Clause variable.
          * @return True if left clause variable is an integer and if right clause variable is a wildcard else false.
          */
-        static bool isIntegerWildCard(ClauseVariable* left, ClauseVariable* right);
+        static bool isIntegerWildCard(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is an integer. Also it
@@ -253,7 +253,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is an integer
          * else false.
          */
-        static bool isValidSynonymInteger(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidSynonymInteger(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is a synonym. Also it
@@ -264,7 +264,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is a valid
          * synonym else false.
          */
-        static bool isValidSynonymSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidSynonymSynonym(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is a wildcard. Also it
@@ -275,7 +275,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is a wildcard
          * else false.
          */
-        static bool isValidSynonymWildCard(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidSynonymWildCard(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a wildcard and if the right clause variable is an integer.
@@ -284,7 +284,7 @@ public:
          * @param right Clause variable.
          * @return True if left clause variable is a wildcard and if right clause variable is an integer else false.
          */
-        static bool isWildCardInteger(ClauseVariable* left, ClauseVariable* right);
+        static bool isWildCardInteger(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a wildcard and if the right clause variable is a synonym. Also it
@@ -295,7 +295,7 @@ public:
          * @return True if left clause variable is a wildcard and if right clause variable is a valid synonym
          * else false.
          */
-        static bool isValidWildCardSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidWildCardSynonym(ClauseVariable *left, ClauseVariable *right);
     };
 
     // for ModifiesP, UsesP, Calls
@@ -309,7 +309,7 @@ public:
          * @return True if left clause variable is an identifier and if right clause variable is an identifier
          * else false.
          */
-        static bool isIdentifierIdentifier(ClauseVariable* left, ClauseVariable* right);
+        static bool isIdentifierIdentifier(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is an identifier and if the right clause variable is a synonym. Also it
@@ -320,7 +320,7 @@ public:
          * @return True if left clause variable is an identifier and if right clause variable is an valid synonym
          * else false.
          */
-        static bool isValidIdentifierSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidIdentifierSynonym(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is an identifier and if the right clause variable is a wildcard.
@@ -329,7 +329,7 @@ public:
          * @param right Clause variable.
          * @return True if left clause variable is an identifier and if right clause variable is a wildcard else false.
          */
-        static bool isIdentifierWildCard(ClauseVariable* left, ClauseVariable* right);
+        static bool isIdentifierWildCard(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is an identifier. Also it
@@ -340,7 +340,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is an identifier
          * else false.
          */
-        static bool isValidSynonymIdentifier(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidSynonymIdentifier(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is a synonym. Also it
@@ -352,7 +352,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is a valid synonym
          * else false.
          */
-        static bool isValidSynonymSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidSynonymSynonym(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is a wildcard. Also it
@@ -363,7 +363,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is a wildcard
          * else false.
          */
-        static bool isValidSynonymWildCard(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidSynonymWildCard(ClauseVariable *left, ClauseVariable *right);
     };
 
     // For ModifiesS, UsesS
@@ -377,7 +377,7 @@ public:
          * @return True if left clause variable is an integer and if right clause variable is an identifier
          * else false.
          */
-        static bool isIntegerIdentifier(ClauseVariable* left, ClauseVariable* right);
+        static bool isIntegerIdentifier(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is an integer and if the right clause variable is a synonym. Also it
@@ -388,7 +388,7 @@ public:
          * @return True if left clause variable is an integer and if right clause variable is a valid synonym
          * else false.
          */
-        static bool isValidIntegerSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidIntegerSynonym(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is an integer and if the right clause variable is a wildcard.
@@ -397,7 +397,7 @@ public:
          * @param right Clause variable.
          * @return True if left clause variable is an integer and if right clause variable is a wildcard else false.
          */
-        static bool isIntegerWildCard(ClauseVariable* left, ClauseVariable* right);
+        static bool isIntegerWildCard(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is an identifier. Also it
@@ -408,7 +408,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is an identifier
          * else false.
          */
-        static bool isValidModifiesSynonymIdentifier(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidModifiesSynonymIdentifier(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is an identifier. Also it
@@ -419,7 +419,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is an identifier
          * else false.
          */
-        static bool isValidUsesSynonymIdentifier(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidUsesSynonymIdentifier(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is a synonym. Also it
@@ -431,7 +431,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is a valid synonym
          * else false.
          */
-        static bool isValidModifiesSynonymSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidModifiesSynonymSynonym(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is a synonym. Also it
@@ -443,7 +443,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is a valid synonym
          * else false.
          */
-        static bool isValidUsesSynonymSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidUsesSynonymSynonym(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is a wildcard. Also it
@@ -454,7 +454,7 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is a wildcard
          * else false.
          */
-        static bool isValidModifiesSynonymWildCard(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidModifiesSynonymWildCard(ClauseVariable *left, ClauseVariable *right);
 
         /**
          * Checks if the left clause variable is a synonym and if the right clause variable is a wildcard. Also it
@@ -465,23 +465,23 @@ public:
          * @return True if left clause variable is a valid synonym and if right clause variable is a wildcard
          * else false.
          */
-        static bool isValidUsesSynonymWildCard(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidUsesSynonymWildCard(ClauseVariable *left, ClauseVariable *right);
     };
 
     // For Calls, Calls*
     class CallsUtils {
     public:
-        static bool isValidCallsIdentifierSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidCallsIdentifierSynonym(ClauseVariable *left, ClauseVariable *right);
 
-        static bool isValidCallsSynonymIdentifier(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidCallsSynonymIdentifier(ClauseVariable *left, ClauseVariable *right);
 
-        static bool isValidCallsSynonymSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidCallsSynonymSynonym(ClauseVariable *left, ClauseVariable *right);
 
-        static bool isValidCallsSynonymWildCard(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidCallsSynonymWildCard(ClauseVariable *left, ClauseVariable *right);
 
-        static bool isValidCallsWildCardSynonym(ClauseVariable* left, ClauseVariable* right);
+        static bool isValidCallsWildCardSynonym(ClauseVariable *left, ClauseVariable *right);
 
-        static bool isWildCardIdentifier(ClauseVariable* left, ClauseVariable* right);
+        static bool isWildCardIdentifier(ClauseVariable *left, ClauseVariable *right);
     };
 
     class AttrUtils {
@@ -493,17 +493,17 @@ public:
          * @param target the select target
          * @return true if valid, false otherwise
          */
-        static bool validateSelectTarget(SelectTarget* target);
+        static bool validateSelectTarget(SelectTarget *target);
 
-         /**
-          * Maps the raw data to the correct output based on attribute type
-          *
-          * @param target the select target
-          * @param rawData the rawData
-          * @param pkb the knowledge base
-          * @return the correct output based on Selectable
-          */
-        static optional<string> getAttrFromSelectable(Selectable* target, const string& rawData, PKBClient* pkb);
+        /**
+         * Maps the raw data to the correct output based on attribute type
+         *
+         * @param target the select target
+         * @param rawData the rawData
+         * @param pkb the knowledge base
+         * @return the correct output based on Selectable
+         */
+        static optional<string> getAttrFromSelectable(Selectable *target, const string &rawData, PKBClient *pkb);
 
         /**
          * Checks if the Selectable is a valid synonym or valid attribute ref
@@ -564,13 +564,16 @@ public:
 
     class PatternUtils {
     public:
-        static bool isWildCardWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables,
+        static bool isWildCardWildCards(ClauseVariable variable, const vector<PatternVariable> &patternVariables,
                                         QueryDeclaration::design_entity_type type);
-        static bool isIdentifierWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables,
+
+        static bool isIdentifierWildCards(ClauseVariable variable, const vector<PatternVariable> &patternVariables,
                                           QueryDeclaration::design_entity_type type);
-        static bool isValidSynonymWildCards(ClauseVariable variable, const vector<PatternVariable>& patternVariables,
+
+        static bool isValidSynonymWildCards(ClauseVariable variable, const vector<PatternVariable> &patternVariables,
                                             QueryDeclaration::design_entity_type type);
-        static bool isWildCards(const vector<PatternVariable>& patternVariables,
+
+        static bool isWildCards(const vector<PatternVariable> &patternVariables,
                                 QueryDeclaration::design_entity_type type);
     };
 };

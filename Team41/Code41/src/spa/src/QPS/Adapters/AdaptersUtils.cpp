@@ -1,7 +1,7 @@
 #include "AdaptersUtils.h"
 
 void AdaptersUtils::runBFS(bool isForward, const CacheCallback &cacheAndContinue, const TerminateCheck &canTerminate,
-                           Cache* cache, CFGNode *startNode) {
+                           Cache *cache, CFGNode *startNode) {
 
     if (startNode == nullptr) return;
 
@@ -30,14 +30,14 @@ void AdaptersUtils::runBFS(bool isForward, const CacheCallback &cacheAndContinue
     }
 }
 
-void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache* cache, CFGNode* node) {
+void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache *cache, CFGNode *node) {
 
-    CacheCallback saveToCache = [start](const string &next, Cache* cache) {
+    CacheCallback saveToCache = [start](const string &next, Cache *cache) {
         cache->registerBooleanMapping(start, next);
         return true;
     };
 
-    TerminateCheck canEnd = [start, end](const string &next, Cache* cache) {
+    TerminateCheck canEnd = [start, end](const string &next, Cache *cache) {
         if (cache->getBooleanMapping(next, end)) {
             cache->registerBooleanMapping(end, end);
             return true;
@@ -56,8 +56,8 @@ void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache* ca
     runBFS(true, saveToCache, canEnd, cache, node);
 }
 
-void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode* node) {
-    CacheCallback saveToCache = [stmtNum](const string &next, Cache* cache) {
+void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *node) {
+    CacheCallback saveToCache = [stmtNum](const string &next, Cache *cache) {
         unordered_set<string> forwardCache = cache->getForwardMapping(next);
         bool canUseCache = !forwardCache.empty() && stmtNum != next;
 
@@ -74,13 +74,13 @@ void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode* nod
         return true;
     };
 
-    TerminateCheck canEnd = [](const string&, Cache*) { return false; };
+    TerminateCheck canEnd = [](const string &, Cache *) { return false; };
 
     runBFS(true, saveToCache, canEnd, cache, node);
 }
 
-void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode* node) {
-    CacheCallback saveToCache = [stmtNum](const string &next, Cache* cache) {
+void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node) {
+    CacheCallback saveToCache = [stmtNum](const string &next, Cache *cache) {
         unordered_set<string> backwardCache = cache->getBackwardMapping(next);
         bool canUseCache = !backwardCache.empty() && stmtNum != next;
 
@@ -97,7 +97,7 @@ void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode* node)
         return true;
     };
 
-    TerminateCheck canEnd = [](const string &, Cache*) { return false; };
+    TerminateCheck canEnd = [](const string &, Cache *) { return false; };
 
     runBFS(false, saveToCache, canEnd, cache, node);
 }

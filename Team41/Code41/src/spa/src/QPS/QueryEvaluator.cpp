@@ -23,8 +23,8 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
 
     try {
         while (!queryObject->empty()) {
-            SuperClause* clause = queryObject->popClause();
-            Table* intermediateTable = this->evaluate(clause);
+            SuperClause *clause = queryObject->popClause();
+            Table *intermediateTable = this->evaluate(clause);
 
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
@@ -68,11 +68,11 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
                 return {queryObject->getSelectTarget(), new FalseTable()};
             }
         }
-    } catch (SemanticException& error) {
+    } catch (SemanticException &error) {
         cout << error.what() << endl;
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
-    } catch (const runtime_error& error) {
+    } catch (const runtime_error &error) {
         cout << error.what() << endl;
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
@@ -81,7 +81,7 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
     return {queryObject->getSelectTarget(), resultTable};
 }
 
-Table *QueryEvaluator::evaluate(SuperClause* clause) {
+Table *QueryEvaluator::evaluate(SuperClause *clause) {
     if (clause->isPatternClause()) {
         return evaluate(clause->getPatternClause());
     } else if (clause->isWithClause()) {
@@ -144,7 +144,7 @@ Table *QueryEvaluator::evaluate(const WithClause &clause) {
     return WithEvaluator(pkb).evaluate(clause);
 }
 
-void QueryEvaluator::safeDeleteTable(Table* tableToDelete, Table* resultTable) {
+void QueryEvaluator::safeDeleteTable(Table *tableToDelete, Table *resultTable) {
     if (tableToDelete == resultTable) {
         return;
     }
@@ -168,7 +168,7 @@ void QueryEvaluator::safeDeleteTable(Table *tableToDelete) {
 vector<string> QueryEvaluator::getSynonyms(QueryObject *queryObject) {
     vector<string> synonyms;
 
-    for (auto& selectable : queryObject->getSelectables()) {
+    for (auto &selectable: queryObject->getSelectables()) {
         QueryDeclaration queryDeclaration = selectable.getSynonym();
         string label = queryDeclaration.synonym;
 

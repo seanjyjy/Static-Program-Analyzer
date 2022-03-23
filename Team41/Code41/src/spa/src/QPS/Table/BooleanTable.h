@@ -9,13 +9,13 @@ class BooleanTable : public Table {
     vector<const Row *> getRows() override;
 
     // This is a stub method
-    void addRow(const Row* row) override;
+    void addRow(const Row *row) override;
 
     // This is a stub method
     Header getHeader() const override;
 
     // This is a stub method
-    bool hasRow(const Row* row) override;
+    bool hasRow(const Row *row) override;
 
     // This is a stub method
     size_t size() override;
@@ -30,5 +30,6 @@ class BooleanTable : public Table {
     unordered_set<string> getColumns(vector<string> columnNames) override;
 
     friend class Truetable;
+
     friend class FalseTable;
 };

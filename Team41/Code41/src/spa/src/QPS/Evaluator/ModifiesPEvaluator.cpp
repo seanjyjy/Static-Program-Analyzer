@@ -1,6 +1,6 @@
 #include "ModifiesPEvaluator.h"
 
-ModifiesPEvaluator::ModifiesPEvaluator(PKBClient *pkb): ModifiesUsesPEvaluator(pkb) {}
+ModifiesPEvaluator::ModifiesPEvaluator(PKBClient *pkb) : ModifiesUsesPEvaluator(pkb) {}
 
 bool ModifiesPEvaluator::getIdentifierIdentifierRelation(const string &leftLabel, const string &rightLabel) {
     return pkb->isModifiesP(leftLabel, rightLabel);

@@ -7,7 +7,7 @@ Table *AffectEvaluator::evaluateClause(ClauseVariable left, ClauseVariable right
         isValidAssignAssign(left.getLabel(), right.getLabel())) {
         return evaluateIntegerInteger(left, right);
     }
-    
+
     if (EvaluatorUtils::StmtUtils::isValidIntegerSynonym(&left, &right)
         && isValidAssignStmt(left.getLabel()) && isValidAssignSyn(right)) {
         return evaluateIntegerSynonym(left, right);
@@ -52,17 +52,17 @@ bool AffectEvaluator::isValidAssignAssign(const string &stmt1, const string &stm
     }
 
     // checks if both statements are in the same procedure
-    CFGNode* root = pkb->getRootCFG();
+    CFGNode *root = pkb->getRootCFG();
     vector<CFGNode *> children = root->getChildren();
     int stmt1Val = stoi(stmt1);
     int stmt2Val = stoi(stmt2);
-    for (auto& child : root->getChildren()) {
+    for (auto &child: root->getChildren()) {
         int procStart = stoi(child->getStmtNum());
         if (stmt1Val < procStart && stmt2Val >= procStart) {
             return false;
         }
     }
-    
+
     return true;
 }
 
@@ -81,25 +81,25 @@ bool AffectEvaluator::isValidAssignSynSyn(ClauseVariable &left, ClauseVariable &
     auto rightType = right.getDesignEntityType();
 
     return (EvaluatorUtils::isAssign(leftType) || EvaluatorUtils::isStmt(leftType))
-        && (EvaluatorUtils::isAssign(rightType) || EvaluatorUtils::isStmt(rightType));
+           && (EvaluatorUtils::isAssign(rightType) || EvaluatorUtils::isStmt(rightType));
 }
 
-Table *AffectEvaluator::evaluateIntegerInteger(const ClauseVariable& left, const ClauseVariable& right) {
+Table *AffectEvaluator::evaluateIntegerInteger(const ClauseVariable &left, const ClauseVariable &right) {
     bool affectResult = getIntegerIntegerRelation(left.getLabel(), right.getLabel());
     return buildBooleanTable(affectResult);
 }
 
-Table *AffectEvaluator::evaluateIntegerSynonym(const ClauseVariable& left, ClauseVariable right) {
+Table *AffectEvaluator::evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable right) {
     unordered_set<string> affecteds = getIntegerSynonymRelation(left.getLabel());
     return buildSingleSynonymTable(affecteds, right);
 }
 
-Table *AffectEvaluator::evaluateIntegerWildCard(const ClauseVariable& left) {
+Table *AffectEvaluator::evaluateIntegerWildCard(const ClauseVariable &left) {
     unordered_set<string> affecteds = getIntegerWildCardRelation(left.getLabel());
     return buildBooleanTable(!affecteds.empty());
 }
 
-Table *AffectEvaluator::evaluateSynonymInteger(ClauseVariable left, const ClauseVariable& right) {
+Table *AffectEvaluator::evaluateSynonymInteger(ClauseVariable left, const ClauseVariable &right) {
     unordered_set<string> affectings = getSynonymIntegerRelation(right.getLabel());
     return buildSingleSynonymTable(affectings, left);
 }
@@ -114,7 +114,7 @@ Table *AffectEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
     return buildSingleSynonymTable(affectings, left);
 }
 
-Table *AffectEvaluator::evaluateWildCardInteger(const ClauseVariable& right) {
+Table *AffectEvaluator::evaluateWildCardInteger(const ClauseVariable &right) {
     unordered_set<string> affectings = getWildCardIntegerRelation(right.getLabel());
     return buildBooleanTable(!affectings.empty());
 }

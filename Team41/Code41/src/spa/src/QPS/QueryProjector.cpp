@@ -4,7 +4,7 @@
 #include "Evaluator/EvaluatorUtils.h"
 #include "Exception/SemanticException.h"
 
-QueryProjector::QueryProjector(const QueryResult& queryResult, PKBClient* pkb) : queryResult(queryResult), pkb(pkb) {}
+QueryProjector::QueryProjector(const QueryResult &queryResult, PKBClient *pkb) : queryResult(queryResult), pkb(pkb) {}
 
 unordered_set<string> QueryProjector::getResult() {
     if (!queryResult.isValid()) return {};
@@ -23,7 +23,7 @@ unordered_set<string> QueryProjector::getBooleanResult() {
 
 unordered_set<string> QueryProjector::getTupleResult() {
     vector<Selectable> selectables = queryResult.getSelectables();
-    Table* table = queryResult.getTable();
+    Table *table = queryResult.getTable();
     unordered_set<string> results;
     for (auto row: table->getRows()) {
         string result;
@@ -35,7 +35,7 @@ unordered_set<string> QueryProjector::getTupleResult() {
     return results;
 }
 
-string QueryProjector::getProjectionFromRow(const Row* row, Selectable* target) {
+string QueryProjector::getProjectionFromRow(const Row *row, Selectable *target) {
     QueryDeclaration declaration = target->getSynonym();
     string rawData = row->getValueAtColumn(declaration.synonym);
     if (target->getType() == target->SYNONYM) {

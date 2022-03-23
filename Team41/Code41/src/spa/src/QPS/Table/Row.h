@@ -10,7 +10,8 @@ private:
     unordered_map<string, string> row;
 public:
     Row();
-    Row(const string& column, string value);
+
+    Row(const string &column, string value);
 
     /**
      * Retrieves the number of entries in the current row.
@@ -25,7 +26,7 @@ public:
      * @param column The name of the column.
      * @return True if current row contains the name of a column else return false.
      */
-    bool hasColumn(const string& column) const;
+    bool hasColumn(const string &column) const;
 
     /**
      * Retrieves a values from a certain column.
@@ -33,7 +34,7 @@ public:
      * @param column The name of the column.
      * @return The string value at that particular column if exist, else throw an error.
      */
-    string getValueAtColumn(const string& column) const;
+    string getValueAtColumn(const string &column) const;
 
     /**
      * Retrieves the current row.
@@ -48,7 +49,7 @@ public:
      * @param column The name of the column.
      * @param value The value to be added to a certain column
      */
-    void addEntry(const string& column, string value);
+    void addEntry(const string &column, string value);
 
     /**
      * Compares if two rows are equal.

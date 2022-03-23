@@ -18,18 +18,19 @@ private:
     vector<pair<string, string>> allMapping; // only populated when getAll* is being called
 
     unordered_set<string> getMapping(Mapping map, const string &key);
+
 public:
-    void registerForwardMapping(const string& key, const string& value); // register key-value pair in forward mapping
+    void registerForwardMapping(const string &key, const string &value); // register key-value pair in forward mapping
 
-    void registerBackwardMapping(const string& key, const string& value); // register key-value pair in backward mapping
+    void registerBackwardMapping(const string &key, const string &value); // register key-value pair in backward mapping
 
-    void registerBooleanMapping(const string& key, const string& value); // register key-value pair in boolean mapping
+    void registerBooleanMapping(const string &key, const string &value); // register key-value pair in boolean mapping
 
-    unordered_set<string> getForwardMapping(const string& key); // retrieves the forward mapping for certain key
+    unordered_set<string> getForwardMapping(const string &key); // retrieves the forward mapping for certain key
 
-    unordered_set<string> getBackwardMapping(const string& key); // retrieves the backward mapping for certain key
+    unordered_set<string> getBackwardMapping(const string &key); // retrieves the backward mapping for certain key
 
-    bool getBooleanMapping(const string& key, const string& value); // checks if key value pair exist in boolean mapping
+    bool getBooleanMapping(const string &key, const string &value); // checks if key value pair exist in boolean mapping
 
     vector<pair<string, string>> getAllMapping(); // retrieves all mapping
 

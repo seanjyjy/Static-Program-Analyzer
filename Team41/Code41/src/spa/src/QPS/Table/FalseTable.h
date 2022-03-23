@@ -5,13 +5,14 @@
 class FalseTable : public BooleanTable {
 public:
     FalseTable();
+
     ~FalseTable();
 
     // This is a stub method
     bool isEmpty() override;
 
     // This is a stub method
-    Table* mergeJoin(Table* intermediatePQLTable) override;
+    Table *mergeJoin(Table *intermediatePQLTable) override;
 
     // This is a stub method
     TableType getType() override;

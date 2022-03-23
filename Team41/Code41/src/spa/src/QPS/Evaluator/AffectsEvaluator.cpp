@@ -1,6 +1,6 @@
 #include "AffectsEvaluator.h"
 
-AffectsEvaluator::AffectsEvaluator(PKBClient *pkb, AffectsKBAdapter *affectsKBAdapter): AffectEvaluator(pkb) {
+AffectsEvaluator::AffectsEvaluator(PKBClient *pkb, AffectsKBAdapter *affectsKBAdapter) : AffectEvaluator(pkb) {
     this->affectsKBAdapter = affectsKBAdapter;
 }
 

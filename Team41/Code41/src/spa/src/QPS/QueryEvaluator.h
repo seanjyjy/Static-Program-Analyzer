@@ -40,16 +40,16 @@ using namespace std;
 
 class QueryEvaluator {
 private:
-    PKBClient* pkb;
-    NextKBAdapter* nextKBAdapter;
-    AffectsKBAdapter* affectsKBAdapter;
+    PKBClient *pkb;
+    NextKBAdapter *nextKBAdapter;
+    AffectsKBAdapter *affectsKBAdapter;
 
     /**
      * Deletes a table after it is not being used.
      *
      * @param tableToDelete Table to be deleted.
      */
-    void safeDeleteTable(Table* tableToDelete);
+    void safeDeleteTable(Table *tableToDelete);
 
     /**
      * Deletes a table after it is not being used and it is not the same reference as result table.
@@ -57,9 +57,11 @@ private:
      * @param tableToDelete Table to be deleted.
      * @param resultTable Table that contains the current result.
      */
-    void safeDeleteTable(Table* tableToDelete, Table* resultTable);
+    void safeDeleteTable(Table *tableToDelete, Table *resultTable);
+
 public:
-    explicit QueryEvaluator(PKBClient* pkb);
+    explicit QueryEvaluator(PKBClient *pkb);
+
     ~QueryEvaluator();
 
     /**
@@ -78,10 +80,13 @@ public:
      * @param clause QueryClause.
      * @return A table that contains information based on the QueryClause provided.
      */
-    Table* evaluate(SuperClause* clause);
-    Table* evaluate(const QueryClause &clause);
-    Table* evaluate(const PatternClause &clause);
-    Table* evaluate(const WithClause &clause);
+    Table *evaluate(SuperClause *clause);
+
+    Table *evaluate(const QueryClause &clause);
+
+    Table *evaluate(const PatternClause &clause);
+
+    Table *evaluate(const WithClause &clause);
 
     /**
      * Extract the vector of synonyms from the query's return type from query object.

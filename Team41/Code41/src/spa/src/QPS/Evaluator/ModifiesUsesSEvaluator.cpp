@@ -18,22 +18,22 @@ Table *ModifiesUsesSEvaluator::evaluateClause(ClauseVariable leftVariable, Claus
     return evaluateClauseFurther(leftVariable, rightVariable);
 }
 
-Table *ModifiesUsesSEvaluator::evaluateIntegerIdentifier(const ClauseVariable& left, const ClauseVariable& right) {
+Table *ModifiesUsesSEvaluator::evaluateIntegerIdentifier(const ClauseVariable &left, const ClauseVariable &right) {
     bool isStatementUsed = getIntegerIdentifierRelation(left.getLabel(), right.getLabel());
     return buildBooleanTable(isStatementUsed);
 }
 
-Table *ModifiesUsesSEvaluator::evaluateIntegerSynonym(const ClauseVariable& left, ClauseVariable right) {
+Table *ModifiesUsesSEvaluator::evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable right) {
     unordered_set<string> statementUsed = getIntegerSynonymRelation(left.getLabel());
     return buildSingleSynonymTable(statementUsed, right);
 }
 
-Table *ModifiesUsesSEvaluator::evaluateIntegerWildCard(const ClauseVariable& left) {
+Table *ModifiesUsesSEvaluator::evaluateIntegerWildCard(const ClauseVariable &left) {
     unordered_set<string> statementUsed = getIntegerWildCardRelation(left.getLabel());
     return buildBooleanTable(!statementUsed.empty());
 }
 
-Table *ModifiesUsesSEvaluator::evaluateSynonymIdentifier(ClauseVariable& left, ClauseVariable& right) {
+Table *ModifiesUsesSEvaluator::evaluateSynonymIdentifier(ClauseVariable &left, ClauseVariable &right) {
     unordered_set<string> statementBeingUsed = getSynonymIdentifierRelation(right.getLabel());
     return buildSingleSynonymTable(statementBeingUsed, left);
 }
@@ -43,7 +43,7 @@ Table *ModifiesUsesSEvaluator::evaluateSynonymSynonym(ClauseVariable left, Claus
     return buildSynonymSynonymTable(listOfStmtStmt, left, right);
 }
 
-Table *ModifiesUsesSEvaluator::evaluateSynonymWildCard(ClauseVariable& left) {
+Table *ModifiesUsesSEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
     unordered_set<string> statementUsed = getSynonymWildCardRelation();
     return buildSingleSynonymTable(statementUsed, left);
 }
