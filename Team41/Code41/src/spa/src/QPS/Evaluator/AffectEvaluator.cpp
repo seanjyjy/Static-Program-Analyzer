@@ -101,7 +101,7 @@ Table *AffectEvaluator::evaluateIntegerSynonym(const ClauseVariable& left, Claus
 }
 
 Table *AffectEvaluator::evaluateIntegerWildCard(const ClauseVariable& left) {
-    unordered_set<string> affecteds = getIntegerSynonymRelation(left.getLabel());
+    unordered_set<string> affecteds = getIntegerWildCardRelation(left.getLabel());
     return buildBooleanTable(!affecteds.empty());
 }
 
