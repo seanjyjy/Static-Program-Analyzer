@@ -28,6 +28,7 @@
 #include "QueryProjector.h"
 #include "QueryResult.h"
 #include "QueryObject.h"
+#include "Optimizer/OptimizedQueryObject.h"
 #include "QueryClause.h"
 #include "Selectable.h"
 
@@ -66,6 +67,8 @@ public:
      */
     QueryResult evaluateQuery(QueryObject *queryObject);
 
+    QueryResult evaluateQuery(OptimizedQueryObject *queryObject);
+
     /**
      * Constructs a table based on the QueryClause provided.
      *
@@ -73,9 +76,9 @@ public:
      * @return A table that contains information based on the QueryClause provided.
      */
     Table* evaluate(SuperClause* clause);
-    Table* evaluate(QueryClause* clause);
-    Table* evaluate(PatternClause* clause);
-    Table* evaluate(WithClause* clause);
+    Table* evaluate(const QueryClause &clause);
+    Table* evaluate(const PatternClause &clause);
+    Table* evaluate(const WithClause &clause);
 
     /**
      * Extract the vector of synonyms from the query's return type from query object.

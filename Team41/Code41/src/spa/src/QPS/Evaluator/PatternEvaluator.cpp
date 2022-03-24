@@ -2,12 +2,12 @@
 
 PatternEvaluator::PatternEvaluator(PKBClient *pkb) : Evaluator(pkb) {}
 
-Table *PatternEvaluator::evaluate(PatternClause *clause) {
-    QueryDeclaration patternSynonym = clause->getSynonym();
-    ClauseVariable leftVariable = clause->getLHS();
-    vector<PatternVariable> rightPatternVariables = clause->getRHS();
+Table *PatternEvaluator::evaluate(const PatternClause &clause) {
+    QueryDeclaration patternSynonym = clause.getSynonym();
+    ClauseVariable leftVariable = clause.getLHS();
+    vector<PatternVariable> rightPatternVariables = clause.getRHS();
 
-    if (leftVariable.getLabel() == patternSynonym.synonym) {
+    if (leftVariable.getLabel() == patternSynonym.getSynonym()) {
         throw SemanticException("NO SUCH COMBINATION ALLOWED FOR PATTERN");
     }
 

@@ -4,9 +4,9 @@ WithEvaluator::WithEvaluator(PKBClient *pkb) : Evaluator(pkb) {}
 
 // ==================================== PUBLIC METHODS =========================================================
 
-Table *WithEvaluator::evaluate(WithClause *clause) {
-    WithVariable left = clause->getLeft();
-    WithVariable right = clause->getRight();
+Table *WithEvaluator::evaluate(const WithClause &clause) {
+    WithVariable left = clause.getLeft();
+    WithVariable right = clause.getRight();
 
     if (isIntegerInteger(left, right)) {
         return evaluateIntegerInteger(left, right);

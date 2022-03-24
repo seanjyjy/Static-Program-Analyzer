@@ -1,12 +1,11 @@
 #include "QueryEvaluator.h"
-#include "QPS/Evaluator/Evaluator.h"
 
 QueryEvaluator::QueryEvaluator(PKBClient *pkb) {
     this->pkb = pkb;
     this->nextKBAdapter = new NextKBAdapter(pkb);
 }
 
-QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
+QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
     unordered_set<string> emptyResult;
     unordered_set<string> result;
 
@@ -20,10 +19,10 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     }
 
     Table *resultTable = new TrueTable();
-    vector<SuperClause *> clauses = queryObject->getSuperClauses();
 
     try {
-        for (auto clause : clauses) {
+        while (!queryObject->empty()) {
+            SuperClause* clause = queryObject->popClause();
             Table* intermediateTable = this->evaluate(clause);
 
             if (intermediateTable->isEmpty()) {
@@ -83,16 +82,16 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
 
 Table *QueryEvaluator::evaluate(SuperClause* clause) {
     if (clause->isPatternClause()) {
-        return evaluate((PatternClause *) clause);
+        return evaluate(clause->getPatternClause());
     } else if (clause->isWithClause()) {
-        return evaluate((WithClause* ) clause);
+        return evaluate(clause->getWithClause());
     }
 
-    return evaluate((QueryClause*) clause);
+    return evaluate(clause->getSuchThatClause());
 }
 
-Table *QueryEvaluator::evaluate(QueryClause *clause) {
-    switch (clause->type) {
+Table *QueryEvaluator::evaluate(const QueryClause &clause) {
+    switch (clause.getType()) {
         case QueryClause::clause_type::follows:
             return FollowsEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::followsT:
@@ -122,12 +121,12 @@ Table *QueryEvaluator::evaluate(QueryClause *clause) {
         case QueryClause::clause_type::affectsT:
             return nullptr;
         default:
-            throw std::runtime_error("unknown clause of type " + to_string(clause->type));
+            throw std::runtime_error("unknown clause of type " + to_string(clause.type));
     }
 }
 
-Table *QueryEvaluator::evaluate(PatternClause *clause) {
-    auto type = clause->getSynonym().getType();
+Table *QueryEvaluator::evaluate(const PatternClause &clause) {
+    auto type = clause.getSynonym().getType();
     switch (type) {
         case QueryDeclaration::design_entity_type::ASSIGN:
             return AssignPatternEvaluator(pkb).evaluate(clause);
@@ -140,7 +139,7 @@ Table *QueryEvaluator::evaluate(PatternClause *clause) {
     }
 }
 
-Table *QueryEvaluator::evaluate(WithClause *clause) {
+Table *QueryEvaluator::evaluate(const WithClause &clause) {
     return WithEvaluator(pkb).evaluate(clause);
 }
 
@@ -179,4 +178,79 @@ vector<string> QueryEvaluator::getSynonyms(QueryObject *queryObject) {
     }
 
     return synonyms;
+}
+
+// TODO: DELETE WHEN ALL IS WELL
+QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
+    unordered_set<string> emptyResult;
+    unordered_set<string> result;
+
+    if (!queryObject->isValid()) {
+        return {queryObject->getSelectTarget(), nullptr, false};
+    }
+
+    if (!EvaluatorUtils::validateDeclarations(queryObject->getDeclarations()) ||
+        !EvaluatorUtils::AttrUtils::validateSelectTarget(&queryObject->getSelectTarget())) {
+        return {queryObject->getSelectTarget(), new FalseTable()};
+    }
+
+    Table *resultTable = new TrueTable();
+
+    try {
+        for (auto clause : queryObject->getSuperClauses()) {
+            Table* intermediateTable = this->evaluate(clause);
+
+            if (intermediateTable->isEmpty()) {
+                safeDeleteTable(intermediateTable);
+                safeDeleteTable(resultTable);
+                return {queryObject->getSelectTarget(), new FalseTable()};
+            }
+
+            Table *ogTable = resultTable;
+            resultTable = resultTable->mergeJoin(intermediateTable);
+            safeDeleteTable(ogTable, resultTable);
+            safeDeleteTable(intermediateTable, resultTable);
+
+            if (resultTable->isEmpty()) {
+                safeDeleteTable(resultTable);
+                return {queryObject->getSelectTarget(), new FalseTable()};
+            }
+        }
+
+        for (const auto &declaration: queryObject->getDeclarations()) {
+            Header header = resultTable->getHeader();
+            if (header.find(declaration.synonym) != header.end()) {
+                continue;
+            }
+
+            Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(declaration);
+
+            if (intermediateTable->isEmpty()) {
+                safeDeleteTable(intermediateTable);
+                safeDeleteTable(resultTable);
+                return {queryObject->getSelectTarget(), new FalseTable()};
+            }
+
+            Table *ogTable = resultTable;
+            resultTable = resultTable->mergeJoin(intermediateTable);
+
+            safeDeleteTable(ogTable, resultTable);
+            safeDeleteTable(intermediateTable, resultTable);
+
+            if (resultTable->isEmpty()) {
+                safeDeleteTable(resultTable);
+                return {queryObject->getSelectTarget(), new FalseTable()};
+            }
+        }
+    } catch (SemanticException& error) {
+        cout << error.what() << endl;
+        safeDeleteTable(resultTable);
+        return {queryObject->getSelectTarget(), new FalseTable()};
+    } catch (const runtime_error& error) {
+        cout << error.what() << endl;
+        safeDeleteTable(resultTable);
+        return {queryObject->getSelectTarget(), new FalseTable()};
+    }
+
+    return {queryObject->getSelectTarget(), resultTable};
 }
