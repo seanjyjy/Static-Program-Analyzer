@@ -1,0 +1,15 @@
+procedure empty {
+    x = x + 1;
+    x = y + 1;
+    a = x + c;
+    call nextEmpty;
+    if (x == 2) then {
+        y = 2;
+    } else {
+        z = 3;
+    }
+}
+
+procedure nextEmpty {
+    x = x + 1;
+}

@@ -1,0 +1,500 @@
+1 - Query clause but use With
+
+Select BOOLEAN with Uses(1, "x")
+
+5000
+2 - Query clause but use Pattern
+
+Select BOOLEAN pattern Uses(1, "x")
+
+5000
+3 - Such that + and but receive With type
+
+Select BOOLEAN such that Uses(1, "x") and with 1 = 1
+
+5000
+4 - Such that + and but receive Pattern Type
+
+Select BOOLEAN such that Uses(1, "x") and pattern a("x", "y + 1")
+
+5000
+5 - With + and but receive such that type
+
+Select BOOLEAN with 1 = 1 and Uses(1, "x")
+
+5000
+6 - With + and but receive pattern type
+assign a;
+Select BOOLEAN with 1 = 1 and pattern a("x", "y + 1")
+
+5000
+7 - Pattern + and but receive such that type
+assign a;
+Select BOOLEAN pattern a("x", "y + 1") and Uses(1, "x")
+
+5000
+8 - Pattern + and but receive with type
+assign a;
+Select BOOLEAN pattern a("x", "y + 1") and with 1 = 1
+
+5000
+9 - Using and before with type
+
+Select BOOLEAN and 1 = 1 with 1 = 1
+
+5000
+10 - Using and before pattern type
+assign a;
+Select BOOLEAN and a("x", "y + 1") pattern("x", "y + 1")
+
+5000
+11 - Using and in such that but also include such that in subsequent clauses
+
+Select BOOLEAN such that Uses(1, "x") and such that Uses(1, "x")
+
+5000
+12 - Using and in pattern but also include pattern in subsequent clauses
+assign a;
+Select BOOLEAN pattern a("x", "y + 1") and pattern a("x", "y + 1")
+
+5000
+13 - Using an in with but also include with in subsequent clauses
+
+Select BOOLEAN with 1 = 1 and with 1 = 1
+
+5000
+14 - Starting with number in IDENTIFIER needed type - With type
+
+Select BOOLEAN with "1" = "1"
+
+5000
+15 - Starting with number in IDENTIFIER needed type - With type
+
+Select BOOLEAN with "1" = 1
+
+5000
+16 - Starting with number in IDENTIFIER needed type - With type
+
+Select BOOLEAN with 1 = "1"
+
+5000
+17 - Staring with number in IDENTIFIER needed type - UsesS
+
+Select BOOLEAN such that Uses(1, "1")
+
+5000
+18 - Starting with number in IDENTIFIER needed type - UsesP
+
+Select BOOLEAN such that Uses("empty", "1")
+
+5000
+19 - Starting with number in IDENTIFIER needed type - UsesP
+
+Select BOOLEAN such that Uses("1empty", "1")
+
+5000
+20 - Staring with number in IDENTIFIER needed type - ModifiesS
+
+Select BOOLEAN such that Modifies(1, "1")
+
+5000
+21 - Starting with number in IDENTIFIER needed type - ModifiesP
+
+Select BOOLEAN such that Modifies("empty", "1")
+
+5000
+22 - Starting with number in IDENTIFIER needed type - ModifiesP
+
+Select BOOLEAN such that Modifies("1empty", "1")
+
+5000
+23 - Starting with number in IDENTIFIER needed type - Calls
+
+Select BOOLEAN such that Calls("empty", "1nextEmpty")
+
+5000
+24 - Starting with number in IDENTIFIER needed type - Calls
+
+Select BOOLEAN such that Call("1empty", "nextEmpty")
+
+5000
+25 - Starting with number in IDENTIFIER needed type - Calls*
+
+Select BOOLEAN such that Calls* ("empty", "1nextEmpty")
+
+5000
+26 - Starting with number in IDENTIFIER needed type - Calls*
+
+Select BOOLEAN such that Call* ("1empty", "nextEmpty")
+
+5000
+27 - Using Ent ref in Next
+
+Select BOOLEAN such that Next("1", "2")
+
+5000
+27 - Using Ent ref in Next
+
+Select BOOLEAN such that Next("1", 2)
+
+5000
+27 - Using Ent ref in Next
+
+Select BOOLEAN such that Next(1, "2")
+
+5000
+28 - Using Ent ref in Next*
+
+Select BOOLEAN such that Next* ("1", "2")
+
+5000
+28 - Using Ent ref in Next*
+
+Select BOOLEAN such that Next* (1, "2")
+
+5000
+28 - Using Ent ref in Next*
+
+Select BOOLEAN such that Next* ("1", 2)
+
+5000
+29 - Using Ent ref in Affects
+
+Select BOOLEAN such that Affects("1", "2")
+
+5000
+29 - Using Ent ref in Affects
+
+Select BOOLEAN such that Affects(1, "2")
+
+5000
+29 - Using Ent ref in Affects
+
+Select BOOLEAN such that Affects("1", 2)
+
+5000
+30 - Using Ent ref in Affects*
+
+Select BOOLEAN such that Affects* ("1", "2")
+
+5000
+30 - Using Ent ref in Affects*
+
+Select BOOLEAN such that Affects* (1, "2")
+
+5000
+30 - Using Ent ref in Affects*
+
+Select BOOLEAN such that Affects* ("1", 2)
+
+5000
+31 - Using stmt ref in Calls
+
+Select BOOLEAN such that Calls (1, 2)
+
+5000
+31 - Using stmt ref in Calls
+
+Select BOOLEAN such that Calls ("1", 2)
+
+5000
+31 - Using stmt ref in Calls
+
+Select BOOLEAN such that Calls (1, "2")
+
+5000
+32 - Using stmt ref in Calls *
+
+Select BOOLEAN such that Calls* (1, 2)
+
+5000
+32 - Using stmt ref in Calls *
+
+Select BOOLEAN such that Calls* ("1", 2)
+
+5000
+32 - Using stmt ref in Calls *
+
+Select BOOLEAN such that Calls* (1, "2")
+
+5000
+33 - Using Ent ref in Follows
+
+Select BOOLEAN such that Follows("1", "2")
+
+5000
+33 - Using Ent ref in Follows
+
+Select BOOLEAN such that Follows(1, "2")
+
+5000
+33 - Using Ent ref in Follows
+
+Select BOOLEAN such that Follows("1", 2)
+
+5000
+34 - Using Ent ref in Follows*
+
+Select BOOLEAN such that Follows* ("1", "2")
+
+5000
+34 - Using Ent ref in Follows*
+
+Select BOOLEAN such that Follows* (1, "2")
+
+5000
+34 - Using Ent ref in Follows*
+
+Select BOOLEAN such that Follows* ("1", 2)
+
+5000
+35 - Using Ent ref in Parent
+
+Select BOOLEAN such that Parent("1", "2")
+
+5000
+35 - Using Ent ref in Parent
+
+Select BOOLEAN such that Parent(1, "2")
+
+5000
+35 - Using Ent ref in Parent
+
+Select BOOLEAN such that Parent("1", 2)
+
+5000
+36 - Using Ent ref in Parent*
+
+Select BOOLEAN such that Parent* ("1", "2")
+
+5000
+36 - Using Ent ref in Parent*
+
+Select BOOLEAN such that Parent* (1, "2")
+
+5000
+36 - Using Ent ref in Parent*
+
+Select BOOLEAN such that Parent* ("1", 2)
+
+5000
+37 - Using invalid synonym for pattern - Statement
+stmt s;
+Select BOOLEAN pattern s("x", "y + 1")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+stmt s;
+Select BOOLEAN pattern s("x", "y + 1")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+while w;
+Select BOOLEAN pattern w("x", "y + 1")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+if ifs;
+Select BOOLEAN pattern ifs("x", "y + 1")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+procedure p;
+Select BOOLEAN pattern p("x", "y + 1")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+constant c;
+Select BOOLEAN pattern c("x", "y + 1")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+read re;
+Select BOOLEAN pattern re("x", "y + 1")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+print pn;
+Select BOOLEAN pattern pn("x", "y + 1")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+call cl;
+Select BOOLEAN pattern cl("x", "y + 1")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+stmt s;
+Select BOOLEAN pattern s("x", "_", "_")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+variable v;
+Select BOOLEAN pattern v("x", "_", "_")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+procedure p;
+Select BOOLEAN pattern p("x", "_", "_")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+constant c;
+Select BOOLEAN pattern c("x", "_", "_")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+read re;
+Select BOOLEAN pattern re("x", "_", "_")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+print pn;
+Select BOOLEAN pattern pn("x", "_", "_")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+call cl;
+Select BOOLEAN pattern cl("x", "_", "_")
+
+5000
+37 - Using invalid synonym for pattern - Statement
+call cl;
+Select BOOLEAN pattern w("x", "_", "_")
+
+5000
+38 - Stmt ref in while pattern
+while w;
+Select BOOLEAN pattern w(1, "_", "_")
+
+5000
+39 - Stmt ref in if pattern
+if ifs;
+Select BOOLEAN pattern ifs(1, "_", "_")
+
+5000
+39 - Stmt ref in assign pattern
+assign a;
+Select BOOLEAN pattern a(1, "_")
+
+5000
+40 - invalid subpattern in assign pattern
+assign a;
+Select BOOLEAN pattern a("x", _"y")
+
+5000
+41 - invalid subpattern in assign pattern
+assign a;
+Select BOOLEAN pattern a("x", "y"_)
+
+5000
+41 - invalid subpattern in assign pattern
+assign a;
+Select BOOLEAN pattern a("x", "")
+
+5000
+41 - invalid subpattern in assign pattern
+assign a;
+Select BOOLEAN pattern a("x", _""_)
+
+5000
+41 - invalid syntax for while pattern
+while w;
+Select BOOLEAN pattern w("x", "y")
+
+5000
+41 - invalid syntax for if pattern
+if ifs;
+Select BOOLEAN pattern ifs("x", "_", "1")
+
+5000
+41 - invalid syntax for if pattern
+if ifs;
+Select BOOLEAN pattern ifs("x", "1", "_")
+
+5000
+42 - invalid casing for such that - common
+
+Select BOOLEAN Such that Uses(1, "x")
+
+5000
+42 - invalid casing for such that - common
+
+Select BOOLEAN Such That Uses(1, "x")
+
+5000
+42 - invalid casing for pattern - common
+assign a;
+Select BOOLEAN Pattern a("x", "y + 1")
+
+5000
+42 - invalid casing for with - common
+assign a;
+Select BOOLEAN With 1 = 1
+
+5000
+43 - star should be joined to the clause
+
+Select BOOLEAN such that Follows * (5, 6)
+
+5000
+44 - star should be joined to the clause
+
+Select BOOLEAN such that Parent * (6, 7)
+
+5000
+44 - star should be joined to the clause
+
+Select BOOLEAN such that Calls * ("empty", "nextEmpty")
+
+5000
+44 - star should be joined to the clause
+
+Select BOOLEAN such that Next * (6, 7)
+
+5000
+44 - star should be joined to the clause
+
+Select BOOLEAN such that Affects * (3, 4)
+
+5000
+48 - invalid attrName
+stmt s;
+Select BOOLEAN with 1 = s.procname
+
+5000
+48 - invalid attrName
+stmt s;
+Select BOOLEAN with 1 = s.varname
+
+5000
+48 - invalid attrName
+stmt s;
+Select BOOLEAN with 1 = s.Value
+
+5000
+48 - invalid attrName
+stmt s;
+Select BOOLEAN with 1 = s.stmt
+
+5000
+48 - No leading zero
+
+Select BOOLEAN such that Uses("01", "x")
+
+5000
+45 - Such that should have a space
+
+Select BOOLEAN suchthat Uses(1, "x")
+
+5000
+46 - POSITIVE CASES - Such that should allow any amount of space inbetween
+
+Select BOOLEAN such                       that Uses(1, "x")
+TRUE
+500
+47 - POSITIVE CASES - Attr Ref should allow any amount of space between the .
+stmt s;
+Select BOOLEAN with 1 = s         .              stmt#
+TRUE
+5000
