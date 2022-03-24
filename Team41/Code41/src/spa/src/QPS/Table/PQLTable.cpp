@@ -255,7 +255,8 @@ unordered_set<string> PQLTable::getColumns(vector<string> columnNames) {
         for (auto &columnName: columnNames) {
             result.append(row->getValueAtColumn(columnName)).append(" ");
         }
-        results.insert(result.substr(0, result.size() - 1));
+        if (!result.empty())
+            results.insert(result.substr(0, result.size() - 1));
     }
 
     return results;
