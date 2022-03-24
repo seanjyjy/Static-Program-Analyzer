@@ -1,10 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <unordered_set>
 #include "QueryDeclaration.h"
 #include "WithClause.h"
 #include "QueryClause.h"
 #include "PatternClause.h"
+
+using namespace std;
 
 class SuperClause {
 public:
@@ -14,8 +17,8 @@ public:
     const WithClause& getWithClause() const;
     const PatternClause& getPatternClause() const;
     const QueryClause& getSuchThatClause() const;
-    int hash() const;
     bool equals(const SuperClause&) const;
+    int hash() const;
     string toString() const;
     vector<QueryDeclaration> getSynonyms() const;
     bool hasSynonyms() const;
@@ -36,6 +39,9 @@ public:
     bool isNextT() const;
     bool isAffects() const;
     bool isAffectsT() const;
+    bool operator==(const SuperClause &other) const {
+        return this->equals(other);
+    }
 private:
     enum clause_type {
         SUCH_THAT, WITH, PATTERN
@@ -44,5 +50,12 @@ private:
     WithClause withClause;
     QueryClause suchThatClause;
     PatternClause patternClause;
+};
+
+template<>
+struct hash<SuperClause> {
+    std::size_t operator()(SuperClause const& g) const noexcept {
+        return g.hash();
+    }
 };
 

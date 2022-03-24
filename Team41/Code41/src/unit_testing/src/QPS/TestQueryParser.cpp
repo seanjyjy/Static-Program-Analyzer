@@ -597,6 +597,10 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->isValid());
         REQUIRE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(1)));
         REQUIRE_FALSE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(2)));
+
+        SuperClause *sc1 = qo->getSuperClauses().at(0);
+        SuperClause *sc2 = qo->getSuperClauses().at(1);
+        REQUIRE((*sc1) == (*sc2));
     }
     delete qo;
 }
