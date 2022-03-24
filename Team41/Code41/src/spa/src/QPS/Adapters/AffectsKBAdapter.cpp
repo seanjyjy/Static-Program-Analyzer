@@ -188,14 +188,14 @@ bool AffectsKBAdapter::bfsBool(CFGNode *start, const string &modifiedVar, const 
         vector<CFGNode *> children = curr->getChildren();
         queue.pop();
 
+        // if current stmt uses this modifiedVar and is assign stmt
+        if (stmtNum == end && pkb->isAssignStmt(stmtNum) && pkb->isUsesS(stmtNum, modifiedVar))
+            return true;
+
         if (visited.find(stmtNum) != visited.end())
             continue;
 
         visited.insert(stmtNum);
-
-        // if current stmt uses this modifiedVar and is assign stmt
-        if (stmtNum == end && pkb->isAssignStmt(stmtNum) && pkb->isUsesS(stmtNum, modifiedVar))
-            return true;
 
         if (isModifyStmt(stmtNum) && pkb->isModifiesS(stmtNum, modifiedVar))
             continue;
@@ -219,14 +219,14 @@ void AffectsKBAdapter::bfsDown(CFGNode *start, const string &modifiedVar, unorde
         vector<CFGNode *> children = curr->getChildren();
         queue.pop();
 
+        // if current stmt uses this modifiedVar and is assign stmt
+        if (pkb->isAssignStmt(stmtNum) && pkb->isUsesS(stmtNum, modifiedVar))
+            affected.insert(stmtNum);
+
         if (visited.find(stmtNum) != visited.end())
             continue;
 
         visited.insert(stmtNum);
-
-        // if current stmt uses this modifiedVar and is assign stmt
-        if (pkb->isAssignStmt(stmtNum) && pkb->isUsesS(stmtNum, modifiedVar))
-            affected.insert(stmtNum);
 
         if (isModifyStmt(stmtNum) && pkb->isModifiesS(stmtNum, modifiedVar))
             continue;
@@ -250,11 +250,6 @@ void AffectsKBAdapter::bfsUpSingle(CFGNode *start, const string &affectedVar, un
         vector<CFGNode *> parents = curr->getParent();
         queue.pop();
 
-        if (visited.find(stmtNum) != visited.end())
-            continue;
-
-        visited.insert(stmtNum);
-
         unordered_set<string> modifiedVarsInStmt = pkb->getModifiesByStmt(stmtNum);
         // if above is any of the 3 modify statement and is modifying the current affected var we dont need to explore
         if (isModifyStmt(stmtNum) && modifiedVarsInStmt.find(affectedVar) != modifiedVarsInStmt.end()) {
@@ -262,6 +257,11 @@ void AffectsKBAdapter::bfsUpSingle(CFGNode *start, const string &affectedVar, un
                 affecting.insert(stmtNum);
             continue;
         }
+
+        if (visited.find(stmtNum) != visited.end())
+            continue;
+
+        visited.insert(stmtNum);
 
         for (auto parent: parents)
             queue.push(parent);
