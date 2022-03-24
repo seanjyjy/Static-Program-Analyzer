@@ -1,6 +1,7 @@
 #pragma once
 
 #include <queue>
+#include <algorithm>
 
 #include "PKB/PKBClient.h"
 #include "QPS/Cache/Cache.h"
@@ -64,4 +65,8 @@ public:
     unordered_set<string> getAllStmtAffectedTByOther();
 
     vector<pair<string, string>> getAffectsTAll();
+
+    void printCFG(CFGNode *, unordered_set<CFGNode *>);
+
+    void printAffectsGraph();
 };
