@@ -14,7 +14,7 @@ void AdaptersUtils::runBFS(bool isForward, const CacheCallback &cacheAndContinue
         vector<CFGNode *> nextNodes = isForward ? currNode->getChildren() : currNode->getParent();
         bfsQueue.pop();
 
-        for (auto &next: nextNodes) {
+        for (auto next: nextNodes) {
             string nextStmtNum = next->getStmtNum();
             if (visited.find(nextStmtNum) == visited.end()) {
                 // check cache

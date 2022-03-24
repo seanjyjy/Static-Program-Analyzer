@@ -10,8 +10,11 @@ bool AffectsKBAdapter::isModifyStmt(const string &stmtNum) {
 
 bool AffectsKBAdapter::isAffects(const string &stmtNum1, const string &stmtNum2) {
     if (hasAffectsGraph()) {
+        if (stmtNumToNodeMap.find(stmtNum1) == stmtNumToNodeMap.end())
+            return false;
+
         CFGNode *node = stmtNumToNodeMap.at(stmtNum1);
-        for (auto &child: node->getChildren()) {
+        for (auto child: node->getChildren()) {
             if (child->getStmtNum() == stmtNum2)
                 return true;
         }
@@ -34,8 +37,11 @@ unordered_set<string> AffectsKBAdapter::getDirectAffectsBy(const string &stmtNum
     unordered_set<string> affected;
 
     if (hasAffectsGraph()) {
+        if (stmtNumToNodeMap.find(stmtNum) == stmtNumToNodeMap.end())
+            return {};
+
         CFGNode *node = stmtNumToNodeMap.at(stmtNum);
-        for (auto &child: node->getChildren())
+        for (auto child: node->getChildren())
             affected.insert(child->getStmtNum());
         return affected;
     }
@@ -52,8 +58,11 @@ unordered_set<string> AffectsKBAdapter::getDirectAffecting(const string &stmtNum
     unordered_set<string> affecting;
 
     if (hasAffectsGraph()) {
+        if (stmtNumToNodeMap.find(stmtNum) == stmtNumToNodeMap.end())
+            return {};
+
         CFGNode *node = stmtNumToNodeMap.at(stmtNum);
-        for (auto &parent: node->getParent())
+        for (auto parent: node->getParent())
             affecting.insert(parent->getStmtNum());
         return affecting;
     }
@@ -168,7 +177,7 @@ vector<pair<string, string>> AffectsKBAdapter::getAffectsTAll() {
 
 bool AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, const string &end) {
     queue<CFGNode *> queue;
-    for (auto &child: start->getChildren())
+    for (auto child: start->getChildren())
         queue.push(child);
 
     unordered_set<string> visited;
@@ -190,7 +199,7 @@ bool AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, const stri
         if (isModifyStmt(stmtNum) && pkb->isModifiesS(stmtNum, modifiedVar))
             continue;
 
-        for (auto &child: children)
+        for (auto child: children)
             queue.push(child);
     }
     return false;
@@ -198,7 +207,7 @@ bool AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, const stri
 
 void AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, unordered_set<string> &affected) {
     queue<CFGNode *> queue;
-    for (auto &child: start->getChildren())
+    for (auto child: start->getChildren())
         queue.push(child);
 
     unordered_set<string> visited;
@@ -220,14 +229,14 @@ void AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, unordered_
         if (isModifyStmt(stmtNum) && pkb->isModifiesS(stmtNum, modifiedVar))
             continue;
 
-        for (auto &child: children)
+        for (auto child: children)
             queue.push(child);
     }
 }
 
 void AffectsKBAdapter::bfs(CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting) {
     queue<pair<CFGNode *, unordered_set<string>>> queue;
-    for (auto &parent: start->getParent()) {
+    for (auto parent: start->getParent()) {
         unordered_set<string> copy(affectedVars.begin(), affectedVars.end());
         queue.push({parent, copy});
     }
@@ -240,20 +249,21 @@ void AffectsKBAdapter::bfs(CFGNode *start, unordered_set<string> &affectedVars, 
         vector<CFGNode *> parents = curr->getParent();
         queue.pop();
 
+        unordered_set<string> modifiedVarsInStmt = pkb->getModifiesByStmt(stmtNum);
         if (pkb->isCallStmt(stmtNum)) {
-            string procName = pkb->getCallsProcNameAttr(stmtNum);
-            unordered_set<string> modifiedByProc = pkb->getModifiesByProc(procName);
             unordered_set<string> temp;
-            set_difference(unusedSet.begin(), unusedSet.end(), modifiedByProc.begin(), modifiedByProc.end(),
+            set_difference(unusedSet.begin(), unusedSet.end(), modifiedVarsInStmt.begin(), modifiedVarsInStmt.end(),
                            inserter(temp, temp.begin()));
             unusedSet = temp;
         }
 
-        string modifiedVar = *pkb->getModifiesByStmt(stmtNum).begin();
-        if (unusedSet.find(modifiedVar) != unusedSet.end() && isModifyStmt(stmtNum)) {
-            if (pkb->isAssignStmt(stmtNum))
-                affecting.insert(stmtNum);
-            unusedSet.erase(modifiedVar);
+        if (!modifiedVarsInStmt.empty()) {
+            string modifiedVar = *(modifiedVarsInStmt).begin();
+            if (unusedSet.find(modifiedVar) != unusedSet.end() && isModifyStmt(stmtNum)) {
+                if (pkb->isAssignStmt(stmtNum))
+                    affecting.insert(stmtNum);
+                unusedSet.erase(modifiedVar);
+            }
         }
 
         if (visited.find(stmtNum) != visited.end())
@@ -262,7 +272,7 @@ void AffectsKBAdapter::bfs(CFGNode *start, unordered_set<string> &affectedVars, 
         visited.insert(stmtNum);
 
         if (!unusedSet.empty()) {
-            for (auto &parent: parents) {
+            for (auto parent: parents) {
                 unordered_set<string> copy(unusedSet.begin(), unusedSet.end());
                 queue.push({parent, copy});
             }
@@ -277,7 +287,7 @@ bool AffectsKBAdapter::hasAffectsGraph() {
 void AffectsKBAdapter::buildAffectsGraph() {
     CFGNode *root = pkb->getRootCFG();
 
-    for (auto &child: root->getChildren())
+    for (auto child: root->getChildren())
         buildAffectsGraphForProc(child);
 }
 
@@ -295,7 +305,7 @@ void AffectsKBAdapter::addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ) {
             stmtNumToNodeMap.insert({next->getStmtNum(), affectNode});
         }
 
-        for (auto &child: next->getChildren()) {
+        for (auto child: next->getChildren()) {
             if (visited.find(child) == visited.end()) {
                 q.push(child);
                 visited.insert(child);
@@ -320,7 +330,7 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
         string affectingStmtNum = affectingNode->getStmtNum();
         vector<CFGNode *> nextChildren = pkb->getCFGForStmt(affectingStmtNum)->getChildren();
 
-        for (auto &child: nextChildren)
+        for (auto child: nextChildren)
             queue.push(child);
 
         // mainQ only has assign stmt
@@ -349,7 +359,7 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
             if (isModifyStmt(stmtNum) && pkb->isModifiesS(stmtNum, modifiedVar))
                 continue;
 
-            for (auto &child: children)
+            for (auto child: children)
                 queue.push(child);
         }
 
@@ -360,7 +370,7 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
 
 void AffectsKBAdapter::buildAffectsMapping(const string &stmtNum, CFGNode *node, unordered_set<CFGNode *> visited) {
     affectingAffectedTPairs.emplace_back(stmtNum, node->getStmtNum());
-    for (auto &child: node->getChildren()) {
+    for (auto child: node->getChildren()) {
         if (visited.find(child) != visited.end()) continue;
         visited.insert(child);
         buildAffectsMapping(stmtNum, child, visited);
@@ -370,8 +380,8 @@ void AffectsKBAdapter::buildAffectsMapping(const string &stmtNum, CFGNode *node,
 
 void AffectsKBAdapter::buildAllAffectsMapping() {
     unordered_set<CFGNode *> visited;
-    for (auto&[stmtNum, node]: stmtNumToNodeMap) {
-        for (auto &child: node->getChildren()) {
+    for (auto [stmtNum, node]: stmtNumToNodeMap) {
+        for (auto child: node->getChildren()) {
             affectingAffectedPairs.emplace_back(stmtNum, child->getStmtNum());
             buildAffectsMapping(stmtNum, child, visited);
         }
