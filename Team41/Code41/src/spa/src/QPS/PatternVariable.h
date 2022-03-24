@@ -50,7 +50,13 @@ public:
      * @param type of the new pattern variable
      * @param miniAST representing the parsed SIMPLE code
      */
-    PatternVariable(pattern_type type, TNode *miniAST);
+    PatternVariable(pattern_type type, TNode *miniAST, string expr);
+
+    bool equals(PatternVariable) const;
+
+    string getExpr() const;
+
+    pattern_type getType() const;
 
 private:
     // parsed AST to be compared to the main SIMPLE AST
@@ -58,4 +64,6 @@ private:
 
     // type of this pattern variable instance
     pattern_type type;
+
+    string expr;
 };

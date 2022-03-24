@@ -41,3 +41,15 @@ string ClauseVariable::getLabel() const {
 QueryDeclaration ClauseVariable::getQueryDeclaration() const {
     return qd;
 }
+
+bool ClauseVariable::equals(ClauseVariable other) const {
+    if (type != other.getType())
+        return false;
+    if (label != other.getLabel())
+        return false;
+    if (!qd.equals(other.getQueryDeclaration()))
+        return false;
+    if (designEntityType != other.getDesignEntityType())
+        return false;
+    return true;
+}

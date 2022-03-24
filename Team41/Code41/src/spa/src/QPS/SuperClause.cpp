@@ -28,6 +28,8 @@ int SuperClause::hash() const {
     // todo: make use of underlying clause data
     if (isWithClause())
         return withClause.hash();
+    if (isPatternClause())
+        return patternClause.hash();
 
     return 0;
 }
@@ -35,6 +37,8 @@ int SuperClause::hash() const {
 bool SuperClause::equals(SuperClause other) const {
     if (isWithClause() && other.isWithClause())
         return withClause.equals(other.getWithClause());
+    if (isPatternClause() && other.isPatternClause())
+        return patternClause.equals(other.getPatternClause());
 
     // todo: compare underlying clause type and data
     return false;
@@ -43,6 +47,8 @@ bool SuperClause::equals(SuperClause other) const {
 string SuperClause::toString() const {
     if (isWithClause())
         return withClause.toString();
+    if (isPatternClause())
+        return patternClause.toString();
 
     // todo: print data of underlying clause
     return "help me\n";
@@ -51,6 +57,8 @@ string SuperClause::toString() const {
 vector<QueryDeclaration> SuperClause::getSynonyms() const {
     if (isWithClause())
         return withClause.getSynonyms();
+    if (isPatternClause())
+        return patternClause.getSynonyms();
 
     // todo
     return vector<QueryDeclaration>();
@@ -59,6 +67,9 @@ vector<QueryDeclaration> SuperClause::getSynonyms() const {
 bool SuperClause::hasSynonyms() const {
     if (isWithClause())
         return withClause.hasSynonyms();
+    if (isPatternClause())
+        return patternClause.hasSynonyms();
+
     return false;
 }
 

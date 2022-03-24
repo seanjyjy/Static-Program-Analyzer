@@ -49,4 +49,14 @@ public:
     PatternClause(QueryDeclaration synonym, ClauseVariable lhs, vector<PatternVariable> rhs);
 
     PatternClause();
+
+    bool hasSynonyms() const;
+
+    vector<QueryDeclaration> getSynonyms() const;
+
+    bool equals(PatternClause) const;
+
+    string toString() const;
+
+    int hash() const;
 };

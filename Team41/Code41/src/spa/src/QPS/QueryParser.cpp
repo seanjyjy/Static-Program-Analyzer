@@ -462,7 +462,7 @@ optional<PatternVariable> QueryParser::parsePatternRHS() {
                 return nullopt;
             }
         }
-        return PatternVariable(pt, miniAST);
+        return PatternVariable(pt, miniAST, patternExpr->c_str());
     } else {
         // Invalid RHS
         printf("Syntax Error: No valid pattern expression found in RHS.\n");

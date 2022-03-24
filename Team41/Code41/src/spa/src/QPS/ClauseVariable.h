@@ -74,6 +74,8 @@ public:
     ClauseVariable(variable_type type, string label, QueryDeclaration qd);
     ClauseVariable();
 
+    bool equals(ClauseVariable) const;
+
 private:
     // variable type of the variable instance
     variable_type type;
