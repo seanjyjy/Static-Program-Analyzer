@@ -63,10 +63,10 @@ bool QueryClause::hasSynonyms() const {
 }
 
 int QueryClause::hash() const {
-    int out = std::hash<string>{}("suchthat");
-    out ^= std::hash<int>{}(type);
-    out ^= std::hash<int>{}(left.getType());
-    out ^= std::hash<int>{}(right.getType());
+    int out = (int)std::hash<string>{}("suchthat");
+    out ^= (int)std::hash<int>{}(type);
+    out ^= (int)std::hash<int>{}(left.getType());
+    out ^= (int)std::hash<int>{}(right.getType());
     return out;
 }
 

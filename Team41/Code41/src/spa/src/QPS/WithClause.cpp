@@ -26,24 +26,24 @@ bool WithClause::hasSynonyms() const {
 }
 
 int WithClause::hash() const {
-    int out = std::hash<string>{}("with")
-        ^ std::hash<int>{} (left.getType())
-        ^ std::hash<int>{} (right.getType());
+    int out = (int)std::hash<string>{}("with")
+        ^ (int)std::hash<int>{} (left.getType())
+        ^ (int)std::hash<int>{} (right.getType());
 
     if (left.isIdentifier())
-        out ^= std::hash<string>{} (left.getIdent());
+        out ^= (int)std::hash<string>{} (left.getIdent());
     if (right.isIdentifier())
-        out ^= std::hash<string>{} (right.getIdent());
+        out ^= (int)std::hash<string>{} (right.getIdent());
 
     if (left.isInteger())
-        out ^= std::hash<int>{} (left.getInteger());
+        out ^= (int)std::hash<int>{} (left.getInteger());
     if (right.isInteger())
-        out ^= std::hash<int>{} (right.getInteger());
+        out ^= (int)std::hash<int>{} (right.getInteger());
 
     if (left.isAttrRef())
-        out ^= std::hash<int>{} (left.getAttr());
+        out ^= (int)std::hash<int>{} (left.getAttr());
     if (right.isAttrRef())
-        out ^= std::hash<int>{} (right.getAttr());
+        out ^= (int)std::hash<int>{} (right.getAttr());
 
     return out;
 }

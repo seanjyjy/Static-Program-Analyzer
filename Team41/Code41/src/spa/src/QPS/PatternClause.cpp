@@ -49,11 +49,11 @@ string PatternClause::toString() const {
 }
 
 int PatternClause::hash() const {
-    int out = std::hash<string>{}("pattern");
-    out ^= std::hash<int>{}(synonym.getType());
-    out ^= std::hash<int>{}(lhs.getType());
+    int out = (int)std::hash<string>{}("pattern");
+    out ^= (int)std::hash<int>{}(synonym.getType());
+    out ^= (int)std::hash<int>{}(lhs.getType());
     for (int i = 0; i < (int)rhs.size(); i++) {
-        out ^= rhs.at(i).getType();
+        out ^= (int)std::hash<int>{}(rhs.at(i).getType());
     }
     return out;
 }
