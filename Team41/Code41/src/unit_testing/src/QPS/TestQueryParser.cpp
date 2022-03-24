@@ -558,6 +558,46 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(1).getType() == QueryDeclaration::VARIABLE);
         REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(1).getSynonym() == "v");
     }
+    SECTION("SuperClause wrapper hash test") {
+        string s = "stmt s, s1, s2; while w; variable v;\n"
+                   "Select s.stmt# such that Follows* (s, s1) with s1.stmt#=10 pattern w (v, _) such that Follows*(s, s1) and Follows*(s1, s2)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->getSuperClauses().at(0)->isSuchThatClause());
+        REQUIRE(qo->getSuperClauses().at(0)->isFollowsT());
+        int h0 = qo->getSuperClauses().at(0)->hash();
+        int h1 = qo->getSuperClauses().at(1)->hash();
+        int h2 = qo->getSuperClauses().at(2)->hash();
+        REQUIRE(h0 != h1);
+        REQUIRE(h0 != h2);
+        REQUIRE(h1 != h2);
+        REQUIRE(qo->getSuperClauses().at(0)->getSuchThatClause().getType() == QueryClause::followsT);
+    }
+    SECTION("SuperClause wrapper equivalence test") {
+        string s = "stmt s, s1, s2; while w; variable v; assign a;\n"
+                   "Select s.stmt# such that Follows* (s, s1) and Follows*(s, s1) and Follows*(s1, s2) and Uses(a, v)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(1)));
+        REQUIRE_FALSE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(2)));
+        REQUIRE_FALSE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(3)));
+
+        s = "stmt s, s1, s2; while w; variable v; assign a;\n"
+            "Select s.stmt# with s1.stmt#=10 with s1.stmt#=420 with s1.stmt#=10";
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(2)));
+        REQUIRE_FALSE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(1)));
+
+        s = "stmt s; if ifs; while w; variable v; assign a;\n"
+            "Select s.stmt# pattern w (v, _) and w (v, _) and ifs (v, _, _)";
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(1)));
+        REQUIRE_FALSE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(2)));
+    }
     delete qo;
 }
 

@@ -12,9 +12,9 @@ public:
         BOOLEAN, TUPLE
     };
 
-    bool isBoolean();
+    bool isBoolean() const;
 
-    bool isTuple();
+    bool isTuple() const;
 
     void addSelectable(Selectable newSelectable);
 
@@ -22,7 +22,7 @@ public:
 
     SelectTarget(targetType type);
 
-    vector<Selectable> getSelectable();
+    vector<Selectable> getSelectable() const;
 
 private:
     targetType type;
