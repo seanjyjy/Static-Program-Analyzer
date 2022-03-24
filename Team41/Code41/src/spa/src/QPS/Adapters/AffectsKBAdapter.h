@@ -2,6 +2,7 @@
 
 #include <queue>
 #include <algorithm>
+#include <iterator>
 
 #include "PKB/PKBClient.h"
 #include "QPS/Cache/Cache.h"
