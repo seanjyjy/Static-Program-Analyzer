@@ -29,7 +29,7 @@ bool AffectsKBAdapter::isAffects(const string &stmtNum1, const string &stmtNum2)
     if (variablesUsed.find(variable) == variablesUsed.end())
         return false;
 
-    bool isAffects = bfs(start, variable, stmtNum2);
+    bool isAffects = bfsBool(start, variable, stmtNum2);
     return isAffects;
 }
 
@@ -50,7 +50,7 @@ unordered_set<string> AffectsKBAdapter::getDirectAffectsBy(const string &stmtNum
     // we are ensured that there is a modified var since this is an assignment statement
     string variable = *pkb->getModifiesByStmt(stmtNum).begin();
 
-    bfs(start, variable, affected);
+    bfsDown(start, variable, affected);
     return affected;
 }
 
@@ -70,7 +70,7 @@ unordered_set<string> AffectsKBAdapter::getDirectAffecting(const string &stmtNum
     CFGNode *start = pkb->getCFGForStmt(stmtNum);
     unordered_set<string> affectedVars = pkb->getUsesByStmt(stmtNum);
 
-    bfs(start, affectedVars, affecting);
+    bfsUp(start, affectedVars, affecting);
     return affecting;
 }
 
@@ -175,7 +175,7 @@ vector<pair<string, string>> AffectsKBAdapter::getAffectsTAll() {
     return affectingAffectedTPairs;
 }
 
-bool AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, const string &end) {
+bool AffectsKBAdapter::bfsBool(CFGNode *start, const string &modifiedVar, const string &end) {
     queue<CFGNode *> queue;
     for (auto child: start->getChildren())
         queue.push(child);
@@ -187,14 +187,15 @@ bool AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, const stri
         string stmtNum = curr->getStmtNum();
         vector<CFGNode *> children = curr->getChildren();
         queue.pop();
-        // if current stmt uses this modifiedVar and is assign stmt
-        if (stmtNum == end && pkb->isAssignStmt(stmtNum) && pkb->isUsesS(stmtNum, modifiedVar))
-            return true;
 
         if (visited.find(stmtNum) != visited.end())
             continue;
 
         visited.insert(stmtNum);
+
+        // if current stmt uses this modifiedVar and is assign stmt
+        if (stmtNum == end && pkb->isAssignStmt(stmtNum) && pkb->isUsesS(stmtNum, modifiedVar))
+            return true;
 
         if (isModifyStmt(stmtNum) && pkb->isModifiesS(stmtNum, modifiedVar))
             continue;
@@ -205,7 +206,7 @@ bool AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, const stri
     return false;
 }
 
-void AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, unordered_set<string> &affected) {
+void AffectsKBAdapter::bfsDown(CFGNode *start, const string &modifiedVar, unordered_set<string> &affected) {
     queue<CFGNode *> queue;
     for (auto child: start->getChildren())
         queue.push(child);
@@ -217,14 +218,15 @@ void AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, unordered_
         string stmtNum = curr->getStmtNum();
         vector<CFGNode *> children = curr->getChildren();
         queue.pop();
-        // if current stmt uses this modifiedVar and is assign stmt
-        if (pkb->isAssignStmt(stmtNum) && pkb->isUsesS(stmtNum, modifiedVar))
-            affected.insert(stmtNum);
 
         if (visited.find(stmtNum) != visited.end())
             continue;
 
         visited.insert(stmtNum);
+
+        // if current stmt uses this modifiedVar and is assign stmt
+        if (pkb->isAssignStmt(stmtNum) && pkb->isUsesS(stmtNum, modifiedVar))
+            affected.insert(stmtNum);
 
         if (isModifyStmt(stmtNum) && pkb->isModifiesS(stmtNum, modifiedVar))
             continue;
@@ -234,54 +236,48 @@ void AffectsKBAdapter::bfs(CFGNode *start, const string &modifiedVar, unordered_
     }
 }
 
-void AffectsKBAdapter::bfs(CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting) {
-    queue<pair<CFGNode *, unordered_set<string>>> queue;
-    for (auto parent: start->getParent()) {
-        unordered_set<string> copy(affectedVars.begin(), affectedVars.end());
-        queue.push({parent, copy});
+void AffectsKBAdapter::bfsUpSingle(CFGNode *start, const string &affectedVar, unordered_set<string> &affecting) {
+    queue<CFGNode *> queue;
+    for (auto parent : start -> getParent()) {
+        queue.push(parent);
     }
 
     unordered_set<string> visited;
 
     while (!queue.empty()) {
-        auto[curr, unusedSet] = queue.front();
+        CFGNode* curr = queue.front();
         string stmtNum = curr->getStmtNum();
         vector<CFGNode *> parents = curr->getParent();
         queue.pop();
-
-        unordered_set<string> modifiedVarsInStmt = pkb->getModifiesByStmt(stmtNum);
-        if (pkb->isCallStmt(stmtNum)) {
-            unordered_set<string> temp;
-            set_difference(unusedSet.begin(), unusedSet.end(), modifiedVarsInStmt.begin(), modifiedVarsInStmt.end(),
-                           inserter(temp, temp.begin()));
-            unusedSet = temp;
-        }
-
-        if (!modifiedVarsInStmt.empty()) {
-            string modifiedVar = *(modifiedVarsInStmt).begin();
-            if (unusedSet.find(modifiedVar) != unusedSet.end() && isModifyStmt(stmtNum)) {
-                if (pkb->isAssignStmt(stmtNum))
-                    affecting.insert(stmtNum);
-                unusedSet.erase(modifiedVar);
-            }
-        }
 
         if (visited.find(stmtNum) != visited.end())
             continue;
 
         visited.insert(stmtNum);
 
-        if (!unusedSet.empty()) {
-            for (auto parent: parents) {
-                unordered_set<string> copy(unusedSet.begin(), unusedSet.end());
-                queue.push({parent, copy});
-            }
+        unordered_set<string> modifiedVarsInStmt = pkb->getModifiesByStmt(stmtNum);
+        // if above is any of the 3 modify statement and is modifying the current affected var we dont need to explore
+        if (isModifyStmt(stmtNum) && modifiedVarsInStmt.find(affectedVar) != modifiedVarsInStmt.end()) {
+            if (pkb->isAssignStmt(stmtNum))
+                affecting.insert(stmtNum);
+            continue;
         }
+
+        for (auto parent: parents) {
+            printf("current stmtNum: %s pushing stmtNum: %s\n", stmtNum.c_str(), parent->getStmtNum().c_str());
+            queue.push(parent);
+        }
+
     }
 }
 
+void AffectsKBAdapter::bfsUp(CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting) {
+    for (auto& affectedVar : affectedVars)
+        bfsUpSingle(start, affectedVar, affecting);
+}
+
 bool AffectsKBAdapter::hasAffectsGraph() {
-    return (int) stmtNumToNodeMap.size() != 0; // only when affectsGraph is built then size != 0
+    return !stmtNumToNodeMap.empty();
 }
 
 void AffectsKBAdapter::buildAffectsGraph() {
@@ -326,7 +322,6 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
 
     while (!mainQ.empty()) {
         CFGNode *affectingNode = mainQ.front();
-        // TODO WHY local variable 'affectingNode' may point to invalidated memory
         string affectingStmtNum = affectingNode->getStmtNum();
         vector<CFGNode *> nextChildren = pkb->getCFGForStmt(affectingStmtNum)->getChildren();
 

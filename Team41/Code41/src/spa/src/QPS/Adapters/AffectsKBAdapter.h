@@ -18,11 +18,12 @@ private:
     vector<pair<string, string>> affectingAffectedPairs;
     vector<pair<string, string>> affectingAffectedTPairs;
 
-    bool bfs(CFGNode *start, const string &modifiedVar, const string &end);
+    bool bfsBool(CFGNode *start, const string &modifiedVar, const string &end);
 
-    void bfs(CFGNode *start, const string &modifiedVar, unordered_set<string> &affected);
+    void bfsDown(CFGNode *start, const string &modifiedVar, unordered_set<string> &affected);
 
-    void bfs(CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting);
+    void bfsUp(CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting);
+    void bfsUpSingle(CFGNode *start, const string &affectedVar, unordered_set<string> &affecting);
 
     bool hasAffectsGraph();
 
