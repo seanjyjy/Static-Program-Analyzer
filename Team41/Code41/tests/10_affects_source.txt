@@ -1,0 +1,76 @@
+procedure all {
+    call noAssignStmts;
+    x = x + 1;
+    while (y > x) {
+        if (a != b) then {
+            y = y + 1;
+            while (a == y) {
+                print y;
+                a = a + b;
+                y = x + 1;
+            }
+            b = b + 1;
+        } else {
+            while (b == t) {
+                t = t + 1;
+                call smartLoop;
+            }
+            if (a == t) then {
+                t = t + 1;
+                read t;
+            } else {
+                read print;
+                print read;
+                read = print + read + t + 1;
+            }
+            print t;
+            t = y + 2;
+            read = print + t * 2;
+        }
+        while (y == 2) {
+            print y;
+            b = y + 2;
+        }
+    }
+    call assignLoop;
+}
+
+procedure smartLoop {
+    while (a > b) {
+        if (b > c) then {
+            t = b + a;
+        } else {
+            a = read + print + t;
+        }
+    }
+}
+
+procedure noAssignStmts {
+    read a;
+    print b;
+    call assignInterweaveWithCallsAndPrint;
+    while (b == a) {
+        read c;
+        if (f == d) then {
+            print read;
+        } else {
+            read print;
+        }
+    }
+}
+
+procedure assignInterweaveWithCallsAndPrint {
+    a = b;
+    a = d + f;
+    c = a;
+    call assignLoop;
+    d = f;
+}
+
+procedure assignLoop {
+    a = b;
+    b = c;
+    d = e;
+    e = f;
+    f = a;
+}
