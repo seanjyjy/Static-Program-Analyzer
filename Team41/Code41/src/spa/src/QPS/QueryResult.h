@@ -9,15 +9,20 @@
 class QueryResult {
 private:
     SelectTarget selectTarget;
-    Table* table;
+    Table *table;
     bool isValidQuery;
 public:
-    QueryResult(SelectTarget select, Table* table, bool isValidQuery = true);
+    QueryResult(SelectTarget select, Table *table, bool isValidQuery = true);
 
     bool isBoolean();
+
     bool isTuple();
+
     bool isEmpty();
+
     bool isValid() const;
-    Table* getTable();
+
+    Table *getTable();
+
     vector<Selectable> getSelectables();
 };

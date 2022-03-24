@@ -1,7 +1,7 @@
 #include "IfPatternEvaluator.h"
 #include "Common/TreeUtils.h"
 
-IfPatternEvaluator::IfPatternEvaluator(PKBClient *pkb): IfWhilePatternEvaluator(pkb) {}
+IfPatternEvaluator::IfPatternEvaluator(PKBClient *pkb) : IfWhilePatternEvaluator(pkb) {}
 
 unordered_set<string> IfPatternEvaluator::getWildCardWildCardRelation() {
     return pkb->getIfStmtUsingSomeVarCond();

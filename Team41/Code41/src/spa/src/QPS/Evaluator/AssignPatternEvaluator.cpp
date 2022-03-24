@@ -1,7 +1,7 @@
 #include "AssignPatternEvaluator.h"
 #include "Common/TreeUtils.h"
 
-AssignPatternEvaluator::AssignPatternEvaluator(PKBClient *pkb): PatternEvaluator(pkb) {}
+AssignPatternEvaluator::AssignPatternEvaluator(PKBClient *pkb) : PatternEvaluator(pkb) {}
 
 Table *AssignPatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
                                                vector<PatternVariable> &rightPatternVariables) {
@@ -56,13 +56,13 @@ Table *AssignPatternEvaluator::evaluateWildCardSubPattern(QueryDeclaration patte
     return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateIdentifierFullPattern(QueryDeclaration patternSyn, const ClauseVariable& left,
+Table *AssignPatternEvaluator::evaluateIdentifierFullPattern(QueryDeclaration patternSyn, const ClauseVariable &left,
                                                              PatternVariable right) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromPatternNVar(right.getMiniAST(), left.getLabel());
     return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateIdentifierSubPattern(QueryDeclaration patternSyn, const ClauseVariable& left,
+Table *AssignPatternEvaluator::evaluateIdentifierSubPattern(QueryDeclaration patternSyn, const ClauseVariable &left,
                                                             PatternVariable right) {
 
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromSubpatternNVar(right.getMiniAST(), left.getLabel());
@@ -107,11 +107,11 @@ Table *AssignPatternEvaluator::buildAssignPatternSSTable(const vector<pair<strin
     Header header = Header({firstColumn, secondColumn});
     Table *table = new PQLTable(header);
 
-    for (auto &[leftSyn, rightSyn] : results) {
+    for (auto &[leftSyn, rightSyn]: results) {
         bool isInLeftFilter = leftFilters.find(leftSyn) != leftFilters.end();
         bool isInRightFilter = rightFilters.find(rightSyn) != rightFilters.end();
         if (isInLeftFilter && isInRightFilter) {
-            Row* row = new Row();
+            Row *row = new Row();
             row->addEntry(firstColumn, leftSyn);
             row->addEntry(secondColumn, rightSyn);
             table->addRow(row);
@@ -120,7 +120,7 @@ Table *AssignPatternEvaluator::buildAssignPatternSSTable(const vector<pair<strin
     return table;
 }
 
-Table *AssignPatternEvaluator::buildAssignPatternSTable(const unordered_set<string>& results,
+Table *AssignPatternEvaluator::buildAssignPatternSTable(const unordered_set<string> &results,
                                                         QueryDeclaration &patternSyn, ClauseVariable &variable) {
     string column = patternSyn.synonym;
     Header header = Header({column});
@@ -159,7 +159,7 @@ Table *AssignPatternEvaluator::buildAssignPatternSSTable(const unordered_set<str
             bool isInLeftFilter = leftFilters.find(stmtNum) != leftFilters.end();
             bool isInRightFilter = rightFilters.find(varName) != rightFilters.end();
             if (isInLeftFilter && isInRightFilter) {
-                Row* row = new Row();
+                Row *row = new Row();
                 row->addEntry(firstColumn, stmtNum);
                 row->addEntry(secondColumn, varName);
                 result->addRow(row);

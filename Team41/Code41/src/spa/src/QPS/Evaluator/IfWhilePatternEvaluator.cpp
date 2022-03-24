@@ -5,7 +5,8 @@ IfWhilePatternEvaluator::IfWhilePatternEvaluator(PKBClient *pkb) : PatternEvalua
 Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
                                                 vector<PatternVariable> &rightPatternVariables) {
 
-    if (EvaluatorUtils::PatternUtils::isValidSynonymWildCards(leftVariable, rightPatternVariables, patternSynonym.type)) {
+    if (EvaluatorUtils::PatternUtils::isValidSynonymWildCards(leftVariable, rightPatternVariables,
+                                                              patternSynonym.type)) {
         return evaluateSynonymWildCard(patternSynonym, leftVariable);
     }
 
@@ -16,7 +17,7 @@ Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym,
     throw SemanticException("Invalid query provided for Pattern");
 }
 
-Table *IfWhilePatternEvaluator::evaluateSynonymWildCard(QueryDeclaration& patternSyn, ClauseVariable& left) {
+Table *IfWhilePatternEvaluator::evaluateSynonymWildCard(QueryDeclaration &patternSyn, ClauseVariable &left) {
     vector<pair<string, string>> listOfStmtNVar = getSynonymWildCardRelation();
     return buildSynonymSynonymPatternTable(listOfStmtNVar, patternSyn, left);
 }

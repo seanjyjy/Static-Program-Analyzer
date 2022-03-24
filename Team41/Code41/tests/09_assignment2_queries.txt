@@ -13,6 +13,16 @@ assign a; while w;
 Select a such that Next (a, w)
 5, 7, 12, 21, 22, 27
 5000
+4 - Affects (13, 17)
+
+Select BOOLEAN such that Affects(13, 17)
+FALSE
+5000
+4 - Affects (a, 13)
+assign a;
+Select a such that Affects(a, 13)
+12
+5000
 4 - pattern with
 while w; if ifs;
 Select <w, ifs> pattern w ("c", _)
@@ -33,6 +43,11 @@ stmt s; call cl;
 Select s such that Next* (s, s) such that Next* (cl, s)
 6, 7, 8, 9, 10, 11, 12, 25, 26, 27
 5000
+8 - Affects with If
+assign a; if ifs;
+Select a such that Affects*(a, a) and Parent* (ifs, a)
+21, 22
+5000
 8 - Tuple with Follow and Pattern While
 assign a; variable v; while w;
 Select <a, v> such that Follows (w, a) pattern w (v, _)
@@ -42,4 +57,9 @@ Select <a, v> such that Follows (w, a) pattern w (v, _)
 procedure p; if ifs; variable v;
 Select p pattern ifs (v, _, _) such that Modifies (p, v) and Uses (p, v)
 Kappa, Pig, Monk, Monkey
+5000
+10 - Affects pattern with attr ref
+assign a, a1; variable v; read rd;
+Select a1 such that Affects* (a, a1) pattern a (v, _) with v.varName = rd.varName
+28
 5000

@@ -18,7 +18,7 @@ private:
      * @param rightTable Table to be merged.
      * @return A common header between the two tables.
      */
-    Header getCommonHeader(Table* leftTable, Table* rightTable);
+    Header getCommonHeader(Table *leftTable, Table *rightTable);
 
     /**
      * Combines the header between the two tables. If there are duplicate headers, it will be considered as the same.
@@ -38,7 +38,7 @@ private:
      * @return 0 if both rows are of the same order, -1 if leftRowPtr has a higher priority and 1 if rightRowPtr has
      * a lower priority.
      */
-    int compareRow(const Row* leftRowPtr, const Row* rightRowPtr, vector<string> commonHeader) const;
+    int compareRow(const Row *leftRowPtr, const Row *rightRowPtr, vector<string> commonHeader) const;
 
     /**
      * Merge both table based on the common header to form the resultant cross product table.
@@ -48,7 +48,7 @@ private:
      * @param newTable A new table to be populated with the result of the merging.
      * @param commonHeader The common header that provides the column for ordering.
      */
-    void mergeTable(Table* leftTable, Table* rightTable, Table* newTable, vector<string> commonHeader);
+    void mergeTable(Table *leftTable, Table *rightTable, Table *newTable, vector<string> commonHeader);
 
     /**
      * Sorts the table based on the common header fields.
@@ -65,7 +65,7 @@ private:
      * @param commonHeader The common header that provides the column for equality check
      * @return True if both rows are considered equal based on common header, else false.
      */
-    bool isEqual(const Row* rowA, const Row* rowB, const vector<string> commonHeader);
+    bool isEqual(const Row *rowA, const Row *rowB, const vector<string> commonHeader);
 
     /**
      * Combines the two rows together.
@@ -74,7 +74,7 @@ private:
      * @param rowB Row to be combined.
      * @return A row that is the result of combining two rows.
      */
-    const Row* combineRow(const Row* rowA, const Row* rowB) const;
+    const Row *combineRow(const Row *rowA, const Row *rowB) const;
 
     /**
      * Checks if the column of the row provided matches the header defined in the table.
@@ -82,9 +82,11 @@ private:
      * @param row Row to be checked.
      * @return True if the row provided matches the header defined in the table else false.
      */
-    bool checkRowMatchesHeader(const Row* row) const;
+    bool checkRowMatchesHeader(const Row *row) const;
+
 public:
     explicit PQLTable(Header header);
+
     ~PQLTable();
 
     /**
@@ -98,12 +100,12 @@ public:
      * @param column The name of the column.
      * @return True if table contains this column else false.
      */
-    bool hasColumn(const string& column);
+    bool hasColumn(const string &column);
 
     /**
      * @see QPS/Table/Table.h
      */
-    bool hasRow(const Row* row) override;
+    bool hasRow(const Row *row) override;
 
     /**
      * @see QPS/Table/Table.h
@@ -118,14 +120,14 @@ public:
     /**
      * @see QPS/Table/Table.h
      */
-    void addRow(const Row* row) override;
+    void addRow(const Row *row) override;
 
     TableType getType() override;
 
     /**
      * @see QPS/Table/Table.h
      */
-    Table* mergeJoin(Table* intermediatePQLTable) override;
+    Table *mergeJoin(Table *intermediatePQLTable) override;
 
     /**
      * @see QPS/Table/Table.h

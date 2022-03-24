@@ -1,6 +1,6 @@
 #include "NextTEvaluator.h"
 
-NextTEvaluator::NextTEvaluator(PKBClient* pkb, NextKBAdapter *nextKBAdapter): StmtStmtEvaluator(pkb) {
+NextTEvaluator::NextTEvaluator(PKBClient *pkb, NextKBAdapter *nextKBAdapter) : StmtStmtEvaluator(pkb) {
     this->nextKBAdapter = nextKBAdapter;
 }
 

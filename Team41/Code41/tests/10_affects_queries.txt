@@ -1,0 +1,555 @@
+1 - Affects(int, int) - No Blockage
+
+Select BOOLEAN such that Affects(2, 9)
+TRUE
+5000
+1 - Affects(int, int) - Block by READ
+
+Select BOOLEAN such that Affects(5, 9)
+FALSE
+5000
+1 - Affects(int, int) - Block by CALL
+
+Select BOOLEAN such that Affects(12, 12)
+FALSE
+5000
+1 - Affects(int, int) - Block by ASSIGNMENT
+
+Select BOOLEAN such that Affects(39, 41)
+FALSE
+5000
+1 - Affects(int, syn) - Statement
+stmt s;
+Select s such that Affects(5, s)
+5, 21, 25
+5000
+2 - Affects(int, syn) - Assignment
+assign a;
+Select a such that Affects(21, a)
+12, 15, 19, 22
+5000
+1 - Affects(int, wildcard) - Positive case
+
+Select BOOLEAN such that Affects(21, _)
+TRUE
+5000
+1 - Affects(int, wildcard) - Negative case
+
+Select BOOLEAN such that Affects(12, _)
+FALSE
+5000
+1 - Affects(syn, int) - Statement
+stmt s;
+Select s such that Affects(s, 25)
+5, 9
+5000
+1 - Affects(syn, int) - Assignment
+assign a;
+Select a such that Affects(a, 21)
+5, 9
+5000
+1 - Affects(syn, syn) - Statement - Statement
+stmt s, s2;
+Select <s, s2> such that Affects(s, s2)
+10 10, 10 8, 2 9, 21 12, 21 15, 21 19, 21 22, 22 19, 25 10, 25 8, 29 30, 30 29, 40 41, 44 48, 5 21, 5 25, 5 5, 8 8, 9 21, 9 25, 9 5
+5000
+1 - Affects(syn, syn) - Statement - Assignment
+stmt s; assign a;
+Select <s, a> such that Affects(s, a)
+10 10, 10 8, 2 9, 21 12, 21 15, 21 19, 21 22, 22 19, 25 10, 25 8, 29 30, 30 29, 40 41, 44 48, 5 21, 5 25, 5 5, 8 8, 9 21, 9 25, 9 5
+5000
+1 - Affects(syn, syn) - Assignment - Assignment
+assign a, a2;
+Select <a, a2> such that Affects(a, a2)
+10 10, 10 8, 2 9, 21 12, 21 15, 21 19, 21 22, 22 19, 25 10, 25 8, 29 30, 30 29, 40 41, 44 48, 5 21, 5 25, 5 5, 8 8, 9 21, 9 25, 9 5
+5000
+1 - Affects(syn, syn) - Assignment - Assignment
+assign a; stmt s;
+Select <a, s> such that Affects(a, s)
+10 10, 10 8, 2 9, 21 12, 21 15, 21 19, 21 22, 22 19, 25 10, 25 8, 29 30, 30 29, 40 41, 44 48, 5 21, 5 25, 5 5, 8 8, 9 21, 9 25, 9 5
+5000
+1 - Affects(syn, syn) - same variable - Statement
+stmt s;
+Select s such that Affects(s, s)
+5, 8, 10
+5000
+1 - Affects(syn, syn) - same variable - Assignment
+assign a;
+Select a such that Affects(a, a)
+5, 8, 10
+5000
+1 - Affects(syn, _) - Statement - WildCard
+stmt s;
+Select s such that Affects(s, _)
+2, 5, 8, 9, 10, 21, 22, 25, 29, 30, 40, 44
+5000
+1 - Affects(syn, _) - Assignment - WildCard
+assign a;
+Select a such that Affects(a, _)
+2, 5, 8, 9, 10, 21, 22, 25, 29, 30, 40, 44
+5000
+1 - Affects(_, int) - Positive case
+
+Select BOOLEAN such that Affects(_, 25)
+TRUE
+5000
+1 - Affects(_, int) - Negative case
+
+Select BOOLEAN such that Affects(_, 47)
+FALSE
+5000
+1 - Affects(_, syn) - Statement
+stmt s;
+Select s such that Affects(_, s)
+5, 8, 9, 10, 12, 15, 19, 21, 22, 25, 29, 30, 41, 48
+5000
+1 - Affects(_, syn) - Assignment
+assign a;
+Select a such that Affects(_, a)
+5, 8, 9, 10, 12, 15, 19, 21, 22, 25, 29, 30, 41, 48
+5000
+1 - Affects(_, _) - wildcard x2
+
+Select BOOLEAN such that Affects(_, _)
+TRUE
+5000
+1 - Affects(int, syn) - Semantically invalid - w
+while w;
+Select BOOLEAN such that Affects(2, w)
+FALSE
+5000
+1 - Affects(int, syn) - Semantically invalid - ifs
+if ifs;
+Select BOOLEAN such that Affects(2, ifs)
+FALSE
+5000
+1 - Affects(int, syn) - Semantically invalid - v
+variable v;
+Select BOOLEAN such that Affects(2, v)
+FALSE
+5000
+1 - Affects(int, syn) - Semantically invalid - p
+procedure p;
+Select BOOLEAN such that Affects(2, p)
+FALSE
+5000
+1 - Affects(int, syn) - Semantically invalid - c
+constant c;
+Select BOOLEAN such that Affects(2, c)
+FALSE
+5000
+1 - Affects(int, syn) - Semantically invalid - re
+read re;
+Select BOOLEAN such that Affects(2, re)
+FALSE
+5000
+1 - Affects(int, syn) - Semantically invalid - pn
+print pn;
+Select BOOLEAN such that Affects(2, pn)
+FALSE
+5000
+1 - Affects(int, syn) - Semantically invalid - cl
+call cl;
+Select BOOLEAN such that Affects(2, cl)
+FALSE
+5000
+1 - Affects(syn, int) - Semantically invalid - w
+while w;
+Select BOOLEAN such that Affects(w, 25)
+FALSE
+5000
+1 - Affects(syn, int) - Semantically invalid - ifs
+if ifs;
+Select BOOLEAN such that Affects(ifs, 25)
+FALSE
+5000
+1 - Affects(syn, int) - Semantically invalid - v
+variable v;
+Select BOOLEAN such that Affects(v, 25)
+FALSE
+5000
+1 - Affects(syn, int) - Semantically invalid - p
+procedure p;
+Select BOOLEAN such that Affects(p, 25)
+FALSE
+5000
+1 - Affects(syn, int) - Semantically invalid - c
+constant c;
+Select BOOLEAN such that Affects(c, 25)
+FALSE
+5000
+1 - Affects(syn, int) - Semantically invalid - re
+read re;
+Select BOOLEAN such that Affects(re, 25)
+FALSE
+5000
+1 - Affects(syn, int) - Semantically invalid - pn
+print pn;
+Select BOOLEAN such that Affects(pn, 25)
+FALSE
+5000
+1 - Affects(syn, int) - Semantically invalid - cl
+call cl;
+Select BOOLEAN such that Affects(cl, 25)
+FALSE
+5000
+1 - Affects(syn, _) - Semantically invalid - w
+while w;
+Select BOOLEAN such that Affects(w, _)
+FALSE
+5000
+1 - Affects(syn, _) - Semantically invalid - ifs
+if ifs;
+Select BOOLEAN such that Affects(ifs, _)
+FALSE
+5000
+1 - Affects(syn, _) - Semantically invalid - v
+variable v;
+Select BOOLEAN such that Affects(v, _)
+FALSE
+5000
+1 - Affects(syn, _) - Semantically invalid - p
+procedure p;
+Select BOOLEAN such that Affects(p, _)
+FALSE
+5000
+1 - Affects(syn, _) - Semantically invalid - c
+constant c;
+Select BOOLEAN such that Affects(c, _)
+FALSE
+5000
+1 - Affects(syn, _) - Semantically invalid - re
+read re;
+Select BOOLEAN such that Affects(re, _)
+FALSE
+5000
+1 - Affects(syn, _) - Semantically invalid - pn
+print pn;
+Select BOOLEAN such that Affects(pn, _)
+FALSE
+5000
+1 - Affects(syn, _) - Semantically invalid - cl
+call cl;
+Select BOOLEAN such that Affects(cl, _)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - w - w
+while w, w2;
+Select BOOLEAN such that Affects(w, w2)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - w - ifs
+while w; if ifs;
+Select BOOLEAN such that Affects(w, ifs)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - w - v
+while w; variable v;
+Select BOOLEAN such that Affects(w, v)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - w - p
+while w; procedure p;
+Select BOOLEAN such that Affects(w, p)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - w - c
+while w; constant c;
+Select BOOLEAN such that Affects(w, c)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - w - re
+while w; read re;
+Select BOOLEAN such that Affects(w, re)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - w - pn
+while w; print pn;
+Select BOOLEAN such that Affects(w, pn)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - w - cl
+while w; call cl;
+Select BOOLEAN such that Affects(w, cl)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - ifs - w
+if ifs; while w;
+Select BOOLEAN such that Affects(ifs, w)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - ifs - ifs
+if ifs, ifs2;
+Select BOOLEAN such that Affects(ifs, ifs2)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - ifs - v
+if ifs; variable v;
+Select BOOLEAN such that Affects(ifs, v)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - ifs - p
+if ifs; procedure p;
+Select BOOLEAN such that Affects(ifs, p)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - ifs - c
+if ifs; constant c;
+Select BOOLEAN such that Affects(ifs, c)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - ifs - re
+if ifs; read re;
+Select BOOLEAN such that Affects(ifs, re)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - ifs - pn
+if ifs; print pn;
+Select BOOLEAN such that Affects(ifs, pn)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - ifs - cl
+if ifs; call cl;
+Select BOOLEAN such that Affects(ifs, cl)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - v - w
+variable v; while w;
+Select BOOLEAN such that Affects(v, w)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - v - ifs
+variable v; if ifs;
+Select BOOLEAN such that Affects(v, ifs)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - v - v
+variable v, v2;
+Select BOOLEAN such that Affects(v, v2)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - v - p
+variable v; procedure p;
+Select BOOLEAN such that Affects(v, p)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - v - c
+variable v; constant c;
+Select BOOLEAN such that Affects(v, c)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - v - re
+variable v; read re;
+Select BOOLEAN such that Affects(v, re)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - v - pn
+variable v; print pn;
+Select BOOLEAN such that Affects(v, pn)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - v - cl
+variable v; call cl;
+Select BOOLEAN such that Affects(v, cl)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - p - w
+procedure p; while w;
+Select BOOLEAN such that Affects(p, w)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - p - ifs
+procedure p; if ifs;
+Select BOOLEAN such that Affects(p, ifs)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - p - v
+procedure p; variable v;
+Select BOOLEAN such that Affects(p, v)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - p - p
+procedure p, p2;
+Select BOOLEAN such that Affects(p, p2)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - p - c
+procedure p; constant c;
+Select BOOLEAN such that Affects(p, c)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - p - re
+procedure p; read re;
+Select BOOLEAN such that Affects(p, re)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - p - pn
+procedure p; print pn;
+Select BOOLEAN such that Affects(p, pn)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - p - cl
+procedure p; call cl;
+Select BOOLEAN such that Affects(p, cl)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - c - w
+constant c; while w;
+Select BOOLEAN such that Affects(c, w)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - c - ifs
+constant c; if ifs;
+Select BOOLEAN such that Affects(c, ifs)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - c - v
+constant c; variable v;
+Select BOOLEAN such that Affects(c, v)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - c - p
+constant c; procedure p;
+Select BOOLEAN such that Affects(c, p)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - c - c
+constant c, c2;
+Select BOOLEAN such that Affects(c, c2)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - c - re
+constant c; read re;
+Select BOOLEAN such that Affects(c, re)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - c - pn
+constant c; print pn;
+Select BOOLEAN such that Affects(c, pn)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - c - cl
+constant c; call cl;
+Select BOOLEAN such that Affects(c, cl)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - re - w
+read re; while w;
+Select BOOLEAN such that Affects(re, w)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - re - ifs
+read re; if ifs;
+Select BOOLEAN such that Affects(re, ifs)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - re - v
+read re; variable v;
+Select BOOLEAN such that Affects(re, v)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - re - p
+read re; procedure p;
+Select BOOLEAN such that Affects(re, p)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - re - c
+read re; constant c;
+Select BOOLEAN such that Affects(re, c)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - re - re
+read re, re2;
+Select BOOLEAN such that Affects(re, re2)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - re - pn
+read re; print pn;
+Select BOOLEAN such that Affects(re, pn)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - re - cl
+read re; call cl;
+Select BOOLEAN such that Affects(re, cl)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - pn - w
+print pn; while w;
+Select BOOLEAN such that Affects(pn, w)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - pn - ifs
+print pn; if ifs;
+Select BOOLEAN such that Affects(pn, ifs)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - pn - v
+print pn; variable v;
+Select BOOLEAN such that Affects(pn, v)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - pn - p
+print pn; procedure p;
+Select BOOLEAN such that Affects(pn, p)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - pn - c
+print pn; constant c;
+Select BOOLEAN such that Affects(pn, c)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - pn - re
+print pn; read re;
+Select BOOLEAN such that Affects(pn, re)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - pn - pn
+print pn, pn2;
+Select BOOLEAN such that Affects(pn, pn2)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - pn - cl
+print pn; call cl;
+Select BOOLEAN such that Affects(pn, cl)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - cl - w
+call cl; while w;
+Select BOOLEAN such that Affects(cl, w)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - cl - ifs
+call cl; if ifs;
+Select BOOLEAN such that Affects(cl, ifs)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - cl - v
+call cl; variable v;
+Select BOOLEAN such that Affects(cl, v)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - cl - p
+call cl; procedure p;
+Select BOOLEAN such that Affects(cl, p)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - cl - c
+call cl; constant c;
+Select BOOLEAN such that Affects(cl, c)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - cl - re
+call cl; read re;
+Select BOOLEAN such that Affects(cl, re)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - cl - pn
+call cl; print pn;
+Select BOOLEAN such that Affects(cl, pn)
+FALSE
+5000
+1 - Affects(syn, syn) - Semantically invalid - cl - cl
+call cl, cl2;
+Select BOOLEAN such that Affects(cl, cl2)
+FALSE
+5000

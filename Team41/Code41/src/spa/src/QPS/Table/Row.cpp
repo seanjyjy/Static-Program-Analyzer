@@ -8,11 +8,11 @@ size_t Row::size() const {
     return this->row.size();
 }
 
-bool Row::hasColumn(const std::string& column) const {
+bool Row::hasColumn(const std::string &column) const {
     return this->row.find(column) != this->row.end();
 }
 
-string Row::getValueAtColumn(const string& column) const {
+string Row::getValueAtColumn(const string &column) const {
     if (!hasColumn(column)) {
         throw runtime_error("Column doesnt exist!");
     }
@@ -24,7 +24,7 @@ unordered_map<string, string> Row::getRow() const {
     return this->row;
 }
 
-void Row::addEntry(const string& column, string value) {
+void Row::addEntry(const string &column, string value) {
     bool hasColumn = this->hasColumn(column);
 
     // if this exact entry has been added before, we can return
@@ -41,7 +41,7 @@ void Row::addEntry(const string& column, string value) {
 }
 
 bool Row::operator==(const Row &other) const {
-    for (auto& columnValuePair : this->row) {
+    for (auto &columnValuePair: this->row) {
         if (!other.hasColumn(columnValuePair.first)) {
             return false;
         }

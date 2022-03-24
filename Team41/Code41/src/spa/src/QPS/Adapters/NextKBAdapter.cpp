@@ -59,37 +59,6 @@ void NextKBAdapter::fullBFS() {
     }
 }
 
-void NextKBAdapter::runBFS(const string &start, const string &end, bool isForward,
-                           const CacheCallback &cacheAndContinue, const TerminateCheck &canTerminate) {
-    CFGNode *startNode = pkb->getCFGForStmt(isForward ? start : end);
-
-    if (startNode == nullptr) return;
-
-    queue<CFGNode *> bfsQueue;
-    unordered_set<string> visited;
-    bfsQueue.push(startNode);
-
-    while (!bfsQueue.empty()) {
-        CFGNode *currNode = bfsQueue.front();
-        vector<CFGNode *> nextNodes = isForward ? currNode->getChildren() : currNode->getParent();
-        bfsQueue.pop();
-
-        for (auto &next: nextNodes) {
-            string nextStmtNum = next->getStmtNum();
-            if (visited.find(nextStmtNum) == visited.end()) {
-                // check cache
-                if (cacheAndContinue(nextStmtNum, cache)) {
-                    bfsQueue.push(next);
-                }
-                if (canTerminate(nextStmtNum, cache)) {
-                    return;
-                };
-                visited.insert(nextStmtNum);
-            }
-        }
-    }
-}
-
 void NextKBAdapter::addFullMapping(const string &start, const string &end) {
     // Add forward Mapping
     cache->registerBooleanMapping(start, end);
@@ -128,64 +97,26 @@ vector<string> NextKBAdapter::getAllStmtsThatIsNextOfSomeStmt() const {
 
 bool NextKBAdapter::isNextT(const string &stmt1, const string &stmt2) {
     unordered_set<string> backwardCache = cache->getBackwardMapping(stmt2);
-    if (!backwardCache.empty()) {
+    if (!backwardCache.empty())
         return backwardCache.find(stmt1) != backwardCache.end();
-    }
 
     unordered_set<string> forwardCache = cache->getForwardMapping(stmt1);
-    if (!forwardCache.empty()) {
+    if (!forwardCache.empty())
         return forwardCache.find(stmt2) != forwardCache.end();
-    }
 
     if (!cache->getBooleanMapping(stmt1, stmt2)) {
-        CacheCallback saveToCache = [stmt1](const string &next, Cache* cache) {
-            cache->registerBooleanMapping(stmt1, next);
-            return true;
-        };
-
-        TerminateCheck canEnd = [stmt1, stmt2](const string &next, Cache* cache) {
-            if (cache->getBooleanMapping(next, stmt2)) {
-                cache->registerBooleanMapping(stmt1, stmt2);
-                return true;
-            };
-            unordered_set<string> forwardCache = cache->getForwardMapping(next);
-            if (!forwardCache.empty()) {
-                bool hasNextT = forwardCache.find(stmt2) != forwardCache.end();
-                if (hasNextT) {
-                    cache->registerBooleanMapping(stmt1, stmt2);
-                }
-                return hasNextT;
-            }
-            return false;
-        };
-        runBFS(stmt1, stmt2, true, saveToCache, canEnd);
+        CFGNode *startNode = pkb->getCFGForStmt(stmt1);
+        AdaptersUtils::runBoolBFS(stmt1, stmt2, cache, startNode);
     }
+
 
     return cache->getBooleanMapping(stmt1, stmt2);
 }
 
 unordered_set<string> NextKBAdapter::getAllStmtsNextT(const string &stmtNum) {
     if (cache->getForwardMapping(stmtNum).empty()) {
-        CacheCallback saveToCache = [stmtNum](const string &next, Cache* cache) {
-            unordered_set<string> forwardCache = cache->getForwardMapping(next);
-            bool canUseCache = !forwardCache.empty() && stmtNum != next;
-
-            cache->registerBooleanMapping(stmtNum, next);
-            cache->registerForwardMapping(stmtNum, next);
-
-            if (canUseCache) {
-                for (auto &savedNext: forwardCache) {
-                    cache->registerBooleanMapping(stmtNum, savedNext);
-                    cache->registerForwardMapping(stmtNum, savedNext);
-                }
-                return false;
-            }
-            return true;
-        };
-
-        TerminateCheck canEnd = [](const string&, Cache*) { return false; };
-
-        runBFS(stmtNum, ROOT_STMT, true, saveToCache, canEnd);
+        CFGNode *startNode = pkb->getCFGForStmt(stmtNum);
+        AdaptersUtils::runDownBFS(stmtNum, cache, startNode);
     }
 
     return cache->getForwardMapping(stmtNum);
@@ -193,35 +124,16 @@ unordered_set<string> NextKBAdapter::getAllStmtsNextT(const string &stmtNum) {
 
 unordered_set<string> NextKBAdapter::getAllStmtsTBefore(const string &stmtNum) {
     if (cache->getBackwardMapping(stmtNum).empty()) {
-        CacheCallback saveToCache = [stmtNum](const string &next, Cache* cache) {
-            unordered_set<string> backwardCache = cache->getBackwardMapping(next);
-            bool canUseCache = !backwardCache.empty() && stmtNum != next;
-
-            cache->registerBooleanMapping(next, stmtNum);
-            cache->registerBackwardMapping(stmtNum, next);
-
-            if (canUseCache) {
-                for (auto &savedNext: backwardCache) {
-                    cache->registerBooleanMapping(savedNext, stmtNum);
-                    cache->registerBackwardMapping(stmtNum, savedNext);
-                }
-                return false;
-            }
-            return true;
-        };
-
-        TerminateCheck canEnd = [](const string &, Cache*) { return false; };
-
-        runBFS(ROOT_STMT, stmtNum, false, saveToCache, canEnd);
+        CFGNode *endNode = pkb->getCFGForStmt(stmtNum);
+        AdaptersUtils::runUpBFS(stmtNum, cache, endNode);
     }
 
     return cache->getBackwardMapping(stmtNum);
 }
 
 vector<pair<string, string>> NextKBAdapter::getAllNextT() {
-    if (cache->getAllMapping().empty()) {
+    if (cache->getAllMapping().empty())
         fullBFS();
-    }
 
     return cache->getAllMapping();
 }

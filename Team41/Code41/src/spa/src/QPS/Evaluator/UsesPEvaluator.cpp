@@ -1,6 +1,6 @@
 #include "UsesPEvaluator.h"
 
-UsesPEvaluator::UsesPEvaluator(PKBClient *pkb): ModifiesUsesPEvaluator(pkb) {}
+UsesPEvaluator::UsesPEvaluator(PKBClient *pkb) : ModifiesUsesPEvaluator(pkb) {}
 
 bool UsesPEvaluator::getIdentifierIdentifierRelation(const string &leftLabel, const string &rightLabel) {
     return pkb->isUsesP(leftLabel, rightLabel);

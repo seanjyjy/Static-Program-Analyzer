@@ -48,10 +48,10 @@ Table *Evaluator::buildSingleSynonymTable(const string &result, ClauseVariable &
     unordered_set<string> filters = getFilters(synonym.getDesignEntityType());
 
     Header header({column});
-    Table* table = new PQLTable(header);
+    Table *table = new PQLTable(header);
 
     if (filters.find(result) != filters.end()) {
-        Row* row = new Row(column, result);
+        Row *row = new Row(column, result);
         table->addRow(row);
     }
 
@@ -66,7 +66,7 @@ Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, 
     return buildSingleSynonymTable(results, synonym.getLabel(), synonym.getDesignEntityType());
 }
 
-Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, const string& label,
+Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, const string &label,
                                           QueryDeclaration::design_entity_type type) {
 
     if (results.empty()) {
@@ -76,11 +76,11 @@ Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, 
     unordered_set<string> filters = getFilters(type);
 
     Header header({label});
-    Table* table = new PQLTable(header);
+    Table *table = new PQLTable(header);
 
-    for (auto& child : results) {
+    for (auto &child: results) {
         if (filters.find(child) != filters.end()) {
-            Row* row = new Row(label, child);
+            Row *row = new Row(label, child);
             table->addRow(row);
         }
     }
@@ -88,7 +88,7 @@ Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, 
     return table;
 }
 
-Table *Evaluator::buildSingleSynonymTable(const vector<CFGNode *>& results, ClauseVariable &synonym) {
+Table *Evaluator::buildSingleSynonymTable(const vector<CFGNode *> &results, ClauseVariable &synonym) {
     if (results.empty()) {
         return new FalseTable();
     }
@@ -97,11 +97,11 @@ Table *Evaluator::buildSingleSynonymTable(const vector<CFGNode *>& results, Clau
     unordered_set<string> filters = getFilters(synonym.getDesignEntityType());
 
     Header header = Header({column});
-    Table* table = new PQLTable(header);
+    Table *table = new PQLTable(header);
 
-    for (auto& child : results) {
+    for (auto &child: results) {
         if (filters.find(child->getStmtNum()) != filters.end()) {
-            Row* row = new Row(column, child->getStmtNum());
+            Row *row = new Row(column, child->getStmtNum());
             table->addRow(row);
         }
     }
@@ -109,7 +109,7 @@ Table *Evaluator::buildSingleSynonymTable(const vector<CFGNode *>& results, Clau
     return table;
 }
 
-Table *Evaluator::buildSingleSynonymTable(const vector<string>& results, ClauseVariable &synonym) {
+Table *Evaluator::buildSingleSynonymTable(const vector<string> &results, ClauseVariable &synonym) {
     if (results.empty()) {
         return new FalseTable();
     }
@@ -118,11 +118,11 @@ Table *Evaluator::buildSingleSynonymTable(const vector<string>& results, ClauseV
     unordered_set<string> filters = getFilters(synonym.getDesignEntityType());
 
     Header header = Header({column});
-    Table* table = new PQLTable(header);
+    Table *table = new PQLTable(header);
 
-    for (auto& statement : results) {
+    for (auto &statement: results) {
         if (filters.find(statement) != filters.end()) {
-            Row* row = new Row(column, statement);
+            Row *row = new Row(column, statement);
             table->addRow(row);
         }
     }
@@ -148,11 +148,11 @@ Table *Evaluator::buildSameSynonymTable(const vector<pair<string, string>> &resu
     unordered_set<string> filters = getFilters(synonym.getDesignEntityType());
 
     Header header({label});
-    Table* table = new PQLTable(header);
+    Table *table = new PQLTable(header);
 
-    for (auto&[leftSyn, rightSyn] : results) {
+    for (auto&[leftSyn, rightSyn]: results) {
         if (leftSyn == rightSyn && filters.find(leftSyn) != filters.end()) {
-            Row* row = new Row(label, leftSyn);
+            Row *row = new Row(label, leftSyn);
             table->addRow(row);
         }
     }
@@ -168,13 +168,13 @@ Table *Evaluator::buildDifferentSynonymTable(const vector<pair<string, string>> 
     unordered_set<string> rightFilters = getFilters(rightSynonym.getDesignEntityType());
 
     Header header({leftLabel, rightLabel});
-    Table* table = new PQLTable(header);
+    Table *table = new PQLTable(header);
 
-    for (auto&[leftSyn, rightSyn] : results) {
+    for (auto&[leftSyn, rightSyn]: results) {
         bool isInLeftFilter = leftFilters.find(leftSyn) != leftFilters.end();
         bool isInRightFilter = rightFilters.find(rightSyn) != rightFilters.end();
         if (isInLeftFilter && isInRightFilter) {
-            Row* row = new Row();
+            Row *row = new Row();
             row->addEntry(leftLabel, leftSyn);
             row->addEntry(rightLabel, rightSyn);
             table->addRow(row);
@@ -185,7 +185,7 @@ Table *Evaluator::buildDifferentSynonymTable(const vector<pair<string, string>> 
 }
 
 Table *Evaluator::buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results,
-                                                  QueryDeclaration& patternSyn, const ClauseVariable& left) {
+                                                  QueryDeclaration &patternSyn, const ClauseVariable &left) {
     string firstColumn = patternSyn.getSynonym();
     string secondColumn = left.getLabel();
     unordered_set<string> leftFilters = getFilters(patternSyn.getType());
@@ -194,7 +194,7 @@ Table *Evaluator::buildSynonymSynonymPatternTable(const vector<pair<string, stri
     Header header({firstColumn, secondColumn});
     Table *table = new PQLTable(header);
 
-    for (auto &[stmt, var] : results) {
+    for (auto &[stmt, var]: results) {
         bool isInLeftFilter = leftFilters.find(stmt) != leftFilters.end();
         bool isInRightFilter = rightFilters.find(var) != rightFilters.end();
         if (isInLeftFilter && isInRightFilter) {

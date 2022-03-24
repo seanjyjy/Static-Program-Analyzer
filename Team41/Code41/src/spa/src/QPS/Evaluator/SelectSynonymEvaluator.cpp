@@ -1,24 +1,25 @@
 #include "SelectSynonymEvaluator.h"
 #include <stdexcept>
 
-Table* SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym) {
+Table *SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym) {
     auto declarationType = selectSynonym.type;
     auto synonym = selectSynonym.synonym;
 
     unordered_set<string> setOfResult = getResultViaType(declarationType, pkb);
     Header header({synonym});
-    Table* resultTable = new PQLTable(header);
+    Table *resultTable = new PQLTable(header);
 
-    for (auto& result : setOfResult) {
-        Row* row = new Row(synonym, result);
+    for (auto &result: setOfResult) {
+        Row *row = new Row(synonym, result);
         resultTable->addRow(row);
     }
 
     return resultTable;
 }
 
-unordered_set<string> SelectSynonymEvaluator::getResultViaType(QueryDeclaration::design_entity_type type, PKBClient* pkb) {
-    switch(type) {
+unordered_set<string>
+SelectSynonymEvaluator::getResultViaType(QueryDeclaration::design_entity_type type, PKBClient *pkb) {
+    switch (type) {
         case QueryDeclaration::design_entity_type::STMT:
             return pkb->getStatements();
         case QueryDeclaration::design_entity_type::READ:

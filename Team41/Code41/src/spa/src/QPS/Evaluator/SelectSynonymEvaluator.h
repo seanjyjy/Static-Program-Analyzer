@@ -10,7 +10,8 @@
 
 class SelectSynonymEvaluator {
 private:
-    PKBClient* pkb;
+    PKBClient *pkb;
+
     /**
      * Depending on the query declaration select type, select all selected type from the pkb.
      *
@@ -19,8 +20,10 @@ private:
      * @return A table depending on the select type.
      */
     static unordered_set<string> getResultViaType(QueryDeclaration::design_entity_type type, PKBClient *pkb);
+
 public:
-    explicit SelectSynonymEvaluator(PKBClient* pkb);
+    explicit SelectSynonymEvaluator(PKBClient *pkb);
+
     /**
      * Depending on the select synonym in query declaration , get all values of that synonym from the pkb.
      *
@@ -28,5 +31,5 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table depending on the select synonym.
      */
-    Table* evaluate(QueryDeclaration selectSynonym);
+    Table *evaluate(QueryDeclaration selectSynonym);
 };

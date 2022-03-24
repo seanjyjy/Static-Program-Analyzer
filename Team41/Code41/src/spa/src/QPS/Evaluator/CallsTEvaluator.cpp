@@ -1,6 +1,6 @@
 #include "CallsTEvaluator.h"
 
-CallsTEvaluator::CallsTEvaluator(PKBClient *pkb): ProcProcEvaluator(pkb) {}
+CallsTEvaluator::CallsTEvaluator(PKBClient *pkb) : ProcProcEvaluator(pkb) {}
 
 bool CallsTEvaluator::getIdentifierIdentifierRelation(const string &leftLabel, const string &rightLabel) {
     return pkb->isCallsT(leftLabel, rightLabel);

@@ -6,17 +6,20 @@
 
 class AssignPatternEvaluator : public PatternEvaluator {
 private:
-    Table* buildAssignPatternSTable(const unordered_set<string>& results, QueryDeclaration &patternSyn,
+    Table *buildAssignPatternSTable(const unordered_set<string> &results, QueryDeclaration &patternSyn,
                                     ClauseVariable &variable);
-    Table* buildAssignPatternSSTable(const vector<pair<string, string>> &results, QueryDeclaration& patternSyn,
-                                     ClauseVariable &variable);
-    Table* buildAssignPatternSSTable(const unordered_set<string> &results, QueryDeclaration& patternSyn,
-                                     ClauseVariable &variable);
-public:
-    explicit AssignPatternEvaluator(PKBClient* pkb);
 
-    Table* evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable& leftVariable,
-                                   vector<PatternVariable>& rightPatternVariables) override;
+    Table *buildAssignPatternSSTable(const vector<pair<string, string>> &results, QueryDeclaration &patternSyn,
+                                     ClauseVariable &variable);
+
+    Table *buildAssignPatternSSTable(const unordered_set<string> &results, QueryDeclaration &patternSyn,
+                                     ClauseVariable &variable);
+
+public:
+    explicit AssignPatternEvaluator(PKBClient *pkb);
+
+    Table *evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
+                           vector<PatternVariable> &rightPatternVariables) override;
 
     unordered_set<string> getWildCardWildCardRelation() override;
 
@@ -48,7 +51,8 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a full pattern.
      */
-    Table *evaluateIdentifierFullPattern(QueryDeclaration patternSyn, const ClauseVariable& left, PatternVariable right);
+    Table *
+    evaluateIdentifierFullPattern(QueryDeclaration patternSyn, const ClauseVariable &left, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between an identifier and a sub pattern.
@@ -58,7 +62,7 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a sub pattern.
      */
-    Table *evaluateIdentifierSubPattern(QueryDeclaration patternSyn, const ClauseVariable& left, PatternVariable right);
+    Table *evaluateIdentifierSubPattern(QueryDeclaration patternSyn, const ClauseVariable &left, PatternVariable right);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a full pattern.
@@ -97,5 +101,5 @@ public:
      * @param leftVariable Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a wildcard.
      */
-    Table* evaluateIdentifierWildCard(QueryDeclaration patternSynonym, ClauseVariable& leftVariable);
+    Table *evaluateIdentifierWildCard(QueryDeclaration patternSynonym, ClauseVariable &leftVariable);
 };

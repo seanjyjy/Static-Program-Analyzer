@@ -1,6 +1,6 @@
 #include "ModifiesSEvaluator.h"
 
-ModifiesSEvaluator::ModifiesSEvaluator(PKBClient *pkb): ModifiesUsesSEvaluator(pkb) {}
+ModifiesSEvaluator::ModifiesSEvaluator(PKBClient *pkb) : ModifiesUsesSEvaluator(pkb) {}
 
 Table *ModifiesSEvaluator::evaluateClauseFurther(ClauseVariable leftVariable, ClauseVariable rightVariable) {
     if (EvaluatorUtils::SUtils::isValidModifiesSynonymIdentifier(&leftVariable, &rightVariable)) {

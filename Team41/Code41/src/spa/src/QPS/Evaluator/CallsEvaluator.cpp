@@ -1,6 +1,6 @@
 #include "CallsEvaluator.h"
 
-CallsEvaluator::CallsEvaluator(PKBClient *pkb): ProcProcEvaluator(pkb) {}
+CallsEvaluator::CallsEvaluator(PKBClient *pkb) : ProcProcEvaluator(pkb) {}
 
 bool CallsEvaluator::getIdentifierIdentifierRelation(const string &leftLabel, const string &rightLabel) {
     return pkb->isCalls(leftLabel, rightLabel);
@@ -15,7 +15,7 @@ unordered_set<string> CallsEvaluator::getIdentifierWildCardRelation(const string
 }
 
 unordered_set<string> CallsEvaluator::getSynonymIdentifierRelation(const string &label) {
-    return  pkb->getAllProcCalling(label);
+    return pkb->getAllProcCalling(label);
 }
 
 vector<pair<string, string>> CallsEvaluator::getSynonymSynonymRelation() {

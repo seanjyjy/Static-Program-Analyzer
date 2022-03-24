@@ -6,9 +6,11 @@
 
 class WhilePatternEvaluator : public IfWhilePatternEvaluator {
 public:
-    explicit WhilePatternEvaluator(PKBClient* pkb);
+    explicit WhilePatternEvaluator(PKBClient *pkb);
 
     unordered_set<string> getWildCardWildCardRelation() override;
-    unordered_set<string> getIdentifierWildCardRelation(const string& label) override;
+
+    unordered_set<string> getIdentifierWildCardRelation(const string &label) override;
+
     vector<pair<string, string>> getSynonymWildCardRelation() override;
 };
