@@ -102,12 +102,10 @@ bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2
         return forwardCache.find(stmtNum2) != forwardCache.end();
 
     if (!cache->getBooleanMapping(stmtNum1, stmtNum2)) {
-        CFGNode *startNode = stmtNumToNodeMap.at(stmtNum1);
-
-        // TODO: I am not sure if this is default behaviour
-        if (startNode == nullptr)
+        if (stmtNumToNodeMap.find(stmtNum1) == stmtNumToNodeMap.end())
             return false;
 
+        CFGNode *startNode = stmtNumToNodeMap.at(stmtNum1);
         AdaptersUtils::runBoolBFS(stmtNum1, stmtNum2, cache, startNode);
     }
 
@@ -119,11 +117,10 @@ unordered_set<string> AffectsKBAdapter::getAffectsTBy(const string &stmtNum) {
         buildAffectsGraph();
 
     if (cache->getForwardMapping(stmtNum).empty()) {
-        CFGNode *startNode = stmtNumToNodeMap.at(stmtNum);
-
-        if (startNode == nullptr)
+        if (stmtNumToNodeMap.find(stmtNum) == stmtNumToNodeMap.end())
             return {};
 
+        CFGNode *startNode = stmtNumToNodeMap.at(stmtNum);
         AdaptersUtils::runDownBFS(stmtNum, cache, startNode);
     }
 
@@ -135,11 +132,10 @@ unordered_set<string> AffectsKBAdapter::getAffectingT(const string &stmtNum) {
         buildAffectsGraph();
 
     if (cache->getBackwardMapping(stmtNum).empty()) {
-        CFGNode *endNode = stmtNumToNodeMap.at(stmtNum);
-
-        if (endNode == nullptr)
+        if (stmtNumToNodeMap.find(stmtNum) == stmtNumToNodeMap.end())
             return {};
 
+        CFGNode *endNode = stmtNumToNodeMap.at(stmtNum);
         AdaptersUtils::runUpBFS(stmtNum, cache, endNode);
     }
 
