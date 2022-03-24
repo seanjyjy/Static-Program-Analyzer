@@ -2,6 +2,7 @@
 
 #include "QueryDeclaration.h"
 #include "ClauseVariable.h"
+#include <vector>
 
 using namespace std;
 
@@ -42,12 +43,12 @@ public:
      * @return a human-readable string representation.
      * @throws runtime_error if the given clause type has no string mapping.
      */
-    static string typeToString(clause_type &c);
+    string typeToString() const;
 
     /**
      * Returns a human-readable string representation of the query clause.
      */
-    string toString();
+    string toString() const;
 
     /**
      * Prints the query clause's type and clause variables in a human-readable form.
@@ -64,4 +65,12 @@ public:
     QueryClause(clause_type type, ClauseVariable left, ClauseVariable right);
 
     QueryClause();
+
+    bool hasSynonyms() const;
+
+    vector<QueryDeclaration> getSynonyms() const;
+
+    int hash() const;
+
+    bool equals(QueryClause) const;
 };
