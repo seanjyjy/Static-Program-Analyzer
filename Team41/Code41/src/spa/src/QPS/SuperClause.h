@@ -15,7 +15,7 @@ public:
     const PatternClause& getPatternClause() const;
     const QueryClause& getSuchThatClause() const;
     int hash() const;
-    bool equals(SuperClause) const;
+    bool equals(const SuperClause&) const;
     string toString() const;
     vector<QueryDeclaration> getSynonyms() const;
     bool hasSynonyms() const;

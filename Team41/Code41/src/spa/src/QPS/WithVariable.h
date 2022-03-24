@@ -14,6 +14,7 @@ public:
         PROC_NAME, VAR_NAME, VALUE, STMT_NUM, NONE
     };
 
+    WithVariable();
     WithVariable(int);
     WithVariable(string);
     WithVariable(attributeName, QueryDeclaration);

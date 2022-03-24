@@ -1,5 +1,7 @@
 #include "WithClause.h"
 
+WithClause::WithClause() {}
+
 WithClause::WithClause(WithVariable left, WithVariable right): left(std::move(left)), right(std::move(right)){}
 
 WithVariable WithClause::getLeft() const {

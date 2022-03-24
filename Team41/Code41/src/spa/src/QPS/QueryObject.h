@@ -7,6 +7,7 @@
 #include "PatternClause.h"
 #include "WithClause.h"
 #include "SelectTarget.h"
+#include "SuperClause.h"
 
 using namespace std;
 

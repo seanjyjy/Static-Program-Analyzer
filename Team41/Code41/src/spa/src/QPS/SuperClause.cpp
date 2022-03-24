@@ -1,14 +1,16 @@
 #include "SuperClause.h"
 
-SuperClause::SuperClause(WithClause wc): withClause(wc) {
+#include <utility>
+
+SuperClause::SuperClause(WithClause wc): withClause(std::move(wc)) {
     type = WITH;
 }
 
-SuperClause::SuperClause(PatternClause pc): patternClause(pc) {
+SuperClause::SuperClause(PatternClause pc): patternClause(std::move(pc)) {
     type = PATTERN;
 }
 
-SuperClause::SuperClause(QueryClause qc): suchThatClause(qc) {
+SuperClause::SuperClause(QueryClause qc): suchThatClause(std::move(qc)) {
     type = SUCH_THAT;
 }
 
@@ -34,7 +36,7 @@ int SuperClause::hash() const {
     return 0;
 }
 
-bool SuperClause::equals(SuperClause other) const {
+bool SuperClause::equals(const SuperClause& other) const {
     if (isWithClause() && other.isWithClause())
         return withClause.equals(other.getWithClause());
     if (isPatternClause() && other.isPatternClause())
@@ -61,7 +63,7 @@ vector<QueryDeclaration> SuperClause::getSynonyms() const {
         return patternClause.getSynonyms();
     if(isSuchThatClause())
         return suchThatClause.getSynonyms();
-    return vector<QueryDeclaration>();
+    return {};
 }
 
 bool SuperClause::hasSynonyms() const {

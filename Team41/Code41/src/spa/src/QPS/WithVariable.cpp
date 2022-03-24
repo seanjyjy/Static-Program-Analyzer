@@ -1,5 +1,7 @@
 #include "WithVariable.h"
 
+WithVariable::WithVariable() {}
+
 WithVariable::WithVariable(int integer): integer(integer) {
     type = INTEGER;
 }

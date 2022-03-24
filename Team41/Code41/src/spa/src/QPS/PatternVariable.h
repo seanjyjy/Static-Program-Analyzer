@@ -52,6 +52,8 @@ public:
      */
     PatternVariable(pattern_type type, TNode *miniAST, string expr);
 
+    PatternVariable(pattern_type type, TNode *miniAST);
+
     bool equals(PatternVariable) const;
 
     string getExpr() const;

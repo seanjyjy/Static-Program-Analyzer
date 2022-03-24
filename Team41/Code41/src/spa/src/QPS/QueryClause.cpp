@@ -5,6 +5,8 @@
 QueryClause::QueryClause(clause_type type, ClauseVariable left, ClauseVariable right) :
     left(std::move(left)), right(std::move(right)), type(type) {}
 
+QueryClause::QueryClause() {}
+
 ClauseVariable QueryClause::getLeftClauseVariable() const {
     return left;
 }
