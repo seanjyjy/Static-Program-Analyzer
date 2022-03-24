@@ -334,7 +334,9 @@ bool QueryParser::buildClause(string clauseStr, string left, string right) {
 
         QueryClause *queryClause = new QueryClause(type, lcv, rcv);
         queryObject->getClauses().push_back(*queryClause);
-        queryObject->getSuperClauses().push_back(queryClause);
+
+        SuperClause *super = new SuperClause(*queryClause);
+        queryObject->getSuperClauses().push_back(super);
     } else {
         return false;
     }
@@ -462,7 +464,7 @@ optional<PatternVariable> QueryParser::parsePatternRHS() {
                 return nullopt;
             }
         }
-        return PatternVariable(pt, miniAST);
+        return PatternVariable(pt, miniAST, patternExpr->c_str());
     } else {
         // Invalid RHS
         printf("Syntax Error: No valid pattern expression found in RHS.\n");
@@ -577,7 +579,9 @@ void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string l
 
     PatternClause *pc = new PatternClause(patternSyn, lcv, rhs);
     queryObject->getPatternClauses().push_back(*pc);
-    queryObject->getSuperClauses().push_back(pc);
+
+    SuperClause *super = new SuperClause(*pc);
+    queryObject->getSuperClauses().push_back(super);
 }
 
 QueryParser::QueryParser(string &input) : input(input) {}
@@ -624,7 +628,9 @@ bool QueryParser::parseWithClause() {
     }
     WithClause* wc = new WithClause(left.value(), right.value());
     queryObject->getWithClauses().push_back(*wc);
-    queryObject->getSuperClauses().push_back(wc);
+
+    SuperClause *super = new SuperClause(*wc);
+    queryObject->getSuperClauses().push_back(super);
     return true;
 }
 

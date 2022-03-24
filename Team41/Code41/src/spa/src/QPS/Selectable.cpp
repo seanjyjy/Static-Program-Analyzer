@@ -3,14 +3,14 @@
 Selectable::Selectable(selectableType type, QueryDeclaration synonym, attributeName attr):
     type(type), attr(attr), synonym(synonym) {}
 
-Selectable::attributeName Selectable::getAttr() {
+Selectable::attributeName Selectable::getAttr() const {
     return attr;
 }
 
-Selectable::selectableType Selectable::getType() {
+Selectable::selectableType Selectable::getType() const {
     return type;
 }
 
-QueryDeclaration Selectable::getSynonym() {
+QueryDeclaration Selectable::getSynonym() const {
     return synonym;
 }

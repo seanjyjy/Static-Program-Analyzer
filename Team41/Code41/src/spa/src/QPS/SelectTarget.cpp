@@ -2,11 +2,11 @@
 
 SelectTarget::SelectTarget(targetType type) : type(type) {}
 
-bool SelectTarget::isBoolean() {
+bool SelectTarget::isBoolean() const {
     return type == BOOLEAN;
 }
 
-bool SelectTarget::isTuple() {
+bool SelectTarget::isTuple() const{
     return type == TUPLE;
 }
 
@@ -19,6 +19,6 @@ void SelectTarget::setType(targetType targetType) {
     this->type = targetType;
 }
 
-vector<Selectable> SelectTarget::getSelectable() {
+vector<Selectable> SelectTarget::getSelectable() const {
     return tuple;
 }

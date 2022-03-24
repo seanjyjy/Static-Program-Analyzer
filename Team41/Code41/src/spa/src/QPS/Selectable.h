@@ -11,11 +11,11 @@ public:
         SYNONYM, ATTR_REF
     };
 
-    attributeName getAttr();
+    attributeName getAttr() const;
 
-    selectableType getType();
+    selectableType getType() const;
 
-    QueryDeclaration getSynonym();
+    QueryDeclaration getSynonym() const;
 
     Selectable(selectableType type, QueryDeclaration synonym, attributeName attr);
 

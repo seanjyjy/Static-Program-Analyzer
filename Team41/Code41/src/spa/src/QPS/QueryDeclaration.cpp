@@ -53,3 +53,12 @@ void QueryDeclaration::print() {
     cout << toString() << endl;
 }
 
+bool QueryDeclaration::equals(QueryDeclaration other) const {
+    if (type != other.getType())
+        return false;
+    if (synonym != other.getSynonym())
+        return false;
+
+    return true;
+}
+

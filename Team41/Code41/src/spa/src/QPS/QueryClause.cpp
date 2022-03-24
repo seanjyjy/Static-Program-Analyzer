@@ -5,6 +5,8 @@
 QueryClause::QueryClause(clause_type type, ClauseVariable left, ClauseVariable right) :
     left(std::move(left)), right(std::move(right)), type(type) {}
 
+QueryClause::QueryClause() {}
+
 ClauseVariable QueryClause::getLeftClauseVariable() const {
     return left;
 }
@@ -17,28 +19,28 @@ QueryClause::clause_type QueryClause::getType() const {
     return type;
 }
 
-string QueryClause::typeToString(QueryClause::clause_type &c) {
-    if (c == clause_type::follows) return "Follows";
-    if (c == clause_type::followsT) return "Follows*";
-    if (c == clause_type::parent) return "Parent";
-    if (c == clause_type::parentT) return "Parent*";
-    if (c == clause_type::usesS) return "UsesS";
-    if (c == clause_type::usesP) return "UsesP";
-    if (c == clause_type::modifiesS) return "ModifiesS";
-    if (c == clause_type::modifiesP) return "ModifiesP";
-    if (c == clause_type::calls) return "Calls";
-    if (c == clause_type::callsT) return "Calls*";
-    if (c == clause_type::next) return "Next";
-    if (c == clause_type::nextT) return "Next*";
-    if (c == clause_type::affects) return "Affects";
-    if (c == clause_type::affectsT) return "Affects*";
+string QueryClause::typeToString() const {
+    if (type == clause_type::follows) return "Follows";
+    if (type == clause_type::followsT) return "Follows*";
+    if (type == clause_type::parent) return "Parent";
+    if (type == clause_type::parentT) return "Parent*";
+    if (type == clause_type::usesS) return "UsesS";
+    if (type == clause_type::usesP) return "UsesP";
+    if (type == clause_type::modifiesS) return "ModifiesS";
+    if (type == clause_type::modifiesP) return "ModifiesP";
+    if (type == clause_type::calls) return "Calls";
+    if (type == clause_type::callsT) return "Calls*";
+    if (type == clause_type::next) return "Next";
+    if (type == clause_type::nextT) return "Next*";
+    if (type == clause_type::affects) return "Affects";
+    if (type == clause_type::affectsT) return "Affects*";
     throw runtime_error("no valid string mapping for given clause type");
 }
 
-string QueryClause::toString() {
+string QueryClause::toString() const {
     string lhs = getLeftClauseVariable().getLabel();
     string rhs = getRightClauseVariable().getLabel();
-    return typeToString(type) + "(" + lhs + "," + rhs + ")";
+    return typeToString() + "(" + lhs + "," + rhs + ")";
 }
 
 void QueryClause::print() {
@@ -47,7 +49,7 @@ void QueryClause::print() {
 
 //// For SuperClause
 
-vector<QueryDeclaration> QueryClause::getSynonyms() {
+vector<QueryDeclaration> QueryClause::getSynonyms() const {
     vector<QueryDeclaration> out;
     if (left.isSynonym())
         out.push_back(left.getQueryDeclaration());
@@ -60,69 +62,17 @@ bool QueryClause::hasSynonyms() const {
     return left.isSynonym() || right.isSynonym();
 }
 
-bool QueryClause::isWithClause() const {
-    return false;
+int QueryClause::hash() const {
+    int out = (int)std::hash<string>{}("suchthat");
+    out ^= (int)std::hash<int>{}(type);
+    out ^= (int)std::hash<int>{}(left.getType());
+    out ^= (int)std::hash<int>{}(right.getType());
+    return out;
 }
 
-bool QueryClause::isSuchThatClause() const {
-    return true;
-}
-
-bool QueryClause::isPatternClause() const {
-    return false;
-}
-
-bool QueryClause::isFollows() const {
-    return type == follows;
-}
-
-bool QueryClause::isFollowsT() const {
-    return type == followsT;
-}
-
-bool QueryClause::isParent() const {
-    return type == parent;
-}
-bool QueryClause::isParentT() const {
-    return type == parentT;
-}
-
-bool QueryClause::isUsesS() const {
-    return type == usesS;
-}
-
-bool QueryClause::isUsesP() const {
-    return type == usesP;
-}
-
-bool QueryClause::isModifiesS() const {
-    return type == modifiesS;
-}
-
-bool QueryClause::isModifiesP() const {
-    return type == modifiesP;
-}
-
-bool QueryClause::isCalls() const {
-    return type == calls;
-}
-
-bool QueryClause::isCallsT() const {
-    return type == callsT;
-}
-
-bool QueryClause::isNext() const {
-    return type == next;
-}
-
-bool QueryClause::isNextT() const {
-    return type == nextT;
-}
-
-bool QueryClause::isAffects() const {
-    return type == affects;
-}
-
-bool QueryClause::isAffectsT() const {
-    return type == affectsT;
+bool QueryClause::equals(QueryClause other) const {
+    if (type != other.getType())
+        return false;
+    return left.equals(other.getLeftClauseVariable())
+        && right.equals(other.getRightClauseVariable());
 }

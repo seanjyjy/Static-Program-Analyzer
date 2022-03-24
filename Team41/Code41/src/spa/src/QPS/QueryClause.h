@@ -2,11 +2,11 @@
 
 #include "QueryDeclaration.h"
 #include "ClauseVariable.h"
-#include "SuperClause.h"
+#include <vector>
 
 using namespace std;
 
-class QueryClause :public SuperClause {
+class QueryClause {
 private:
     // The LHS and RHS of a clause in PQL
     ClauseVariable left, right;
@@ -43,12 +43,12 @@ public:
      * @return a human-readable string representation.
      * @throws runtime_error if the given clause type has no string mapping.
      */
-    static string typeToString(clause_type &c);
+    string typeToString() const;
 
     /**
      * Returns a human-readable string representation of the query clause.
      */
-    string toString();
+    string toString() const;
 
     /**
      * Prints the query clause's type and clause variables in a human-readable form.
@@ -64,24 +64,13 @@ public:
      */
     QueryClause(clause_type type, ClauseVariable left, ClauseVariable right);
 
-    // For SuperClause
-    vector<QueryDeclaration> getSynonyms();
+    QueryClause();
+
     bool hasSynonyms() const;
-    bool isWithClause() const;
-    bool isSuchThatClause() const;
-    bool isPatternClause() const;
-    bool isFollows() const;
-    bool isFollowsT() const;
-    bool isParent() const;
-    bool isParentT() const;
-    bool isUsesS() const;
-    bool isUsesP() const;
-    bool isModifiesS() const;
-    bool isModifiesP() const;
-    bool isCalls() const;
-    bool isCallsT() const;
-    bool isNext() const;
-    bool isNextT() const;
-    bool isAffects() const;
-    bool isAffectsT() const;
+
+    vector<QueryDeclaration> getSynonyms() const;
+
+    int hash() const;
+
+    bool equals(QueryClause) const;
 };

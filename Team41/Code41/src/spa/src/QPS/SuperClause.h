@@ -1,28 +1,61 @@
 #pragma once
 
-#include "QueryDeclaration.h"
 #include <vector>
+#include <unordered_set>
+#include "QueryDeclaration.h"
+#include "WithClause.h"
+#include "QueryClause.h"
+#include "PatternClause.h"
+
+using namespace std;
 
 class SuperClause {
 public:
-    virtual vector<QueryDeclaration> getSynonyms() = 0;
-    virtual bool hasSynonyms() const = 0;
-    virtual bool isWithClause() const = 0;
-    virtual bool isSuchThatClause() const = 0;
-    virtual bool isPatternClause() const = 0;
-    virtual bool isFollows() const = 0;
-    virtual bool isFollowsT() const = 0;
-    virtual bool isParent() const = 0;
-    virtual bool isParentT() const = 0;
-    virtual bool isUsesS() const = 0;
-    virtual bool isUsesP() const = 0;
-    virtual bool isModifiesS() const = 0;
-    virtual bool isModifiesP() const = 0;
-    virtual bool isCalls() const = 0;
-    virtual bool isCallsT() const = 0;
-    virtual bool isNext() const = 0;
-    virtual bool isNextT() const = 0;
-    virtual bool isAffects() const = 0;
-    virtual bool isAffectsT() const = 0;
+    SuperClause(WithClause);
+    SuperClause(PatternClause);
+    SuperClause(QueryClause);
+    const WithClause& getWithClause() const;
+    const PatternClause& getPatternClause() const;
+    const QueryClause& getSuchThatClause() const;
+    bool equals(const SuperClause&) const;
+    int hash() const;
+    string toString() const;
+    vector<QueryDeclaration> getSynonyms() const;
+    bool hasSynonyms() const;
+    bool isWithClause() const;
+    bool isSuchThatClause() const;
+    bool isPatternClause() const;
+    bool isFollows() const;
+    bool isFollowsT() const;
+    bool isParent() const;
+    bool isParentT() const;
+    bool isUsesS() const;
+    bool isUsesP() const;
+    bool isModifiesS() const;
+    bool isModifiesP() const;
+    bool isCalls() const;
+    bool isCallsT() const;
+    bool isNext() const;
+    bool isNextT() const;
+    bool isAffects() const;
+    bool isAffectsT() const;
+    bool operator==(const SuperClause &other) const {
+        return this->equals(other);
+    }
+private:
+    enum clause_type {
+        SUCH_THAT, WITH, PATTERN
+    };
+    clause_type type;
+    WithClause withClause;
+    QueryClause suchThatClause;
+    PatternClause patternClause;
+};
+
+template<>
+struct hash<SuperClause> {
+    std::size_t operator()(SuperClause const& g) const noexcept {
+        return g.hash();
+    }
 };
 
