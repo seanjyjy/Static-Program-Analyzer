@@ -92,7 +92,7 @@ vector<pair<string, string>> AffectsKBAdapter::getDirectAffectsAll() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
-    if ((int) affectingAffectedPairs.size() == 0)
+    if (affectingAffectedPairs.empty())
         buildAllAffectsMapping();
 
     return affectingAffectedPairs;
@@ -169,7 +169,7 @@ vector<pair<string, string>> AffectsKBAdapter::getAffectsTAll() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
-    if ((int) affectingAffectedTPairs.size() == 0)
+    if (affectingAffectedTPairs.empty())
         buildAllAffectsMapping();
 
     return affectingAffectedTPairs;
