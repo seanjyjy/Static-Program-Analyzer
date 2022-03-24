@@ -5,7 +5,7 @@
 class PatternEvaluator : public Evaluator {
 public:
     explicit PatternEvaluator(PKBClient *pkb);
-    Table* evaluate(PatternClause *clause);
+    Table* evaluate(const PatternClause &clause);
 
     Table* evaluateWildCardWildCard(QueryDeclaration patternSynonym);
 
