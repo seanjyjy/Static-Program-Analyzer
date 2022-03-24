@@ -263,11 +263,8 @@ void AffectsKBAdapter::bfsUpSingle(CFGNode *start, const string &affectedVar, un
             continue;
         }
 
-        for (auto parent: parents) {
-            printf("current stmtNum: %s pushing stmtNum: %s\n", stmtNum.c_str(), parent->getStmtNum().c_str());
+        for (auto parent: parents)
             queue.push(parent);
-        }
-
     }
 }
 
