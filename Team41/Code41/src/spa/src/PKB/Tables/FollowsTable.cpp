@@ -8,7 +8,6 @@ FollowsTable::FollowsTable() : followsRelation("Follows"), followsTRelation("Fol
 void FollowsTable::setFollows(const string &follower, const string &followed) {
     // NOTE: does not check if follower is a numeric string
     if (follower == followed) { throw domain_error("[PKB][FollowsTable] Statements cannot follow self"); }
-    if (isFollows(follower, followed)) { return; }
 
     followsRelation.addMapping(follower, followed);
 }
@@ -16,7 +15,6 @@ void FollowsTable::setFollows(const string &follower, const string &followed) {
 void FollowsTable::setFollowsT(const string &follower, const string &followed) {
     // NOTE: does not check if follower is a numeric string
     if (follower == followed) { throw domain_error("[PKB][FollowsTable] Statements cannot followT self"); }
-    if (isFollowsT(follower, followed)) { return; }
 
     followsTRelation.addMapping(follower, followed);
 }
