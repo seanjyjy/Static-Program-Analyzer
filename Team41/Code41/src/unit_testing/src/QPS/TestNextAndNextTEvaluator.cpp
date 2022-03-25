@@ -19,8 +19,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
     };
 
     string startStmt = "1";
-    string endStmt = "5";
-    CFGBuilder cfgBuilder = CFGBuilder(stmtNextMap, {startStmt, endStmt});
+    CFGBuilder cfgBuilder = CFGBuilder(stmtNextMap, {startStmt});
     cfgBuilder.build();
     CFGNode *rootNode = cfgBuilder.getCFG();
     unordered_map<string, CFGNode *> stmtToCFG = cfgBuilder.getStmtNumToNodeMap();

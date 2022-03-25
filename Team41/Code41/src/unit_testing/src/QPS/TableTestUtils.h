@@ -33,8 +33,30 @@ public:
         }
 
         // remove duplicate rows
-        actualRows.erase( unique( actualRows.begin(), actualRows.end() ), actualRows.end() );
+        actualRows.erase(unique(actualRows.begin(), actualRows.end()), actualRows.end());
 
         return actualRows == expectedRows;
+    }
+
+    static void
+    registerUsesModify(PKBManager *client, string proc, string stmtNum, vector<string> lhs, vector<string> rhs) {
+        for (string var: lhs) {
+            client->registerModifiesS(stmtNum, var);
+            client->registerModifiesP(proc, var);
+        }
+        for (string var: rhs) {
+            client->registerUsesS(stmtNum, var);
+            client->registerUsesP(proc, var);
+        }
+    }
+
+    static void registerCalls(PKBManager *client, string stmtNum, string proc) {
+        client->registerCallStmt(stmtNum, proc);
+        for (string var: client->getUsesByProc(proc)) {
+            client->registerUsesS(stmtNum, var);
+        }
+        for (string var: client->getModifiesByProc(proc)) {
+            client->registerModifiesS(stmtNum, var);
+        }
     }
 };
