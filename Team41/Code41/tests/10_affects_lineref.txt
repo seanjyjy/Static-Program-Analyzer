@@ -64,7 +64,7 @@
 40.    a = d + f;
 41.    c = a;
 42.    call assignLoop;
-43.    d = f;
+43.    d = a;
 --.}
 
 --. procedure assignLoop {
