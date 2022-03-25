@@ -1,6 +1,9 @@
 #include "AffectsKBAdapter.h"
 
-AffectsKBAdapter::AffectsKBAdapter(PKBClient *pkb) : pkb(pkb) { this->cache = new Cache(); }
+AffectsKBAdapter::AffectsKBAdapter(PKBClient *pkb) : pkb(pkb) {
+    this->cache = new Cache();
+    stmtNumToNodeMap.insert({ROOT_CFG,  new CFGNode(ROOT_CFG)});
+}
 
 AffectsKBAdapter::~AffectsKBAdapter() { delete cache; }
 
@@ -96,8 +99,15 @@ vector<pair<string, string>> AffectsKBAdapter::getDirectAffectsAll() {
 }
 
 bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2) {
-    if (!hasAffectsGraph())
-        buildAffectsGraph();
+    if (!hasAffectsGraph(stmtNum1) && !hasAffectsGraph(stmtNum2)) {
+        CFGNode* procNode1 = getStartingProcNode(stmtNum1);
+        CFGNode* procNode2 = getStartingProcNode(stmtNum2);
+        if (procNode1 != procNode2) {
+            // different procedure;
+            return false;
+        }
+        buildAffectsGraphForProc(procNode1);
+    }
 
     unordered_set<string> backwardCache = cache->getBackwardMapping(stmtNum2);
     if (!backwardCache.empty())
@@ -119,8 +129,9 @@ bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2
 }
 
 unordered_set<string> AffectsKBAdapter::getAffectsTBy(const string &stmtNum) {
-    if (!hasAffectsGraph())
-        buildAffectsGraph();
+    if (!hasAffectsGraph(stmtNum)) {
+        buildAffectsGraphForProc(getStartingProcNode(stmtNum));
+    }
 
     if (cache->getForwardMapping(stmtNum).empty()) {
         if (stmtNumToNodeMap.find(stmtNum) == stmtNumToNodeMap.end())
@@ -134,8 +145,9 @@ unordered_set<string> AffectsKBAdapter::getAffectsTBy(const string &stmtNum) {
 }
 
 unordered_set<string> AffectsKBAdapter::getAffectingT(const string &stmtNum) {
-    if (!hasAffectsGraph())
-        buildAffectsGraph();
+    if (!hasAffectsGraph(stmtNum)) {
+        buildAffectsGraphForProc(getStartingProcNode(stmtNum));
+    }
 
     if (cache->getBackwardMapping(stmtNum).empty()) {
         if (stmtNumToNodeMap.find(stmtNum) == stmtNumToNodeMap.end())
@@ -239,14 +251,14 @@ void AffectsKBAdapter::bfsDown(CFGNode *start, const string &modifiedVar, unorde
 
 void AffectsKBAdapter::bfsUpSingle(CFGNode *start, const string &affectedVar, unordered_set<string> &affecting) {
     queue<CFGNode *> queue;
-    for (auto parent : start -> getParent()) {
+    for (auto parent: start->getParent()) {
         queue.push(parent);
     }
 
     unordered_set<string> visited;
 
     while (!queue.empty()) {
-        CFGNode* curr = queue.front();
+        CFGNode *curr = queue.front();
         string stmtNum = curr->getStmtNum();
         vector<CFGNode *> parents = curr->getParent();
         queue.pop();
@@ -270,23 +282,40 @@ void AffectsKBAdapter::bfsUpSingle(CFGNode *start, const string &affectedVar, un
 }
 
 void AffectsKBAdapter::bfsUp(CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting) {
-    for (auto& affectedVar : affectedVars)
+    for (auto &affectedVar: affectedVars)
         bfsUpSingle(start, affectedVar, affecting);
 }
 
 //================================= Affects Graph ==========================================
 
+bool AffectsKBAdapter::hasAffectsGraph(const string &stmt) {
+    return stmtNumToNodeMap.find(stmt) != stmtNumToNodeMap.end();
+}
+
 bool AffectsKBAdapter::hasAffectsGraph() {
-    return !stmtNumToNodeMap.empty();
+    return isAffectsGraphBuilt;
+}
+
+CFGNode* AffectsKBAdapter::getStartingProcNode(const string &stmt) {
+    CFGNode* startNode = nullptr;
+    int stmtNum = stoi(stmt);
+    for (auto child: pkb->getRootCFG()->getChildren()) {
+        int startingStmt = stoi(child->getStmtNum());
+        if (startingStmt > stmtNum) {
+            break;
+        }
+        startNode = child;
+    }
+    return startNode;
 }
 
 void AffectsKBAdapter::buildAffectsGraph() {
-    stmtNumToNodeMap.insert({ROOT_CFG,  new CFGNode(ROOT_CFG)});
-
     CFGNode *root = pkb->getRootCFG();
 
     for (auto child: root->getChildren())
         buildAffectsGraphForProc(child);
+
+    isAffectsGraphBuilt = true;
 }
 
 void AffectsKBAdapter::addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ) {
@@ -366,24 +395,3 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
         visited.clear();
     }
 }
-//
-//void AffectsKBAdapter::buildAffectsMapping(const string &stmtNum, CFGNode *node, unordered_set<CFGNode *> visited) {
-//    affectingAffectedTPairs.emplace_back(stmtNum, node->getStmtNum());
-////    AdaptersUtils::addFullMapping(stmtNum, node->getStmtNum(), cache);
-//    for (auto child: node->getChildren()) {
-//        if (visited.find(child) != visited.end()) continue;
-//        visited.insert(child);
-//        buildAffectsMapping(stmtNum, child, visited);
-//        visited.erase(child);
-//    }
-//}
-//
-//void AffectsKBAdapter::buildAllAffectsMapping() {
-//    unordered_set<CFGNode *> visited;
-//    for (auto [stmtNum, node]: stmtNumToNodeMap) {
-//        for (auto child: node->getChildren()) {
-//            affectingAffectedPairs.emplace_back(stmtNum, child->getStmtNum());
-//            buildAffectsMapping(stmtNum, child, visited);
-//        }
-//    }
-//}

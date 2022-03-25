@@ -13,6 +13,7 @@ private:
     const string ROOT_CFG = "0";
     PKBClient *pkb;
     Cache *cache;
+    bool isAffectsGraphBuilt = false;
     unordered_map<string, CFGNode *> stmtNumToNodeMap;
     unordered_set<string> affectings;
     unordered_set<string> affecteds;
@@ -26,6 +27,7 @@ private:
     void bfsUp(CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting);
     void bfsUpSingle(CFGNode *start, const string &affectedVar, unordered_set<string> &affecting);
 
+    bool hasAffectsGraph(const string& stmt);
     bool hasAffectsGraph();
 
     void addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ);
@@ -64,4 +66,6 @@ public:
     unordered_set<string> getAllStmtAffectedTByOther();
 
     vector<pair<string, string>> getAffectsTAll();
+
+    CFGNode * getStartingProcNode(const string &stmt);
 };
