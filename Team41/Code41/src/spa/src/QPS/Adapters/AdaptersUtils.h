@@ -16,6 +16,8 @@ private:
                        Cache *cache, CFGNode *startNode);
 
 public:
+    static void addFullMapping(const string &start, const string &end, Cache *cache);
+
     static void runBoolBFS(const string &start, const string &end, Cache *cache, CFGNode *node);
 
     static void runDownBFS(const string &stmtNum, Cache *cache, CFGNode *node);

@@ -45,6 +45,6 @@ Table *NextTEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
 }
 
 Table *NextTEvaluator::evaluateWildCardWildCard() {
-    vector<pair<string, string>> listOfStmts = nextKBAdapter->getAllNextT();
+    vector<pair<string, string>> listOfStmts = nextKBAdapter->getAllNext();
     return buildBooleanTable(!listOfStmts.empty());
 }

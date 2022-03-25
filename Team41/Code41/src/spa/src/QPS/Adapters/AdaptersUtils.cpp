@@ -30,6 +30,14 @@ void AdaptersUtils::runBFS(bool isForward, const CacheCallback &cacheAndContinue
     }
 }
 
+void AdaptersUtils::addFullMapping(const string &start, const string &end, Cache *cache) {
+    cache->registerBooleanMapping(start, end);
+    // Add forward Mapping
+    cache->registerForwardMapping(start, end);
+    // Add backwardMapping
+    cache->registerBackwardMapping(end, start);
+}
+
 void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache *cache, CFGNode *node) {
 
     CacheCallback saveToCache = [start](const string &next, Cache *cache) {

@@ -362,6 +362,7 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
 
 void AffectsKBAdapter::buildAffectsMapping(const string &stmtNum, CFGNode *node, unordered_set<CFGNode *> visited) {
     affectingAffectedTPairs.emplace_back(stmtNum, node->getStmtNum());
+    AdaptersUtils::addFullMapping(stmtNum, node->getStmtNum(), cache);
     for (auto child: node->getChildren()) {
         if (visited.find(child) != visited.end()) continue;
         visited.insert(child);

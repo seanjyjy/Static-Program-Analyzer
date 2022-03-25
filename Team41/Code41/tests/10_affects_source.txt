@@ -64,7 +64,7 @@ procedure assignInterweaveWithCallsAndPrint {
     a = d + f;
     c = a;
     call assignLoop;
-    d = f;
+    d = a;
 }
 
 procedure assignLoop {
