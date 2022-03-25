@@ -16,8 +16,6 @@ private:
 
     void fullBFS();
 
-    void addFullMapping(const string &start, const string &end);
-
 public:
     explicit NextKBAdapter(PKBClient *pkb);
 

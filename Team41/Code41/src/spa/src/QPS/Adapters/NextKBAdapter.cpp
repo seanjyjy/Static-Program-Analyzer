@@ -30,7 +30,7 @@ void NextKBAdapter::fullBFS() {
         for (auto &next: children) {
             string nextStmtNum = next->getStmtNum();
             cache->addAllMappingPair({currStmtNum, nextStmtNum});
-            addFullMapping(currStmtNum, nextStmtNum);
+            AdaptersUtils::addFullMapping(currStmtNum, nextStmtNum, cache);
             bfsQueue.push(next);
 
             if (mainVisited.find(nextStmtNum) == mainVisited.end()) {
@@ -50,7 +50,7 @@ void NextKBAdapter::fullBFS() {
 
                 if (bfsVisited.find(nextStmtNum) == bfsVisited.end()) {
                     cache->addAllMappingPair({currStmtNum, nextStmtNum});
-                    addFullMapping(currStmtNum, nextStmtNum);
+                    AdaptersUtils::addFullMapping(currStmtNum, nextStmtNum, cache);
                     bfsQueue.push(next);
                 }
             }
@@ -58,14 +58,6 @@ void NextKBAdapter::fullBFS() {
 
         bfsVisited.clear();
     }
-}
-
-void NextKBAdapter::addFullMapping(const string &start, const string &end) {
-    cache->registerBooleanMapping(start, end);
-    // Add forward Mapping
-    cache->registerForwardMapping(start, end);
-    // Add backwardMapping
-    cache->registerBackwardMapping(end, start);
 }
 
 //================================== Public =============================================
