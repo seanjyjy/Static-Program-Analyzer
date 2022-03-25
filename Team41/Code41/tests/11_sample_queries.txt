@@ -39,12 +39,12 @@ Select p such that Calls*("Example", p)
 p, q
 5000
 9 - comment
-prog_line n;
+stmt n;
 Select n such that Next(4, n)
 5, 12
 5000
 10 - comment
-prog_line n;
+stmt n;
 Select n such that Next*(n, 4)
 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
 5000
@@ -94,12 +94,12 @@ Select ifs such that Follows*(a1, ifs) and Follows*(ifs, a2) and Modifies(ifs, v
 6
 5000
 20 - comment
-prog_line n; stmt s;
+stmt n; stmt s;
 Select s such that Next*(16, n) and Parent*(s, n)
 13, 14
 5000
 21 - comment
-prog_line n; assign a;
+stmt n; assign a;
 Select a such that Affects*(a, n) and Next*(13, n)
 17, 18, 19, 20
 5000
@@ -119,7 +119,7 @@ Select v pattern a1(v, _) such that Affects*(a1, a2) and Uses(a2, v)
 i, x, z
 5000
 25 - comment
-prog_line n1, n2; variable v; call c;
+stmt n1, n2; variable v; call c;
 Select c such that Next*(n1, n2) and Modifies(n1, v) and Uses(n2, v) and Modifies(c, v)
 10, 12, 16
 5000
