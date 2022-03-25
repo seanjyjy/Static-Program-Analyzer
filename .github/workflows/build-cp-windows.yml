@@ -1,6 +1,7 @@
 name: CI for Cmake Project - Windows
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
