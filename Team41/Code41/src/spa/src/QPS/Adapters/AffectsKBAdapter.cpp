@@ -312,9 +312,11 @@ CFGNode* AffectsKBAdapter::getStartingProcNode(const string &stmt) {
 void AffectsKBAdapter::buildAffectsGraph() {
     CFGNode *root = pkb->getRootCFG();
 
-    for (auto child: root->getChildren())
-        buildAffectsGraphForProc(child);
-
+    for (auto child: root->getChildren()) {
+        if (!hasAffectsGraph(child->getStmtNum())) {
+            buildAffectsGraphForProc(child);
+        }
+    }
     isAffectsGraphBuilt = true;
 }
 
