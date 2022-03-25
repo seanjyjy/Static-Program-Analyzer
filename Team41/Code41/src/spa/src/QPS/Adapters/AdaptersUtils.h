@@ -15,8 +15,6 @@ private:
     static void runBFS(bool isForward, const CacheCallback &cacheAndContinue, const TerminateCheck &canTerminate, CFGNode *startNode);
 
 public:
-    static void addFullMapping(const string &start, const string &end, Cache *cache);
-
     static void runBoolBFS(const string &start, const string &end, Cache *cache, CFGNode *node);
 
     static void runDownBFS(const string &stmtNum, Cache *cache, CFGNode *node);
@@ -24,4 +22,6 @@ public:
     static void runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node);
 
     static void fullBFS(Cache *cache, CFGNode *node);
+
+    static CFGNode *getStartingParentNode(CFGNode *rootCFG, const string &stmt);
 };

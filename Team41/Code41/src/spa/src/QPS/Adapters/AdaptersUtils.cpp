@@ -116,7 +116,6 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
         CFGNode *curr = mainQ.front();
         vector<CFGNode *> children = curr->getChildren();
         string currStmtNum = curr->getStmtNum();
-        mainQ.pop();
 
         CacheCallback saveToCache = [currStmtNum, &cache](const string &next) {
             cache->addAllMappingPair({currStmtNum, next});
@@ -139,5 +138,19 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
         };
 
         runBFS(true, saveToCache, canEnd, curr);
+        mainQ.pop();
     }
+}
+
+CFGNode* AdaptersUtils::getStartingParentNode(CFGNode* rootCFG, const string &stmt) {
+    CFGNode* startNode = nullptr;
+    int stmtNum = stoi(stmt);
+    for (auto child: rootCFG->getChildren()) {
+        int startingStmt = stoi(child->getStmtNum());
+        if (startingStmt > stmtNum) {
+            break;
+        }
+        startNode = child;
+    }
+    return startNode;
 }

@@ -28,7 +28,7 @@ private:
     void bfsUpSingle(CFGNode *start, const string &affectedVar, unordered_set<string> &affecting);
 
     bool hasAffectsGraph(const string& stmt);
-    bool hasAffectsGraph();
+    bool hasAffectsGraph() const;
 
     void addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ);
 
@@ -66,6 +66,4 @@ public:
     unordered_set<string> getAllStmtAffectedTByOther();
 
     vector<pair<string, string>> getAffectsTAll();
-
-    CFGNode * getStartingProcNode(const string &stmt);
 };

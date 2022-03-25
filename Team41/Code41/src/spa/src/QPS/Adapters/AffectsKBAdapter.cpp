@@ -100,13 +100,8 @@ vector<pair<string, string>> AffectsKBAdapter::getDirectAffectsAll() {
 
 bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2) {
     if (!hasAffectsGraph(stmtNum1) && !hasAffectsGraph(stmtNum2)) {
-        CFGNode* procNode1 = getStartingProcNode(stmtNum1);
-        CFGNode* procNode2 = getStartingProcNode(stmtNum2);
-        if (procNode1 != procNode2) {
-            // different procedure;
-            return false;
-        }
-        buildAffectsGraphForProc(procNode1);
+        CFGNode *firstNode = AdaptersUtils::getStartingParentNode(pkb->getRootCFG(), stmtNum1);
+        buildAffectsGraphForProc(firstNode);
     }
 
     unordered_set<string> backwardCache = cache->getBackwardMapping(stmtNum2);
@@ -130,7 +125,8 @@ bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2
 
 unordered_set<string> AffectsKBAdapter::getAffectsTBy(const string &stmtNum) {
     if (!hasAffectsGraph(stmtNum)) {
-        buildAffectsGraphForProc(getStartingProcNode(stmtNum));
+        CFGNode *firstNode = AdaptersUtils::getStartingParentNode(pkb->getRootCFG(), stmtNum);
+        buildAffectsGraphForProc(firstNode);
     }
 
     if (cache->getForwardMapping(stmtNum).empty()) {
@@ -146,7 +142,8 @@ unordered_set<string> AffectsKBAdapter::getAffectsTBy(const string &stmtNum) {
 
 unordered_set<string> AffectsKBAdapter::getAffectingT(const string &stmtNum) {
     if (!hasAffectsGraph(stmtNum)) {
-        buildAffectsGraphForProc(getStartingProcNode(stmtNum));
+        CFGNode *firstNode = AdaptersUtils::getStartingParentNode(pkb->getRootCFG(), stmtNum);
+        buildAffectsGraphForProc(firstNode);
     }
 
     if (cache->getBackwardMapping(stmtNum).empty()) {
@@ -292,21 +289,8 @@ bool AffectsKBAdapter::hasAffectsGraph(const string &stmt) {
     return stmtNumToNodeMap.find(stmt) != stmtNumToNodeMap.end();
 }
 
-bool AffectsKBAdapter::hasAffectsGraph() {
+bool AffectsKBAdapter::hasAffectsGraph() const {
     return isAffectsGraphBuilt;
-}
-
-CFGNode* AffectsKBAdapter::getStartingProcNode(const string &stmt) {
-    CFGNode* startNode = nullptr;
-    int stmtNum = stoi(stmt);
-    for (auto child: pkb->getRootCFG()->getChildren()) {
-        int startingStmt = stoi(child->getStmtNum());
-        if (startingStmt > stmtNum) {
-            break;
-        }
-        startNode = child;
-    }
-    return startNode;
 }
 
 void AffectsKBAdapter::buildAffectsGraph() {
