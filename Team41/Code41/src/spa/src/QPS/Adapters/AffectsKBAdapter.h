@@ -10,6 +10,7 @@
 
 class AffectsKBAdapter {
 private:
+    const string ROOT_CFG = "0";
     PKBClient *pkb;
     Cache *cache;
     unordered_map<string, CFGNode *> stmtNumToNodeMap;
@@ -32,10 +33,6 @@ private:
     void buildAffectsGraphForProc(CFGNode *start);
 
     void buildAffectsGraph();
-
-    void buildAllAffectsMapping();
-
-    void buildAffectsMapping(const string &stmtNum, CFGNode *node, unordered_set<CFGNode *> visited);
 
     bool isModifyStmt(const string &stmtNum);
 
@@ -67,8 +64,4 @@ public:
     unordered_set<string> getAllStmtAffectedTByOther();
 
     vector<pair<string, string>> getAffectsTAll();
-
-    void printCFG(CFGNode *, unordered_set<CFGNode *>);
-
-    void printAffectsGraph();
 };

@@ -92,9 +92,6 @@ vector<pair<string, string>> AffectsKBAdapter::getDirectAffectsAll() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
-    if (affectingAffectedPairs.empty())
-        buildAllAffectsMapping();
-
     return affectingAffectedPairs;
 }
 
@@ -169,11 +166,15 @@ vector<pair<string, string>> AffectsKBAdapter::getAffectsTAll() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
-    if (affectingAffectedTPairs.empty())
-        buildAllAffectsMapping();
+    if (cache->getAllMapping().empty()) {
+        CFGNode *start = stmtNumToNodeMap.at(ROOT_CFG);
+        AdaptersUtils::fullBFS(cache, start);
+    }
 
-    return affectingAffectedTPairs;
+    return cache->getAllMapping();
 }
+
+//================================= Algo ==========================================
 
 bool AffectsKBAdapter::bfsBool(CFGNode *start, const string &modifiedVar, const string &end) {
     queue<CFGNode *> queue;
@@ -273,11 +274,15 @@ void AffectsKBAdapter::bfsUp(CFGNode *start, unordered_set<string> &affectedVars
         bfsUpSingle(start, affectedVar, affecting);
 }
 
+//================================= Affects Graph ==========================================
+
 bool AffectsKBAdapter::hasAffectsGraph() {
     return !stmtNumToNodeMap.empty();
 }
 
 void AffectsKBAdapter::buildAffectsGraph() {
+    stmtNumToNodeMap.insert({ROOT_CFG,  new CFGNode(ROOT_CFG)});
+
     CFGNode *root = pkb->getRootCFG();
 
     for (auto child: root->getChildren())
@@ -296,6 +301,7 @@ void AffectsKBAdapter::addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ) {
             CFGNode *affectNode = new CFGNode(next->getStmtNum());
             mainQ.push(affectNode);
             stmtNumToNodeMap.insert({next->getStmtNum(), affectNode});
+            stmtNumToNodeMap.at(ROOT_CFG)->addChild(affectNode);
         }
 
         for (auto child: next->getChildren()) {
@@ -339,6 +345,7 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
                 CFGNode *childNode = stmtNumToNodeMap.at(stmtNum);
                 affectingNode->addChild(childNode);
                 childNode->addParent(affectingNode);
+                affectingAffectedPairs.emplace_back(affectingStmtNum, stmtNum);
                 affectings.insert(affectingStmtNum);
                 affecteds.insert(stmtNum);
             }
@@ -359,24 +366,24 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
         visited.clear();
     }
 }
-
-void AffectsKBAdapter::buildAffectsMapping(const string &stmtNum, CFGNode *node, unordered_set<CFGNode *> visited) {
-    affectingAffectedTPairs.emplace_back(stmtNum, node->getStmtNum());
-//    AdaptersUtils::addFullMapping(stmtNum, node->getStmtNum(), cache);
-    for (auto child: node->getChildren()) {
-        if (visited.find(child) != visited.end()) continue;
-        visited.insert(child);
-        buildAffectsMapping(stmtNum, child, visited);
-        visited.erase(child);
-    }
-}
-
-void AffectsKBAdapter::buildAllAffectsMapping() {
-    unordered_set<CFGNode *> visited;
-    for (auto [stmtNum, node]: stmtNumToNodeMap) {
-        for (auto child: node->getChildren()) {
-            affectingAffectedPairs.emplace_back(stmtNum, child->getStmtNum());
-            buildAffectsMapping(stmtNum, child, visited);
-        }
-    }
-}
+//
+//void AffectsKBAdapter::buildAffectsMapping(const string &stmtNum, CFGNode *node, unordered_set<CFGNode *> visited) {
+//    affectingAffectedTPairs.emplace_back(stmtNum, node->getStmtNum());
+////    AdaptersUtils::addFullMapping(stmtNum, node->getStmtNum(), cache);
+//    for (auto child: node->getChildren()) {
+//        if (visited.find(child) != visited.end()) continue;
+//        visited.insert(child);
+//        buildAffectsMapping(stmtNum, child, visited);
+//        visited.erase(child);
+//    }
+//}
+//
+//void AffectsKBAdapter::buildAllAffectsMapping() {
+//    unordered_set<CFGNode *> visited;
+//    for (auto [stmtNum, node]: stmtNumToNodeMap) {
+//        for (auto child: node->getChildren()) {
+//            affectingAffectedPairs.emplace_back(stmtNum, child->getStmtNum());
+//            buildAffectsMapping(stmtNum, child, visited);
+//        }
+//    }
+//}
