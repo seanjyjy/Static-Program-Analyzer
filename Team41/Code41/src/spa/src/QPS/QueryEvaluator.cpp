@@ -43,13 +43,12 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
             }
         }
 
-        for (const auto &declaration: queryObject->getDeclarations()) {
+        for (const auto &selected: queryObject->getSelectables()) {
             Header header = resultTable->getHeader();
-            if (header.find(declaration.synonym) != header.end()) {
+            if (header.find(selected.getSynonym().getSynonym()) != header.end())
                 continue;
-            }
 
-            Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(declaration);
+            Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(selected.getSynonym());
 
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
@@ -69,11 +68,9 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
             }
         }
     } catch (SemanticException &error) {
-        cout << error.what() << endl;
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     } catch (const runtime_error &error) {
-        cout << error.what() << endl;
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     }
@@ -245,11 +242,9 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
             }
         }
     } catch (SemanticException& error) {
-        cout << error.what() << endl;
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     } catch (const runtime_error& error) {
-        cout << error.what() << endl;
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     }
