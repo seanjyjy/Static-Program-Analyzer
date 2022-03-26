@@ -609,6 +609,289 @@ TEST_CASE("Query Optimizer: autotester 01_uses_modify") {
     }
 }
 
+TEST_CASE("Query Optimizer: autotester 05_uses_modify_pattern") {
+    string simple = " procedure wH5TH15m0dS0Pa1nFu1 {x = (NevERGONNA12GiveYouUP12-10*(37 - (25 + thisIs100PercentTheStartOfT24134QSDAFAF)) + 50 / 20);print thisIs100PercentTheStartOfT24134QSDAFAF;\n"
+                    "    if ((seeThisRub115h == d1Ngd1Ngd1Ng) || ((elephant == FATBOM123BOM) && (d1Ngd1Ngd1Ng != z1b3sw))) then {\n"
+                    "        print\n"
+                    "        d1Ngd1Ngd1Ng;\n"
+                    "        if (\n"
+                    "        seeThisRub115h\n"
+                    "        ==\n"
+                    "        z1b3sw\n"
+                    "        )\n"
+                    "        then { while ((b == d1Ngd1Ngd1Ng) && (T0ngT0ngQ1ANG == NevERGONNA12GiveYouUP12)) {\n"
+                    "x               =                x     ; print i; if\n"
+                    "((d1Ngd1Ngd1Ng ==                          NevERGONNA12GiveYouUP12        )                 ||\n"
+                    "(g == b))\n"
+                    "then {T0ngT0ngQ1ANG=h+y+                 2+((x))*            g         ;               h = (77 -\n"
+                    "(g  +\n"
+                    "y)) * (g\n"
+                    "* (((g + g)\n"
+                    "+ (g * y)\n"
+                    ")\n"
+                    ")\n"
+                    ")\n"
+                    ";\n"
+                    "                } else {h = abcdef;}print l;}if(d1Ngd1Ngd1Ng==b)then{print thisIs100PercentTheStartOfT24134QSDAFAF;while(jb==noChance){cry=cry+1;}\n"
+                    "                thisIs100PercentTheStartOfT24134QSDAFAF = b;\n"
+                    "} else {\n"
+                    "while (zz == tc) {zz=2+zz*h+y;}\n"
+                    "print\n"
+                    "ab; read\n"
+                    "db;\n"
+                    "ab=                     db;while\n"
+                    "(ab\n"
+                    "==\n"
+                    "aj) {tj = (abcdef\n"
+                    "+ abcdef\n"
+                    ") -\n"
+                    "abcdef\n"
+                    ";\n"
+                    "                }\n"
+                    "}print\n"
+                    "T0ngT0ngQ1ANG;while (ab == ac) {\n"
+                    "ab\n"
+                    "=\n"
+                    "1\n"
+                    ";\n"
+                    "print\n"
+                    "ac\n"
+                    ";\n"
+                    "}\n"
+                    "}\n"
+                    "else\n"
+                    "{print sadness;while (iAmSad123 != youAreSad321) {weCry =\n"
+                    "youCry + weCry\n"
+                    ";\n"
+                    "print cry;if (youWeep\n"
+                    "== iWeep) then {weAllWeep=\n"
+                    "1\n"
+                    ";print cry;}\n"
+                    "else\n"
+                    "{print noCry\n"
+                    ";theyAllHeartLess = bastards\n"
+                    "+ heartless\n"
+                    ";\n"
+                    "}\n"
+                    "}\n"
+                    "read weAllCry;\n"
+                    "}\n"
+                    "} else {while (else ==\n"
+                    "sad) {then = lol;print whyAreKeyWordsEvenUsed;}if (youReachedHere == youPsycho) then {enjoyThisReallyFunLongText=kidding+(g+g);okTimeToEndSoon=yesPls+g+g;} else {\n"
+                    "PLSEND =\n"
+                    "OK\n"
+                    ";}while\n"
+                    "(neverGonnaLetThisEnd\n"
+                    "==\n"
+                    "sadness) {print iAmSad123;print youAreSad321;bastards = VERYTRUE;read helloWord;while (youReachedHere == youPsycho){then=youAreSad321;read moreToK1M2S;}}}}";
+
+    // parse program
+    Parser p;
+    TNode *ast(p.parseProgram(simple));
+
+    // extract relations into pkb
+    PKBManager pkbManager = PKBManager();
+    DesignExtractor designExtractor(ast, &pkbManager);
+    designExtractor.extractDesign();
+
+    SECTION("149 - Modifies Synonym WildCard Pattern Pair5") {
+        string query = "assign a;\n"
+                       "Select a such that Modifies(a, _) pattern a(\"ab\", \"1\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("148 - Modifies Synonym WildCard Pattern Pair4") {
+        string query = "stmt s; assign a;\n"
+                       "Select s such that Modifies(s, _) pattern a(\"okTimeToEndSoon\", \"yesPls + (g + g)\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("147 - Modifies Synonym WildCard Pattern Pair3") {
+        string query = "if ifs; assign a;\n"
+                       "Select ifs such that Modifies(ifs, _) pattern a(\"enjoyThisReallyFunLongText\", \"(kidding + g) + g\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("146 - Modifies Synonym WildCard Pattern Pair2") {
+        string query = "while w; assign a;\n"
+                       "Select w such that Modifies(w, _) pattern a(\"theyAllHeartLess\", \"bastards + heartless\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("145 - Modifies Synonym WildCard Pattern Pair1") {
+        string query = "read re; assign a;\n"
+                       "Select re such that Modifies(re, _) pattern a(\"x\", \"x\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("144 - Modifies Synonym WildCard SubPattern Pair5") {
+        string query = "assign a;\n"
+                       "Select a such that Modifies(a, _) pattern a(_, _\"g +     g\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("143 - Modifies Synonym WildCard SubPattern Pair4") {
+        string query = "stmt s; assign a;\n"
+                       "Select s such that Modifies(s, _) pattern a(\"x\", _\"y\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("142 - Modifies Synonym WildCard SubPattern Pair3") {
+        string query = "if ifs; assign a;\n"
+                       "Select ifs such that Modifies(ifs, _) pattern a(\"tj\", _\"abcdef - abcdef\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("141 - Modifies Synonym WildCard SubPattern Pair2") {
+        string query = "while w; assign a;\n"
+                       "Select w such that Modifies(w, _) pattern a(_, _\"zz * h\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("140 - Modifies Synonym WildCard SubPattern Pair1") {
+        string query = "read re; assign a;\n"
+                       "Select re such that Modifies(re, _) pattern a(_, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("139 - Modifies Synonym Synonym Pattern Pair5") {
+        string query = "assign a; variable v;\n"
+                       "Select a such that Modifies(a, v) pattern a(v, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("138 - Modifies Synonym Synonym Pattern Pair4") {
+        string query = "stmt s; variable v; assign a;\n"
+                       "Select s such that Modifies(s, v) pattern a(\"h\", 77 - g  + y * g * g + g + g * y)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("137 - Modifies Synonym Synonym Pattern Pair3") {
+        string query = "if ifs; variable v; assign a;\n"
+                       "Select ifs such that Modifies(ifs, v) pattern a(\"x\", \"x + 1\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("136 - Modifies Synonym Synonym Pattern Pair2 - Expected empty") {
+        string query = "while w; variable v; assign a;\n"
+                       "Select w such that Modifies(w, v) pattern a(bastards, \"VERYTRUE\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("135 - Modifies Synonym Synonym Pattern Pair1") {
+        string query = "read re; variable v; assign a;\n"
+                       "Select re such that Modifies(re, v) pattern a(\"x\", \"x\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("134 - Modifies Synonym Synonym SubPattern Pair5") {
+        string query = "assign a; variable v;\n"
+                       "Select a such that Modifies(a, v) pattern a(v, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("133 - Modifies Synonym Synonym SubPattern Pair4") {
+        string query = "stmt s; variable v; assign a;\n"
+                       "Select s such that Modifies(s, v) pattern a(\"enjoyThisReallyFunLongText\", _\"kidding + g\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("132 - Modifies Synonym Synonym SubPattern Pair3") {
+        string query = "if ifs; variable v; assign a;\n"
+                       "Select ifs such that Modifies(ifs, v) pattern a(v, _\"g + g\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("131 - Modifies Synonym Synonym SubPattern Pair2") {
+        string query = "while w; variable v; assign a;\n"
+                       "Select w such that Modifies(w, v) pattern a(v, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("130 - Modifies Synonym Synonym SubPattern Pair1") {
+        string query = "read re; variable v; assign a;\n"
+                       "Select re such that Modifies(re, v) pattern a(v, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("129 - Modifies Synonym Identifier Pattern Pair5") {
+        string query = "assign a;\n"
+                       "Select a such that Modifies(a, \"cry\") pattern a(\"cry\", \"cry + 1\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("128 - Modifies Synonym Identifier Pattern Pair4") {
+        string query = "stmt s; assign a;\n"
+                       "Select s such that Modifies(s, \"zz\") pattern a(\"enjoyThisReallyFunLongText\", (kidding + g) + g);";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("127 - Modifies Synonym Identifier Pattern Pair3") {
+        string query = "if ifs; assign a;\n"
+                       "Select ifs such that Modifies(ifs, \"zz\") pattern a(_, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("126 - Modifies Synonym Identifier Pattern Pair2") {
+        string query = "while w; assign a;\n"
+                       "Select w such that Modifies(w, \"zz\") pattern a(_, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("125 - Modifies Synonym Identifier Pattern Pair1") {
+        string query = "read re; assign a;\n"
+                       "Select re such that Modifies(re, \"moreToK1M2S\") pattern a(\"okTimeToEndSoon\", \"yesPls + g + g\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("124 - Modifies Synonym Identifier SubPattern Pair5") {
+        string query = "assign a;\n"
+                       "Select a such that Modifies(a, \"x\") pattern a(\"x\", _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("123 - Modifies Synonym Identifier SubPattern Pair4") {
+        string query = "stmt s; assign a;\n"
+                       "Select s such that Modifies(s, \"h\") pattern a(_, _\"77 - g  + y\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("122 - Modifies Synonym Identifier SubPattern Pair3") {
+        string query = "if ifs; assign a;\n"
+                       "Select ifs such that Modifies(ifs, \"weCry\") pattern a(_, _\"1\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("121 - Modifies Synonym Identifier SubPattern Pair2") {
+        string query = "while w; assign a;\n"
+                       "Select w such that Modifies(w, \"T0ngT0ngQ1ANG\") pattern a(_, _\" h + y \"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("120 - Modifies Synonym Identifier SubPattern Pair1") {
+        string query = "read re; assign a;\n"
+                       "Select re such that Modifies(re, \"weAllCry\") pattern a(_, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("119 - Modifies Integer WildCard Pattern Pair2") {
+        string query = "assign a;\n"
+                       "Select a such that Modifies(31, _) pattern a(\"x\", \"x\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("118 - Modifies Integer WildCard Pattern Pair1") {
+        string query = "assign a;\n"
+                       "Select a such that Modifies(31, _) pattern a(_, \"heartless\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("117 - Modifies Integer WildCard SubPattern Pair2") {
+        string query = "assign a; variable v;\n"
+                       "Select v such that Modifies(21, _) pattern a(_, _\"x\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("116 - Modifies Integer WildCard SubPattern Pair1") {
+        string query = "assign a;\n"
+                       "Select a such that Modifies(1, _) pattern a(\"x\", _\"x + 1\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("115 - Modifies Integer Synonym Pattern Pair2") {
+        string query = "assign a; variable v;\n"
+                       "Select a such that Modifies(47, v) pattern a(\"bastards\", \"VERYTRUE\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("114 - Modifies Integer Synonym Pattern Pair1") {
+        string query = "assign a; variable v;\n"
+                       "Select a such that Modifies(3, v) pattern a(_, \"x\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("113 - Modifies Integer Synonym SubPattern Pair4") {
+        string query = "assign a; variable v;\n"
+                       "Select v such that Modifies(47, v) pattern a(_, _\"kidding + g\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("112 - Modifies Integer Synonym SubPattern Pair3") {
+        string query = "assign a; variable v;\n"
+                       "Select v such that Modifies(47, v) pattern a(_, _\"yesPls + g\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("111 - Modifies Integer Synonym SubPattern Pair2") {
+        string query = "assign a; variable v;\n"
+                       "Select a such that Modifies(6, v) pattern a(v, _\"g\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+
+}
+
 TEST_CASE("Query Optimizer: autotester 09_assignment2") {
     string simple = "procedure Monk {\n"
                     "      a = 4;\n"
@@ -723,177 +1006,6 @@ TEST_CASE("Query Optimizer: autotester 09_assignment2") {
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
 }
-
-TEST_CASE("Query Optimizer: autotester 13_sample") {
-    string simple = "procedure Example {\n"
-                    "  x = 2;\n"
-                    "  z = 3;\n"
-                    "  i = 5;\n"
-                    "  while (i!=0) {\n"
-                    "    x = x - 1;\n"
-                    "    if (x==1) then {\n"
-                    "      z = x + 1; }\n"
-                    "    else {\n"
-                    "      y = z + x; }\n"
-                    "    z = z + x + i;\n"
-                    "    call q;\n"
-                    "    i = i - 1; }\n"
-                    "  call p; }\n"
-                    "\n"
-                    "procedure p {\n"
-                    "  if (x<0) then {\n"
-                    "    while (i>0) {\n"
-                    "      x = z * 3 + 2 * y;\n"
-                    "      call q;\n"
-                    "      i = i - 1; }\n"
-                    "    x = x + 1;\n"
-                    "    z = x + z; }\n"
-                    "  else {\n"
-                    "    z = 1; }\n"
-                    "  z = z + x + i; }\n"
-                    "\n"
-                    "procedure q {\n"
-                    "  if (x==1) then {\n"
-                    "    z = x + 1; }\n"
-                    "  else {\n"
-                    "    x = z + x; } }";
-
-    // parse program
-    Parser p;
-    TNode *ast(p.parseProgram(simple));
-
-    // extract relations into pkb
-    PKBManager pkbManager = PKBManager();
-    DesignExtractor designExtractor(ast, &pkbManager);
-    designExtractor.extractDesign();
-
-    SECTION("1") {
-        string query = "while w;\n"
-                       "Select w such that Parent(w, 7)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("2") {
-        string query = "if ifs;\n"
-                       "Select ifs such that Follows(5, ifs)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("3") {
-        string query = "assign a;\n"
-                       "Select a such that Parent*(4, a)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("4") {
-        string query = "call c;\n"
-                       "Select c such that Follows*(1, c)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("5") {
-        string query = "stmt s;\n"
-                       "Select s such that Modifies(s, \"i\")";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("6") {
-        string query = "variable v;\n"
-                       "Select v such that Uses(\"p\", v)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("7") {
-        string query = "procedure p;\n"
-                       "Select p such that Calls(p, \"q\")";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("8") {
-        string query = "procedure p;\n"
-                       "Select p such that Calls*(\"Example\", p)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("9") {
-        string query = "stmt n;\n"
-                       "Select n such that Next(4, n)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("10") {
-        string query = "stmt n;\n"
-                       "Select n such that Next*(n, 4)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("11") {
-        string query = "assign a;\n"
-                       "Select a such that Affects(a, 9)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("12") {
-        string query = "assign a;\n"
-                       "Select a such that Affects*(11, a)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("13") {
-        string query = "assign a;\n"
-                       "Select a pattern a(\"z\", _\"x+i\")";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("14") {
-        string query = "assign a;\n"
-                       "Select a pattern a(_, _\"x + 1\"_)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("15") {
-        string query = "assign a;\n"
-                       "Select a pattern a(_, \" 3  +  2 \")";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("16") {
-        string query = "while w; variable v;\n"
-                       "Select w such that Modifies(w, v) with v.varName = \"x\"";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("17") {
-        string query = "if ifs; variable v;\n"
-                       "Select v such that Uses(ifs, v) with ifs.stmt# = 22";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("18") {
-        string query = "procedure p, q;\n"
-                       "Select BOOLEAN such that Calls(p, q) with q.procName = \"p\" and p.procName = \"Example\"";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("19") {
-        string query = "if ifs; assign a1, a2; variable v1, v2;\n"
-                       "Select ifs such that Follows*(a1, ifs) and Follows*(ifs, a2) and Modifies(ifs, v1) and Uses(ifs, v2) with v1.varName = v2.varName";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("20") {
-        string query = "stmt n; stmt s;\n"
-                       "Select s such that Next*(16, n) and Parent*(s, n)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("21") {
-        string query = "stmt n; assign a;\n"
-                       "Select a such that Affects*(a, n) and Next*(13, n)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("22") {
-        string query = "procedure p, q; variable v;\n"
-                       "Select <p, q, v> such that Modifies(p, v) and Calls(p, q)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("23") {
-        string query = "call c; assign a1, a2;\n"
-                       "Select BOOLEAN such that Follows*(_, c) and Affects(a1, a2) and Uses(a2, _)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("24") {
-        string query = "assign a1, a2; variable v;\n"
-                       "Select v pattern a1(v, _) such that Affects*(a1, a2) and Uses(a2, v)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("25") {
-        string query = "stmt n1, n2; variable v; call c;\n"
-                       "Select c such that Next*(n1, n2) and Modifies(n1, v) and Uses(n2, v) and Modifies(c, v)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-}
-
 
 TEST_CASE("Query Optimizer: autotester 12_next_cache_queries") {
     string simple = "procedure NextTest {\n"
@@ -1081,3 +1193,172 @@ TEST_CASE("Query Optimizer: autotester 12_next_cache_queries") {
     }
 }
 
+TEST_CASE("Query Optimizer: autotester 13_sample") {
+    string simple = "procedure Example {\n"
+                    "  x = 2;\n"
+                    "  z = 3;\n"
+                    "  i = 5;\n"
+                    "  while (i!=0) {\n"
+                    "    x = x - 1;\n"
+                    "    if (x==1) then {\n"
+                    "      z = x + 1; }\n"
+                    "    else {\n"
+                    "      y = z + x; }\n"
+                    "    z = z + x + i;\n"
+                    "    call q;\n"
+                    "    i = i - 1; }\n"
+                    "  call p; }\n"
+                    "\n"
+                    "procedure p {\n"
+                    "  if (x<0) then {\n"
+                    "    while (i>0) {\n"
+                    "      x = z * 3 + 2 * y;\n"
+                    "      call q;\n"
+                    "      i = i - 1; }\n"
+                    "    x = x + 1;\n"
+                    "    z = x + z; }\n"
+                    "  else {\n"
+                    "    z = 1; }\n"
+                    "  z = z + x + i; }\n"
+                    "\n"
+                    "procedure q {\n"
+                    "  if (x==1) then {\n"
+                    "    z = x + 1; }\n"
+                    "  else {\n"
+                    "    x = z + x; } }";
+
+    // parse program
+    Parser p;
+    TNode *ast(p.parseProgram(simple));
+
+    // extract relations into pkb
+    PKBManager pkbManager = PKBManager();
+    DesignExtractor designExtractor(ast, &pkbManager);
+    designExtractor.extractDesign();
+
+    SECTION("1") {
+        string query = "while w;\n"
+                       "Select w such that Parent(w, 7)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("2") {
+        string query = "if ifs;\n"
+                       "Select ifs such that Follows(5, ifs)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("3") {
+        string query = "assign a;\n"
+                       "Select a such that Parent*(4, a)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("4") {
+        string query = "call c;\n"
+                       "Select c such that Follows*(1, c)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("5") {
+        string query = "stmt s;\n"
+                       "Select s such that Modifies(s, \"i\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("6") {
+        string query = "variable v;\n"
+                       "Select v such that Uses(\"p\", v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("7") {
+        string query = "procedure p;\n"
+                       "Select p such that Calls(p, \"q\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("8") {
+        string query = "procedure p;\n"
+                       "Select p such that Calls*(\"Example\", p)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("9") {
+        string query = "stmt n;\n"
+                       "Select n such that Next(4, n)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("10") {
+        string query = "stmt n;\n"
+                       "Select n such that Next*(n, 4)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("11") {
+        string query = "assign a;\n"
+                       "Select a such that Affects(a, 9)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("12") {
+        string query = "assign a;\n"
+                       "Select a such that Affects*(11, a)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("13") {
+        string query = "assign a;\n"
+                       "Select a pattern a(\"z\", _\"x+i\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("14") {
+        string query = "assign a;\n"
+                       "Select a pattern a(_, _\"x + 1\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("15") {
+        string query = "assign a;\n"
+                       "Select a pattern a(_, \" 3  +  2 \")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("16") {
+        string query = "while w; variable v;\n"
+                       "Select w such that Modifies(w, v) with v.varName = \"x\"";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("17") {
+        string query = "if ifs; variable v;\n"
+                       "Select v such that Uses(ifs, v) with ifs.stmt# = 22";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("18") {
+        string query = "procedure p, q;\n"
+                       "Select BOOLEAN such that Calls(p, q) with q.procName = \"p\" and p.procName = \"Example\"";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("19") {
+        string query = "if ifs; assign a1, a2; variable v1, v2;\n"
+                       "Select ifs such that Follows*(a1, ifs) and Follows*(ifs, a2) and Modifies(ifs, v1) and Uses(ifs, v2) with v1.varName = v2.varName";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("20") {
+        string query = "stmt n; stmt s;\n"
+                       "Select s such that Next*(16, n) and Parent*(s, n)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("21") {
+        string query = "stmt n; assign a;\n"
+                       "Select a such that Affects*(a, n) and Next*(13, n)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("22") {
+        string query = "procedure p, q; variable v;\n"
+                       "Select <p, q, v> such that Modifies(p, v) and Calls(p, q)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("23") {
+        string query = "call c; assign a1, a2;\n"
+                       "Select BOOLEAN such that Follows*(_, c) and Affects(a1, a2) and Uses(a2, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("24") {
+        string query = "assign a1, a2; variable v;\n"
+                       "Select v pattern a1(v, _) such that Affects*(a1, a2) and Uses(a2, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("25") {
+        string query = "stmt n1, n2; variable v; call c;\n"
+                       "Select c such that Next*(n1, n2) and Modifies(n1, v) and Uses(n2, v) and Modifies(c, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+}
