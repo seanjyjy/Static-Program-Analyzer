@@ -8,34 +8,85 @@
 
 using namespace std;
 
-// TODO make generic
+/**
+ * Represents a graph that takes in a generic type as vertex label.
+ * @tparam T the type of the vertex label (usually string/numeric types)
+ * The code must be defined in the template class: https://stackoverflow.com/questions/5237055/c-generic-class-link-errors
+ */
+template <typename T>
 class SimpleGraph {
 private:
     int nodeId = 0;
-    unordered_map<string, int> nameToNodeId;
-    unordered_map<int, string> nodeIdToName;
-    // TODO maybe define custom hash function for unordered_set
+    unordered_map<T, int> nameToNodeId; // allow simpleGraph to work with integer representations
+    unordered_map<int, T> nodeIdToName; // allow simpleGraph to work with integer representations
     set<pair<int, int>> seenEdges; // simple graphs can't have multi-edges
     unordered_map<int, vector<int>> adjList;
 
-    int getNodeId(string node);
+    int genNodeId() {
+        return nodeId++;
+    }
+    bool hasNode(T node) {
+        // if a node is in the graph, it definitely has a mapping
+        return nameToNodeId.find(node) != nameToNodeId.end();
+    }
+    // performs dfs on each connected component, tagging each group with a unique tag. for connected cmpt generation.
+    void dfs(int u, int tag, vector<int> &tags) {
+        tags[u] = tag;
+        for (int v: adjList[u]) {
+            if (tags[v] == -1) dfs(v, tag, tags);
+        }
+    }
 
-    string getName(int nodeId);
-
-    int genId();
-
-    bool hasNode(string node);
-
-    void dfs(int u, int tag, vector<int> &tags);
 
 public:
-    SimpleGraph();
+    SimpleGraph() = default;
 
-    void addVertex(string n1);
+    void addVertex(T n1) {
+        // don't add the same vertex more than one
+        if (nameToNodeId.find(n1) != nameToNodeId.end()) return;
+        int id = genNodeId();
+        nameToNodeId[n1] = id;
+        nodeIdToName[id] = n1;
+        adjList[id] = vector<int>();
+    }
 
-    void addUndirectedEdge(string n1, string n2);
+    void addUndirectedEdge(T n1, T n2) {
+        if (!hasNode(n1)) addVertex(n1);
+        if (!hasNode(n2)) addVertex(n2);
+        int id1 = nameToNodeId[n1];
+        int id2 = nameToNodeId[n2];
+        pair<int, int> e1 = {id1, id2};
+        pair<int, int> e2 = {id2, id1};
+        // don't add the same edge more than once
+        if (seenEdges.find(e1) == seenEdges.end()) {
+            seenEdges.insert(e1);
+            adjList[id1].push_back(id2);
+        }
+        // don't add the same edge more than once
+        if (seenEdges.find(e2) == seenEdges.end()) {
+            seenEdges.insert(e2);
+            adjList[id2].push_back(id1);
+        }
+    }
 
-    void clear();
+    vector<vector<T>> getDisjointComponents() {
+        int V = (int) adjList.size();
+        // find connected components with DFS
+        int tag = 0;
+        vector<int> tags(V, -1);
+        for (int i = 0; i < V; i++) {
+            if (tags[i] == -1) dfs(i, tag++, tags);
+        }
 
-    vector<vector<string>> getDisjointComponents();
+        // split components into buckets
+        vector<vector<T>> components(tag, vector<T>());
+        for (int i = 0; i < V; i++) {
+            int bucket = tags[i];
+            int nid = i;
+            T nodeName = nodeIdToName[nid];
+            components[bucket].push_back(nodeName);
+        }
+
+        return components;
+    }
 };

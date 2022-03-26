@@ -26,11 +26,10 @@ void FifoGroup::print() const {
 }
 
 string FifoGroup::toString() const {
-    // TODO implement after superclause refactor
     string ret;
     ret += "\n***** FIFO GROUP *****\n";
-    for ([[maybe_unused]] SuperClause *cl: clauses) {
-        ret += "WIP\n";
+    for (SuperClause *cl: clauses) {
+        ret += cl->toString() + "\n";
     }
     ret += "\n**********************\n";
     return ret;

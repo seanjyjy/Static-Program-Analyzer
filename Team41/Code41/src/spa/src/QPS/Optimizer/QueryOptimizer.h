@@ -15,8 +15,6 @@
 
 using namespace std;
 
-// TODO: destructor
-
 class QueryOptimizer {
 private:
     // default configuration options

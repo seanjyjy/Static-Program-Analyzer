@@ -43,11 +43,10 @@ void PKBAwareGroup::print() const {
 }
 
 string PKBAwareGroup::toString() const {
-    // TODO implement after superclause refactor
     string ret;
     ret += "\n***** PKB AWARE GROUP *****\n";
-    for ([[maybe_unused]] SuperClause *cl: clauses) {
-        ret += "WIP\n";
+    for (SuperClause *cl: clauses) {
+        ret += cl->toString() + "\n";
     }
     ret += "***************************";
     return ret;

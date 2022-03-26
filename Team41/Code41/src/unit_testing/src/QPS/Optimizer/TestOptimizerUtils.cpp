@@ -11,8 +11,8 @@ void TestOptimizerUtils::print(vector<vector<string>> &arr) {
     }
 }
 
-SimpleGraph TestOptimizerUtils::genGraph(int fromInclusive, int toInclusive, const vector<pair<int, int>> &edges) {
-    SimpleGraph g;
+SimpleGraph<string> TestOptimizerUtils::genStringGraph(int fromInclusive, int toInclusive, const vector<pair<int, int>> &edges) {
+    SimpleGraph<string> g;
     // add nodes
     for (int i = fromInclusive; i <= toInclusive; i++) {
         g.addVertex(to_string(i));
@@ -27,9 +27,8 @@ SimpleGraph TestOptimizerUtils::genGraph(int fromInclusive, int toInclusive, con
 void TestOptimizerUtils::print(vector<vector<SuperClause *>> &clauses) {
     for (auto &arr: clauses) {
         cout << "array" << endl;
-        for (auto &cl: arr) { // TODO implement after superclause refactor to use composition
-            cl->isAffectsT();
-            cout << "wip" << " ";
+        for (auto &cl: arr) {
+            cout << cl->toString() << " ";
         }
         cout << endl;
     }

@@ -26,11 +26,10 @@ void SortedGroup::print() const {
 }
 
 string SortedGroup::toString() const {
-    // TODO implement after superclause refactor
     string ret;
     ret += "\n***** SORTED GROUP *****\n";
-    for ([[maybe_unused]] SuperClause *cl: clauses) {
-        ret += "WIP\n";
+    for (SuperClause *cl: clauses) {
+        ret += cl->toString() + "\n";
     }
     ret += "************************";
     return ret;
