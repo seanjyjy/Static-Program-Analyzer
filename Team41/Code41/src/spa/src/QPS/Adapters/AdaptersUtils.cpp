@@ -66,7 +66,6 @@ void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *nod
 
         if (canUseCache) {
             for (auto &savedNext: forwardCache) {
-                cache->registerBooleanMapping(stmtNum, savedNext);
                 cache->registerForwardMapping(stmtNum, savedNext);
             }
             return false;
@@ -119,7 +118,6 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
 
         CacheCallback saveToCache = [currStmtNum, &cache](const string &next) {
             cache->addAllMappingPair({currStmtNum, next});
-            cache->registerBooleanMapping(currStmtNum, next);
             // Add forward Mapping
             cache->registerForwardMapping(currStmtNum, next);
             // Add backwardMapping
