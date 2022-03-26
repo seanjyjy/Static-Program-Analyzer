@@ -3,38 +3,59 @@
 AffectEvaluator::AffectEvaluator(PKBClient *pkb) : GenericClauseEvaluator(pkb) {}
 
 Table *AffectEvaluator::evaluateClause(ClauseVariable left, ClauseVariable right) {
-    if (EvaluatorUtils::StmtUtils::isIntegerInteger(&left, &right) &&
-        isValidAssignAssign(left.getLabel(), right.getLabel())) {
+    if (EvaluatorUtils::StmtUtils::isIntegerInteger(&left, &right)) {
+        if (!EvaluatorUtils::isWithinLimit(left, right, pkb) || !isValidAssignAssign(left, right))
+            return new FalseTable();
+
         return evaluateIntegerInteger(left, right);
     }
 
-    if (EvaluatorUtils::StmtUtils::isValidIntegerSynonym(&left, &right)
-        && isValidAssignStmt(left.getLabel()) && isValidAssignSyn(right)) {
+    if (EvaluatorUtils::StmtUtils::isValidIntegerSynonym(&left, &right)) {
+        if (!EvaluatorUtils::isWithinLimit(left, pkb) || !isValidAssignStmt(left) || !isValidAssignSyn(right))
+            return new FalseTable();
+
         return evaluateIntegerSynonym(left, right);
     }
 
-    if (EvaluatorUtils::StmtUtils::isIntegerWildCard(&left, &right) && isValidAssignStmt(left.getLabel())) {
+    if (EvaluatorUtils::StmtUtils::isIntegerWildCard(&left, &right)) {
+        if (!EvaluatorUtils::isWithinLimit(left, pkb) || !isValidAssignStmt(left))
+            return new FalseTable();
+
         return evaluateIntegerWildCard(left);
     }
 
-    if (EvaluatorUtils::StmtUtils::isValidSynonymInteger(&left, &right)
-        && isValidAssignStmt(right.getLabel()) && isValidAssignSyn(left)) {
+    if (EvaluatorUtils::StmtUtils::isValidSynonymInteger(&left, &right)) {
+        if (!EvaluatorUtils::isWithinLimit(right, pkb) || !isValidAssignStmt(right) || !isValidAssignSyn(left))
+            return new FalseTable();
+
         return evaluateSynonymInteger(left, right);
     }
 
-    if (EvaluatorUtils::StmtUtils::isValidSynonymSynonym(&left, &right) && isValidAssignSynSyn(left, right)) {
+    if (EvaluatorUtils::StmtUtils::isValidSynonymSynonym(&left, &right)) {
+        if (!isValidAssignSynSyn(left, right))
+            return new FalseTable();
+
         return evaluateSynonymSynonym(left, right);
     }
 
-    if (EvaluatorUtils::StmtUtils::isValidSynonymWildCard(&left, &right) && isValidAssignSyn(left)) {
+    if (EvaluatorUtils::StmtUtils::isValidSynonymWildCard(&left, &right)) {
+        if (!isValidAssignSyn(left))
+            return new FalseTable();
+
         return evaluateSynonymWildCard(left);
     }
 
-    if (EvaluatorUtils::StmtUtils::isWildCardInteger(&left, &right) && isValidAssignStmt(right.getLabel())) {
+    if (EvaluatorUtils::StmtUtils::isWildCardInteger(&left, &right)) {
+        if (!EvaluatorUtils::isWithinLimit(right, pkb) || !isValidAssignStmt(right))
+            return new FalseTable();
+
         return evaluateWildCardInteger(right);
     }
 
-    if (EvaluatorUtils::StmtUtils::isValidWildCardSynonym(&left, &right) && isValidAssignSyn(right)) {
+    if (EvaluatorUtils::StmtUtils::isValidWildCardSynonym(&left, &right)) {
+        if (!isValidAssignSyn(right))
+            return new FalseTable();
+
         return evaluateWildCardSynonym(right);
     }
 
@@ -45,13 +66,13 @@ Table *AffectEvaluator::evaluateClause(ClauseVariable left, ClauseVariable right
     throw SemanticException("Invalid query provided for Affect type");
 }
 
-bool AffectEvaluator::isValidAssignAssign(const string &stmt1, const string &stmt2) {
+bool AffectEvaluator::isValidAssignAssign(ClauseVariable& left, ClauseVariable& right) {
     // checks if both statements are an assign statement
-    return pkb->isAssignStmt(stmt1) && pkb->isAssignStmt(stmt2);
+    return pkb->isAssignStmt(left.getLabel()) && pkb->isAssignStmt(right.getLabel());
 }
 
-bool AffectEvaluator::isValidAssignStmt(const string &stmt) {
-    return pkb->isAssignStmt(stmt);
+bool AffectEvaluator::isValidAssignStmt(ClauseVariable& variable) {
+    return pkb->isAssignStmt(variable.getLabel());
 }
 
 bool AffectEvaluator::isValidAssignSyn(ClauseVariable &left) {

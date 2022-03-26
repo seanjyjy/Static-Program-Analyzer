@@ -12,6 +12,8 @@
 class EvaluatorUtils {
 public:
     // General utils
+    static bool isWithinLimit(ClauseVariable& left, ClauseVariable& right, PKBClient* pkb);
+    static bool isWithinLimit(ClauseVariable& variable, PKBClient* pkb);
 
     /**
      * Checks if a given query declaration is of a Statement type.
