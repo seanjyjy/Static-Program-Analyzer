@@ -271,7 +271,7 @@ bool QueryParser::lookForClauseGrammarSymbol(string symbol, string notFoundMessa
 optional<string> QueryParser::parseClauseVariable(string clause) {
     optional<string> var = lex->nextClauseVariable();
     if (var == nullopt) {
-        printf("Syntax Error: No clause variable found.\n");
+        printf("Syntax Error: No valid clause variable found.\n");
         return nullopt;
     }
     if (lex->isValidSynonym(var->c_str())) { // check if synonym has been

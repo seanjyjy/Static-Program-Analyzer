@@ -880,5 +880,17 @@ TEST_CASE("QPS: Parser_INVALID") {
         qo = qp.parse();
         REQUIRE_FALSE(qo->isQueryValid);
     }
+    SECTION("Integers with leading 0") {
+        string s = "stmt s;\n"
+                   "Select BOOLEAN such that Follows(01, _)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isQueryValid);
+
+        s = "stmt s, s1, s2; while w; variable v;\n"
+                   "Select s.stmt# such that Follows* (s, s1) with s1.stmt#=069 pattern w (v, _) such that Follows*(s, s1) and Follows*(s1, s2)";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isQueryValid);
+    }
     delete qo;
 }
