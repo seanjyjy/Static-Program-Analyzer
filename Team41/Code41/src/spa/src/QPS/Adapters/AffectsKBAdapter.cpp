@@ -65,7 +65,7 @@ unordered_set<string> AffectsKBAdapter::getDirectAffecting(const string &stmtNum
     CFGNode *start = pkb->getCFGForStmt(stmtNum);
     unordered_set<string> affectedVars = pkb->getUsesByStmt(stmtNum);
 
-    bfsUp(start, affectedVars, affecting);
+    bfsUp(pkb, start, affectedVars, affecting);
     return affecting;
 }
 
