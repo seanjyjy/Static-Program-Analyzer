@@ -715,6 +715,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         qo = a.parse();
 
         REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("clause undeclared synonym") {
         string s = "variable v; assign a;\n"
@@ -724,6 +725,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         qo = a.parse();
 
         REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("clause undeclared synonym") {
         string s = "variable v; assign a;\n"
@@ -732,6 +734,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
         REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("pattern undeclared LHS") {
         string s = "variable v; assign a;\n"
@@ -739,6 +742,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
         REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("pattern no synonym") {
         string s = "variable v; assign a;\n"

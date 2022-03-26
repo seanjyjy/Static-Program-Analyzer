@@ -131,7 +131,8 @@ bool QueryParser::parseSelectSingle() {
 
     optional<QueryDeclaration> qd = findMatchingDeclaration(synonym.value());
     if (!qd.has_value()) {
-        printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
+        queryObject->setUseOfUndeclaredVariable(true);
+        printf("Semantic Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
         return false;
     }
 
@@ -276,7 +277,8 @@ optional<string> QueryParser::parseClauseVariable(string clause) {
     }
     if (lex->isValidSynonym(var->c_str())) { // check if synonym has been
         if (!isDeclared(var->c_str())) {
-            printf("Syntax Error: Use of undeclared synonym <%s> for clause %s\n", var->c_str(), clause.c_str());
+            queryObject->setUseOfUndeclaredVariable(true);
+            printf("Semantic Error: Use of undeclared synonym <%s> for clause %s\n", var->c_str(), clause.c_str());
             return nullopt;
         }
     }
@@ -402,7 +404,8 @@ optional<QueryDeclaration> QueryParser::parsePatternSyn() {
     }
     optional<QueryDeclaration> declared = findMatchingDeclaration(patternSyn->c_str());
     if (declared == nullopt) {
-        printf("Syntax Error: Use of undeclared pattern synonym <%s>\n", patternSyn->c_str());
+        queryObject->setUseOfUndeclaredVariable(true);
+        printf("Semantic Error: Use of undeclared pattern synonym <%s>\n", patternSyn->c_str());
         return nullopt;
     }
 
@@ -425,7 +428,8 @@ optional<string> QueryParser::parsePatternLHS() {
     if (lex->isValidSynonym(lhs->c_str())) {
         optional<QueryDeclaration> lhsDeclared = findMatchingDeclaration(lhs->c_str());
         if (lhsDeclared == nullopt) {
-            printf("Syntax Error: Use of undeclared pattern LHS synonym <%s>\n", lhs->c_str());
+            queryObject->setUseOfUndeclaredVariable(true);
+            printf("Semantic Error: Use of undeclared pattern LHS synonym <%s>\n", lhs->c_str());
             return nullopt;
         }
     }
@@ -653,7 +657,8 @@ optional<WithVariable> QueryParser::parseWithRef() {
         // attrRef : synonym '.' attrName
         optional<QueryDeclaration> syn = findMatchingDeclaration(n);
         if (!syn.has_value()) {
-            printf("Syntax Error: Use of undeclared synonym <%s> for Select.\n", n.c_str());
+            queryObject->setUseOfUndeclaredVariable(true);
+            printf("Semantic Error: Use of undeclared synonym <%s> for Select.\n", n.c_str());
             return nullopt;
         }
         if (lex->peekNextIsString(".") && lex->nextExpected(".")) {

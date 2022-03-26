@@ -15,6 +15,7 @@ class QueryObject {
 private:
     vector<WithClause> withClauses;
     vector<SuperClause*> superClauses;
+    bool useOfUndeclaredVariable;
 public:
     // todo: make private after all refactor
     vector<QueryDeclaration> declarations; // collection of declarations in the query
@@ -37,8 +38,10 @@ public:
     vector<PatternClause>& getPatternClauses();
     vector<WithClause>& getWithClauses();
     vector<SuperClause*>& getSuperClauses();
-
     SelectTarget& getSelectTarget();
+
+    bool hasUseOfUndeclaredVariable() const;
+    void setUseOfUndeclaredVariable(bool);
 
     bool isValid();
 
