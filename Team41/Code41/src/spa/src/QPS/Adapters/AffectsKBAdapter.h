@@ -18,7 +18,6 @@ private:
     unordered_set<string> affectings;
     unordered_set<string> affecteds;
     vector<pair<string, string>> affectingAffectedPairs;
-    vector<pair<string, string>> affectingAffectedTPairs;
 
     bool bfsBool(CFGNode *start, const string &modifiedVar, const string &end);
 

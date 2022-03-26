@@ -42,8 +42,9 @@ bool NextKBAdapter::isNextT(const string &stmt1, const string &stmt2) {
         return forwardCache.find(stmt2) != forwardCache.end();
 
     // check if same procedure
-    CFGNode *firstNode = AdaptersUtils::getStartingParentNode(pkb->getRootCFG(), stmt1);
-    CFGNode *secondNode = AdaptersUtils::getStartingParentNode(pkb->getRootCFG(), stmt2);
+    CFGNode *rootCFG = pkb->getRootCFG();
+    CFGNode *firstNode = AdaptersUtils::getStartingParentNode(rootCFG, stmt1);
+    CFGNode *secondNode = AdaptersUtils::getStartingParentNode(rootCFG, stmt2);
     if (firstNode == nullptr || firstNode != secondNode) {
         return false;
     }

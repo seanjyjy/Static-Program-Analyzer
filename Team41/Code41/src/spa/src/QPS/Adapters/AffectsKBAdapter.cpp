@@ -12,10 +12,13 @@ bool AffectsKBAdapter::isModifyStmt(const string &stmtNum) {
 }
 
 bool AffectsKBAdapter::isAffects(const string &stmtNum1, const string &stmtNum2) {
-    if (hasAffectsGraph()) {
-        if (stmtNumToNodeMap.find(stmtNum1) == stmtNumToNodeMap.end())
-            return false;
-
+    CFGNode *root = pkb->getRootCFG();
+    CFGNode *firstNode = AdaptersUtils::getStartingParentNode(root, stmtNum1);
+    CFGNode *secondNode = AdaptersUtils::getStartingParentNode(root, stmtNum2);
+    if (firstNode == nullptr || firstNode != secondNode) {
+        return false;
+    }
+    if (hasAffectsGraph(stmtNum1)) {
         CFGNode *node = stmtNumToNodeMap.at(stmtNum1);
         for (auto child: node->getChildren()) {
             if (child->getStmtNum() == stmtNum2)
@@ -39,10 +42,7 @@ bool AffectsKBAdapter::isAffects(const string &stmtNum1, const string &stmtNum2)
 unordered_set<string> AffectsKBAdapter::getDirectAffectsBy(const string &stmtNum) {
     unordered_set<string> affected;
 
-    if (hasAffectsGraph()) {
-        if (stmtNumToNodeMap.find(stmtNum) == stmtNumToNodeMap.end())
-            return {};
-
+    if (hasAffectsGraph(stmtNum)) {
         CFGNode *node = stmtNumToNodeMap.at(stmtNum);
         for (auto child: node->getChildren())
             affected.insert(child->getStmtNum());
@@ -60,10 +60,7 @@ unordered_set<string> AffectsKBAdapter::getDirectAffectsBy(const string &stmtNum
 unordered_set<string> AffectsKBAdapter::getDirectAffecting(const string &stmtNum) {
     unordered_set<string> affecting;
 
-    if (hasAffectsGraph()) {
-        if (stmtNumToNodeMap.find(stmtNum) == stmtNumToNodeMap.end())
-            return {};
-
+    if (hasAffectsGraph(stmtNum)) {
         CFGNode *node = stmtNumToNodeMap.at(stmtNum);
         for (auto parent: node->getParent())
             affecting.insert(parent->getStmtNum());
@@ -99,14 +96,15 @@ vector<pair<string, string>> AffectsKBAdapter::getDirectAffectsAll() {
 }
 
 bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2) {
-    if (!hasAffectsGraph(stmtNum1) && !hasAffectsGraph(stmtNum2)) {
-        CFGNode* root = pkb->getRootCFG();
-        CFGNode *firstNode = AdaptersUtils::getStartingParentNode(root, stmtNum1);
-        CFGNode *secondNode = AdaptersUtils::getStartingParentNode(root, stmtNum2);
-        if (firstNode == nullptr || firstNode != secondNode) {
-            return false;
-        }
-        buildAffectsGraphForProc(firstNode);
+    CFGNode *root = pkb->getRootCFG();
+    CFGNode *firstCFGNode = AdaptersUtils::getStartingParentNode(root, stmtNum1);
+    CFGNode *secondCFGNode = AdaptersUtils::getStartingParentNode(root, stmtNum2);
+    if (firstCFGNode == nullptr || firstCFGNode != secondCFGNode) {
+        return false;
+    }
+
+    if (!hasAffectsGraph(stmtNum1)) {
+        buildAffectsGraphForProc(firstCFGNode);
     }
 
     unordered_set<string> backwardCache = cache->getBackwardMapping(stmtNum2);
@@ -118,9 +116,6 @@ bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2
         return forwardCache.find(stmtNum2) != forwardCache.end();
 
     if (!cache->getBooleanMapping(stmtNum1, stmtNum2)) {
-        if (stmtNumToNodeMap.find(stmtNum1) == stmtNumToNodeMap.end())
-            return false;
-
         CFGNode *startNode = stmtNumToNodeMap.at(stmtNum1);
         AdaptersUtils::runBoolBFS(stmtNum1, stmtNum2, cache, startNode);
     }
@@ -135,9 +130,6 @@ unordered_set<string> AffectsKBAdapter::getAffectsTBy(const string &stmtNum) {
     }
 
     if (cache->getForwardMapping(stmtNum).empty()) {
-        if (stmtNumToNodeMap.find(stmtNum) == stmtNumToNodeMap.end())
-            return {};
-
         CFGNode *startNode = stmtNumToNodeMap.at(stmtNum);
         AdaptersUtils::runDownBFS(stmtNum, cache, startNode);
     }
@@ -152,9 +144,6 @@ unordered_set<string> AffectsKBAdapter::getAffectingT(const string &stmtNum) {
     }
 
     if (cache->getBackwardMapping(stmtNum).empty()) {
-        if (stmtNumToNodeMap.find(stmtNum) == stmtNumToNodeMap.end())
-            return {};
-
         CFGNode *endNode = stmtNumToNodeMap.at(stmtNum);
         AdaptersUtils::runUpBFS(stmtNum, cache, endNode);
     }
