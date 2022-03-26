@@ -12,9 +12,9 @@ typedef std::function<bool(CFGNode*)> TerminateCheck;
 
 class AdaptersUtils {
 private:
+public:
     static void runBFS(bool isForward, const CacheCallback &cacheAndContinue, const TerminateCheck &canTerminate, CFGNode *startNode);
 
-public:
     static void runBoolBFS(const string &start, const string &end, Cache *cache, CFGNode *node);
 
     static void runDownBFS(const string &stmtNum, Cache *cache, CFGNode *node);
