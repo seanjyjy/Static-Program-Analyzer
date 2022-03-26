@@ -47,23 +47,7 @@ Table *AffectEvaluator::evaluateClause(ClauseVariable left, ClauseVariable right
 
 bool AffectEvaluator::isValidAssignAssign(const string &stmt1, const string &stmt2) {
     // checks if both statements are an assign statement
-    if (!pkb->isAssignStmt(stmt1) || !pkb->isAssignStmt(stmt2)) {
-        return false;
-    }
-
-    // checks if both statements are in the same procedure
-    CFGNode *root = pkb->getRootCFG();
-    vector<CFGNode *> children = root->getChildren();
-    int stmt1Val = stoi(stmt1);
-    int stmt2Val = stoi(stmt2);
-    for (auto &child: root->getChildren()) {
-        int procStart = stoi(child->getStmtNum());
-        if (stmt1Val < procStart && stmt2Val >= procStart) {
-            return false;
-        }
-    }
-
-    return true;
+    return pkb->isAssignStmt(stmt1) && pkb->isAssignStmt(stmt2);
 }
 
 bool AffectEvaluator::isValidAssignStmt(const string &stmt) {

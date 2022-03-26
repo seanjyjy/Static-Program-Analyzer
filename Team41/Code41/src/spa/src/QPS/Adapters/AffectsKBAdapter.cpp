@@ -100,7 +100,12 @@ vector<pair<string, string>> AffectsKBAdapter::getDirectAffectsAll() {
 
 bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2) {
     if (!hasAffectsGraph(stmtNum1) && !hasAffectsGraph(stmtNum2)) {
-        CFGNode *firstNode = AdaptersUtils::getStartingParentNode(pkb->getRootCFG(), stmtNum1);
+        CFGNode* root = pkb->getRootCFG();
+        CFGNode *firstNode = AdaptersUtils::getStartingParentNode(root, stmtNum1);
+        CFGNode *secondNode = AdaptersUtils::getStartingParentNode(root, stmtNum2);
+        if (firstNode == nullptr || firstNode != secondNode) {
+            return false;
+        }
         buildAffectsGraphForProc(firstNode);
     }
 

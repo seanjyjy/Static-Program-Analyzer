@@ -31,14 +31,24 @@ vector<string> NextKBAdapter::getAllStmtsThatIsNextOfSomeStmt() const {
 }
 
 bool NextKBAdapter::isNextT(const string &stmt1, const string &stmt2) {
+    // check if backward cache exist
     unordered_set<string> backwardCache = cache->getBackwardMapping(stmt2);
     if (!backwardCache.empty())
         return backwardCache.find(stmt1) != backwardCache.end();
 
+    // check if forward cache exist
     unordered_set<string> forwardCache = cache->getForwardMapping(stmt1);
     if (!forwardCache.empty())
         return forwardCache.find(stmt2) != forwardCache.end();
 
+    // check if same procedure
+    CFGNode *firstNode = AdaptersUtils::getStartingParentNode(pkb->getRootCFG(), stmt1);
+    CFGNode *secondNode = AdaptersUtils::getStartingParentNode(pkb->getRootCFG(), stmt2);
+    if (firstNode == nullptr || firstNode != secondNode) {
+        return false;
+    }
+
+    // check if boolean cache exist
     if (!cache->getBooleanMapping(stmt1, stmt2)) {
         CFGNode *startNode = pkb->getCFGForStmt(stmt1);
         AdaptersUtils::runBoolBFS(stmt1, stmt2, cache, startNode);

@@ -143,14 +143,20 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
 }
 
 CFGNode* AdaptersUtils::getStartingParentNode(CFGNode* rootCFG, const string &stmt) {
-    CFGNode* startNode = nullptr;
     int stmtNum = stoi(stmt);
-    for (auto child: rootCFG->getChildren()) {
-        int startingStmt = stoi(child->getStmtNum());
-        if (startingStmt > stmtNum) {
-            break;
-        }
-        startNode = child;
+
+    vector<CFGNode*> children = rootCFG->getChildren();
+
+    // Binary search for first element that is greater than stmt
+    auto result = std::upper_bound(children.begin(), children.end(), stmtNum, [](int value, CFGNode *currNode) {
+        return value < stoi(currNode->getStmtNum());
+    });
+
+    if (result == children.begin()) {
+        return nullptr;
     }
-    return startNode;
+
+    // Get the first stmt of procedure
+    // Note: does not check if stmt is out of range
+    return *(--result);
 }
