@@ -488,12 +488,32 @@ Select BOOLEAN such that Uses("01", "x")
 Select BOOLEAN suchthat Uses(1, "x")
 
 5000
-46 - POSITIVE CASES - Such that should allow any amount of space inbetween
+46 - Boolean with semicolon
+stmt s;
+Select BOOLEAN;
+
+5000
+47 - using undeclared variables
+stmt s;
+Select BOOLEAN with a.stmt# = a.stmt#
+
+5000
+48 - using 01
+stmt s;
+Select BOOLEAN such that Follows(01, _)
+
+5000
+49 - using same variable
+stmt s; while s;
+Select BOOLEAN
+FALSE
+5000
+50 - POSITIVE CASES - Such that should allow any amount of space inbetween
 
 Select BOOLEAN such                       that Uses(1, "x")
 TRUE
 500
-47 - POSITIVE CASES - Attr Ref should allow any amount of space between the .
+51 - POSITIVE CASES - Attr Ref should allow any amount of space between the .
 stmt s;
 Select BOOLEAN with 1 = s         .              stmt#
 TRUE
