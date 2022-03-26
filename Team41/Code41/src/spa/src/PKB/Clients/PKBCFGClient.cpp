@@ -15,14 +15,14 @@ PKBCFGClient::~PKBCFGClient() {
 
 //=========================================== CFG =======================================================
 
-CFGNode *PKBCFGClient::getCFGForStmt(const string &stmtNum) {
+CFGNode *PKBCFGClient::getCFGForStmt(const string &stmtNum) const {
     if (stmtToNodeMap.find(stmtNum) == stmtToNodeMap.end()) {
         return nullptr;
     }
     return stmtToNodeMap.at(stmtNum);
 }
 
-CFGNode *PKBCFGClient::getRootCFG() {
+CFGNode *PKBCFGClient::getRootCFG() const {
     return rootCFG;
 }
 

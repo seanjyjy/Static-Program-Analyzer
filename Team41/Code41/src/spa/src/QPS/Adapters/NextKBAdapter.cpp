@@ -4,62 +4,6 @@ NextKBAdapter::NextKBAdapter(PKBClient *pkb) : pkb(pkb) {
     this->cache = new Cache();
 }
 
-//================================== Private =============================================
-
-void NextKBAdapter::fullBFS() {
-    CFGNode *start = pkb->getRootCFG();
-
-    unordered_set<string> mainVisited;
-    queue<CFGNode *> mainQ;
-
-    // we cannot start with root its 0!
-    for (auto &startProc: start->getChildren()) {
-        mainQ.push(startProc);
-        mainVisited.insert(startProc->getStmtNum());
-    }
-
-    unordered_set<string> bfsVisited;
-    queue<CFGNode *> bfsQueue;
-
-    while (!mainQ.empty()) {
-        CFGNode *curr = mainQ.front();
-        vector<CFGNode *> children = curr->getChildren();
-        string currStmtNum = curr->getStmtNum();
-        mainQ.pop();
-
-        for (auto &next: children) {
-            string nextStmtNum = next->getStmtNum();
-            cache->addAllMappingPair({currStmtNum, nextStmtNum});
-            AdaptersUtils::addFullMapping(currStmtNum, nextStmtNum, cache);
-            bfsQueue.push(next);
-
-            if (mainVisited.find(nextStmtNum) == mainVisited.end()) {
-                mainQ.push(next);
-                mainVisited.insert(nextStmtNum);
-            }
-        }
-
-        while (!bfsQueue.empty()) {
-            CFGNode *currNode = bfsQueue.front();
-            bfsVisited.insert(currNode->getStmtNum());
-            vector<CFGNode *> currChildren = currNode->getChildren();
-            bfsQueue.pop();
-
-            for (auto &next: currChildren) {
-                string nextStmtNum = next->getStmtNum();
-
-                if (bfsVisited.find(nextStmtNum) == bfsVisited.end()) {
-                    cache->addAllMappingPair({currStmtNum, nextStmtNum});
-                    AdaptersUtils::addFullMapping(currStmtNum, nextStmtNum, cache);
-                    bfsQueue.push(next);
-                }
-            }
-        }
-
-        bfsVisited.clear();
-    }
-}
-
 //================================== Public =============================================
 
 bool NextKBAdapter::isNext(string stmt1, string stmt2) const {
@@ -87,19 +31,29 @@ vector<string> NextKBAdapter::getAllStmtsThatIsNextOfSomeStmt() const {
 }
 
 bool NextKBAdapter::isNextT(const string &stmt1, const string &stmt2) {
+    // check if backward cache exist
     unordered_set<string> backwardCache = cache->getBackwardMapping(stmt2);
     if (!backwardCache.empty())
         return backwardCache.find(stmt1) != backwardCache.end();
 
+    // check if forward cache exist
     unordered_set<string> forwardCache = cache->getForwardMapping(stmt1);
     if (!forwardCache.empty())
         return forwardCache.find(stmt2) != forwardCache.end();
 
+    // check if same procedure
+    CFGNode *rootCFG = pkb->getRootCFG();
+    CFGNode *firstNode = AdaptersUtils::getStartingParentNode(rootCFG, stmt1);
+    CFGNode *secondNode = AdaptersUtils::getStartingParentNode(rootCFG, stmt2);
+    if (firstNode == nullptr || firstNode != secondNode) {
+        return false;
+    }
+
+    // check if boolean cache exist
     if (!cache->getBooleanMapping(stmt1, stmt2)) {
         CFGNode *startNode = pkb->getCFGForStmt(stmt1);
         AdaptersUtils::runBoolBFS(stmt1, stmt2, cache, startNode);
     }
-
 
     return cache->getBooleanMapping(stmt1, stmt2);
 }
@@ -123,9 +77,10 @@ unordered_set<string> NextKBAdapter::getAllStmtsTBefore(const string &stmtNum) {
 }
 
 vector<pair<string, string>> NextKBAdapter::getAllNextT() {
-    if (cache->getAllMapping().empty())
-        fullBFS();
-
+    if (cache->getAllMapping().empty()) {
+        CFGNode *start = pkb->getRootCFG();
+        AdaptersUtils::fullBFS(cache, start);
+    }
     return cache->getAllMapping();
 }
 

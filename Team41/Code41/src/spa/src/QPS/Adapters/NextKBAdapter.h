@@ -14,8 +14,6 @@ private:
     PKBClient *pkb;
     Cache *cache;
 
-    void fullBFS();
-
 public:
     explicit NextKBAdapter(PKBClient *pkb);
 

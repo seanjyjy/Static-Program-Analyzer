@@ -10,13 +10,14 @@
 
 class AffectsKBAdapter {
 private:
+    const string ROOT_CFG = "0";
     PKBClient *pkb;
     Cache *cache;
+    bool isAffectsGraphBuilt = false;
     unordered_map<string, CFGNode *> stmtNumToNodeMap;
     unordered_set<string> affectings;
     unordered_set<string> affecteds;
     vector<pair<string, string>> affectingAffectedPairs;
-    vector<pair<string, string>> affectingAffectedTPairs;
 
     bool bfsBool(CFGNode *start, const string &modifiedVar, const string &end);
 
@@ -25,17 +26,14 @@ private:
     void bfsUp(CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting);
     void bfsUpSingle(CFGNode *start, const string &affectedVar, unordered_set<string> &affecting);
 
-    bool hasAffectsGraph();
+    bool hasAffectsGraph(const string& stmt);
+    bool hasAffectsGraph() const;
 
     void addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ);
 
     void buildAffectsGraphForProc(CFGNode *start);
 
     void buildAffectsGraph();
-
-    void buildAllAffectsMapping();
-
-    void buildAffectsMapping(const string &stmtNum, CFGNode *node, unordered_set<CFGNode *> visited);
 
     bool isModifyStmt(const string &stmtNum);
 
@@ -67,8 +65,4 @@ public:
     unordered_set<string> getAllStmtAffectedTByOther();
 
     vector<pair<string, string>> getAffectsTAll();
-
-    void printCFG(CFGNode *, unordered_set<CFGNode *>);
-
-    void printAffectsGraph();
 };

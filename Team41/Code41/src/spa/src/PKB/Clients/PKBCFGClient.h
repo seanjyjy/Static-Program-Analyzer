@@ -25,9 +25,9 @@ public:
 
     //=========================================== CFG =======================================================
 
-    CFGNode *getCFGForStmt(const string &stmtNum);
+    CFGNode *getCFGForStmt(const string &stmtNum) const;
 
-    CFGNode *getRootCFG();
+    CFGNode *getRootCFG() const;
 
     //=========================================== Next ===================================================
 
