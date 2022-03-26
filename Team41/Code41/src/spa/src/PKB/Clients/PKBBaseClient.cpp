@@ -66,6 +66,10 @@ string PKBBaseClient::getReadVarNameAttr(string stmtNum) const {
     return isReadStmt(stmtNum) ? stmtTable->getStmtAttr(move(stmtNum)) : "";
 }
 
+bool PKBBaseClient::hasStmt(string stmtNum) const {
+    return stmtTable->getStmtType(move(stmtNum)) != StmtType::UNKNOWN_STMT;
+}
+
 //======================================== Entities ==================================================
 
 unordered_set<string> PKBBaseClient::getVariables() const { return entityTable->getVariables(); }
