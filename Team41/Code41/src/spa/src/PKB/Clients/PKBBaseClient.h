@@ -57,6 +57,7 @@ public:
     size_t getReadCount() const; // Gets the number of read statements stored in table
     size_t getPrintCount() const; // Gets the number of print statements stored in table
     size_t getCallCount() const; // Gets the number of call statements stored in table
+    bool hasStmt(string stmtNumber) const; // Checks if statement exists in the PKB
 
     //======================================== Entities ==================================================
 
