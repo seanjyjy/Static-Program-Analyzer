@@ -518,3 +518,8 @@ stmt s;
 Select BOOLEAN with 1 = s         .              stmt#
 TRUE
 5000
+52 - POSITIVE CASES - Able to support different clause type and
+assign a, a1;
+Select BOOLEAN such that Uses(1, "x") and Uses(2, "y") with 1 = 1 and 2 = 2 pattern a("x", "y + 1") and a1("x", "x + 1")
+TRUE
+5000
