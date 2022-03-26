@@ -67,10 +67,10 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
                 return {queryObject->getSelectTarget(), new FalseTable()};
             }
         }
-    } catch (SemanticException &error) {
+    } catch (SemanticException &) {
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
-    } catch (const runtime_error &error) {
+    } catch (const runtime_error &) {
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     }
@@ -241,10 +241,10 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
                 return {queryObject->getSelectTarget(), new FalseTable()};
             }
         }
-    } catch (SemanticException& error) {
+    } catch (SemanticException&) {
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
-    } catch (const runtime_error& error) {
+    } catch (const runtime_error&) {
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     }
