@@ -65,7 +65,7 @@ void TestOptimizerUtils::ensureOQOIsCorrect(string &query, PKBManager &pkbManage
     }
 
     // query optimizer should not duplicate clauses
-    REQUIRE(originalClauses.size() <= optimizedClauses.size());
+    REQUIRE(originalClauses.size() >= optimizedClauses.size());
 
     // query optimizer should not add or remove new clauses
     REQUIRE(originalSet.size() == optimizedSet.size());
