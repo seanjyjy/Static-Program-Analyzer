@@ -37,6 +37,7 @@ string QueryLexer::nextToken() {
     // Treat special characters as tokens themselves.
     if (isSpecialChar(curr)) {
         out.push_back(curr);
+        index++;
         return out;
     }
     while (!isSpecialChar(curr)) {
@@ -132,18 +133,12 @@ optional<string> QueryLexer::nextSynonym() {
 }
 
 optional<string> QueryLexer::nextExpected(string w) {
-    skipSpaces();
-    for (size_t i = 0; i < w.length(); i++) {
-        size_t j = index + i;
-        if (j >= input.length()) {
-            return nullopt;
-        }
-
-        if (input.at(j) != w.at(i))
-            return nullopt;
+    string expectedSpecial = nextToken();
+    if (expectedSpecial == w) {
+        return w;
+    } else {
+        return nullopt;
     }
-    index += (int)w.length();
-    return w;
 }
 
 optional<string> QueryLexer::nextClause() {
