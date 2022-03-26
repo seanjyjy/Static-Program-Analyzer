@@ -844,6 +844,35 @@ TEST_CASE("QPS: Parser_INVALID") {
         qo = qp.parse();
         REQUIRE_FALSE(qo->isQueryValid);
     }
+    SECTION("Rogue semicolons at query end 2") {
+        string s = "stmt s; Select s;";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isQueryValid);
+
+        s = "stmt s, s1; Select <s1, s>;";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isQueryValid);
+
+        s = "stmt s;\n"
+            "Select BOOLEAN;";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isQueryValid);
+
+        s = "stmt s, s1, s2; while w; variable v; Select s.stmt#;";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isQueryValid);
+
+        s = "assign a; variable v;\n"
+            "Select a pattern a (_, \"count + 1\") such that Uses(a, v);";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isQueryValid);
+
+        s = "assign a; variable v;\n"
+            "Select a pattern a (_, \"count + 1\");";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isQueryValid);
+    }
     SECTION("BOOLEAN within tuple") {
         string s = "stmt s;\n"
                    "Select <BOOLEAN, s>";

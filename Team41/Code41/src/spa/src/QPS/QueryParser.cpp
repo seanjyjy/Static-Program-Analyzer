@@ -740,7 +740,7 @@ QueryObject *QueryParser::parse() {
         } else {
             queryObject->isQueryValid = false;
             string unexpected = lex->nextToken();
-            printf("Syntax Error: Unexpected term <%s> found.", unexpected.c_str());
+            printf("Syntax Error: Unexpected term <%s> found.\n", unexpected.c_str());
             cleanup();
             return queryObject;
         }
