@@ -141,7 +141,7 @@ optional<string> QueryLexer::nextExpected(string w) {
         if (input.at(j) != w.at(i))
             return nullopt;
     }
-    index += w.length();
+    index += (int)w.length();
     return w;
 }
 
