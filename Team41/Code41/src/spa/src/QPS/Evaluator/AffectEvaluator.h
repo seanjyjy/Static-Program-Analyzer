@@ -23,9 +23,9 @@ private:
     Table *evaluateWildCardWildCard();
 
 protected:
-    bool isValidAssignAssign(const string &stmt1, const string &stmt2);
+    bool isValidAssignAssign(ClauseVariable& left, ClauseVariable& right);
 
-    bool isValidAssignStmt(const string &stmt);
+    bool isValidAssignStmt(ClauseVariable& variable);
 
     bool isValidAssignSyn(ClauseVariable &left);
 

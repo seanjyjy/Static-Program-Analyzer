@@ -3,7 +3,7 @@
 FollowsTEvaluator::FollowsTEvaluator(PKBClient *pkb) : StmtStmtEvaluator(pkb) {}
 
 Table *FollowsTEvaluator::evaluateIntegerInteger(ClauseVariable left, ClauseVariable right) {
-    bool isFollows = pkb->isFollowsT(left.getLabel(), right.getLabel());
+    bool isFollows = pkb->isFollowsT(right.getLabel(), left.getLabel());
     return buildBooleanTable(isFollows);
 }
 

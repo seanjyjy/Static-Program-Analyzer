@@ -48,19 +48,19 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::follows, integer1, integer2);
             Table* table1 = FollowsEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::FalseTable);
+            REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::follows, integer2, integer1);
             Table* table2 = FollowsEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->getType() == Table::FalseTable);
 
             QueryClause queryClause3(QueryClause::follows, integer4, integer3);
             Table* table3 = FollowsEvaluator(pkbManager).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->getType() == Table::FalseTable);
 
             QueryClause queryClause4(QueryClause::follows, integer6, integer5);
             Table* table4 = FollowsEvaluator(pkbManager).evaluate(queryClause4);
-            REQUIRE(table4->getType() == Table::TrueTable);
+            REQUIRE(table4->getType() == Table::FalseTable);
 
             QueryClause queryClause5(QueryClause::follows, integer6, integer1);
             Table* table5 = FollowsEvaluator(pkbManager).evaluate(queryClause5);
@@ -175,22 +175,22 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::followsT, integer1, integer2);
             Table* table1 = FollowsTEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::FalseTable);
+            REQUIRE(table1->getType() == Table::TrueTable);
 
             QueryClause queryClause2(QueryClause::followsT, integer2, integer1);
             Table* table2 = FollowsTEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->getType() == Table::FalseTable);
 
-            QueryClause queryClause3(QueryClause::followsT, integer4, integer3);
+            QueryClause queryClause3(QueryClause::followsT, integer3, integer4);
             Table* table3 = FollowsTEvaluator(pkbManager).evaluate(queryClause3);
             REQUIRE(table3->getType() == Table::TrueTable);
 
-            QueryClause queryClause4(QueryClause::followsT, integer6, integer5);
+            QueryClause queryClause4(QueryClause::followsT, integer5, integer6);
             Table* table4 = FollowsTEvaluator(pkbManager).evaluate(queryClause4);
             REQUIRE(table4->getType() == Table::TrueTable);
 
             // transitive
-            QueryClause queryClause5(QueryClause::followsT, integer6, integer1);
+            QueryClause queryClause5(QueryClause::followsT, integer1, integer6);
             Table* table5 = FollowsTEvaluator(pkbManager).evaluate(queryClause5);
             REQUIRE(table5->getType() == Table::TrueTable);
 

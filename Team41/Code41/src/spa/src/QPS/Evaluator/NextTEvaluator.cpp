@@ -5,21 +5,33 @@ NextTEvaluator::NextTEvaluator(PKBClient *pkb, NextKBAdapter *nextKBAdapter) : S
 }
 
 Table *NextTEvaluator::evaluateIntegerInteger(ClauseVariable left, ClauseVariable right) {
+    if (!EvaluatorUtils::isWithinLimit(left, right, pkb))
+        return new FalseTable();
+
     bool isNextT = nextKBAdapter->isNextT(left.getLabel(), right.getLabel());
     return buildBooleanTable(isNextT);
 }
 
 Table *NextTEvaluator::evaluateIntegerSynonym(ClauseVariable left, ClauseVariable right) {
+    if (!EvaluatorUtils::isWithinLimit(left, pkb))
+        return new FalseTable();
+
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNextT(left.getLabel());
     return buildSingleSynonymTable(setOfStmts, right);
 }
 
 Table *NextTEvaluator::evaluateIntegerWildCard(ClauseVariable left) {
+    if (!EvaluatorUtils::isWithinLimit(left, pkb))
+        return new FalseTable();
+
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNextT(left.getLabel());
     return buildBooleanTable(!setOfStmts.empty());
 }
 
 Table *NextTEvaluator::evaluateSynonymInteger(ClauseVariable left, ClauseVariable right) {
+    if (!EvaluatorUtils::isWithinLimit(right, pkb))
+        return new FalseTable();
+
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsTBefore(right.getLabel());
     return buildSingleSynonymTable(setOfStmts, left);
 }
@@ -35,6 +47,9 @@ Table *NextTEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
 }
 
 Table *NextTEvaluator::evaluateWildCardInteger(ClauseVariable right) {
+    if (!EvaluatorUtils::isWithinLimit(right, pkb))
+        return new FalseTable();
+
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsTBefore(right.getLabel());
     return buildBooleanTable(!setOfStmts.empty());
 }

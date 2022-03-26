@@ -126,7 +126,7 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
 
             // invalid stmtNumber
             clauses.push({QueryClause::affects, integers[0], integers[1]});
-            REQUIRE_THROWS(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            REQUIRE(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top())->getType() == Table::FalseTable);
         }
 
         SECTION("Integer Synonym pair") {
@@ -406,7 +406,7 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
 
             // invalid stmtNumber
             clauses.push({QueryClause::affectsT, integers[0], integers[13]});
-            REQUIRE_THROWS(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            REQUIRE(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top())->getType() == Table::FalseTable);
         }
 
         SECTION("Integer Synonym pair") {
