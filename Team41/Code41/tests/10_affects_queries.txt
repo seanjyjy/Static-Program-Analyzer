@@ -1428,3 +1428,53 @@ Select BOOLEAN such that Affects*(_, "all")
 Select BOOLEAN such that Affects*("smartLoop", "all")
 
 5000
+264 - Out of bound - (int, int) - Affects
+
+Select BOOLEAN such that Affects(5000000000000, 500000100000000)
+FALSE
+5000
+265 - Out of bound - (int, syn) - Affects
+stmt s;
+Select BOOLEAN such that Affects(5000000000000, s)
+FALSE
+5000
+266 - Out of bound - (int, wildcard) - Affects
+
+Select BOOLEAN such that Affects(5000000000000, _)
+FALSE
+5000
+267 - Out of bound - (syn, int) - Affects
+stmt s;
+Select BOOLEAN such that Affects(s, 500000100000000)
+FALSE
+5000
+268 - Out of bound - (wildcard, int) - Affects
+
+Select BOOLEAN such that Affects(_, 500000100000000)
+FALSE
+5000
+269 - Out of bound - (int, int) - Affects*
+
+Select BOOLEAN such that Affects*(5000000000000, 500000100000000)
+FALSE
+5000
+270 - Out of bound - (int, syn) - Affects*
+stmt s;
+Select BOOLEAN such that Affects*(5000000000000, s)
+FALSE
+5000
+271 - Out of bound - (int, wildcard) - Affects*
+
+Select BOOLEAN such that Affects*(5000000000000, _)
+FALSE
+5000
+272 - Out of bound - (syn, int) - Affects*
+stmt s;
+Select BOOLEAN such that Affects*(s, 500000100000000)
+FALSE
+5000
+273 - Out of bound - (wildcard, int) - Affects*
+
+Select BOOLEAN such that Affects*(_, 500000100000000)
+FALSE
+5000

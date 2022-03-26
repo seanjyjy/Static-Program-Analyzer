@@ -343,3 +343,33 @@ procedure procedure; variable variable;
 Select <procedure, variable> such that Uses(procedure, variable)
 procedure y132, procedure x, procedure x411, procedure foo, procedure a, procedure bar, procedure temp, procedure tmp, procedure X, procedure chArlie, procedure A1pH3, procedure z, procedure c, procedure var, procedure while, procedure read, procedure print
 5000
+70 - Out of bound - (int, identifier) - Uses
+
+Select BOOLEAN such that Uses(50000000000000, "x")
+FALSE
+5000
+71 - Out of bound - (int, synonym) - Uses
+stmt s;
+Select BOOLEAN such that Uses(50000000000000, s)
+FALSE
+5000
+72 - Out of bound - (int, wildcard) - Uses
+
+Select BOOLEAN such that Uses(50000000000000, _)
+FALSE
+5000
+73 - Out of bound - (int, identifier) - Modify
+
+Select BOOLEAN such that Modifies(50000000000000, "x")
+FALSE
+5000
+74 - Out of bound - (int, synonym) - Modify
+stmt s;
+Select BOOLEAN such that Modifies(50000000000000, s)
+FALSE
+5000
+75 - Out of bound - (int, wildcard) - Modify
+
+Select BOOLEAN such that Modifies(50000000000000, _)
+FALSE
+5000

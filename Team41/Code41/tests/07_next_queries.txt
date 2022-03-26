@@ -1128,3 +1128,53 @@ stmt s;
 Select BOOLEAN such that Next(0, 1)
 FALSE
 5000
+227 - Out of bound - (int, int) - Next
+
+Select BOOLEAN such that Next(5000000000000, 500000100000000)
+FALSE
+5000
+228 - Out of bound - (int, syn) - Next
+stmt s;
+Select BOOLEAN such that Next(5000000000000, s)
+FALSE
+5000
+229 - Out of bound - (int, wildcard) - Next
+
+Select BOOLEAN such that Next(5000000000000, _)
+FALSE
+5000
+230 - Out of bound - (syn, int) - Next
+stmt s;
+Select BOOLEAN such that Next(s, 500000100000000)
+FALSE
+5000
+231 - Out of bound - (wildcard, int) - Next
+
+Select BOOLEAN such that Next(_, 500000100000000)
+FALSE
+5000
+232 - Out of bound - (int, int) - Next*
+
+Select BOOLEAN such that Next*(5000000000000, 500000100000000)
+FALSE
+5000
+233 - Out of bound - (int, syn) - Next*
+stmt s;
+Select BOOLEAN such that Next*(5000000000000, s)
+FALSE
+5000
+234 - Out of bound - (int, wildcard) - Next*
+
+Select BOOLEAN such that Next*(5000000000000, _)
+FALSE
+5000
+235 - Out of bound - (syn, int) - Next*
+stmt s;
+Select BOOLEAN such that Next*(s, 500000100000000)
+FALSE
+5000
+236 - Out of bound - (wildcard, int) - Next*
+
+Select BOOLEAN such that Next*(_, 500000100000000)
+FALSE
+5000
