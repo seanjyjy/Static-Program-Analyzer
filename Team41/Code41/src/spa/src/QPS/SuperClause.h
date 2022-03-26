@@ -7,8 +7,6 @@
 #include "QueryClause.h"
 #include "PatternClause.h"
 
-using namespace std;
-
 class SuperClause {
 public:
     SuperClause(WithClause);
@@ -52,10 +50,11 @@ private:
     PatternClause patternClause;
 };
 
-template<>
-struct hash<SuperClause> {
-    std::size_t operator()(SuperClause const& g) const noexcept {
-        return g.hash();
-    }
-};
-
+namespace std {
+    template<>
+    struct hash<SuperClause> {
+        std::size_t operator()(SuperClause const& g) const noexcept {
+            return g.hash();
+        }
+    };
+}
