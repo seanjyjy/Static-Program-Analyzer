@@ -602,6 +602,15 @@ TEST_CASE("QPS: Parser_VALID") {
         SuperClause *sc2 = qo->getSuperClauses().at(1);
         REQUIRE((*sc1) == (*sc2));
     }
+    SECTION("single digit zero") {
+        string s = "stmt s;\n"
+                   "Select BOOLEAN such that Next(0, 1)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->getSuperClauses().at(0)->getSuchThatClause().getLeftClauseVariable().getLabel() == "0");
+        REQUIRE(qo->getSuperClauses().at(0)->getSuchThatClause().getLeftClauseVariable().isInteger());
+    }
     delete qo;
 }
 

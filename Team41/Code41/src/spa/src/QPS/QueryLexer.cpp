@@ -87,13 +87,14 @@ bool QueryLexer::isValidAttribute(string w) {
 }
 
 bool QueryLexer::isInteger(string w) {
-    string::const_iterator it = w.begin();
-
-    if ((*it) == '0')
-        return false;
-
-    while (it != w.end() && isdigit(*it)) ++it;
-    return !w.empty() && it == w.end();
+    if (w.at(0) == '0') {
+        return w.length() == 1;
+    }
+    for (int i = 0; i < (int)w.length(); i++) {
+        if (!isdigit(w.at(i)))
+            return false;
+    }
+    return true;
 }
 
 bool QueryLexer::isIdentifier(string w) {
