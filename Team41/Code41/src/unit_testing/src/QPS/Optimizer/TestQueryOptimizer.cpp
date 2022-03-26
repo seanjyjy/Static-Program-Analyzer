@@ -724,7 +724,178 @@ TEST_CASE("Query Optimizer: autotester 09_assignment2") {
     }
 }
 
-TEST_CASE("Query Optimizer: autotester next_cache_queries") {
+TEST_CASE("Query Optimizer: autotester 13_sample") {
+    string simple = "procedure Example {\n"
+                    "  x = 2;\n"
+                    "  z = 3;\n"
+                    "  i = 5;\n"
+                    "  while (i!=0) {\n"
+                    "    x = x - 1;\n"
+                    "    if (x==1) then {\n"
+                    "      z = x + 1; }\n"
+                    "    else {\n"
+                    "      y = z + x; }\n"
+                    "    z = z + x + i;\n"
+                    "    call q;\n"
+                    "    i = i - 1; }\n"
+                    "  call p; }\n"
+                    "\n"
+                    "procedure p {\n"
+                    "  if (x<0) then {\n"
+                    "    while (i>0) {\n"
+                    "      x = z * 3 + 2 * y;\n"
+                    "      call q;\n"
+                    "      i = i - 1; }\n"
+                    "    x = x + 1;\n"
+                    "    z = x + z; }\n"
+                    "  else {\n"
+                    "    z = 1; }\n"
+                    "  z = z + x + i; }\n"
+                    "\n"
+                    "procedure q {\n"
+                    "  if (x==1) then {\n"
+                    "    z = x + 1; }\n"
+                    "  else {\n"
+                    "    x = z + x; } }";
+
+    // parse program
+    Parser p;
+    TNode *ast(p.parseProgram(simple));
+
+    // extract relations into pkb
+    PKBManager pkbManager = PKBManager();
+    DesignExtractor designExtractor(ast, &pkbManager);
+    designExtractor.extractDesign();
+
+    SECTION("1") {
+        string query = "while w;\n"
+                       "Select w such that Parent(w, 7)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("2") {
+        string query = "if ifs;\n"
+                       "Select ifs such that Follows(5, ifs)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("3") {
+        string query = "assign a;\n"
+                       "Select a such that Parent*(4, a)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("4") {
+        string query = "call c;\n"
+                       "Select c such that Follows*(1, c)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("5") {
+        string query = "stmt s;\n"
+                       "Select s such that Modifies(s, \"i\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("6") {
+        string query = "variable v;\n"
+                       "Select v such that Uses(\"p\", v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("7") {
+        string query = "procedure p;\n"
+                       "Select p such that Calls(p, \"q\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("8") {
+        string query = "procedure p;\n"
+                       "Select p such that Calls*(\"Example\", p)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("9") {
+        string query = "stmt n;\n"
+                       "Select n such that Next(4, n)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("10") {
+        string query = "stmt n;\n"
+                       "Select n such that Next*(n, 4)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("11") {
+        string query = "assign a;\n"
+                       "Select a such that Affects(a, 9)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("12") {
+        string query = "assign a;\n"
+                       "Select a such that Affects*(11, a)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("13") {
+        string query = "assign a;\n"
+                       "Select a pattern a(\"z\", _\"x+i\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("14") {
+        string query = "assign a;\n"
+                       "Select a pattern a(_, _\"x + 1\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("15") {
+        string query = "assign a;\n"
+                       "Select a pattern a(_, \" 3  +  2 \")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("16") {
+        string query = "while w; variable v;\n"
+                       "Select w such that Modifies(w, v) with v.varName = \"x\"";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("17") {
+        string query = "if ifs; variable v;\n"
+                       "Select v such that Uses(ifs, v) with ifs.stmt# = 22";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("18") {
+        string query = "procedure p, q;\n"
+                       "Select BOOLEAN such that Calls(p, q) with q.procName = \"p\" and p.procName = \"Example\"";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("19") {
+        string query = "if ifs; assign a1, a2; variable v1, v2;\n"
+                       "Select ifs such that Follows*(a1, ifs) and Follows*(ifs, a2) and Modifies(ifs, v1) and Uses(ifs, v2) with v1.varName = v2.varName";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("20") {
+        string query = "stmt n; stmt s;\n"
+                       "Select s such that Next*(16, n) and Parent*(s, n)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("21") {
+        string query = "stmt n; assign a;\n"
+                       "Select a such that Affects*(a, n) and Next*(13, n)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("22") {
+        string query = "procedure p, q; variable v;\n"
+                       "Select <p, q, v> such that Modifies(p, v) and Calls(p, q)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("23") {
+        string query = "call c; assign a1, a2;\n"
+                       "Select BOOLEAN such that Follows*(_, c) and Affects(a1, a2) and Uses(a2, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("24") {
+        string query = "assign a1, a2; variable v;\n"
+                       "Select v pattern a1(v, _) such that Affects*(a1, a2) and Uses(a2, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("25") {
+        string query = "stmt n1, n2; variable v; call c;\n"
+                       "Select c such that Next*(n1, n2) and Modifies(n1, v) and Uses(n2, v) and Modifies(c, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+}
+
+
+TEST_CASE("Query Optimizer: autotester 12_next_cache_queries") {
     string simple = "procedure NextTest {\n"
                     "    x = 1;\n"
                     "    x = 2;\n"
