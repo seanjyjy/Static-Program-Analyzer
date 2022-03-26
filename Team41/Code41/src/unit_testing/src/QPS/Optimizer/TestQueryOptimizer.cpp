@@ -609,6 +609,121 @@ TEST_CASE("Query Optimizer: autotester 01_uses_modify") {
     }
 }
 
+TEST_CASE("Query Optimizer: autotester 09_assignment2") {
+    string simple = "procedure Monk {\n"
+                    "      a = 4;\n"
+                    "      read t;\n"
+                    "      c = a * b + 3 * a;\n"
+                    "      call Pig;\n"
+                    "      y = a + 2 * c;\n"
+                    "      while (d != 1)  {\n"
+                    "          d = a + y;\n"
+                    "          while (y < c) {\n"
+                    "              x = b + 5 * y;\n"
+                    "            t = 1;\n"
+                    "            call Monkey; }\n"
+                    "        v = d + 25; }\n"
+                    "    x = 2 * t + v;\n"
+                    "    if (a > 0) then {\n"
+                    "        x = x * a; }\n"
+                    "      else {\n"
+                    "       x = x + a; }\n"
+                    "    y = x + 2;\n"
+                    "    call Kappa; }\n"
+                    "procedure Pig {\n"
+                    "    while (c > 0) {\n"
+                    "        if (b > 0) then {\n"
+                    "            d = v + a; }\n"
+                    "           else {\n"
+                    "            a = x * y + v * y + d; } } }\n"
+                    "procedure Monkey {\n"
+                    "    t = d + y;\n"
+                    "    if (t > 0) then {\n"
+                    "        while (x > 0) {\n"
+                    "            call Pig;\n"
+                    "            d = d + a; } }\n"
+                    "       else {\n"
+                    "            t = d + 21 + t; } }\n"
+                    "procedure Kappa {\n"
+                    "    print x;\n"
+                    "    call Monkey;\n"
+                    "    }";
+
+    // parse program
+    Parser p;
+    TNode *ast(p.parseProgram(simple));
+
+    // extract relations into pkb
+    PKBManager pkbManager = PKBManager();
+    DesignExtractor designExtractor(ast, &pkbManager);
+    designExtractor.extractDesign();
+
+    SECTION("1 - cl with attr ref") {
+        string query = "call cl;\n"
+                       "Select <cl.procName>";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("2 - calls p") {
+        string query = "procedure p;\n"
+                       "Select p such that Calls (p, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("3 - next (a, w)") {
+        string query = "assign a; while w;\n"
+                       "Select a such that Next (a, w)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("4 - Affects (13, 17)") {
+        string query = "Select BOOLEAN such that Affects(13, 17)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("5 - Affects (a, 13)") {
+        string query = "assign a;\n"
+                       "Select a such that Affects(a, 13)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("6 - pattern with") {
+        string query = "while w; if ifs;\n"
+                       "Select <w, ifs> pattern w (\"c\", _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("7 - with stmt# - constant value") {
+        string query = "constant c; assign a;\n"
+                       "Select c with a.stmt# = c.value";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("8 - incorrect pattern and") {
+        string query = "assign a, a1;\n"
+                       "Select a pattern a (\"x\", _) and pattern a1 (_, _\"x\"_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("9 - Next cache usage") {
+        string query = "stmt s; call cl;\n"
+                       "Select s such that Next* (s, s) such that Next* (cl, s)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("10 - Affects with If") {
+        string query = "assign a; if ifs;\n"
+                       "Select a such that Affects*(a, a) and Parent* (ifs, a)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("11 - Tuple with Follow and Pattern While") {
+        string query = "assign a; variable v; while w;\n"
+                       "Select <a, v> such that Follows (w, a) pattern w (v, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("12 - pattern ifs and modifies and uses") {
+        string query = "procedure p; if ifs; variable v;\n"
+                       "Select p pattern ifs (v, _, _) such that Modifies (p, v) and Uses (p, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("13 - Affects pattern with attr ref") {
+        string query = "assign a, a1; variable v; read rd;\n"
+                       "Select a1 such that Affects* (a, a1) pattern a (v, _) with v.varName = rd.varName";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+}
+
 TEST_CASE("Query Optimizer: autotester next_cache_queries") {
     string simple = "procedure NextTest {\n"
                     "    x = 1;\n"

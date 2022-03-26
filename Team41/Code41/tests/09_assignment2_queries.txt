@@ -18,47 +18,47 @@ Select a such that Next (a, w)
 Select BOOLEAN such that Affects(13, 17)
 FALSE
 5000
-4 - Affects (a, 13)
+5 - Affects (a, 13)
 assign a;
 Select a such that Affects(a, 13)
 12
 5000
-4 - pattern with
+6 - pattern with
 while w; if ifs;
 Select <w, ifs> pattern w ("c", _)
 8 14, 8 20, 8 24, 19 14, 19 20, 19 24
 5000
-5 - with stmt# - constant value
+7 - with stmt# - constant value
 constant c; assign a;
 Select c with a.stmt# = c.value
 1, 3, 5, 21
 5000
-6 - incorrect pattern and
+8 - incorrect pattern and
 assign a, a1;
 Select a pattern a ("x", _) and pattern a1 (_, _"x"_)
 
 5000
-7 - Next cache usage
+9 - Next cache usage
 stmt s; call cl;
 Select s such that Next* (s, s) such that Next* (cl, s)
 6, 7, 8, 9, 10, 11, 12, 25, 26, 27
 5000
-8 - Affects with If
+10 - Affects with If
 assign a; if ifs;
 Select a such that Affects*(a, a) and Parent* (ifs, a)
 21, 22
 5000
-8 - Tuple with Follow and Pattern While
+11 - Tuple with Follow and Pattern While
 assign a; variable v; while w;
 Select <a, v> such that Follows (w, a) pattern w (v, _)
 13 d, 12 y, 12 c
 5000
-9 - pattern ifs and modifies and uses
+12 - pattern ifs and modifies and uses
 procedure p; if ifs; variable v;
 Select p pattern ifs (v, _, _) such that Modifies (p, v) and Uses (p, v)
 Kappa, Pig, Monk, Monkey
 5000
-10 - Affects pattern with attr ref
+13 - Affects pattern with attr ref
 assign a, a1; variable v; read rd;
 Select a1 such that Affects* (a, a1) pattern a (v, _) with v.varName = rd.varName
 28
