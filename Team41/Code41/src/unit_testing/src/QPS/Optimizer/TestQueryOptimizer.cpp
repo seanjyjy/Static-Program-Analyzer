@@ -285,6 +285,330 @@ TEST_CASE("Query Optimizer: autotester 00_assignment") {
     }
 }
 
+TEST_CASE("Query Optimizer: autotester 01_uses_modify") {
+    string simple = "procedure procedure {\n"
+                    "  x411 = 2;\n"
+                    "  y132 = 2 + 2;\n"
+                    "  x1c2v3b4 = 2 / 2;\n"
+                    "\n"
+                    "  x = y132 * 2;\n"
+                    "  x = 3 % x;  x = 2 * 2 + 3 % 1 - x411 / 2;\n"
+                    "  var = 2;\n"
+                    "  foo = 4;\n"
+                    "  bar = foo - 4 + 3 * 2;\n"
+                    "  X=1;\n"
+                    "    read bar ;\n"
+                    "   \tbar= foo   ;\n"
+                    "   if (a <\n"
+                    "   bar) then{\n"
+                    "      while (bar > temp) {\n"
+                    "           oSCar  = 1 * bar + tmp;\n"
+                    "           while (!(tmp / tmp == bar * bar)) {\n"
+                    "             oSCar = X - (bar + foo *\n"
+                    "             chArlie); }}\n"
+                    "   \twhile ((!(x!=1)) && (!(x == 1))) {\n"
+                    "           x = x + 1;\n"
+                    "           if (foo==0) then {\n"
+                    "             while (bar== 3){\n"
+                    "               print A1pH3;\n"
+                    "               b = 0;\n"
+                    "               c = x411    + z + A1pH3; }}\n"
+                    "           else {\n"
+                    "               while (c>1) {\n"
+                    "                              c = c -1;}\n"
+                    "               x = x+ 1; }}}\n"
+                    "   else{\n"
+                    "   \ta= 2;}\n"
+                    "  while (foo < bar) {\n"
+                    "    if (var > 0) then {\n"
+                    "      var = var + 22222222222222222222222222222;\n"
+                    "      bar = bar + 11111111111111111111111111111;\n"
+                    "      var = var - 22222222222222222222222222222;\n"
+                    "    } else {\n"
+                    "      foo = foo + 1;\n"
+                    "      var = var - 1;\n"
+                    "      while = 8;\n"
+                    "      while (while > 1) {\n"
+                    "        while = 3 * 2 + while / 2 - 6;\n"
+                    "        read read;\n"
+                    "        read print;\n"
+                    "        then\n"
+                    "        =\n"
+                    "        read\n"
+                    "        ;\n"
+                    "        else =\n"
+                    "        print;\n"
+                    "        if (while != 0) then {\n"
+                    "          temp = while * 2 - 2;\n"
+                    "          read while;\n"
+                    "          while = foo - bar * var + 3 * 2;\n"
+                    "          print while;\n"
+                    "          while = (temp + 2) / 2;\n"
+                    "        } else {\n"
+                    "          read temp;\n"
+                    "          print temp;\n"
+                    "        }\n"
+                    "        print read;\n"
+                    "        print print;\n"
+                    "      }\n"
+                    "    }\n"
+                    "  }\n"
+                    "  print var;\n"
+                    "  print foo;\n"
+                    "  print bar;\n"
+                    "}";
+
+    // parse program
+    Parser p;
+    TNode *ast(p.parseProgram(simple));
+
+    // extract relations into pkb
+    PKBManager pkbManager = PKBManager();
+    DesignExtractor designExtractor(ast, &pkbManager);
+    designExtractor.extractDesign();
+
+    SECTION("1 - Select all statement") {
+        string query = "stmt s;\n"
+                       "Select s";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("2 - Select all variable") {
+        string query = "variable v;\n"
+                       "Select v";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("3 - Select all constant") {
+        string query = "constant c;\n"
+                       "Select c";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("4 - Select all print") {
+        string query = "print pn;\n"
+                       "Select pn";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("5 - Select all read") {
+        string query = "read re;\n"
+                       "Select re";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("6 - Select all while") {
+        string query = "while w;\n"
+                       "Select w";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("7 - Select all if") {
+        string query = "if ifs;\n"
+                       "Select ifs";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("8 - Uses with invalid wildcard") {
+        string query = "variable v;\n"
+                       "Select BOOLEAN such that Uses(_, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("9 - Uses with statement and wildcard") {
+        string query = "stmt s;\n"
+                       "Select s such that Uses(s, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("10 - Uses with assign and ident variable") {
+        string query = "assign a;\n"
+                       "Select a such that Uses(a, \"x\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("11 - Uses with assign and synonym variable") {
+        string query = "assign a; variable v;\n"
+                       "Select a such that Uses(a, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("12 - Uses with ident assign and synonym variable") {
+        string query = "variable v;\n"
+                       "Select v such that Uses(14, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("13 - Uses with print and ident variable") {
+        string query = "print pn; variable v;\n"
+                       "Select v such that Uses(pn, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("14 - Uses with if and ident variable") {
+        string query = "if ifs;\n"
+                       "Select ifs such that Uses(ifs, \"x\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("15 - Uses with if and synonym variable") {
+        string query = "if ifs; variable v;\n"
+                       "Select v such that Uses(ifs, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("16 - Uses with while and ident variable") {
+        string query = "while w;\n"
+                       "Select w such that Uses(w, \"X\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("17 - Uses with while and synonym variable") {
+        string query = "while w; variable v;\n"
+                       "Select v such that Uses(w, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("18 - Uses with false clause") {
+        string query = "stmt s;\n"
+                       "Select s such that Uses(6, \"y132\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("19 - Uses with true clause") {
+        string query = "Select v such that Uses(6, \"x411\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("20 - Uses none") {
+        string query = "stmt s;\n"
+                       "Select s such that Uses(s, \"Z\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("21 - Modifies with invalid wildcard") {
+        string query = "variable v;\n"
+                       "Select BOOLEAN such that Modifies(_, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("22 - Modifies with statement and wildcard") {
+        string query = "stmt s;\n"
+                       "Select s such that Modifies(s, _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("23 - Modifies with assign and ident variable") {
+        string query = "assign a;\n"
+                       "Select a such that Modifies(a, \"x1c2v3b4\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("24 - Modifies with assign and synonym variable") {
+        string query = "assign a; variable v;\n"
+                       "Select a such that Modifies(a, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("25 - Modifies with ident assign and synonym variable") {
+        string query = "variable v;\n"
+                       "Select v such that Modifies(1, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("26 - Modifies with read and synonym variable") {
+        string query = "read r; variable v;\n"
+                       "Select v such that Modifies(r, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("27 - Modifies with if and ident variable") {
+        string query = "if ifs;\n"
+                       "Select ifs such that Modifies(ifs, \"x\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("28 - Modifies with if and ident variable - none") {
+        string query = "if ifs;\n"
+                       "Select ifs such that Modifies(ifs, \"x411\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("29 - Modifies with if and ident variable") {
+        string query = "if ifs; variable v;\n"
+                       "Select v such that Modifies(ifs, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("30 - Modifies with while and ident variable") {
+        string query = "while w;\n"
+                       "Select w such that Modifies(w, \"x\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("31 - Modifies with while and synonym variable") {
+        string query = "variable v; while w;\n"
+                       "Select v such that Modifies(w, v)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("32 - Modifies none") {
+        string query = "stmt s;\n"
+                       "Select s such that Modifies(s, \"xDoNotExist\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("41 - Invalid case - Uses with read") {
+        string query = "read r;\n"
+                       "Select BOOLEAN such that Uses(r,_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("42 - Invalid case - Modifies with print") {
+        string query = "print pn;\n"
+                       "Select BOOLEAN such that Modifies(pn,_)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("46 - Uses('procedure', _)") {
+        string query = "Select BOOLEAN such that Uses(\"procedure\", _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("47 - Uses('procedure', 'x')") {
+        string query = R"(Select BOOLEAN such that Uses("procedure", "x"))";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("48 - Uses('procedure', 'x')") {
+        string query = "variable v;\n"
+                       "Select BOOLEAN such that Uses(\"procedure\", \"x\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("49 - Uses('procedure', proc)") {
+        string query = "procedure Uses;\n"
+                       "Select BOOLEAN such that Uses(\"procedure\", Uses)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("50 - Uses('procedure', v)") {
+        string query = "variable Select;\n"
+                       "Select Select such that Uses(\"procedure\", Select)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("51 - Uses('procedure', 1)") {
+        string query = "Select BOOLEAN such that Uses(\"procedure\", 1)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("52 - Uses(proc, v) - select proc") {
+        string query = "variable Uses; procedure such;\n"
+                       "Select such such that Uses(such, Uses)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("53 - Uses(proc, 'chArlie')") {
+        string query = "variable Select; procedure proc;\n"
+                       "Select proc such that Uses(proc, \"chArlie\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("54 - Uses(proc, v) - select v") {
+        string query = "variable variable; procedure procedure;\n"
+                       "Select variable such that Uses(procedure, variable)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("55 - Uses(s, 'X')") {
+        string query = "stmt stmt;\n"
+                       "Select stmt such that Uses(stmt, \"X\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("56 - Modifies('procedure', _)") {
+        string query = "Select BOOLEAN such that Modifies(\"procedure\", _)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("66 - Modifies(s, v)") {
+        string query = "stmt stmt; variable variable;\n"
+                       "Select <stmt, variable> such that Modifies(stmt, variable)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("67 - Modifies(proc, v)") {
+        string query = "procedure procedure; variable variable;\n"
+                       "Select <procedure, variable> such that Modifies(procedure, variable)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("68 - Uses(s, v)") {
+        string query = "stmt stmt; variable variable;\n"
+                       "Select <stmt, variable> such that Uses(stmt, variable)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+    SECTION("69 - Uses(proc, v)") {
+        string query = "procedure procedure; variable variable;\n"
+                       "Select <procedure, variable> such that Uses(procedure, variable)";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+}
+
 TEST_CASE("Query Optimizer: autotester next_cache_queries") {
     string simple = "procedure NextTest {\n"
                     "    x = 1;\n"

@@ -46,7 +46,6 @@ void TestOptimizerUtils::ensureOQOIsCorrect(string &query, PKBManager &pkbManage
     OptimizedQueryObject oqo = QueryOptimizer::create()
             .enableAllOptimizations(&pkbManager)
             .optimize(qo);
-    oqo.printPlan();
 
     // extract clauses from original
     vector<SuperClause*> originalClauses(qo->getSuperClauses());
