@@ -54,8 +54,6 @@ QueryOptimizer QueryOptimizer::create() {
     return QueryOptimizer{};
 }
 
-
-
 void QueryOptimizer::print() {
     cout << "isClauseGroupingEnabled: " << isClauseGroupingEnabled << endl
          << "isIntraGroupSortEnabled: " << isIntraGroupSortEnabled << endl
@@ -84,4 +82,11 @@ QueryOptimizer &QueryOptimizer::enableDynamicPolling(PKBManager *pkbManager) {
     isDynamicPollingEnabled = true;
     isPkbAdapterSet = true;
     return *this;
+}
+
+QueryOptimizer &QueryOptimizer::enableAllOptimizations(PKBManager *pkbManager) {
+    return setClauseGrouping(true)
+            .setIntraGroupSort(true)
+            .setInterGroupSort(true)
+            .enableDynamicPolling(pkbManager);
 }

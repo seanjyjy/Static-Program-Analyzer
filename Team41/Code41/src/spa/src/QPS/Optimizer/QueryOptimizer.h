@@ -31,6 +31,9 @@ public:
 
     static QueryOptimizer create();
 
+    // convenience method to turn on all forms of optimization
+    QueryOptimizer &enableAllOptimizations(PKBManager *pkbManager);
+
     QueryOptimizer &setIntraGroupSort(bool isOn);
 
     QueryOptimizer &setInterGroupSort(bool isOn);
