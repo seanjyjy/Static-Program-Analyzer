@@ -708,11 +708,11 @@ QueryObject *QueryParser::parse() {
     string a = "";
     QueryDeclaration s(QueryDeclaration::ASSIGN, a);
     SelectTarget st(SelectTarget::BOOLEAN);
-    queryObject = new QueryObject(declarations, clauses, patternClauses, withClauses, superClauses, s, st, false);
-
+    queryObject = new QueryObject(declarations, clauses, patternClauses, withClauses, superClauses, s, st, true);
     lex = new QueryLexer(input);
 
     if (!parseDeclarations()) {
+        queryObject->isQueryValid = false;
         cleanup();
         return queryObject;
     }
@@ -752,7 +752,6 @@ QueryObject *QueryParser::parse() {
     }
 
     printf("Query parsed.\n");
-    queryObject->isQueryValid = true;
     cleanup();
     return queryObject;
 }
