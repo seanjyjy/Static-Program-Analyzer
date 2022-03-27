@@ -13,7 +13,7 @@
 --.            } else {
 11.                read reader;
 12.                while (while + 1 == while + 1) {
-13.                    while = while * while;
+13.                    while = while *while;
 --.                }
 --.            }
 --.        }
