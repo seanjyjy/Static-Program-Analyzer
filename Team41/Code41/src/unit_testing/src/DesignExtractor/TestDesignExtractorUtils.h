@@ -46,4 +46,17 @@ public:
         }
         return true;
     }
+
+    static bool checkCallsOrder(list<string> procCallOrder, unordered_map<string, unordered_set<string>> callsMap) {
+        unordered_set<string> vis;
+        for (string &proc : procCallOrder) {
+            if (callsMap.find(proc) == callsMap.end()) return false;
+            for (const string &procChild : callsMap[proc]) {
+                if (callsMap.find(procChild) != callsMap.end() && vis.find(procChild) == vis.end())
+                    return false;
+            }
+            vis.insert(proc);
+        }
+        return true;
+    }
 };

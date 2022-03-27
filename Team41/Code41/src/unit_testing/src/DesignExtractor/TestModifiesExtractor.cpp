@@ -9,6 +9,7 @@ using namespace std;
 
 /**
  * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl
+ * Call
  */
 
 TEST_CASE("ModifiesExtractor: Assign") {
@@ -17,7 +18,7 @@ TEST_CASE("ModifiesExtractor: Assign") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -45,7 +46,7 @@ TEST_CASE("ModifiesExtractor: Read") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -68,7 +69,7 @@ TEST_CASE("ModifiesExtractor: Print") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -83,7 +84,7 @@ TEST_CASE("ModifiesExtractor: While") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -112,7 +113,7 @@ TEST_CASE("ModifiesExtractor: If") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -149,7 +150,7 @@ TEST_CASE("ModifiesExtractor: Non-nested") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -178,7 +179,7 @@ TEST_CASE("ModifiesExtractor: Nested") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -206,7 +207,7 @@ TEST_CASE("ModifiesExtractor: n3iif") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -241,7 +242,7 @@ TEST_CASE("ModifiesExtractor: n3iwl") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -272,7 +273,7 @@ TEST_CASE("ModifiesExtractor: n3wim") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -304,7 +305,7 @@ TEST_CASE("ModifiesExtractor: n3wwl") {
     ee.extract();
     unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     unordered_map<string, unordered_set<string>> callsMap;
-    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
 
@@ -322,6 +323,41 @@ TEST_CASE("ModifiesExtractor: n3wwl") {
             {"7", {"while"}},
             {"8", {"while"}},
             {"9", {"while"}}
+    };
+    REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
+}
+
+TEST_CASE("ModifiesExtractor: Call") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("call.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extract();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    unordered_map<string, unordered_set<string>> callsMap = {
+            {"p1", {"p2", "p4"}}, {"p2", {"p3"}}, {"p4", {"p5", "p6"}}, {"p5", {"p6"}}
+    };
+    list<string> procCallOrder = {"p5", "p4", "p2", "p1"};
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
+    me.extract();
+
+    unordered_map<string, unordered_set<string>> expectedProcModifies = {
+            {"p6", {"f"}}, {"p5", {"e", "f"}}, {"p4", {"d", "e", "f"}},
+            {"p3", {"c"}}, {"p2", {"b", "c"}}, {"p1", {"a", "b", "c", "d", "e", "f"}}
+    };
+    REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
+    unordered_map<string, unordered_set<string>> expectedStmtModifies = {
+            {"1", {"b", "c"}},
+            {"2", {"d", "e", "f"}},
+            {"3", {"a"}},
+            {"4", {"c"}},
+            {"5", {"b"}},
+            {"6", {"c"}},
+            {"7", {"d"}},
+            {"8", {"e", "f"}},
+            {"9", {"f"}},
+            {"10", {"f"}},
+            {"11", {"e"}},
+            {"12", {"f"}}
     };
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
     delete ast;

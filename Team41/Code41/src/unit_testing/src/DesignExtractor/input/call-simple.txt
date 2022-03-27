@@ -1,0 +1,29 @@
+procedure p1 {
+    call p2;
+    call p4;
+    a = 1 + m;
+}
+
+procedure p2 {
+    call p3;
+    b = 2 + n;
+}
+
+procedure p3 {
+    c = 3 + o;
+}
+
+procedure p4 {
+    d = 4 + p;
+    call p5;
+    call p6;
+}
+
+procedure p5 {
+    call p6;
+    e = 5 + q;
+}
+
+procedure p6 {
+    f = 6 + r;
+}
