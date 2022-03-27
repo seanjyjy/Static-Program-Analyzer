@@ -211,10 +211,10 @@ TEST_CASE("FollowsExtractor: multiproc1") {
     fe.extract();
 
     unordered_map<string, list<string>> expectedFollowsT = {
-            {"1", {"8", "9"}},
-            {"2", {"5"}},
-            {"6", {"7"}},
-            {"8", {"9"}},
+            {"1",  {"8",  "9"}},
+            {"2",  {"5"}},
+            {"6",  {"7"}},
+            {"8",  {"9"}},
             {"10", {"13", "14"}},
             {"11", {"12"}},
             {"13", {"14"}},

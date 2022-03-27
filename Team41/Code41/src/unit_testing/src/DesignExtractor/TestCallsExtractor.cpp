@@ -20,11 +20,17 @@ TEST_CASE("CallsExtractor: Call") {
     ce.extract();
 
     unordered_map<string, unordered_set<string>> expectedCalls = {
-            {"p1", {"p2", "p4"}}, {"p2", {"p3"}}, {"p4", {"p5", "p6"}}, {"p5", {"p6"}}
+            {"p1", {"p2", "p4"}},
+            {"p2", {"p3"}},
+            {"p4", {"p5", "p6"}},
+            {"p5", {"p6"}}
     };
     REQUIRE(ce.getCallsMap() == expectedCalls);
     unordered_map<string, unordered_set<string>> expectedCallsT = {
-            {"p1", {"p2", "p3", "p4", "p5", "p6"}}, {"p2", {"p3"}}, {"p4", {"p5", "p6"}}, {"p5", {"p6"}}
+            {"p1", {"p2", "p3", "p4", "p5", "p6"}},
+            {"p2", {"p3"}},
+            {"p4", {"p5", "p6"}},
+            {"p5", {"p6"}}
     };
     REQUIRE(ce.getCallsTMap() == expectedCallsT);
     REQUIRE(TestDesignExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
@@ -39,11 +45,15 @@ TEST_CASE("CallsExtractor: multiproc1") {
     ce.extract();
 
     unordered_map<string, unordered_set<string>> expectedCalls = {
-            {"n1iif", {"n0f"}}, {"n0f", {"n0m"}}, {"n0m", {"n0l"}}
+            {"n1iif", {"n0f"}},
+            {"n0f",   {"n0m"}},
+            {"n0m",   {"n0l"}}
     };
     REQUIRE(ce.getCallsMap() == expectedCalls);
     unordered_map<string, unordered_set<string>> expectedCallsT = {
-            {"n1iif", {"n0f", "n0m", "n0l"}}, {"n0f", {"n0m", "n0l"}}, {"n0m", {"n0l"}}
+            {"n1iif", {"n0f", "n0m", "n0l"}},
+            {"n0f",   {"n0m", "n0l"}},
+            {"n0m",   {"n0l"}}
     };
     REQUIRE(ce.getCallsTMap() == expectedCallsT);
     REQUIRE(TestDesignExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
@@ -58,11 +68,15 @@ TEST_CASE("CallsExtractor: multiproc2") {
     ce.extract();
 
     unordered_map<string, unordered_set<string>> expectedCalls = {
-            {"n1iif", {"n0f", "n0m"}}, {"n0f", {"n0l"}}, {"n0m", {"n0l"}}
+            {"n1iif", {"n0f", "n0m"}},
+            {"n0f",   {"n0l"}},
+            {"n0m",   {"n0l"}}
     };
     REQUIRE(ce.getCallsMap() == expectedCalls);
     unordered_map<string, unordered_set<string>> expectedCallsT = {
-            {"n1iif", {"n0f", "n0m", "n0l"}}, {"n0f", {"n0l"}}, {"n0m", {"n0l"}}
+            {"n1iif", {"n0f", "n0m", "n0l"}},
+            {"n0f",   {"n0l"}},
+            {"n0m",   {"n0l"}}
     };
     REQUIRE(ce.getCallsTMap() == expectedCallsT);
     REQUIRE(TestDesignExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
@@ -96,11 +110,13 @@ TEST_CASE("CallsExtractor: multiproc4") {
     ce.extract();
 
     unordered_map<string, unordered_set<string>> expectedCalls = {
-            {"n1iif", {"n0f"}}, {"n0m", {"n0l"}}
+            {"n1iif", {"n0f"}},
+            {"n0m",   {"n0l"}}
     };
     REQUIRE(ce.getCallsMap() == expectedCalls);
     unordered_map<string, unordered_set<string>> expectedCallsT = {
-            {"n1iif", {"n0f"}}, {"n0m", {"n0l"}}
+            {"n1iif", {"n0f"}},
+            {"n0m",   {"n0l"}}
     };
     REQUIRE(ce.getCallsTMap() == expectedCallsT);
     REQUIRE(TestDesignExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));

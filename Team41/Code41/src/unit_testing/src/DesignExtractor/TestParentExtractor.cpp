@@ -250,19 +250,19 @@ TEST_CASE("ParentExtractor: multiproc1") {
     pe.extract();
 
     unordered_map<string, list<string>> expectedParent = {
-            {"1",  {"2", "5", "6", "7"}},
-            {"2",  {"3", "4"}},
-            {"10",  {"11", "12"}},
-            {"16",  {"17", "18"}},
-            {"22",  {"23"}}
+            {"1",  {"2",  "5", "6", "7"}},
+            {"2",  {"3",  "4"}},
+            {"10", {"11", "12"}},
+            {"16", {"17", "18"}},
+            {"22", {"23"}}
     };
     REQUIRE(pe.getParentMap() == expectedParent);
     unordered_map<string, list<string>> expectedParentT = {
-            {"1",  {"2", "3", "4", "5", "6", "7"}},
-            {"2",  {"3", "4"}},
-            {"10",  {"11", "12"}},
-            {"16",  {"17", "18"}},
-            {"22",  {"23"}}
+            {"1",  {"2",  "3", "4", "5", "6", "7"}},
+            {"2",  {"3",  "4"}},
+            {"10", {"11", "12"}},
+            {"16", {"17", "18"}},
+            {"22", {"23"}}
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
     delete ast;
