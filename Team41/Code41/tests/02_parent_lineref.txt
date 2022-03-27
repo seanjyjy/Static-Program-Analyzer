@@ -104,6 +104,11 @@
 72.            read x;
 --.        }
 73.        c = b * 10;
+74.        call newProc;
 --.    }
-74.    d = 20 * 30;
+75.    d = 20 * 30;
+--.}
+
+--. procedure newProc {
+76. x = x + 1;
 --.}
