@@ -14,7 +14,7 @@ SuperClause *FifoGroups::pop() {
 
 bool FifoGroups::empty() {
     // ensure invariant - first group always has a clause to take (unless
-    while (it != groups.end() && front()->empty()) it++;
+    while (it != groups.end() && (*it)->empty()) it++;
     return it == groups.end();
 }
 
