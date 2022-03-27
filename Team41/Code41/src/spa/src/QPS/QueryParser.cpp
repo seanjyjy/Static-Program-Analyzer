@@ -133,7 +133,6 @@ bool QueryParser::parseSelectSingle() {
     if (!qd.has_value()) {
         queryObject->setUseOfUndeclaredVariable(true);
         printf("Semantic Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
-        queryObject->setUseOfUndeclaredVariable(true);
         qd = {QueryDeclaration::design_entity_type::NONE, synonym.value()};
     }
 
@@ -280,7 +279,6 @@ optional<string> QueryParser::parseClauseVariable(string clause) {
         if (!isDeclared(var->c_str())) {
             queryObject->setUseOfUndeclaredVariable(true);
             printf("Semantic Error: Use of undeclared synonym <%s> for clause %s\n", var->c_str(), clause.c_str());
-            queryObject->setUseOfUndeclaredVariable(true);
         }
     }
     return var;
@@ -318,7 +316,6 @@ bool QueryParser::buildClause(string clauseStr, string left, string right) {
         }
         ClauseVariable lcv;
         if (leftType == ClauseVariable::synonym) {
-            //lcv = ClauseVariable(leftType, l, findMatchingDeclaration(l).value());
             optional<QueryDeclaration> qd = findMatchingDeclaration(l);
             if (qd.has_value()) {
                 lcv = ClauseVariable(leftType, l, qd.value());
@@ -336,7 +333,6 @@ bool QueryParser::buildClause(string clauseStr, string left, string right) {
         }
         ClauseVariable rcv;
         if (rightType == ClauseVariable::synonym) {
-            // rcv = ClauseVariable(rightType, r, findMatchingDeclaration(r).value());
             optional<QueryDeclaration> qd = findMatchingDeclaration(r);
             if (qd.has_value()) {
                 rcv = ClauseVariable(rightType, r, qd.value());
@@ -609,7 +605,9 @@ void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string l
 QueryParser::QueryParser(string &input) : input(input) {}
 
 bool QueryParser::parseSuchThatClauses() {
-    skipSuchThat();
+    if (!skipSuchThat()) {
+        return false;
+    }
     do {
         if (!parseClause()) {
             return false;
@@ -678,7 +676,6 @@ optional<WithVariable> QueryParser::parseWithRef() {
             queryObject->setUseOfUndeclaredVariable(true);
             printf("Semantic Error: Use of undeclared synonym <%s> for Select.\n", n.c_str());
 
-            queryObject->setUseOfUndeclaredVariable(true);
             syn = {QueryDeclaration::design_entity_type::NONE, n};
         }
         if (lex->peekNextIsString(".") && lex->nextExpected(".")) {
