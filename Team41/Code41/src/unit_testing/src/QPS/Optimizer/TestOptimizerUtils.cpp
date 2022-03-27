@@ -30,8 +30,9 @@ SimpleGraph<string> TestOptimizerUtils::genStringGraph(int fromInclusive, int to
 }
 
 void TestOptimizerUtils::print(vector<vector<SuperClause *>> &clauses) {
+    int id = 0;
     for (auto &arr: clauses) {
-        cout << "array" << endl;
+        cout << "group " + to_string(id++) + " ";
         for (auto &cl: arr) {
             cout << cl->toString() << " ";
         }

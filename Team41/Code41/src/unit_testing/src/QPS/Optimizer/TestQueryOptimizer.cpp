@@ -1,9 +1,6 @@
 #include "catch.hpp"
 #include "SimpleParser/Parser.h"
 #include "DesignExtractor/DesignExtractor.h"
-#include "QPS/QueryEvaluator.h"
-#include "QPS/QueryParser.h"
-#include "QPS/Optimizer/QueryOptimizer.h"
 #include "TestOptimizerUtils.h"
 
 #include <string>
@@ -63,6 +60,12 @@ TEST_CASE("Query Optimizer: integration test1") {
     SECTION("Query 3") {
         string query = "variable v; procedure p;\n"
                        "Select p such that  Modifies (p, \"x\")";
+        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
+    }
+
+    SECTION("Query 4 (extra)") {
+        string query = "assign a1, a2, a3; stmt s1, s2, s3; variable v1, v2, v3;\n"
+                       "Select <s1, s2, s3> such that Uses(s3, v1) and Modifies(s3, \"x\") and Follows(s1, s2) and Parent(s3, s1) and Uses(s2, v1)";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
 
