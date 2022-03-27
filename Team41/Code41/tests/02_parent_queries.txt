@@ -642,7 +642,7 @@ FALSE
 print pn;
 Select BOOLEAN such that Parent(pn, 52)
 FALSE
-5000FALSE
+5000
 291 - (syn, int) - valid case - syn -> call
 call cl;
 Select BOOLEAN such that Parent(cl, 21)
@@ -752,7 +752,7 @@ FALSE
 print pn;
 Select BOOLEAN such that Parent*(pn, 52)
 FALSE
-5000FALSE
+5000
 313 - (syn, int) - valid case - syn -> call
 call cl;
 Select BOOLEAN such that Parent*(cl, 21)

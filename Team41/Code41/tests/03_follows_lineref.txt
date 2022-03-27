@@ -105,5 +105,11 @@
 --.        }
 73.        c = b * 10;
 --.    }
-74.    d = 20 * 30;
+74.    call newProc;
+75.    call newProc;
+76.    d = 20 * 30;
 --.}
+
+procedure newProc {
+    x = x + 1;
+}
