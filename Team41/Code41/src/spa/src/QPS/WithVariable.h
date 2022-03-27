@@ -15,14 +15,15 @@ public:
     };
 
     WithVariable();
-    WithVariable(int);
-    WithVariable(string);
+//    WithVariable(int);
+//    WithVariable(string);
+    WithVariable(string, withRefType);
     WithVariable(attributeName, QueryDeclaration);
     withRefType getType() const;
     attributeName getAttr() const;
     QueryDeclaration getSynonym() const;
     string getIdent() const;
-    int getInteger() const;
+    string getInteger() const;
     string getIntegerAsString() const;
 
     bool isIdentifier() const;
@@ -36,6 +37,6 @@ private:
     attributeName attr;
     QueryDeclaration synonym;
     string ident;
-    int integer;
+    string integer;
 };
 

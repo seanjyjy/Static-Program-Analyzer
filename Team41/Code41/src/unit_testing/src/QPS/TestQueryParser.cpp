@@ -436,16 +436,16 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
 
         REQUIRE(qo->isValid());
-        REQUIRE(qo->patternClauses.at(0).getSynonym().synonym == "a1");
-        REQUIRE(qo->patternClauses.at(0).getLHS().isIdentifier());
-        REQUIRE(qo->patternClauses.at(0).getLHS().getLabel() == "x");
-        REQUIRE(qo->patternClauses.at(0).getRHS().at(0).isWildcard());
-        REQUIRE(qo->patternClauses.at(1).getSynonym().synonym == "a2");
-        REQUIRE(qo->clauses.at(0).type == QueryClause::affects);
-        REQUIRE(qo->clauses.at(1).type == QueryClause::parentT);
-        REQUIRE(qo->clauses.at(2).type == QueryClause::parentT);
-        REQUIRE(qo->clauses.at(2).getLeftClauseVariable().getLabel() == "w1");
-        REQUIRE(qo->clauses.at(2).getRightClauseVariable().getLabel() == "w2");
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().synonym == "a1");
+        REQUIRE(qo->getPatternClauses().at(0).getLHS().isIdentifier());
+        REQUIRE(qo->getPatternClauses().at(0).getLHS().getLabel() == "x");
+        REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isWildcard());
+        REQUIRE(qo->getPatternClauses().at(1).getSynonym().synonym == "a2");
+        REQUIRE(qo->getClauses().at(0).type == QueryClause::affects);
+        REQUIRE(qo->getClauses().at(1).type == QueryClause::parentT);
+        REQUIRE(qo->getClauses().at(2).type == QueryClause::parentT);
+        REQUIRE(qo->getClauses().at(2).getLeftClauseVariable().getLabel() == "w1");
+        REQUIRE(qo->getClauses().at(2).getRightClauseVariable().getLabel() == "w2");
     }
     SECTION("stmt boolean select boolean") {
         string s = "stmt BOOLEAN;\n"
@@ -493,7 +493,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getWithClauses().at(0).getLeft().getSynonym().getSynonym() == "s1");
         REQUIRE(qo->getWithClauses().at(0).getLeft().getAttr() == WithVariable::STMT_NUM);
         REQUIRE(qo->getWithClauses().at(0).getRight().getType() == WithVariable::INTEGER);
-        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == 10);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == "10");
         REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
     }
     SECTION("superClause test") {
@@ -510,7 +510,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getWithClauses().at(0).getLeft().getSynonym().getSynonym() == "s1");
         REQUIRE(qo->getWithClauses().at(0).getLeft().getAttr() == WithVariable::STMT_NUM);
         REQUIRE(qo->getWithClauses().at(0).getRight().getType() == WithVariable::INTEGER);
-        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == 10);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == "10");
         REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
         ////
         // QueryClause super clause
@@ -602,6 +602,16 @@ TEST_CASE("QPS: Parser_VALID") {
         SuperClause *sc2 = qo->getSuperClauses().at(1);
         REQUIRE((*sc1) == (*sc2));
     }
+    SECTION("single digit zero") {
+        string s = "stmt s;\n"
+                   "Select BOOLEAN such that Next(0, 1)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->getSuperClauses().at(0)->getSuchThatClause().getLeftClauseVariable().getLabel() == "0");
+        REQUIRE(qo->getSuperClauses().at(0)->getSuchThatClause().getLeftClauseVariable().isInteger());
+    }
+
     delete qo;
 }
 
@@ -632,7 +642,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("synonym beginning with '0-9'") {
         string s = "variable v; assign 69a;\n"
@@ -641,7 +651,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("such that bad clause") {
         string s = "variable v; assign a;\n"
@@ -650,7 +660,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("such that no clause") {
         string s = "variable v; assign a;\n"
@@ -658,7 +668,7 @@ TEST_CASE("QPS: Parser_INVALID") {
 
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("No ClauseVariable left") {
         string s = "variable v; assign a;\n"
@@ -666,7 +676,7 @@ TEST_CASE("QPS: Parser_INVALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("No ClauseVariable right") {
         string s = "variable v; assign a;\n"
@@ -674,7 +684,7 @@ TEST_CASE("QPS: Parser_INVALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("Malformed such that") {
         string s = "variable v; assign a;\n"
@@ -682,7 +692,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("select instead of Select") {
         string s = "variable v; assign a;\n"
@@ -691,13 +701,13 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("Empty query") {
-        string s = "";
+        string s;
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("No Select clause") {
         string s = "variable v; assign a;";
@@ -705,7 +715,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("Select undeclared synonym") {
         string s = "variable v; assign a;\n"
@@ -714,7 +724,8 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("clause undeclared synonym") {
         string s = "variable v; assign a;\n"
@@ -723,7 +734,8 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser a = QueryParser{s};
         qo = a.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("clause undeclared synonym") {
         string s = "variable v; assign a;\n"
@@ -731,77 +743,79 @@ TEST_CASE("QPS: Parser_INVALID") {
 
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("pattern undeclared LHS") {
         string s = "variable v; assign a;\n"
                    "Select v such that Uses(a, v) pattern a (leftPatBad, _)";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("pattern no synonym") {
         string s = "variable v; assign a;\n"
                    "Select v such that Uses(a, v) pattern (leftPatBad, _)";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("pattern misspelled") {
         string s = "variable v; assign a;\n"
                    "Select v such that Uses(a, v) paddern a (v, _)";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("assign pattern extra arg") {
         string s = "variable v; assign a;\n"
                    "Select v such that Uses(a, v) pattern a (v, _, _)";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("while pattern extra arg") {
         string s = "variable v; while w;\n"
                    "Select v such that Uses(w, v) pattern w (v, _, _)";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("unknown pattern") {
         string s = "variable v; call c;\n"
                    "Select v such that Uses(c, v) pattern w (c, _)";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("while pattern using fullpattern") {
         string s = "variable v; while w;\n"
                    "Select v such that Uses(w, v) pattern w (v, \"x+1\")";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("while pattern using subpattern") {
         string s = "variable v; while w;\n"
                    "Select v such that Uses(w, v) pattern w (v, _\"x+1\"_)";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("if pattern using fullpattern") {
         string s = "variable v; if ifs;\n"
                    "Select v such that Uses(ifs, v) pattern ifs (v, \"x+1\")";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("if pattern using subpattern") {
         string s = "variable v; if ifs;\n"
                    "Select v such that Uses(ifs, v) pattern ifs (v, _\"x+1\"_)";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("Missing semi colon 1") {
         string s = "variable v\n"
@@ -810,7 +824,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("Missing semi colon 2") {
         string s = "variable v            Select v";
@@ -818,38 +832,87 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
 
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("Rogue semicolons in declarations 1") {
         string s = ";;;variable v; Select v";
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("Rogue semicolons in declarations 2") {
         string s = "variable ;;; ; ;v; Select v";
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("Rogue semicolons in select") {
         string s = "variable v; Select ;; ; v";
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("Rogue semicolons at query end") {
         string s = "variable v; Select v;";
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE_FALSE(qo->isValid());
+    }
+    SECTION("Rogue semicolons at query end 2") {
+        string s = "stmt s; Select s;";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+
+        s = "stmt s, s1; Select <s1, s>;";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+
+        s = "stmt s;\n"
+            "Select BOOLEAN;";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+
+        s = "stmt s, s1, s2; while w; variable v; Select s.stmt#;";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+
+        s = "assign a; variable v;\n"
+            "Select a pattern a (_, \"count + 1\") such that Uses(a, v);";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+
+        s = "assign a; variable v;\n"
+            "Select a pattern a (_, \"count + 1\");";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
     }
     SECTION("BOOLEAN within tuple") {
         string s = "stmt s;\n"
                    "Select <BOOLEAN, s>";
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        REQUIRE_FALSE(qo->isQueryValid);
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
+    }
+    SECTION("Integers with leading 0") {
+        string s = "stmt s;\n"
+                   "Select BOOLEAN such that Follows(01, _)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+
+        s = "stmt s, s1, s2; while w; variable v;\n"
+                   "Select s.stmt# such that Follows* (s, s1) with s1.stmt#=069 pattern w (v, _) such that Follows*(s, s1) and Follows*(s1, s2)";
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+    }
+    SECTION("syntactically ok, semantically not") {
+        string s = "stmt s; Select t such that Follows(1, _)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     delete qo;
 }

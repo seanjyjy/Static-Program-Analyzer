@@ -57,11 +57,11 @@ TEST_CASE("Evaluator: With evaluator") {
 
     SECTION("Calls Evaluator") {
         SECTION("Integer Integer Pair") {
-            WithClause withClause1({1}, {2});
+            WithClause withClause1({"1", WithVariable::INTEGER}, {"2", WithVariable::INTEGER});
             Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
-            WithClause withClause2({1}, {1});
+            WithClause withClause2({"1", WithVariable::INTEGER}, {"1", WithVariable::INTEGER});
             Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
             REQUIRE(table2->getType() == Table::TrueTable);
 
@@ -70,19 +70,19 @@ TEST_CASE("Evaluator: With evaluator") {
         }
 
         SECTION("Integer AttrRef Pair") {
-            WithClause withClause1({1}, stmtNoRef);
+            WithClause withClause1({"1", WithVariable::INTEGER}, stmtNoRef);
             Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {stmtSyn.getSynonym()}, {{stmt[0]}}));
 
-            WithClause withClause2({1}, assignStmtNumRef);
+            WithClause withClause2({"1", WithVariable::INTEGER}, assignStmtNumRef);
             Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {assignSyn.getSynonym()}, {{stmt[0]}}));
 
-            WithClause withClause3({0}, constValRef);
+            WithClause withClause3({"0", WithVariable::INTEGER}, constValRef);
             Table *table3 = WithEvaluator(pkbManager).evaluate(withClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {constSyn.getSynonym()}, {{constants[0]}}));
 
-            WithClause withClause4({99}, constValRef);
+            WithClause withClause4({"99", WithVariable::INTEGER}, constValRef);
             Table *table4 = WithEvaluator(pkbManager).evaluate(withClause4);
             REQUIRE(table4->getRows().empty());
 
@@ -93,11 +93,11 @@ TEST_CASE("Evaluator: With evaluator") {
         }
 
         SECTION("Identifier Identifier Pair") {
-            WithClause withClause1({"1"}, {"2"});
+            WithClause withClause1({"1", WithVariable::IDENT}, {"2", WithVariable::IDENT});
             Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
             REQUIRE(table1->getType() == Table::FalseTable);
 
-            WithClause withClause2({"1"}, {"1"});
+            WithClause withClause2({"1", WithVariable::IDENT}, {"1", WithVariable::IDENT});
             Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
             REQUIRE(table2->getType() == Table::TrueTable);
 
@@ -106,23 +106,23 @@ TEST_CASE("Evaluator: With evaluator") {
         }
 
         SECTION("Identifier AttrRef Pair") {
-            WithClause withClause1({variable[0]}, readVarNameRef);
+            WithClause withClause1({variable[0], WithVariable::IDENT}, readVarNameRef);
             Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {readSyn.getSynonym()}, {{stmt[1]}}));
 
-            WithClause withClause2({variable[1]}, printVarNameRef);
+            WithClause withClause2({variable[1], WithVariable::IDENT}, printVarNameRef);
             Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {printSyn.getSynonym()}, {{stmt[2]}}));
 
-            WithClause withClause3({proc[0]}, callProcNameRef);
+            WithClause withClause3({proc[0], WithVariable::IDENT}, callProcNameRef);
             Table *table3 = WithEvaluator(pkbManager).evaluate(withClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {callSyn.getSynonym()}, {{stmt[3]}}));
 
-            WithClause withClause4({proc[1]}, procProcNameRef);
+            WithClause withClause4({proc[1], WithVariable::IDENT}, procProcNameRef);
             Table *table4 = WithEvaluator(pkbManager).evaluate(withClause4);
             REQUIRE(TableTestUtils::checkTableMatches(table4, {procSyn.getSynonym()}, {{proc[1]}}));
 
-            WithClause withClause5({"unknown"}, procProcNameRef);
+            WithClause withClause5({"unknown", WithVariable::IDENT}, procProcNameRef);
             Table *table5 = WithEvaluator(pkbManager).evaluate(withClause5);
             REQUIRE(table5->getRows().empty());
 
@@ -134,19 +134,19 @@ TEST_CASE("Evaluator: With evaluator") {
         }
 
         SECTION("AttrRef Integer Pair") {
-            WithClause withClause1(stmtNoRef, {1});
+            WithClause withClause1(stmtNoRef, {"1", WithVariable::INTEGER});
             Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {stmtSyn.getSynonym()}, {{stmt[0]}}));
 
-            WithClause withClause2(assignStmtNumRef, {1});
+            WithClause withClause2(assignStmtNumRef, {"1", WithVariable::INTEGER});
             Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {assignSyn.getSynonym()}, {{stmt[0]}}));
 
-            WithClause withClause3(constValRef, {0});
+            WithClause withClause3(constValRef, {"0", WithVariable::INTEGER});
             Table *table3 = WithEvaluator(pkbManager).evaluate(withClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {constSyn.getSynonym()}, {{constants[0]}}));
 
-            WithClause withClause4(constValRef, {99});
+            WithClause withClause4(constValRef, {"99", WithVariable::INTEGER});
             Table *table4 = WithEvaluator(pkbManager).evaluate(withClause4);
             REQUIRE(table4->getRows().empty());
 
@@ -157,23 +157,23 @@ TEST_CASE("Evaluator: With evaluator") {
         }
 
         SECTION("AttrRef Identifier Pair") {
-            WithClause withClause1(readVarNameRef, {variable[0]});
+            WithClause withClause1(readVarNameRef, {variable[0], WithVariable::IDENT});
             Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {readSyn.getSynonym()}, {{stmt[1]}}));
 
-            WithClause withClause2(printVarNameRef, {variable[1]});
+            WithClause withClause2(printVarNameRef, {variable[1], WithVariable::IDENT});
             Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {printSyn.getSynonym()}, {{stmt[2]}}));
 
-            WithClause withClause3(callProcNameRef, {proc[0]});
+            WithClause withClause3(callProcNameRef, {proc[0], WithVariable::IDENT});
             Table *table3 = WithEvaluator(pkbManager).evaluate(withClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {callSyn.getSynonym()}, {{stmt[3]}}));
 
-            WithClause withClause4(procProcNameRef, {proc[1]});
+            WithClause withClause4(procProcNameRef, {proc[1], WithVariable::IDENT});
             Table *table4 = WithEvaluator(pkbManager).evaluate(withClause4);
             REQUIRE(TableTestUtils::checkTableMatches(table4, {procSyn.getSynonym()}, {{proc[1]}}));
 
-            WithClause withClause5(procProcNameRef, {"unknown"});
+            WithClause withClause5(procProcNameRef, {"unknown", WithVariable::IDENT});
             Table *table5 = WithEvaluator(pkbManager).evaluate(withClause5);
             REQUIRE(table5->getRows().empty());
 
@@ -221,22 +221,22 @@ TEST_CASE("Evaluator: With evaluator") {
         }
 
         SECTION("Mismatch type") {
-            WithClause withClause1({1}, {"2"});
+            WithClause withClause1({"1", WithVariable::INTEGER}, {"2", WithVariable::IDENT});
             REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause1));
 
-            WithClause withClause2({"1"}, {2});
+            WithClause withClause2({"1", WithVariable::IDENT}, {"2", WithVariable::INTEGER});
             REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause2));
 
-            WithClause withClause3(readVarNameRef, {2});
+            WithClause withClause3(readVarNameRef, {"2", WithVariable::INTEGER});
             REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause3));
 
-            WithClause withClause4({1}, readVarNameRef);
+            WithClause withClause4({"1", WithVariable::INTEGER}, readVarNameRef);
             REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause4));
 
-            WithClause withClause5(constValRef, {"2"});
+            WithClause withClause5(constValRef, {"2", WithVariable::IDENT});
             REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause5));
 
-            WithClause withClause6({"1"}, constValRef);
+            WithClause withClause6({"1", WithVariable::IDENT}, constValRef);
             REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause6));
         }
     }

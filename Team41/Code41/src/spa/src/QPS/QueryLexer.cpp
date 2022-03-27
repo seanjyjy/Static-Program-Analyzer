@@ -37,6 +37,7 @@ string QueryLexer::nextToken() {
     // Treat special characters as tokens themselves.
     if (isSpecialChar(curr)) {
         out.push_back(curr);
+        index++;
         return out;
     }
     while (!isSpecialChar(curr)) {
@@ -87,9 +88,14 @@ bool QueryLexer::isValidAttribute(string w) {
 }
 
 bool QueryLexer::isInteger(string w) {
-    string::const_iterator it = w.begin();
-    while (it != w.end() && isdigit(*it)) ++it;
-    return !w.empty() && it == w.end();
+    if (w.at(0) == '0') {
+        return w.length() == 1;
+    }
+    for (int i = 0; i < (int)w.length(); i++) {
+        if (!isdigit(w.at(i)))
+            return false;
+    }
+    return true;
 }
 
 bool QueryLexer::isIdentifier(string w) {
@@ -129,7 +135,6 @@ optional<string> QueryLexer::nextSynonym() {
 optional<string> QueryLexer::nextExpected(string w) {
     string expectedSpecial = nextToken();
     if (expectedSpecial == w) {
-        index++;
         return w;
     } else {
         return nullopt;

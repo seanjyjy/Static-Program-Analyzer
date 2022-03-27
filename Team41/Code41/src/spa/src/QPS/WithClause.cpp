@@ -36,9 +36,9 @@ int WithClause::hash() const {
         out ^= (int)std::hash<string>{} (right.getIdent());
 
     if (left.isInteger())
-        out ^= (int)std::hash<int>{} (left.getInteger());
+        out ^= (int)std::hash<string>{} (left.getInteger());
     if (right.isInteger())
-        out ^= (int)std::hash<int>{} (right.getInteger());
+        out ^= (int)std::hash<string>{} (right.getInteger());
 
     if (left.isAttrRef())
         out ^= (int)std::hash<int>{} (left.getAttr());
