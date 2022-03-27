@@ -8,6 +8,7 @@ using namespace std;
 class WithClause {
 private:
     WithVariable left, right;
+    bool canSimplify;
 public:
     WithClause();
     WithClause(WithVariable, WithVariable);
@@ -19,4 +20,8 @@ public:
     int hash() const;
     bool equals(WithClause) const;
     string toString() const;
+
+    bool canSimplifyClause() const;
+
+    void setSimplified(bool canSimplifyClause);
 };

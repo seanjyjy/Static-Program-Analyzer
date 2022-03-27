@@ -33,7 +33,7 @@ Table *WithEvaluator::evaluate(const WithClause &clause) {
     }
 
     if (isValidAttrRefAttrRef(left, right)) {
-        return evaluateAttrRefAttrRef(left, right);
+        return evaluateAttrRefAttrRef(left, right, clause.canSimplifyClause());
     }
 
     throw SemanticException("Wrong Type for With Clause");
@@ -128,28 +128,40 @@ Table *WithEvaluator::buildSingleSynonymTableWithSingleFilter(unordered_set<stri
     return table;
 }
 
-Table *WithEvaluator::buildSynonymSynonymTable(unordered_set<string> &leftResults, unordered_set<string> &rightResults,
+Table *WithEvaluator::buildSynonymSynonymTable(unordered_set<string> &leftRes, unordered_set<string> &rightRes,
                                                QueryDeclaration &leftSynonym, QueryDeclaration &rightSynonym,
-                                               const ValueMapping &leftMapping, const ValueMapping &rightMapping) {
-    string firstColumn = leftSynonym.getSynonym();
-    string secondColumn = rightSynonym.getSynonym();
+                                               const ValueMapping &leftMapping, const ValueMapping &rightMapping,
+                                               bool canSimplify) {
 
-    if (firstColumn == secondColumn) {
-        return buildSameSynonymTable(leftResults, firstColumn);
+    string firstCol = leftSynonym.getSynonym();
+    string secondCol = rightSynonym.getSynonym();
+
+    if (firstCol == secondCol) {
+        if (canSimplify) {
+            return buildBooleanTable(!leftRes.empty());
+        }
+
+        return buildSameSynonymTable(leftRes, firstCol);
     }
 
-    return buildDiffSynonymTable(leftResults, rightResults, firstColumn, secondColumn, leftMapping, rightMapping);
+    return buildDiffSynonymTable(leftRes, rightRes, firstCol, secondCol, leftMapping, rightMapping, canSimplify);
 }
 
 Table *WithEvaluator::buildDiffSynonymTable(unordered_set<string> &leftResults, unordered_set<string> &rightResults,
                                             const string &firstColumn, const string &secondColumn,
-                                            const ValueMapping &leftMapping, const ValueMapping &rightMapping) {
+                                            const ValueMapping &leftMapping, const ValueMapping &rightMapping,
+                                            bool canSimplify) {
+
     Header header = Header({firstColumn, secondColumn});
     Table *table = new PQLTable(header);
 
     for (auto &leftResult: leftResults) {
         for (auto &rightResult: rightResults) {
             if (leftMapping(leftResult, pkb) == rightMapping(rightResult, pkb)) {
+                if (canSimplify) {
+                    return buildBooleanTable(true);
+                }
+
                 Row *row = new Row();
                 row->addEntry(firstColumn, leftResult);
                 row->addEntry(secondColumn, rightResult);
@@ -178,7 +190,7 @@ Table *WithEvaluator::buildSameSynonymTable(unordered_set<string> &results, cons
 // ==================================== EVALUATOR METHODS ================================================
 
 Table *WithEvaluator::evaluateIntegerInteger(WithVariable &left, WithVariable &right) {
-    bool isSameInteger = left.getIntegerAsString() == right.getIntegerAsString();
+    bool isSameInteger = left.getInteger() == right.getInteger();
     return buildBooleanTable(isSameInteger);
 }
 
@@ -186,7 +198,7 @@ Table *WithEvaluator::evaluateIntegerAttrRef(WithVariable &left, WithVariable &r
     // 2 = read.stmt# || 10 = c.value
     QueryDeclaration synonym = right.getSynonym();
     unordered_set<string> results = getSpecificStatementType(synonym.getType());
-    return buildSingleSynonymTableWithSingleFilter(results, synonym, left.getIntegerAsString(), sameMapper);
+    return buildSingleSynonymTableWithSingleFilter(results, synonym, left.getInteger(), sameMapper);
 }
 
 Table *WithEvaluator::evaluateIdentifierIdentifier(WithVariable &left, WithVariable &right) {
@@ -205,7 +217,7 @@ Table *WithEvaluator::evaluateIdentifierAttrRef(WithVariable &left, WithVariable
 Table *WithEvaluator::evaluateAttrRefInteger(WithVariable &left, WithVariable &right) {
     QueryDeclaration synonym = left.getSynonym();
     unordered_set<string> results = getSpecificStatementType(synonym.getType());
-    return buildSingleSynonymTableWithSingleFilter(results, synonym, right.getIntegerAsString(), sameMapper);
+    return buildSingleSynonymTableWithSingleFilter(results, synonym, right.getInteger(), sameMapper);
 }
 
 Table *WithEvaluator::evaluateAttrRefIdentifier(WithVariable &left, WithVariable &right) {
@@ -215,7 +227,7 @@ Table *WithEvaluator::evaluateAttrRefIdentifier(WithVariable &left, WithVariable
     return buildSingleSynonymTableWithSingleFilter(results, synonym, right.getIdent(), mapper);
 }
 
-Table *WithEvaluator::evaluateAttrRefAttrRef(WithVariable &left, WithVariable &right) {
+Table *WithEvaluator::evaluateAttrRefAttrRef(WithVariable &left, WithVariable &right, bool canSimplify) {
     bool isLeftNumberType = (isStmtNumVar(left) || isValueVar(left));
     bool isRightNumberType = (isStmtNumVar(right) || isValueVar(right));
 
@@ -229,14 +241,14 @@ Table *WithEvaluator::evaluateAttrRefAttrRef(WithVariable &left, WithVariable &r
     if (isLeftNumberType && isRightNumberType) {
         unordered_set<string> leftResults = getSpecificStatementType(leftSynonym.getType());
         unordered_set<string> rightResults = getSpecificStatementType(rightSynonym.getType());
-        return buildSynonymSynonymTable(leftResults, rightResults, leftSynonym, rightSynonym, sameMapper, sameMapper);
+        return buildSynonymSynonymTable(leftResults, rightResults, leftSynonym, rightSynonym, sameMapper, sameMapper, canSimplify);
     }
 
     unordered_set<string> leftResults = getName(leftSynonym.getType());
     unordered_set<string> rightResults = getName(rightSynonym.getType());
     ValueMapping leftMapper = getMapper(leftSynonym.getType());
     ValueMapping rightMapper = getMapper(rightSynonym.getType());
-    return buildSynonymSynonymTable(leftResults, rightResults, leftSynonym, rightSynonym, leftMapper, rightMapper);
+    return buildSynonymSynonymTable(leftResults, rightResults, leftSynonym, rightSynonym, leftMapper, rightMapper, canSimplify);
 }
 
 unordered_set<string> WithEvaluator::getSpecificStatementType(QueryDeclaration::design_entity_type type) {
