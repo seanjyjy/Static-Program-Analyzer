@@ -11,10 +11,10 @@ PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAd
     });
 }
 
-// find the clause giving the smallest new intermediate table
 SuperClause *PKBAwareGroup::pop() const {
     if (empty()) throw runtime_error("PKBAwareGroup: no more clauses to pop");
 
+    // find the clause giving the smallest new intermediate table
     int bestIdx = -1;
     long long bestRows = numeric_limits<long long>::max();
     for (int i = 0; i < (int) isClauseUsed.size(); i++) {
@@ -23,8 +23,12 @@ SuperClause *PKBAwareGroup::pop() const {
             bestIdx = i;
         }
     }
-    // don't forget to update state
+
+    // is there are no more clauses to pop, this method shouldn't even be called
     if (bestIdx == -1) throw runtime_error("incorrect assertion");
+
+    // update table and group's state
+    table.merge(clauses[bestIdx]->getSynonyms());
     isClauseUsed[bestIdx] = true;
     clausesPopped++;
     return clauses[bestIdx];

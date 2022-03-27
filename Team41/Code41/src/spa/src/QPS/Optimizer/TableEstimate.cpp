@@ -12,14 +12,14 @@ TableEstimate::TableEstimate() = default;
 TableEstimate::TableEstimate(const PKBAdapter &pkbAdapter) : pkbAdapter(pkbAdapter) {}
 
 void TableEstimate::merge(const vector<QueryDeclaration> &sch) {
+    // update row estimate
+    estRows = estimateMergeCost(sch);
+
     // merge with new schema
     unordered_set<QueryDeclaration, cvHasher, cvEquals> a(schema.begin(), schema.end());
     for (const QueryDeclaration &cv: sch) {
         if (a.find(cv) == a.end()) schema.push_back(cv);
     }
-
-    // update row estimate
-    estRows = estimateMergeCost(sch);
 }
 
 bool TableEstimate::hasCommonCol(const vector<QueryDeclaration> &sch) {
@@ -42,7 +42,8 @@ long long TableEstimate::estimateMergeCost(const vector<QueryDeclaration> &newSc
     if (schema.empty()) return pkbAdapter.getRowCount(newSch);
 
     if (hasCommonCol(newSch)) {
-        return max(estRows, pkbAdapter.getRowCount(newSch));
+        // merge is constrained by the smaller table
+        return min(estRows, pkbAdapter.getRowCount(newSch));
     } else {
         return estRows * pkbAdapter.getRowCount(newSch);
     }

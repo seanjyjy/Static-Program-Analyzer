@@ -73,3 +73,11 @@ void TestOptimizerUtils::ensureOQOIsCorrect(string &query, PKBManager &pkbManage
     // TODO delete causing bugs in some places, ignore memory leaks for now
 //    delete qo;
 }
+
+void TestOptimizerUtils::print(vector<QueryDeclaration> arr) {
+    cout << "query declarations: ";
+    for (QueryDeclaration& qd: arr) {
+        cout << qd.toString() << " ";
+    }
+    cout << endl;
+}
