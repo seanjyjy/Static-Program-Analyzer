@@ -493,7 +493,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getWithClauses().at(0).getLeft().getSynonym().getSynonym() == "s1");
         REQUIRE(qo->getWithClauses().at(0).getLeft().getAttr() == WithVariable::STMT_NUM);
         REQUIRE(qo->getWithClauses().at(0).getRight().getType() == WithVariable::INTEGER);
-        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == 10);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == "10");
         REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
     }
     SECTION("superClause test") {
@@ -510,7 +510,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getWithClauses().at(0).getLeft().getSynonym().getSynonym() == "s1");
         REQUIRE(qo->getWithClauses().at(0).getLeft().getAttr() == WithVariable::STMT_NUM);
         REQUIRE(qo->getWithClauses().at(0).getRight().getType() == WithVariable::INTEGER);
-        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == 10);
+        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == "10");
         REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
         ////
         // QueryClause super clause
@@ -704,7 +704,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         REQUIRE_FALSE(qo->isQueryValid);
     }
     SECTION("Empty query") {
-        string s = "";
+        string s;
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE_FALSE(qo->isQueryValid);

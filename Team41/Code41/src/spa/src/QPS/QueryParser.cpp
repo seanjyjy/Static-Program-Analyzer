@@ -644,7 +644,7 @@ optional<WithVariable> QueryParser::parseWithRef() {
         // '"' IDENT '"'
         string ident = lex->nextToken();
         if (lex->isIdentifier(ident)) {
-            return WithVariable(ident.substr(1, ident.length() - 2));
+            return WithVariable(ident.substr(1, ident.length() - 2), WithVariable::IDENT);
         } else {
             return nullopt;
         }
@@ -652,7 +652,7 @@ optional<WithVariable> QueryParser::parseWithRef() {
     string n = lex->nextToken();
     if (lex->isInteger(n)) {
         // INTEGER
-        return WithVariable(stoi(n));
+        return WithVariable(n, WithVariable::INTEGER);
     } else if (lex->isValidSynonym(n)) {
         // attrRef : synonym '.' attrName
         optional<QueryDeclaration> syn = findMatchingDeclaration(n);
