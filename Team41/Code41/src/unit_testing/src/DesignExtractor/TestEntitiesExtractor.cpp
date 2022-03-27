@@ -6,6 +6,10 @@
 
 using namespace std;
 
+/**
+ * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl, multi-procedures
+ */
+
 TEST_CASE("EntitiesExtractor: Assign") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
@@ -230,6 +234,25 @@ TEST_CASE("EntitiesExtractor: n3wwl") {
     }SECTION("Constants") {
         unordered_set<string> expectedConsts = {"0", "120348725108321", "3", "4", "1", "10", "2"};
         REQUIRE(ee.getConstSet() == expectedConsts);
+    }
+    delete ast;
+}
+
+TEST_CASE("EntitiesExtractor: multi-procedures") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("multi-procedures.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extract();
+
+    SECTION("Statement Nums") {
+        REQUIRE(ee.getNodeToStmtNumMap().size() == 6);
+    }SECTION("Procedures") {
+        unordered_set<string> expectedProcedures = {"procedure", "read", "print", "call", "while", "if"};
+        REQUIRE(ee.getProcSet() == expectedProcedures);
+    }SECTION("Variable") {
+        unordered_set<string> expectedVarNames = {"procedure", "read", "print", "call", "while", "if"};
+        REQUIRE(ee.getVarSet() == expectedVarNames);
+    }SECTION("Constants") {
+        REQUIRE(ee.getConstSet().empty());
     }
     delete ast;
 }

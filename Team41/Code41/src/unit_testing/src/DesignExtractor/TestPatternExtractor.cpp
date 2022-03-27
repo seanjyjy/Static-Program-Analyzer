@@ -7,6 +7,10 @@
 
 using namespace std;
 
+/**
+ * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl
+ */
+
 TEST_CASE("PatternExtractor: Assign") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);

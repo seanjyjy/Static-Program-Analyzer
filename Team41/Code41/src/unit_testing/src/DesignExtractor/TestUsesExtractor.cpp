@@ -7,6 +7,10 @@
 
 using namespace std;
 
+/**
+ * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl, multi-procedures
+ */
+
 TEST_CASE("UsesExtractor: Assign") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
@@ -314,6 +318,28 @@ TEST_CASE("UsesExtractor: n3wwl") {
             {"5", {"if"}},
             {"6", {"else"}},
             {"7", {"else"}}
+    };
+    REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
+}
+
+TEST_CASE("UsesExtractor: multi-procedures") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("multi-procedures.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extract();
+    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    unordered_map<string, unordered_set<string>> callsMap;
+    list<string> procCallOrder; // TODO: DUMMY FOR NOW
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
+    ue.extract();
+
+    unordered_map<string, unordered_set<string>> expectedProcUses = {
+            {"procedure", {"procedure"}}, {"read", {"read"}}, {"print", {"print"}}, {"call", {"call"}},
+            {"while", {"while"}}, {"if", {"if"}}
+    };
+    REQUIRE(ue.getProcUsesMap() == expectedProcUses);
+    unordered_map<string, unordered_set<string>> expectedStmtUses = {
+            {"1", {"procedure"}}, {"2", {"read"}}, {"3", {"print"}}, {"4", {"call"}}, {"5", {"while"}}, {"6", {"if"}}
     };
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
     delete ast;
