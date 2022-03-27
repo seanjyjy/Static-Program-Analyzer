@@ -508,17 +508,22 @@ stmt s; while s;
 Select BOOLEAN
 FALSE
 5000
-50 - POSITIVE CASES - Such that should allow any amount of space inbetween
+50 - Using undeclared variables in pattern
+stmt s;
+Select BOOLEAN pattern a(_, "x+1")
+
+5000
+51 - POSITIVE CASES - Such that should allow any amount of space inbetween
 
 Select BOOLEAN such                       that Uses(1, "x")
 TRUE
 500
-51 - POSITIVE CASES - Attr Ref should allow any amount of space between the .
+52 - POSITIVE CASES - Attr Ref should allow any amount of space between the .
 stmt s;
 Select BOOLEAN with 1 = s         .              stmt#
 TRUE
 5000
-52 - POSITIVE CASES - Able to support different clause type and
+53 - POSITIVE CASES - Able to support different clause type and
 assign a, a1;
 Select BOOLEAN such that Uses(1, "x") and Uses(2, "y") with 1 = 1 and 2 = 2 pattern a("x", "y + 1") and a1("x", "x + 1")
 TRUE
