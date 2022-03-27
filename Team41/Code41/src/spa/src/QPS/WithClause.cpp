@@ -56,3 +56,4 @@ bool WithClause::equals(WithClause other) const {
 string WithClause::toString() const {
     return "with " + left.toString() + " " + right.toString();
 }
+

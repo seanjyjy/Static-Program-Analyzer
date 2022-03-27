@@ -6,7 +6,7 @@
 // If required is a stmt, return back the stmt provided, else get its required mapping thru the function provided
 typedef std::function<string(const string &, PKBClient *pkb)> ValueMapping;
 
-class WithEvaluator : Evaluator {
+class WithEvaluator : public Evaluator {
 private:
     bool isIntegerInteger(WithVariable &left, WithVariable &right);
 
@@ -44,7 +44,7 @@ private:
 
     Table *evaluateAttrRefIdentifier(WithVariable &left, WithVariable &right);
 
-    Table *evaluateAttrRefAttrRef(WithVariable &left, WithVariable &right);
+    Table *evaluateAttrRefAttrRef(WithVariable &left, WithVariable &right, bool canSimplify);
 
     unordered_set<string> getSpecificStatementType(QueryDeclaration::design_entity_type type);
 
@@ -53,15 +53,15 @@ private:
     Table *buildSingleSynonymTableWithSingleFilter(unordered_set<string> &results, QueryDeclaration &synonym,
                                                    const string &filter, const ValueMapping &mapping);
 
-    Table *buildSynonymSynonymTable(unordered_set<string> &leftResults, unordered_set<string> &rightResults,
+    Table *buildSynonymSynonymTable(unordered_set<string> &leftRes, unordered_set<string> &rightRes,
                                     QueryDeclaration &leftSynonym, QueryDeclaration &rightSynonym,
-                                    const ValueMapping &leftMapping, const ValueMapping &rightMapping);
+                                    const ValueMapping &leftMapping, const ValueMapping &rightMapping, bool canSimplify);
 
     Table *buildSameSynonymTable(unordered_set<string> &results, const string &column);
 
     Table *buildDiffSynonymTable(unordered_set<string> &leftResults, unordered_set<string> &rightResults,
                                  const string &firstColumn, const string &secondColumn,
-                                 const ValueMapping &leftMapping, const ValueMapping &rightMapping);
+                                 const ValueMapping &leftMapping, const ValueMapping &rightMapping, bool canSimplify);
 
     ValueMapping sameMapper = [](const string &stmtNum, PKBClient *) { return stmtNum; };
 

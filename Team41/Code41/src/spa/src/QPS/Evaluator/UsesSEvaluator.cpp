@@ -41,3 +41,11 @@ vector<pair<string, string>> UsesSEvaluator::getSynonymSynonymRelation() {
 unordered_set<string> UsesSEvaluator::getSynonymWildCardRelation() {
     return pkb->getAllStmtsUsingSomeVar();
 }
+
+unordered_set<string> UsesSEvaluator::getWildCardIdentifierRelation(const string &label) {
+    return pkb->getUsesSByVar(label);
+}
+
+vector<pair<string, string>> UsesSEvaluator::getWildCardWildCardRelation() {
+    return pkb->getAllUsesS();
+}

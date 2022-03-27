@@ -186,6 +186,7 @@ private:
      * Clean up method to clean up unused attributes after parsing
      */
     void cleanup();
+
 public:
     /**
      * Constructor for the QueryParser class.

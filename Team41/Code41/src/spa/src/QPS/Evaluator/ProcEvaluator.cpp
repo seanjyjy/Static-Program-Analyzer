@@ -31,3 +31,13 @@ Table *ProcEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
     unordered_set<string> listOfProcCalling = getSynonymWildCardRelation();
     return buildSingleSynonymTable(listOfProcCalling, left);
 }
+
+Table *ProcEvaluator::evaluateWildCardIdentifier(const ClauseVariable &right) {
+    unordered_set<string> procCalling = getWildCardIdentifierRelation(right.getLabel());
+    return buildBooleanTable(!procCalling.empty());
+}
+
+Table *ProcEvaluator::evaluateWildCardWildCard() {
+    vector<pair<string, string>> listOfProcToProc = getWildCardWildCardRelation();
+    return buildBooleanTable(!listOfProcToProc.empty());
+}

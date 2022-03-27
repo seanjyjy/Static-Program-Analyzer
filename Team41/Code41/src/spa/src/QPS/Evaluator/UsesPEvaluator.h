@@ -17,4 +17,8 @@ public:
     vector<pair<string, string>> getSynonymSynonymRelation() override;
 
     unordered_set<string> getSynonymWildCardRelation() override;
+
+    unordered_set<string> getWildCardIdentifierRelation(const string &label) override;
+
+    vector<pair<string, string>> getWildCardWildCardRelation() override;
 };

@@ -5,8 +5,9 @@
 #include "ClauseVariable.h"
 #include "QueryDeclaration.h"
 #include "PatternVariable.h"
+#include "SimplifiableClause.h"
 
-class PatternClause {
+class PatternClause : public SimplifiableClause {
 private:
     // the synonym attached to the pattern clause
     QueryDeclaration synonym;

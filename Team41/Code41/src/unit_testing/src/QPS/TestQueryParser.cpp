@@ -105,7 +105,7 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::modifiesS;
+        bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::generic_modifies;
         bool vMatch = qo->getClauses().at(0).getLeftClauseVariable().getType() == ClauseVariable::wildcard;
         REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::NONE);
         REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);

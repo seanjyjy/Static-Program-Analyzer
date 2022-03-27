@@ -1,11 +1,12 @@
 #pragma once
 
 #include "WithVariable.h"
+#include "SimplifiableClause.h"
 #include <vector>
 
 using namespace std;
 
-class WithClause {
+class WithClause : public SimplifiableClause {
 private:
     WithVariable left, right;
 public:

@@ -190,6 +190,9 @@ public:
      */
     static bool isSynonymIdentifier(ClauseVariable *left, ClauseVariable *right);
 
+
+    static bool isWildCardIdentifier(ClauseVariable *left, ClauseVariable *right);
+
     /**
      * Checks if the left clause variable is a wildcard and if the right clause variable is a wildcard.
      *
@@ -482,8 +485,6 @@ public:
         static bool isValidCallsSynonymWildCard(ClauseVariable *left, ClauseVariable *right);
 
         static bool isValidCallsWildCardSynonym(ClauseVariable *left, ClauseVariable *right);
-
-        static bool isWildCardIdentifier(ClauseVariable *left, ClauseVariable *right);
     };
 
     class AttrUtils {

@@ -132,14 +132,8 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
         }
 
         SECTION("Semantically Invalid") {
-            QueryClause queryClause1(QueryClause::usesS, wildcard, identifierVar1);
-            REQUIRE_THROWS(UsesSEvaluator(pkbManager).evaluate(queryClause1));
-
             QueryClause queryClause2(QueryClause::usesS, wildcard, varSyn);
             REQUIRE_THROWS(UsesSEvaluator(pkbManager).evaluate(queryClause2));
-
-            QueryClause queryClause3(QueryClause::usesS, wildcard, wildcard);
-            REQUIRE_THROWS(UsesSEvaluator(pkbManager).evaluate(queryClause3));
 
             QueryClause queryClause4(QueryClause::modifiesS, procSyn, assignSyn);
             REQUIRE_THROWS(UsesSEvaluator(pkbManager).evaluate(queryClause4));
@@ -242,14 +236,8 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
         }
 
         SECTION("Semantically Invalid") {
-            QueryClause queryClause1(QueryClause::usesS, wildcard, identifierVar1 );
-            REQUIRE_THROWS(UsesPEvaluator(pkbManager).evaluate(queryClause1));
-
             QueryClause queryClause2(QueryClause::usesS, wildcard, varSyn );
             REQUIRE_THROWS(UsesPEvaluator(pkbManager).evaluate(queryClause2));
-
-            QueryClause queryClause3(QueryClause::usesS, wildcard, wildcard );
-            REQUIRE_THROWS(UsesPEvaluator(pkbManager).evaluate(queryClause3));
 
             QueryClause queryClause4(QueryClause::modifiesS, assignSyn, assignSyn);
             REQUIRE_THROWS(UsesPEvaluator(pkbManager).evaluate(queryClause4));

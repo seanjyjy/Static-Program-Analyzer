@@ -29,8 +29,10 @@ public:
     bool isParentT() const;
     bool isUsesS() const;
     bool isUsesP() const;
+    bool isUses() const;
     bool isModifiesS() const;
     bool isModifiesP() const;
+    bool isModifies() const;
     bool isCalls() const;
     bool isCallsT() const;
     bool isNext() const;

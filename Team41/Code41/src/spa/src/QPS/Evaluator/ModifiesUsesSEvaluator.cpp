@@ -15,6 +15,14 @@ Table *ModifiesUsesSEvaluator::evaluateClause(ClauseVariable leftVariable, Claus
         return evaluateIntegerWildCard(leftVariable);
     }
 
+    if (EvaluatorUtils::isWildCardIdentifier(&leftVariable, &rightVariable)) {
+        return evaluateWildCardIdentifier(rightVariable);
+    }
+
+    if (EvaluatorUtils::isWildCardWildCard(&leftVariable, &rightVariable)) {
+        return evaluateWildCardWildCard();
+    }
+
     return evaluateClauseFurther(leftVariable, rightVariable);
 }
 
@@ -46,4 +54,14 @@ Table *ModifiesUsesSEvaluator::evaluateSynonymSynonym(ClauseVariable left, Claus
 Table *ModifiesUsesSEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
     unordered_set<string> statementUsed = getSynonymWildCardRelation();
     return buildSingleSynonymTable(statementUsed, left);
+}
+
+Table *ModifiesUsesSEvaluator::evaluateWildCardIdentifier(ClauseVariable &right) {
+    unordered_set<string> statementBeingUsed = getWildCardIdentifierRelation(right.getLabel());
+    return buildBooleanTable(!statementBeingUsed.empty());
+}
+
+Table *ModifiesUsesSEvaluator::evaluateWildCardWildCard() {
+    vector<pair<string, string>> statementUsed = getWildCardWildCardRelation();
+    return buildBooleanTable(!statementUsed.empty());
 }

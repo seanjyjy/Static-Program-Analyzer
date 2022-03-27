@@ -2,18 +2,20 @@
 
 #include "QueryDeclaration.h"
 #include "ClauseVariable.h"
+#include "SimplifiableClause.h"
 #include <vector>
 
 using namespace std;
 
-class QueryClause {
+class QueryClause : public SimplifiableClause {
 private:
     // The LHS and RHS of a clause in PQL
     ClauseVariable left, right;
 public:
     // enum representing possible clause types in PQL
     enum clause_type {
-        follows, followsT, parent, parentT, usesS, usesP, modifiesS, modifiesP, calls, callsT, next, nextT, affects, affectsT
+        follows, followsT, parent, parentT, usesS, usesP, modifiesS, modifiesP, calls, callsT, next, nextT, affects, affectsT,
+        generic_uses, generic_modifies, none
     };
 
     // todo: make private after all refactor
@@ -73,4 +75,6 @@ public:
     int hash() const;
 
     bool equals(QueryClause) const;
+
+    QueryClause generateSimplifiedSelf() const;
 };

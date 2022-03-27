@@ -25,3 +25,11 @@ vector<pair<string, string>> ModifiesPEvaluator::getSynonymSynonymRelation() {
 unordered_set<string> ModifiesPEvaluator::getSynonymWildCardRelation() {
     return pkb->getAllProcsModifyingSomeVar();
 }
+
+unordered_set<string> ModifiesPEvaluator::getWildCardIdentifierRelation(const string &label) {
+    return pkb->getModifiesPByVar(label);
+}
+
+vector<pair<string, string>> ModifiesPEvaluator::getWildCardWildCardRelation() {
+    return pkb->getAllModifiesP();
+}
