@@ -19,7 +19,7 @@ public:
     explicit AssignPatternEvaluator(PKBClient *pkb);
 
     Table *evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
-                           vector<PatternVariable> &rightPatternVariables) override;
+                           vector<PatternVariable> &rightPatternVariables, bool canSimplify) override;
 
     unordered_set<string> getWildCardWildCardRelation() override;
 
@@ -31,7 +31,7 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a wildcard and a full pattern.
      */
-    Table *evaluateWildCardFullPattern(QueryDeclaration patternSyn, PatternVariable right);
+    Table *evaluateWildCardFullPattern(QueryDeclaration patternSyn, PatternVariable right, bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between a wildcard and a sub pattern.
@@ -41,7 +41,7 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a wildcard and a sub pattern.
      */
-    Table *evaluateWildCardSubPattern(QueryDeclaration patternSyn, PatternVariable right);
+    Table *evaluateWildCardSubPattern(QueryDeclaration patternSyn, PatternVariable right, bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between an identifier and a full pattern.
@@ -52,7 +52,7 @@ public:
      * @return A table that contains information based on the Pattern relation between an identifier and a full pattern.
      */
     Table *
-    evaluateIdentifierFullPattern(QueryDeclaration patternSyn, const ClauseVariable &left, PatternVariable right);
+    evaluateIdentifierFullPattern(QueryDeclaration patternSyn, const ClauseVariable &left, PatternVariable right, bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between an identifier and a sub pattern.
@@ -62,7 +62,7 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a sub pattern.
      */
-    Table *evaluateIdentifierSubPattern(QueryDeclaration patternSyn, const ClauseVariable &left, PatternVariable right);
+    Table *evaluateIdentifierSubPattern(QueryDeclaration patternSyn, const ClauseVariable &left, PatternVariable right, bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a full pattern.
@@ -72,7 +72,7 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a full pattern.
      */
-    Table *evaluateSynonymFullPattern(QueryDeclaration patternSyn, ClauseVariable left, PatternVariable right);
+    Table *evaluateSynonymFullPattern(QueryDeclaration patternSyn, ClauseVariable left, PatternVariable right, bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a sub pattern.
@@ -82,7 +82,7 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a sub pattern.
      */
-    Table *evaluateSynonymSubPattern(QueryDeclaration patternSyn, ClauseVariable left, PatternVariable right);
+    Table *evaluateSynonymSubPattern(QueryDeclaration patternSyn, ClauseVariable left, PatternVariable right, bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a wildcard.
@@ -92,7 +92,7 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a wildcard.
      */
-    Table *evaluateSynonymWildCard(QueryDeclaration patternSyn, ClauseVariable left);
+    Table *evaluateSynonymWildCard(QueryDeclaration patternSyn, ClauseVariable left, bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between an identifier and a wildcard.
@@ -101,5 +101,5 @@ public:
      * @param leftVariable Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a wildcard.
      */
-    Table *evaluateIdentifierWildCard(QueryDeclaration patternSynonym, ClauseVariable &leftVariable);
+    Table *evaluateIdentifierWildCard(QueryDeclaration patternSynonym, ClauseVariable &leftVariable, bool canSimplify);
 };
