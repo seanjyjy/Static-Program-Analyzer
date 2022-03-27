@@ -57,11 +57,3 @@ string WithClause::toString() const {
     return "with " + left.toString() + " " + right.toString();
 }
 
-// TODO: When kendrick is done with OQO
-bool WithClause::canSimplifyClause() const {
-    return false;
-}
-
-void WithClause::setSimplified(bool canSimplifyClause) {
-    this->canSimplify = canSimplifyClause;
-}

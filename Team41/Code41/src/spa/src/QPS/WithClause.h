@@ -1,14 +1,14 @@
 #pragma once
 
 #include "WithVariable.h"
+#include "SimplifiableClause.h"
 #include <vector>
 
 using namespace std;
 
-class WithClause {
+class WithClause : public SimplifiableClause {
 private:
     WithVariable left, right;
-    bool canSimplify;
 public:
     WithClause();
     WithClause(WithVariable, WithVariable);
@@ -20,8 +20,4 @@ public:
     int hash() const;
     bool equals(WithClause) const;
     string toString() const;
-
-    bool canSimplifyClause() const;
-
-    void setSimplified(bool canSimplifyClause);
 };
