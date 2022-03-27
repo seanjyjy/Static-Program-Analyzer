@@ -10,10 +10,11 @@ class QueryClause {
 private:
     // The LHS and RHS of a clause in PQL
     ClauseVariable left, right;
+    bool canSimplify;
 public:
     // enum representing possible clause types in PQL
     enum clause_type {
-        follows, followsT, parent, parentT, usesS, usesP, modifiesS, modifiesP, calls, callsT, next, nextT, affects, affectsT
+        follows, followsT, parent, parentT, usesS, usesP, modifiesS, modifiesP, calls, callsT, next, nextT, affects, affectsT, none
     };
 
     // todo: make private after all refactor
@@ -73,4 +74,12 @@ public:
     int hash() const;
 
     bool equals(QueryClause) const;
+
+    QueryClause generateSimplifiedSelf() const;
+
+    bool canSimplifyClause() const;
+
+    void setSimplified(bool canSimplifyClause);
+
+    bool isBooleanClause() const;
 };

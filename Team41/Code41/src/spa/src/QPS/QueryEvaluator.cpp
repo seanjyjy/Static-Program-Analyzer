@@ -14,7 +14,8 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
         return {queryObject->getSelectTarget(), nullptr, false};
     }
 
-    if (!EvaluatorUtils::validateDeclarations(queryObject->getDeclarations()) ||
+    if (queryObject->hasUseOfUndeclaredVariable() ||
+        !EvaluatorUtils::validateDeclarations(queryObject->getDeclarations()) ||
         !EvaluatorUtils::AttrUtils::validateSelectTarget(&queryObject->getSelectTarget())) {
         return {queryObject->getSelectTarget(), new FalseTable()};
     }

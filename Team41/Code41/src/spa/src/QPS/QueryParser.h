@@ -186,6 +186,8 @@ private:
      * Clean up method to clean up unused attributes after parsing
      */
     void cleanup();
+
+    bool isWildCard(const string& left, const string& right);
 public:
     /**
      * Constructor for the QueryParser class.

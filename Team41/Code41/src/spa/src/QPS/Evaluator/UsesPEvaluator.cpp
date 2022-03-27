@@ -25,3 +25,11 @@ vector<pair<string, string>> UsesPEvaluator::getSynonymSynonymRelation() {
 unordered_set<string> UsesPEvaluator::getSynonymWildCardRelation() {
     return pkb->getAllProcsUsingSomeVar();
 }
+
+unordered_set<string> UsesPEvaluator::getWildCardIdentifierRelation(const string &label) {
+    return pkb->getUsesPByVar(label);
+}
+
+vector<pair<string, string>> UsesPEvaluator::getWildCardWildCardRelation() {
+    return pkb->getAllUsesP();
+}

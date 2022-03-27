@@ -28,7 +28,7 @@ Table *ProcProcEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVari
         return evaluateSynonymWildCard(leftVariable);
     }
 
-    if (EvaluatorUtils::CallsUtils::isWildCardIdentifier(&leftVariable, &rightVariable)) {
+    if (EvaluatorUtils::isWildCardIdentifier(&leftVariable, &rightVariable)) {
         return evaluateWildCardIdentifier(rightVariable);
     }
 
@@ -43,17 +43,7 @@ Table *ProcProcEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVari
     throw SemanticException("Invalid query provided for Call");
 }
 
-Table *ProcProcEvaluator::evaluateWildCardIdentifier(const ClauseVariable &right) {
-    unordered_set<string> procCalling = getWildCardIdentifierRelation(right.getLabel());
-    return buildBooleanTable(!procCalling.empty());
-}
-
 Table *ProcProcEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {
     unordered_set<string> listOfProcBeingCalled = getWildCardSynonymRelation();
     return buildSingleSynonymTable(listOfProcBeingCalled, right);
-}
-
-Table *ProcProcEvaluator::evaluateWildCardWildCard() {
-    vector<pair<string, string>> listOfProcToProc = getWildCardWildCardRelation();
-    return buildBooleanTable(!listOfProcToProc.empty());
 }

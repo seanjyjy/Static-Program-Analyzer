@@ -18,6 +18,10 @@ public:
 
     Table *evaluateSynonymWildCard(ClauseVariable &left);
 
+    Table *evaluateWildCardIdentifier(const ClauseVariable &right);
+
+    Table *evaluateWildCardWildCard();
+
     virtual bool getIdentifierIdentifierRelation(const string &leftLabel, const string &rightLabel) = 0;
 
     virtual unordered_set<string> getIdentifierSynonymRelation(const string &label) = 0;
@@ -29,6 +33,10 @@ public:
     virtual vector<pair<string, string>> getSynonymSynonymRelation() = 0;
 
     virtual unordered_set<string> getSynonymWildCardRelation() = 0;
+
+    virtual unordered_set<string> getWildCardIdentifierRelation(const string &label) = 0;
+
+    virtual vector<pair<string, string>> getWildCardWildCardRelation() = 0;
 
     friend class ProcProcEvaluator;
 

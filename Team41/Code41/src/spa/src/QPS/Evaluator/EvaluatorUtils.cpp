@@ -95,6 +95,10 @@ bool EvaluatorUtils::isSynonymWildCard(ClauseVariable *left, ClauseVariable *rig
     return left->isSynonym() && right->isWildCard();
 }
 
+bool EvaluatorUtils::isWildCardIdentifier(ClauseVariable *left, ClauseVariable *right) {
+    return left->isWildCard() && right->isIdentifier();
+}
+
 bool EvaluatorUtils::isWildCardWildCard(ClauseVariable *left, ClauseVariable *right) {
     return left->isWildCard() && right->isWildCard();
 }
@@ -247,10 +251,6 @@ bool EvaluatorUtils::CallsUtils::isValidCallsSynonymWildCard(ClauseVariable *lef
 
 bool EvaluatorUtils::CallsUtils::isValidCallsWildCardSynonym(ClauseVariable *left, ClauseVariable *right) {
     return isWildCardSynonym(left, right) && isProcedure(right->getDesignEntityType());
-}
-
-bool EvaluatorUtils::CallsUtils::isWildCardIdentifier(ClauseVariable *left, ClauseVariable *right) {
-    return left->isWildCard() && right->isIdentifier();
 }
 
 // ============================================ Attr Utils ====================================================

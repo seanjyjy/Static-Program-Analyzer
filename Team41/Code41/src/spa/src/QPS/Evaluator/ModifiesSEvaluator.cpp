@@ -41,3 +41,11 @@ vector<pair<string, string>> ModifiesSEvaluator::getSynonymSynonymRelation() {
 unordered_set<string> ModifiesSEvaluator::getSynonymWildCardRelation() {
     return pkb->getAllStmtsModifyingSomeVar();
 }
+
+unordered_set<string> ModifiesSEvaluator::getWildCardIdentifierRelation(const string &label) {
+    return pkb->getModifiesSByVar(label);
+}
+
+vector<pair<string, string>> ModifiesSEvaluator::getWildCardWildCardRelation() {
+    return pkb->getAllModifiesS();
+}

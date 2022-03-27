@@ -76,6 +76,7 @@ public:
 
     bool equals(ClauseVariable) const;
 
+    ClauseVariable convertWildCard() const;
 private:
     // variable type of the variable instance
     variable_type type;
