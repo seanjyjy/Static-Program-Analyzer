@@ -1,0 +1,15 @@
+--. procedure empty {
+01.    x = x + 1;
+02.    x = y + 1;
+03.    a = x + c;
+04.    call nextEmpty;
+05.    if (x == 2) then {
+06.        y = 2;
+--.    } else {
+07.        z = 3;
+--.    }
+--.}
+
+--.procedure nextEmpty {
+08.    x = x + 1;
+--.}

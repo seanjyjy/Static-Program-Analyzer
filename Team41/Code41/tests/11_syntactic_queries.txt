@@ -1,0 +1,545 @@
+1 - Query clause but use With // Invalid Syntactic
+
+Select BOOLEAN with Uses(1, "x")
+
+5000
+2 - Query clause but use Pattern  // Invalid Syntactic
+
+Select BOOLEAN pattern Uses(1, "x")
+
+5000
+3 - Such that + and but receive With type  // Invalid Syntactic
+
+Select BOOLEAN such that Uses(1, "x") and with 1 = 1
+
+5000
+4 - Such that + and but receive Pattern Type  // Invalid Syntactic
+
+Select BOOLEAN such that Uses(1, "x") and pattern a("x", "y + 1")
+
+5000
+5 - With + and but receive such that type  // Invalid Syntactic
+
+Select BOOLEAN with 1 = 1 and Uses(1, "x")
+
+5000
+6 - With + and but receive pattern type  // Invalid Syntactic
+assign a;
+Select BOOLEAN with 1 = 1 and pattern a("x", "y + 1")
+
+5000
+7 - Pattern + and but receive such that type  // Invalid Syntactic
+assign a;
+Select BOOLEAN pattern a("x", "y + 1") and Uses(1, "x")
+
+5000
+8 - Pattern + and but receive with type  // Invalid Syntactic
+assign a;
+Select BOOLEAN pattern a("x", "y + 1") and with 1 = 1
+
+5000
+9 - Using and before with type  // Invalid Syntactic
+
+Select BOOLEAN and 1 = 1 with 1 = 1
+
+5000
+10 - Using and before pattern type  // Invalid Syntactic
+assign a;
+Select BOOLEAN and a("x", "y + 1") pattern("x", "y + 1")
+
+5000
+11 - Using and in such that but also include such that in subsequent clauses  // Invalid Syntactic
+
+Select BOOLEAN such that Uses(1, "x") and such that Uses(1, "x")
+
+5000
+12 - Using and in pattern but also include pattern in subsequent clauses  // Invalid Syntactic
+assign a;
+Select BOOLEAN pattern a("x", "y + 1") and pattern a("x", "y + 1")
+
+5000
+13 - Using an in with but also include with in subsequent clauses  // Invalid Syntactic
+
+Select BOOLEAN with 1 = 1 and with 1 = 1
+
+5000
+14 - Starting with number in IDENTIFIER needed type - With type  // Invalid Syntactic
+
+Select BOOLEAN with "1" = "1"
+
+5000
+15 - Starting with number in IDENTIFIER needed type - With type  // Invalid Syntactic
+
+Select BOOLEAN with "1" = 1
+
+5000
+16 - Starting with number in IDENTIFIER needed type - With type  // Invalid Syntactic
+
+Select BOOLEAN with 1 = "1"
+
+5000
+17 - Staring with number in IDENTIFIER needed type - UsesS  // Invalid Syntactic
+
+Select BOOLEAN such that Uses(1, "1")
+
+5000
+18 - Starting with number in IDENTIFIER needed type - UsesP  // Invalid Syntactic
+
+Select BOOLEAN such that Uses("empty", "1")
+
+5000
+19 - Starting with number in IDENTIFIER needed type - UsesP  // Invalid Syntactic
+
+Select BOOLEAN such that Uses("1empty", "1")
+
+5000
+20 - Staring with number in IDENTIFIER needed type - ModifiesS  // Invalid Syntactic
+
+Select BOOLEAN such that Modifies(1, "1")
+
+5000
+21 - Starting with number in IDENTIFIER needed type - ModifiesP  // Invalid Syntactic
+
+Select BOOLEAN such that Modifies("empty", "1")
+
+5000
+22 - Starting with number in IDENTIFIER needed type - ModifiesP  // Invalid Syntactic
+
+Select BOOLEAN such that Modifies("1empty", "1")
+
+5000
+23 - Starting with number in IDENTIFIER needed type - Calls  // Invalid Syntactic
+
+Select BOOLEAN such that Calls("empty", "1nextEmpty")
+
+5000
+24 - Starting with number in IDENTIFIER needed type - Calls  // Invalid Syntactic
+
+Select BOOLEAN such that Call("1empty", "nextEmpty")
+
+5000
+25 - Starting with number in IDENTIFIER needed type - Calls*  // Invalid Syntactic
+
+Select BOOLEAN such that Calls* ("empty", "1nextEmpty")
+
+5000
+26 - Starting with number in IDENTIFIER needed type - Calls*  // Invalid Syntactic
+
+Select BOOLEAN such that Call* ("1empty", "nextEmpty")
+
+5000
+27 - Using Ent ref in Next  // Invalid Syntactic
+
+Select BOOLEAN such that Next("1", "2")
+
+5000
+28 - Using Ent ref in Next  // Invalid Syntactic
+
+Select BOOLEAN such that Next("1", 2)
+
+5000
+29 - Using Ent ref in Next  // Invalid Syntactic
+
+Select BOOLEAN such that Next(1, "2")
+
+5000
+30 - Using Ent ref in Next*  // Invalid Syntactic
+
+Select BOOLEAN such that Next* ("1", "2")
+
+5000
+31 - Using Ent ref in Next*  // Invalid Syntactic
+
+Select BOOLEAN such that Next* (1, "2")
+
+5000
+32 - Using Ent ref in Next*  // Invalid Syntactic
+
+Select BOOLEAN such that Next* ("1", 2)
+
+5000
+33 - Using Ent ref in Affects  // Invalid Syntactic
+
+Select BOOLEAN such that Affects("1", "2")
+
+5000
+34 - Using Ent ref in Affects  // Invalid Syntactic
+
+Select BOOLEAN such that Affects(1, "2")
+
+5000
+35 - Using Ent ref in Affects  // Invalid Syntactic
+
+Select BOOLEAN such that Affects("1", 2)
+
+5000
+36 - Using Ent ref in Affects*  // Invalid Syntactic
+
+Select BOOLEAN such that Affects* ("1", "2")
+
+5000
+37 - Using Ent ref in Affects*  // Invalid Syntactic
+
+Select BOOLEAN such that Affects* (1, "2")
+
+5000
+38 - Using Ent ref in Affects*  // Invalid Syntactic
+
+Select BOOLEAN such that Affects* ("1", 2)
+
+5000
+39 - Using stmt ref in Calls  // Invalid Syntactic
+
+Select BOOLEAN such that Calls (1, 2)
+
+5000
+40 - Using stmt ref in Calls  // Invalid Syntactic
+
+Select BOOLEAN such that Calls ("1", 2)
+
+5000
+41 - Using stmt ref in Calls  // Invalid Syntactic
+
+Select BOOLEAN such that Calls (1, "2")
+
+5000
+42 - Using stmt ref in Calls*  // Invalid Syntactic
+
+Select BOOLEAN such that Calls* (1, 2)
+
+5000
+43 - Using stmt ref in Calls*  // Invalid Syntactic
+
+Select BOOLEAN such that Calls* ("1", 2)
+
+5000
+44 - Using stmt ref in Calls*  // Invalid Syntactic
+
+Select BOOLEAN such that Calls* (1, "2")
+
+5000
+45 - Using Ent ref in Follows  // Invalid Syntactic
+
+Select BOOLEAN such that Follows("1", "2")
+
+5000
+46 - Using Ent ref in Follows  // Invalid Syntactic
+
+Select BOOLEAN such that Follows(1, "2")
+
+5000
+47 - Using Ent ref in Follows  // Invalid Syntactic
+
+Select BOOLEAN such that Follows("1", 2)
+
+5000
+48 - Using Ent ref in Follows*  // Invalid Syntactic
+
+Select BOOLEAN such that Follows* ("1", "2")
+
+5000
+49 - Using Ent ref in Follows*  // Invalid Syntactic
+
+Select BOOLEAN such that Follows* (1, "2")
+
+5000
+50 - Using Ent ref in Follows*  // Invalid Syntactic
+
+Select BOOLEAN such that Follows* ("1", 2)
+
+5000
+51 - Using Ent ref in Parent  // Invalid Syntactic
+
+Select BOOLEAN such that Parent("1", "2")
+
+5000
+52 - Using Ent ref in Parent // Invalid Syntactic
+
+Select BOOLEAN such that Parent(1, "2")
+
+5000
+53 - Using Ent ref in Parent // Invalid Syntactic
+
+Select BOOLEAN such that Parent("1", 2)
+
+5000
+54 - Using Ent ref in Parent* // Invalid Syntactic
+
+Select BOOLEAN such that Parent* ("1", "2")
+
+5000
+55 - Using Ent ref in Parent* // Invalid Syntactic
+
+Select BOOLEAN such that Parent* (1, "2")
+
+5000
+56 - Using Ent ref in Parent* // Invalid Syntactic
+
+Select BOOLEAN such that Parent* ("1", 2)
+
+5000
+57 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+stmt s;
+Select BOOLEAN pattern s("x", "y + 1")
+
+5000
+58 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+stmt s;
+Select BOOLEAN pattern s("x", "y + 1")
+
+5000
+59 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+while w;
+Select BOOLEAN pattern w("x", "y + 1")
+
+5000
+60 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+if ifs;
+Select BOOLEAN pattern ifs("x", "y + 1")
+
+5000
+61 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+procedure p;
+Select BOOLEAN pattern p("x", "y + 1")
+
+5000
+62 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+constant c;
+Select BOOLEAN pattern c("x", "y + 1")
+
+5000
+63 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+read re;
+Select BOOLEAN pattern re("x", "y + 1")
+
+5000
+64 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+print pn;
+Select BOOLEAN pattern pn("x", "y + 1")
+
+5000
+65 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+call cl;
+Select BOOLEAN pattern cl("x", "y + 1")
+
+5000
+66 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+stmt s;
+Select BOOLEAN pattern s("x", "_", "_")
+
+5000
+67 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+variable v;
+Select BOOLEAN pattern v("x", "_", "_")
+
+5000
+68 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+procedure p;
+Select BOOLEAN pattern p("x", "_", "_")
+
+5000
+69 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+constant c;
+Select BOOLEAN pattern c("x", "_", "_")
+
+5000
+70 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+read re;
+Select BOOLEAN pattern re("x", "_", "_")
+
+5000
+71 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+print pn;
+Select BOOLEAN pattern pn("x", "_", "_")
+
+5000
+72 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+call cl;
+Select BOOLEAN pattern cl("x", "_", "_")
+
+5000
+73 - Using invalid synonym for pattern - Statement // Invalid Syntactic
+call cl;
+Select BOOLEAN pattern w("x", "_", "_")
+
+5000
+74 - Using undeclared synonym for pattern // Invalid Syntactic
+
+Select BOOLEAN pattern a("x", _)
+
+5000
+75 - Using undeclared synonym for pattern // Invalid Semantic
+
+Select BOOLEAN such that Uses(a, v)
+FALSE
+5000
+76 - Using undeclared synonym for pattern // Invalid Semantic
+
+Select BOOLEAN with a.stmt# = 2
+FALSE
+5000
+77 - Stmt ref in while pattern  // Invalid Syntactic
+while w;
+Select BOOLEAN pattern w(1, "_", "_")
+
+5000
+78 - Stmt ref in if pattern // Invalid Syntactic
+if ifs;
+Select BOOLEAN pattern ifs(1, "_", "_")
+
+5000
+79 - Stmt ref in assign pattern // Invalid Syntactic
+assign a;
+Select BOOLEAN pattern a(1, "_")
+
+5000
+80 - invalid subpattern in assign pattern // Invalid Syntactic
+assign a;
+Select BOOLEAN pattern a("x", _"y")
+
+5000
+81 - invalid subpattern in assign pattern // Invalid Syntactic
+assign a;
+Select BOOLEAN pattern a("x", "y"_)
+
+5000
+82 - invalid subpattern in assign pattern // Invalid Syntactic
+assign a;
+Select BOOLEAN pattern a("x", "")
+
+5000
+83 - invalid subpattern in assign pattern // Invalid Syntactic
+assign a;
+Select BOOLEAN pattern a("x", _""_)
+
+5000
+84 - invalid syntax for while pattern // Invalid Syntactic
+while w;
+Select BOOLEAN pattern w("x", "y")
+
+5000
+85 - invalid syntax for if pattern // Invalid Syntactic
+if ifs;
+Select BOOLEAN pattern ifs("x", "_", "1")
+
+5000
+86 - invalid syntax for if pattern // Invalid Syntactic
+if ifs;
+Select BOOLEAN pattern ifs("x", "1", "_")
+
+5000
+87 - invalid casing for such that - common // Invalid Syntactic
+
+Select BOOLEAN Such that Uses(1, "x")
+
+5000
+88 - invalid casing for such that - common // Invalid Syntactic
+
+Select BOOLEAN Such That Uses(1, "x")
+
+5000
+89 - invalid casing for pattern - common // Invalid Syntactic
+assign a;
+Select BOOLEAN Pattern a("x", "y + 1")
+
+5000
+90 - invalid casing for with - common // Invalid Syntactic
+assign a;
+Select BOOLEAN With 1 = 1
+
+5000
+91 - star should be joined to the clause // Invalid Syntactic
+
+Select BOOLEAN such that Follows * (5, 6)
+
+5000
+92 - star should be joined to the clause // Invalid Syntactic
+
+Select BOOLEAN such that Parent * (6, 7)
+
+5000
+93 - star should be joined to the clause // Invalid Syntactic
+
+Select BOOLEAN such that Calls * ("empty", "nextEmpty")
+
+5000
+94 - star should be joined to the clause // Invalid Syntactic
+
+Select BOOLEAN such that Next * (6, 7)
+
+5000
+95 - star should be joined to the clause // Invalid Syntactic
+
+Select BOOLEAN such that Affects * (3, 4)
+
+5000
+96 - invalid attrName // Invalid Syntactic
+stmt s;
+Select BOOLEAN with 1 = s.procname
+
+5000
+97 - invalid attrName // Invalid Syntactic
+stmt s;
+Select BOOLEAN with 1 = s.varname
+
+5000
+98 - invalid attrName // Invalid Syntactic
+stmt s;
+Select BOOLEAN with 1 = s.Value
+
+5000
+99 - invalid attrName // Invalid Syntactic
+stmt s;
+Select BOOLEAN with 1 = s.stmt
+
+5000
+100 - No leading zero // Invalid Syntactic
+
+Select BOOLEAN such that Uses("01", "x")
+
+5000
+101 - Such that should have a space // Invalid Syntactic
+
+Select BOOLEAN suchthat Uses(1, "x")
+
+5000
+102 - Boolean with semicolon // Invalid Syntactic
+stmt s;
+Select BOOLEAN;
+
+5000
+103 - using undeclared variables // Invalid Semantic
+stmt s;
+Select BOOLEAN with a.stmt# = a.stmt#
+FALSE
+5000
+104 - using 01 // Invalid Syntactic
+stmt s;
+Select BOOLEAN such that Follows(01, _)
+
+5000
+105 - using same variable // Invalid Semantic
+stmt s; while s;
+Select BOOLEAN
+FALSE
+5000
+106 - Using undeclared variables in pattern // Invalid Syntactic
+stmt s;
+Select BOOLEAN pattern a(_, "x+1")
+
+5000
+107 - POSITIVE CASES - Such that should allow any amount of space inbetween
+
+Select BOOLEAN such                       that Uses(1, "x")
+TRUE
+500
+52 - POSITIVE CASES - Attr Ref should allow any amount of space between the .
+stmt s;
+Select BOOLEAN with 1 = s         .              stmt#
+TRUE
+5000
+108 - POSITIVE CASES - Able to support different clause type and
+assign a, a1;
+Select BOOLEAN such that Uses(1, "x") and Uses(2, "y") with 1 = 1 and 2 = 2 pattern a("x", "y + 1") and a1("x", "x + 1")
+TRUE
+5000
