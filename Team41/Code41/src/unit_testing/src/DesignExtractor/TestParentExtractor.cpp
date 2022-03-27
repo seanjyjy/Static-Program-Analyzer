@@ -9,6 +9,7 @@ using namespace std;
 
 /**
  * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl
+ * multiproc1
  */
 
 TEST_CASE("ParentExtractor: Assign") {
@@ -237,6 +238,31 @@ TEST_CASE("ParentExtractor: n3wwl") {
             {"4", {"5", "6", "7", "8", "9"}},
             {"6", {"7", "8", "9"}},
             {"8", {"9"}}
+    };
+    REQUIRE(pe.getParentTMap() == expectedParentT);
+    delete ast;
+}
+
+TEST_CASE("ParentExtractor: multiproc1") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
+    pe.extract();
+
+    unordered_map<string, list<string>> expectedParent = {
+            {"1",  {"2", "5", "6", "7"}},
+            {"2",  {"3", "4"}},
+            {"10",  {"11", "12"}},
+            {"16",  {"17", "18"}},
+            {"22",  {"23"}}
+    };
+    REQUIRE(pe.getParentMap() == expectedParent);
+    unordered_map<string, list<string>> expectedParentT = {
+            {"1",  {"2", "3", "4", "5", "6", "7"}},
+            {"2",  {"3", "4"}},
+            {"10",  {"11", "12"}},
+            {"16",  {"17", "18"}},
+            {"22",  {"23"}}
     };
     REQUIRE(pe.getParentTMap() == expectedParentT);
     delete ast;

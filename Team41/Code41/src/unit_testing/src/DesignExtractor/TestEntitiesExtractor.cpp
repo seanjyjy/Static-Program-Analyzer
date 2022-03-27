@@ -8,6 +8,7 @@ using namespace std;
 
 /**
  * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl, multi-procedures
+ * multiproc1
  */
 
 TEST_CASE("EntitiesExtractor: Assign") {
@@ -253,6 +254,32 @@ TEST_CASE("EntitiesExtractor: multi-procedures") {
         REQUIRE(ee.getVarSet() == expectedVarNames);
     }SECTION("Constants") {
         REQUIRE(ee.getConstSet().empty());
+    }
+    delete ast;
+}
+
+TEST_CASE("EntitiesExtractor: multiproc1") {
+    // multiproc/multiproc1-simple.txt
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    ee.extract();
+
+    SECTION("Statement Nums") {
+        REQUIRE(ee.getNodeToStmtNumMap().size() == 23);
+    }SECTION("Procedures") {
+        unordered_set<string> expectedProcedures = {"n1iif", "n0f", "n0m", "n0l"};
+        REQUIRE(ee.getProcSet() == expectedProcedures);
+    }SECTION("Variable") {
+        unordered_set<string> expectedVarNames = {
+                "the3dWORLD", "my2dLAIFU", "TooMuchIntoThings", "er", "Iamn0taWeeb", "isThisJustFantasy",
+                "J0000000000000", "A0136999B", "a", "c", "d", "h3ll0", "trader", "buyer", "temptation", "a1", "b1",
+                "abc", "xyz", "g00dbye", "yourfather", "permanent", "marker", "a2", "b2", "def", "pqr", "s33y0u"};
+        REQUIRE(ee.getVarSet() == expectedVarNames);
+    }SECTION("Constants") {
+        unordered_set<string> expectedConsts = {
+                "12304982739041283675213", "7345612390847123490128", "0", "10", "0", "0"
+        };
+        REQUIRE(ee.getConstSet() == expectedConsts);
     }
     delete ast;
 }

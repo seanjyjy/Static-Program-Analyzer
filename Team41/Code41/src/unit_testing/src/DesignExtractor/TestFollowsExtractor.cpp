@@ -9,6 +9,7 @@ using namespace std;
 
 /**
  * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl
+ * multiproc1
  */
 
 TEST_CASE("FollowsExtractor: Assign") {
@@ -198,6 +199,30 @@ TEST_CASE("FollowsExtractor: n3wwl") {
             {"3", {"4"}},
             {"5", {"6"}},
             {"7", {"8"}}
+    };
+    REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
+    delete ast;
+}
+
+TEST_CASE("FollowsExtractor: multiproc1") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
+    fe.extract();
+
+    unordered_map<string, list<string>> expectedFollowsT = {
+            {"1", {"8", "9"}},
+            {"2", {"5"}},
+            {"6", {"7"}},
+            {"8", {"9"}},
+            {"10", {"13", "14"}},
+            {"11", {"12"}},
+            {"13", {"14"}},
+            {"15", {"16", "19"}},
+            {"16", {"19"}},
+            {"17", {"18"}},
+            {"20", {"21", "22"}},
+            {"21", {"22"}}
     };
     REQUIRE(fe.getFollowsTMap() == expectedFollowsT);
     delete ast;

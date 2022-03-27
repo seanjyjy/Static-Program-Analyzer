@@ -1,0 +1,42 @@
+procedure n1iif {
+	if (the3dWORLD > my2dLAIFU) then {
+		if (12304982739041283675213 <= 7345612390847123490128) then {
+			read TooMuchIntoThings;
+			call n0f;
+		} else {
+			call n0m;
+			print er;
+		}
+		print Iamn0taWeeb;
+	} else {
+		print isThisJustFantasy;
+	}
+	read J0000000000000;
+	print A0136999B;
+}
+
+procedure n0f {
+	while (!((a < c) && (10 == d))) {
+		h3ll0 = 0;
+    }
+    call n0l;
+    read trader;
+    print buyer;
+}
+
+procedure n0m {
+	read temptation;
+	while ((a1 >= b1) && (abc == xyz)) {
+		call n0l;
+		g00dbye = 0;
+	}
+	print yourfather;
+}
+
+procedure n0l {
+	read permanent;
+	print marker;
+	while ((a2 >= b2) && (def == pqr)) {
+		s33y0u = 0;
+	}
+}

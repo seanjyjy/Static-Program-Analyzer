@@ -9,7 +9,7 @@ using namespace std;
 
 /**
  * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl, multi-procedures
- * Call
+ * Call, multiproc1, multiproc2, multiproc3, multiproc4
  */
 
 TEST_CASE("UsesExtractor: Assign") {
@@ -354,3 +354,170 @@ TEST_CASE("UsesExtractor: Call") {
     REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
     delete ast;
 }
+
+TEST_CASE("UsesExtractor: multiproc1") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_map<string, unordered_set<string>> callsMap = {
+            {"n1iif", {"n0f"}}, {"n0f", {"n0m"}}, {"n0m", {"n0l"}}
+    };
+    list<string> procCallOrder = {"n0m", "n0f", "n1iif"};
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
+    ue.extract();
+
+    unordered_map<string, unordered_set<string>> expectedProcUses = {
+            {"n0l", {"marker", "a2", "b2", "def", "pqr"}},
+            {"n0m", {"a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"n0f", {"a", "c", "d", "buyer", "a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"n1iif", {"the3dWORLD", "my2dLAIFU", "er", "Iamn0taWeeb", "isThisJustFantasy", "A0136999B",
+                       "a", "c", "d", "buyer", "a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}}
+    };
+    REQUIRE(ue.getProcUsesMap() == expectedProcUses);
+    unordered_map<string, unordered_set<string>> expectedStmtUses = {
+            {"1", {"the3dWORLD", "my2dLAIFU", "er", "Iamn0taWeeb", "isThisJustFantasy", "a", "c", "d", "buyer",
+                   "a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"2", {"er"}},
+            {"4", {"er"}},
+            {"5", {"Iamn0taWeeb"}},
+            {"6", {"a", "c", "d", "buyer", "a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"7", {"isThisJustFantasy"}},
+            {"9", {"A0136999B"}},
+            {"10", {"a", "c", "d", "a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"12", {"a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"14", {"buyer"}},
+            {"16", {"a1", "b1", "abc", "xyz", "marker", "a2", "b2", "def", "pqr"}},
+            {"17", {"marker", "a2", "b2", "def", "pqr"}},
+            {"19", {"yourfather"}},
+            {"21", {"marker"}},
+            {"22", {"a2", "b2", "def", "pqr"}}
+    };
+    REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
+}
+
+TEST_CASE("UsesExtractor: multiproc2") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc2.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_map<string, unordered_set<string>> callsMap = {
+            {"n1iif", {"n0f", "n0m"}}, {"n0f", {"n0l"}}, {"n0m", {"n0l"}}
+    };
+    list<string> procCallOrder = {"n0m", "n0f", "n1iif"};
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
+    ue.extract();
+
+    unordered_map<string, unordered_set<string>> expectedProcUses = {
+            {"n0l", {"marker", "a2", "b2", "def", "pqr"}},
+            {"n0m", {"a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"n0f", {"a", "c", "d", "buyer", "marker", "a2", "b2", "def", "pqr"}},
+            {"n1iif", {"the3dWORLD", "my2dLAIFU", "er", "Iamn0taWeeb", "isThisJustFantasy", "A0136999B",
+                       "a", "c", "d", "buyer", "a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}}
+    };
+    REQUIRE(ue.getProcUsesMap() == expectedProcUses);
+    unordered_map<string, unordered_set<string>> expectedStmtUses = {
+            {"1", {"the3dWORLD", "my2dLAIFU", "er", "Iamn0taWeeb", "isThisJustFantasy", "a", "c", "d", "buyer",
+                   "a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"2", {"er", "a", "c", "d", "buyer", "marker", "a2", "b2", "def", "pqr",
+                   "a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"4", {"a", "c", "d", "buyer", "marker", "a2", "b2", "def", "pqr"}},
+            {"5", {"a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"6", {"er"}},
+            {"7", {"Iamn0taWeeb"}},
+            {"8", {"isThisJustFantasy"}},
+            {"10", {"A0136999B"}},
+            {"11", {"a", "c", "d"}},
+            {"13", {"marker", "a2", "b2", "def", "pqr"}},
+            {"15", {"buyer"}},
+            {"17", {"a1", "b1", "abc", "xyz", "marker", "a2", "b2", "def", "pqr"}},
+            {"18", {"marker", "a2", "b2", "def", "pqr"}},
+            {"20", {"yourfather"}},
+            {"22", {"marker"}},
+            {"23", {"a2", "b2", "def", "pqr"}}
+    };
+    REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
+}
+
+TEST_CASE("UsesExtractor: multiproc3") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc3.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_map<string, unordered_set<string>> callsMap = {
+            {"n1iif", {"n0f", "n0m", "n0l"}}
+    };
+    list<string> procCallOrder = {"n1iif"};
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
+    ue.extract();
+
+    unordered_map<string, unordered_set<string>> expectedProcUses = {
+            {"n0l", {"marker", "a2", "b2", "def", "pqr"}},
+            {"n0m", {"a1", "b1", "abc", "xyz", "yourfather"}},
+            {"n0f", {"a", "c", "d", "buyer"}},
+            {"n1iif", {"the3dWORLD", "my2dLAIFU", "er", "Iamn0taWeeb", "isThisJustFantasy", "A0136999B",
+                       "a", "c", "d", "buyer", "a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}}
+    };
+    REQUIRE(ue.getProcUsesMap() == expectedProcUses);
+    unordered_map<string, unordered_set<string>> expectedStmtUses = {
+            {"1", {"the3dWORLD", "my2dLAIFU", "er", "Iamn0taWeeb", "isThisJustFantasy", "a", "c", "d", "buyer",
+                   "a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"2", {"er"}},
+            {"4", {"er"}},
+            {"5", {"Iamn0taWeeb"}},
+            {"6", {"a", "c", "d", "buyer"}},
+            {"7", {"a1", "b1", "abc", "xyz", "yourfather"}},
+            {"8", {"marker", "a2", "b2", "def", "pqr"}},
+            {"9", {"isThisJustFantasy"}},
+            {"11", {"A0136999B"}},
+            {"12", {"a", "c", "d"}},
+            {"15", {"buyer"}},
+            {"17", {"a1", "b1", "abc", "xyz"}},
+            {"19", {"yourfather"}},
+            {"21", {"marker"}},
+            {"22", {"a2", "b2", "def", "pqr"}}
+    };
+    REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
+}
+
+TEST_CASE("UsesExtractor: multiproc4") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc4.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_map<string, unordered_set<string>> callsMap = {
+            {"n1iif", {"n0f"}}, {"n0m", {"n0l"}}
+    };
+    list<string> procCallOrder = {"n1iif", "n0m"};
+    UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
+    ue.extract();
+
+    unordered_map<string, unordered_set<string>> expectedProcUses = {
+            {"n0l", {"marker", "a2", "b2", "def", "pqr"}},
+            {"n0m", {"a1", "b1", "abc", "xyz", "yourfather", "marker", "a2", "b2", "def", "pqr"}},
+            {"n0f", {"a", "c", "d", "buyer"}},
+            {"n1iif", {"the3dWORLD", "my2dLAIFU", "er", "Iamn0taWeeb", "isThisJustFantasy", "A0136999B",
+                       "a", "c", "d", "buyer"}}
+    };
+    REQUIRE(ue.getProcUsesMap() == expectedProcUses);
+    for (auto [a,b] : ue.getStmtUsesMap()) {
+        cout << a << ": ";
+        for (auto c : b)
+            cout << c << " ";
+        cout << endl;
+    }
+    unordered_map<string, unordered_set<string>> expectedStmtUses = {
+            {"1", {"the3dWORLD", "my2dLAIFU", "er", "Iamn0taWeeb", "isThisJustFantasy", "a", "c", "d", "buyer"}},
+            {"2", {"er", "a", "c", "d", "buyer"}},
+            {"4", {"er"}},
+            {"5", {"a", "c", "d", "buyer"}},
+            {"6", {"Iamn0taWeeb"}},
+            {"7", {"isThisJustFantasy"}},
+            {"9", {"A0136999B"}},
+            {"10", {"a", "c", "d"}},
+            {"13", {"buyer"}},
+            {"15", {"marker", "a2", "b2", "def", "pqr"}},
+            {"16", {"a1", "b1", "abc", "xyz"}},
+            {"18", {"yourfather"}},
+            {"20", {"marker"}},
+            {"21", {"a2", "b2", "def", "pqr"}}
+    };
+    REQUIRE(ue.getStmtUsesMap() == expectedStmtUses);
+    delete ast;
+}
+

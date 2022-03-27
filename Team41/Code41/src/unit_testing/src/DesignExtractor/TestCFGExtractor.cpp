@@ -11,6 +11,7 @@ using namespace std;
 
 /**
  * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl
+ * multiproc1, multiproc2, multiproc3, multiproc4
  */
 
 TEST_CASE("CFGExtractor: Assign") {
@@ -200,6 +201,86 @@ TEST_CASE("CFGExtractor: n3wwl") {
             {"7", {"8"}}, {"8", {"9", "6"}}, {"9", {"8"}}
     };
     CFGBuilder cfgBuilder = CFGBuilder(stmtNextMap, {"1"});
+    cfgBuilder.build();
+
+    REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
+    delete ast;
+}
+
+TEST_CASE("CFGExtractor: multiproc1") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
+    cfge.extract();
+
+    unordered_map<string, vector<string>> stmtNextMap = {
+            {"1", {"2", "6"}}, {"2", {"3", "4"}}, {"3", {"5"}}, {"4", {"5"}},
+            {"5", {"8"}}, {"6", {"7"}}, {"7", {"8"}}, {"8", {"9"}}, {"9", {}},
+            {"10", {"11", "13"}}, {"11", {"12"}}, {"12", {"10"}}, {"13", {"14"}}, {"14", {}},
+            {"15", {"16"}}, {"16", {"17", "19"}}, {"17", {"18"}}, {"18", {"16"}}, {"19", {}},
+            {"20", {"21"}}, {"21", {"22"}}, {"22", {"23"}}, {"23", {"22"}}
+    };
+    CFGBuilder cfgBuilder = CFGBuilder(stmtNextMap, {"1", "10", "15", "20"});
+    cfgBuilder.build();
+
+    REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
+    delete ast;
+}
+
+TEST_CASE("CFGExtractor: multiproc2") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc2.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
+    cfge.extract();
+
+    unordered_map<string, vector<string>> stmtNextMap = {
+            {"1", {"2", "8"}}, {"2", {"3", "5"}}, {"3", {"4"}}, {"4", {"7"}},
+            {"5", {"6"}}, {"6", {"7"}}, {"7", {"9"}}, {"8", {"9"}}, {"9", {"10"}}, {"10", {}},
+            {"11", {"12", "13"}}, {"12", {"11"}}, {"13", {"14"}}, {"14", {"15"}}, {"15", {}},
+            {"16", {"17"}}, {"17", {"18", "20"}}, {"18", {"19"}}, {"19", {"17"}}, {"20", {}},
+            {"21", {"22"}}, {"22", {"23"}}, {"23", {"24"}}, {"24", {"23"}}
+    };
+    CFGBuilder cfgBuilder = CFGBuilder(stmtNextMap, {"1", "11", "16", "21"});
+    cfgBuilder.build();
+
+    REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
+    delete ast;
+}
+
+TEST_CASE("CFGExtractor: multiproc3") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc3.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
+    cfge.extract();
+
+    unordered_map<string, vector<string>> stmtNextMap = {
+            {"1", {"2", "9"}}, {"2", {"3", "4"}}, {"3", {"5"}}, {"4", {"5"}}, {"5", {"6"}}, {"6", {"7"}},
+            {"7", {"8"}}, {"8", {"10"}}, {"9", {"10"}}, {"10", {"11"}}, {"11", {}},
+            {"12", {"13", "14"}}, {"13", {"12"}}, {"14", {"15"}}, {"15", {}},
+            {"16", {"17"}}, {"17", {"18", "19"}}, {"18", {"17"}}, {"19", {}},
+            {"20", {"21"}}, {"21", {"22"}}, {"22", {"23"}}, {"23", {"22"}}
+    };
+    CFGBuilder cfgBuilder = CFGBuilder(stmtNextMap, {"1", "12", "16", "20"});
+    cfgBuilder.build();
+
+    REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
+    delete ast;
+}
+
+TEST_CASE("CFGExtractor: multiproc4") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc4.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
+    cfge.extract();
+
+    unordered_map<string, vector<string>> stmtNextMap = {
+            {"1", {"2", "7"}}, {"2", {"3", "4"}}, {"3", {"6"}}, {"4", {"5"}},
+            {"5", {"6"}}, {"6", {"8"}}, {"7", {"8"}}, {"8", {"9"}}, {"9", {}},
+            {"10", {"11", "12"}}, {"11", {"10"}}, {"12", {"13"}}, {"13", {}},
+            {"14", {"15"}}, {"15", {"16"}}, {"16", {"17", "18"}}, {"17", {"16"}}, {"18", {}},
+            {"19", {"20"}}, {"20", {"21"}}, {"21", {"22"}}, {"22", {"21"}}
+    };
+    CFGBuilder cfgBuilder = CFGBuilder(stmtNextMap, {"1", "10", "14", "19"});
     cfgBuilder.build();
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));

@@ -9,7 +9,7 @@ using namespace std;
 
 /**
  * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl
- * Call
+ * Call, multiproc1, multiproc2, multiproc3, multiproc4
  */
 
 TEST_CASE("ModifiesExtractor: Assign") {
@@ -334,6 +334,162 @@ TEST_CASE("ModifiesExtractor: Call") {
             {"10", {"f"}},
             {"11", {"e"}},
             {"12", {"f"}}
+    };
+    REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
+}
+
+TEST_CASE("ModifiesExtractor: multiproc1") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_map<string, unordered_set<string>> callsMap = {
+            {"n1iif", {"n0f"}}, {"n0f", {"n0m"}}, {"n0m", {"n0l"}}
+    };
+    list<string> procCallOrder = {"n0m", "n0f", "n1iif"};
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
+    me.extract();
+
+    unordered_map<string, unordered_set<string>> expectedProcModifies = {
+            {"n0l", {"permanent", "s33y0u"}},
+            {"n0m", {"temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"n0f", {"h3ll0", "trader", "temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"n1iif", {"TooMuchIntoThings", "J0000000000000", "h3ll0", "trader", "temptation", "g00dbye", "permanent", "s33y0u"}}
+    };
+    REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
+    unordered_map<string, unordered_set<string>> expectedStmtModifies = {
+            {"1", {"TooMuchIntoThings", "h3ll0", "trader", "temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"2", {"TooMuchIntoThings"}},
+            {"3", {"TooMuchIntoThings"}},
+            {"6", {"h3ll0", "trader", "temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"8", {"J0000000000000"}},
+            {"10", {"h3ll0", "temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"11", {"h3ll0"}},
+            {"12", {"temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"13", {"trader"}},
+            {"15", {"temptation"}},
+            {"16", {"g00dbye", "permanent", "s33y0u"}},
+            {"17", {"permanent", "s33y0u"}},
+            {"18", {"g00dbye"}},
+            {"20", {"permanent"}},
+            {"22", {"s33y0u"}},
+            {"23", {"s33y0u"}}
+    };
+    REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
+}
+
+TEST_CASE("ModifiesExtractor: multiproc2") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc2.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_map<string, unordered_set<string>> callsMap = {
+            {"n1iif", {"n0f", "n0m"}}, {"n0f", {"n0l"}}, {"n0m", {"n0l"}}
+    };
+    list<string> procCallOrder = {"n0m", "n0f", "n1iif"};
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
+    me.extract();
+
+    unordered_map<string, unordered_set<string>> expectedProcModifies = {
+            {"n0l", {"permanent", "s33y0u"}},
+            {"n0m", {"temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"n0f", {"h3ll0", "trader", "permanent", "s33y0u"}},
+            {"n1iif", {"TooMuchIntoThings", "J0000000000000", "h3ll0", "trader", "temptation", "g00dbye", "permanent", "s33y0u"}}
+    };
+    REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
+    unordered_map<string, unordered_set<string>> expectedStmtModifies = {
+            {"1", {"TooMuchIntoThings", "h3ll0", "trader", "temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"2", {"TooMuchIntoThings", "h3ll0", "trader", "temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"3", {"TooMuchIntoThings"}},
+            {"4", {"h3ll0", "trader", "permanent", "s33y0u"}},
+            {"5", {"temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"9", {"J0000000000000"}},
+            {"11", {"h3ll0"}},
+            {"12", {"h3ll0"}},
+            {"13", {"permanent", "s33y0u"}},
+            {"14", {"trader"}},
+            {"16", {"temptation"}},
+            {"17", {"g00dbye", "permanent", "s33y0u"}},
+            {"18", {"permanent", "s33y0u"}},
+            {"19", {"g00dbye"}},
+            {"21", {"permanent"}},
+            {"23", {"s33y0u"}},
+            {"24", {"s33y0u"}}
+    };
+    REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
+}
+
+TEST_CASE("ModifiesExtractor: multiproc3") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc3.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_map<string, unordered_set<string>> callsMap = {
+            {"n1iif", {"n0f", "n0m", "n0l"}}
+    };
+    list<string> procCallOrder = {"n1iif"};
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
+    me.extract();
+
+    unordered_map<string, unordered_set<string>> expectedProcModifies = {
+            {"n0l", {"permanent", "s33y0u"}},
+            {"n0m", {"temptation", "g00dbye"}},
+            {"n0f", {"h3ll0", "trader"}},
+            {"n1iif", {"TooMuchIntoThings", "J0000000000000", "h3ll0", "trader", "temptation", "g00dbye", "permanent", "s33y0u"}}
+    };
+    REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
+    unordered_map<string, unordered_set<string>> expectedStmtModifies = {
+            {"1", {"TooMuchIntoThings", "h3ll0", "trader", "temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"2", {"TooMuchIntoThings"}},
+            {"3", {"TooMuchIntoThings"}},
+            {"6", {"h3ll0", "trader"}},
+            {"7", {"temptation", "g00dbye"}},
+            {"8", {"permanent", "s33y0u"}},
+            {"10", {"J0000000000000"}},
+            {"12", {"h3ll0"}},
+            {"13", {"h3ll0"}},
+            {"14", {"trader"}},
+            {"16", {"temptation"}},
+            {"17", {"g00dbye"}},
+            {"18", {"g00dbye"}},
+            {"20", {"permanent"}},
+            {"22", {"s33y0u"}},
+            {"23", {"s33y0u"}}
+    };
+    REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
+    delete ast;
+}
+
+TEST_CASE("ModifiesExtractor: multiproc4") {
+    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc4.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_map<string, unordered_set<string>> callsMap = {
+            {"n1iif", {"n0f"}}, {"n0m", {"n0l"}}
+    };
+    list<string> procCallOrder = {"n1iif", "n0m"};
+    ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
+    me.extract();
+
+    unordered_map<string, unordered_set<string>> expectedProcModifies = {
+            {"n0l", {"permanent", "s33y0u"}},
+            {"n0m", {"temptation", "g00dbye", "permanent", "s33y0u"}},
+            {"n0f", {"h3ll0", "trader"}},
+            {"n1iif", {"TooMuchIntoThings", "J0000000000000", "h3ll0", "trader"}}
+    };
+    REQUIRE(me.getProcModifiesMap() == expectedProcModifies);
+    unordered_map<string, unordered_set<string>> expectedStmtModifies = {
+            {"1", {"TooMuchIntoThings", "h3ll0", "trader"}},
+            {"2", {"TooMuchIntoThings", "h3ll0", "trader"}},
+            {"3", {"TooMuchIntoThings"}},
+            {"5", {"h3ll0", "trader"}},
+            {"8", {"J0000000000000"}},
+            {"10", {"h3ll0"}},
+            {"11", {"h3ll0"}},
+            {"12", {"trader"}},
+            {"14", {"temptation"}},
+            {"15", {"permanent", "s33y0u"}},
+            {"16", {"g00dbye"}},
+            {"17", {"g00dbye"}},
+            {"19", {"permanent"}},
+            {"21", {"s33y0u"}},
+            {"22", {"s33y0u"}}
     };
     REQUIRE(me.getStmtModifiesMap() == expectedStmtModifies);
     delete ast;
