@@ -187,7 +187,6 @@ private:
      */
     void cleanup();
 
-    bool isWildCard(const string& left, const string& right);
 public:
     /**
      * Constructor for the QueryParser class.

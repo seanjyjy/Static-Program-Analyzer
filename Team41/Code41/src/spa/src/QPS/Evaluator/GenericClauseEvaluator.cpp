@@ -4,7 +4,7 @@ GenericClauseEvaluator::GenericClauseEvaluator(PKBClient *pkb) : Evaluator(pkb) 
 
 Table *GenericClauseEvaluator::evaluate(const QueryClause& clause) {
     QueryClause clauseToUse = clause;
-    if (clause.canSimplifyClause() && !clause.isBooleanClause())
+    if (clause.canSimplifyClause())
         clauseToUse = clause.generateSimplifiedSelf();
 
     ClauseVariable leftVariable = clauseToUse.getLeftClauseVariable();

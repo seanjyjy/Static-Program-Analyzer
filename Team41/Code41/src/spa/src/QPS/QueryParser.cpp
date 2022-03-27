@@ -389,11 +389,11 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
     if (type == "Affects*")
         return QueryClause::affectsT;
     if (type == "Uses" && lex->isStmtRef(left) && lex->isEntRef(right))
-        return isWildCard(left, right) ? QueryClause::none : isDeclaredProcedure(left) ? QueryClause::usesP : QueryClause::usesS;
+        return lex->isWildCard(left) ? QueryClause::generic_uses : isDeclaredProcedure(left) ? QueryClause::usesP : QueryClause::usesS;
     if (type == "Uses" && lex->isEntRef(left) && lex->isEntRef(right))
         return QueryClause::usesP;
     if (type == "Modifies" && lex->isStmtRef(left) && lex->isEntRef(right))
-        return isWildCard(left, right) ? QueryClause::none : isDeclaredProcedure(left) ? QueryClause::modifiesP : QueryClause::modifiesS;
+        return lex->isWildCard(left) ? QueryClause::generic_modifies : isDeclaredProcedure(left) ? QueryClause::modifiesP : QueryClause::modifiesS;
     if (type == "Modifies" && lex->isEntRef(left) && lex->isEntRef(right))
         return QueryClause::modifiesP;
     throw runtime_error("Internal Error: Invalid clause type");
@@ -778,6 +778,3 @@ void QueryParser::cleanup() {
     lex = nullptr;
 }
 
-bool QueryParser::isWildCard(const string &left, const string &right) {
-    return left == "_" && right == "_";
-}

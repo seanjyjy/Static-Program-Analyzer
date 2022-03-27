@@ -15,9 +15,11 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
 //        groups = new FifoGroups();
 //    }
 
+    bool hasError = !qo->isValid() || qo->hasUseOfUndeclaredVariable();
+
     // step 1: Take query object, extract clauses, group them based on synonym dependencies
     vector<vector<SuperClause *>> clauseGroups;
-    if (isClauseGroupingEnabled) {
+    if (isClauseGroupingEnabled && !hasError) {
         // clause grouping enabled - form dependency graph and split clauses
         for (SuperClause *cl: qo->getSuperClauses()) {
             clauseDepGraph.registerClause(cl);
@@ -33,9 +35,9 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
     for (vector<SuperClause *> &clauseGroup: clauseGroups) {
         clauseGroup = OptimizerUtils::removeDuplicates(clauseGroup);
 
-        if (isIntraGroupSortEnabled && isDynamicPollingEnabled) {
+        if (isIntraGroupSortEnabled && isDynamicPollingEnabled && !hasError) {
             groups.push_back(new PKBAwareGroup(clauseGroup, adapter));
-        } else if (isIntraGroupSortEnabled) {
+        } else if (isIntraGroupSortEnabled && !hasError) {
             groups.push_back(new SortedGroup(clauseGroup));
         } else {
             groups.push_back(new FifoGroup(clauseGroup));
@@ -43,7 +45,7 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
     }
 
     // initialize the groups container
-    if (isInterGroupSortEnabled) {
+    if (isInterGroupSortEnabled && !hasError) {
         return {qo, new SortedGroups(groups)};
     } else {
         return {qo, new FifoGroups(groups)};

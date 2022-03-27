@@ -6,7 +6,7 @@
 // If required is a stmt, return back the stmt provided, else get its required mapping thru the function provided
 typedef std::function<string(const string &, PKBClient *pkb)> ValueMapping;
 
-class WithEvaluator : Evaluator {
+class WithEvaluator : public Evaluator {
 private:
     bool isIntegerInteger(WithVariable &left, WithVariable &right);
 

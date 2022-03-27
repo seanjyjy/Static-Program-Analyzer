@@ -77,36 +77,11 @@ bool QueryClause::equals(QueryClause other) const {
         && right.equals(other.getRightClauseVariable());
 }
 
-bool QueryClause::isBooleanClause() const {
-    switch (type) {
-        case usesP:
-        case modifiesP:
-            return left.isIdentifier() && (right.isIdentifier() || right.isWildCard());
-        case usesS:
-        case modifiesS:
-            return left.isInteger() && (right.isIdentifier() || right.isWildCard());
-        case calls:
-        case callsT:
-            return (left.isIdentifier() && (right.isIdentifier() || right.isWildCard())) ||
-                (left.isWildCard() && (right.isIdentifier() || right.isWildCard()));
-        default:
-            return (left.isInteger() && (right.isInteger() || right.isWildCard())) ||
-                (left.isWildCard() && (right.isInteger() || right.isWildCard()));
-    }
-}
-
 QueryClause QueryClause::generateSimplifiedSelf() const {
+    if (!canSimplifyClause()) {
+        return {type, left, right};
+    }
     ClauseVariable leftClause = left.isSynonym() ? left.convertWildCard() : left;
     ClauseVariable rightClause = right.isSynonym() ? right.convertWildCard() : right;
     return {type, leftClause, rightClause};
 }
-
-// TODO change when kendrick is okay!
-bool QueryClause::canSimplifyClause() const {
-    return false;
-}
-
-void QueryClause::setSimplified(bool canSimplifyClause) {
-    this->canSimplify = canSimplifyClause;
-}
-

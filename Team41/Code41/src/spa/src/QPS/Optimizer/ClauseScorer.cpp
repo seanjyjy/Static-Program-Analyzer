@@ -44,12 +44,12 @@ ClauseScorer::SuchThatType ClauseScorer::stClauseToType(SuperClause *tc) {
     if (tc->isCallsT()) return SuchThatType::CallsT;
     if (tc->isFollows()) return SuchThatType::Follows;
     if (tc->isFollowsT()) return SuchThatType::FollowsT;
-    if (tc->isModifiesP() || tc->isModifiesS()) return SuchThatType::Modifies;
+    if (tc->isModifies()) return SuchThatType::Modifies;
     if (tc->isNext()) return SuchThatType::Next;
     if (tc->isNextT()) return SuchThatType::NextT;
     if (tc->isParent()) return SuchThatType::Parent;
     if (tc->isParentT()) return SuchThatType::ParentT;
-    if (tc->isUsesP() || tc->isUsesS()) return SuchThatType::Uses;
+    if (tc->isUses()) return SuchThatType::Uses;
     throw runtime_error("could not find matching for suchthat clause");
 }
 

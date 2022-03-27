@@ -119,6 +119,13 @@ bool SuperClause::isUsesP() const {
            && suchThatClause.getType() == QueryClause::usesP;
 }
 
+bool SuperClause::isUses() const {
+    return type == SUCH_THAT
+           && (suchThatClause.getType() == QueryClause::usesP ||
+               suchThatClause.getType() == QueryClause::usesS ||
+               suchThatClause.getType() == QueryClause::generic_uses);
+}
+
 bool SuperClause::isModifiesS() const {
     return type == SUCH_THAT
            && suchThatClause.getType() == QueryClause::modifiesS;
@@ -127,6 +134,13 @@ bool SuperClause::isModifiesS() const {
 bool SuperClause::isModifiesP() const {
     return type == SUCH_THAT
            && suchThatClause.getType() == QueryClause::modifiesP;
+}
+
+bool SuperClause::isModifies() const {
+    return type == SUCH_THAT
+           && (suchThatClause.getType() == QueryClause::modifiesP ||
+               suchThatClause.getType() == QueryClause::modifiesS ||
+               suchThatClause.getType() == QueryClause::generic_modifies);
 }
 
 bool SuperClause::isCalls() const {

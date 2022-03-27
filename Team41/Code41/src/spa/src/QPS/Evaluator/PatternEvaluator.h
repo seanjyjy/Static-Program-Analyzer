@@ -8,10 +8,10 @@ public:
 
     Table* evaluate(const PatternClause &clause);
 
-    Table *evaluateWildCardWildCard(QueryDeclaration patternSynonym);
+    Table *evaluateWildCardWildCard(QueryDeclaration patternSynonym, bool canSimplify);
 
     virtual Table *evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
-                                   vector<PatternVariable> &rightPatternVariables) = 0;
+                                   vector<PatternVariable> &rightPatternVariables, bool canSimplify) = 0;
 
     virtual unordered_set<string> getWildCardWildCardRelation() = 0;
 
