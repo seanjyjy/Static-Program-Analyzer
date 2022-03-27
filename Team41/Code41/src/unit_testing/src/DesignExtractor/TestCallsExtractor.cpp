@@ -13,9 +13,7 @@ using namespace std;
 
 TEST_CASE("CallsExtractor: Call") {
     TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("call.x")).build();
-    EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
-    unordered_map<TNode *, string> nodeToStmtNumMap = ee.getNodeToStmtNumMap();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_set<string> procSet = {"p1", "p2", "p3", "p4", "p5", "p6"};
     CallsExtractor ce = CallsExtractor(ast, procSet);
     ce.extract();
