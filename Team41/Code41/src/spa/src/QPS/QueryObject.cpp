@@ -58,8 +58,12 @@ SelectTarget& QueryObject::getSelectTarget() {
     return selectTarget;
 }
 
-bool QueryObject::isValid() {
+bool QueryObject::isValid() const {
     return isQueryValid;
+}
+
+void QueryObject::setValidity(bool v) {
+    isQueryValid = v;
 }
 
 bool QueryObject::isSelectingBoolean() {
