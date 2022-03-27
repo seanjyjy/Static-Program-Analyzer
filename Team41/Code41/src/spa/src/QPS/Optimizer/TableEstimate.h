@@ -29,6 +29,7 @@ private:
     long long estRows = 0;
     bool hasCommonCol(const vector<QueryDeclaration> &sch);
 public:
+    // do NOT use this in business logic - only meant for class member initialization
     TableEstimate();
 
     TableEstimate(const PKBAdapter &pkbAdapter);
@@ -38,7 +39,7 @@ public:
     void merge(const vector<QueryDeclaration> &sch);
 
     // getters and setters
-    long long getEstimatedRows() const;
+    [[nodiscard]] long long getEstimatedRows() const;
 
-    vector<QueryDeclaration> getSchema() const;
+    [[nodiscard]] vector<QueryDeclaration> getSchema() const;
 };

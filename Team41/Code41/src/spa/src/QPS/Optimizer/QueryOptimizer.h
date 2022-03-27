@@ -15,8 +15,6 @@
 
 using namespace std;
 
-// TODO: destructor
-
 class QueryOptimizer {
 private:
     // default configuration options
@@ -32,6 +30,9 @@ private:
 public:
 
     static QueryOptimizer create();
+
+    // convenience method to turn on all forms of optimization
+    QueryOptimizer &enableAllOptimizations(PKBManager *pkbManager);
 
     QueryOptimizer &setIntraGroupSort(bool isOn);
 

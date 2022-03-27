@@ -3,8 +3,6 @@
 #include "PKB/PKBManager.h"
 #include "QPS/ClauseVariable.h"
 
-// TODO: destructor
-
 class PKBAdapter {
 private:
     PKBManager *pkb;
