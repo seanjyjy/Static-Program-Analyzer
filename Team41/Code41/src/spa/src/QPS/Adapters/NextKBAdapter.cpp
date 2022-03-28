@@ -84,11 +84,11 @@ vector<pair<string, string>> NextKBAdapter::getAllNextT() {
     return cache->getAllMapping();
 }
 
-vector<string> NextKBAdapter::getAllStmtsThatHaveNextTStmt() {
+vector<string> NextKBAdapter::getAllStmtsThatHaveNextTStmt() const {
     return pkb->getAllStmtsExecBeforeSomeStmt();
 }
 
-vector<string> NextKBAdapter::getAllStmtsThatIsNextTOfSomeStmt() {
+vector<string> NextKBAdapter::getAllStmtsThatIsNextTOfSomeStmt() const {
     return pkb->getAllStmtsExecAfterSomeStmt();
 }
 

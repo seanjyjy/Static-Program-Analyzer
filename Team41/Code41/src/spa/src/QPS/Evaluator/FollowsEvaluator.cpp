@@ -13,8 +13,8 @@ Table *FollowsEvaluator::evaluateIntegerSynonym(ClauseVariable &left, ClauseVari
 }
 
 Table *FollowsEvaluator::evaluateIntegerWildCard(ClauseVariable &left) {
-    string follower = pkb->getStmtDirectlyAfter(left.getLabel());
-    return buildBooleanTable(!follower.empty());
+    unordered_set<string> beforeStmts = pkb->getAllStmtsBeforeSomeStmt();
+    return buildBooleanTable(beforeStmts.find(left.getLabel()) != beforeStmts.end());
 }
 
 Table *FollowsEvaluator::evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right) {
@@ -34,8 +34,8 @@ Table *FollowsEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
 }
 
 Table *FollowsEvaluator::evaluateWildCardInteger(ClauseVariable &right) {
-    string followedByCurrent = pkb->getStmtDirectlyBefore(right.getLabel());
-    return buildBooleanTable(!followedByCurrent.empty());
+    unordered_set<string> afterStmts = pkb->getAllStmtsAfterSomeStmt();
+    return buildBooleanTable(afterStmts.find(right.getLabel()) != afterStmts.end());
 }
 
 Table *FollowsEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {

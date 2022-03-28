@@ -10,8 +10,9 @@ unordered_set<string> CallsEvaluator::getIdentifierSynonymRelation(const string 
     return pkb->getAllProcCalledBy(label);
 }
 
-unordered_set<string> CallsEvaluator::getIdentifierWildCardRelation(const string &label) {
-    return pkb->getAllProcCalledBy(label);
+bool CallsEvaluator::getIdentifierWildCardRelation(const string &label) {
+    unordered_set<string> allCallers = pkb->getAllProcsCallingSomeProcs();
+    return allCallers.find(label) != allCallers.end();
 }
 
 unordered_set<string> CallsEvaluator::getSynonymIdentifierRelation(const string &label) {
@@ -26,14 +27,15 @@ unordered_set<string> CallsEvaluator::getSynonymWildCardRelation() {
     return pkb->getAllProcsCallingSomeProcs();
 }
 
-unordered_set<string> CallsEvaluator::getWildCardIdentifierRelation(const string &label) {
-    return pkb->getAllProcCalling(label);
+bool CallsEvaluator::getWildCardIdentifierRelation(const string &label) {
+    unordered_set<string> allCallees = pkb->getAllProcsCalledBySomeProcs();
+    return allCallees.find(label) != allCallees.end();
 }
 
 unordered_set<string> CallsEvaluator::getWildCardSynonymRelation() {
     return pkb->getAllProcsCalledBySomeProcs();
 }
 
-vector<pair<string, string>> CallsEvaluator::getWildCardWildCardRelation() {
-    return pkb->getAllCalls();
+bool CallsEvaluator::getWildCardWildCardRelation() {
+    return !pkb->getAllCalls().empty();
 }

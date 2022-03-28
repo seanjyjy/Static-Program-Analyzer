@@ -10,7 +10,7 @@ public:
 
     unordered_set<string> getIdentifierSynonymRelation(const string &label) override;
 
-    unordered_set<string> getIdentifierWildCardRelation(const string &label) override;
+    bool getIdentifierWildCardRelation(const string &label) override;
 
     unordered_set<string> getSynonymIdentifierRelation(const string &label) override;
 
@@ -24,7 +24,7 @@ public:
      * (syn, syn) -> (wildcard, wildcard)
      * (syn, wildcard) -> (wildcard, wildcard)
      */
-    unordered_set<string> getWildCardIdentifierRelation(const string &label) override;
+    bool getWildCardIdentifierRelation(const string &label) override;
 
-    vector<pair<string, string>> getWildCardWildCardRelation() override;
+    bool getWildCardWildCardRelation() override;
 };

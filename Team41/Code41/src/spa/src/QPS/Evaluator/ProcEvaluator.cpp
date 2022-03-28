@@ -13,8 +13,8 @@ Table *ProcEvaluator::evaluateIdentifierSynonym(const ClauseVariable &left, Clau
 }
 
 Table *ProcEvaluator::evaluateIdentifierWildCard(const ClauseVariable &left) {
-    unordered_set<string> procCalledBy = getIdentifierWildCardRelation(left.getLabel());
-    return buildBooleanTable(!procCalledBy.empty());
+    bool hasCallRelation = getIdentifierWildCardRelation(left.getLabel());
+    return buildBooleanTable(hasCallRelation);
 }
 
 Table *ProcEvaluator::evaluateSynonymIdentifier(ClauseVariable &left, const ClauseVariable &right) {
@@ -33,11 +33,11 @@ Table *ProcEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
 }
 
 Table *ProcEvaluator::evaluateWildCardIdentifier(const ClauseVariable &right) {
-    unordered_set<string> procCalling = getWildCardIdentifierRelation(right.getLabel());
-    return buildBooleanTable(!procCalling.empty());
+    bool hasCallRelation = getWildCardIdentifierRelation(right.getLabel());
+    return buildBooleanTable(hasCallRelation);
 }
 
 Table *ProcEvaluator::evaluateWildCardWildCard() {
-    vector<pair<string, string>> listOfProcToProc = getWildCardWildCardRelation();
-    return buildBooleanTable(!listOfProcToProc.empty());
+    bool hasCallRelation = getWildCardWildCardRelation();
+    return buildBooleanTable(hasCallRelation);
 }

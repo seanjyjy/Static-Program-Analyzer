@@ -31,6 +31,6 @@ public:
     unordered_set<string> getAllStmtsNextT(const string &stmtNum); // Get the stmts that are executed after stmt
     unordered_set<string> getAllStmtsTBefore(const string &stmtNum); // Gets the stmts that are executed before stmt
     vector<pair<string, string>> getAllNextT(); // Gets stmts pair where stmt1 are executed after stmt2
-    vector<string> getAllStmtsThatHaveNextTStmt(); // Get list of stmts that are executed before some stmt
-    vector<string> getAllStmtsThatIsNextTOfSomeStmt(); // Get list of stmts that are executed after some stmt
+    vector<string> getAllStmtsThatHaveNextTStmt() const; // Get list of stmts that are executed before some stmt
+    vector<string> getAllStmtsThatIsNextTOfSomeStmt() const; // Get list of stmts that are executed after some stmt
 };

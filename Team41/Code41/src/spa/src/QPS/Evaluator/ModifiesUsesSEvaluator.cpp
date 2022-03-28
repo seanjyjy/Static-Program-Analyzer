@@ -37,8 +37,8 @@ Table *ModifiesUsesSEvaluator::evaluateIntegerSynonym(const ClauseVariable &left
 }
 
 Table *ModifiesUsesSEvaluator::evaluateIntegerWildCard(const ClauseVariable &left) {
-    unordered_set<string> statementUsed = getIntegerWildCardRelation(left.getLabel());
-    return buildBooleanTable(!statementUsed.empty());
+    bool isStatementUsed = getIntegerWildCardRelation(left.getLabel());
+    return buildBooleanTable(isStatementUsed);
 }
 
 Table *ModifiesUsesSEvaluator::evaluateSynonymIdentifier(ClauseVariable &left, ClauseVariable &right) {
@@ -57,11 +57,11 @@ Table *ModifiesUsesSEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
 }
 
 Table *ModifiesUsesSEvaluator::evaluateWildCardIdentifier(ClauseVariable &right) {
-    unordered_set<string> statementBeingUsed = getWildCardIdentifierRelation(right.getLabel());
-    return buildBooleanTable(!statementBeingUsed.empty());
+    bool isStatementBeingUsed = getWildCardIdentifierRelation(right.getLabel());
+    return buildBooleanTable(isStatementBeingUsed);
 }
 
 Table *ModifiesUsesSEvaluator::evaluateWildCardWildCard() {
-    vector<pair<string, string>> statementUsed = getWildCardWildCardRelation();
-    return buildBooleanTable(!statementUsed.empty());
+    bool hasRelation = getWildCardWildCardRelation();
+    return buildBooleanTable(hasRelation);
 }

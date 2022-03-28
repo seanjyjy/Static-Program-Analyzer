@@ -5,16 +5,6 @@
 #include "../PatternClause.h"
 
 class AssignPatternEvaluator : public PatternEvaluator {
-private:
-    Table *buildAssignPatternSTable(const unordered_set<string> &results, QueryDeclaration &patternSyn,
-                                    ClauseVariable &variable);
-
-    Table *buildAssignPatternSSTable(const vector<pair<string, string>> &results, QueryDeclaration &patternSyn,
-                                     ClauseVariable &variable);
-
-    Table *buildAssignPatternSSTable(const unordered_set<string> &results, QueryDeclaration &patternSyn,
-                                     ClauseVariable &variable);
-
 public:
     explicit AssignPatternEvaluator(PKBClient *pkb);
 
