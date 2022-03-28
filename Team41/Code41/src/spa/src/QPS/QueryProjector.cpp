@@ -30,8 +30,11 @@ unordered_set<string> QueryProjector::getTupleResult() {
         for (Selectable target: selectables) {
             result.append(getProjectionFromRow(row, &target)).append(" ");
         }
-        results.insert(result.substr(0, result.size() - 1));
+
+        if (!result.empty())
+            results.insert(result.substr(0, result.size() - 1));
     }
+
     return results;
 }
 

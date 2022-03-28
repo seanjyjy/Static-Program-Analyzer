@@ -6,8 +6,7 @@ QueryEvaluator::QueryEvaluator(PKBClient *pkb) {
     this->affectsKBAdapter = new AffectsKBAdapter(pkb);
 }
 
-optional<QueryResult> QueryEvaluator::evaluateClauses(Table *resultTable, OptimizedQueryObject *queryObject) {
-    QueryResult emptyQueryResult = {queryObject->getSelectTarget(), new FalseTable()};
+optional<Table *> QueryEvaluator::evaluateClauses(Table *resultTable, OptimizedQueryObject *queryObject) {
     while (!queryObject->empty()) {
         SuperClause *clause = queryObject->popClause();
         Table *intermediateTable = this->evaluate(clause);
@@ -15,7 +14,7 @@ optional<QueryResult> QueryEvaluator::evaluateClauses(Table *resultTable, Optimi
         if (intermediateTable->isEmpty()) {
             safeDeleteTable(intermediateTable);
             safeDeleteTable(resultTable);
-            return emptyQueryResult;
+            return nullopt;
         }
 
         Table *ogTable = resultTable;
@@ -26,15 +25,14 @@ optional<QueryResult> QueryEvaluator::evaluateClauses(Table *resultTable, Optimi
 
         if (resultTable->isEmpty()) {
             safeDeleteTable(resultTable);
-            return emptyQueryResult;
+            return nullopt;
         }
     }
 
-    return nullopt;
+    return resultTable;
 }
 
-optional<QueryResult> QueryEvaluator::evaluatSelectables(Table *resultTable, OptimizedQueryObject *queryObject) {
-    QueryResult emptyQueryResult = {queryObject->getSelectTarget(), new FalseTable()};
+optional<Table *> QueryEvaluator::evaluateSelectables(Table *resultTable, OptimizedQueryObject *queryObject) {
     for (const auto &selected: queryObject->getSelectables()) {
         Header header = resultTable->getHeader();
         if (header.find(selected.getSynonym().getSynonym()) != header.end())
@@ -45,7 +43,7 @@ optional<QueryResult> QueryEvaluator::evaluatSelectables(Table *resultTable, Opt
         if (intermediateTable->isEmpty()) {
             safeDeleteTable(intermediateTable);
             safeDeleteTable(resultTable);
-            return emptyQueryResult;
+            return nullopt;
         }
 
         Table *ogTable = resultTable;
@@ -56,16 +54,14 @@ optional<QueryResult> QueryEvaluator::evaluatSelectables(Table *resultTable, Opt
 
         if (resultTable->isEmpty()) {
             safeDeleteTable(resultTable);
-            return emptyQueryResult;
+            return nullopt;
         }
     }
 
-    return nullopt;
+    return resultTable;
 }
 
 QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
-    unordered_set<string> emptyResult;
-    unordered_set<string> result;
     QueryResult emptyQueryResult = {queryObject->getSelectTarget(), new FalseTable()};
 
     if (!queryObject->isValid()) {
@@ -81,16 +77,17 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
     Table *resultTable = new TrueTable();
 
     try {
-        // A value in optional indicates an empty result has been returned
-        optional<QueryResult> clauseResult = evaluateClauses(resultTable, queryObject);
-        if (clauseResult.has_value()) {
-            return clauseResult.value();
+        optional<Table *> clauseResult = evaluateClauses(resultTable, queryObject);
+        if (!clauseResult.has_value()) {
+            return emptyQueryResult;
         }
 
-        optional<QueryResult> selectableResult = evaluatSelectables(resultTable, queryObject);
-        if (selectableResult.has_value()) {
-            return clauseResult.value();
+        optional<Table *> selectableResult = evaluateSelectables(clauseResult.value(), queryObject);
+        if (!selectableResult.has_value()) {
+            return emptyQueryResult;
         }
+
+        return {queryObject->getSelectTarget(), selectableResult.value()};
     } catch (SemanticException &) {
         safeDeleteTable(resultTable);
         return emptyQueryResult;
@@ -98,8 +95,6 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
         safeDeleteTable(resultTable);
         return emptyQueryResult;
     }
-
-    return {queryObject->getSelectTarget(), resultTable};
 }
 
 Table *QueryEvaluator::evaluate(SuperClause *clause) {
