@@ -1,6 +1,7 @@
 #include "AdaptersUtils.h"
 
-void AdaptersUtils::runBFS(bool isForward, const CacheCallback &cacheAndContinue, const TerminateCheck &canTerminate, CFGNode *startNode) {
+void AdaptersUtils::runBFS(bool isForward, const CacheCallback &cacheAndContinue, const TerminateCheck &canTerminate,
+                           CFGNode *startNode) {
 
     if (startNode == nullptr) return;
 
@@ -36,7 +37,7 @@ void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache *ca
         return true;
     };
 
-    TerminateCheck canEnd = [start, end, &cache](CFGNode* next) {
+    TerminateCheck canEnd = [start, end, &cache](CFGNode *next) {
         string nextStmt = next->getStmtNum();
         if (cache->getBooleanMapping(nextStmt, end)) {
             cache->registerBooleanMapping(end, end);
@@ -73,7 +74,7 @@ void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *nod
         return true;
     };
 
-    TerminateCheck canEnd = [](CFGNode*) { return false; };
+    TerminateCheck canEnd = [](CFGNode *) { return false; };
 
     runBFS(true, saveToCache, canEnd, node);
 }
@@ -96,7 +97,7 @@ void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node)
         return true;
     };
 
-    TerminateCheck canEnd = [](CFGNode*) { return false; };
+    TerminateCheck canEnd = [](CFGNode *) { return false; };
 
     runBFS(false, saveToCache, canEnd, node);
 }
@@ -126,7 +127,7 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
             return true;
         };
 
-        TerminateCheck canEnd = [&mainVisited, &mainQ](CFGNode* next) {
+        TerminateCheck canEnd = [&mainVisited, &mainQ](CFGNode *next) {
             string nextStmtNum = next->getStmtNum();
             if (mainVisited.find(nextStmtNum) == mainVisited.end()) {
                 mainQ.push(next);
@@ -140,10 +141,10 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
     }
 }
 
-CFGNode* AdaptersUtils::getStartingParentNode(CFGNode* rootCFG, const string &stmt) {
+CFGNode *AdaptersUtils::getStartingParentNode(CFGNode *rootCFG, const string &stmt) {
     int stmtNum = stoi(stmt);
 
-    vector<CFGNode*> children = rootCFG->getChildren();
+    vector<CFGNode *> children = rootCFG->getChildren();
 
     // Binary search for first element that is greater than stmt
     auto result = std::upper_bound(children.begin(), children.end(), stmtNum, [](int value, CFGNode *currNode) {

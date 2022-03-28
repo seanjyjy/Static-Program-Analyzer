@@ -4,42 +4,42 @@ NextEvaluator::NextEvaluator(PKBClient *pkb, NextKBAdapter *nextKBAdapter) : Stm
     this->nextKBAdapter = nextKBAdapter;
 }
 
-Table *NextEvaluator::evaluateIntegerInteger(ClauseVariable left, ClauseVariable right) {
+Table *NextEvaluator::evaluateIntegerInteger(ClauseVariable &left, ClauseVariable &right) {
     bool isNext = nextKBAdapter->isNext(left.getLabel(), right.getLabel());
     return buildBooleanTable(isNext);
 }
 
-Table *NextEvaluator::evaluateIntegerSynonym(ClauseVariable left, ClauseVariable right) {
+Table *NextEvaluator::evaluateIntegerSynonym(ClauseVariable &left, ClauseVariable &right) {
     vector<CFGNode *> setOfChildren = nextKBAdapter->getNextNodes(left.getLabel());
     return buildSingleSynonymTable(setOfChildren, right);
 }
 
-Table *NextEvaluator::evaluateIntegerWildCard(ClauseVariable left) {
+Table *NextEvaluator::evaluateIntegerWildCard(ClauseVariable &left) {
     vector<CFGNode *> setOfChildren = nextKBAdapter->getNextNodes(left.getLabel());
     return buildBooleanTable(!setOfChildren.empty());
 }
 
-Table *NextEvaluator::evaluateSynonymInteger(ClauseVariable left, ClauseVariable right) {
+Table *NextEvaluator::evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right) {
     vector<CFGNode *> setOfParent = nextKBAdapter->getPrevNodes(right.getLabel());
     return buildSingleSynonymTable(setOfParent, left);
 }
 
-Table *NextEvaluator::evaluateSynonymSynonym(ClauseVariable left, ClauseVariable right) {
+Table *NextEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right) {
     vector<pair<string, string>> listOfStmtToStmt = nextKBAdapter->getAllNext();
     return buildSynonymSynonymTable(listOfStmtToStmt, left, right);
 }
 
-Table *NextEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
+Table *NextEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
     vector<string> setOfStmts = nextKBAdapter->getAllStmtsThatHaveNextStmt();
     return buildSingleSynonymTable(setOfStmts, left);
 }
 
-Table *NextEvaluator::evaluateWildCardInteger(ClauseVariable right) {
+Table *NextEvaluator::evaluateWildCardInteger(ClauseVariable &right) {
     vector<CFGNode *> setOfParent = nextKBAdapter->getPrevNodes(right.getLabel());
     return buildBooleanTable(!setOfParent.empty());
 }
 
-Table *NextEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
+Table *NextEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {
     vector<string> setOfStmts = nextKBAdapter->getAllStmtsThatIsNextOfSomeStmt();
     return buildSingleSynonymTable(setOfStmts, right);
 }

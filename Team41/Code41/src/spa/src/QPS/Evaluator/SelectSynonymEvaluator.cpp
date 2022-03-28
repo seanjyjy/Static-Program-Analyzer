@@ -2,8 +2,8 @@
 #include <stdexcept>
 
 Table *SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym) {
-    auto declarationType = selectSynonym.type;
-    auto synonym = selectSynonym.synonym;
+    auto declarationType = selectSynonym.getType();
+    auto synonym = selectSynonym.getSynonym();
 
     unordered_set<string> setOfResult = getResultViaType(declarationType, pkb);
     Header header({synonym});

@@ -19,7 +19,8 @@ private:
     unordered_set<string> affecteds;
     vector<pair<string, string>> affectingAffectedPairs;
 
-    bool hasAffectsGraph(const string& stmt);
+    bool hasAffectsGraph(const string &stmt);
+
     bool hasAffectsGraph() const;
 
     void addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ);
@@ -28,14 +29,17 @@ private:
 
     void buildAffectsGraph();
 
-    static bool bfsBool(PKBClient* pkb, CFGNode *start, const string &modifiedVar, const string &end);
+    static bool bfsBool(PKBClient *pkb, CFGNode *start, const string &modifiedVar, const string &end);
 
-    static void bfsDown(PKBClient* pkb, CFGNode *start, const string &modifiedVar, unordered_set<string> &affected);
+    static void bfsDown(PKBClient *pkb, CFGNode *start, const string &modifiedVar, unordered_set<string> &affected);
 
-    static void bfsUp(PKBClient* pkb, CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting);
-    static void bfsUpSingle(PKBClient* pkb, CFGNode *start, const string &affectedVar, unordered_set<string> &affecting);
+    static void
+    bfsUp(PKBClient *pkb, CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting);
 
-    static bool isModifyStmt(PKBClient * client, const string &stmtNum);
+    static void
+    bfsUpSingle(PKBClient *pkb, CFGNode *start, const string &affectedVar, unordered_set<string> &affecting);
+
+    static bool isModifyStmt(PKBClient *client, const string &stmtNum);
 
 public:
     explicit AffectsKBAdapter(PKBClient *pkb);

@@ -2,7 +2,7 @@
 
 StmtStmtEvaluator::StmtStmtEvaluator(PKBClient *pkb) : GenericClauseEvaluator(pkb) {}
 
-Table *StmtStmtEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVariable rightVariable) {
+Table *StmtStmtEvaluator::evaluateClause(ClauseVariable &leftVariable, ClauseVariable &rightVariable) {
     if (EvaluatorUtils::StmtUtils::isIntegerInteger(&leftVariable, &rightVariable)) {
         return evaluateIntegerInteger(leftVariable, rightVariable);
     }

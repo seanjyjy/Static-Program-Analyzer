@@ -5,7 +5,7 @@ vector<const Row *> BooleanTable::getRows() {
 }
 
 void BooleanTable::addRow(const Row *) {
-    throw runtime_error("Not allow to use addRow on boolean tabls");
+    throw runtime_error("Not allow to use addRow on boolean table");
 }
 
 Header BooleanTable::getHeader() const {
@@ -20,12 +20,12 @@ size_t BooleanTable::size() {
     return 0;
 }
 
-unordered_set<string> BooleanTable::getColumn(string) {
+unordered_set<string> BooleanTable::getColumn(const string &) {
     return {};
 }
 
-void BooleanTable::sort(vector<string>) {}
+void BooleanTable::sort(const vector<string> &) {}
 
-unordered_set<string> BooleanTable::getColumns(vector<string>) {
+unordered_set<string> BooleanTable::getColumns(const vector<string> &) {
     return {};
 }

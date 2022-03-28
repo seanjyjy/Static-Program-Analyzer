@@ -2,7 +2,7 @@
 
 IfWhilePatternEvaluator::IfWhilePatternEvaluator(PKBClient *pkb) : PatternEvaluator(pkb) {}
 
-Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
+Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration &patternSynonym, ClauseVariable &leftVariable,
                                                 vector<PatternVariable> &rightPatternVariables, bool canSimplify) {
 
     if (EvaluatorUtils::PatternUtils::isValidSynonymWildCards(leftVariable, rightPatternVariables,
@@ -25,7 +25,7 @@ Table *IfWhilePatternEvaluator::evaluateSynonymWildCard(QueryDeclaration &patter
     return buildSynonymSynonymPatternTable(listOfStmtNVar, patternSyn, left);
 }
 
-Table *IfWhilePatternEvaluator::evaluateIdentifierWildCard(QueryDeclaration patternSynonym,
+Table *IfWhilePatternEvaluator::evaluateIdentifierWildCard(QueryDeclaration &patternSynonym,
                                                            const ClauseVariable &leftVariable, bool canSimplify) {
     unordered_set<string> setOfPatternStmt = getIdentifierWildCardRelation(leftVariable.getLabel());
     if (canSimplify) {

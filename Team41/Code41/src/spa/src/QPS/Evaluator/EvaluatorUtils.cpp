@@ -114,11 +114,11 @@ bool EvaluatorUtils::validateDeclarations(vector<QueryDeclaration> declarations)
     return true;
 }
 
-bool EvaluatorUtils::isWithinLimit(ClauseVariable &variable, PKBClient* pkb) {
+bool EvaluatorUtils::isWithinLimit(ClauseVariable &variable, PKBClient *pkb) {
     return pkb->hasStmt(variable.getLabel());
 }
 
-bool EvaluatorUtils::isWithinLimit(ClauseVariable &left, ClauseVariable &right, PKBClient* pkb) {
+bool EvaluatorUtils::isWithinLimit(ClauseVariable &left, ClauseVariable &right, PKBClient *pkb) {
     return isWithinLimit(left, pkb) && isWithinLimit(right, pkb);
 }
 

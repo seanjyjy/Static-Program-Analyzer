@@ -6,10 +6,61 @@ QueryEvaluator::QueryEvaluator(PKBClient *pkb) {
     this->affectsKBAdapter = new AffectsKBAdapter(pkb);
 }
 
-QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
-    unordered_set<string> emptyResult;
-    unordered_set<string> result;
+Table *QueryEvaluator::mergeTable(Table *resultTable, Table *intermediateTable) {
+    if (intermediateTable->isEmpty()) {
+        safeDeleteTable(intermediateTable);
+        safeDeleteTable(resultTable);
+        return new FalseTable();
+    }
 
+    Table *ogTable = resultTable;
+    resultTable = resultTable->mergeJoin(intermediateTable);
+
+    safeDeleteTable(ogTable, resultTable);
+    safeDeleteTable(intermediateTable, resultTable);
+
+    if (resultTable->isEmpty()) {
+        safeDeleteTable(resultTable);
+        return new FalseTable();
+    }
+
+    return resultTable;
+}
+
+Table *QueryEvaluator::evaluateClauses(Table *resultTable, OptimizedQueryObject *queryObject) {
+    while (!queryObject->empty()) {
+        SuperClause *clause = queryObject->popClause();
+        Table *intermediateTable = this->evaluate(clause);
+        Table *mergedTable = mergeTable(resultTable, intermediateTable);
+        if (mergedTable->isEmpty()) {
+            return mergedTable;
+        }
+
+        resultTable = mergedTable;
+    }
+
+    return resultTable;
+}
+
+Table *QueryEvaluator::evaluateSelectables(Table *resultTable, OptimizedQueryObject *queryObject) {
+    for (const auto &selected: queryObject->getSelectables()) {
+        Header header = resultTable->getHeader();
+        if (header.find(selected.getSynonym().getSynonym()) != header.end())
+            continue;
+
+        Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(selected.getSynonym());
+        Table *mergedTable = mergeTable(resultTable, intermediateTable);
+        if (mergedTable->isEmpty()) {
+            return mergedTable;
+        }
+
+        resultTable = mergedTable;
+    }
+
+    return resultTable;
+}
+
+QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
     if (!queryObject->isValid()) {
         return {queryObject->getSelectTarget(), nullptr, false};
     }
@@ -23,51 +74,13 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
     Table *resultTable = new TrueTable();
 
     try {
-        while (!queryObject->empty()) {
-            SuperClause *clause = queryObject->popClause();
-            Table *intermediateTable = this->evaluate(clause);
-
-            if (intermediateTable->isEmpty()) {
-                safeDeleteTable(intermediateTable);
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
-
-            Table *ogTable = resultTable;
-            resultTable = resultTable->mergeJoin(intermediateTable);
-            safeDeleteTable(ogTable, resultTable);
-            safeDeleteTable(intermediateTable, resultTable);
-
-            if (resultTable->isEmpty()) {
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
+        Table *clauseResult = evaluateClauses(resultTable, queryObject);
+        if (clauseResult->isEmpty()) {
+            return {queryObject->getSelectTarget(), clauseResult};
         }
 
-        for (const auto &selected: queryObject->getSelectables()) {
-            Header header = resultTable->getHeader();
-            if (header.find(selected.getSynonym().getSynonym()) != header.end())
-                continue;
-
-            Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(selected.getSynonym());
-
-            if (intermediateTable->isEmpty()) {
-                safeDeleteTable(intermediateTable);
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
-
-            Table *ogTable = resultTable;
-            resultTable = resultTable->mergeJoin(intermediateTable);
-
-            safeDeleteTable(ogTable, resultTable);
-            safeDeleteTable(intermediateTable, resultTable);
-
-            if (resultTable->isEmpty()) {
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
-        }
+        Table *selectableResult = evaluateSelectables(clauseResult, queryObject);
+        return {queryObject->getSelectTarget(), selectableResult};
     } catch (SemanticException &) {
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
@@ -75,14 +88,14 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     }
-
-    return {queryObject->getSelectTarget(), resultTable};
 }
 
 Table *QueryEvaluator::evaluate(SuperClause *clause) {
     if (clause->isPatternClause()) {
         return evaluate(clause->getPatternClause());
-    } else if (clause->isWithClause()) {
+    }
+
+    if (clause->isWithClause()) {
         return evaluate(clause->getWithClause());
     }
 
@@ -120,7 +133,7 @@ Table *QueryEvaluator::evaluate(const QueryClause &clause) {
         case QueryClause::clause_type::affectsT:
             return AffectsTEvaluator(pkb, affectsKBAdapter).evaluate(clause);
         default:
-            throw std::runtime_error("unknown clause of type " + to_string(clause.type));
+            throw runtime_error("unknown clause of type " + to_string(clause.type));
     }
 }
 
@@ -134,7 +147,7 @@ Table *QueryEvaluator::evaluate(const PatternClause &clause) {
         case QueryDeclaration::design_entity_type::WHILE:
             return WhilePatternEvaluator(pkb).evaluate(clause);
         default:
-            throw std::runtime_error("unknown pattern clause of type " + to_string(type));
+            throw runtime_error("unknown pattern clause of type " + to_string(type));
     }
 }
 
@@ -149,11 +162,11 @@ void QueryEvaluator::safeDeleteTable(Table *tableToDelete, Table *resultTable) {
 
     if (tableToDelete != nullptr) {
         delete tableToDelete;
+        tableToDelete = nullptr;
     }
 }
 
 QueryEvaluator::~QueryEvaluator() {
-    // TODO: check if this cause an error as this also takes in PKB!
     delete nextKBAdapter;
     delete affectsKBAdapter;
 }
@@ -197,8 +210,8 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     Table *resultTable = new TrueTable();
 
     try {
-        for (auto clause : queryObject->getSuperClauses()) {
-            Table* intermediateTable = this->evaluate(clause);
+        for (auto clause: queryObject->getSuperClauses()) {
+            Table *intermediateTable = this->evaluate(clause);
 
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
@@ -242,10 +255,10 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
                 return {queryObject->getSelectTarget(), new FalseTable()};
             }
         }
-    } catch (SemanticException&) {
+    } catch (SemanticException &) {
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
-    } catch (const runtime_error&) {
+    } catch (const runtime_error &) {
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     }

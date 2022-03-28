@@ -21,13 +21,13 @@ class BooleanTable : public Table {
     size_t size() override;
 
     // This is a stub method
-    unordered_set<string> getColumn(string columnName) override;
+    unordered_set<string> getColumn(const string &columnName) override;
 
     // This is a stub method
-    void sort(vector<string> commonHeader) override;
+    void sort(const vector<string> &commonHeader) override;
 
     // This is a stub method
-    unordered_set<string> getColumns(vector<string> columnNames) override;
+    unordered_set<string> getColumns(const vector<string> &columnNames) override;
 
     friend class Truetable;
 

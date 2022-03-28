@@ -70,5 +70,5 @@ private:
 public:
     explicit WithEvaluator(PKBClient *pkb);
 
-    Table* evaluate(const WithClause &clause);
+    Table *evaluate(const WithClause &clause);
 };
