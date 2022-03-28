@@ -51,8 +51,8 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a full pattern.
      */
-    Table *
-    evaluateIdentifierFullPattern(QueryDeclaration &patternSyn, const ClauseVariable &left, PatternVariable &right, bool canSimplify);
+    Table *evaluateIdentifierFullPattern(QueryDeclaration &patternSyn, const ClauseVariable &left,
+                                         PatternVariable &right, bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between an identifier and a sub pattern.
@@ -62,7 +62,9 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between an identifier and a sub pattern.
      */
-    Table *evaluateIdentifierSubPattern(QueryDeclaration &patternSyn, const ClauseVariable &left, PatternVariable &right, bool canSimplify);
+    Table *
+    evaluateIdentifierSubPattern(QueryDeclaration &patternSyn, const ClauseVariable &left, PatternVariable &right,
+                                 bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a full pattern.
@@ -72,7 +74,8 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a full pattern.
      */
-    Table *evaluateSynonymFullPattern(QueryDeclaration &patternSyn, ClauseVariable &left, PatternVariable &right, bool canSimplify);
+    Table *evaluateSynonymFullPattern(QueryDeclaration &patternSyn, ClauseVariable &left, PatternVariable &right,
+                                      bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a sub pattern.
@@ -82,7 +85,8 @@ public:
      * @param right Pattern variable.
      * @return A table that contains information based on the Pattern relation between a synonym and a sub pattern.
      */
-    Table *evaluateSynonymSubPattern(QueryDeclaration &patternSyn, ClauseVariable &left, PatternVariable &right, bool canSimplify);
+    Table *evaluateSynonymSubPattern(QueryDeclaration &patternSyn, ClauseVariable &left, PatternVariable &right,
+                                     bool canSimplify);
 
     /**
      * Construct a table that captures the Pattern relation between a synonym and a wildcard.

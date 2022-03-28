@@ -148,8 +148,9 @@ Header PQLTable::getCombinedHeader(Table *leftTable, Table *rightTable) {
     return combinedHeader;
 }
 
-int
-PQLTable::compareRow(const Row *leftRowPtr, const Row *rightRowPtr, const vector<string> &orderedCommonHeader) const {
+int PQLTable::compareRow(const Row *leftRowPtr, const Row *rightRowPtr,
+                         const vector<string> &orderedCommonHeader) const {
+
     auto leftRow = leftRowPtr->getRow();
     auto rightRow = rightRowPtr->getRow();
 

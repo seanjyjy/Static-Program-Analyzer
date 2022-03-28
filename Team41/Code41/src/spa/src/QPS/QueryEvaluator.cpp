@@ -6,64 +6,61 @@ QueryEvaluator::QueryEvaluator(PKBClient *pkb) {
     this->affectsKBAdapter = new AffectsKBAdapter(pkb);
 }
 
-optional<Table *> QueryEvaluator::evaluateClauses(Table *resultTable, OptimizedQueryObject *queryObject) {
-    while (!queryObject->empty()) {
-        SuperClause *clause = queryObject->popClause();
-        Table *intermediateTable = this->evaluate(clause);
+Table *QueryEvaluator::mergeTable(Table *resultTable, Table *intermediateTable) {
+    if (intermediateTable->isEmpty()) {
+        safeDeleteTable(intermediateTable);
+        safeDeleteTable(resultTable);
+        return new FalseTable();
+    }
 
-        if (intermediateTable->isEmpty()) {
-            safeDeleteTable(intermediateTable);
-            safeDeleteTable(resultTable);
-            return nullopt;
-        }
+    Table *ogTable = resultTable;
+    resultTable = resultTable->mergeJoin(intermediateTable);
 
-        Table *ogTable = resultTable;
-        resultTable = resultTable->mergeJoin(intermediateTable);
+    safeDeleteTable(ogTable, resultTable);
+    safeDeleteTable(intermediateTable, resultTable);
 
-        safeDeleteTable(ogTable, resultTable);
-        safeDeleteTable(intermediateTable, resultTable);
-
-        if (resultTable->isEmpty()) {
-            safeDeleteTable(resultTable);
-            return nullopt;
-        }
+    if (resultTable->isEmpty()) {
+        safeDeleteTable(resultTable);
+        return new FalseTable();
     }
 
     return resultTable;
 }
 
-optional<Table *> QueryEvaluator::evaluateSelectables(Table *resultTable, OptimizedQueryObject *queryObject) {
+Table *QueryEvaluator::evaluateClauses(Table *resultTable, OptimizedQueryObject *queryObject) {
+    while (!queryObject->empty()) {
+        SuperClause *clause = queryObject->popClause();
+        Table *intermediateTable = this->evaluate(clause);
+        Table *mergedTable = mergeTable(resultTable, intermediateTable);
+        if (mergedTable->isEmpty()) {
+            return mergedTable;
+        }
+
+        resultTable = mergedTable;
+    }
+
+    return resultTable;
+}
+
+Table *QueryEvaluator::evaluateSelectables(Table *resultTable, OptimizedQueryObject *queryObject) {
     for (const auto &selected: queryObject->getSelectables()) {
         Header header = resultTable->getHeader();
         if (header.find(selected.getSynonym().getSynonym()) != header.end())
             continue;
 
         Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(selected.getSynonym());
-
-        if (intermediateTable->isEmpty()) {
-            safeDeleteTable(intermediateTable);
-            safeDeleteTable(resultTable);
-            return nullopt;
+        Table *mergedTable = mergeTable(resultTable, intermediateTable);
+        if (mergedTable->isEmpty()) {
+            return mergedTable;
         }
 
-        Table *ogTable = resultTable;
-        resultTable = resultTable->mergeJoin(intermediateTable);
-
-        safeDeleteTable(ogTable, resultTable);
-        safeDeleteTable(intermediateTable, resultTable);
-
-        if (resultTable->isEmpty()) {
-            safeDeleteTable(resultTable);
-            return nullopt;
-        }
+        resultTable = mergedTable;
     }
 
     return resultTable;
 }
 
 QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
-    QueryResult emptyQueryResult = {queryObject->getSelectTarget(), new FalseTable()};
-
     if (!queryObject->isValid()) {
         return {queryObject->getSelectTarget(), nullptr, false};
     }
@@ -71,29 +68,25 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
     if (queryObject->hasUseOfUndeclaredVariable() ||
         !EvaluatorUtils::validateDeclarations(queryObject->getDeclarations()) ||
         !EvaluatorUtils::AttrUtils::validateSelectTarget(&queryObject->getSelectTarget())) {
-        return emptyQueryResult;
+        return {queryObject->getSelectTarget(), new FalseTable()};
     }
 
     Table *resultTable = new TrueTable();
 
     try {
-        optional<Table *> clauseResult = evaluateClauses(resultTable, queryObject);
-        if (!clauseResult.has_value()) {
-            return emptyQueryResult;
+        Table *clauseResult = evaluateClauses(resultTable, queryObject);
+        if (clauseResult->isEmpty()) {
+            return {queryObject->getSelectTarget(), clauseResult};
         }
 
-        optional<Table *> selectableResult = evaluateSelectables(clauseResult.value(), queryObject);
-        if (!selectableResult.has_value()) {
-            return emptyQueryResult;
-        }
-
-        return {queryObject->getSelectTarget(), selectableResult.value()};
+        Table *selectableResult = evaluateSelectables(clauseResult, queryObject);
+        return {queryObject->getSelectTarget(), selectableResult};
     } catch (SemanticException &) {
         safeDeleteTable(resultTable);
-        return emptyQueryResult;
+        return {queryObject->getSelectTarget(), new FalseTable()};
     } catch (const runtime_error &) {
         safeDeleteTable(resultTable);
-        return emptyQueryResult;
+        return {queryObject->getSelectTarget(), new FalseTable()};
     }
 }
 
@@ -169,6 +162,7 @@ void QueryEvaluator::safeDeleteTable(Table *tableToDelete, Table *resultTable) {
 
     if (tableToDelete != nullptr) {
         delete tableToDelete;
+        tableToDelete = nullptr;
     }
 }
 
