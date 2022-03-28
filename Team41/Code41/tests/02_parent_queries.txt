@@ -58,503 +58,708 @@ procedure proc;
 Select BOOLEAN such that Parent(proc, _)
 FALSE
 5000
-15 - Parent(_, 20)
+13 - Parent(_, 20)
 constant c;
 Select c such that Parent(_, 20)
 1,2,98,20,0,80,99,3,4,10,100,5,30,40,50,789,987
 5000
-16 - Parent(_, s)
+14 - Parent(_, s)
 stmt s;
 Select s such that Parent(_, s)
-4,5,6,7,8,9,10,11,12,13,14,17,18,19,20,21,22,23,24,25,26,27,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73
+4,5,6,7,8,9,10,11,12,13,14,17,18,19,20,21,22,23,24,25,26,27,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74
 5000
-17 - Parent(_, pn)
+15 - Parent(_, pn)
 print pn;
 Select pn such that Parent(_, pn)
 8,14,19,21,23,24,33,35,39,40,45,50,51,52,59,61,62,63,64,69,70
 5000
-18 - Parent(_, r)
+16 - Parent(_, r)
 read r;
 Select r such that Parent(_, r)
 6,11,41,65,67,71,72
 5000
-19 - Parent(_, a)
+17 - Parent(_, a)
 assign a;
 Select a such that Parent(_, a)
 4,10,13,17,25,26,27,31,37,38,42,43,44,47,48,55,57,73
 5000
-20 - Parent(_, ifs)
+18 - Parent(_, ifs)
 if ifs;
 Select ifs such that Parent(_, ifs)
 7,20,32,34,36,46,49,56,60,68
 5000
-21 - Parent(_, w)
+19 - Parent(_, w)
 while w;
 Select w such that Parent(_, w)
 5,9,12,18,22,58,66
 5000
-22 - Parent(_, c) - error
+20 - Parent(_, c) - error
 call c;
 Select BOOLEAN such that Parent(_, c)
-FALSE
+TRUE
 5000
-23 - Parent(_, v) - error
+21 - Parent(_, v) - error
 variable v;
 Select BOOLEAN such that Parent(_, v)
 FALSE
 5000
-24 - Parent(_, c) - error
+22 - Parent(_, c) - error
 constant c;
 Select BOOLEAN such that Parent(_, c)
 FALSE
 5000
-25 - Parent(_, proc) - error
+23 - Parent(_, proc) - error
 procedure proc;
 Select BOOLEAN such that Parent(_, proc)
 FALSE
 5000
-26 - Parent(s, S)
+24 - Parent(s, S)
 stmt s, S;
 Select s such that Parent(s, S)
 3,5,7,9,12,16,18,20,22,30,32,34,36,46,49,54,56,58,60,66,68
 5000
-27 - Parent(s, pn)
+25 - Parent(s, pn)
 print pn; stmt s;
 Select s such that Parent(s, pn)
 3,7,18,20,22,30,32,34,49,56,58,60,68
 5000
-28 - Parent(s, r)
+26 - Parent(s, r)
 read r; stmt s;
 Select s such that Parent(s, r)
 5,7,32,56,66
 5000
-32 - Parent(s, a)
+27 - Parent(s, a)
 assign a; stmt s;
 Select s such that Parent(s, a)
 3,9,12,16,18,20,30,32,36,46,54,56
 5000
-33 - Parent(s, ifs)
+28 - Parent(s, ifs)
 if ifs; stmt s;
 Select s such that Parent(s, ifs)
 5,18,30,32,34,46,54,58,66
 5000
-34 - Parent(s, w)
+29 - Parent(s, w)
 while w; stmt s;
 Select s such that Parent(s, w)
 3,7,16,20,56
 5000
-35 - Parent(ifs, S)
+30 - Parent(ifs, S)
 if ifs; stmt S;
 Select S such that Parent(ifs, S)
 4,5,8,9,11,12,14,21,22,24,25,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,57,58,61,62,64,65,66,69,70,72
 5000
-36 - Parent(ifs, pn)
+31 - Parent(ifs, pn)
 print pn; if ifs;
 Select pn such that Parent(ifs, pn)
 8,14,21,24,33,35,39,40,45,50,51,52,61,62,64,69,70
 5000
-37 - Parent(ifs, r)
+32 - Parent(ifs, r)
 read r; if ifs;
 Select r such that Parent(ifs, r)
 11,41,65,72
 5000
-38 - Parent(ifs, a)
+33 - Parent(ifs, a)
 assign a; if ifs;
 Select a such that Parent(ifs, a)
 4,25,31,37,38,42,43,44,47,48,57
 5000
-39 - Parent(ifs, ifs)
+34 - Parent(ifs, ifs)
 if ifs, ifs2;
 Select ifs2 such that Parent(ifs, ifs2)
 32,34,36,46,49
 5000
-40 - Parent(ifs, w) - get w
+35 - Parent(ifs, w) - get w
 while w; if ifs;
 Select w such that Parent(ifs, w)
 5,9,12,22,58,66
 5000
-40b - Parent(ifs, w) - get ifs
+36 - Parent(ifs, w) - get ifs
 while w; if ifs;
 Select ifs such that Parent(ifs, w)
 3,7,20,56
 5000
-41 - Parent(w, S)
+37 - Parent(w, S)
 while w; stmt S;
 Select S such that Parent(w, S)
-6,7,10,13,17,18,19,20,23,26,27,55,56,59,60,63,67,68,71,73
+6,7,10,13,17,18,19,20,23,26,27,55,56,59,60,63,67,68,71,73,74
 5000
-42 - Parent(w, pn)
+38 - Parent(w, pn)
 print pn; while w;
 Select pn such that Parent(w, pn)
 19,23,59,63
 5000
-43 - Parent(w, r)
+39 - Parent(w, r)
 read r; while w;
 Select r such that Parent(w, r)
 6,67,71
 5000
-44 - Parent(w, a)
+40 - Parent(w, a)
 assign a; while w;
 Select a such that Parent(w, a)
 10,13,17,26,27,55,73
 5000
-45 - Parent(w, w)
+41 - Parent(w, w)
 while w, w2;
 Select w2 such that Parent(w, w2)
 18
 5000
-46 - Parent(w, ifs) get ifs
+42 - Parent(w, ifs) get ifs
 while w; if ifs;
 Select ifs such that Parent(w, ifs)
 7,20,56,60,68
 5000
-47 - Parent(w, ifs) get w
+43 - Parent(w, ifs) get w
 while w; if ifs;
 Select w such that Parent(w, ifs)
 5,18,54,58,66
 5000
-201 - Parent*(_, _)
+44 - Parent*(_, _)
 constant c;
 Select c such that Parent*(_, _)
 1,2,98,20,0,80,99,3,4,10,100,5,30,40,50,789,987
 5000
-202 - Parent*(20, _)
+45 - Parent*(20, _)
 constant c;
 Select c such that Parent*(20, _)
 1,2,98,20,0,80,99,3,4,10,100,5,30,40,50,789,987
 5000
-203 - Parent*(s, _)
+46 - Parent*(s, _)
 stmt s;
 Select s such that Parent*(s, _)
 3,5,7,9,12,16,18,20,22,30,32,34,36,46,49,54,56,58,60,66,68
 5000
-204 - Parent*(pn, _)
+47 - Parent*(pn, _)
 print pn;
 Select BOOLEAN such that Parent*(pn, _)
 FALSE
 5000
-205 - Parent*(r, _)
+48 - Parent*(r, _)
 read r;
 Select BOOLEAN such that Parent*(r, _)
 FALSE
 5000
-206 - Parent*(a, _)
+49 - Parent*(a, _)
 assign a;
 Select BOOLEAN such that Parent*(a, _)
 FALSE
 5000
-207 - Parent*(ifs, _)
+50 - Parent*(ifs, _)
 if ifs;
 Select ifs such that Parent*(ifs, _)
 3,7,20,30,32,34,36,46,49,56,60,68
 5000
-208 - Parent*(w, _)
+51 - Parent*(w, _)
 while w;
 Select w such that Parent*(w, _)
 5,9,12,16,18,22,54,58,66
 5000
-209 - Parent*(c, _) - error
+52 - Parent*(c, _) - error
 call c;
 Select BOOLEAN such that Parent*(c, _)
 FALSE
 5000
-210 - Parent*(v, _) - error
+53 - Parent*(v, _) - error
 variable v;
 Select BOOLEAN such that Parent*(v, _)
 FALSE
 5000
-211 - Parent*(c, _) - error
+54 - Parent*(c, _) - error
 constant c;
 Select BOOLEAN such that Parent*(c, _)
 FALSE
 5000
-212 - Parent*(proc, _) - error
+55 - Parent*(proc, _) - error
 procedure proc;
 Select BOOLEAN such that Parent*(proc, _)
 FALSE
 5000
-215 - Parent*(_, 20)
+56 - Parent*(_, 20)
 constant c;
 Select c such that Parent*(_, 20)
 1,2,98,20,0,80,99,3,4,10,100,5,30,40,50,789,987
 5000
-216 - Parent*(_, s)
+57 - Parent*(_, s)
 stmt s;
 Select s such that Parent*(_, s)
-4,5,6,7,8,9,10,11,12,13,14,17,18,19,20,21,22,23,24,25,26,27,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73
+4,5,6,7,8,9,10,11,12,13,14,17,18,19,20,21,22,23,24,25,26,27,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74
 5000
-217 - Parent*(_, pn)
+58 - Parent*(_, pn)
 print pn;
 Select pn such that Parent*(_, pn)
 8,14,19,21,23,24,33,35,39,40,45,50,51,52,59,61,62,63,64,69,70
 5000
-218 - Parent*(_, r)
+59 - Parent*(_, r)
 read r;
 Select r such that Parent*(_, r)
 6,11,41,65,67,71,72
 5000
-219 - Parent*(_, a)
+60 - Parent*(_, a)
 assign a;
 Select a such that Parent*(_, a)
 4,10,13,17,25,26,27,31,37,38,42,43,44,47,48,55,57,73
 5000
-220 - Parent*(_, ifs)
+61 - Parent*(_, ifs)
 if ifs;
 Select ifs such that Parent*(_, ifs)
 7,20,32,34,36,46,49,56,60,68
 5000
-221 - Parent*(_, w)
+62 - Parent*(_, w)
 while w;
 Select w such that Parent*(_, w)
 5,9,12,18,22,58,66
 5000
-222 - Parent*(_, c) - error
-call c;
-Select BOOLEAN such that Parent*(_, c)
-FALSE
+63 - Parent*(_, c)
+call cl;
+Select BOOLEAN such that Parent*(_, cl)
+TRUE
 5000
-223 - Parent*(_, v) - error
+64 - Parent*(_, v) - error
 variable v;
 Select BOOLEAN such that Parent*(_, v)
 FALSE
 5000
-224 - Parent*(_, c) - error
+65 - Parent*(_, c) - error
 constant c;
 Select BOOLEAN such that Parent*(_, c)
 FALSE
 5000
-225 - Parent*(_, proc) - error
+66 - Parent*(_, proc) - error
 procedure proc;
 Select BOOLEAN such that Parent*(_, proc)
 FALSE
 5000
-226 - Parent*(s, S)
+67 - Parent*(s, S)
 stmt s, S;
 Select s such that Parent*(s, S)
 3,5,7,9,12,16,18,20,22,30,32,34,36,46,49,54,56,58,60,66,68
 5000
-227 - Parent*(s, pn)
+68 - Parent*(s, pn)
 print pn; stmt s;
 Select s such that Parent*(s, pn)
 3,5,7,16,18,20,22,30,32,34,46,49,54,56,58,60,66,68
 5000
-228 - Parent*(s, r)
+69 - Parent*(s, r)
 read r; stmt s;
 Select s such that Parent*(s, r)
 3,5,7,30,32,54,56,66
 5000
-232 - Parent*(s, a)
+70 - Parent*(s, a)
 assign a; stmt s;
 Select s such that Parent*(s, a)
 3,5,7,9,12,16,18,20,30,32,34,36,46,54,56
 5000
-233 - Parent*(s, ifs)
+71 - Parent*(s, ifs)
 if ifs; stmt s;
 Select s such that Parent*(s, ifs)
 3,5,16,18,30,32,34,46,54,56,58,66
 5000
-234 - Parent*(s, w)
+72 - Parent*(s, w)
 while w; stmt s;
 Select s such that Parent*(s, w)
 3,5,7,16,18,20,54,56
 5000
-235 - Parent*(ifs, S)
+73 - Parent*(ifs, S)
 if ifs; stmt S;
 Select S such that Parent*(ifs, S)
 4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,25,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72
 5000
-236 - Parent*(ifs, pn)
+74 - Parent*(ifs, pn)
 print pn; if ifs;
 Select pn such that Parent*(ifs, pn)
 8,14,21,23,24,33,35,39,40,45,50,51,52,59,61,62,63,64,69,70
 5000
-237 - Parent*(ifs, r)
+75 - Parent*(ifs, r)
 read r; if ifs;
 Select r such that Parent*(ifs, r)
 6,11,41,65,67,71,72
 5000
-238 - Parent*(ifs, a)
+76 - Parent*(ifs, a)
 assign a; if ifs;
 Select a such that Parent*(ifs, a)
 4,10,13,25,31,37,38,42,43,44,47,48,57
 5000
-239 - Parent*(ifs, ifs)
+77 - Parent*(ifs, ifs)
 if ifs, ifs2;
 Select ifs2 such that Parent*(ifs, ifs2)
 7,32,34,36,46,49,60,68
 5000
-240 - Parent*(ifs, w) - get w
+78 - Parent*(ifs, w) - get w
 while w; if ifs;
 Select w such that Parent*(ifs, w)
 5,9,12,22,58,66
 5000
-40b* - Parent*(ifs, w) - get ifs
+79 - Parent*(ifs, w) - get ifs
 while w; if ifs;
 Select ifs such that Parent*(ifs, w)
 3,7,20,56
 5000
-241 - Parent*(w, S)
+80 - Parent*(w, S)
 while w; stmt S;
 Select S such that Parent*(w, S)
-6,7,8,9,10,11,12,13,17,18,19,20,21,22,23,24,25,26,27,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73
+6,7,8,9,10,11,12,13,17,18,19,20,21,22,23,24,25,26,27,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74
 5000
-242 - Parent*(w, pn)
+81 - Parent*(w, pn)
 print pn; while w;
 Select pn such that Parent*(w, pn)
 8,19,21,23,24,59,61,62,63,64,69,70
 5000
-243 - Parent*(w, r)
+82 - Parent*(w, r)
 read r; while w;
 Select r such that Parent*(w, r)
 6,11,65,67,71,72
 5000
-244 - Parent*(w, a)
+83 - Parent*(w, a)
 assign a; while w;
 Select a such that Parent*(w, a)
 10,13,17,25,26,27,55,57,73
 5000
-245 - Parent*(w, w)
+84 - Parent*(w, w)
 while w, w2;
 Select w2 such that Parent*(w, w2)
 9,12,18,22,58,66
 5000
-246 - Parent*(w, ifs) get ifs
+85 - Parent*(w, ifs) get ifs
 while w; if ifs;
 Select ifs such that Parent*(w, ifs)
 7,20,56,60,68
 5000
-247 - Parent*(w, ifs) get w
+86 - Parent*(w, ifs) get w
 while w; if ifs;
 Select w such that Parent*(w, ifs)
 5,16,18,54,58,66
 5000
-248 - Parent('w', _) - syntactic error
+87 - Parent('w', _) - syntactic error
 
 Select BOOLEAN such that Parent("w", _)
 
 5000
-249 - Parent('w', v) - syntactic error
+88 - Parent('w', v) - syntactic error
 variable v;
 Select BOOLEAN such that Parent("w", v)
 
 5000
-250 - Parent('w', s) - syntactic error
+89 - Parent('w', s) - syntactic error
 stmt s;
 Select BOOLEAN such that Parent("w", s)
 
 5000
-251 - Parent('w', 'x') - syntactic error
+90 - Parent('w', 'x') - syntactic error
 
 Select BOOLEAN such that Parent("w", "x")
 
 5000
-252 - Parent(_, 'x') - syntactic error
+91 - Parent(_, 'x') - syntactic error
 
 Select BOOLEAN such that Parent(_, "x")
 
 5000
-253 - Parent('x', 1) - syntactic error
+92 - Parent('x', 1) - syntactic error
 
 Select BOOLEAN such that Parent("x", 1)
 
 5000
-254 - Parent(1, 'x') - syntactic error
+93 - Parent(1, 'x') - syntactic error
 
 Select BOOLEAN such that Parent(1, "x")
 
 5000
-255 - Parent('w', _) - syntactic error
+94 - Parent('w', _) - syntactic error
 
 Select BOOLEAN such that Parent("w", _)
 
 5000
-256 - Parent('w', v) - syntactic error
+95 - Parent('w', v) - syntactic error
 variable v;
 Select BOOLEAN such that Parent("w", v)
 
 5000
-257 - Parent('w', s) - syntactic error
+96 - Parent('w', s) - syntactic error
 stmt s;
 Select BOOLEAN such that Parent("w", s)
 
 5000
-258 - Parent('w', 'x') - syntactic error
+97 - Parent('w', 'x') - syntactic error
 
 Select BOOLEAN such that Parent("w", "x")
 
 5000
-259 - Parent(_, 'x') - syntactic error
+98 - Parent(_, 'x') - syntactic error
 
 Select BOOLEAN such that Parent(_, "x")
 
 5000
-260 - Parent('x', 1) - syntactic error
+99 - Parent('x', 1) - syntactic error
 
 Select BOOLEAN such that Parent("x", 1)
 
 5000
-261 - Parent(1, 'x') - syntactic error
+100 - Parent(1, 'x') - syntactic error
 
 Select BOOLEAN such that Parent(1, "x")
 
 5000
-262 - Parent(s1, s2) - tuple
+101 - Parent(s1, s2) - tuple
 stmt s1, s2;
 Select <s1, s2> such that Parent(s1, s2)
-3 4, 3 5, 3 14, 5 6, 5 7, 7 8, 7 9, 7 11, 7 12, 9 10, 12 13, 16 17, 16 18, 16 27, 18 19, 18 20, 18 26, 20 21, 20 22, 20 24, 20 25, 22 23, 30 31, 30 32, 30 44, 30 45, 30 46, 30 52, 32 33, 32 34, 32 41, 32 42, 32 43, 34 35, 34 36, 34 39, 34 40, 36 37, 36 38, 46 47, 46 48, 46 49, 49 50, 49 51, 54 55, 54 56, 54 73, 56 57, 56 58, 56 64, 56 65, 56 66, 56 72, 58 59, 58 60, 58 63, 60 61, 60 62, 66 67, 66 68, 66 71, 68 69, 68 70
+3 4, 3 5, 3 14, 5 6, 5 7, 7 8, 7 9, 7 11, 7 12, 9 10, 12 13, 16 17, 16 18, 16 27, 18 19, 18 20, 18 26, 20 21, 20 22, 20 24, 20 25, 22 23, 30 31, 30 32, 30 44, 30 45, 30 46, 30 52, 32 33, 32 34, 32 41, 32 42, 32 43, 34 35, 34 36, 34 39, 34 40, 36 37, 36 38, 46 47, 46 48, 46 49, 49 50, 49 51, 54 55, 54 56, 54 73, 56 57, 56 58, 56 64, 56 65, 56 66, 56 72, 58 59, 58 60, 58 63, 60 61, 60 62, 66 67, 66 68, 66 71, 68 69, 68 70, 54 74
 5000
-263 - Parent*(s1, s2) - tuple
+102 - Parent*(s1, s2) - tuple
 stmt s1, s2;
 Select <s1, s2> such that Parent*(s1, s2)
-3 4, 3 5, 3 6, 3 7, 3 8, 3 9, 3 10, 3 11, 3 12, 3 13, 3 14, 5 6, 5 7, 5 8, 5 9, 5 10, 5 11, 5 12, 5 13, 7 8, 7 9, 7 10, 7 11, 7 12, 7 13, 9 10, 12 13, 16 17, 16 18, 16 19, 16 20, 16 21, 16 22, 16 23, 16 24, 16 25, 16 26, 16 27, 18 19, 18 20, 18 21, 18 22, 18 23, 18 24, 18 25, 18 26, 20 21, 20 22, 20 23, 20 24, 20 25, 22 23, 30 31, 30 32, 30 33, 30 34, 30 35, 30 36, 30 37, 30 38, 30 39, 30 40, 30 41, 30 42, 30 43, 30 44, 30 45, 30 46, 30 47, 30 48, 30 49, 30 50, 30 51, 30 52, 32 33, 32 34, 32 35, 32 36, 32 37, 32 38, 32 39, 32 40, 32 41, 32 42, 32 43, 34 35, 34 36, 34 37, 34 38, 34 39, 34 40, 36 37, 36 38, 46 47, 46 48, 46 49, 46 50, 46 51, 49 50, 49 51, 54 55, 54 56, 54 57, 54 58, 54 59, 54 60, 54 61, 54 62, 54 63, 54 64, 54 65, 54 66, 54 67, 54 68, 54 69, 54 70, 54 71, 54 72, 54 73, 56 57, 56 58, 56 59, 56 60, 56 61, 56 62, 56 63, 56 64, 56 65, 56 66, 56 67, 56 68, 56 69, 56 70, 56 71, 56 72, 58 59, 58 60, 58 61, 58 62, 58 63, 60 61, 60 62, 66 67, 66 68, 66 69, 66 70, 66 71, 68 69, 68 70
+3 4, 3 5, 3 6, 3 7, 3 8, 3 9, 3 10, 3 11, 3 12, 3 13, 3 14, 5 6, 5 7, 5 8, 5 9, 5 10, 5 11, 5 12, 5 13, 7 8, 7 9, 7 10, 7 11, 7 12, 7 13, 9 10, 12 13, 16 17, 16 18, 16 19, 16 20, 16 21, 16 22, 16 23, 16 24, 16 25, 16 26, 16 27, 18 19, 18 20, 18 21, 18 22, 18 23, 18 24, 18 25, 18 26, 20 21, 20 22, 20 23, 20 24, 20 25, 22 23, 30 31, 30 32, 30 33, 30 34, 30 35, 30 36, 30 37, 30 38, 30 39, 30 40, 30 41, 30 42, 30 43, 30 44, 30 45, 30 46, 30 47, 30 48, 30 49, 30 50, 30 51, 30 52, 32 33, 32 34, 32 35, 32 36, 32 37, 32 38, 32 39, 32 40, 32 41, 32 42, 32 43, 34 35, 34 36, 34 37, 34 38, 34 39, 34 40, 36 37, 36 38, 46 47, 46 48, 46 49, 46 50, 46 51, 49 50, 49 51, 54 55, 54 56, 54 57, 54 58, 54 59, 54 60, 54 61, 54 62, 54 63, 54 64, 54 65, 54 66, 54 67, 54 68, 54 69, 54 70, 54 71, 54 72, 54 73, 56 57, 56 58, 56 59, 56 60, 56 61, 56 62, 56 63, 56 64, 56 65, 56 66, 56 67, 56 68, 56 69, 56 70, 56 71, 56 72, 58 59, 58 60, 58 61, 58 62, 58 63, 60 61, 60 62, 66 67, 66 68, 66 69, 66 70, 66 71, 68 69, 68 70, 54 74
 5000
-264 - Out of bound - (int, int) - parent
+103 - Out of bound - (int, int) - parent
 
 Select BOOLEAN such that Parent(5000000000000, 500000100000000)
 FALSE
 5000
-265 - Out of bound - (int, syn) - parent
+104 - Out of bound - (int, syn) - parent
 stmt s;
 Select BOOLEAN such that Parent(5000000000000, s)
 FALSE
 5000
-266 - Out of bound - (int, wildcard) - parent
+105 - Out of bound - (int, wildcard) - parent
 
 Select BOOLEAN such that Parent(5000000000000, _)
 FALSE
 5000
-267 - Out of bound - (syn, int) - parent
+106 - Out of bound - (syn, int) - parent
 stmt s;
 Select BOOLEAN such that Parent(s, 500000100000000)
 FALSE
 5000
-268 - Out of bound - (wildcard, int) - parent
+107 - Out of bound - (wildcard, int) - parent
 
 Select BOOLEAN such that Parent(_, 500000100000000)
 FALSE
 5000
-269 - Out of bound - (int, int) - parent*
+108 - Out of bound - (int, int) - parent*
 
 Select BOOLEAN such that Parent*(5000000000000, 500000100000000)
 FALSE
 5000
-270 - Out of bound - (int, syn) - parent*
+109 - Out of bound - (int, syn) - parent*
 stmt s;
 Select BOOLEAN such that Parent*(5000000000000, s)
 FALSE
 5000
-271 - Out of bound - (int, wildcard) - parent*
+110 - Out of bound - (int, wildcard) - parent*
 
 Select BOOLEAN such that Parent*(5000000000000, _)
 FALSE
 5000
-272 - Out of bound - (syn, int) - parent*
+111 - Out of bound - (syn, int) - parent*
 stmt s;
 Select BOOLEAN such that Parent*(s, 500000100000000)
 FALSE
 5000
-273 - Out of bound - (wildcard, int) - parent*
+112 - Out of bound - (wildcard, int) - parent*
 
 Select BOOLEAN such that Parent*(_, 500000100000000)
+FALSE
+5000
+113 - (int, int) - valid case
+
+Select BOOLEAN such that Parent(3, 5)
+TRUE
+5000
+114 - (int, int) - invalid case - normal follows relation
+
+Select BOOLEAN such that Parent(1, 2)
+FALSE
+5000
+115 - (int, int) - invalid case - extra nesting level
+
+Select BOOLEAN such that Parent(3, 6)
+FALSE
+5000
+116 - (int, int) - invalid case - parent of itself for while
+
+Select BOOLEAN such that Parent(5, 5)
+FALSE
+5000
+117 - (int, int) - invalid case - parent of itself for if
+
+Select BOOLEAN such that Parent(3, 3)
+FALSE
+5000
+118 - (int, syn) - valid case - syn -> stmt
+stmt s;
+Select s such that Parent(3, s)
+4, 5, 14
+5000
+119 - (int, syn) - valid case - syn -> while
+while w;
+Select w such that Parent(3, w)
+5
+5000
+120 - (int, syn) - valid case - syn -> if
+if ifs;
+Select ifs such that Parent(5, ifs)
+7
+5000
+121 - (int, syn) - valid case - syn -> read
+read re;
+Select re such that Parent(5, re)
+6
+5000
+122 - (int, syn) - valid case - syn -> print
+print pn;
+Select pn such that Parent(3, pn)
+14
+5000
+123 - (int, syn) - valid case - syn -> call
+call cl;
+Select cl such that Parent(54, cl)
+74
+5000
+124 - (int, syn) - valid case - syn -> assign
+assign a;
+Select a such that Parent(54, a)
+55, 73
+5000
+125 - (syn, int) - valid case - syn -> stmt
+stmt s;
+Select s such that Parent(s, 14)
+3
+5000
+126 - (syn, int) - valid case - syn -> while
+while w;
+Select w such that Parent(w, 26)
+18
+5000
+127 - (syn, int) - valid case - syn -> if
+if ifs;
+Select ifs such that Parent(ifs, 72)
+56
+5000
+128 - (syn, int) - valid case - syn -> read
+read re;
+Select BOOLEAN such that Parent(re, 65)
+FALSE
+5000
+129 - (syn, int) - valid case - syn -> print
+print pn;
+Select BOOLEAN such that Parent(pn, 52)
+FALSE
+5000
+130 - (syn, int) - valid case - syn -> call
+call cl;
+Select BOOLEAN such that Parent(cl, 21)
+FALSE
+5000
+131 - (syn, int) - valid case - syn -> assign
+assign a;
+Select BOOLEAN such that Parent(a, 20)
+FALSE
+5000
+132 - (int, int) - valid case
+
+Select BOOLEAN such that Parent*(3, 13)
+TRUE
+5000
+133 - (int, int) - valid case
+
+Select BOOLEAN such that Parent*(16, 23)
+TRUE
+5000
+134 - (int, int) - valid case
+
+Select BOOLEAN such that Parent*(30, 38)
+TRUE
+5000
+135 - (int, int) - valid case
+
+Select BOOLEAN such that Parent*(30, 51)
+TRUE
+5000
+136 - (int, int) - invalid case - normal follows relation
+
+Select BOOLEAN such that Parent*(1, 13)
+FALSE
+5000
+137 - (int, int) - invalid case
+
+Select BOOLEAN such that Parent*(32, 47)
+FALSE
+5000
+138 - (int, int) - invalid case - parent of itself for while
+
+Select BOOLEAN such that Parent*(5, 5)
+FALSE
+5000
+139 - (int, int) - invalid case - parent of itself for if
+
+Select BOOLEAN such that Parent*(3, 3)
+FALSE
+5000
+140 - (int, syn) - valid case - syn -> stmt
+stmt s;
+Select s such that Parent*(3, s)
+4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+5000
+141 - (int, syn) - valid case - syn -> while
+while w;
+Select w such that Parent*(5, w)
+9, 12
+5000
+142 - (int, syn) - valid case - syn -> if
+if ifs;
+Select ifs such that Parent*(30, ifs)
+32, 34, 36, 46, 49
+5000
+143 - (int, syn) - valid case - syn -> read
+read re;
+Select re such that Parent*(54, re)
+65, 67, 71, 72
+5000
+144 - (int, syn) - valid case - syn -> print
+print pn;
+Select pn such that Parent*(54, pn)
+59, 61, 62, 63, 64, 69, 70
+5000
+145 - (int, syn) - valid case - syn -> call
+call cl;
+Select cl such that Parent*(54, cl)
+74
+5000
+146 - (int, syn) - valid case - syn -> assign
+assign a;
+Select a such that Parent*(16, a)
+17, 25, 26, 27
+5000
+147 - (syn, int) - valid case - syn -> stmt
+stmt s;
+Select s such that Parent*(s, 10)
+3, 5, 7, 9
+5000
+148 - (syn, int) - valid case - syn -> while
+while w;
+Select w such that Parent*(w, 23)
+16, 18, 22
+5000
+149 - (syn, int) - valid case - syn -> if
+if ifs;
+Select ifs such that Parent*(ifs, 37)
+30, 32, 34, 36
+5000
+150 - (syn, int) - valid case - syn -> read
+read re;
+Select BOOLEAN such that Parent*(re, 65)
+FALSE
+5000
+151 - (syn, int) - valid case - syn -> print
+print pn;
+Select BOOLEAN such that Parent*(pn, 52)
+FALSE
+5000
+152 - (syn, int) - valid case - syn -> call
+call cl;
+Select BOOLEAN such that Parent*(cl, 21)
+FALSE
+5000
+153 - (syn, int) - valid case - syn -> assign
+assign a;
+Select BOOLEAN such that Parent*(a, 20)
 FALSE
 5000
