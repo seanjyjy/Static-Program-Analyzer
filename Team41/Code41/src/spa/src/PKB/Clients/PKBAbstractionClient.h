@@ -53,19 +53,17 @@ public:
     //=========================================== Follows ===================================================
 
     bool isFollows(string stmt1, string stmt2) const; // Checks if stmt1 follows stmt2
-    string getStmtFollowing(string stmtNum) const;// Gets the stmt that follows the specified stmt
-    string getStmtFollowedBy(string stmtNum) const;// Gets the stmt that are follows by the specified stmt
+    string getStmtDirectlyAfter(string stmt) const;// Gets the stmt that follows the specified stmt
+    string getStmtDirectlyBefore(string stmt) const;// Gets the stmt that are follows by the specified stmt
     vector<pair<string, string>> getAllFollows() const; // Gets list of stmt1-stmt2 pair where stmt1 follows stmt2
 
     bool isFollowsT(string stmt1, string stmt2) const; // Checks if stmt1 followsT stmt2
-    unordered_set<string>
-    getAllStmtsFollowingT(string stmtNum) const;// Gets list of stmts that followsT the specified stmt
-    unordered_set<string>
-    getAllStmtsFollowedTBy(string stmtNum) const;// Gets list of stmts that is followedT by given stmt
+    unordered_set<string> getAllStmtsAfter(string stmt) const;// Gets list of stmts that followsT the specified stmt
+    unordered_set<string> getAllStmtsBefore(string stmt) const;// Gets list of stmts that is followedT by given stmt
     vector<pair<string, string>> getAllFollowsT() const; // Gets list of stmt1-stmt2 pair where stmt1 followsT stmt2
 
-    unordered_set<string> getAllStmtsFollowingSomeStmt() const; // Get list of stmt following some stmt
-    unordered_set<string> getAllStmtsFollowedBySomeStmt() const; // Get list of stmt followed by some stmt
+    unordered_set<string> getAllStmtsAfterSomeStmt() const; // Get list of stmt following some stmt
+    unordered_set<string> getAllStmtsBeforeSomeStmt() const; // Get list of stmt followed by some stmt
 
     //=========================================== Parent ===================================================
 

@@ -30,12 +30,12 @@ bool PKBAbstractionClient::isFollows(string stmt1, string stmt2) const {
                                    move(stmt2));
 }
 
-string PKBAbstractionClient::getStmtFollowing(string stmtNum) const {
-    return followsTable->getStmtFollowing(move(stmtNum));
+string PKBAbstractionClient::getStmtDirectlyAfter(string stmtNum) const {
+    return followsTable->getStmtDirectlyAfter(move(stmtNum));
 }
 
-string PKBAbstractionClient::getStmtFollowedBy(string stmtNum) const {
-    return followsTable->getStmtFollowedBy(move(stmtNum));
+string PKBAbstractionClient::getStmtDirectlyBefore(string stmtNum) const {
+    return followsTable->getStmtDirectlyBefore(move(stmtNum));
 }
 
 vector<pair<string, string>> PKBAbstractionClient::getAllFollows() const { return followsTable->getFollowEntries(); }
@@ -45,21 +45,21 @@ bool PKBAbstractionClient::isFollowsT(string stmt1, string stmt2) const {
                                     move(stmt2));
 }
 
-unordered_set<string> PKBAbstractionClient::getAllStmtsFollowingT(string stmtNum) const {
-    return followsTable->getStmtsFollowingT(move(stmtNum));
+unordered_set<string> PKBAbstractionClient::getAllStmtsAfter(string stmtNum) const {
+    return followsTable->getStmtsAfter(move(stmtNum));
 }
 
-unordered_set<string> PKBAbstractionClient::getAllStmtsFollowedTBy(string stmtNum) const {
-    return followsTable->getStmtsFollowedTBy(move(stmtNum));
+unordered_set<string> PKBAbstractionClient::getAllStmtsBefore(string stmtNum) const {
+    return followsTable->getStmtsBefore(move(stmtNum));
 }
 
 vector<pair<string, string>> PKBAbstractionClient::getAllFollowsT() const { return followsTable->getFollowTEntries(); }
 
 unordered_set<string>
-PKBAbstractionClient::getAllStmtsFollowingSomeStmt() const { return followsTable->getStmtsFollowingSomeStmt(); }
+PKBAbstractionClient::getAllStmtsAfterSomeStmt() const { return followsTable->getStmtsAfterSomeStmt(); }
 
 unordered_set<string>
-PKBAbstractionClient::getAllStmtsFollowedBySomeStmt() const { return followsTable->getStmtsFollowedBySomeStmt(); }
+PKBAbstractionClient::getAllStmtsBeforeSomeStmt() const { return followsTable->getStmtsBeforeSomeStmt(); }
 
 //======================================== Parent ==================================================
 
