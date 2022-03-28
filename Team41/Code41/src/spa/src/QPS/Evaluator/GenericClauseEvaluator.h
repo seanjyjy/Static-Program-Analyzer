@@ -6,9 +6,9 @@ class GenericClauseEvaluator : public Evaluator {
 public:
     explicit GenericClauseEvaluator(PKBClient *pkb);
 
-    Table* evaluate(const QueryClause &clause);
+    Table *evaluate(const QueryClause &clause);
 
-    virtual Table *evaluateClause(ClauseVariable left, ClauseVariable right) = 0;
+    virtual Table *evaluateClause(ClauseVariable &left, ClauseVariable &right) = 0;
 
     friend class ProcEvaluator;
 

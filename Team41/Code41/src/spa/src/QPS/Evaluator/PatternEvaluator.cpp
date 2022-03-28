@@ -14,7 +14,7 @@ Table *PatternEvaluator::evaluate(const PatternClause &clause) {
     return evaluateFurther(patternSynonym, leftVariable, rightPatternVariables, clause.canSimplifyClause());
 }
 
-Table *PatternEvaluator::evaluateWildCardWildCard(QueryDeclaration patternSynonym, bool canSimplify) {
+Table *PatternEvaluator::evaluateWildCardWildCard(QueryDeclaration &patternSynonym, bool canSimplify) {
     unordered_set<string> setOfPatternStmt = getWildCardWildCardRelation();
     if (canSimplify) {
         return buildBooleanTable(!setOfPatternStmt.empty());

@@ -2,7 +2,7 @@
 
 ProcProcEvaluator::ProcProcEvaluator(PKBClient *pkb) : ProcEvaluator(pkb) {}
 
-Table *ProcProcEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVariable rightVariable) {
+Table *ProcProcEvaluator::evaluateClause(ClauseVariable &leftVariable, ClauseVariable &rightVariable) {
 
     if (EvaluatorUtils::ProcUtils::isIdentifierIdentifier(&leftVariable, &rightVariable)) {
         return evaluateIdentifierIdentifier(leftVariable, rightVariable);

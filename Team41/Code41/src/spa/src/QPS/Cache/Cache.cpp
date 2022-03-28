@@ -29,7 +29,7 @@ vector<pair<string, string>> Cache::getAllMapping() {
     return allMapping;
 }
 
-void Cache::addAllMappingPair(pair<string, string> pair) {
+void Cache::addAllMappingPair(const pair<string, string> &pair) {
     allMapping.push_back(pair);
 }
 

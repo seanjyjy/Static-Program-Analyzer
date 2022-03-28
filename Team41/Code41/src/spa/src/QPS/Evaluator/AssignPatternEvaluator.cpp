@@ -3,7 +3,7 @@
 
 AssignPatternEvaluator::AssignPatternEvaluator(PKBClient *pkb) : PatternEvaluator(pkb) {}
 
-Table *AssignPatternEvaluator::evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
+Table *AssignPatternEvaluator::evaluateFurther(QueryDeclaration &patternSynonym, ClauseVariable &leftVariable,
                                                vector<PatternVariable> &rightPatternVariables, bool canSimplify) {
 
     PatternVariable rightVariable = rightPatternVariables.at(0);
@@ -46,7 +46,7 @@ unordered_set<string> AssignPatternEvaluator::getWildCardWildCardRelation() {
     return pkb->getAssigns();
 }
 
-Table *AssignPatternEvaluator::evaluateWildCardFullPattern(QueryDeclaration patternSyn, PatternVariable right, bool canSimplify) {
+Table *AssignPatternEvaluator::evaluateWildCardFullPattern(QueryDeclaration &patternSyn, PatternVariable &right, bool canSimplify) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromPattern(right.getMiniAST());
     if (canSimplify) {
         return buildBooleanTable(!setOfAssignStmt.empty());
@@ -54,7 +54,7 @@ Table *AssignPatternEvaluator::evaluateWildCardFullPattern(QueryDeclaration patt
     return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateWildCardSubPattern(QueryDeclaration patternSyn, PatternVariable right, bool canSimplify) {
+Table *AssignPatternEvaluator::evaluateWildCardSubPattern(QueryDeclaration &patternSyn, PatternVariable &right, bool canSimplify) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromSubpattern(right.getMiniAST());
     if (canSimplify) {
         return buildBooleanTable(!setOfAssignStmt.empty());
@@ -62,8 +62,8 @@ Table *AssignPatternEvaluator::evaluateWildCardSubPattern(QueryDeclaration patte
     return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateIdentifierFullPattern(QueryDeclaration patternSyn, const ClauseVariable &left,
-                                                             PatternVariable right, bool canSimplify) {
+Table *AssignPatternEvaluator::evaluateIdentifierFullPattern(QueryDeclaration &patternSyn, const ClauseVariable &left,
+                                                             PatternVariable &right, bool canSimplify) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromPatternNVar(right.getMiniAST(), left.getLabel());
     if (canSimplify) {
         return buildBooleanTable(!setOfAssignStmt.empty());
@@ -71,8 +71,8 @@ Table *AssignPatternEvaluator::evaluateIdentifierFullPattern(QueryDeclaration pa
     return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateIdentifierSubPattern(QueryDeclaration patternSyn, const ClauseVariable &left,
-                                                            PatternVariable right, bool canSimplify) {
+Table *AssignPatternEvaluator::evaluateIdentifierSubPattern(QueryDeclaration &patternSyn, const ClauseVariable &left,
+                                                            PatternVariable &right, bool canSimplify) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromSubpatternNVar(right.getMiniAST(), left.getLabel());
     if (canSimplify) {
         return buildBooleanTable(!setOfAssignStmt.empty());
@@ -80,8 +80,8 @@ Table *AssignPatternEvaluator::evaluateIdentifierSubPattern(QueryDeclaration pat
     return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateSynonymFullPattern(QueryDeclaration patternSyn, ClauseVariable left,
-                                                          PatternVariable right, bool canSimplify) {
+Table *AssignPatternEvaluator::evaluateSynonymFullPattern(QueryDeclaration &patternSyn, ClauseVariable &left,
+                                                          PatternVariable &right, bool canSimplify) {
     vector<pair<string, string>> listOfStmtNVar = pkb->getAssignStmtNVarFromPattern(right.getMiniAST());
     if (canSimplify) {
         return buildBooleanTable(!listOfStmtNVar.empty());
@@ -90,8 +90,8 @@ Table *AssignPatternEvaluator::evaluateSynonymFullPattern(QueryDeclaration patte
     return buildAssignPatternSSTable(listOfStmtNVar, patternSyn, left);
 }
 
-Table *AssignPatternEvaluator::evaluateSynonymSubPattern(QueryDeclaration patternSyn, ClauseVariable left,
-                                                         PatternVariable right, bool canSimplify) {
+Table *AssignPatternEvaluator::evaluateSynonymSubPattern(QueryDeclaration &patternSyn, ClauseVariable &left,
+                                                         PatternVariable &right, bool canSimplify) {
     vector<pair<string, string>> listOfStmtNVar = pkb->getAssignStmtNVarFromSubpattern(right.getMiniAST());
     if (canSimplify) {
         return buildBooleanTable(!listOfStmtNVar.empty());
@@ -99,7 +99,7 @@ Table *AssignPatternEvaluator::evaluateSynonymSubPattern(QueryDeclaration patter
     return buildAssignPatternSSTable(listOfStmtNVar, patternSyn, left);
 }
 
-Table *AssignPatternEvaluator::evaluateSynonymWildCard(QueryDeclaration patternSyn, ClauseVariable left, bool canSimplify) {
+Table *AssignPatternEvaluator::evaluateSynonymWildCard(QueryDeclaration &patternSyn, ClauseVariable &left, bool canSimplify) {
     unordered_set<string> setOfAssignStmt = pkb->getAssigns();
     if (canSimplify) {
         return buildBooleanTable(!setOfAssignStmt.empty());
@@ -107,7 +107,7 @@ Table *AssignPatternEvaluator::evaluateSynonymWildCard(QueryDeclaration patternS
     return buildAssignPatternSSTable(setOfAssignStmt, patternSyn, left);
 }
 
-Table *AssignPatternEvaluator::evaluateIdentifierWildCard(QueryDeclaration patternSynonym,
+Table *AssignPatternEvaluator::evaluateIdentifierWildCard(QueryDeclaration &patternSynonym,
                                                           ClauseVariable &leftVariable, bool canSimplify) {
     unordered_set<string> setOfAssignStmt = pkb->getAssigns();
     if (canSimplify) {

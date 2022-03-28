@@ -2,6 +2,8 @@
 
 #include <unordered_map>
 #include <string>
+#include <stdexcept>
+#include <utility>
 
 using namespace std;
 
@@ -11,7 +13,7 @@ private:
 public:
     Row();
 
-    Row(const string &column, string value);
+    Row(const string &column, const string &value);
 
     /**
      * Retrieves the number of entries in the current row.
@@ -49,7 +51,7 @@ public:
      * @param column The name of the column.
      * @param value The value to be added to a certain column
      */
-    void addEntry(const string &column, string value);
+    void addEntry(const string &column, const string &value);
 
     /**
      * Compares if two rows are equal.

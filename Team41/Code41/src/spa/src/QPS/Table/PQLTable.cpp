@@ -36,9 +36,9 @@ Table *PQLTable::mergeJoin(Table *intermediatePQLTable) {
     return newTable;
 }
 
-void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, vector<string> commonHeader) {
-    auto leftTableRow = leftTable->getRows();
-    auto rightTableRow = rightTable->getRows();
+void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, const vector<string> &commonHeader) {
+    vector<const Row *> leftTableRow = leftTable->getRows();
+    vector<const Row *> rightTableRow = rightTable->getRows();
 
     // have to separate else have warning: object backing the pointer will be destroyed at the end of the full-expression
     auto leftTableIndex = leftTableRow.begin();
@@ -46,7 +46,7 @@ void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, 
     auto rightTableIndex = rightTableRow.begin();
     auto rightTableEnd = rightTableRow.end();
 
-    while (leftTableIndex != leftTableEnd && rightTableIndex != rightTableEnd) {
+    while (leftTableIndex < leftTableEnd && rightTableIndex < rightTableEnd) {
         int result = compareRow(*leftTableIndex, *rightTableIndex, commonHeader);
         if (result == -1) {
             leftTableIndex++;
@@ -61,15 +61,15 @@ void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, 
         unordered_set<const Row *> leftRowsSet;
         unordered_set<const Row *> rightRowsSet;
 
-        auto fixedLeftIndexElement = leftTableIndex;
-        auto fixedRightIndexElement = rightTableIndex;
+        auto leftIndexElement = leftTableIndex;
+        auto rightIndexElement = rightTableIndex;
 
-        while (leftTableIndex != leftTableEnd && isEqual(*fixedLeftIndexElement, *leftTableIndex, commonHeader)) {
+        while (leftTableIndex < leftTableEnd && isEqual(*leftIndexElement, *leftTableIndex, commonHeader)) {
             leftRowsSet.insert(*leftTableIndex);
             leftTableIndex++;
         }
 
-        while (rightTableIndex != rightTableEnd && isEqual(*fixedRightIndexElement, *rightTableIndex, commonHeader)) {
+        while (rightTableIndex < rightTableEnd && isEqual(*rightIndexElement, *rightTableIndex, commonHeader)) {
             rightRowsSet.insert(*rightTableIndex);
             rightTableIndex++;
         }
@@ -84,39 +84,35 @@ void PQLTable::mergeTable(Table *leftTable, Table *rightTable, Table *newTable, 
     }
 }
 
-bool PQLTable::isEqual(const Row *rowA, const Row *rowB, vector<string> orderedCommonHeader) {
-    for (auto &headerField: orderedCommonHeader) {
-        if (rowA->getValueAtColumn(headerField) != rowB->getValueAtColumn(headerField)) {
-            return false;
-        }
-    }
-
-    return true;
+bool PQLTable::isEqual(const Row *rowA, const Row *rowB, const vector<string> &orderedCommonHeader) {
+    return all_of(orderedCommonHeader.begin(), orderedCommonHeader.end(), [&rowA, &rowB](auto &headerField) {
+        return rowA->getValueAtColumn(headerField) == rowB->getValueAtColumn(headerField);
+    });
 }
 
 const Row *PQLTable::combineRow(const Row *rowA, const Row *rowB) const {
     Row *row = new Row();
 
-    for (const auto &columnValuePair: rowA->getRow()) {
-        row->addEntry(columnValuePair.first, columnValuePair.second);
+    for (auto &[column, value]: rowA->getRow()) {
+        row->addEntry(column, value);
     }
 
-    for (const auto &columnValuePair: rowB->getRow()) {
-        row->addEntry(columnValuePair.first, columnValuePair.second);
+    for (auto &[column, value]: rowB->getRow()) {
+        row->addEntry(column, value);
     }
 
     return row;
 }
 
-void PQLTable::sort(vector<string> orderedCommonHeader) {
-    if (orderedCommonHeader.empty()) { return; }
-    std::sort(this->rows.begin(), this->rows.end(), [orderedCommonHeader](const Row *left, const Row *right) {
+void PQLTable::sort(const vector<string> &orderedCommonHeader) {
+    if (orderedCommonHeader.empty()) return;
+    std::sort(this->rows.begin(), this->rows.end(), [&orderedCommonHeader](const Row *left, const Row *right) {
         for (const string &headerField: orderedCommonHeader) {
             string leftVal = left->getValueAtColumn(headerField);
             string rightVal = right->getValueAtColumn(headerField);
             if (leftVal != rightVal) {
                 return leftVal < rightVal;
-            };
+            }
         }
         return false;
     });
@@ -152,7 +148,8 @@ Header PQLTable::getCombinedHeader(Table *leftTable, Table *rightTable) {
     return combinedHeader;
 }
 
-int PQLTable::compareRow(const Row *leftRowPtr, const Row *rightRowPtr, vector<string> orderedCommonHeader) const {
+int
+PQLTable::compareRow(const Row *leftRowPtr, const Row *rightRowPtr, const vector<string> &orderedCommonHeader) const {
     auto leftRow = leftRowPtr->getRow();
     auto rightRow = rightRowPtr->getRow();
 
@@ -175,13 +172,9 @@ bool PQLTable::checkRowMatchesHeader(const Row *row) const {
         return false;
     }
 
-    for (const auto &headerField: columnHeader) {
-        if (!row->hasColumn(headerField)) {
-            return false;
-        }
-    }
-
-    return true;
+    return all_of(columnHeader.begin(), columnHeader.end(), [&row](auto &headerField) {
+        return row->hasColumn(headerField);
+    });
 }
 
 void PQLTable::addRow(const Row *row) {
@@ -202,12 +195,9 @@ bool PQLTable::hasColumn(const string &column) {
 }
 
 bool PQLTable::hasRow(const Row *row) {
-    for (auto cRow: this->rows) {
-        if (*cRow == *row) {
-            return true;
-        }
-    }
-    return false;
+    return any_of(rows.begin(), rows.end(), [&row](const Row *cRow) {
+        return *cRow == *row;
+    });
 }
 
 Header PQLTable::getHeader() const {
@@ -233,7 +223,7 @@ PQLTable::~PQLTable() {
     }
 }
 
-unordered_set<string> PQLTable::getColumn(string columnName) {
+unordered_set<string> PQLTable::getColumn(const string &columnName) {
     unordered_set<string> results;
 
     for (auto &row: this->getRows()) {
@@ -247,7 +237,7 @@ Table::TableType PQLTable::getType() {
     return Table::PQLTable;
 }
 
-unordered_set<string> PQLTable::getColumns(vector<string> columnNames) {
+unordered_set<string> PQLTable::getColumns(const vector<string> &columnNames) {
     unordered_set<string> results;
 
     for (auto &row: this->getRows()) {

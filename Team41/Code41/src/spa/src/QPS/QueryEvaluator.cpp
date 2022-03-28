@@ -6,9 +6,67 @@ QueryEvaluator::QueryEvaluator(PKBClient *pkb) {
     this->affectsKBAdapter = new AffectsKBAdapter(pkb);
 }
 
+optional<QueryResult> QueryEvaluator::evaluateClauses(Table *resultTable, OptimizedQueryObject *queryObject) {
+    QueryResult emptyQueryResult = {queryObject->getSelectTarget(), new FalseTable()};
+    while (!queryObject->empty()) {
+        SuperClause *clause = queryObject->popClause();
+        Table *intermediateTable = this->evaluate(clause);
+
+        if (intermediateTable->isEmpty()) {
+            safeDeleteTable(intermediateTable);
+            safeDeleteTable(resultTable);
+            return emptyQueryResult;
+        }
+
+        Table *ogTable = resultTable;
+        resultTable = resultTable->mergeJoin(intermediateTable);
+
+        safeDeleteTable(ogTable, resultTable);
+        safeDeleteTable(intermediateTable, resultTable);
+
+        if (resultTable->isEmpty()) {
+            safeDeleteTable(resultTable);
+            return emptyQueryResult;
+        }
+    }
+
+    return nullopt;
+}
+
+optional<QueryResult> QueryEvaluator::evaluatSelectables(Table *resultTable, OptimizedQueryObject *queryObject) {
+    QueryResult emptyQueryResult = {queryObject->getSelectTarget(), new FalseTable()};
+    for (const auto &selected: queryObject->getSelectables()) {
+        Header header = resultTable->getHeader();
+        if (header.find(selected.getSynonym().getSynonym()) != header.end())
+            continue;
+
+        Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(selected.getSynonym());
+
+        if (intermediateTable->isEmpty()) {
+            safeDeleteTable(intermediateTable);
+            safeDeleteTable(resultTable);
+            return emptyQueryResult;
+        }
+
+        Table *ogTable = resultTable;
+        resultTable = resultTable->mergeJoin(intermediateTable);
+
+        safeDeleteTable(ogTable, resultTable);
+        safeDeleteTable(intermediateTable, resultTable);
+
+        if (resultTable->isEmpty()) {
+            safeDeleteTable(resultTable);
+            return emptyQueryResult;
+        }
+    }
+
+    return nullopt;
+}
+
 QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
     unordered_set<string> emptyResult;
     unordered_set<string> result;
+    QueryResult emptyQueryResult = {queryObject->getSelectTarget(), new FalseTable()};
 
     if (!queryObject->isValid()) {
         return {queryObject->getSelectTarget(), nullptr, false};
@@ -17,63 +75,28 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
     if (queryObject->hasUseOfUndeclaredVariable() ||
         !EvaluatorUtils::validateDeclarations(queryObject->getDeclarations()) ||
         !EvaluatorUtils::AttrUtils::validateSelectTarget(&queryObject->getSelectTarget())) {
-        return {queryObject->getSelectTarget(), new FalseTable()};
+        return emptyQueryResult;
     }
 
     Table *resultTable = new TrueTable();
 
     try {
-        while (!queryObject->empty()) {
-            SuperClause *clause = queryObject->popClause();
-            Table *intermediateTable = this->evaluate(clause);
-
-            if (intermediateTable->isEmpty()) {
-                safeDeleteTable(intermediateTable);
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
-
-            Table *ogTable = resultTable;
-            resultTable = resultTable->mergeJoin(intermediateTable);
-            safeDeleteTable(ogTable, resultTable);
-            safeDeleteTable(intermediateTable, resultTable);
-
-            if (resultTable->isEmpty()) {
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
+        // A value in optional indicates an empty result has been returned
+        optional<QueryResult> clauseResult = evaluateClauses(resultTable, queryObject);
+        if (clauseResult.has_value()) {
+            return clauseResult.value();
         }
 
-        for (const auto &selected: queryObject->getSelectables()) {
-            Header header = resultTable->getHeader();
-            if (header.find(selected.getSynonym().getSynonym()) != header.end())
-                continue;
-
-            Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(selected.getSynonym());
-
-            if (intermediateTable->isEmpty()) {
-                safeDeleteTable(intermediateTable);
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
-
-            Table *ogTable = resultTable;
-            resultTable = resultTable->mergeJoin(intermediateTable);
-
-            safeDeleteTable(ogTable, resultTable);
-            safeDeleteTable(intermediateTable, resultTable);
-
-            if (resultTable->isEmpty()) {
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
+        optional<QueryResult> selectableResult = evaluatSelectables(resultTable, queryObject);
+        if (selectableResult.has_value()) {
+            return clauseResult.value();
         }
     } catch (SemanticException &) {
         safeDeleteTable(resultTable);
-        return {queryObject->getSelectTarget(), new FalseTable()};
+        return emptyQueryResult;
     } catch (const runtime_error &) {
         safeDeleteTable(resultTable);
-        return {queryObject->getSelectTarget(), new FalseTable()};
+        return emptyQueryResult;
     }
 
     return {queryObject->getSelectTarget(), resultTable};
@@ -82,7 +105,9 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
 Table *QueryEvaluator::evaluate(SuperClause *clause) {
     if (clause->isPatternClause()) {
         return evaluate(clause->getPatternClause());
-    } else if (clause->isWithClause()) {
+    }
+
+    if (clause->isWithClause()) {
         return evaluate(clause->getWithClause());
     }
 
@@ -120,7 +145,7 @@ Table *QueryEvaluator::evaluate(const QueryClause &clause) {
         case QueryClause::clause_type::affectsT:
             return AffectsTEvaluator(pkb, affectsKBAdapter).evaluate(clause);
         default:
-            throw std::runtime_error("unknown clause of type " + to_string(clause.type));
+            throw runtime_error("unknown clause of type " + to_string(clause.type));
     }
 }
 
@@ -134,7 +159,7 @@ Table *QueryEvaluator::evaluate(const PatternClause &clause) {
         case QueryDeclaration::design_entity_type::WHILE:
             return WhilePatternEvaluator(pkb).evaluate(clause);
         default:
-            throw std::runtime_error("unknown pattern clause of type " + to_string(type));
+            throw runtime_error("unknown pattern clause of type " + to_string(type));
     }
 }
 
@@ -153,7 +178,6 @@ void QueryEvaluator::safeDeleteTable(Table *tableToDelete, Table *resultTable) {
 }
 
 QueryEvaluator::~QueryEvaluator() {
-    // TODO: check if this cause an error as this also takes in PKB!
     delete nextKBAdapter;
     delete affectsKBAdapter;
 }
@@ -197,8 +221,8 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     Table *resultTable = new TrueTable();
 
     try {
-        for (auto clause : queryObject->getSuperClauses()) {
-            Table* intermediateTable = this->evaluate(clause);
+        for (auto clause: queryObject->getSuperClauses()) {
+            Table *intermediateTable = this->evaluate(clause);
 
             if (intermediateTable->isEmpty()) {
                 safeDeleteTable(intermediateTable);
@@ -242,10 +266,10 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
                 return {queryObject->getSelectTarget(), new FalseTable()};
             }
         }
-    } catch (SemanticException&) {
+    } catch (SemanticException &) {
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
-    } catch (const runtime_error&) {
+    } catch (const runtime_error &) {
         safeDeleteTable(resultTable);
         return {queryObject->getSelectTarget(), new FalseTable()};
     }

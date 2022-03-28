@@ -2,7 +2,7 @@
 
 AffectEvaluator::AffectEvaluator(PKBClient *pkb) : GenericClauseEvaluator(pkb) {}
 
-Table *AffectEvaluator::evaluateClause(ClauseVariable left, ClauseVariable right) {
+Table *AffectEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &right) {
     if (EvaluatorUtils::StmtUtils::isIntegerInteger(&left, &right)) {
         if (!EvaluatorUtils::isWithinLimit(left, right, pkb) || !isValidAssignAssign(left, right))
             return new FalseTable();
@@ -66,12 +66,12 @@ Table *AffectEvaluator::evaluateClause(ClauseVariable left, ClauseVariable right
     throw SemanticException("Invalid query provided for Affect type");
 }
 
-bool AffectEvaluator::isValidAssignAssign(ClauseVariable& left, ClauseVariable& right) {
+bool AffectEvaluator::isValidAssignAssign(ClauseVariable &left, ClauseVariable &right) {
     // checks if both statements are an assign statement
     return pkb->isAssignStmt(left.getLabel()) && pkb->isAssignStmt(right.getLabel());
 }
 
-bool AffectEvaluator::isValidAssignStmt(ClauseVariable& variable) {
+bool AffectEvaluator::isValidAssignStmt(ClauseVariable &variable) {
     return pkb->isAssignStmt(variable.getLabel());
 }
 
@@ -94,7 +94,7 @@ Table *AffectEvaluator::evaluateIntegerInteger(const ClauseVariable &left, const
     return buildBooleanTable(affectResult);
 }
 
-Table *AffectEvaluator::evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable right) {
+Table *AffectEvaluator::evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable &right) {
     unordered_set<string> affecteds = getIntegerSynonymRelation(left.getLabel());
     return buildSingleSynonymTable(affecteds, right);
 }
@@ -104,17 +104,17 @@ Table *AffectEvaluator::evaluateIntegerWildCard(const ClauseVariable &left) {
     return buildBooleanTable(!affecteds.empty());
 }
 
-Table *AffectEvaluator::evaluateSynonymInteger(ClauseVariable left, const ClauseVariable &right) {
+Table *AffectEvaluator::evaluateSynonymInteger(ClauseVariable &left, const ClauseVariable &right) {
     unordered_set<string> affectings = getSynonymIntegerRelation(right.getLabel());
     return buildSingleSynonymTable(affectings, left);
 }
 
-Table *AffectEvaluator::evaluateSynonymSynonym(ClauseVariable left, ClauseVariable right) {
+Table *AffectEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right) {
     vector<pair<string, string>> affectingAffectedPairs = getSynonymSynonymRelation();
     return buildSynonymSynonymTable(affectingAffectedPairs, left, right);
 }
 
-Table *AffectEvaluator::evaluateSynonymWildCard(ClauseVariable left) {
+Table *AffectEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
     unordered_set<string> affectings = getSynonymWildCardRelation();
     return buildSingleSynonymTable(affectings, left);
 }
@@ -124,7 +124,7 @@ Table *AffectEvaluator::evaluateWildCardInteger(const ClauseVariable &right) {
     return buildBooleanTable(!affectings.empty());
 }
 
-Table *AffectEvaluator::evaluateWildCardSynonym(ClauseVariable right) {
+Table *AffectEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {
     unordered_set<string> affecteds = getWildCardSynonymRelation();
     return buildSingleSynonymTable(affecteds, right);
 }

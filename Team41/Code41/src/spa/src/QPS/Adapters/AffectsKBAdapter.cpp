@@ -2,7 +2,7 @@
 
 AffectsKBAdapter::AffectsKBAdapter(PKBClient *pkb) : pkb(pkb) {
     this->cache = new Cache();
-    stmtNumToNodeMap.insert({ROOT_CFG,  new CFGNode(ROOT_CFG)});
+    stmtNumToNodeMap.insert({ROOT_CFG, new CFGNode(ROOT_CFG)});
 }
 
 AffectsKBAdapter::~AffectsKBAdapter() { delete cache; }
@@ -197,7 +197,8 @@ bool AffectsKBAdapter::bfsBool(PKBClient *client, CFGNode *start, const string &
     return canReach;
 }
 
-void AffectsKBAdapter::bfsDown(PKBClient *client, CFGNode *start, const string &modifiedVar, unordered_set<string> &affected) {
+void AffectsKBAdapter::bfsDown(PKBClient *client, CFGNode *start, const string &modifiedVar,
+                               unordered_set<string> &affected) {
 
     CacheCallback shouldContinue = [&client, &modifiedVar, &affected](const string &next) {
         // if current stmt uses this modifiedVar and is assign stmt
@@ -232,7 +233,8 @@ void AffectsKBAdapter::bfsUpSingle(PKBClient *client, CFGNode *start, const stri
     AdaptersUtils::runBFS(false, shouldContinue, canEnd, start);
 }
 
-void AffectsKBAdapter::bfsUp(PKBClient *client, CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting) {
+void AffectsKBAdapter::bfsUp(PKBClient *client, CFGNode *start, unordered_set<string> &affectedVars,
+                             unordered_set<string> &affecting) {
     for (auto &affectedVar: affectedVars)
         bfsUpSingle(client, start, affectedVar, affecting);
 }

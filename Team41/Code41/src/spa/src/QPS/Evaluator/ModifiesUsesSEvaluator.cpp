@@ -2,7 +2,7 @@
 
 ModifiesUsesSEvaluator::ModifiesUsesSEvaluator(PKBClient *pkb) : GenericClauseEvaluator(pkb) {}
 
-Table *ModifiesUsesSEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVariable rightVariable) {
+Table *ModifiesUsesSEvaluator::evaluateClause(ClauseVariable &leftVariable, ClauseVariable &rightVariable) {
     if (EvaluatorUtils::SUtils::isIntegerIdentifier(&leftVariable, &rightVariable)) {
         return evaluateIntegerIdentifier(leftVariable, rightVariable);
     }
@@ -31,7 +31,7 @@ Table *ModifiesUsesSEvaluator::evaluateIntegerIdentifier(const ClauseVariable &l
     return buildBooleanTable(isStatementUsed);
 }
 
-Table *ModifiesUsesSEvaluator::evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable right) {
+Table *ModifiesUsesSEvaluator::evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable &right) {
     unordered_set<string> statementUsed = getIntegerSynonymRelation(left.getLabel());
     return buildSingleSynonymTable(statementUsed, right);
 }
@@ -46,7 +46,7 @@ Table *ModifiesUsesSEvaluator::evaluateSynonymIdentifier(ClauseVariable &left, C
     return buildSingleSynonymTable(statementBeingUsed, left);
 }
 
-Table *ModifiesUsesSEvaluator::evaluateSynonymSynonym(ClauseVariable left, ClauseVariable right) {
+Table *ModifiesUsesSEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right) {
     vector<pair<string, string>> listOfStmtStmt = getSynonymSynonymRelation();
     return buildSynonymSynonymTable(listOfStmtStmt, left, right);
 }

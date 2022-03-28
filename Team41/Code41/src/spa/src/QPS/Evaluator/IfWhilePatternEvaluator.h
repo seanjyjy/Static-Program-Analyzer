@@ -6,12 +6,12 @@ class IfWhilePatternEvaluator : public PatternEvaluator {
 public:
     explicit IfWhilePatternEvaluator(PKBClient *pkb);
 
-    Table *evaluateFurther(QueryDeclaration patternSynonym, ClauseVariable &leftVariable,
+    Table *evaluateFurther(QueryDeclaration &patternSynonym, ClauseVariable &leftVariable,
                            vector<PatternVariable> &rightPatternVariables, bool canSimplify) override;
 
     Table *evaluateSynonymWildCard(QueryDeclaration &patternSyn, ClauseVariable &left, bool canSimplify);
 
-    Table *evaluateIdentifierWildCard(QueryDeclaration patternSynonym, const ClauseVariable &leftVariable, bool canSimplify);
+    Table *evaluateIdentifierWildCard(QueryDeclaration &patternSynonym, const ClauseVariable &leftVariable, bool canSimplify);
 
     virtual vector<pair<string, string>> getSynonymWildCardRelation() = 0;
 

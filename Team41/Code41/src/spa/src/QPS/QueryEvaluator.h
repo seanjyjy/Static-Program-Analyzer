@@ -59,6 +59,10 @@ private:
      */
     void safeDeleteTable(Table *tableToDelete, Table *resultTable);
 
+    optional<QueryResult> evaluateClauses(Table *resultTable, OptimizedQueryObject *queryObject);
+
+    optional<QueryResult> evaluatSelectables(Table *resultTable, OptimizedQueryObject *queryObject);
+
 public:
     explicit QueryEvaluator(PKBClient *pkb);
 

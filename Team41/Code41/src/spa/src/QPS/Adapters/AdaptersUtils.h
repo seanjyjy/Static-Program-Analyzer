@@ -8,12 +8,13 @@
 #include "PKB/PKBClient.h"
 
 typedef std::function<bool(const string &)> CacheCallback;
-typedef std::function<bool(CFGNode*)> TerminateCheck;
+typedef std::function<bool(CFGNode *)> TerminateCheck;
 
 class AdaptersUtils {
 private:
 public:
-    static void runBFS(bool isForward, const CacheCallback &cacheAndContinue, const TerminateCheck &canTerminate, CFGNode *startNode);
+    static void runBFS(bool isForward, const CacheCallback &cacheAndContinue, const TerminateCheck &canTerminate,
+                       CFGNode *startNode);
 
     static void runBoolBFS(const string &start, const string &end, Cache *cache, CFGNode *node);
 

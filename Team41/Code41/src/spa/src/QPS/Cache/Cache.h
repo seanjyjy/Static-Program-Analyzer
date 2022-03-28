@@ -34,6 +34,6 @@ public:
 
     vector<pair<string, string>> getAllMapping(); // retrieves all mapping
 
-    void addAllMappingPair(pair<string, string> pair); // add a pair into the vector of mappings
+    void addAllMappingPair(const pair<string, string> &pair); // add a pair into the vector of mappings
 };
 

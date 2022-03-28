@@ -2,7 +2,7 @@
 
 ModifiesUsesPEvaluator::ModifiesUsesPEvaluator(PKBClient *pkb) : ProcEvaluator(pkb) {}
 
-Table *ModifiesUsesPEvaluator::evaluateClause(ClauseVariable leftVariable, ClauseVariable rightVariable) {
+Table *ModifiesUsesPEvaluator::evaluateClause(ClauseVariable &leftVariable, ClauseVariable &rightVariable) {
 
     if (EvaluatorUtils::ProcUtils::isIdentifierIdentifier(&leftVariable, &rightVariable)) {
         return evaluateIdentifierIdentifier(leftVariable, rightVariable);

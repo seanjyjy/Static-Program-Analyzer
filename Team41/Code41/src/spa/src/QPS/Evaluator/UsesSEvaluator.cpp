@@ -2,7 +2,7 @@
 
 UsesSEvaluator::UsesSEvaluator(PKBClient *pkb) : ModifiesUsesSEvaluator(pkb) {}
 
-Table *UsesSEvaluator::evaluateClauseFurther(ClauseVariable leftVariable, ClauseVariable rightVariable) {
+Table *UsesSEvaluator::evaluateClauseFurther(ClauseVariable &leftVariable, ClauseVariable &rightVariable) {
     if (EvaluatorUtils::SUtils::isValidUsesSynonymIdentifier(&leftVariable, &rightVariable)) {
         return evaluateSynonymIdentifier(leftVariable, rightVariable);
     }

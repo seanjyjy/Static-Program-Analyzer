@@ -74,7 +74,7 @@ public:
      * @param columnName The name of the column to retrieve from.
      * @return A set of values from this table based on the column.
      */
-    virtual unordered_set<string> getColumn(string columnName) = 0;
+    virtual unordered_set<string> getColumn(const string &columnName) = 0;
 
     /**
      * Retrieves a set of values from this table based on the column.
@@ -82,22 +82,18 @@ public:
      * @param columnName The names of the columns to retrieve from.
      * @return A set of values from this table based on the columns.
      */
-    virtual unordered_set<string> getColumns(vector<string> columnNames) = 0;
+    virtual unordered_set<string> getColumns(const vector<string> &columnNames) = 0;
 
     /**
      * Sort the current table based on the common header provided.
      *
      * @param commonHeader A vector of strings that contains the header information that is used for sorting.
      */
-    virtual void sort(vector<string> commonHeader) = 0;
+    virtual void sort(const vector<string> &commonHeader) = 0;
 
     virtual TableType getType() = 0;
 
     virtual ~Table() = default;
-
-    friend class TrueTable;
-
-    friend class FalseTable;
 
     friend class BooleanTable;
 

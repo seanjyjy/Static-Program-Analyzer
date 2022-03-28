@@ -6,26 +6,26 @@ class AffectEvaluator : public GenericClauseEvaluator {
 private:
     Table *evaluateIntegerInteger(const ClauseVariable &left, const ClauseVariable &right);
 
-    Table *evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable right);
+    Table *evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable &right);
 
     Table *evaluateIntegerWildCard(const ClauseVariable &left);
 
-    Table *evaluateSynonymInteger(ClauseVariable left, const ClauseVariable &right);
+    Table *evaluateSynonymInteger(ClauseVariable &left, const ClauseVariable &right);
 
-    Table *evaluateSynonymSynonym(ClauseVariable left, ClauseVariable right);
+    Table *evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right);
 
-    Table *evaluateSynonymWildCard(ClauseVariable left);
+    Table *evaluateSynonymWildCard(ClauseVariable &left);
 
     Table *evaluateWildCardInteger(const ClauseVariable &right);
 
-    Table *evaluateWildCardSynonym(ClauseVariable right);
+    Table *evaluateWildCardSynonym(ClauseVariable &right);
 
     Table *evaluateWildCardWildCard();
 
 protected:
-    bool isValidAssignAssign(ClauseVariable& left, ClauseVariable& right);
+    bool isValidAssignAssign(ClauseVariable &left, ClauseVariable &right);
 
-    bool isValidAssignStmt(ClauseVariable& variable);
+    bool isValidAssignStmt(ClauseVariable &variable);
 
     bool isValidAssignSyn(ClauseVariable &left);
 
@@ -52,7 +52,7 @@ protected:
 public:
     explicit AffectEvaluator(PKBClient *pkb);
 
-    Table *evaluateClause(ClauseVariable left, ClauseVariable right) override;
+    Table *evaluateClause(ClauseVariable &left, ClauseVariable &right) override;
 
     friend class AffectsEvaluator;
 };
