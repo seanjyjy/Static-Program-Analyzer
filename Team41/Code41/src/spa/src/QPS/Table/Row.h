@@ -4,6 +4,7 @@
 #include <string>
 #include <stdexcept>
 #include <utility>
+#include <algorithm>
 
 using namespace std;
 

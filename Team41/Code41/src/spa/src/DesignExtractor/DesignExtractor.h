@@ -3,6 +3,7 @@
 #include <list>
 #include <unordered_map>
 #include <unordered_set>
+#include <algorithm>
 
 #include "Common/TNode.h"
 #include "PKB/PKBManager.h"
