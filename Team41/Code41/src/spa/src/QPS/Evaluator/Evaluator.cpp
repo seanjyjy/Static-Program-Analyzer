@@ -186,6 +186,9 @@ Table *Evaluator::buildDifferentSynonymTable(const vector<pair<string, string>> 
 
 Table *Evaluator::buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results,
                                                   QueryDeclaration &patternSyn, const ClauseVariable &left) {
+    if (results.empty()) {
+        return new FalseTable();
+    }
     string firstColumn = patternSyn.getSynonym();
     string secondColumn = left.getLabel();
     unordered_set<string> leftFilters = getFilters(patternSyn.getType());

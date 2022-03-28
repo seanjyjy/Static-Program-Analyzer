@@ -13,8 +13,8 @@ Table *ParentEvaluator::evaluateIntegerSynonym(ClauseVariable &left, ClauseVaria
 }
 
 Table *ParentEvaluator::evaluateIntegerWildCard(ClauseVariable &left) {
-    unordered_set<string> setOfChildren = pkb->getChildStmtsOf(left.getLabel());
-    return buildBooleanTable(!setOfChildren.empty());
+    unordered_set<string> parents = pkb->getAllStmtsParentOfSomeStmt();
+    return buildBooleanTable(parents.find(left.getLabel()) != parents.end());
 }
 
 Table *ParentEvaluator::evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right) {
@@ -35,8 +35,8 @@ Table *ParentEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
 }
 
 Table *ParentEvaluator::evaluateWildCardInteger(ClauseVariable &right) {
-    string parent = pkb->getParentOf(right.getLabel());
-    return buildBooleanTable(!parent.empty());
+    unordered_set<string> children = pkb->getAllStmtsChildOfSomeStmt();
+    return buildBooleanTable(children.find(right.getLabel()) != children.end());
 }
 
 Table *ParentEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {

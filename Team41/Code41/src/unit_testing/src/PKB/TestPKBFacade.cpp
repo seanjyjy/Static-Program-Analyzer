@@ -324,26 +324,26 @@ TEST_CASE("PKB: follows abstraction") {
 
     SECTION("Follows") {
         REQUIRE(sortAndCompareVectors(pkbManager.getAllFollows(), entryList));
-        REQUIRE(pkbManager.getStmtFollowing(stmt[0]).empty());
-        REQUIRE(pkbManager.getStmtFollowedBy(stmt[0]).empty());
+        REQUIRE(pkbManager.getStmtDirectlyAfter(stmt[0]).empty());
+        REQUIRE(pkbManager.getStmtDirectlyBefore(stmt[0]).empty());
         REQUIRE_FALSE(pkbManager.isFollows(stmt[0], stmt[1]));
 
         pkbManager.registerFollows(stmt[0], stmt[1]);
         entryList.push_back(make_pair(stmt[0], stmt[1]));
 
         REQUIRE(pkbManager.isFollows(stmt[0], stmt[1]));
-        REQUIRE(pkbManager.getStmtFollowedBy(stmt[0]) == stmt[1]);
-        REQUIRE(pkbManager.getStmtFollowing(stmt[1]) == stmt[0]);
+        REQUIRE(pkbManager.getStmtDirectlyAfter(stmt[0]) == stmt[1]);
+        REQUIRE(pkbManager.getStmtDirectlyBefore(stmt[1]) == stmt[0]);
         REQUIRE(sortAndCompareVectors(pkbManager.getAllFollows(), entryList));
 
-        REQUIRE(pkbManager.getAllStmtsFollowingSomeStmt() == unordered_set<string>({stmt[0]}));
-        REQUIRE(pkbManager.getAllStmtsFollowedBySomeStmt() == unordered_set<string>({stmt[1]}));
+        REQUIRE(pkbManager.getAllStmtsBeforeSomeStmt() == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getAllStmtsAfterSomeStmt() == unordered_set<string>({stmt[1]}));
     }
 
     SECTION("FollowsT") {
         REQUIRE(sortAndCompareVectors(pkbManager.getAllFollowsT(), entryList));
-        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[0]) == EMPTY_LIST);
-        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[0]) == EMPTY_LIST);
+        REQUIRE(pkbManager.getAllStmtsBefore(stmt[0]) == EMPTY_LIST);
+        REQUIRE(pkbManager.getAllStmtsAfter(stmt[0]) == EMPTY_LIST);
         REQUIRE_FALSE(pkbManager.isFollowsT(stmt[0], stmt[1]));
 
         // 0 -> 1
@@ -356,12 +356,12 @@ TEST_CASE("PKB: follows abstraction") {
         entryList.push_back(make_pair(stmt[1], stmt[2]));
 
         REQUIRE(pkbManager.isFollowsT(stmt[0], stmt[1]));
-        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[0]) == unordered_set<string>({stmt[1], stmt[2]}));
-        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[1]) == unordered_set<string>({stmt[2]}));
-        REQUIRE(pkbManager.getAllStmtsFollowedTBy(stmt[2]).empty());
-        REQUIRE(pkbManager.getAllStmtsFollowingT(stmt[0]).empty());
-        REQUIRE(pkbManager.getAllStmtsFollowingT(stmt[1]) == unordered_set<string>({stmt[0]}));
-        REQUIRE(pkbManager.getAllStmtsFollowingT(stmt[2]) == unordered_set<string>({stmt[0], stmt[1]}));
+        REQUIRE(pkbManager.getAllStmtsAfter(stmt[0]) == unordered_set<string>({stmt[1], stmt[2]}));
+        REQUIRE(pkbManager.getAllStmtsAfter(stmt[1]) == unordered_set<string>({stmt[2]}));
+        REQUIRE(pkbManager.getAllStmtsAfter(stmt[2]).empty());
+        REQUIRE(pkbManager.getAllStmtsBefore(stmt[0]).empty());
+        REQUIRE(pkbManager.getAllStmtsBefore(stmt[1]) == unordered_set<string>({stmt[0]}));
+        REQUIRE(pkbManager.getAllStmtsBefore(stmt[2]) == unordered_set<string>({stmt[0], stmt[1]}));
         REQUIRE(pkbManager.isFollowsT(stmt[0], stmt[2]));
     }
 }

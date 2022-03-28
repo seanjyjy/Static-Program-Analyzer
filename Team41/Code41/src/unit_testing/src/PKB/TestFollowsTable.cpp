@@ -13,8 +13,8 @@ TEST_CASE("PKB: FollowsTable") {
     SECTION("Follows") {
         SECTION("Initial State") {
             REQUIRE(sortAndCompareVectors(table.getFollowEntries(), EMPTY_SET_PAIR));
-            REQUIRE(table.getStmtFollowedBy(stmt[0]).empty());
-            REQUIRE(table.getStmtFollowing(stmt[0]).empty());
+            REQUIRE(table.getStmtDirectlyAfter(stmt[0]).empty());
+            REQUIRE(table.getStmtDirectlyBefore(stmt[0]).empty());
 
             REQUIRE_FALSE(table.isFollows(stmt[1], stmt[2]));
             REQUIRE_FALSE(table.isFollows(stmt[1], stmt[1]));
@@ -34,22 +34,22 @@ TEST_CASE("PKB: FollowsTable") {
             REQUIRE(sortAndCompareVectors(table.getFollowEntries(), entryList));
 
             // 0 -> 1 -> 2 -> 5
-            REQUIRE(table.getStmtFollowedBy(stmt[0]) == stmt[1]);
-            REQUIRE(table.getStmtFollowedBy(stmt[1]) == stmt[2]);
-            REQUIRE(table.getStmtFollowedBy(stmt[2]) == stmt[5]);
-            REQUIRE(table.getStmtFollowedBy(stmt[5]).empty());
+            REQUIRE(table.getStmtDirectlyAfter(stmt[0]) == stmt[1]);
+            REQUIRE(table.getStmtDirectlyAfter(stmt[1]) == stmt[2]);
+            REQUIRE(table.getStmtDirectlyAfter(stmt[2]) == stmt[5]);
+            REQUIRE(table.getStmtDirectlyAfter(stmt[5]).empty());
 
             // 0 <- 1 <- 2 <- 5
-            REQUIRE(table.getStmtFollowing(stmt[0]).empty());
-            REQUIRE(table.getStmtFollowing(stmt[1]) == stmt[0]);
-            REQUIRE(table.getStmtFollowing(stmt[2]) == stmt[1]);
-            REQUIRE(table.getStmtFollowing(stmt[5]) == stmt[2]);
+            REQUIRE(table.getStmtDirectlyBefore(stmt[0]).empty());
+            REQUIRE(table.getStmtDirectlyBefore(stmt[1]) == stmt[0]);
+            REQUIRE(table.getStmtDirectlyBefore(stmt[2]) == stmt[1]);
+            REQUIRE(table.getStmtDirectlyBefore(stmt[5]) == stmt[2]);
 
             REQUIRE(table.isFollows(stmt[0], stmt[1]));
             REQUIRE_FALSE(table.isFollows(stmt[0], stmt[5]));
 
-            REQUIRE(table.getStmtsFollowingSomeStmt() == unordered_set<string>({stmt[0], stmt[1], stmt[2]}));
-            REQUIRE(table.getStmtsFollowedBySomeStmt() == unordered_set<string>({stmt[1], stmt[2], stmt[5]}));
+            REQUIRE(table.getStmtsBeforeSomeStmt() == unordered_set<string>({stmt[0], stmt[1], stmt[2]}));
+            REQUIRE(table.getStmtsAfterSomeStmt() == unordered_set<string>({stmt[1], stmt[2], stmt[5]}));
         }
 
             // domain specific edge cases
@@ -78,8 +78,8 @@ TEST_CASE("PKB: FollowsTable") {
     SECTION("FollowsT") {
         SECTION("Initial State") {
             REQUIRE(sortAndCompareVectors(table.getFollowTEntries(), EMPTY_SET_PAIR));
-            REQUIRE(table.getStmtsFollowedTBy(stmt[0]) == EMPTY_SET);
-            REQUIRE(table.getStmtsFollowingT(stmt[0]) == EMPTY_SET);
+            REQUIRE(table.getStmtsAfter(stmt[0]) == EMPTY_SET);
+            REQUIRE(table.getStmtsBefore(stmt[0]) == EMPTY_SET);
 
             REQUIRE_FALSE(table.isFollowsT(stmt[1], stmt[2]));
             REQUIRE_FALSE(table.isFollowsT(stmt[1], stmt[1]));
@@ -91,16 +91,16 @@ TEST_CASE("PKB: FollowsTable") {
             // 0 -> 1
             REQUIRE_NOTHROW(table.setFollowsT(stmt[0], stmt[1]));
             entryList.push_back(make_pair(stmt[0], stmt[1]));
-            REQUIRE(table.getStmtsFollowedTBy(stmt[0]) == unordered_set<string>({stmt[1]}));
-            REQUIRE(table.getStmtsFollowingT(stmt[1]) == unordered_set<string>({stmt[0]}));
+            REQUIRE(table.getStmtsAfter(stmt[0]) == unordered_set<string>({stmt[1]}));
+            REQUIRE(table.getStmtsBefore(stmt[1]) == unordered_set<string>({stmt[0]}));
             REQUIRE(sortAndCompareVectors(table.getFollowTEntries(), entryList));
             REQUIRE(table.isFollowsT(stmt[0], stmt[1]));
 
             // 2 -> 3
             REQUIRE_NOTHROW(table.setFollowsT(stmt[2], stmt[3]));
             entryList.push_back(make_pair(stmt[2], stmt[3]));
-            REQUIRE(table.getStmtsFollowedTBy(stmt[2]) == unordered_set<string>({stmt[3]}));
-            REQUIRE(table.getStmtsFollowingT(stmt[3]) == unordered_set<string>({stmt[2]}));
+            REQUIRE(table.getStmtsAfter(stmt[2]) == unordered_set<string>({stmt[3]}));
+            REQUIRE(table.getStmtsBefore(stmt[3]) == unordered_set<string>({stmt[2]}));
             REQUIRE(sortAndCompareVectors(table.getFollowTEntries(), entryList));
             REQUIRE(table.isFollowsT(stmt[2], stmt[3]));
 
@@ -114,15 +114,15 @@ TEST_CASE("PKB: FollowsTable") {
             entryList.push_back(make_pair(stmt[1], stmt[2]));
             entryList.push_back(make_pair(stmt[1], stmt[3]));
 
-            REQUIRE(table.getStmtsFollowedTBy(stmt[0]) == unordered_set<string>({stmt[1], stmt[2], stmt[3]}));
-            REQUIRE(table.getStmtsFollowedTBy(stmt[1]) == unordered_set<string>({stmt[2], stmt[3]}));
-            REQUIRE(table.getStmtsFollowedTBy(stmt[2]) == unordered_set<string>({stmt[3]}));
-            REQUIRE(table.getStmtsFollowedTBy(stmt[3]).empty());
+            REQUIRE(table.getStmtsAfter(stmt[0]) == unordered_set<string>({stmt[1], stmt[2], stmt[3]}));
+            REQUIRE(table.getStmtsAfter(stmt[1]) == unordered_set<string>({stmt[2], stmt[3]}));
+            REQUIRE(table.getStmtsAfter(stmt[2]) == unordered_set<string>({stmt[3]}));
+            REQUIRE(table.getStmtsAfter(stmt[3]).empty());
 
-            REQUIRE(table.getStmtsFollowingT(stmt[0]).empty());
-            REQUIRE(table.getStmtsFollowingT(stmt[1]) == unordered_set<string>({stmt[0]}));
-            REQUIRE(table.getStmtsFollowingT(stmt[2]) == unordered_set<string>({stmt[0], stmt[1]}));
-            REQUIRE(table.getStmtsFollowingT(stmt[3]) == unordered_set<string>({stmt[0], stmt[1], stmt[2]}));
+            REQUIRE(table.getStmtsBefore(stmt[0]).empty());
+            REQUIRE(table.getStmtsBefore(stmt[1]) == unordered_set<string>({stmt[0]}));
+            REQUIRE(table.getStmtsBefore(stmt[2]) == unordered_set<string>({stmt[0], stmt[1]}));
+            REQUIRE(table.getStmtsBefore(stmt[3]) == unordered_set<string>({stmt[0], stmt[1], stmt[2]}));
 
             REQUIRE(sortAndCompareVectors(table.getFollowTEntries(), entryList));
             REQUIRE(table.isFollowsT(stmt[1], stmt[2]));
@@ -157,10 +157,10 @@ TEST_CASE("PKB: FollowsTable") {
         followsTList.push_back(make_pair(stmt[0], stmt[2]));
         REQUIRE(sortAndCompareVectors(table.getFollowEntries(), followsList));
         REQUIRE(sortAndCompareVectors(table.getFollowTEntries(), followsTList));
-        REQUIRE(table.getStmtFollowedBy(stmt[0]) == stmt[1]);
-        REQUIRE(table.getStmtFollowing(stmt[2]) == stmt[1]);
-        REQUIRE(table.getStmtsFollowedTBy(stmt[0]) == unordered_set<string>({stmt[1], stmt[2]}));
-        REQUIRE(table.getStmtsFollowingT(stmt[2]) == unordered_set<string>({stmt[0], stmt[1]}));
+        REQUIRE(table.getStmtDirectlyAfter(stmt[0]) == stmt[1]);
+        REQUIRE(table.getStmtDirectlyBefore(stmt[2]) == stmt[1]);
+        REQUIRE(table.getStmtsAfter(stmt[0]) == unordered_set<string>({stmt[1], stmt[2]}));
+        REQUIRE(table.getStmtsBefore(stmt[2]) == unordered_set<string>({stmt[0], stmt[1]}));
         REQUIRE(table.isFollows(stmt[0], stmt[1]));
         REQUIRE_FALSE(table.isFollows(stmt[0], stmt[2]));
         REQUIRE(table.isFollowsT(stmt[0], stmt[2]));

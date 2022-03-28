@@ -21,11 +21,8 @@ Table *NextTEvaluator::evaluateIntegerSynonym(ClauseVariable &left, ClauseVariab
 }
 
 Table *NextTEvaluator::evaluateIntegerWildCard(ClauseVariable &left) {
-    if (!EvaluatorUtils::isWithinLimit(left, pkb))
-        return new FalseTable();
-
-    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNextT(left.getLabel());
-    return buildBooleanTable(!setOfStmts.empty());
+    vector<CFGNode *> children = nextKBAdapter->getNextNodes(left.getLabel());
+    return buildBooleanTable(!children.empty());
 }
 
 Table *NextTEvaluator::evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right) {
@@ -47,11 +44,8 @@ Table *NextTEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
 }
 
 Table *NextTEvaluator::evaluateWildCardInteger(ClauseVariable &right) {
-    if (!EvaluatorUtils::isWithinLimit(right, pkb))
-        return new FalseTable();
-
-    unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsTBefore(right.getLabel());
-    return buildBooleanTable(!setOfStmts.empty());
+    vector<CFGNode *> parent = nextKBAdapter->getPrevNodes(right.getLabel());
+    return buildBooleanTable(!parent.empty());
 }
 
 Table *NextTEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {

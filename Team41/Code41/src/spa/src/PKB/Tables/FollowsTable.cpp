@@ -5,26 +5,26 @@
 
 FollowsTable::FollowsTable() : followsRelation("Follows"), followsTRelation("FollowsT") {}
 
-void FollowsTable::setFollows(const string &follower, const string &followed) {
+void FollowsTable::setFollows(const string &before, const string &after) {
     // NOTE: does not check if follower is a numeric string
-    if (follower == followed) { throw domain_error("[PKB][FollowsTable] Statements cannot follow self"); }
+    if (before == after) { throw domain_error("[PKB][FollowsTable] Statements cannot follow self"); }
 
-    followsRelation.addMapping(follower, followed);
+    followsRelation.addMapping(before, after);
 }
 
-void FollowsTable::setFollowsT(const string &follower, const string &followed) {
+void FollowsTable::setFollowsT(const string &before, const string &after) {
     // NOTE: does not check if follower is a numeric string
-    if (follower == followed) { throw domain_error("[PKB][FollowsTable] Statements cannot followT self"); }
+    if (before == after) { throw domain_error("[PKB][FollowsTable] Statements cannot followT self"); }
 
-    followsTRelation.addMapping(follower, followed);
+    followsTRelation.addMapping(before, after);
 }
 
-string FollowsTable::getStmtFollowedBy(string follower) {
-    return followsRelation.getValFromKey(move(follower));
+string FollowsTable::getStmtDirectlyAfter(string stmt) {
+    return followsRelation.getValFromKey(move(stmt));
 }
 
-string FollowsTable::getStmtFollowing(string followed) {
-    return followsRelation.getKeyFromValue(move(followed));
+string FollowsTable::getStmtDirectlyBefore(string stmt) {
+    return followsRelation.getKeyFromValue(move(stmt));
 }
 
 vector<pair<string, string>> FollowsTable::getFollowEntries() {
@@ -35,26 +35,26 @@ bool FollowsTable::isFollows(string follower, string followed) {
     return followsRelation.hasMapping(move(follower), move(followed));
 }
 
-unordered_set<string> FollowsTable::getStmtsFollowedTBy(string follower) {
-    return followsTRelation.getValuesFromKey(move(follower));
+unordered_set<string> FollowsTable::getStmtsAfter(string stmt) {
+    return followsTRelation.getValuesFromKey(move(stmt));
 }
 
-unordered_set<string> FollowsTable::getStmtsFollowingT(string followed) {
-    return followsTRelation.getKeysFromValue(move(followed));
+unordered_set<string> FollowsTable::getStmtsBefore(string stmt) {
+    return followsTRelation.getKeysFromValue(move(stmt));
 }
 
 vector<pair<string, string>> FollowsTable::getFollowTEntries() {
     return followsTRelation.getEntries();
 }
 
-bool FollowsTable::isFollowsT(string follower, string followed) {
-    return followsTRelation.hasMapping(move(follower), move(followed));
+bool FollowsTable::isFollowsT(string before, string after) {
+    return followsTRelation.hasMapping(move(before), move(after));
 }
 
-unordered_set<string> FollowsTable::getStmtsFollowedBySomeStmt() {
-    return followsRelation.getValues();
-}
-
-unordered_set<string> FollowsTable::getStmtsFollowingSomeStmt() {
+unordered_set<string> FollowsTable::getStmtsBeforeSomeStmt() {
     return followsRelation.getKeys();
+}
+
+unordered_set<string> FollowsTable::getStmtsAfterSomeStmt() {
+    return followsRelation.getValues();
 }

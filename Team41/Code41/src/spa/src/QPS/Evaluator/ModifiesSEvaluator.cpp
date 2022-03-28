@@ -26,8 +26,9 @@ unordered_set<string> ModifiesSEvaluator::getIntegerSynonymRelation(const string
     return pkb->getModifiesByStmt(label);
 }
 
-unordered_set<string> ModifiesSEvaluator::getIntegerWildCardRelation(const string &label) {
-    return pkb->getModifiesByStmt(label);
+bool ModifiesSEvaluator::getIntegerWildCardRelation(const string &label) {
+    unordered_set<string> allStmt = pkb->getAllStmtsModifyingSomeVar();
+    return allStmt.find(label) != allStmt.end();
 }
 
 unordered_set<string> ModifiesSEvaluator::getSynonymIdentifierRelation(const string &label) {
@@ -42,10 +43,11 @@ unordered_set<string> ModifiesSEvaluator::getSynonymWildCardRelation() {
     return pkb->getAllStmtsModifyingSomeVar();
 }
 
-unordered_set<string> ModifiesSEvaluator::getWildCardIdentifierRelation(const string &label) {
-    return pkb->getModifiesSByVar(label);
+bool ModifiesSEvaluator::getWildCardIdentifierRelation(const string &label) {
+    unordered_set<string> allVar = pkb->getAllVarModifiedBySomeStmt();
+    return allVar.find(label) != allVar.end();
 }
 
-vector<pair<string, string>> ModifiesSEvaluator::getWildCardWildCardRelation() {
-    return pkb->getAllModifiesS();
+bool ModifiesSEvaluator::getWildCardWildCardRelation() {
+    return !pkb->getAllModifiesS().empty();
 }

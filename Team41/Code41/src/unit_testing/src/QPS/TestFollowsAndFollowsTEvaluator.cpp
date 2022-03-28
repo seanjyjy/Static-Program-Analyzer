@@ -9,21 +9,21 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
     string stmt[] = {"1", "2", "3", "4", "5", "6"};
     auto* pkbManager = new PKBManager();
 
-    // 1 <- 2 <- 5 <- 6
-    // 3 <- 4 (Think of it as an if block)
-    pkbManager->registerFollows(stmt[1], stmt[0]); // 2 -> 1
-    pkbManager->registerFollows(stmt[4], stmt[1]); // 5 -> 2
-    pkbManager->registerFollows(stmt[5], stmt[4]); // 6 -> 5
-    pkbManager->registerFollows(stmt[3], stmt[2]); // 4 -> 3
+    // 1 -> 2 -> 5 -> 6
+    // 3 -> 4 (Think of it as an if block)
+    pkbManager->registerFollows(stmt[0], stmt[1]); // 1 -> 2
+    pkbManager->registerFollows(stmt[1], stmt[4]); // 2 -> 5
+    pkbManager->registerFollows(stmt[4], stmt[5]); // 5 -> 6
+    pkbManager->registerFollows(stmt[2], stmt[3]); // 3 -> 4
 
-    pkbManager->registerFollowsT(stmt[1], stmt[0]);
-    pkbManager->registerFollowsT(stmt[4], stmt[1]);
-    pkbManager->registerFollowsT(stmt[5], stmt[4]);
-    pkbManager->registerFollowsT(stmt[3], stmt[2]);
+    pkbManager->registerFollowsT(stmt[0], stmt[1]);
+    pkbManager->registerFollowsT(stmt[1], stmt[4]);
+    pkbManager->registerFollowsT(stmt[4], stmt[5]);
+    pkbManager->registerFollowsT(stmt[2], stmt[3]);
 
-    pkbManager->registerFollowsT(stmt[4], stmt[0]); // 5 -> 1
-    pkbManager->registerFollowsT(stmt[5], stmt[0]); // 6 -> 1
-    pkbManager->registerFollowsT(stmt[5], stmt[1]); // 6 -> 2
+    pkbManager->registerFollowsT(stmt[0], stmt[4]); // 1 -> 5
+    pkbManager->registerFollowsT(stmt[0], stmt[5]); // 1 -> 6
+    pkbManager->registerFollowsT(stmt[1], stmt[5]); // 2 -> 6
 
     ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", QueryDeclaration::CONSTANT);
     ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", QueryDeclaration::CONSTANT);

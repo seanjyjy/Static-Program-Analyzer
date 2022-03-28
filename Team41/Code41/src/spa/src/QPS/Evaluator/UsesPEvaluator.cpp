@@ -10,8 +10,9 @@ unordered_set<string> UsesPEvaluator::getIdentifierSynonymRelation(const string 
     return pkb->getUsesByProc(label);
 }
 
-unordered_set<string> UsesPEvaluator::getIdentifierWildCardRelation(const string &label) {
-    return pkb->getUsesByProc(label);
+bool UsesPEvaluator::getIdentifierWildCardRelation(const string &label) {
+    unordered_set<string> allProcs = pkb->getAllProcsUsingSomeVar();
+    return allProcs.find(label) != allProcs.end();
 }
 
 unordered_set<string> UsesPEvaluator::getSynonymIdentifierRelation(const string &label) {
@@ -26,10 +27,11 @@ unordered_set<string> UsesPEvaluator::getSynonymWildCardRelation() {
     return pkb->getAllProcsUsingSomeVar();
 }
 
-unordered_set<string> UsesPEvaluator::getWildCardIdentifierRelation(const string &label) {
-    return pkb->getUsesPByVar(label);
+bool UsesPEvaluator::getWildCardIdentifierRelation(const string &label) {
+    unordered_set<string> allVar = pkb->getAllVarUsedBySomeProc();
+    return allVar.find(label) != allVar.end();
 }
 
-vector<pair<string, string>> UsesPEvaluator::getWildCardWildCardRelation() {
-    return pkb->getAllUsesP();
+bool UsesPEvaluator::getWildCardWildCardRelation() {
+    return !pkb->getAllUsesP().empty();
 }

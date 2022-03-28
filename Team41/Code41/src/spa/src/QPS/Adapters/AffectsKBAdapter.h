@@ -29,15 +29,11 @@ private:
 
     void buildAffectsGraph();
 
-    static bool bfsBool(PKBClient *pkb, CFGNode *start, const string &modifiedVar, const string &end);
+    bool bfsBool(PKBClient *pkb, CFGNode *start, const string &modifiedVar, const string &end);
 
-    static void bfsDown(PKBClient *pkb, CFGNode *start, const string &modifiedVar, unordered_set<string> &affected);
+    unordered_set<string> bfsDown(PKBClient *pkb, const string& stmtNum, bool isAnyResult = false);
 
-    static void
-    bfsUp(PKBClient *pkb, CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting);
-
-    static void
-    bfsUpSingle(PKBClient *pkb, CFGNode *start, const string &affectedVar, unordered_set<string> &affecting);
+    unordered_set<string> bfsUp(PKBClient *pkb, const string& stmtNum, bool isAnyResult = false);
 
     static bool isModifyStmt(PKBClient *client, const string &stmtNum);
 
@@ -69,4 +65,13 @@ public:
     unordered_set<string> getAllStmtAffectedTByOther();
 
     vector<pair<string, string>> getAffectsTAll();
+
+    bool isAffectingSomeStmt(const string &stmtNum);
+
+    bool isAffectedBySomeStmt(const string &stmtNum);
+
+    bool hasSomeAffectsAll();
+
+    unordered_set<string>
+    bfsDown(PKBClient *client, const string &stmtNum, const string &modifiedVar, bool isAnyResult);
 };

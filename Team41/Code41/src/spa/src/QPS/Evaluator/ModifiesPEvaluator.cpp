@@ -10,8 +10,9 @@ unordered_set<string> ModifiesPEvaluator::getIdentifierSynonymRelation(const str
     return pkb->getModifiesByProc(label);
 }
 
-unordered_set<string> ModifiesPEvaluator::getIdentifierWildCardRelation(const string &label) {
-    return pkb->getModifiesByProc(label);
+bool ModifiesPEvaluator::getIdentifierWildCardRelation(const string &label) {
+    unordered_set<string> allProc = pkb->getAllProcsModifyingSomeVar();
+    return allProc.find(label) != allProc.end();
 }
 
 unordered_set<string> ModifiesPEvaluator::getSynonymIdentifierRelation(const string &label) {
@@ -26,10 +27,11 @@ unordered_set<string> ModifiesPEvaluator::getSynonymWildCardRelation() {
     return pkb->getAllProcsModifyingSomeVar();
 }
 
-unordered_set<string> ModifiesPEvaluator::getWildCardIdentifierRelation(const string &label) {
-    return pkb->getModifiesPByVar(label);
+bool ModifiesPEvaluator::getWildCardIdentifierRelation(const string &label) {
+    unordered_set<string> allVar = pkb->getAllVarModifiedBySomeProc();
+    return allVar.find(label) != allVar.end();
 }
 
-vector<pair<string, string>> ModifiesPEvaluator::getWildCardWildCardRelation() {
-    return pkb->getAllModifiesP();
+bool ModifiesPEvaluator::getWildCardWildCardRelation() {
+    return !pkb->getAllModifiesP().empty();
 }

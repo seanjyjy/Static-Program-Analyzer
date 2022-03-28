@@ -23,6 +23,8 @@ private:
     Table *evaluateWildCardWildCard();
 
 protected:
+    AffectsKBAdapter *affectsKBAdapter;
+
     bool isValidAssignAssign(ClauseVariable &left, ClauseVariable &right);
 
     bool isValidAssignStmt(ClauseVariable &variable);
@@ -35,22 +37,21 @@ protected:
 
     virtual unordered_set<string> getIntegerSynonymRelation(const string &label) = 0;
 
-    virtual unordered_set<string> getIntegerWildCardRelation(const string &label) = 0;
-
     virtual unordered_set<string> getSynonymIntegerRelation(const string &label) = 0;
 
     virtual vector<pair<string, string>> getSynonymSynonymRelation() = 0;
 
     virtual unordered_set<string> getSynonymWildCardRelation() = 0;
 
-    virtual unordered_set<string> getWildCardIntegerRelation(const string &label) = 0;
-
     virtual unordered_set<string> getWildCardSynonymRelation() = 0;
 
-    virtual vector<pair<string, string>> getWildCardWildCardRelation() = 0;
+    bool getIntegerWildCardRelation(const string &label);
 
+    bool getWildCardIntegerRelation(const string &label);
+
+    bool getWildCardWildCardRelation();
 public:
-    explicit AffectEvaluator(PKBClient *pkb);
+    explicit AffectEvaluator(PKBClient *pkb, AffectsKBAdapter *adapter);
 
     Table *evaluateClause(ClauseVariable &left, ClauseVariable &right) override;
 

@@ -30,7 +30,7 @@ public:
 
     virtual unordered_set<string> getIntegerSynonymRelation(const string &label) = 0;
 
-    virtual unordered_set<string> getIntegerWildCardRelation(const string &label) = 0;
+    virtual bool getIntegerWildCardRelation(const string &label) = 0;
 
     virtual unordered_set<string> getSynonymIdentifierRelation(const string &label) = 0;
 
@@ -38,9 +38,9 @@ public:
 
     virtual unordered_set<string> getSynonymWildCardRelation() = 0;
 
-    virtual unordered_set<string> getWildCardIdentifierRelation(const string &label) = 0;
+    virtual bool getWildCardIdentifierRelation(const string &label) = 0;
 
-    virtual vector<pair<string, string>> getWildCardWildCardRelation() = 0;
+    virtual bool getWildCardWildCardRelation() = 0;
 
     friend class ModifiesSEvaluator;
 
