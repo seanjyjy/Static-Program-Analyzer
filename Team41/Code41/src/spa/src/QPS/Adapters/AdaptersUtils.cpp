@@ -16,16 +16,17 @@ void AdaptersUtils::runBFS(bool isForward, const CacheCallback &cacheAndContinue
 
         for (auto next: nextNodes) {
             string nextStmtNum = next->getStmtNum();
-            if (visited.find(nextStmtNum) == visited.end()) {
-                // check cache
-                if (cacheAndContinue(nextStmtNum)) {
-                    bfsQueue.push(next);
-                }
-                if (canTerminate(next)) {
-                    return;
-                };
-                visited.insert(nextStmtNum);
+            if (visited.find(nextStmtNum) != visited.end()) {
+                continue;
             }
+            // check cache
+            if (cacheAndContinue(nextStmtNum)) {
+                bfsQueue.push(next);
+            }
+            if (canTerminate(next)) {
+                return;
+            };
+            visited.insert(nextStmtNum);
         }
     }
 }
@@ -44,14 +45,14 @@ void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache *ca
             return true;
         }
         unordered_set<string> forwardCache = cache->getForwardMapping(nextStmt);
-        if (!forwardCache.empty()) {
-            bool hasNextT = forwardCache.find(end) != forwardCache.end();
-            if (hasNextT) {
-                cache->registerBooleanMapping(start, end);
-            }
-            return hasNextT;
+        if (forwardCache.empty()) {
+            return false;
         }
-        return false;
+        bool hasNextT = forwardCache.find(end) != forwardCache.end();
+        if (hasNextT) {
+            cache->registerBooleanMapping(start, end);
+        }
+        return hasNextT;
     };
 
     runBFS(true, saveToCache, canEnd, node);
@@ -65,13 +66,13 @@ void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *nod
         cache->registerBooleanMapping(stmtNum, next);
         cache->registerForwardMapping(stmtNum, next);
 
-        if (canUseCache) {
-            for (auto &savedNext: forwardCache) {
-                cache->registerForwardMapping(stmtNum, savedNext);
-            }
-            return false;
+        if (!canUseCache) {
+            return true;
         }
-        return true;
+        for (auto &savedNext: forwardCache) {
+            cache->registerForwardMapping(stmtNum, savedNext);
+        }
+        return false;
     };
 
     TerminateCheck canEnd = [](CFGNode *) { return false; };
@@ -87,14 +88,14 @@ void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node)
         cache->registerBooleanMapping(next, stmtNum);
         cache->registerBackwardMapping(stmtNum, next);
 
-        if (canUseCache) {
-            for (auto &savedNext: backwardCache) {
-                cache->registerBooleanMapping(savedNext, stmtNum);
-                cache->registerBackwardMapping(stmtNum, savedNext);
-            }
-            return false;
+        if (!canUseCache) {
+            return true;
         }
-        return true;
+        for (auto &savedNext: backwardCache) {
+            cache->registerBooleanMapping(savedNext, stmtNum);
+            cache->registerBackwardMapping(stmtNum, savedNext);
+        }
+        return false;
     };
 
     TerminateCheck canEnd = [](CFGNode *) { return false; };
