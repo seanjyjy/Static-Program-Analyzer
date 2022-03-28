@@ -157,16 +157,18 @@ Table *WithEvaluator::buildDiffSynonymTable(unordered_set<string> &leftResults, 
 
     for (auto &leftResult: leftResults) {
         for (auto &rightResult: rightResults) {
-            if (leftMapping(leftResult, pkb) == rightMapping(rightResult, pkb)) {
-                if (canSimplify) {
-                    return buildBooleanTable(true);
-                }
-
-                Row *row = new Row();
-                row->addEntry(firstColumn, leftResult);
-                row->addEntry(secondColumn, rightResult);
-                table->addRow(row);
+            if (leftMapping(leftResult, pkb) != rightMapping(rightResult, pkb)) {
+                continue;
             }
+            if (canSimplify) {
+                delete table;
+                return buildBooleanTable(true);
+            }
+
+            Row *row = new Row();
+            row->addEntry(firstColumn, leftResult);
+            row->addEntry(secondColumn, rightResult);
+            table->addRow(row);
         }
     }
 

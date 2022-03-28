@@ -50,7 +50,7 @@ public:
      *
      * @return set of statement numbers
      */
-    size_t getStatementCount() const; // Gets the number of statements stored in table
+    size_t getStatementCount() const;
     size_t getAssignCount() const; // Gets the number of assign statements stored in table
     size_t getWhileCount() const; // Gets the number of while statements stored in table
     size_t getIfCount() const; // Gets the number of if statements stored in table
