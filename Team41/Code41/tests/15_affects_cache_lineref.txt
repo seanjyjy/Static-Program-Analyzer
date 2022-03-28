@@ -1,0 +1,72 @@
+--. procedure all {
+01.    call noAssignStmts;
+02.    x = x + 1;
+03.    while (y > x) {
+04.        if (a != b) then {
+05.            y = y + 1;
+06.            while (a == y) {
+07.                print y;
+08.                a = a + b;
+09.                y = x + 1;
+--.            }
+10.            b = b + 1;
+--.        } else {
+11.            while (b == t) {
+12.                t = t + 1;
+13.                call smartLoop;
+--.            }
+14.            if (a == t) then {
+15.                t = t + 1;
+16.                read t;
+--.            } else {
+17.                read print;
+18.                print read;
+19.                read = print + read + t + 1;
+--.            }
+20.            print t;
+21.            t = y + 2;
+22.            read = print + t * 2;
+--.        }
+23.        while (y == 2) {
+24.            print y;
+25.            b = y + 2;
+--.        }
+--.    }
+26.    call assignLoop;
+--.}
+--. procedure smartLoop {
+27.    while (a > b) {
+28.        if (b > c) then {
+29.            t = b + a;
+--.        } else {
+30.            a = read + print + t;
+--.        }
+--.    }
+--.}
+--. procedure noAssignStmts {
+31.    read a;
+32.    print b;
+33.    call assignInterweaveWithCallsAndPrint;
+34.    while (b == a) {
+35.        read c;
+36.        if (f == d) then {
+37.            print read;
+--.        } else {
+38.            read print;
+--.        }
+--.    }
+--.}
+--. procedure assignInterweaveWithCallsAndPrint {
+39.    a = b;
+40.    a = d + f;
+41.    c = a;
+42.    call assignLoop;
+43.    d = a;
+--.}
+--. procedure assignLoop {
+44.    a = b;
+45.    b = c;
+46.    d = e;
+47.    e = f;
+48.    f = a;
+--.}
