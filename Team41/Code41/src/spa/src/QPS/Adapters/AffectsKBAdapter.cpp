@@ -83,6 +83,53 @@ unordered_set<string> AffectsKBAdapter::getAllStmtAffectedByOther() {
     return affecteds;
 }
 
+bool AffectsKBAdapter::isAffectingSomeStmt(const string &stmtNum) {
+    if (hasAffectsGraph(stmtNum)) {
+        CFGNode *node = stmtNumToNodeMap.at(stmtNum);
+        return !node->getChildren().empty();
+    }
+
+    unordered_set<string> affected;
+    CFGNode *start = pkb->getCFGForStmt(stmtNum);
+    // we are ensured that there is a modified var since this is an assignment statement
+    string variable = *pkb->getModifiesByStmt(stmtNum).begin();
+
+    bfsDown(pkb, start, variable, affected, true);
+    return !affected.empty();
+}
+
+bool AffectsKBAdapter::isAffectedBySomeStmt(const string &stmtNum) {
+    if (hasAffectsGraph(stmtNum)) {
+        CFGNode *node = stmtNumToNodeMap.at(stmtNum);
+        return !node->getParent().empty();
+    }
+
+    unordered_set<string> affecting;
+    CFGNode *start = pkb->getCFGForStmt(stmtNum);
+    unordered_set<string> affectedVars = pkb->getUsesByStmt(stmtNum);
+
+    bfsUp(pkb, start, affectedVars, affecting, true);
+    return !affecting.empty();
+}
+
+bool AffectsKBAdapter::hasSomeAffectsAll() {
+    if (!affectingAffectedPairs.empty()) {
+        return true;
+    }
+
+    CFGNode *root = pkb->getRootCFG();
+    for (auto child: root->getChildren()) {
+        if (hasAffectsGraph(child->getStmtNum())) {
+            continue;
+        }
+        buildAffectsGraphForProc(child);
+        if (!affectingAffectedPairs.empty()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 vector<pair<string, string>> AffectsKBAdapter::getDirectAffectsAll() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
@@ -198,7 +245,7 @@ bool AffectsKBAdapter::bfsBool(PKBClient *client, CFGNode *start, const string &
 }
 
 void AffectsKBAdapter::bfsDown(PKBClient *client, CFGNode *start, const string &modifiedVar,
-                               unordered_set<string> &affected) {
+                               unordered_set<string> &affected, bool isAnyResult) {
 
     CacheCallback shouldContinue = [&client, &modifiedVar, &affected](const string &next) {
         // if current stmt uses this modifiedVar and is assign stmt
@@ -209,34 +256,41 @@ void AffectsKBAdapter::bfsDown(PKBClient *client, CFGNode *start, const string &
         return !client->isModifiesS(next, modifiedVar) || !isModifyStmt(client, next);
     };
 
-    TerminateCheck canEnd = [](CFGNode *) { return false; };
+    TerminateCheck canEnd;
+    if (isAnyResult) {
+        canEnd = [affected](CFGNode *) { return !affected.empty(); };
+    } else {
+        canEnd = [](CFGNode *) { return false; };
+    }
 
     AdaptersUtils::runBFS(true, shouldContinue, canEnd, start);
 }
 
-void AffectsKBAdapter::bfsUpSingle(PKBClient *client, CFGNode *start, const string &affectedVar,
-                                   unordered_set<string> &affecting) {
-    CacheCallback shouldContinue = [&affecting, &client, &affectedVar](const string &next) {
-        unordered_set<string> modifiedVarsInStmt = client->getModifiesByStmt(next);
+void AffectsKBAdapter::bfsUp(PKBClient *client, CFGNode *start, unordered_set<string> &affectedVars,
+                             unordered_set<string> &affecting, bool isAnyResult) {
+    TerminateCheck canEnd;
+    if (isAnyResult) {
+        canEnd = [affecting](CFGNode *) { return !affecting.empty(); };
+    } else {
+        canEnd = [](CFGNode *) { return false; };
+    }
 
-        // if above is any of the 3 modify statement and is modifying the current affected var we dont need to explore
-        if (isModifyStmt(client, next) && modifiedVarsInStmt.find(affectedVar) != modifiedVarsInStmt.end()) {
+    for (auto &affectedVar: affectedVars) {
+        CacheCallback shouldContinue = [&affecting, &client, &affectedVar](const string &next) {
+            unordered_set<string> modifiedVarsInStmt = client->getModifiesByStmt(next);
+
+            // if above is any of the 3 modify statement and is modifying the current affected var we dont need to explore
+            if (!isModifyStmt(client, next) || modifiedVarsInStmt.find(affectedVar) == modifiedVarsInStmt.end())
+                return true;
+
             if (client->isAssignStmt(next))
                 affecting.insert(next);
+
             return false;
-        }
-        return true;
-    };
+        };
 
-    TerminateCheck canEnd = [](CFGNode *) { return false; };
-
-    AdaptersUtils::runBFS(false, shouldContinue, canEnd, start);
-}
-
-void AffectsKBAdapter::bfsUp(PKBClient *client, CFGNode *start, unordered_set<string> &affectedVars,
-                             unordered_set<string> &affecting) {
-    for (auto &affectedVar: affectedVars)
-        bfsUpSingle(client, start, affectedVar, affecting);
+        AdaptersUtils::runBFS(false, shouldContinue, canEnd, start);
+    }
 }
 
 //================================= Affects Graph ==========================================

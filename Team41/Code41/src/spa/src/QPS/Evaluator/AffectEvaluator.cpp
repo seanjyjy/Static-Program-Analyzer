@@ -1,6 +1,7 @@
 #include "AffectEvaluator.h"
 
-AffectEvaluator::AffectEvaluator(PKBClient *pkb) : GenericClauseEvaluator(pkb) {}
+AffectEvaluator::AffectEvaluator(PKBClient *pkb, AffectsKBAdapter *adapter) :
+        GenericClauseEvaluator(pkb), affectsKBAdapter(adapter) {};
 
 Table *AffectEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &right) {
     if (EvaluatorUtils::StmtUtils::isIntegerInteger(&left, &right)) {
@@ -100,8 +101,8 @@ Table *AffectEvaluator::evaluateIntegerSynonym(const ClauseVariable &left, Claus
 }
 
 Table *AffectEvaluator::evaluateIntegerWildCard(const ClauseVariable &left) {
-    unordered_set<string> affecteds = getIntegerWildCardRelation(left.getLabel());
-    return buildBooleanTable(!affecteds.empty());
+    bool hasAffecteds = getIntegerWildCardRelation(left.getLabel());
+    return buildBooleanTable(hasAffecteds);
 }
 
 Table *AffectEvaluator::evaluateSynonymInteger(ClauseVariable &left, const ClauseVariable &right) {
@@ -120,8 +121,8 @@ Table *AffectEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
 }
 
 Table *AffectEvaluator::evaluateWildCardInteger(const ClauseVariable &right) {
-    unordered_set<string> affectings = getWildCardIntegerRelation(right.getLabel());
-    return buildBooleanTable(!affectings.empty());
+    bool hasAffectings = getWildCardIntegerRelation(right.getLabel());
+    return buildBooleanTable(hasAffectings);
 }
 
 Table *AffectEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {
@@ -130,6 +131,18 @@ Table *AffectEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {
 }
 
 Table *AffectEvaluator::evaluateWildCardWildCard() {
-    vector<pair<string, string>> affectingAffectedPairs = getWildCardWildCardRelation();
-    return buildBooleanTable(!affectingAffectedPairs.empty());
+    bool hasAffectingAffectedPairs = getWildCardWildCardRelation();
+    return buildBooleanTable(hasAffectingAffectedPairs);
+}
+
+bool AffectEvaluator::getIntegerWildCardRelation(const string &label) {
+    return affectsKBAdapter->isAffectingSomeStmt(label);
+}
+
+bool AffectEvaluator::getWildCardIntegerRelation(const string &label) {
+    return affectsKBAdapter->isAffectedBySomeStmt(label);
+}
+
+bool AffectEvaluator::getWildCardWildCardRelation() {
+    return affectsKBAdapter->hasSomeAffectsAll();
 }

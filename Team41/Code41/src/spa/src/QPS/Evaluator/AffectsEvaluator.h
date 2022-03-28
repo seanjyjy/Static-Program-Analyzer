@@ -3,8 +3,6 @@
 #include "AffectEvaluator.h"
 
 class AffectsEvaluator : public AffectEvaluator {
-private:
-    AffectsKBAdapter *affectsKBAdapter;
 public:
     explicit AffectsEvaluator(PKBClient *pkb, AffectsKBAdapter *affectsKBAdapter);
 
@@ -12,17 +10,11 @@ public:
 
     unordered_set<string> getIntegerSynonymRelation(const string &label) override;
 
-    unordered_set<string> getIntegerWildCardRelation(const string &label) override;
-
     unordered_set<string> getSynonymIntegerRelation(const string &label) override;
 
     vector<pair<string, string>> getSynonymSynonymRelation() override;
 
     unordered_set<string> getSynonymWildCardRelation() override;
 
-    unordered_set<string> getWildCardIntegerRelation(const string &label) override;
-
     unordered_set<string> getWildCardSynonymRelation() override;
-
-    vector<pair<string, string>> getWildCardWildCardRelation() override;
 };

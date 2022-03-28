@@ -31,13 +31,11 @@ private:
 
     static bool bfsBool(PKBClient *pkb, CFGNode *start, const string &modifiedVar, const string &end);
 
-    static void bfsDown(PKBClient *pkb, CFGNode *start, const string &modifiedVar, unordered_set<string> &affected);
+    static void bfsDown(PKBClient *pkb, CFGNode *start, const string &modifiedVar, unordered_set<string> &affected,
+                        bool isAnyResult = false);
 
-    static void
-    bfsUp(PKBClient *pkb, CFGNode *start, unordered_set<string> &affectedVars, unordered_set<string> &affecting);
-
-    static void
-    bfsUpSingle(PKBClient *pkb, CFGNode *start, const string &affectedVar, unordered_set<string> &affecting);
+    static void bfsUp(PKBClient *pkb, CFGNode *start, unordered_set<string> &affectedVars,
+                      unordered_set<string> &affecting, bool isAnyResult = false);
 
     static bool isModifyStmt(PKBClient *client, const string &stmtNum);
 
@@ -69,4 +67,10 @@ public:
     unordered_set<string> getAllStmtAffectedTByOther();
 
     vector<pair<string, string>> getAffectsTAll();
+
+    bool isAffectingSomeStmt(const string &stmtNum);
+
+    bool isAffectedBySomeStmt(const string &stmtNum);
+
+    bool hasSomeAffectsAll();
 };
