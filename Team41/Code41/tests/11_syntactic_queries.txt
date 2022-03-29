@@ -363,10 +363,10 @@ call cl;
 Select BOOLEAN pattern w("x", "_", "_")
 
 5000
-74 - Using undeclared synonym for pattern // Invalid Syntactic
+74 - Using undeclared synonym for pattern // Invalid Semantic
 
 Select BOOLEAN pattern a("x", _)
-
+FALSE
 5000
 75 - Using undeclared synonym for pattern // Invalid Semantic
 
