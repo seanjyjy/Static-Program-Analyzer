@@ -543,7 +543,69 @@ assign a, a1;
 Select BOOLEAN such that Uses(1, "x") and Uses(2, "y") with 1 = 1 and 2 = 2 pattern a("x", "y + 1") and a1("x", "x + 1")
 TRUE
 5000
-109 - Using undeclared synonym and invalid expression for pattern // Invalid Syntactic
+
+109 - NEGATIVE CASES and semantic and boolean return type
+stmt s; variable s; constant BOOLEAN;
+Select BOOLEAN
+
+5000
+110 - POSITIVE CASES
+stmt s;
+Select BOOLEAN
+TRUE
+5000
+111 - POSITIVE CASES
+call cl;
+Select BOOLEAN
+TRUE
+5000
+112 - POSITIVE CASES
+while w;
+Select BOOLEAN
+TRUE
+5000
+113 - POSITIVE CASES
+if ifs;
+Select BOOLEAN
+TRUE
+5000
+114 - POSITIVE CASES
+print pn;
+Select BOOLEAN
+TRUE
+5000
+115 - POSITIVE CASES
+assign a;
+Select BOOLEAN
+TRUE
+5000
+116 - POSITIVE CASES
+variable v;
+Select BOOLEAN
+TRUE
+5000
+117 - POSITIVE CASES
+procedure p;
+Select BOOLEAN
+TRUE
+5000
+118 - POSITIVE CASES
+constant c;
+Select BOOLEAN
+TRUE
+5000
+119 - POSITIVE CASES
+read re;
+Select BOOLEAN
+TRUE
+5000
+120 - POSITIVE CASES
+
+Select BOOLEAN
+TRUE
+5000
+
+121 - Using undeclared synonym and invalid expression for pattern // Invalid Syntactic
 
 Select BOOLEAN pattern s ('x', _, _"invalid pattern"_)
 
