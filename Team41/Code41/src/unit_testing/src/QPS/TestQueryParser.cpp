@@ -787,7 +787,8 @@ TEST_CASE("QPS: Parser_INVALID") {
                    "Select v such that Uses(c, v) pattern w (c, _)";
         QueryParser a = QueryParser{s};
         qo = a.parse();
-        REQUIRE_FALSE(qo->isValid());
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("while pattern using fullpattern") {
         string s = "variable v; while w;\n"
@@ -909,6 +910,13 @@ TEST_CASE("QPS: Parser_INVALID") {
     }
     SECTION("syntactically ok, semantically not") {
         string s = "stmt s; Select t such that Follows(1, _)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
+    }
+    SECTION("syntactically ok, semantically not, pattern") {
+        string s = "Select BOOLEAN pattern a(\"x\",_)";
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());

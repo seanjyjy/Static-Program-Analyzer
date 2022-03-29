@@ -415,7 +415,10 @@ optional<QueryDeclaration> QueryParser::parsePatternSyn() {
     if (declared == nullopt) {
         queryObject->setUseOfUndeclaredVariable(true);
         printf("Semantic Error: Use of undeclared pattern synonym <%s>\n", patternSyn->c_str());
-        return nullopt;
+
+        //qd = {QueryDeclaration::design_entity_type::NONE, synonym.value()};
+        declared = {QueryDeclaration::design_entity_type::NONE, patternSyn.value()};
+        return declared;
     }
 
     if (isValidPatternSynType(declared.value())) {
@@ -525,13 +528,26 @@ bool QueryParser::parsePatternClause() {
             pv = parseWhilePatternParams();
             break;
         default:
-            printf("Invalid pattern type");
-            return false;
+            pv = parseDummyPatternParams();
+            break;
     }
     if (pv == nullopt) return false;
     lookForClauseGrammarSymbol(")", "Syntax Error: Expected ')' for end of pattern declaration.\n");
     buildPatternClauseObject(patternSyn.value(), lhs->c_str(), *pv);
     return true;
+}
+
+optional<vector<PatternVariable>> QueryParser::parseDummyPatternParams() {
+    // skip until end of ")" pattern
+    bool foundEndOfDummyPattern;
+    do {
+        foundEndOfDummyPattern = lex->peekNextIsString(")");
+        if (!foundEndOfDummyPattern)
+            lex->nextToken();
+    } while(!lex->isEndOfQuery() && !foundEndOfDummyPattern);
+
+    // return dummy pattern data
+    return vector<PatternVariable>({});
 }
 
 optional<vector<PatternVariable>> QueryParser::parseAssignPatternParams() {
@@ -768,7 +784,10 @@ QueryObject *QueryParser::parse() {
         }
     }
 
-    printf("Query parsed.\n");
+    if (queryObject->hasUseOfUndeclaredVariable())
+        printf("Query parsed but contains semantic errors\n");
+    else
+        printf("Query parsed.\n");
     cleanup();
     return queryObject;
 }
