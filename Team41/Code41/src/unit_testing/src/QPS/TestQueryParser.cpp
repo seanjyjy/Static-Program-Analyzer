@@ -915,8 +915,48 @@ TEST_CASE("QPS: Parser_INVALID") {
         REQUIRE(qo->isValid());
         REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
-    SECTION("syntactically ok, semantically not, pattern") {
+    SECTION("Pattern syntactically OK, semantically NOT OK, pattern") {
         string s = "Select BOOLEAN pattern a(\"x\",_)";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
+    }
+    SECTION("Pattern syntactically NOT OK, semantically NOT OK, pattern") {
+        string s = "Select BOOLEAN pattern a(\"x\",_";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
+    }
+    SECTION("Pattern syntactically NOT OK, semantically NOT OK, pattern") {
+        string s = "Select BOOLEAN pattern w(\"x\", \"_\", \"_\")";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
+    }
+    SECTION("Pattern syntactically NOT OK") {
+        string s = "call cl;\n"
+            "Select BOOLEAN pattern cl(\"x\", \"_\", \"_\")";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+        REQUIRE_FALSE(qo->hasUseOfUndeclaredVariable());
+    }
+    SECTION("If Pattern semantically NOT OK, syntactically OK") {
+        string s = "variable v;\n"
+                   "Select ifs pattern ifs (v, _, _)";
+
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
+    }
+    SECTION("If Pattern semantically NOT OK, syntactically OK") {
+        string s = "if ifs;\n"
+                   "Select ifs pattern ifs (v, _, _)";
+
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
