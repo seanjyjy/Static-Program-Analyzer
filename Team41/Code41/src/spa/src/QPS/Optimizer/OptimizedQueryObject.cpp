@@ -5,18 +5,26 @@ OptimizedQueryObject::OptimizedQueryObject() : QueryObject({}, {}, {}, {}, false
 OptimizedQueryObject::OptimizedQueryObject(QueryObject *qo): QueryObject(*qo), clauseGroups(nullptr) {
 }
 
-OptimizedQueryObject::OptimizedQueryObject(QueryObject *qo, AbstractGroups *cg) :
+OptimizedQueryObject::OptimizedQueryObject(QueryObject *qo, ClauseGroups *cg) :
         QueryObject(*qo), clauseGroups(cg) {}
-
-bool OptimizedQueryObject::empty() {
-    return clauseGroups->empty();
-}
 
 SuperClause *OptimizedQueryObject::popClause() {
     if (empty()) throw runtime_error("OptimizedQueryObject: no more clauses left to consume");
     return clauseGroups->pop();
 }
 
-void OptimizedQueryObject::printPlan() {
+bool OptimizedQueryObject::empty() {
+    return clauseGroups->empty();
+}
+
+bool OptimizedQueryObject::isLastOfGroup() {
+    return clauseGroups->isLastOfGroup();
+}
+
+size_t OptimizedQueryObject::currGroupSize() {
+    return clauseGroups->currGroupSize();
+}
+
+void OptimizedQueryObject::print() {
     clauseGroups->print();
 }

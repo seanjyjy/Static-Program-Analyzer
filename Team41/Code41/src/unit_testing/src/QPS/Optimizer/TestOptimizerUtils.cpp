@@ -44,6 +44,7 @@ void TestOptimizerUtils::ensureOQOIsCorrect(string &query, PKBManager &pkbManage
     // parse the query and setup objects
     QueryParser qp = QueryParser{query};
     QueryObject *qo(qp.parse());
+    // TODO test each kind of group
     OptimizedQueryObject oqo = QueryOptimizer::create()
             .enableAllOptimizations(&pkbManager)
             .optimize(qo);

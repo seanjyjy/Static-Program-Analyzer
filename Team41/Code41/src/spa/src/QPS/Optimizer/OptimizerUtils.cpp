@@ -27,11 +27,19 @@ void OptimizerUtils::print(vector<vector<SuperClause *>> &clauses) {
     }
 }
 
-vector<string> OptimizerUtils::getSelectablesAsStrings(const vector<Selectable> &selectables) {
-    vector<string> ret;
-    ret.reserve(selectables.size()); // minor optimization
-    for (const Selectable &s: selectables) {
-        ret.push_back(s.getSynonymName());
+bool OptimizerUtils::hasSynonymOverlap(const vector<QueryDeclaration> &qds, const vector<SuperClause *> &clauses) {
+    unordered_set<string> synonyms;
+    synonyms.reserve(qds.size()); // minor optimization
+
+    for (const QueryDeclaration &qd: qds) synonyms.insert(qd.getSynonym());
+
+    for (SuperClause* cl: clauses) {
+        for (const QueryDeclaration &syn: cl->getSynonyms()) {
+            if (synonyms.find(syn.getSynonym()) != synonyms.end()) {
+                return true;
+            }
+        }
     }
-    return ret;
+
+    return false;
 }

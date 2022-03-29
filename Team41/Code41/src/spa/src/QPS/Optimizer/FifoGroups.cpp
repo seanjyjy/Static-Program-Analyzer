@@ -2,8 +2,8 @@
 
 #include <utility>
 
-FifoGroups::FifoGroups(vector<AbstractGroup *> initGroups) {
-    groups = vector<AbstractGroup*>(move(initGroups));
+FifoGroups::FifoGroups(vector<ClauseGroup *> initGroups) {
+    groups = vector<ClauseGroup*>(move(initGroups));
     it = groups.begin();
 }
 
@@ -18,14 +18,14 @@ bool FifoGroups::empty() {
     return it == groups.end();
 }
 
-AbstractGroup *FifoGroups::front() {
+ClauseGroup *FifoGroups::front() {
     if (empty()) throw runtime_error("no more groups");
     return *it;
 }
 
 string FifoGroups::toString() const {
     string ret;
-    for (AbstractGroup *a: groups) {
+    for (ClauseGroup *a: groups) {
         ret += a->toString();
     }
     return ret;
@@ -33,5 +33,13 @@ string FifoGroups::toString() const {
 
 void FifoGroups::print() const {
     cout << toString() << endl;
+}
+
+size_t FifoGroups::currGroupSize() const {
+    return (*it)->size();
+}
+
+bool FifoGroups::isLastOfGroup() const {
+    return (*it)->isLast();
 }
 

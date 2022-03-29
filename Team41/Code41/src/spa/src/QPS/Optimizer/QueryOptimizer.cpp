@@ -17,31 +17,31 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
             clauseDepGraph.registerClause(cl);
         }
         // turn on group simplification if needed
-        clauseGroups = isSimplifyGroupsEnabled
-                ? clauseDepGraph
-                        .enableGroupSimplification(OptimizerUtils::getSelectablesAsStrings(qo->getSelectables()))
-                        .split()
-                : clauseDepGraph.split();
+        clauseGroups = clauseDepGraph.split();
     } else {
         // no clause grouping - just one group of all clauses
         clauseGroups.push_back(qo->getSuperClauses());
     }
 
     // step 2: Add clause groups
-    vector<AbstractGroup*> groups;
+    vector < ClauseGroup * > groups;
+    vector<QueryDeclaration> selectables(qo->getSelectablesAsQDs());
     for (vector<SuperClause *> &clauses: clauseGroups) {
+        bool isEssential = true;
+
         if (isDupClauseRemovalEnabled) clauses = OptimizerUtils::removeDuplicates(clauses);
+        if (isSimplifyGroupsEnabled) isEssential = OptimizerUtils::hasSynonymOverlap(selectables, clauses);
 
         if (isIntraGroupSortEnabled && isDynamicPollingEnabled) {
-            groups.push_back(new PKBAwareGroup(clauses, adapter));
+            groups.push_back(new PKBAwareGroup(clauses, adapter, isEssential));
         } else if (isIntraGroupSortEnabled) {
-            groups.push_back(new SortedGroup(clauses));
+            groups.push_back(new SortedGroup(clauses, isEssential));
         } else {
-            groups.push_back(new FifoGroup(clauses));
+            groups.push_back(new FifoGroup(clauses, isEssential));
         }
     }
 
-    // step 3: Wrap clause groups under an AbstractGroup
+    // step 3: Wrap clause groups under an ClauseGroup
     if (isInterGroupSortEnabled) {
         return {qo, new SortedGroups(groups)};
     } else {

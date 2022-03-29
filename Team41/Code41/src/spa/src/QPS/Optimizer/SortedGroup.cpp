@@ -1,6 +1,11 @@
 #include "SortedGroup.h"
 
-SortedGroup::SortedGroup(vector<SuperClause *> initClauses) {
+#include <utility>
+
+SortedGroup::SortedGroup(vector<SuperClause *> initClauses): SortedGroup(move(initClauses), true) {
+}
+
+SortedGroup::SortedGroup(vector<SuperClause *> initClauses, bool isEssential): ClauseGroup(isEssential) {
     clauses = multiset<SuperClause *, ClauseComparator>(initClauses.begin(), initClauses.end());
     it = clauses.begin();
     clauseScoreSum = accumulate(initClauses.begin(), initClauses.end(), 0L, [](long currScore, SuperClause *a) {
@@ -13,8 +18,16 @@ SuperClause *SortedGroup::pop() const {
     return *(it++);
 }
 
+size_t SortedGroup::size() const {
+    return clauses.size();
+}
+
 bool SortedGroup::empty() const {
     return it == clauses.end();
+}
+
+bool SortedGroup::isLast() const {
+    return it != clauses.end() && next(it) == clauses.end();
 }
 
 size_t SortedGroup::score() const {

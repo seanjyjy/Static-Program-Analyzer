@@ -1,27 +1,31 @@
 #pragma once
 
-#include "AbstractGroups.h"
+#include "ClauseGroups.h"
 #include <functional>
 #include <set>
 
 struct AbstractGroupComparator {
-    bool operator()(AbstractGroup *lhs, AbstractGroup *rhs) const {
+    bool operator()(ClauseGroup *lhs, ClauseGroup *rhs) const {
         return lhs->score() < rhs->score();
     }
 };
 
-class SortedGroups : public AbstractGroups {
+class SortedGroups : public ClauseGroups {
 private:
-    mutable multiset<AbstractGroup *>::iterator it;
-    multiset<AbstractGroup *, AbstractGroupComparator> sortedGroups;
+    mutable multiset<ClauseGroup *>::iterator it;
+    multiset<ClauseGroup *, AbstractGroupComparator> sortedGroups;
 public:
-    SortedGroups(vector<AbstractGroup*> groups);
+    SortedGroups(vector<ClauseGroup*> groups);
 
     SuperClause *pop() override;
 
     bool empty() override;
 
-    AbstractGroup *front() override;
+    ClauseGroup *front() override;
+
+    size_t currGroupSize() const override;
+
+    bool isLastOfGroup() const override;
 
     string toString() const override;
 

@@ -5,7 +5,7 @@
 
 class OptimizerUtils {
 public:
-    static vector<string> getSelectablesAsStrings(const vector<Selectable> &selectables);
+    static bool hasSynonymOverlap(const vector<QueryDeclaration> &qds, const vector<SuperClause*> &clauses);
     static vector<SuperClause *> removeDuplicates(const vector<SuperClause *> &clauses);
     static void print(vector<vector<SuperClause*>> &clauses);
 };

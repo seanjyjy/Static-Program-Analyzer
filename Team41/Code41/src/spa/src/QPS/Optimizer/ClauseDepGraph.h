@@ -24,10 +24,6 @@ private:
     unordered_map<string, vector<TaggedSuperClause>> synonymToClauses; // maps synonyms to clauses with that synonym
     unordered_map<int, bool> isCidProcessed; // stop clauses from being processed multiple times
 
-    // for group simplification optimization
-    bool shouldSimplifyGroups = false;
-    vector<string> selectSynonyms; // e.g Select <s1, s2> ... --> selectSynonyms is { "s1", "s2" }
-
     // convenience method to get the next clauseId and update it
     int getCid();
 
@@ -37,8 +33,6 @@ public:
     ClauseDepGraph();
 
     void registerClause(SuperClause *cl);
-
-    ClauseDepGraph &enableGroupSimplification(const vector<string> &selectables);
 
     vector<vector<SuperClause *>> split();
 };

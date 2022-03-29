@@ -1,8 +1,8 @@
 
 #include "SortedGroups.h"
 
-SortedGroups::SortedGroups(vector<AbstractGroup*> groups) {
-    sortedGroups = multiset<AbstractGroup *, AbstractGroupComparator>(groups.begin(), groups.end());
+SortedGroups::SortedGroups(vector<ClauseGroup*> groups) {
+    sortedGroups = multiset<ClauseGroup *, AbstractGroupComparator>(groups.begin(), groups.end());
     it = sortedGroups.begin();
 }
 
@@ -17,14 +17,14 @@ bool SortedGroups::empty() {
     return it == sortedGroups.end();
 }
 
-AbstractGroup *SortedGroups::front() {
+ClauseGroup *SortedGroups::front() {
     if (empty()) throw runtime_error("no more groups");
     return *it;
 }
 
 string SortedGroups::toString() const {
     string ret;
-    for (AbstractGroup *a: sortedGroups) {
+    for (ClauseGroup *a: sortedGroups) {
         ret += a->toString();
     }
     return ret;
@@ -32,4 +32,12 @@ string SortedGroups::toString() const {
 
 void SortedGroups::print() const {
     cout << toString() << endl;
+}
+
+size_t SortedGroups::currGroupSize() const {
+    return (*it)->size();
+}
+
+bool SortedGroups::isLastOfGroup() const {
+    return (*it)->isLast();
 }

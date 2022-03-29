@@ -6,7 +6,7 @@
 #include "ClauseDepGraph.h"
 #include "OptimizedQueryObject.h"
 #include "OptimizerUtils.h"
-#include "AbstractGroups.h"
+#include "ClauseGroups.h"
 #include "SortedGroups.h"
 #include "FifoGroups.h"
 #include "SortedGroup.h"

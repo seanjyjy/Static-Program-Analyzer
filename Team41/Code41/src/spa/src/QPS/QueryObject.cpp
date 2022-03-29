@@ -116,3 +116,28 @@ bool QueryObject::hasUseOfUndeclaredVariable() const {
 void QueryObject::setUseOfUndeclaredVariable(bool b) {
     useOfUndeclaredVariable = b;
 }
+
+vector<QueryDeclaration> QueryObject::getSelectablesAsQDs() {
+    vector<QueryDeclaration> ret;
+    for (Selectable &s: selectTarget.getSelectable()) {
+        ret.push_back(s.getSynonym());
+    }
+    return ret;
+}
+
+SuperClause *QueryObject::popClause() {
+    return superClauses.at(currPtr++);
+}
+
+size_t QueryObject::currGroupSize() {
+    // only one group since there is no grouping in an unoptimized query object
+    return superClauses.size();
+}
+
+bool QueryObject::isLastOfGroup() {
+    return currPtr == superClauses.size()-1;
+}
+
+bool QueryObject::empty() {
+    return currPtr >= superClauses.size();
+}

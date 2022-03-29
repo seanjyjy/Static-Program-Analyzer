@@ -51,7 +51,7 @@ int main() {
             .setIntraGroupSort(true)
             .enableDynamicPolling(&pkbManager)
             .optimize(queryObject);
-    oqo.printPlan();
+    oqo.print();
 
     int count = 0;
     while (!oqo.empty()) {

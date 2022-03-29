@@ -1,7 +1,6 @@
 #include "ClauseDepGraph.h"
 #include "QPS/SuperClause.h"
 #include "QPS/ClauseVariable.h"
-#include "OptimizerUtils.h"
 #include <stdexcept>
 
 using namespace std;
@@ -36,7 +35,6 @@ void ClauseDepGraph::registerClause(SuperClause *cl) {
 }
 
 vector<vector<SuperClause *>> ClauseDepGraph::split() {
-    // TODO add simplification logic
     vector<vector<SuperClause *>> ret;
 
     // populate the first group - with no synonyms
@@ -74,10 +72,4 @@ vector<SuperClause *> ClauseDepGraph::getUnprocessedClauses(vector<TaggedSuperCl
         }
     }
     return ret;
-}
-
-ClauseDepGraph &ClauseDepGraph::enableGroupSimplification(const vector<string> &selectables) {
-    selectSynonyms = selectables;
-    shouldSimplifyGroups = true;
-    return *this;
 }
