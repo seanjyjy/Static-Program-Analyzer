@@ -7,6 +7,8 @@ class FifoGroups : public ClauseGroups {
 private:
     vector<ClauseGroup *> groups;
     vector<ClauseGroup *>::iterator it;
+
+    void ensureInvariant();
 public:
     FifoGroups(vector<ClauseGroup*> groups);
 
@@ -16,9 +18,9 @@ public:
 
     ClauseGroup *front() override;
 
-    size_t currGroupSize() const override;
+    size_t currGroupSize() override;
 
-    bool isLastOfGroup() const override;
+    bool isLastOfGroup() override;
 
     string toString() const override;
 

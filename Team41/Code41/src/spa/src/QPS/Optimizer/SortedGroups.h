@@ -4,7 +4,7 @@
 #include <functional>
 #include <set>
 
-struct AbstractGroupComparator {
+struct ClauseGroupComparator {
     bool operator()(ClauseGroup *lhs, ClauseGroup *rhs) const {
         return lhs->score() < rhs->score();
     }
@@ -13,7 +13,9 @@ struct AbstractGroupComparator {
 class SortedGroups : public ClauseGroups {
 private:
     mutable multiset<ClauseGroup *>::iterator it;
-    multiset<ClauseGroup *, AbstractGroupComparator> sortedGroups;
+    multiset<ClauseGroup *, ClauseGroupComparator> sortedGroups;
+
+    void ensureInvariant();
 public:
     SortedGroups(vector<ClauseGroup*> groups);
 
@@ -23,9 +25,9 @@ public:
 
     ClauseGroup *front() override;
 
-    size_t currGroupSize() const override;
+    size_t currGroupSize() override;
 
-    bool isLastOfGroup() const override;
+    bool isLastOfGroup() override;
 
     string toString() const override;
 

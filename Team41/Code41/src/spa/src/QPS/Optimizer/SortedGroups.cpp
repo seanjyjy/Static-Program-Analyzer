@@ -2,7 +2,7 @@
 #include "SortedGroups.h"
 
 SortedGroups::SortedGroups(vector<ClauseGroup*> groups) {
-    sortedGroups = multiset<ClauseGroup *, AbstractGroupComparator>(groups.begin(), groups.end());
+    sortedGroups = multiset<ClauseGroup *, ClauseGroupComparator>(groups.begin(), groups.end());
     it = sortedGroups.begin();
 }
 
@@ -12,8 +12,7 @@ SuperClause *SortedGroups::pop() {
 }
 
 bool SortedGroups::empty() {
-    // ensure invariant - first group always has a clause to take
-    while (it != sortedGroups.end() && (*it)->empty()) it = next(it);
+    ensureInvariant();
     return it == sortedGroups.end();
 }
 
@@ -34,10 +33,17 @@ void SortedGroups::print() const {
     cout << toString() << endl;
 }
 
-size_t SortedGroups::currGroupSize() const {
+size_t SortedGroups::currGroupSize() {
+    ensureInvariant();
     return (*it)->size();
 }
 
-bool SortedGroups::isLastOfGroup() const {
+bool SortedGroups::isLastOfGroup() {
+    ensureInvariant();
     return (*it)->isLast();
+}
+
+void SortedGroups::ensureInvariant() {
+    // ensure invariant - first group always has a clause to take (unless
+    while (it != sortedGroups.end() && (*it)->empty()) it++;
 }

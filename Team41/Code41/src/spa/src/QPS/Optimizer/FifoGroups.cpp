@@ -13,8 +13,7 @@ SuperClause *FifoGroups::pop() {
 }
 
 bool FifoGroups::empty() {
-    // ensure invariant - first group always has a clause to take (unless
-    while (it != groups.end() && (*it)->empty()) it++;
+    ensureInvariant();
     return it == groups.end();
 }
 
@@ -35,11 +34,18 @@ void FifoGroups::print() const {
     cout << toString() << endl;
 }
 
-size_t FifoGroups::currGroupSize() const {
+size_t FifoGroups::currGroupSize() {
+    ensureInvariant();
     return (*it)->size();
 }
 
-bool FifoGroups::isLastOfGroup() const {
+bool FifoGroups::isLastOfGroup() {
+    ensureInvariant();
     return (*it)->isLast();
+}
+
+void FifoGroups::ensureInvariant() {
+    // ensure invariant - first group always has a clause to take (unless no more groups)
+    while (it != groups.end() && (*it)->empty()) it++;
 }
 

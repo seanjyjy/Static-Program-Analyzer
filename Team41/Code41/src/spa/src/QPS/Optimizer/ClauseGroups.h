@@ -10,9 +10,9 @@ public:
 
     virtual bool empty() = 0;
 
-    virtual size_t currGroupSize() const = 0;
+    virtual size_t currGroupSize() = 0;
 
-    virtual bool isLastOfGroup() const = 0;
+    virtual bool isLastOfGroup() = 0;
 
     virtual string toString() const = 0;
 
