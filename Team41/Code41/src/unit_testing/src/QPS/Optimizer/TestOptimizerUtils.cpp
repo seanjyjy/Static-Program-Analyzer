@@ -190,6 +190,7 @@ void TestOptimizerUtils::testGroupandGroupsAbstractions(string &query) {
 
     REQUIRE(fg.empty());
     REQUIRE(sg.empty());
+    REQUIRE(pg.empty());
 
     // cleanup
     for (ClauseGroup *cg: fifoGroups) delete (FifoGroup*) cg;
