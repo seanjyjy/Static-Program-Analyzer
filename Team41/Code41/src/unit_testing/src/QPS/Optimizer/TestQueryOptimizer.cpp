@@ -470,7 +470,8 @@ TEST_CASE("Query Optimizer: autotester 01_uses_modify") {
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
     SECTION("19 - Uses with true clause") {
-        string query = "Select v such that Uses(6, \"x411\")";
+        string query = "variable v;\n"
+                       "Select v such that Uses(6, \"x411\")";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
     SECTION("20 - Uses none") {
@@ -569,10 +570,6 @@ TEST_CASE("Query Optimizer: autotester 01_uses_modify") {
     SECTION("50 - Uses('procedure', v)") {
         string query = "variable Select;\n"
                        "Select Select such that Uses(\"procedure\", Select)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("51 - Uses('procedure', 1)") {
-        string query = "Select BOOLEAN such that Uses(\"procedure\", 1)";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
     SECTION("52 - Uses(proc, v) - select proc") {
@@ -763,7 +760,7 @@ TEST_CASE("Query Optimizer: autotester 05_uses_modify_pattern") {
     }
     SECTION("138 - Modifies Synonym Synonym Pattern Pair4") {
         string query = "stmt s; variable v; assign a;\n"
-                       "Select s such that Modifies(s, v) pattern a(\"h\", 77 - g  + y * g * g + g + g * y)";
+                       "Select s such that Modifies(s, v) pattern a(\"h\", \"77 - g  + y * g * g + g + g * y\")";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
     SECTION("137 - Modifies Synonym Synonym Pattern Pair3") {
@@ -773,7 +770,7 @@ TEST_CASE("Query Optimizer: autotester 05_uses_modify_pattern") {
     }
     SECTION("136 - Modifies Synonym Synonym Pattern Pair2 - Expected empty") {
         string query = "while w; variable v; assign a;\n"
-                       "Select w such that Modifies(w, v) pattern a(bastards, \"VERYTRUE\")";
+                       "Select w such that Modifies(w, v) pattern a(\"bastards\", \"VERYTRUE\")";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
     SECTION("135 - Modifies Synonym Synonym Pattern Pair1") {
@@ -813,7 +810,7 @@ TEST_CASE("Query Optimizer: autotester 05_uses_modify_pattern") {
     }
     SECTION("128 - Modifies Synonym Identifier Pattern Pair4") {
         string query = "stmt s; assign a;\n"
-                       "Select s such that Modifies(s, \"zz\") pattern a(\"enjoyThisReallyFunLongText\", (kidding + g) + g);";
+                       "Select s such that Modifies(s, \"zz\") pattern a(\"enjoyThisReallyFunLongText\", \"(kidding + g) + g\")";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
     SECTION("127 - Modifies Synonym Identifier Pattern Pair3") {
@@ -985,11 +982,6 @@ TEST_CASE("Query Optimizer: autotester 09_assignment2") {
     SECTION("7 - with stmt# - constant value") {
         string query = "constant c; assign a;\n"
                        "Select c with a.stmt# = c.value";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("8 - incorrect pattern and") {
-        string query = "assign a, a1;\n"
-                       "Select a pattern a (\"x\", _) and pattern a1 (_, _\"x\"_)";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
     SECTION("9 - Next cache usage") {
@@ -1306,11 +1298,6 @@ TEST_CASE("Query Optimizer: autotester 13_sample") {
     SECTION("12") {
         string query = "assign a;\n"
                        "Select a such that Affects*(11, a)";
-        TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
-    }
-    SECTION("13") {
-        string query = "assign a;\n"
-                       "Select a pattern a(\"z\", _\"x+i\")";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
     SECTION("14") {

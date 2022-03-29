@@ -104,8 +104,9 @@ void QueryObject::printDeclarations() {
 
 void QueryObject::printClauses() {
     cout << "*** CLAUSES ***" << endl;
-    for (QueryClause &qc: clauses) {
-        qc.print();
+    cout << superClauses.size() << endl;
+    for (SuperClause *cl: superClauses) {
+        cout << cl->toString() << endl;
     }
 }
 
