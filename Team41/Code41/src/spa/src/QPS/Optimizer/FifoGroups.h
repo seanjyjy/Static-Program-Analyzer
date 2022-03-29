@@ -20,6 +20,8 @@ public:
 
     size_t currGroupSize() override;
 
+    bool currGroupCanSimplify() override;
+
     bool isLastOfGroup() override;
 
     string toString() const override;

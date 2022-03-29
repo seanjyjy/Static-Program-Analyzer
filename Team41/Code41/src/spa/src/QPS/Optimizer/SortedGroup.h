@@ -18,7 +18,7 @@ private:
     long long clauseScoreSum = 0;
 public:
     SortedGroup(vector<SuperClause *> initClauses);
-    SortedGroup(vector<SuperClause *> initClauses, bool isEssential);
+    SortedGroup(vector<SuperClause *> initClauses, bool canSimplify);
 
     SuperClause *pop() const override; // for non-const contexts
 

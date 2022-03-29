@@ -5,7 +5,7 @@
 
 class ClauseGroup {
 private:
-    bool isEssential = false; // for optimization purposes
+    bool isSimplifiable = false; // for optimization purposes
 public:
     ClauseGroup();
 

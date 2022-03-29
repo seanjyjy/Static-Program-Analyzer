@@ -5,7 +5,7 @@
 FifoGroup::FifoGroup(vector<SuperClause *> clauses): FifoGroup(move(clauses), true) {
 }
 
-FifoGroup::FifoGroup(vector<SuperClause *> initClauses, bool isEssential): ClauseGroup(isEssential) {
+FifoGroup::FifoGroup(vector<SuperClause *> initClauses, bool canSimplify): ClauseGroup(canSimplify) {
     clauses = vector<SuperClause*>(initClauses.begin(), initClauses.end());
     idx = 0;
     clauseScoreSum = accumulate(clauses.begin(), clauses.end(), 0L, [](long currScore, SuperClause *a) {

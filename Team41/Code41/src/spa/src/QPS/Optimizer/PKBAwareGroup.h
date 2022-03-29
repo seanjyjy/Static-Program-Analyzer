@@ -17,7 +17,7 @@ private:
     bool isEssential = false;
 public:
     PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter);
-    PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter, bool isEssential);
+    PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter, bool canSimplify);
 
     SuperClause *pop() const override;
 

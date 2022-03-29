@@ -2,9 +2,9 @@
 
 ClauseGroup::ClauseGroup() = default;
 
-ClauseGroup::ClauseGroup(bool isEssential): isEssential(isEssential) {
+ClauseGroup::ClauseGroup(bool canSimplify): isSimplifiable(canSimplify) {
 }
 
 bool ClauseGroup::canSimplify() const {
-    return !isEssential;
+    return isSimplifiable;
 }

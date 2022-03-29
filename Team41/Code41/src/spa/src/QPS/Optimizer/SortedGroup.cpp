@@ -5,7 +5,7 @@
 SortedGroup::SortedGroup(vector<SuperClause *> initClauses): SortedGroup(move(initClauses), true) {
 }
 
-SortedGroup::SortedGroup(vector<SuperClause *> initClauses, bool isEssential): ClauseGroup(isEssential) {
+SortedGroup::SortedGroup(vector<SuperClause *> initClauses, bool canSimplify): ClauseGroup(canSimplify) {
     clauses = multiset<SuperClause *, ClauseComparator>(initClauses.begin(), initClauses.end());
     it = clauses.begin();
     clauseScoreSum = accumulate(initClauses.begin(), initClauses.end(), 0L, [](long currScore, SuperClause *a) {

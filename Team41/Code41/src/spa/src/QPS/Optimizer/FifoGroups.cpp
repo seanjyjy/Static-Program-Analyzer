@@ -49,3 +49,8 @@ void FifoGroups::ensureInvariant() {
     while (it != groups.end() && (*it)->empty()) it++;
 }
 
+bool FifoGroups::currGroupCanSimplify() {
+    ensureInvariant();
+    return (*it)->canSimplify();
+}
+

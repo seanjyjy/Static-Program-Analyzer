@@ -135,6 +135,10 @@ size_t QueryObject::currGroupSize() {
     return superClauses.size();
 }
 
+bool QueryObject::currGroupCanSimplify() {
+    return false;
+}
+
 bool QueryObject::isLastOfGroup() {
     return currPtr == superClauses.size()-1;
 }

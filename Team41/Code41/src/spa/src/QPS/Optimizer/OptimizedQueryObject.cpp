@@ -25,6 +25,10 @@ size_t OptimizedQueryObject::currGroupSize() {
     return clauseGroups->currGroupSize();
 }
 
+bool OptimizedQueryObject::currGroupCanSimplify() {
+    return clauseGroups->currGroupCanSimplify();
+}
+
 void OptimizedQueryObject::print() {
     clauseGroups->print();
 }

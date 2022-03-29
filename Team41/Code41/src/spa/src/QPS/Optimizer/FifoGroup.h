@@ -13,7 +13,7 @@ private:
     long long clauseScoreSum = 0;
 public:
     FifoGroup(vector<SuperClause *> clauses);
-    FifoGroup(vector<SuperClause *> clauses, bool isEssential);
+    FifoGroup(vector<SuperClause *> clauses, bool canSimplify);
 
     SuperClause *pop() const override;
 

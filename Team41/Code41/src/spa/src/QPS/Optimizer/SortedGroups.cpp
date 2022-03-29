@@ -47,3 +47,8 @@ void SortedGroups::ensureInvariant() {
     // ensure invariant - first group always has a clause to take (unless all consumed)
     while (it != sortedGroups.end() && (*it)->empty()) it++;
 }
+
+bool SortedGroups::currGroupCanSimplify() {
+    ensureInvariant();
+    return (*it)->canSimplify();
+}

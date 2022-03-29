@@ -73,6 +73,11 @@ public:
     virtual size_t currGroupSize();
 
     /**
+     * Returns true if the current group can be simplified, false otherwise.
+     */
+    virtual bool currGroupCanSimplify();
+
+    /**
      * Returns true if after one more clause is popped, the current group will be empty, false otherwise.
      */
     virtual bool isLastOfGroup();

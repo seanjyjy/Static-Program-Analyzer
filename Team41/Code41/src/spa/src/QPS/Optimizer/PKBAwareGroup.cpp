@@ -6,7 +6,7 @@
 PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter): PKBAwareGroup(move(initClauses), pkbAdapter, true) {
 }
 
-PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter, bool isEssential): ClauseGroup(isEssential) {
+PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter, bool canSimplify): ClauseGroup(canSimplify) {
     table = TableEstimate(pkbAdapter);
     clauses = vector<SuperClause*>(initClauses.begin(), initClauses.end());
     isClauseUsed.assign(initClauses.size(), false);

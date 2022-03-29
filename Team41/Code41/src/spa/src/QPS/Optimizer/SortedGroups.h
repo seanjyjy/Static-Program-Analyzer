@@ -6,7 +6,18 @@
 
 struct ClauseGroupComparator {
     bool operator()(ClauseGroup *lhs, ClauseGroup *rhs) const {
-        return lhs->score() < rhs->score();
+        // reducible groups go first
+        if (lhs->canSimplify() && !rhs->canSimplify()) {
+            return true;
+        } else if (!lhs->canSimplify() && rhs->canSimplify()) {
+            return false;
+        } else if (lhs->canSimplify() && rhs->canSimplify() && lhs->size() != rhs->size()) {
+            // if both reducible, smaller group goes first
+            return lhs->size() < rhs->size();
+        } else {
+            // tiebreak by score
+            return lhs->score() < rhs->score();
+        }
     }
 };
 
@@ -26,6 +37,8 @@ public:
     ClauseGroup *front() override;
 
     size_t currGroupSize() override;
+
+    bool currGroupCanSimplify() override;
 
     bool isLastOfGroup() override;
 

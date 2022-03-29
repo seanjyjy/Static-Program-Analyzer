@@ -27,17 +27,17 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
     vector < ClauseGroup * > groups;
     vector<QueryDeclaration> selectables(qo->getSelectablesAsQDs());
     for (vector<SuperClause *> &clauses: clauseGroups) {
-        bool isEssential = true;
+        bool canSimplify = false;
 
         if (isDupClauseRemovalEnabled) clauses = OptimizerUtils::removeDuplicates(clauses);
-        if (isSimplifyGroupsEnabled) isEssential = OptimizerUtils::hasSynonymOverlap(selectables, clauses);
+        if (isSimplifyGroupsEnabled) canSimplify = !OptimizerUtils::hasSynonymOverlap(selectables, clauses);
 
         if (isIntraGroupSortEnabled && isDynamicPollingEnabled) {
-            groups.push_back(new PKBAwareGroup(clauses, adapter, isEssential));
+            groups.push_back(new PKBAwareGroup(clauses, adapter, canSimplify));
         } else if (isIntraGroupSortEnabled) {
-            groups.push_back(new SortedGroup(clauses, isEssential));
+            groups.push_back(new SortedGroup(clauses, canSimplify));
         } else {
-            groups.push_back(new FifoGroup(clauses, isEssential));
+            groups.push_back(new FifoGroup(clauses, canSimplify));
         }
     }
 
@@ -95,6 +95,7 @@ QueryOptimizer &QueryOptimizer::enableAllOptimizations(PKBManager *pkbManager) {
             .setIntraGroupSort(true)
             .setInterGroupSort(true)
             .setDupClauseRemoval(true)
+            .setSimplifyGroups(true)
             .enableDynamicPolling(pkbManager);
 }
 

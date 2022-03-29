@@ -12,6 +12,8 @@ public:
 
     virtual size_t currGroupSize() = 0;
 
+    virtual bool currGroupCanSimplify() = 0;
+
     virtual bool isLastOfGroup() = 0;
 
     virtual string toString() const = 0;
