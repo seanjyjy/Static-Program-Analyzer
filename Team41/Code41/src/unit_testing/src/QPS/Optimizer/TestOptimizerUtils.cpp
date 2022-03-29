@@ -179,7 +179,7 @@ void TestOptimizerUtils::testGroupandGroupsAbstractions(string &query) {
 
         for (int j = 0; j < sortedGroupSize; j++) {
             // this will only run if size is greater than 0, no underflow possible
-            if (j == groupSize-1) {
+            if (j == sortedGroupSize-1) {
                 REQUIRE(sg.isLastOfGroup());
                 REQUIRE(pg.isLastOfGroup());
             }
