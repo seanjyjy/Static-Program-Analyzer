@@ -17,6 +17,8 @@ public:
 
     QueryDeclaration getSynonym() const;
 
+    [[nodiscard]] string getSynonymName() const;
+
     Selectable(selectableType type, QueryDeclaration synonym, attributeName attr);
 
 private:

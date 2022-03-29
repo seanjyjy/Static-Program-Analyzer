@@ -16,7 +16,12 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
         for (SuperClause *cl: qo->getSuperClauses()) {
             clauseDepGraph.registerClause(cl);
         }
-        clauseGroups = clauseDepGraph.split();
+        // turn on group simplification if needed
+        clauseGroups = isSimplifyGroupsEnabled
+                ? clauseDepGraph
+                        .enableGroupSimplification(OptimizerUtils::getSelectablesAsStrings(qo->getSelectables()))
+                        .split()
+                : clauseDepGraph.split();
     } else {
         // no clause grouping - just one group of all clauses
         clauseGroups.push_back(qo->getSuperClauses());

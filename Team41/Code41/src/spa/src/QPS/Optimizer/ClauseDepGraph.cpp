@@ -36,6 +36,7 @@ void ClauseDepGraph::registerClause(SuperClause *cl) {
 }
 
 vector<vector<SuperClause *>> ClauseDepGraph::split() {
+    // TODO add simplification logic
     vector<vector<SuperClause *>> ret;
 
     // populate the first group - with no synonyms
@@ -61,7 +62,7 @@ vector<vector<SuperClause *>> ClauseDepGraph::split() {
 }
 
 int ClauseDepGraph::getCid() {
-    return cid++;
+    return clauseId++;
 }
 
 vector<SuperClause *> ClauseDepGraph::getUnprocessedClauses(vector<TaggedSuperClause> &clauses) {
@@ -73,4 +74,10 @@ vector<SuperClause *> ClauseDepGraph::getUnprocessedClauses(vector<TaggedSuperCl
         }
     }
     return ret;
+}
+
+ClauseDepGraph &ClauseDepGraph::enableGroupSimplification(const vector<string> &selectables) {
+    selectSynonyms = selectables;
+    shouldSimplifyGroups = true;
+    return *this;
 }

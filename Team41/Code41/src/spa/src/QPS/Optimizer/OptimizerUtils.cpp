@@ -26,3 +26,12 @@ void OptimizerUtils::print(vector<vector<SuperClause *>> &clauses) {
         cout << endl;
     }
 }
+
+vector<string> OptimizerUtils::getSelectablesAsStrings(const vector<Selectable> &selectables) {
+    vector<string> ret;
+    ret.reserve(selectables.size()); // minor optimization
+    for (const Selectable &s: selectables) {
+        ret.push_back(s.getSynonymName());
+    }
+    return ret;
+}
