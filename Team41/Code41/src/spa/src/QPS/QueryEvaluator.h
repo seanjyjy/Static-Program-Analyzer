@@ -61,9 +61,9 @@ private:
 
     Table *mergeTable(Table *resultTable, Table *intermediateTable);
 
-    Table *evaluateClauses(Table *resultTable, OptimizedQueryObject *queryObject);
+    Table *evaluateClauses(Table *resultTable, QueryObject *queryObject);
 
-    Table *evaluateSelectables(Table *resultTable, OptimizedQueryObject *queryObject);
+    Table *evaluateSelectables(Table *resultTable, QueryObject *queryObject);
 
 public:
     explicit QueryEvaluator(PKBClient *pkb);
@@ -77,8 +77,6 @@ public:
      * @return A set of results based on the query provided.
      */
     QueryResult evaluateQuery(QueryObject *queryObject);
-
-    QueryResult evaluateQuery(OptimizedQueryObject *queryObject);
 
     /**
      * Constructs a table based on the QueryClause provided.
