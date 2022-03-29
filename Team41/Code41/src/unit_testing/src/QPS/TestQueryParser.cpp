@@ -963,5 +963,14 @@ TEST_CASE("QPS: Parser_INVALID") {
         REQUIRE(qo->isValid());
         REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
+    SECTION("If Pattern semantically NOT OK, syntactically NOT OK, wrong pattern") {
+
+        string s = "Select BOOLEAN pattern s ('x', _, _\"invalid pattern\"_)";
+
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE_FALSE(qo->isValid());
+        REQUIRE(qo->hasUseOfUndeclaredVariable());
+    }
     delete qo;
 }

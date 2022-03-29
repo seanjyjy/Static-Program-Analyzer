@@ -543,3 +543,8 @@ assign a, a1;
 Select BOOLEAN such that Uses(1, "x") and Uses(2, "y") with 1 = 1 and 2 = 2 pattern a("x", "y + 1") and a1("x", "x + 1")
 TRUE
 5000
+109 - Using undeclared synonym and invalid expression for pattern // Invalid Syntactic
+
+Select BOOLEAN pattern s ('x', _, _"invalid pattern"_)
+
+5000
