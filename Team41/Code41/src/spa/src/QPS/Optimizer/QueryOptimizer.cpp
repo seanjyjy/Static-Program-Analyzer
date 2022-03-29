@@ -6,9 +6,8 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
     // if there are errors in the query object, don't do anything
     if (!qo->isValid() || qo->hasUseOfUndeclaredVariable()) return {qo};
 
-    // do some preliminary checks
+    // preliminary checks: dynamic polling requires pkb adapter
     if (isDynamicPollingEnabled && !isPkbAdapterSet) throw runtime_error("pkb adapter not set");
-
 
     // step 1: Take query object, extract clauses, group them based on synonym dependencies
     vector<vector<SuperClause *>> clauseGroups;
@@ -30,7 +29,7 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
 
         if (isIntraGroupSortEnabled && isDynamicPollingEnabled) {
             groups.push_back(new PKBAwareGroup(clauses, adapter));
-        } else if (isIntraGroupSortEnabled &&) {
+        } else if (isIntraGroupSortEnabled) {
             groups.push_back(new SortedGroup(clauses));
         } else {
             groups.push_back(new FifoGroup(clauses));
