@@ -22,6 +22,7 @@ private:
     bool isIntraGroupSortEnabled = true;
     bool isInterGroupSortEnabled = true;
     bool isDynamicPollingEnabled = false;
+    bool isDupClauseRemovalEnabled = true;
     bool isPkbAdapterSet = false;
     PKBAdapter adapter;
     ClauseDepGraph clauseDepGraph;
@@ -39,6 +40,8 @@ public:
     QueryOptimizer &setInterGroupSort(bool isOn);
 
     QueryOptimizer &setClauseGrouping(bool isOn);
+
+    QueryOptimizer &setDupClauseRemoval(bool isOn);
 
     QueryOptimizer &enableDynamicPolling(PKBManager *pkbManager);
 

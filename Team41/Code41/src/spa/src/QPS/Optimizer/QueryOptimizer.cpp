@@ -1,19 +1,10 @@
 #include "QueryOptimizer.h"
 
-#include <utility>
-
 QueryOptimizer::QueryOptimizer() = default;
 
 OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
     // do some preliminary checks
     if (isDynamicPollingEnabled && !isPkbAdapterSet) throw runtime_error("pkb adapter not set");
-
-//    AbstractGroups *groups = nullptr;
-//    if (isInterGroupSortEnabled) {
-//        groups = new SortedGroups();
-//    } else {
-//        groups = new FifoGroups();
-//    }
 
     bool hasError = !qo->isValid() || qo->hasUseOfUndeclaredVariable();
 
@@ -32,15 +23,15 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
 
     // step 2: Add clause groups
     vector<AbstractGroup*> groups;
-    for (vector<SuperClause *> &clauseGroup: clauseGroups) {
-        clauseGroup = OptimizerUtils::removeDuplicates(clauseGroup);
+    for (vector<SuperClause *> &clauses: clauseGroups) {
+        if (isDupClauseRemovalEnabled) clauses = OptimizerUtils::removeDuplicates(clauses);
 
         if (isIntraGroupSortEnabled && isDynamicPollingEnabled && !hasError) {
-            groups.push_back(new PKBAwareGroup(clauseGroup, adapter));
+            groups.push_back(new PKBAwareGroup(clauses, adapter));
         } else if (isIntraGroupSortEnabled && !hasError) {
-            groups.push_back(new SortedGroup(clauseGroup));
+            groups.push_back(new SortedGroup(clauses));
         } else {
-            groups.push_back(new FifoGroup(clauseGroup));
+            groups.push_back(new FifoGroup(clauses));
         }
     }
 
@@ -86,9 +77,15 @@ QueryOptimizer &QueryOptimizer::enableDynamicPolling(PKBManager *pkbManager) {
     return *this;
 }
 
+QueryOptimizer &QueryOptimizer::setDupClauseRemoval(bool isOn) {
+    isDupClauseRemovalEnabled = isOn;
+    return *this;
+}
+
 QueryOptimizer &QueryOptimizer::enableAllOptimizations(PKBManager *pkbManager) {
     return setClauseGrouping(true)
             .setIntraGroupSort(true)
             .setInterGroupSort(true)
+            .setDupClauseRemoval(true)
             .enableDynamicPolling(pkbManager);
 }
