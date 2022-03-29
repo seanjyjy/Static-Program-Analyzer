@@ -415,7 +415,8 @@ optional<QueryDeclaration> QueryParser::parsePatternSyn() {
     if (declared == nullopt) {
         queryObject->setUseOfUndeclaredVariable(true);
         printf("Semantic Error: Use of undeclared pattern synonym <%s>\n", patternSyn->c_str());
-        return nullopt;
+        declared = {QueryDeclaration::design_entity_type::NONE, patternSyn.value()};
+        return declared;
     }
 
     if (isValidPatternSynType(declared.value())) {
@@ -524,14 +525,47 @@ bool QueryParser::parsePatternClause() {
         case QueryDeclaration::WHILE:
             pv = parseWhilePatternParams();
             break;
+        case QueryDeclaration::NONE:
+            pv = parseDummyPatternParams();
+            break;
         default:
-            printf("Invalid pattern type");
+            printf("Invalid pattern synonym type\n");
             return false;
     }
     if (pv == nullopt) return false;
     lookForClauseGrammarSymbol(")", "Syntax Error: Expected ')' for end of pattern declaration.\n");
     buildPatternClauseObject(patternSyn.value(), lhs->c_str(), *pv);
     return true;
+}
+
+optional<vector<PatternVariable>> QueryParser::parseDummyPatternParams() {
+    optional<PatternVariable> pv = parsePatternRHS();
+    if (pv == nullopt) return nullopt;
+    if (!pv->isWildcard()) {
+        delete pv->getMiniAST();
+        return nullopt;
+    }
+    // Found an if-pattern like query
+    if (lex->peekNextIsString(",")) {
+        lex->nextExpected(",");
+        if (lex->isEndOfQuery()) {
+            printf("Expected 2 pattern expression.\n");
+            return nullopt;
+        }
+        optional<PatternVariable> elsePv = parsePatternRHS();
+        if (elsePv == nullopt) {
+            delete pv->getMiniAST();
+            return nullopt;
+        }
+        if (!elsePv->isWildcard()) {
+            delete pv->getMiniAST();
+            delete elsePv->getMiniAST();
+            return nullopt;
+        }
+    }
+
+    // return dummy pattern data cause inconsequential
+    return vector<PatternVariable>({});
 }
 
 optional<vector<PatternVariable>> QueryParser::parseAssignPatternParams() {
@@ -768,7 +802,10 @@ QueryObject *QueryParser::parse() {
         }
     }
 
-    printf("Query parsed.\n");
+    if (queryObject->hasUseOfUndeclaredVariable())
+        printf("Query parsed but contains semantic errors\n");
+    else
+        printf("Query parsed.\n");
     cleanup();
     return queryObject;
 }

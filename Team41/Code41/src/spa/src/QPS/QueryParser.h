@@ -136,6 +136,8 @@ private:
 
     optional<vector<PatternVariable>> parseIfPatternParams();
 
+    optional<vector<PatternVariable>> parseDummyPatternParams();
+
     void buildPatternClauseObject(QueryDeclaration patternSyn, string lhs, vector<PatternVariable> rhs);
 
     /**
