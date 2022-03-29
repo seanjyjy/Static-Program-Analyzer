@@ -3,14 +3,16 @@
 QueryOptimizer::QueryOptimizer() = default;
 
 OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
+    // if there are errors in the query object, don't do anything
+    if (!qo->isValid() || qo->hasUseOfUndeclaredVariable()) return {qo};
+
     // do some preliminary checks
     if (isDynamicPollingEnabled && !isPkbAdapterSet) throw runtime_error("pkb adapter not set");
 
-    bool hasError = !qo->isValid() || qo->hasUseOfUndeclaredVariable();
 
     // step 1: Take query object, extract clauses, group them based on synonym dependencies
     vector<vector<SuperClause *>> clauseGroups;
-    if (isClauseGroupingEnabled && !hasError) {
+    if (isClauseGroupingEnabled) {
         // clause grouping enabled - form dependency graph and split clauses
         for (SuperClause *cl: qo->getSuperClauses()) {
             clauseDepGraph.registerClause(cl);
@@ -26,17 +28,17 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
     for (vector<SuperClause *> &clauses: clauseGroups) {
         if (isDupClauseRemovalEnabled) clauses = OptimizerUtils::removeDuplicates(clauses);
 
-        if (isIntraGroupSortEnabled && isDynamicPollingEnabled && !hasError) {
+        if (isIntraGroupSortEnabled && isDynamicPollingEnabled) {
             groups.push_back(new PKBAwareGroup(clauses, adapter));
-        } else if (isIntraGroupSortEnabled && !hasError) {
+        } else if (isIntraGroupSortEnabled &&) {
             groups.push_back(new SortedGroup(clauses));
         } else {
             groups.push_back(new FifoGroup(clauses));
         }
     }
 
-    // initialize the groups container
-    if (isInterGroupSortEnabled && !hasError) {
+    // step 3: Wrap clause groups under an AbstractGroup
+    if (isInterGroupSortEnabled) {
         return {qo, new SortedGroups(groups)};
     } else {
         return {qo, new FifoGroups(groups)};
@@ -49,9 +51,11 @@ QueryOptimizer QueryOptimizer::create() {
 
 void QueryOptimizer::print() {
     cout << "isClauseGroupingEnabled: " << isClauseGroupingEnabled << endl
+         << "isSimplifyGroupsEnabled: " << isSimplifyGroupsEnabled << endl
          << "isIntraGroupSortEnabled: " << isIntraGroupSortEnabled << endl
          << "isInterGroupSortEnabled: " << isInterGroupSortEnabled << endl
-         << "isDynamicPollingEnabled: " << isDynamicPollingEnabled << endl;
+         << "isDynamicPollingEnabled: " << isDynamicPollingEnabled << endl
+         << "isDupClauseRemovalEnabled: " << isDupClauseRemovalEnabled << endl;
 }
 
 QueryOptimizer &QueryOptimizer::setInterGroupSort(bool isOn) {
@@ -88,4 +92,9 @@ QueryOptimizer &QueryOptimizer::enableAllOptimizations(PKBManager *pkbManager) {
             .setInterGroupSort(true)
             .setDupClauseRemoval(true)
             .enableDynamicPolling(pkbManager);
+}
+
+QueryOptimizer &QueryOptimizer::setSimplifyGroups(bool isOn) {
+    isSimplifyGroupsEnabled = isOn;
+    return *this;
 }

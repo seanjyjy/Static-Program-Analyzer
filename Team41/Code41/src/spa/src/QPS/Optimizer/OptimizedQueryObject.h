@@ -14,11 +14,13 @@ private:
 public:
     OptimizedQueryObject();
 
+    OptimizedQueryObject(QueryObject *qo); // only used when query object has an error - skip optimization
+
     OptimizedQueryObject(QueryObject *qo, AbstractGroups *cg);
 
     SuperClause *popClause();
 
-    bool empty();
+    bool empty(); // now should return true when no more groups
 
     void printPlan();
 };
