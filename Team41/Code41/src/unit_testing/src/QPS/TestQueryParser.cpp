@@ -954,6 +954,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("If Pattern semantically NOT OK, syntactically OK") {
+        printf("<?\n");
         string s = "if ifs;\n"
                    "Select ifs pattern ifs (v, _, _)";
 
