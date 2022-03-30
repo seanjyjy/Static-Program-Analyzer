@@ -7,8 +7,8 @@
 #include "QPS/SelectTarget.h"
 #include "PKB/PKBClient.h"
 #include <optional>
+#include <algorithm>
 
-// TODO shift to correct class later?
 class EvaluatorUtils {
 public:
     // General utils
