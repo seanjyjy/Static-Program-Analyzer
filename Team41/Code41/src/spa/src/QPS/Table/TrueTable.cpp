@@ -12,6 +12,6 @@ Table *TrueTable::mergeJoin(Table *intermediatePQLTable) {
     return intermediatePQLTable;
 }
 
-Table::TableType TrueTable::getType() {
-    return Table::TrueTable;
+bool TrueTable::isTrueTable() {
+    return true;
 }
