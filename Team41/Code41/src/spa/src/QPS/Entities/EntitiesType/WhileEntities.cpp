@@ -4,10 +4,6 @@ bool WhileEntities::isWhile() {
     return true;
 }
 
-EntitiesReader *WhileEntities::getReader() {
-    return reader;
-}
-
 string WhileEntities::toString() {
     return "while";
 }

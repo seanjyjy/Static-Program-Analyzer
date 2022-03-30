@@ -4,10 +4,6 @@ bool ReadEntities::isRead() {
     return true;
 }
 
-EntitiesReader *ReadEntities::getReader() {
-    return reader;
-}
-
 string ReadEntities::toString() {
     return "read";
 }

@@ -46,4 +46,8 @@ bool Entities::isNone() {
     return false;
 }
 
+EntitiesReader *Entities::getReader() {
+    return reader;
+}
+
 Entities::~Entities() = default;

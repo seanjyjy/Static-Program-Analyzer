@@ -11,8 +11,6 @@ public:
 
     bool isVariable() override;
 
-    EntitiesReader *getReader() override;
-
     string toString() override;
 
     int hashCode() override;
