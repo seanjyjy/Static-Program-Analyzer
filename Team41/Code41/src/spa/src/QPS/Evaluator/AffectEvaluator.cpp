@@ -1,7 +1,7 @@
 #include "AffectEvaluator.h"
 
 AffectEvaluator::AffectEvaluator(PKBClient *pkb, AffectsKBAdapter *adapter) :
-        GenericClauseEvaluator(pkb), affectsKBAdapter(adapter) {};
+        GenericClauseEvaluator(pkb), affectsKBAdapter(adapter) {}
 
 Table *AffectEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &right) {
     if (EvaluatorUtils::StmtUtils::isIntegerInteger(&left, &right)) {

@@ -14,13 +14,13 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
                          bool isQueryValid) :
     withClauses(std::move(withClauses)),
     superClauses(std::move(superClauses)),
+    useOfUndeclaredVariable(false),
     declarations(std::move(declarations)),
     clauses(std::move(clauses)),
     patternClauses(std::move(patternClauses)),
     selectSynonym(std::move(selectSynonym)),
     selectTarget(std::move(selectTarget)),
-    isQueryValid(isQueryValid),
-    useOfUndeclaredVariable(false) {
+    isQueryValid(isQueryValid) {
 }
 
 QueryObject::QueryObject(vector<QueryDeclaration> declarations,
@@ -28,12 +28,12 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
                          vector<PatternClause> patternClauses,
                          QueryDeclaration selectSynonym,
                          bool isQueryValid) :
+        useOfUndeclaredVariable(false),
         declarations(std::move(declarations)),
         clauses(std::move(clauses)),
         patternClauses(std::move(patternClauses)),
         selectSynonym(std::move(selectSynonym)),
-        isQueryValid(isQueryValid),
-        useOfUndeclaredVariable(false) {
+        isQueryValid(isQueryValid) {
 }
 
 vector<QueryDeclaration>& QueryObject::getDeclarations() {
