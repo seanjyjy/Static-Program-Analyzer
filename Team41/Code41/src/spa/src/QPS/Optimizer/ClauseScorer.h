@@ -8,19 +8,19 @@
  * For suchthat-clauses, additional penalty is applied based on number of synonyms (more synonyms = lower score)
  *
  * 1. All clauses with no synonyms (except Next, Next*, Affects, Affects*, since those need CFG traversal)
- * 2. All with-clauses
- * 3. All pattern-clauses
- * 4. Follows
- * 5. Parent
- * 6. Calls
- * 7. Parent*
- * 8. Calls*
+ * 2. Follows
+ * 3. Next
+ * 4. All with-clauses
+ * 5. Calls
+ * 6. Parent
+ * 7. Calls*
+ * 8. Modifies
  * 9. Uses
- * 10. Modifies
+ * 10. Parent*
  * 11. Follows*
- * 12. Next
- * 13. Next*
- * 14. Affects
+ * 12. All pattern-clauses
+ * 13. Affects
+ * 14. Next*
  * 15. Affects*
  */
 class ClauseScorer {
@@ -29,9 +29,8 @@ private:
         Follows, FollowsT, Parent, ParentT, Uses, Modifies, Calls, CallsT, Next, NextT, Affects, AffectsT
     };
     const static long SCORE_CLAUSE_NO_SYNONYMS = 1000;
-    const static long SCORE_WITH_CLAUSE = 700;
+    const static long SCORE_WITH_CLAUSE = 900;
     const static long SCORE_PATTERN_CLAUSE = 500;
-    const static long SCORE_SUCHTHAT_CLAUSE = 300;
 
     static unordered_map<SuchThatType, long> getStRanks();
 

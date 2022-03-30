@@ -26,9 +26,8 @@ long ClauseScorer::scoreWithCl(SuperClause *) {
 long ClauseScorer::scoreSuchThatCl(SuperClause *tc) {
     SuchThatType type = stClauseToType(tc);
     unordered_map<ClauseScorer::SuchThatType, long> ranks = getStRanks();
-    long idx = ranks[type];
-    long piece = SCORE_SUCHTHAT_CLAUSE / (long) ranks.size();
-    return SCORE_SUCHTHAT_CLAUSE - (idx * piece); // lower index = higher score
+    long score = ranks[type];
+    return score;
 }
 
 // all pattern-clauses are treated the same, i.e assigned the same score
@@ -54,20 +53,19 @@ ClauseScorer::SuchThatType ClauseScorer::stClauseToType(SuperClause *tc) {
 }
 
 unordered_map<ClauseScorer::SuchThatType, long> ClauseScorer::getStRanks() {
-    static long rank = 1;
     const static unordered_map<ClauseScorer::SuchThatType, long> stRanks = {
-            {SuchThatType::Follows,  rank++},
-            {SuchThatType::Parent,   rank++},
-            {SuchThatType::Calls,    rank++},
-            {SuchThatType::ParentT,  rank++},
-            {SuchThatType::CallsT,   rank++},
-            {SuchThatType::Uses,     rank++},
-            {SuchThatType::Modifies, rank++},
-            {SuchThatType::FollowsT, rank++},
-            {SuchThatType::Next,     rank++},
-            {SuchThatType::NextT,    rank++},
-            {SuchThatType::Affects,  rank++},
-            {SuchThatType::AffectsT, rank++}
+            {SuchThatType::Follows,  999},
+            {SuchThatType::Next,     998},
+            {SuchThatType::Calls,    850},
+            {SuchThatType::Parent,   800},
+            {SuchThatType::CallsT,   750},
+            {SuchThatType::Modifies, 700},
+            {SuchThatType::Uses,     650},
+            {SuchThatType::ParentT,  600},
+            {SuchThatType::FollowsT, 550},
+            {SuchThatType::Affects,  30},
+            {SuchThatType::NextT,    20},
+            {SuchThatType::AffectsT, 10}
     };
     return stRanks;
 }
