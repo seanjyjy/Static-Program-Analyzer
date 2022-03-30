@@ -7,7 +7,7 @@ using namespace std;
 EntitiesExtractor::EntitiesExtractor(TNode *ast) : BaseExtractor(ast) {}
 
 void EntitiesExtractor::findProcedures() {
-    vector<TNode *> procNodes = ast->getChildren();
+    const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) {
         string procName = procNode->getTokenVal();
         if (procSet.find(procName) != procSet.end()) // multiple procedures with same name not allowed

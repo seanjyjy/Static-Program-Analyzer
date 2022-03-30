@@ -43,8 +43,7 @@ void VarRelationExtractor::dfsCalls(TNode *node, unordered_set<string> &relation
         dfsCalls(node->getChildren()[0], relationSet); // only 1 child stmtLst
     } else if (type == TNodeType::stmtLst) {
         unordered_set<string> usesSetChild;
-        vector<TNode *> ch = node->getChildren();
-        for (TNode *child: ch) {
+        for (TNode *child: node->getChildren()) {
             dfsCalls(child, usesSetChild);
             DesignExtractorUtils::combineSetsClear(relationSet, usesSetChild);
         }
@@ -53,7 +52,7 @@ void VarRelationExtractor::dfsCalls(TNode *node, unordered_set<string> &relation
         mapRelation(node, relationSet);
     } else if (type == TNodeType::ifStmt) {
         unordered_set<string> usesSetChild;
-        vector<TNode *> ch = node->getChildren();
+        const vector<TNode *> &ch = node->getChildren();
         for (size_t i = 1; i <= 2; i++) { // if stmt has stmtLst on 2nd and 3rd child
             dfsCalls(ch[i], usesSetChild);
             DesignExtractorUtils::combineSetsClear(relationSet, usesSetChild);
@@ -69,7 +68,7 @@ void VarRelationExtractor::dfsCalls(TNode *node, unordered_set<string> &relation
 }
 
 void VarRelationExtractor::extract() {
-    vector<TNode *> procNodes = ast->getChildren();
+    const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) { // build stmt <relation> w/o calls
         unordered_set<string> st;
         dfs(procNode, st);

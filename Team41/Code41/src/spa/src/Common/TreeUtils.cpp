@@ -28,7 +28,7 @@ bool TreeUtils::isEqual(TNode *n1, TNode *n2) {
 string TreeUtils::serialize(TNode *root) {
     string ret;
     ret += root->toString();
-    vector<TNode *> ch = root->getChildren();
+    const vector<TNode *> &ch = root->getChildren();
     for (TNode *child: ch) {
         ret += serialize(child);
     }

@@ -6,7 +6,7 @@ PatternExtractor::PatternExtractor(TNode *ast, unordered_map<TNode *, string> &n
         StmtNumExtractor(ast, nodeToStmtNumMap) {}
 
 void PatternExtractor::mapAssignPattern(TNode *node) {
-    vector<TNode *> ch = node->getChildren();
+    const vector<TNode *> &ch = node->getChildren();
     pair<string, TNode *> lhsRhsPair = make_pair(ch[0]->getTokenVal(), ch[1]);
     assignPatternMap.insert({nodeToStmtNumMap.at(node), lhsRhsPair});
 }
@@ -26,21 +26,20 @@ void PatternExtractor::dfs(TNode *node) {
     if (type == TNodeType::procedure) {
         dfs(node->getChildren()[0]); // only 1 child stmtLst
     } else if (type == TNodeType::ifStmt) {
-        vector<TNode *> ch = node->getChildren();
+        const vector<TNode *> &ch = node->getChildren();
         dfs(ch[1]); // 2nd and 3rd child are stmtLst
         dfs(ch[2]);
         unordered_set<string> vars;
         dfsExpr(ch[0], vars); // dfs on condition
         mapIfPattern(node, vars);
     } else if (type == TNodeType::whileStmt) {
-        vector<TNode *> ch = node->getChildren();
+        const vector<TNode *> &ch = node->getChildren();
         dfs(ch[1]); // dfs on stmtLst
         unordered_set<string> vars;
         dfsExpr(ch[0], vars); // dfs on condition
         mapWhilePattern(node, vars);
     } else if (type == TNodeType::stmtLst) {
-        vector<TNode *> ch = node->getChildren();
-        for (TNode *childNode: ch) {
+        for (TNode *childNode: node->getChildren()) {
             dfs(childNode);
             if (childNode->getType() == TNodeType::assignStmt)
                 mapAssignPattern(childNode);
@@ -52,8 +51,7 @@ void PatternExtractor::dfsExpr(TNode *node, unordered_set<string> &varSet) {
     unordered_set<string> varSetChild;
     TNodeType type = node->getType();
     if (isCondExpr(type) || isOp(type)) {
-        vector<TNode *> ch = node->getChildren();
-        for (TNode *child: ch) {
+        for (TNode *child: node->getChildren()) {
             dfsExpr(child, varSetChild);
             DesignExtractorUtils::combineSetsClear(varSet, varSetChild);
         }
@@ -63,7 +61,7 @@ void PatternExtractor::dfsExpr(TNode *node, unordered_set<string> &varSet) {
 }
 
 void PatternExtractor::extract() {
-    vector<TNode *> procNodes = ast->getChildren();
+    const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) {
         dfs(procNode);
     }

@@ -10,12 +10,12 @@ void ParentExtractor::mapParent(TNode *node) {
     TNodeType type = node->getType();
     if (type == TNodeType::ifStmt) {
         for (size_t i = 1; i <= 2; i++) {
-            vector<TNode *> ch = node->getChildren()[i]->getChildren();
+            const vector<TNode *> &ch = node->getChildren()[i]->getChildren();
             for (TNode *child: ch)
                 parentLst.push_back(nodeToStmtNumMap.at(child));
         }
     } else { // TNodeType::whileStmt
-        vector<TNode *> ch = node->getChildren()[1]->getChildren();
+        const vector<TNode *> &ch = node->getChildren()[1]->getChildren();
         for (TNode *child: ch)
             parentLst.push_back(nodeToStmtNumMap.at(child));
     }
@@ -33,15 +33,14 @@ void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
         dfs(node->getChildren()[0], parentLst); // only 1 child stmtLst
     } else if (type == TNodeType::stmtLst) {
         list<string> parentLstChild;
-        vector<TNode *> ch = node->getChildren();
-        for (TNode *child: ch) {
+        for (TNode *child: node->getChildren()) {
             dfs(child, parentLstChild);
             DesignExtractorUtils::combineListsClear(parentLst, parentLstChild);
         }
     } else if (type == TNodeType::ifStmt) {
         list<string> parentLstChild;
-        vector<TNode *> ch = node->getChildren();
-        for (size_t i = 1; i <= 2; i++) { // ifStmt has stmtLst on 2nd and 3rd child
+        const vector<TNode *> &ch = node->getChildren();
+        for (size_t i = 1; i <= 2; ++i) { // ifStmt has stmtLst on 2nd and 3rd child
             dfs(ch[i], parentLstChild);
             DesignExtractorUtils::combineListsClear(parentLst, parentLstChild);;
         }
@@ -59,7 +58,7 @@ void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
 }
 
 void ParentExtractor::extract() {
-    vector<TNode *> procNodes = ast->getChildren();
+    const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) {
         list<string> lst;
         dfs(procNode, lst);
