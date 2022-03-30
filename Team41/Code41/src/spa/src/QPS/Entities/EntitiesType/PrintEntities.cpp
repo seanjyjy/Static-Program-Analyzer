@@ -4,7 +4,7 @@ bool PrintEntities::isPrint() {
     return true;
 }
 
-EntitiesReader* PrintEntities::getReader() {
+EntitiesReader *PrintEntities::getReader() {
     return reader;
 }
 

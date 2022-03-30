@@ -16,7 +16,7 @@ int NoneEntities::hashCode() {
     return -1; // shouldnt occur
 }
 
-NoneEntities::NoneEntities(): Entities(nullptr) {}
+NoneEntities::NoneEntities() : Entities(nullptr) {}
 
 NoneEntities::~NoneEntities() {
     delete reader;

@@ -50,6 +50,7 @@ protected:
     bool getWildCardIntegerRelation(const string &label);
 
     bool getWildCardWildCardRelation();
+
 public:
     explicit AffectEvaluator(PKBClient *pkb, AffectsKBAdapter *adapter);
 

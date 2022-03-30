@@ -55,7 +55,8 @@ private:
 
     Table *buildSynonymSynonymTable(unordered_set<string> &leftRes, unordered_set<string> &rightRes,
                                     QueryDeclaration &leftSynonym, QueryDeclaration &rightSynonym,
-                                    const ValueMapping &leftMapping, const ValueMapping &rightMapping, bool canSimplify);
+                                    const ValueMapping &leftMapping, const ValueMapping &rightMapping,
+                                    bool canSimplify);
 
     Table *buildSameSynonymTable(unordered_set<string> &results, const string &column);
 

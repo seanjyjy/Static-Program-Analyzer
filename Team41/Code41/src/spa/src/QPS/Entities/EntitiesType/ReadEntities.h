@@ -6,10 +6,14 @@
 class ReadEntities : public Entities {
 public:
     ReadEntities();
+
     ~ReadEntities() override;
 
     bool isRead() override;
+
     EntitiesReader *getReader() override;
+
     string toString() override;
+
     int hashCode() override;
 };

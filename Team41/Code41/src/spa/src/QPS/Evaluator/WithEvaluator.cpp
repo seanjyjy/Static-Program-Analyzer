@@ -75,7 +75,7 @@ bool WithEvaluator::isAttrRefValid(WithVariable &variable) {
     }
 
     return type->isStmt() || type->isRead() || type->isPrint() || type->isCall() || type->isWhile() || type->isIf()
-            || type->isAssign();
+           || type->isAssign();
 }
 
 bool WithEvaluator::isIntegerInteger(WithVariable &left, WithVariable &right) {
@@ -242,14 +242,16 @@ Table *WithEvaluator::evaluateAttrRefAttrRef(WithVariable &left, WithVariable &r
     if (isLeftNumberType && isRightNumberType) {
         unordered_set<string> leftResults = getSpecificStatementType(leftSynonym.getType());
         unordered_set<string> rightResults = getSpecificStatementType(rightSynonym.getType());
-        return buildSynonymSynonymTable(leftResults, rightResults, leftSynonym, rightSynonym, sameMapper, sameMapper, canSimplify);
+        return buildSynonymSynonymTable(leftResults, rightResults, leftSynonym, rightSynonym, sameMapper, sameMapper,
+                                        canSimplify);
     }
 
     unordered_set<string> leftResults = getName(leftSynonym.getType());
     unordered_set<string> rightResults = getName(rightSynonym.getType());
     ValueMapping leftMapper = getMapper(leftSynonym.getType());
     ValueMapping rightMapper = getMapper(rightSynonym.getType());
-    return buildSynonymSynonymTable(leftResults, rightResults, leftSynonym, rightSynonym, leftMapper, rightMapper, canSimplify);
+    return buildSynonymSynonymTable(leftResults, rightResults, leftSynonym, rightSynonym, leftMapper, rightMapper,
+                                    canSimplify);
 }
 
 unordered_set<string> WithEvaluator::getSpecificStatementType(Entities *type) {

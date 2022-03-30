@@ -4,7 +4,7 @@ bool ReadEntities::isRead() {
     return true;
 }
 
-EntitiesReader* ReadEntities::getReader() {
+EntitiesReader *ReadEntities::getReader() {
     return reader;
 }
 

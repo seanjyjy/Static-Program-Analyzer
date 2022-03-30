@@ -4,7 +4,7 @@ bool VariableEntities::isVariable() {
     return true;
 }
 
-EntitiesReader* VariableEntities::getReader() {
+EntitiesReader *VariableEntities::getReader() {
     return reader;
 }
 

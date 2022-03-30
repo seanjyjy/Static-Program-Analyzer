@@ -6,10 +6,14 @@
 class ConstantEntities : public Entities {
 public:
     ConstantEntities();
+
     ~ConstantEntities() override;
 
     bool isConstant() override;
+
     EntitiesReader *getReader() override;
+
     string toString() override;
+
     int hashCode() override;
 };

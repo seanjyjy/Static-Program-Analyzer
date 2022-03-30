@@ -4,7 +4,7 @@ bool StmtEntities::isStmt() {
     return true;
 }
 
-EntitiesReader* StmtEntities::getReader() {
+EntitiesReader *StmtEntities::getReader() {
     return reader;
 }
 

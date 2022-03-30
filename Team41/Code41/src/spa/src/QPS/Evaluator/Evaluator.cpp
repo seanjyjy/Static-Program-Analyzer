@@ -41,7 +41,7 @@ Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, 
 }
 
 Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, const string &label,
-                                          Entities* type) {
+                                          Entities *type) {
 
     if (results.empty()) {
         return new FalseTable();

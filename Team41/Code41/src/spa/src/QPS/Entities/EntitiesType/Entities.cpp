@@ -1,6 +1,6 @@
 #include "Entities.h"
 
-Entities::Entities(EntitiesReader *reader): reader(reader) {}
+Entities::Entities(EntitiesReader *reader) : reader(reader) {}
 
 bool Entities::isStmt() {
     return false;

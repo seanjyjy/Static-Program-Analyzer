@@ -4,7 +4,7 @@ bool WhileEntities::isWhile() {
     return true;
 }
 
-EntitiesReader* WhileEntities::getReader() {
+EntitiesReader *WhileEntities::getReader() {
     return reader;
 }
 

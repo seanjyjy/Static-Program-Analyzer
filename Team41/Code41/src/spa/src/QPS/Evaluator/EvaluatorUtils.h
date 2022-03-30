@@ -136,7 +136,7 @@ public:
      * @param declarations the list of declarations defined in the query
      * @return true if valid, false otherwise
      */
-    static bool validateDeclarations(vector<QueryDeclaration>& declarations);
+    static bool validateDeclarations(vector<QueryDeclaration> &declarations);
 
     // for Follow, Follow*, Parent, Parent*
     class StmtUtils {
@@ -488,11 +488,12 @@ public:
 
     class PatternUtils {
     public:
-        static bool isWildCardWildCards(const ClauseVariable& variable, const vector<PatternVariable> &patternVariables,
+        static bool isWildCardWildCards(const ClauseVariable &variable, const vector<PatternVariable> &patternVariables,
                                         Entities *type);
 
-        static bool isIdentifierWildCards(const ClauseVariable& variable, const vector<PatternVariable> &patternVariables,
-                                          Entities *type);
+        static bool
+        isIdentifierWildCards(const ClauseVariable &variable, const vector<PatternVariable> &patternVariables,
+                              Entities *type);
 
         static bool isValidSynonymWildCards(ClauseVariable &variable, const vector<PatternVariable> &patternVariables,
                                             Entities *type);

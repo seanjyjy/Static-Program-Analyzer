@@ -4,7 +4,7 @@ bool CallEntities::isCall() {
     return true;
 }
 
-EntitiesReader* CallEntities::getReader() {
+EntitiesReader *CallEntities::getReader() {
     return reader;
 }
 
@@ -16,7 +16,7 @@ int CallEntities::hashCode() {
     return 1;
 }
 
-CallEntities::CallEntities(): Entities(new CallReader()) {}
+CallEntities::CallEntities() : Entities(new CallReader()) {}
 
 CallEntities::~CallEntities() {
     delete reader;

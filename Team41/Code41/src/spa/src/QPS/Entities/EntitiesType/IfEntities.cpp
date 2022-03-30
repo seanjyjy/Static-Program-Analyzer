@@ -4,7 +4,7 @@ bool IfEntities::isIf() {
     return true;
 }
 
-EntitiesReader* IfEntities::getReader() {
+EntitiesReader *IfEntities::getReader() {
     return reader;
 }
 

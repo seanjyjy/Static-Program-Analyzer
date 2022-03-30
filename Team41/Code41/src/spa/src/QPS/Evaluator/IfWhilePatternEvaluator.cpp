@@ -17,7 +17,8 @@ Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration &patternSynonym
     throw SemanticException("Invalid query provided for Pattern");
 }
 
-Table *IfWhilePatternEvaluator::evaluateSynonymWildCard(QueryDeclaration &patternSyn, ClauseVariable &left, bool canSimplify) {
+Table *
+IfWhilePatternEvaluator::evaluateSynonymWildCard(QueryDeclaration &patternSyn, ClauseVariable &left, bool canSimplify) {
     vector<pair<string, string>> listOfStmtNVar = getSynonymWildCardRelation();
     if (canSimplify) {
         return buildBooleanTable(!listOfStmtNVar.empty());

@@ -4,7 +4,7 @@ bool ProcedureEntities::isProcedure() {
     return true;
 }
 
-EntitiesReader* ProcedureEntities::getReader() {
+EntitiesReader *ProcedureEntities::getReader() {
     return reader;
 }
 

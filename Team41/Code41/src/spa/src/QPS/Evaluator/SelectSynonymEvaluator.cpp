@@ -1,10 +1,10 @@
 #include "SelectSynonymEvaluator.h"
 #include <stdexcept>
 
-Table *SelectSynonymEvaluator::evaluate(const QueryDeclaration& selectSynonym) {
+Table *SelectSynonymEvaluator::evaluate(const QueryDeclaration &selectSynonym) {
     auto synonym = selectSynonym.getSynonym();
 
-    EntitiesReader* reader = selectSynonym.getType()->getReader();
+    EntitiesReader *reader = selectSynonym.getType()->getReader();
     unordered_set<string> setOfResult = reader->getEntities(pkb);
     Header header({synonym});
     Table *resultTable = new PQLTable(header);

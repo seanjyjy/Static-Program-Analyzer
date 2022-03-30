@@ -6,10 +6,14 @@
 class VariableEntities : public Entities {
 public:
     VariableEntities();
+
     ~VariableEntities() override;
 
     bool isVariable() override;
+
     EntitiesReader *getReader() override;
+
     string toString() override;
+
     int hashCode() override;
 };

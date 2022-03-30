@@ -4,7 +4,7 @@ bool ConstantEntities::isConstant() {
     return true;
 }
 
-EntitiesReader* ConstantEntities::getReader() {
+EntitiesReader *ConstantEntities::getReader() {
     return reader;
 }
 

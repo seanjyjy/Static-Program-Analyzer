@@ -19,7 +19,7 @@ using namespace std;
 class Evaluator {
 private:
     Table *buildSingleSynonymTable(const unordered_set<string> &results, const string &label,
-                                   Entities* type);
+                                   Entities *type);
 
 protected:
     // ======================================= Generic TABLE BUILDING ==============================================
@@ -45,6 +45,7 @@ protected:
 
     Table *buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results, QueryDeclaration &patternSyn,
                                            const ClauseVariable &left);
+
 public:
     PKBClient *pkb;
 

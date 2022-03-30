@@ -21,5 +21,5 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table depending on the select synonym.
      */
-    Table *evaluate(const QueryDeclaration& selectSynonym);
+    Table *evaluate(const QueryDeclaration &selectSynonym);
 };

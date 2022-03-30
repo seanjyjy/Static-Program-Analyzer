@@ -6,11 +6,15 @@
 class AssignEntities : public Entities {
 public:
     AssignEntities();
+
     ~AssignEntities() override;
 
     bool isAssign() override;
+
     EntitiesReader *getReader() override;
+
     string toString() override;
+
     int hashCode() override;
 };
 
