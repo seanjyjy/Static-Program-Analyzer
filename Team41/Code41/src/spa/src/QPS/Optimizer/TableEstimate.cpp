@@ -45,7 +45,6 @@ long long TableEstimate::estimateMergeCost(const vector<QueryDeclaration> &newSc
         // merge is constrained by the smaller table
         return min(estRows, pkbAdapter.getRowCount(newSch));
     } else {
-        printf("came here?");
         return estRows * pkbAdapter.getRowCount(newSch);
     }
 }
