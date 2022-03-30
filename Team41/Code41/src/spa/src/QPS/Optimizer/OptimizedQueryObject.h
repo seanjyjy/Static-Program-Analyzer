@@ -14,6 +14,8 @@ private:
 public:
     OptimizedQueryObject();
 
+    ~OptimizedQueryObject() override;
+
     OptimizedQueryObject(QueryObject *qo); // only used when query object has an error - skip optimization
 
     OptimizedQueryObject(QueryObject *qo, ClauseGroups *cg);

@@ -2,17 +2,17 @@
 
 ModifiesSEvaluator::ModifiesSEvaluator(PKBClient *pkb) : ModifiesUsesSEvaluator(pkb) {}
 
-Table *ModifiesSEvaluator::evaluateClauseFurther(ClauseVariable &leftVariable, ClauseVariable &rightVariable) {
-    if (EvaluatorUtils::SUtils::isValidModifiesSynonymIdentifier(&leftVariable, &rightVariable)) {
-        return evaluateSynonymIdentifier(leftVariable, rightVariable);
+Table *ModifiesSEvaluator::evaluateClauseFurther(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
+    if (EvaluatorUtils::SUtils::isValidModifiesSynonymIdentifier(&left, &right)) {
+        return evaluateSynonymIdentifier(left, right, canSimplify);
     }
 
-    if (EvaluatorUtils::SUtils::isValidModifiesSynonymSynonym(&leftVariable, &rightVariable)) {
-        return evaluateSynonymSynonym(leftVariable, rightVariable);
+    if (EvaluatorUtils::SUtils::isValidModifiesSynonymSynonym(&left, &right)) {
+        return evaluateSynonymSynonym(left, right, canSimplify);
     }
 
-    if (EvaluatorUtils::SUtils::isValidModifiesSynonymWildCard(&leftVariable, &rightVariable)) {
-        return evaluateSynonymWildCard(leftVariable);
+    if (EvaluatorUtils::SUtils::isValidModifiesSynonymWildCard(&left, &right)) {
+        return evaluateSynonymWildCard(left, canSimplify);
     }
 
     throw SemanticException("Invalid query provided for ModifiesS");

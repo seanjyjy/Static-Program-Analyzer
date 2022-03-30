@@ -6,19 +6,19 @@ class AffectEvaluator : public GenericClauseEvaluator {
 private:
     Table *evaluateIntegerInteger(const ClauseVariable &left, const ClauseVariable &right);
 
-    Table *evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable &right);
+    Table *evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable &right, bool canSimplify);
 
     Table *evaluateIntegerWildCard(const ClauseVariable &left);
 
-    Table *evaluateSynonymInteger(ClauseVariable &left, const ClauseVariable &right);
+    Table *evaluateSynonymInteger(ClauseVariable &left, const ClauseVariable &right, bool canSimplify);
 
-    Table *evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right);
+    Table *evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify);
 
-    Table *evaluateSynonymWildCard(ClauseVariable &left);
+    Table *evaluateSynonymWildCard(ClauseVariable &left, bool canSimplify);
 
     Table *evaluateWildCardInteger(const ClauseVariable &right);
 
-    Table *evaluateWildCardSynonym(ClauseVariable &right);
+    Table *evaluateWildCardSynonym(ClauseVariable &right, bool canSimplify);
 
     Table *evaluateWildCardWildCard();
 
@@ -54,7 +54,7 @@ protected:
 public:
     explicit AffectEvaluator(PKBClient *pkb, AffectsKBAdapter *adapter);
 
-    Table *evaluateClause(ClauseVariable &left, ClauseVariable &right) override;
+    Table *evaluateClause(ClauseVariable &left, ClauseVariable &right, bool canSimplify) override;
 
     friend class AffectsEvaluator;
 };

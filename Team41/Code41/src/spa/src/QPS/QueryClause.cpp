@@ -76,12 +76,3 @@ bool QueryClause::equals(QueryClause other) const {
     return left.equals(other.getLeftClauseVariable())
         && right.equals(other.getRightClauseVariable());
 }
-
-QueryClause QueryClause::generateSimplifiedSelf() const {
-    if (!canSimplifyClause()) {
-        return {type, left, right};
-    }
-    ClauseVariable leftClause = left.isSynonym() ? left.convertWildCard() : left;
-    ClauseVariable rightClause = right.isSynonym() ? right.convertWildCard() : right;
-    return {type, leftClause, rightClause};
-}

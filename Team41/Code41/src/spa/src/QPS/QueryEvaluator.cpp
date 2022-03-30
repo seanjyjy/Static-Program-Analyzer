@@ -27,22 +27,36 @@ Table *QueryEvaluator::mergeTable(Table *resultTable, Table *intermediateTable) 
     return resultTable;
 }
 
-Table *QueryEvaluator::evaluateClauses(Table *resultTable, OptimizedQueryObject *queryObject) {
+Table *QueryEvaluator::evaluateClauses(Table *resultTable, QueryObject *queryObject) {
     while (!queryObject->empty()) {
-        SuperClause *clause = queryObject->popClause();
-        Table *intermediateTable = this->evaluate(clause);
-        Table *mergedTable = mergeTable(resultTable, intermediateTable);
-        if (mergedTable->isEmpty()) {
-            return mergedTable;
+        int groupSize = (int) queryObject->currGroupSize();
+
+        Table* intermediateGroupTable = new TrueTable();
+        for (int i = 0; i < groupSize; i++) {
+            bool isGroupReducible = queryObject->currGroupCanSimplify();
+            bool isClauseReducible = isGroupReducible && groupSize == 1;
+            SuperClause *clause = queryObject->popClause();
+            Table *intermediateTable = this->evaluate(clause, isClauseReducible);
+            Table *mergedTable = mergeTable(intermediateGroupTable, intermediateTable);
+
+            if (mergedTable->isEmpty()) {
+                return mergedTable;
+            }
+
+            if (i == groupSize - 1 && isGroupReducible) {
+                intermediateGroupTable = new TrueTable();
+            } else {
+                intermediateGroupTable = mergedTable;
+            }
         }
 
-        resultTable = mergedTable;
+        resultTable = mergeTable(resultTable, intermediateGroupTable);
     }
 
     return resultTable;
 }
 
-Table *QueryEvaluator::evaluateSelectables(Table *resultTable, OptimizedQueryObject *queryObject) {
+Table *QueryEvaluator::evaluateSelectables(Table *resultTable, QueryObject *queryObject) {
     for (const auto &selected: queryObject->getSelectables()) {
         Header header = resultTable->getHeader();
         if (header.find(selected.getSynonym().getSynonym()) != header.end())
@@ -60,7 +74,7 @@ Table *QueryEvaluator::evaluateSelectables(Table *resultTable, OptimizedQueryObj
     return resultTable;
 }
 
-QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
+QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     if (!queryObject->isValid()) {
         return {queryObject->getSelectTarget(), nullptr, false};
     }
@@ -90,7 +104,9 @@ QueryResult QueryEvaluator::evaluateQuery(OptimizedQueryObject *queryObject) {
     }
 }
 
-Table *QueryEvaluator::evaluate(SuperClause *clause) {
+Table *QueryEvaluator::evaluate(SuperClause *clause, bool canMorphClause) {
+    clause->setSimplifiableClause(canMorphClause);
+
     if (clause->isPatternClause()) {
         return evaluate(clause->getPatternClause());
     }
@@ -190,77 +206,4 @@ vector<string> QueryEvaluator::getSynonyms(QueryObject *queryObject) {
     }
 
     return synonyms;
-}
-
-// TODO: DELETE WHEN ALL IS WELL
-QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
-    unordered_set<string> emptyResult;
-    unordered_set<string> result;
-
-    if (!queryObject->isValid()) {
-        return {queryObject->getSelectTarget(), nullptr, false};
-    }
-
-    if (!EvaluatorUtils::validateDeclarations(queryObject->getDeclarations()) ||
-        !EvaluatorUtils::AttrUtils::validateSelectTarget(&queryObject->getSelectTarget())) {
-        return {queryObject->getSelectTarget(), new FalseTable()};
-    }
-
-    Table *resultTable = new TrueTable();
-
-    try {
-        for (auto clause: queryObject->getSuperClauses()) {
-            Table *intermediateTable = this->evaluate(clause);
-
-            if (intermediateTable->isEmpty()) {
-                safeDeleteTable(intermediateTable);
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
-
-            Table *ogTable = resultTable;
-            resultTable = resultTable->mergeJoin(intermediateTable);
-            safeDeleteTable(ogTable, resultTable);
-            safeDeleteTable(intermediateTable, resultTable);
-
-            if (resultTable->isEmpty()) {
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
-        }
-
-        for (const auto &declaration: queryObject->getDeclarations()) {
-            Header header = resultTable->getHeader();
-            if (header.find(declaration.synonym) != header.end()) {
-                continue;
-            }
-
-            Table *intermediateTable = SelectSynonymEvaluator(this->pkb).evaluate(declaration);
-
-            if (intermediateTable->isEmpty()) {
-                safeDeleteTable(intermediateTable);
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
-
-            Table *ogTable = resultTable;
-            resultTable = resultTable->mergeJoin(intermediateTable);
-
-            safeDeleteTable(ogTable, resultTable);
-            safeDeleteTable(intermediateTable, resultTable);
-
-            if (resultTable->isEmpty()) {
-                safeDeleteTable(resultTable);
-                return {queryObject->getSelectTarget(), new FalseTable()};
-            }
-        }
-    } catch (SemanticException &) {
-        safeDeleteTable(resultTable);
-        return {queryObject->getSelectTarget(), new FalseTable()};
-    } catch (const runtime_error &) {
-        safeDeleteTable(resultTable);
-        return {queryObject->getSelectTarget(), new FalseTable()};
-    }
-
-    return {queryObject->getSelectTarget(), resultTable};
 }

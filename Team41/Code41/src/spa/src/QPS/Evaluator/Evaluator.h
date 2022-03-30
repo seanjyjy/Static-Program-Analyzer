@@ -19,29 +19,31 @@ using namespace std;
 class Evaluator {
 private:
     Table *buildSingleSynonymTable(const unordered_set<string> &results, const string &label,
-                                   Entities *type);
+                                   Entities *type, bool canSimplify);
 
 protected:
     // ======================================= Generic TABLE BUILDING ==============================================
     Table *buildBooleanTable(bool booleanResult);
 
-    Table *buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration &patternSynonym);
+    Table *buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration &patternSynonym,
+                                   bool canSimplify = false);
 
-    Table *buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable &synonym);
+    Table *buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable &synonym,
+                                   bool canSimplify = false);
 
-    Table *buildSingleSynonymTable(const string &result, ClauseVariable &synonym);
+    Table *buildSingleSynonymTable(const string &result, ClauseVariable &synonym, bool canSimplify = false);
 
-    Table *buildSingleSynonymTable(const vector<CFGNode *> &results, ClauseVariable &synonym);
+    Table *buildSingleSynonymTable(const vector<CFGNode *> &results, ClauseVariable &synonym, bool canSimplify = false);
 
-    Table *buildSingleSynonymTable(const vector<string> &results, ClauseVariable &synonym);
+    Table *buildSingleSynonymTable(const vector<string> &results, ClauseVariable &synonym, bool canSimplify = false);
 
     Table *buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
-                                    ClauseVariable &rightSynonym);
+                                    ClauseVariable &rightSynonym, bool canSimplify = false);
 
     Table *buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &synonym);
 
     Table *buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
-                                      ClauseVariable &rightSynonym);
+                                      ClauseVariable &rightSynonym, bool canSimplify);
 
     Table *buildSynonymSynonymPatternTable(const vector<pair<string, string>> &results, QueryDeclaration &patternSyn,
                                            const ClauseVariable &left);

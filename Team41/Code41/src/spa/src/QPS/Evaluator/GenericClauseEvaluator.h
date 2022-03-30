@@ -8,7 +8,7 @@ public:
 
     Table *evaluate(const QueryClause &clause);
 
-    virtual Table *evaluateClause(ClauseVariable &left, ClauseVariable &right) = 0;
+    virtual Table *evaluateClause(ClauseVariable &left, ClauseVariable &right, bool canSimplify) = 0;
 
     friend class ProcEvaluator;
 

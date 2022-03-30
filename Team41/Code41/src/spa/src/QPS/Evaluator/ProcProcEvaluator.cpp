@@ -2,48 +2,48 @@
 
 ProcProcEvaluator::ProcProcEvaluator(PKBClient *pkb) : ProcEvaluator(pkb) {}
 
-Table *ProcProcEvaluator::evaluateClause(ClauseVariable &leftVariable, ClauseVariable &rightVariable) {
+Table *ProcProcEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
 
-    if (EvaluatorUtils::ProcUtils::isIdentifierIdentifier(&leftVariable, &rightVariable)) {
-        return evaluateIdentifierIdentifier(leftVariable, rightVariable);
+    if (EvaluatorUtils::ProcUtils::isIdentifierIdentifier(&left, &right)) {
+        return evaluateIdentifierIdentifier(left, right);
     }
 
-    if (EvaluatorUtils::CallsUtils::isValidCallsIdentifierSynonym(&leftVariable, &rightVariable)) {
-        return evaluateIdentifierSynonym(leftVariable, rightVariable);
+    if (EvaluatorUtils::CallsUtils::isValidCallsIdentifierSynonym(&left, &right)) {
+        return evaluateIdentifierSynonym(left, right, canSimplify);
     }
 
-    if (EvaluatorUtils::ProcUtils::isIdentifierWildCard(&leftVariable, &rightVariable)) {
-        return evaluateIdentifierWildCard(leftVariable);
+    if (EvaluatorUtils::ProcUtils::isIdentifierWildCard(&left, &right)) {
+        return evaluateIdentifierWildCard(left);
     }
 
-    if (EvaluatorUtils::CallsUtils::isValidCallsSynonymIdentifier(&leftVariable, &rightVariable)) {
-        return evaluateSynonymIdentifier(leftVariable, rightVariable);
+    if (EvaluatorUtils::CallsUtils::isValidCallsSynonymIdentifier(&left, &right)) {
+        return evaluateSynonymIdentifier(left, right, canSimplify);
     }
 
-    if (EvaluatorUtils::CallsUtils::isValidCallsSynonymSynonym(&leftVariable, &rightVariable)) {
-        return evaluateSynonymSynonym(leftVariable, rightVariable);
+    if (EvaluatorUtils::CallsUtils::isValidCallsSynonymSynonym(&left, &right)) {
+        return evaluateSynonymSynonym(left, right, canSimplify);
     }
 
-    if (EvaluatorUtils::CallsUtils::isValidCallsSynonymWildCard(&leftVariable, &rightVariable)) {
-        return evaluateSynonymWildCard(leftVariable);
+    if (EvaluatorUtils::CallsUtils::isValidCallsSynonymWildCard(&left, &right)) {
+        return evaluateSynonymWildCard(left, canSimplify);
     }
 
-    if (EvaluatorUtils::isWildCardIdentifier(&leftVariable, &rightVariable)) {
-        return evaluateWildCardIdentifier(rightVariable);
+    if (EvaluatorUtils::isWildCardIdentifier(&left, &right)) {
+        return evaluateWildCardIdentifier(right);
     }
 
-    if (EvaluatorUtils::CallsUtils::isValidCallsWildCardSynonym(&leftVariable, &rightVariable)) {
-        return evaluateWildCardSynonym(rightVariable);
+    if (EvaluatorUtils::CallsUtils::isValidCallsWildCardSynonym(&left, &right)) {
+        return evaluateWildCardSynonym(right, canSimplify);
     }
 
-    if (EvaluatorUtils::isWildCardWildCard(&leftVariable, &rightVariable)) {
+    if (EvaluatorUtils::isWildCardWildCard(&left, &right)) {
         return evaluateWildCardWildCard();
     }
 
     throw SemanticException("Invalid query provided for Call");
 }
 
-Table *ProcProcEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {
+Table *ProcProcEvaluator::evaluateWildCardSynonym(ClauseVariable &right, bool canSimplify) {
     unordered_set<string> listOfProcBeingCalled = getWildCardSynonymRelation();
-    return buildSingleSynonymTable(listOfProcBeingCalled, right);
+    return buildSingleSynonymTable(listOfProcBeingCalled, right, canSimplify);
 }

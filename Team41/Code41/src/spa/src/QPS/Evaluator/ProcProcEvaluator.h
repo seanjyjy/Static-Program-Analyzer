@@ -6,9 +6,9 @@ class ProcProcEvaluator : public ProcEvaluator {
 public:
     explicit ProcProcEvaluator(PKBClient *pkb);
 
-    Table *evaluateClause(ClauseVariable &left, ClauseVariable &right) override;
+    Table *evaluateClause(ClauseVariable &left, ClauseVariable &right, bool canSimplify) override;
 
-    Table *evaluateWildCardSynonym(ClauseVariable &right);
+    Table *evaluateWildCardSynonym(ClauseVariable &right, bool canSimplify);
 
     virtual unordered_set<string> getWildCardSynonymRelation() = 0;
 

@@ -61,9 +61,9 @@ private:
 
     Table *mergeTable(Table *resultTable, Table *intermediateTable);
 
-    Table *evaluateClauses(Table *resultTable, OptimizedQueryObject *queryObject);
+    Table *evaluateClauses(Table *resultTable, QueryObject *queryObject);
 
-    Table *evaluateSelectables(Table *resultTable, OptimizedQueryObject *queryObject);
+    Table *evaluateSelectables(Table *resultTable, QueryObject *queryObject);
 
 public:
     explicit QueryEvaluator(PKBClient *pkb);
@@ -78,15 +78,13 @@ public:
      */
     QueryResult evaluateQuery(QueryObject *queryObject);
 
-    QueryResult evaluateQuery(OptimizedQueryObject *queryObject);
-
     /**
      * Constructs a table based on the QueryClause provided.
      *
      * @param clause QueryClause.
      * @return A table that contains information based on the QueryClause provided.
      */
-    Table *evaluate(SuperClause *clause);
+    Table *evaluate(SuperClause *clause, bool canMorphClause);
 
     Table *evaluate(const QueryClause &clause);
 

@@ -6,7 +6,7 @@ class ModifiesSEvaluator : public ModifiesUsesSEvaluator {
 public:
     explicit ModifiesSEvaluator(PKBClient *pkb);
 
-    Table *evaluateClauseFurther(ClauseVariable &left, ClauseVariable &right) override;
+    Table *evaluateClauseFurther(ClauseVariable &left, ClauseVariable &right, bool canSimplify) override;
 
     bool getIntegerIdentifierRelation(const string &leftLabel, const string &rightLabel) override;
 

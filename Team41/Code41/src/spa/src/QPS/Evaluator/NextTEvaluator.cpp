@@ -12,12 +12,12 @@ Table *NextTEvaluator::evaluateIntegerInteger(ClauseVariable &left, ClauseVariab
     return buildBooleanTable(isNextT);
 }
 
-Table *NextTEvaluator::evaluateIntegerSynonym(ClauseVariable &left, ClauseVariable &right) {
+Table *NextTEvaluator::evaluateIntegerSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     if (!EvaluatorUtils::isWithinLimit(left, pkb))
         return new FalseTable();
 
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsNextT(left.getLabel());
-    return buildSingleSynonymTable(setOfStmts, right);
+    return buildSingleSynonymTable(setOfStmts, right, canSimplify);
 }
 
 Table *NextTEvaluator::evaluateIntegerWildCard(ClauseVariable &left) {
@@ -25,22 +25,22 @@ Table *NextTEvaluator::evaluateIntegerWildCard(ClauseVariable &left) {
     return buildBooleanTable(!children.empty());
 }
 
-Table *NextTEvaluator::evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right) {
+Table *NextTEvaluator::evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     if (!EvaluatorUtils::isWithinLimit(right, pkb))
         return new FalseTable();
 
     unordered_set<string> setOfStmts = nextKBAdapter->getAllStmtsTBefore(right.getLabel());
-    return buildSingleSynonymTable(setOfStmts, left);
+    return buildSingleSynonymTable(setOfStmts, left, canSimplify);
 }
 
-Table *NextTEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right) {
+Table *NextTEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     vector<pair<string, string>> listOfStmtToStmt = nextKBAdapter->getAllNextT();
-    return buildSynonymSynonymTable(listOfStmtToStmt, left, right);
+    return buildSynonymSynonymTable(listOfStmtToStmt, left, right, canSimplify);
 }
 
-Table *NextTEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
+Table *NextTEvaluator::evaluateSynonymWildCard(ClauseVariable &left, bool canSimplify) {
     vector<string> setOfStmts = nextKBAdapter->getAllStmtsThatHaveNextTStmt();
-    return buildSingleSynonymTable(setOfStmts, left);
+    return buildSingleSynonymTable(setOfStmts, left, canSimplify);
 }
 
 Table *NextTEvaluator::evaluateWildCardInteger(ClauseVariable &right) {
@@ -48,9 +48,9 @@ Table *NextTEvaluator::evaluateWildCardInteger(ClauseVariable &right) {
     return buildBooleanTable(!parent.empty());
 }
 
-Table *NextTEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {
+Table *NextTEvaluator::evaluateWildCardSynonym(ClauseVariable &right, bool canSimplify) {
     vector<string> setOfStmts = nextKBAdapter->getAllStmtsThatIsNextTOfSomeStmt();
-    return buildSingleSynonymTable(setOfStmts, right);
+    return buildSingleSynonymTable(setOfStmts, right, canSimplify);
 }
 
 Table *NextTEvaluator::evaluateWildCardWildCard() {
