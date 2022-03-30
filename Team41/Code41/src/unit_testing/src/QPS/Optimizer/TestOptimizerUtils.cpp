@@ -161,25 +161,27 @@ void TestOptimizerUtils::testGroupandGroupsAbstractions(string &query) {
     sort(sortedGroups.begin(), sortedGroups.end(), [](ClauseGroup *a, ClauseGroup *b) {
         return ClauseGroupComparator()(a, b);
     });
-
-    for (int i = 0; i < clauseGroups.size(); i++) {
+    int clauseGroupsSize = (int) clauseGroups.size();
+    for (int i = 0; i < clauseGroupsSize; i++) {
         size_t groupSize = clauseGroups[i].size();
         size_t sortedGroupSize = sortedGroups[i]->size();
         REQUIRE(fg.currGroupSize() == groupSize);
         REQUIRE(sg.currGroupSize() == sortedGroupSize);
         REQUIRE(pg.currGroupSize() == sortedGroupSize);
 
-        for (int j = 0; j < groupSize; j++) {
+        int size = (int) groupSize;
+        for (int j = 0; j < size; j++) {
             // this will only run if size is greater than 0, no underflow possible
-            if (j == groupSize-1) {
+            if (j == size-1) {
                 REQUIRE(fg.isLastOfGroup());
             }
             REQUIRE_NOTHROW(fg.pop());
         }
 
-        for (int j = 0; j < sortedGroupSize; j++) {
+        int sortedSize = (int) sortedGroupSize;
+        for (int j = 0; j < sortedSize; j++) {
             // this will only run if size is greater than 0, no underflow possible
-            if (j == sortedGroupSize-1) {
+            if (j == sortedSize-1) {
                 REQUIRE(sg.isLastOfGroup());
                 REQUIRE(pg.isLastOfGroup());
             }

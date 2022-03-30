@@ -29,11 +29,11 @@ Table *QueryEvaluator::mergeTable(Table *resultTable, Table *intermediateTable) 
 
 Table *QueryEvaluator::evaluateClauses(Table *resultTable, QueryObject *queryObject) {
     while (!queryObject->empty()) {
-        int groupSize = queryObject->getGroupSize();
+        int groupSize = (int) queryObject->currGroupSize();
 
         Table* intermediateGroupTable = new TrueTable();
         for (int i = 0; i < groupSize; i++) {
-            bool isGroupReducible = queryObject->isGroupReducible();
+            bool isGroupReducible = queryObject->currGroupCanSimplify();
             SuperClause *clause = queryObject->popClause();
             Table *intermediateTable = this->evaluate(clause);
             Table *mergedTable = mergeTable(intermediateGroupTable, intermediateTable);
@@ -49,7 +49,7 @@ Table *QueryEvaluator::evaluateClauses(Table *resultTable, QueryObject *queryObj
             }
         }
 
-        resultTable = intermediateGroupTable;
+        resultTable = mergeTable(resultTable, intermediateGroupTable);
     }
 
     return resultTable;
