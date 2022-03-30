@@ -9,7 +9,7 @@ private:
 public:
     ClauseGroup();
 
-    ClauseGroup(bool isEssential);
+    ClauseGroup(bool canSimplify);
 
     virtual SuperClause *pop() const = 0;
 
