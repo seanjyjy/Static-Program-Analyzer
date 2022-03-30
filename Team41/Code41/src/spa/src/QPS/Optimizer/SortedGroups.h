@@ -1,27 +1,46 @@
 #pragma once
 
-#include "AbstractGroups.h"
+#include "ClauseGroups.h"
 #include <functional>
 #include <set>
 
-struct AbstractGroupComparator {
-    bool operator()(AbstractGroup *lhs, AbstractGroup *rhs) const {
-        return lhs->score() < rhs->score();
+struct ClauseGroupComparator {
+    bool operator()(ClauseGroup *lhs, ClauseGroup *rhs) const {
+        // reducible groups go first
+        if (lhs->canSimplify() && !rhs->canSimplify()) {
+            return true;
+        } else if (!lhs->canSimplify() && rhs->canSimplify()) {
+            return false;
+        } else if (lhs->canSimplify() && rhs->canSimplify() && lhs->size() != rhs->size()) {
+            // if both reducible, smaller group goes first
+            return lhs->size() < rhs->size();
+        } else {
+            // tiebreak by score
+            return lhs->score() < rhs->score();
+        }
     }
 };
 
-class SortedGroups : public AbstractGroups {
+class SortedGroups : public ClauseGroups {
 private:
-    mutable multiset<AbstractGroup *>::iterator it;
-    multiset<AbstractGroup *, AbstractGroupComparator> sortedGroups;
+    mutable multiset<ClauseGroup *>::iterator it;
+    multiset<ClauseGroup *, ClauseGroupComparator> sortedGroups;
+
+    void ensureInvariant();
 public:
-    SortedGroups(vector<AbstractGroup*> groups);
+    SortedGroups(vector<ClauseGroup*> groups);
 
     SuperClause *pop() override;
 
     bool empty() override;
 
-    AbstractGroup *front() override;
+    ClauseGroup *front() override;
+
+    size_t currGroupSize() override;
+
+    bool currGroupCanSimplify() override;
+
+    bool isLastOfGroup() override;
 
     string toString() const override;
 

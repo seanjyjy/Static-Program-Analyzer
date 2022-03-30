@@ -14,3 +14,7 @@ Selectable::selectableType Selectable::getType() const {
 QueryDeclaration Selectable::getSynonym() const {
     return synonym;
 }
+
+string Selectable::getSynonymName() const {
+    return synonym.getSynonym();
+}

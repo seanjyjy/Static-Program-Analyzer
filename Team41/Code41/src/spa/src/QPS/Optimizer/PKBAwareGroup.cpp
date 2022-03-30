@@ -1,8 +1,12 @@
 #include "PKBAwareGroup.h"
 
 #include <limits>
+#include <utility>
 
-PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter) {
+PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter): PKBAwareGroup(move(initClauses), pkbAdapter, true) {
+}
+
+PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter, bool canSimplify): ClauseGroup(canSimplify) {
     table = TableEstimate(pkbAdapter);
     clauses = vector<SuperClause*>(initClauses.begin(), initClauses.end());
     isClauseUsed.assign(initClauses.size(), false);
@@ -34,8 +38,16 @@ SuperClause *PKBAwareGroup::pop() const {
     return clauses[bestIdx];
 }
 
+size_t PKBAwareGroup::size() const {
+    return clauses.size();
+}
+
 bool PKBAwareGroup::empty() const {
     return clausesPopped >= (long long) clauses.size();
+}
+
+bool PKBAwareGroup::isLast() const {
+    return clausesPopped == (long long) clauses.size()-1;
 }
 
 size_t PKBAwareGroup::score() const {

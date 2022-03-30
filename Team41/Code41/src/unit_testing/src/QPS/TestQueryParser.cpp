@@ -349,7 +349,7 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
         bool typeMatch = qo->getDeclarations().at(0).getType() == QueryDeclaration::VARIABLE;
         bool synMatch = qo->getDeclarations().at(0).getSynonym() == "v";
-        bool selectMatch = qo->getSelectables().at(0).getSynonym().getSynonym() == "v";
+        bool selectMatch = qo->getSelectables().at(0).getSynonymName() == "v";
         REQUIRE(qo->isValid());
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
@@ -378,7 +378,7 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
         REQUIRE(qo->getSelectTarget().isTuple());
         REQUIRE(qo->getSelectables().at(0).getType() == Selectable::ATTR_REF);
-        REQUIRE(qo->getSelectables().at(0).getSynonym().getSynonym() == "p");
+        REQUIRE(qo->getSelectables().at(0).getSynonymName() == "p");
         REQUIRE(qo->getSelectables().at(0).getAttr() == Selectable::PROC_NAME);
         REQUIRE(qo->getClauses().at(0).getType() == QueryClause::calls);
     }
@@ -390,7 +390,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->isValid());
         REQUIRE(qo->getSelectTarget().isTuple());
         REQUIRE(qo->getSelectables().at(0).getType() == Selectable::ATTR_REF);
-        REQUIRE(qo->getSelectables().at(0).getSynonym().getSynonym() == "p");
+        REQUIRE(qo->getSelectables().at(0).getSynonymName() == "p");
         REQUIRE(qo->getSelectables().at(0).getAttr() == Selectable::PROC_NAME);
         REQUIRE(qo->getClauses().at(0).getType() == QueryClause::calls);
     }
@@ -401,14 +401,14 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
         REQUIRE(qo->isValid());
         REQUIRE(qo->getSelectTarget().isTuple());
-        REQUIRE(qo->getSelectables().at(0).getSynonym().getSynonym() == "a1");
+        REQUIRE(qo->getSelectables().at(0).getSynonymName() == "a1");
         REQUIRE(qo->getSelectables().at(0).getType() == Selectable::SYNONYM);
         REQUIRE(qo->getSelectables().at(1).getType() == Selectable::ATTR_REF);
-        REQUIRE(qo->getSelectables().at(1).getSynonym().getSynonym() == "a1");
+        REQUIRE(qo->getSelectables().at(1).getSynonymName() == "a1");
         REQUIRE(qo->getSelectables().at(1).getAttr() == Selectable::STMT_NUM);
-        REQUIRE(qo->getSelectables().at(2).getSynonym().getSynonym() == "a2");
+        REQUIRE(qo->getSelectables().at(2).getSynonymName() == "a2");
         REQUIRE(qo->getSelectables().at(2).getType() == Selectable::SYNONYM);
-        REQUIRE(qo->getSelectables().at(3).getSynonym().getSynonym() == "a2");
+        REQUIRE(qo->getSelectables().at(3).getSynonymName() == "a2");
         REQUIRE(qo->getSelectables().at(3).getAttr() == Selectable::STMT_NUM);
     }
     SECTION("such that and") {
@@ -454,7 +454,7 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
         REQUIRE(qo->isValid());
         REQUIRE_FALSE(qo->isSelectingBoolean());
-        REQUIRE(qo->getSelectables().at(0).getSynonym().getSynonym() == "BOOLEAN");
+        REQUIRE(qo->getSelectables().at(0).getSynonymName() == "BOOLEAN");
     }
     SECTION("suchthat-with-suchthat ") {
         string s = "procedure p, q;\n"
@@ -485,7 +485,7 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getSelectables().at(0).getSynonym().getSynonym() == "s");
+        REQUIRE(qo->getSelectables().at(0).getSynonymName() == "s");
         REQUIRE(qo->getSelectables().at(0).getType() == Selectable::ATTR_REF);
         REQUIRE(qo->getSelectables().at(0).getAttr() == Selectable::STMT_NUM);
         ////
@@ -502,7 +502,7 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getSelectables().at(0).getSynonym().getSynonym() == "s");
+        REQUIRE(qo->getSelectables().at(0).getSynonymName() == "s");
         REQUIRE(qo->getSelectables().at(0).getType() == Selectable::ATTR_REF);
         REQUIRE(qo->getSelectables().at(0).getAttr() == Selectable::STMT_NUM);
         ////

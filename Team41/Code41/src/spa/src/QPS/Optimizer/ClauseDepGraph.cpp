@@ -1,7 +1,6 @@
 #include "ClauseDepGraph.h"
 #include "QPS/SuperClause.h"
 #include "QPS/ClauseVariable.h"
-#include "OptimizerUtils.h"
 #include <stdexcept>
 
 using namespace std;
@@ -61,7 +60,7 @@ vector<vector<SuperClause *>> ClauseDepGraph::split() {
 }
 
 int ClauseDepGraph::getCid() {
-    return cid++;
+    return clauseId++;
 }
 
 vector<SuperClause *> ClauseDepGraph::getUnprocessedClauses(vector<TaggedSuperClause> &clauses) {

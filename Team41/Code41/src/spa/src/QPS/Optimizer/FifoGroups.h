@@ -1,20 +1,28 @@
 #pragma once
 
-#include "AbstractGroups.h"
-#include "AbstractGroup.h"
+#include "ClauseGroups.h"
+#include "ClauseGroup.h"
 
-class FifoGroups : public AbstractGroups {
+class FifoGroups : public ClauseGroups {
 private:
-    vector<AbstractGroup *> groups;
-    vector<AbstractGroup *>::iterator it;
+    vector<ClauseGroup *> groups;
+    vector<ClauseGroup *>::iterator it;
+
+    void ensureInvariant();
 public:
-    FifoGroups(vector<AbstractGroup*> groups);
+    FifoGroups(vector<ClauseGroup*> groups);
 
     SuperClause *pop() override;
 
     bool empty() override;
 
-    AbstractGroup *front() override;
+    ClauseGroup *front() override;
+
+    size_t currGroupSize() override;
+
+    bool currGroupCanSimplify() override;
+
+    bool isLastOfGroup() override;
 
     string toString() const override;
 

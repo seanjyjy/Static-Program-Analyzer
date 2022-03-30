@@ -1,8 +1,8 @@
 
 #include "SortedGroups.h"
 
-SortedGroups::SortedGroups(vector<AbstractGroup*> groups) {
-    sortedGroups = multiset<AbstractGroup *, AbstractGroupComparator>(groups.begin(), groups.end());
+SortedGroups::SortedGroups(vector<ClauseGroup*> groups) {
+    sortedGroups = multiset<ClauseGroup *, ClauseGroupComparator>(groups.begin(), groups.end());
     it = sortedGroups.begin();
 }
 
@@ -12,19 +12,18 @@ SuperClause *SortedGroups::pop() {
 }
 
 bool SortedGroups::empty() {
-    // ensure invariant - first group always has a clause to take
-    while (it != sortedGroups.end() && (*it)->empty()) it = next(it);
+    ensureInvariant();
     return it == sortedGroups.end();
 }
 
-AbstractGroup *SortedGroups::front() {
+ClauseGroup *SortedGroups::front() {
     if (empty()) throw runtime_error("no more groups");
     return *it;
 }
 
 string SortedGroups::toString() const {
     string ret;
-    for (AbstractGroup *a: sortedGroups) {
+    for (ClauseGroup *a: sortedGroups) {
         ret += a->toString();
     }
     return ret;
@@ -32,4 +31,24 @@ string SortedGroups::toString() const {
 
 void SortedGroups::print() const {
     cout << toString() << endl;
+}
+
+size_t SortedGroups::currGroupSize() {
+    ensureInvariant();
+    return (*it)->size();
+}
+
+bool SortedGroups::isLastOfGroup() {
+    ensureInvariant();
+    return (*it)->isLast();
+}
+
+void SortedGroups::ensureInvariant() {
+    // ensure invariant - first group always has a clause to take (unless all consumed)
+    while (it != sortedGroups.end() && (*it)->empty()) it++;
+}
+
+bool SortedGroups::currGroupCanSimplify() {
+    ensureInvariant();
+    return (*it)->canSimplify();
 }

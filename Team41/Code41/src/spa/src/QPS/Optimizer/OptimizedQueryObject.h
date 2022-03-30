@@ -5,20 +5,28 @@
 #include "QPS/Optimizer/PKBAdapter.h"
 #include "QPS/SuperClause.h"
 #include "QPS/Selectable.h"
-#include "AbstractGroups.h"
+#include "ClauseGroups.h"
 
 class OptimizedQueryObject : public QueryObject {
 private:
-    AbstractGroups *clauseGroups;
+    ClauseGroups *clauseGroups;
 
 public:
     OptimizedQueryObject();
 
-    OptimizedQueryObject(QueryObject *qo, AbstractGroups *cg);
+    OptimizedQueryObject(QueryObject *qo); // only used when query object has an error - skip optimization
 
-    SuperClause *popClause();
+    OptimizedQueryObject(QueryObject *qo, ClauseGroups *cg);
 
-    bool empty();
+    SuperClause *popClause() override;
 
-    void printPlan();
+    size_t currGroupSize() override;
+
+    bool currGroupCanSimplify() override;
+
+    bool isLastOfGroup() override;
+
+    bool empty() override;
+
+    void print() override;
 };

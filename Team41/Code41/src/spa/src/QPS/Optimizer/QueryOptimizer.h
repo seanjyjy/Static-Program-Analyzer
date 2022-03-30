@@ -6,7 +6,7 @@
 #include "ClauseDepGraph.h"
 #include "OptimizedQueryObject.h"
 #include "OptimizerUtils.h"
-#include "AbstractGroups.h"
+#include "ClauseGroups.h"
 #include "SortedGroups.h"
 #include "FifoGroups.h"
 #include "SortedGroup.h"
@@ -19,6 +19,7 @@ class QueryOptimizer {
 private:
     // default configuration options
     bool isClauseGroupingEnabled = true;
+    bool isSimplifyGroupsEnabled = true;
     bool isIntraGroupSortEnabled = true;
     bool isInterGroupSortEnabled = true;
     bool isDynamicPollingEnabled = false;
@@ -40,6 +41,8 @@ public:
     QueryOptimizer &setInterGroupSort(bool isOn);
 
     QueryOptimizer &setClauseGrouping(bool isOn);
+
+    QueryOptimizer &setSimplifyGroups(bool isOn);
 
     QueryOptimizer &setDupClauseRemoval(bool isOn);
 

@@ -4,6 +4,7 @@
 #include "QPS/QueryObject.h"
 #include "QPS/Optimizer/QueryOptimizer.h"
 #include "QPS/QueryParser.h"
+#include "QPS/Optimizer/SortedGroups.h"
 
 #include <iostream>
 
@@ -80,4 +81,119 @@ void TestOptimizerUtils::print(vector<QueryDeclaration> arr) {
         cout << qd.toString() << " ";
     }
     cout << endl;
+}
+
+vector<vector<SuperClause *>> TestOptimizerUtils::prepareClauseGroups(string &s) {
+    ClauseDepGraph g;
+    QueryParser qp = QueryParser{s};
+    unique_ptr<QueryObject> queryObject(qp.parse());
+    for (SuperClause *cl: queryObject->getSuperClauses()) {
+        g.registerClause(cl);
+    }
+    return g.split();
+}
+
+void TestOptimizerUtils::testGroupandGroupsAbstractions(string &query) {
+    ClauseDepGraph g;
+    QueryParser qp = QueryParser{query};
+    unique_ptr<QueryObject> queryObject(qp.parse());
+    vector<SuperClause*> superClauses(queryObject->getSuperClauses());
+    for (SuperClause *cl: superClauses) g.registerClause(cl);
+
+    vector<ClauseGroup*> fifoGroups;
+    vector<ClauseGroup*> sortedGroups;
+    vector<ClauseGroup*> pkbAwareGroups;
+
+    // empty pkb manager
+    PKBManager pkbManager = PKBManager();
+    PKBAdapter pkbAdapter(&pkbManager);
+
+    vector<vector<SuperClause*>> clauseGroups = g.split();
+    size_t totalClauses = 0;
+    for (vector<SuperClause*> &clauseGroup: clauseGroups) {
+        auto *fg = new FifoGroup(clauseGroup);
+        auto *sg = new SortedGroup(clauseGroup);
+        auto *pg = new PKBAwareGroup(clauseGroup, pkbAdapter);
+
+        // should be same size as the base clause group
+        REQUIRE(fg->size() == clauseGroup.size());
+        REQUIRE(sg->size() == clauseGroup.size());
+        REQUIRE(pg->size() == clauseGroup.size());
+
+        for (size_t i = 0; i < clauseGroup.size(); i++) {
+            // this will only run if size is greater than 0, no underflow possible
+            if (i == clauseGroup.size()-1) {
+                REQUIRE(fg->isLast());
+                REQUIRE(sg->isLast());
+                REQUIRE(pg->isLast());
+            }
+            // should not be empty -> should not give errors when popping
+            REQUIRE_NOTHROW(fg->pop());
+            REQUIRE_NOTHROW(sg->pop());
+            REQUIRE_NOTHROW(pg->pop());
+            totalClauses++;
+        }
+
+        // all clauses should be consumed
+        REQUIRE(fg->empty());
+        REQUIRE(sg->empty());
+        REQUIRE(pg->empty());
+
+        delete fg;
+        delete sg;
+        delete pg;
+
+        // for later
+        fifoGroups.push_back(new FifoGroup(clauseGroup));
+        sortedGroups.push_back(new SortedGroup(clauseGroup));
+        pkbAwareGroups.push_back(new PKBAwareGroup(clauseGroup, pkbAdapter));
+    }
+
+    // the groups should not add or remove clauses
+    REQUIRE(totalClauses == superClauses.size());
+
+    // individual clause group OK, now test clause groups abstraction
+    FifoGroups fg(fifoGroups);
+    SortedGroups sg(sortedGroups);
+    SortedGroups pg(pkbAwareGroups);
+
+    // manually sort the groups to emulate the actual consumption
+    sort(sortedGroups.begin(), sortedGroups.end(), [](ClauseGroup *a, ClauseGroup *b) {
+        return ClauseGroupComparator()(a, b);
+    });
+
+    for (int i = 0; i < clauseGroups.size(); i++) {
+        size_t groupSize = clauseGroups[i].size();
+        size_t sortedGroupSize = sortedGroups[i]->size();
+        REQUIRE(fg.currGroupSize() == groupSize);
+        REQUIRE(sg.currGroupSize() == sortedGroupSize);
+        REQUIRE(pg.currGroupSize() == sortedGroupSize);
+
+        for (int j = 0; j < groupSize; j++) {
+            // this will only run if size is greater than 0, no underflow possible
+            if (j == groupSize-1) {
+                REQUIRE(fg.isLastOfGroup());
+            }
+            REQUIRE_NOTHROW(fg.pop());
+        }
+
+        for (int j = 0; j < sortedGroupSize; j++) {
+            // this will only run if size is greater than 0, no underflow possible
+            if (j == sortedGroupSize-1) {
+                REQUIRE(sg.isLastOfGroup());
+                REQUIRE(pg.isLastOfGroup());
+            }
+            REQUIRE_NOTHROW(sg.pop());
+            REQUIRE_NOTHROW(pg.pop());
+        }
+    }
+
+    REQUIRE(fg.empty());
+    REQUIRE(sg.empty());
+    REQUIRE(pg.empty());
+
+    // cleanup
+    for (ClauseGroup *cg: fifoGroups) delete (FifoGroup*) cg;
+    for (ClauseGroup *cg: sortedGroups) delete (SortedGroup*) cg;
+    for (ClauseGroup *cg: pkbAwareGroups) delete (PKBAwareGroup*) cg;
 }
