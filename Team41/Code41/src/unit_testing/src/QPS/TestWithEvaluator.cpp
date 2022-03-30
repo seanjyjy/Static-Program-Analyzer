@@ -17,14 +17,14 @@ TEST_CASE("Evaluator: With evaluator") {
     string CONST_SYN_LBL("const");
     string VAR_SYN_LBL("var");
 
-    QueryDeclaration stmtSyn(QueryDeclaration::STMT, STMT_SYN_LBL);
-    QueryDeclaration assignSyn(QueryDeclaration::ASSIGN, ASSIGN_SYN_LBL);
-    QueryDeclaration readSyn(QueryDeclaration::READ, READ_SYN_LBL);
-    QueryDeclaration printSyn(QueryDeclaration::PRINT, PRINT_SYN_LBL);
-    QueryDeclaration callSyn(QueryDeclaration::CALL, CALL_SYN_LBL);
-    QueryDeclaration procSyn(QueryDeclaration::PROCEDURE, PROC_SYN_LBL);
-    QueryDeclaration constSyn(QueryDeclaration::CONSTANT, CONST_SYN_LBL);
-    QueryDeclaration varSyn(QueryDeclaration::VARIABLE, VAR_SYN_LBL);
+    QueryDeclaration stmtSyn(new StmtEntities(), STMT_SYN_LBL);
+    QueryDeclaration assignSyn(new AssignEntities(), ASSIGN_SYN_LBL);
+    QueryDeclaration readSyn(new ReadEntities(), READ_SYN_LBL);
+    QueryDeclaration printSyn(new PrintEntities(), PRINT_SYN_LBL);
+    QueryDeclaration callSyn(new CallEntities(), CALL_SYN_LBL);
+    QueryDeclaration procSyn(new ProcedureEntities(), PROC_SYN_LBL);
+    QueryDeclaration constSyn(new ConstantEntities(), CONST_SYN_LBL);
+    QueryDeclaration varSyn(new VariableEntities(), VAR_SYN_LBL);
 
     WithVariable stmtNoRef(WithVariable::attributeName::STMT_NUM, stmtSyn);
     WithVariable assignStmtNumRef(WithVariable::attributeName::STMT_NUM, assignSyn);

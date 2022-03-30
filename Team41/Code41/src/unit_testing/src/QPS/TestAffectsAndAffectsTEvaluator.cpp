@@ -81,15 +81,15 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
 
     vector<ClauseVariable> integers;
     for (int i = 0; i <= 13; ++i) {
-        integers.push_back({ClauseVariable::variable_type::integer, std::to_string(i), QueryDeclaration::CONSTANT});
+        integers.push_back({ClauseVariable::variable_type::integer, std::to_string(i), new ConstantEntities()});
     }
 
-    ClauseVariable synonymAssign1(ClauseVariable::variable_type::synonym, "a1", QueryDeclaration::ASSIGN);
-    ClauseVariable synonymAssign2(ClauseVariable::variable_type::synonym, "a2", QueryDeclaration::ASSIGN);
-    ClauseVariable synonymStmt1(ClauseVariable::variable_type::synonym, "s1", QueryDeclaration::STMT);
-    ClauseVariable synonymStmt2(ClauseVariable::variable_type::synonym, "s2", QueryDeclaration::STMT);
+    ClauseVariable synonymAssign1(ClauseVariable::variable_type::synonym, "a1", new AssignEntities());
+    ClauseVariable synonymAssign2(ClauseVariable::variable_type::synonym, "a2", new AssignEntities());
+    ClauseVariable synonymStmt1(ClauseVariable::variable_type::synonym, "s1", new StmtEntities());
+    ClauseVariable synonymStmt2(ClauseVariable::variable_type::synonym, "s2", new StmtEntities());
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", QueryDeclaration::NONE);
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", new NoneEntities());
 
     stack<QueryClause> clauses;
     stack<Table *> tables;

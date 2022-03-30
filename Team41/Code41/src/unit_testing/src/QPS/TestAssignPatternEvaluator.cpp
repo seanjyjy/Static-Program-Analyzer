@@ -20,13 +20,13 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
                     "<minus><plus><var name=x></var><times><var name=x></var><var name=y></var></times></plus><const val=20></const></minus>"};
     string expr[] = {"x+y+z", "x+y", "2", "x+y*z-20"};
 
-    QueryDeclaration assignSyn(QueryDeclaration::ASSIGN, ASSIGN_SYN_LBL);
-    ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL, QueryDeclaration::VARIABLE);
+    QueryDeclaration assignSyn(new AssignEntities(), ASSIGN_SYN_LBL);
+    ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL, new VariableEntities());
 
-    ClauseVariable identifierV1(ClauseVariable::identifier, vars[0], QueryDeclaration::VARIABLE);
-    ClauseVariable identifierV2(ClauseVariable::identifier, vars[1], QueryDeclaration::VARIABLE);
+    ClauseVariable identifierV1(ClauseVariable::identifier, vars[0], new VariableEntities());
+    ClauseVariable identifierV2(ClauseVariable::identifier, vars[1], new VariableEntities());
 
-    ClauseVariable wildcard(ClauseVariable::wildcard, "_", QueryDeclaration::VARIABLE);
+    ClauseVariable wildcard(ClauseVariable::wildcard, "_", new VariableEntities());
 
     TNode *node1 = TestAstBuilderUtils::parseXml(xml[0]);
     TNode *node2 = TestAstBuilderUtils::parseXml(xml[1]);
@@ -205,11 +205,11 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
     }
 
     SECTION("Semantically & Syntactically Invalid") {
-        ClauseVariable procSyn(ClauseVariable::synonym, "proc", QueryDeclaration::PROCEDURE);
+        ClauseVariable procSyn(ClauseVariable::synonym, "proc", new ProcedureEntities());
         PatternClause patternClause1(assignSyn, procSyn, vector<PatternVariable>({patternFP1}));
         REQUIRE_THROWS(AssignPatternEvaluator(pkbManager).evaluate(patternClause1));
 
-        ClauseVariable readSyn(ClauseVariable::synonym, "proc", QueryDeclaration::READ);
+        ClauseVariable readSyn(ClauseVariable::synonym, "proc", new ReadEntities());
         PatternClause patternClause2(assignSyn, readSyn, vector<PatternVariable>({patternFP1}));
         REQUIRE_THROWS(AssignPatternEvaluator(pkbManager).evaluate(patternClause2));
     }

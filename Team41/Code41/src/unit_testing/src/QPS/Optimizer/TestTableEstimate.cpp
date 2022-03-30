@@ -20,8 +20,8 @@ TEST_CASE("Table Estimate") {
     string s11 = "s3";
     string s12 = "v1";
     vector<QueryDeclaration> first = {
-            {QueryDeclaration::STMT, s11},
-            {QueryDeclaration::VARIABLE, s12},
+            {new StmtEntities(), s11},
+            {new VariableEntities(), s12},
     };
 
     // verify post-merge state is correct
@@ -34,7 +34,7 @@ TEST_CASE("Table Estimate") {
     // second merge - s3 "x" - ignore constant
     string s21 = "s3";
     vector<QueryDeclaration> second = {
-            {QueryDeclaration::STMT, s21},
+            {new StmtEntities(), s21},
     };
 
     // merge is constrained by the table with less rows
@@ -46,8 +46,8 @@ TEST_CASE("Table Estimate") {
     string s31 = "s1";
     string s32 = "s2";
     vector<QueryDeclaration> third = {
-            {QueryDeclaration::STMT, s31},
-            {QueryDeclaration::STMT, s32},
+            {new StmtEntities(), s31},
+            {new StmtEntities(), s32},
     };
 
     // merge is a cross-product, no common rows
