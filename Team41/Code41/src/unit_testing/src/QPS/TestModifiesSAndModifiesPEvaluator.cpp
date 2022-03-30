@@ -12,23 +12,23 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
     string proc[] = {"proc1", "proc2", "proc3"};
     string declaration[] = { "a", "v", "p", "pn", "c" };
 
-    ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0], QueryDeclaration::CONSTANT);
-    ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1], QueryDeclaration::CONSTANT);
-    ClauseVariable integer3(ClauseVariable::variable_type::integer, lines[2], QueryDeclaration::CONSTANT);
+    ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0], new ConstantEntities());
+    ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1], new ConstantEntities());
+    ClauseVariable integer3(ClauseVariable::variable_type::integer, lines[2], new ConstantEntities());
 
-    ClauseVariable proc1(ClauseVariable::variable_type::identifier, proc[0], QueryDeclaration::PROCEDURE);
-    ClauseVariable proc2(ClauseVariable::variable_type::identifier, proc[1], QueryDeclaration::PROCEDURE);
-    ClauseVariable proc3(ClauseVariable::variable_type::identifier, proc[2], QueryDeclaration::PROCEDURE);
+    ClauseVariable proc1(ClauseVariable::variable_type::identifier, proc[0], new ProcedureEntities());
+    ClauseVariable proc2(ClauseVariable::variable_type::identifier, proc[1], new ProcedureEntities());
+    ClauseVariable proc3(ClauseVariable::variable_type::identifier, proc[2], new ProcedureEntities());
 
-    ClauseVariable identifierVar1(ClauseVariable::variable_type::identifier, vars[0], QueryDeclaration::VARIABLE);
-    ClauseVariable identifierVar2(ClauseVariable::variable_type::identifier, vars[1], QueryDeclaration::VARIABLE);
+    ClauseVariable identifierVar1(ClauseVariable::variable_type::identifier, vars[0], new VariableEntities());
+    ClauseVariable identifierVar2(ClauseVariable::variable_type::identifier, vars[1], new VariableEntities());
 
-    ClauseVariable assignSyn(ClauseVariable::variable_type::synonym, declaration[0], QueryDeclaration::ASSIGN);
-    ClauseVariable varSyn(ClauseVariable::variable_type::synonym, declaration[1], QueryDeclaration::VARIABLE);
-    ClauseVariable procSyn(ClauseVariable::variable_type::synonym, declaration[2], QueryDeclaration::PROCEDURE);
-    ClauseVariable printSyn(ClauseVariable::variable_type::synonym, declaration[3], QueryDeclaration::PRINT);
+    ClauseVariable assignSyn(ClauseVariable::variable_type::synonym, declaration[0], new AssignEntities());
+    ClauseVariable varSyn(ClauseVariable::variable_type::synonym, declaration[1], new VariableEntities());
+    ClauseVariable procSyn(ClauseVariable::variable_type::synonym, declaration[2], new ProcedureEntities());
+    ClauseVariable printSyn(ClauseVariable::variable_type::synonym, declaration[3], new PrintEntities());
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", QueryDeclaration::NONE);
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", new NoneEntities());
 
     pkbManager->registerVariable(vars[0]);
     pkbManager->registerVariable(vars[1]);

@@ -46,16 +46,17 @@ private:
 
     Table *evaluateAttrRefAttrRef(WithVariable &left, WithVariable &right, bool canSimplify);
 
-    unordered_set<string> getSpecificStatementType(QueryDeclaration::design_entity_type type);
+    unordered_set<string> getSpecificStatementType(Entities *type);
 
-    unordered_set<string> getName(QueryDeclaration::design_entity_type type);
+    unordered_set<string> getName(Entities *type);
 
     Table *buildSingleSynonymTableWithSingleFilter(unordered_set<string> &results, QueryDeclaration &synonym,
                                                    const string &filter, const ValueMapping &mapping);
 
     Table *buildSynonymSynonymTable(unordered_set<string> &leftRes, unordered_set<string> &rightRes,
                                     QueryDeclaration &leftSynonym, QueryDeclaration &rightSynonym,
-                                    const ValueMapping &leftMapping, const ValueMapping &rightMapping, bool canSimplify);
+                                    const ValueMapping &leftMapping, const ValueMapping &rightMapping,
+                                    bool canSimplify);
 
     Table *buildSameSynonymTable(unordered_set<string> &results, const string &column);
 
@@ -65,7 +66,7 @@ private:
 
     ValueMapping sameMapper = [](const string &stmtNum, PKBClient *) { return stmtNum; };
 
-    ValueMapping getMapper(QueryDeclaration::design_entity_type type);
+    ValueMapping getMapper(Entities *type);
 
 public:
     explicit WithEvaluator(PKBClient *pkb);

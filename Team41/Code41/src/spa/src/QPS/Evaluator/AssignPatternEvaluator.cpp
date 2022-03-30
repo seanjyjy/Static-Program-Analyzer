@@ -46,7 +46,8 @@ unordered_set<string> AssignPatternEvaluator::getWildCardWildCardRelation() {
     return pkb->getAssigns();
 }
 
-Table *AssignPatternEvaluator::evaluateWildCardFullPattern(QueryDeclaration &patternSyn, PatternVariable &right, bool canSimplify) {
+Table *AssignPatternEvaluator::evaluateWildCardFullPattern(QueryDeclaration &patternSyn, PatternVariable &right,
+                                                           bool canSimplify) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromPattern(right.getMiniAST());
     if (canSimplify) {
         return buildBooleanTable(!setOfAssignStmt.empty());
@@ -54,7 +55,8 @@ Table *AssignPatternEvaluator::evaluateWildCardFullPattern(QueryDeclaration &pat
     return buildSingleSynonymTable(setOfAssignStmt, patternSyn);
 }
 
-Table *AssignPatternEvaluator::evaluateWildCardSubPattern(QueryDeclaration &patternSyn, PatternVariable &right, bool canSimplify) {
+Table *AssignPatternEvaluator::evaluateWildCardSubPattern(QueryDeclaration &patternSyn, PatternVariable &right,
+                                                          bool canSimplify) {
     unordered_set<string> setOfAssignStmt = pkb->getAssignStmtFromSubpattern(right.getMiniAST());
     if (canSimplify) {
         return buildBooleanTable(!setOfAssignStmt.empty());
@@ -99,7 +101,8 @@ Table *AssignPatternEvaluator::evaluateSynonymSubPattern(QueryDeclaration &patte
     return buildSynonymSynonymPatternTable(listOfStmtNVar, patternSyn, left);
 }
 
-Table *AssignPatternEvaluator::evaluateSynonymWildCard(QueryDeclaration &patternSyn, ClauseVariable &left, bool canSimplify) {
+Table *
+AssignPatternEvaluator::evaluateSynonymWildCard(QueryDeclaration &patternSyn, ClauseVariable &left, bool canSimplify) {
     vector<pair<string, string>> setOfStmtVar = pkb->getAllModifiesS();
     if (canSimplify) {
         return buildBooleanTable(!setOfStmtVar.empty());

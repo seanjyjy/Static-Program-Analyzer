@@ -31,7 +31,7 @@ public:
      *
      * @return QueryDeclaration::design_entity_type representing the declaration type.
      */
-    QueryDeclaration::design_entity_type getDesignEntityType() const;
+    Entities* getDesignEntityType() const;
 
     /**
      * Checks if the variable is an identifier.
@@ -70,7 +70,7 @@ public:
      * @param label for the name of the new variable.
      * @param designEntityType for the declaration type of the new variable.
      */
-    ClauseVariable(variable_type type, string label, QueryDeclaration::design_entity_type designEntityType);
+    ClauseVariable(variable_type type, string label, Entities *designEntityType);
     ClauseVariable(variable_type type, string label, QueryDeclaration qd);
     ClauseVariable();
 
@@ -87,5 +87,5 @@ private:
     QueryDeclaration qd;
 
     // declaration type of the clause variable (must be declared)
-    QueryDeclaration::design_entity_type designEntityType;
+    Entities *designEntityType;
 };

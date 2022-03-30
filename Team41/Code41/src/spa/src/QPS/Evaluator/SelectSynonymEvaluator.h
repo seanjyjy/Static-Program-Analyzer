@@ -11,16 +11,6 @@
 class SelectSynonymEvaluator {
 private:
     PKBClient *pkb;
-
-    /**
-     * Depending on the query declaration select type, select all selected type from the pkb.
-     *
-     * @param type QueryDeclaration type.
-     * @param pkb A knowledge base based on the Source Program.
-     * @return A table depending on the select type.
-     */
-    static unordered_set<string> getResultViaType(QueryDeclaration::design_entity_type type, PKBClient *pkb);
-
 public:
     explicit SelectSynonymEvaluator(PKBClient *pkb);
 
@@ -31,5 +21,5 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @return A table depending on the select synonym.
      */
-    Table *evaluate(QueryDeclaration selectSynonym);
+    Table *evaluate(const QueryDeclaration &selectSynonym);
 };

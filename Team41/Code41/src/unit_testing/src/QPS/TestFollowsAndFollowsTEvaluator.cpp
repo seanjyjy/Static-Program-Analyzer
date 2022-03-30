@@ -25,17 +25,17 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
     pkbManager->registerFollowsT(stmt[0], stmt[5]); // 1 -> 6
     pkbManager->registerFollowsT(stmt[1], stmt[5]); // 2 -> 6
 
-    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", QueryDeclaration::CONSTANT);
-    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", QueryDeclaration::CONSTANT);
-    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", QueryDeclaration::CONSTANT);
-    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", QueryDeclaration::CONSTANT);
-    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", QueryDeclaration::CONSTANT);
-    ClauseVariable integer6(ClauseVariable::variable_type::integer, "6", QueryDeclaration::CONSTANT);
+    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", new ConstantEntities());
+    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", new ConstantEntities());
+    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", new ConstantEntities());
+    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", new ConstantEntities());
+    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", new ConstantEntities());
+    ClauseVariable integer6(ClauseVariable::variable_type::integer, "6", new ConstantEntities());
 
-    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", QueryDeclaration::ASSIGN);
-    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", QueryDeclaration::READ);
+    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", new AssignEntities());
+    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", new ReadEntities());
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", QueryDeclaration::NONE);
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", new NoneEntities());
 
     pkbManager->registerAssignStmt(stmt[0]);
     pkbManager->registerAssignStmt(stmt[1]);

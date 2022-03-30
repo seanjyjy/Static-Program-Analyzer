@@ -11,7 +11,8 @@ public:
 
     Table *evaluateSynonymWildCard(QueryDeclaration &patternSyn, ClauseVariable &left, bool canSimplify);
 
-    Table *evaluateIdentifierWildCard(QueryDeclaration &patternSynonym, const ClauseVariable &leftVariable, bool canSimplify);
+    Table *
+    evaluateIdentifierWildCard(QueryDeclaration &patternSynonym, const ClauseVariable &leftVariable, bool canSimplify);
 
     virtual vector<pair<string, string>> getSynonymWildCardRelation() = 0;
 

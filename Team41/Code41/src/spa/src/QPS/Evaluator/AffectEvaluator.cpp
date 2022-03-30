@@ -79,15 +79,14 @@ bool AffectEvaluator::isValidAssignStmt(ClauseVariable &variable) {
 bool AffectEvaluator::isValidAssignSyn(ClauseVariable &left) {
     auto type = left.getDesignEntityType();
 
-    return EvaluatorUtils::isAssign(type) || EvaluatorUtils::isStmt(type);
+    return type->isAssign() || type->isStmt();
 }
 
 bool AffectEvaluator::isValidAssignSynSyn(ClauseVariable &left, ClauseVariable &right) {
     auto leftType = left.getDesignEntityType();
     auto rightType = right.getDesignEntityType();
 
-    return (EvaluatorUtils::isAssign(leftType) || EvaluatorUtils::isStmt(leftType))
-           && (EvaluatorUtils::isAssign(rightType) || EvaluatorUtils::isStmt(rightType));
+    return (leftType->isAssign() || leftType->isStmt()) && (rightType->isAssign() || rightType->isStmt());
 }
 
 Table *AffectEvaluator::evaluateIntegerInteger(const ClauseVariable &left, const ClauseVariable &right) {

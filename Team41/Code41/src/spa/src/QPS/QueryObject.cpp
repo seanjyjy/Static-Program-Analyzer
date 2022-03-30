@@ -1,4 +1,6 @@
 #include "QueryObject.h"
+#include "QueryDeclaration.h"
+
 
 #include <utility>
 
@@ -80,9 +82,12 @@ QueryObject::~QueryObject() {
             p.cleanAST();
         }
     }
+    for (auto declaration : declarations) {
+        declaration.cleanUp();
+    }
 }
 
-QueryDeclaration::design_entity_type QueryDeclaration::getType() const {
+Entities* QueryDeclaration::getType() const {
     return type;
 }
 

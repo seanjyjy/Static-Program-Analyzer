@@ -13,12 +13,12 @@ TEST_CASE("Evaluator: If pattern evaluator") {
     string VAR_SYN_LBL = "v1";
     string vars[] = {"var0", "var1", "var2"};
 
-    QueryDeclaration ifSyn(QueryDeclaration::IF, IF_SYN_LBL);
+    QueryDeclaration ifSyn(new IfEntities(), IF_SYN_LBL);
 
-    ClauseVariable identifierV0(ClauseVariable::identifier, vars[0], QueryDeclaration::VARIABLE);
-    ClauseVariable identifierV1(ClauseVariable::identifier, vars[1], QueryDeclaration::VARIABLE);
-    ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL, QueryDeclaration::VARIABLE);
-    ClauseVariable wildcard(ClauseVariable::wildcard, "_", QueryDeclaration::VARIABLE);
+    ClauseVariable identifierV0(ClauseVariable::identifier, vars[0], new VariableEntities());
+    ClauseVariable identifierV1(ClauseVariable::identifier, vars[1], new VariableEntities());
+    ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL, new VariableEntities());
+    ClauseVariable wildcard(ClauseVariable::wildcard, "_", new VariableEntities());
 
     PatternVariable patternWildCard(PatternVariable::wildcard, nullptr);
     PatternVariable patternFP(PatternVariable::fullpattern, nullptr);
@@ -88,11 +88,11 @@ TEST_CASE("Evaluator: If pattern evaluator") {
         PatternClause patternClause1(ifSyn, variableSyn, vector<PatternVariable>({patternWildCard}));
         REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause1));
 
-        ClauseVariable procSyn(ClauseVariable::synonym, "proc", QueryDeclaration::PROCEDURE);
+        ClauseVariable procSyn(ClauseVariable::synonym, "proc", new ProcedureEntities());
         PatternClause patternClause2(ifSyn, procSyn, vector<PatternVariable>({patternWildCard, patternWildCard}));
         REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause2));
 
-        ClauseVariable readSyn(ClauseVariable::synonym, "read", QueryDeclaration::READ);
+        ClauseVariable readSyn(ClauseVariable::synonym, "read", new ReadEntities());
         PatternClause patternClause3(ifSyn, readSyn, vector<PatternVariable>({patternWildCard, patternWildCard}));
         REQUIRE_THROWS(IfPatternEvaluator(pkbManager).evaluate(patternClause3));
 

@@ -9,7 +9,7 @@ using namespace std;
 
 struct cvHasher {
     size_t operator()(const QueryDeclaration &cv) const {
-        size_t a = hash<int>{}(cv.getType());
+        size_t a = hash<int>{}(cv.getType()->hashCode());
         size_t b = hash<string>{}(cv.getSynonym());
         return a ^ (b << 1);
     }
@@ -17,7 +17,7 @@ struct cvHasher {
 
 struct cvEquals {
     size_t operator()(const QueryDeclaration &a, const QueryDeclaration &b) const {
-        if (a.getType() == b.getType() && a.getSynonym() == b.getSynonym()) return true;
+        if (a.getType()->toString() == b.getType()->toString() && a.getSynonym() == b.getSynonym()) return true;
         return false;
     }
 };

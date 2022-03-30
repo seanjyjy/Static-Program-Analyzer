@@ -63,7 +63,7 @@ bool QueryParser::parseDeclarationsOfTypeString(string type) {
 }
 
 void QueryParser::generateDeclarationObject(string type, string synonym) {
-    QueryDeclaration::design_entity_type t = QueryDeclaration::stringToType(type);
+    Entities* t = QueryDeclaration::stringToType(type);
     QueryDeclaration qd(t, synonym);
     queryObject->getDeclarations().push_back(qd);
 }
@@ -94,11 +94,11 @@ optional<QueryDeclaration> QueryParser::findMatchingDeclaration(string synonym) 
     return nullopt;
 }
 
-QueryDeclaration::design_entity_type QueryParser::determineDeclarationType(string synonym) {
+Entities* QueryParser::determineDeclarationType(string synonym) {
     optional<QueryDeclaration> qd = findMatchingDeclaration(synonym);
     if (qd == nullopt) {
         // not a declared synonym
-        return QueryDeclaration::NONE;
+        return new NoneEntities();
     } else {
         return qd->type;
     }
@@ -133,7 +133,7 @@ bool QueryParser::parseSelectSingle() {
     if (!qd.has_value()) {
         queryObject->setUseOfUndeclaredVariable(true);
         printf("Semantic Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
-        qd = {QueryDeclaration::design_entity_type::NONE, synonym.value()};
+        qd = {new NoneEntities(), synonym.value()};
     }
 
     ///// LEGACY CODE FROM ITER 1 (todo remove)
@@ -244,7 +244,7 @@ bool QueryParser::isDeclared(string synonym) {
 
 bool QueryParser::isDeclaredProcedure(string synonym) {
     optional<QueryDeclaration> posProc = findMatchingDeclaration(synonym);
-    return posProc.has_value() && posProc.value().type == QueryDeclaration::PROCEDURE;
+    return posProc.has_value() && posProc.value().type->isProcedure();
 }
 
 optional<string> QueryParser::parseClauseType() {
@@ -320,7 +320,7 @@ bool QueryParser::buildClause(string clauseStr, string left, string right) {
             if (qd.has_value()) {
                 lcv = ClauseVariable(leftType, l, qd.value());
             } else {
-                lcv = ClauseVariable(leftType, l, {QueryDeclaration::NONE, l});
+                lcv = ClauseVariable(leftType, l, {new NoneEntities(), l});
             }
         } else {
             lcv = ClauseVariable(leftType, l, determineDeclarationType(l));
@@ -337,7 +337,7 @@ bool QueryParser::buildClause(string clauseStr, string left, string right) {
             if (qd.has_value()) {
                 rcv = ClauseVariable(rightType, r, qd.value());
             } else {
-                rcv = ClauseVariable(rightType, r, {QueryDeclaration::NONE, r});
+                rcv = ClauseVariable(rightType, r, {new NoneEntities(), r});
             }
         } else {
             rcv = ClauseVariable(rightType, r, determineDeclarationType(r));
@@ -400,9 +400,7 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
 }
 
 bool QueryParser::isValidPatternSynType(QueryDeclaration declared) {
-    return declared.type == QueryDeclaration::ASSIGN ||
-        declared.type == QueryDeclaration::WHILE ||
-        declared.type == QueryDeclaration::IF;
+    return declared.type->isAssign() || declared.type->isWhile() || declared.type->isIf();
 }
 
 optional<QueryDeclaration> QueryParser::parsePatternSyn() {
@@ -415,7 +413,7 @@ optional<QueryDeclaration> QueryParser::parsePatternSyn() {
     if (declared == nullopt) {
         queryObject->setUseOfUndeclaredVariable(true);
         printf("Semantic Error: Use of undeclared pattern synonym <%s>\n", patternSyn->c_str());
-        declared = {QueryDeclaration::design_entity_type::NONE, patternSyn.value()};
+        declared = {new NoneEntities(), patternSyn.value()};
         return declared;
     }
 
@@ -515,22 +513,18 @@ bool QueryParser::parsePatternClause() {
         return false;
     }
     optional<vector<PatternVariable>> pv;
-    switch (patternSyn->type) {
-        case QueryDeclaration::ASSIGN:
-            pv = parseAssignPatternParams();
-            break;
-        case QueryDeclaration::IF:
-            pv = parseIfPatternParams();
-            break;
-        case QueryDeclaration::WHILE:
-            pv = parseWhilePatternParams();
-            break;
-        case QueryDeclaration::NONE:
-            pv = parseDummyPatternParams();
-            break;
-        default:
-            printf("Invalid pattern synonym type\n");
-            return false;
+    Entities *type = patternSyn->type;
+    if (type->isAssign()) {
+        pv = parseAssignPatternParams();
+    } else if (type->isIf()) {
+        pv = parseIfPatternParams();
+    } else if (type->isWhile()) {
+        pv = parseWhilePatternParams();
+    } else if (type->isNone()) {
+        pv = parseDummyPatternParams();
+    } else {
+        printf("Invalid pattern synonym type\n");
+        return false;
     }
     if (pv == nullopt) return false;
     lookForClauseGrammarSymbol(")", "Syntax Error: Expected ')' for end of pattern declaration.\n");
@@ -623,10 +617,11 @@ void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string l
         if (qd.has_value()) {
             lcv = ClauseVariable(leftType, l, qd.value());
         } else {
-            lcv = ClauseVariable(leftType, l, {QueryDeclaration::NONE, l});
+            lcv = ClauseVariable(leftType, l, {new NoneEntities(), l});
         }
     } else {
-        lcv = ClauseVariable(leftType, l, determineDeclarationType(l));
+        auto declarationType = determineDeclarationType(l);
+        lcv = ClauseVariable(leftType, l, declarationType);
     }
 
     PatternClause *pc = new PatternClause(patternSyn, lcv, rhs);
@@ -710,7 +705,7 @@ optional<WithVariable> QueryParser::parseWithRef() {
             queryObject->setUseOfUndeclaredVariable(true);
             printf("Semantic Error: Use of undeclared synonym <%s> for Select.\n", n.c_str());
 
-            syn = {QueryDeclaration::design_entity_type::NONE, n};
+            syn = {new NoneEntities(), n};
         }
         if (lex->peekNextIsString(".") && lex->nextExpected(".")) {
             string attr = lex->nextToken();
@@ -757,7 +752,7 @@ QueryObject *QueryParser::parse() {
     vector<WithClause> withClauses;
     vector<SuperClause*> superClauses;
     string a = "";
-    QueryDeclaration s(QueryDeclaration::ASSIGN, a);
+    QueryDeclaration s(new AssignEntities(), a);
     SelectTarget st(SelectTarget::BOOLEAN);
     queryObject = new QueryObject(declarations, clauses, patternClauses, withClauses, superClauses, s, st, true);
     lex = new QueryLexer(input);

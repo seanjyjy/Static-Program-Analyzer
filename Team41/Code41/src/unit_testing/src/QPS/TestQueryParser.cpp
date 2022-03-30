@@ -12,7 +12,7 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        bool typeMatch = qo->getDeclarations().at(0).type == QueryDeclaration::VARIABLE;
+        bool typeMatch = qo->getDeclarations().at(0).type->isVariable();
         bool synMatch = qo->getDeclarations().at(0).synonym == "v";
         bool selectMatch = qo->getSelectables().at(0).getSynonym().synonym == "v";
         REQUIRE(qo->isValid());
@@ -26,7 +26,7 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        bool typeMatch = qo->getDeclarations().at(1).getType() == QueryDeclaration::ASSIGN;
+        bool typeMatch = qo->getDeclarations().at(1).getType()->isAssign();
         bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::usesS;
         REQUIRE(qo->isValid());
         REQUIRE(typeMatch);
@@ -48,7 +48,7 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        bool typeMatch = qo->getDeclarations().at(1).getType() == QueryDeclaration::VARIABLE;
+        bool typeMatch = qo->getDeclarations().at(1).getType()->isVariable();
         bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::modifiesP;
         REQUIRE(qo->isValid());
         REQUIRE(typeMatch);
@@ -60,12 +60,12 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        bool typeMatch = qo->getDeclarations().at(0).getType() == QueryDeclaration::VARIABLE;
+        bool typeMatch = qo->getDeclarations().at(0).getType()->isVariable();
         bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::modifiesP;
         bool selectMatch = qo->getSelectables().at(0).getSynonym().synonym == "v";
 
-        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::NONE);
-        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType()->isNone());
+        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType()->isVariable());
         REQUIRE(qo->isValid());
         REQUIRE(typeMatch);
         REQUIRE(clauseMatch);
@@ -77,10 +77,10 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        bool typeMatch = qo->getDeclarations().at(0).getType() == QueryDeclaration::CALL;
+        bool typeMatch = qo->getDeclarations().at(0).getType()->isCall();
         bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::usesS;
-        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::CALL);
-        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType()->isCall());
+        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType()->isVariable());
         REQUIRE(qo->isValid());
         REQUIRE(typeMatch);
         REQUIRE(clauseMatch);
@@ -93,8 +93,8 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
         bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::usesS;
         bool vMatch = qo->getClauses().at(0).getLeftClauseVariable().getType() == ClauseVariable::synonym;
-        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType()->isAssign());
+        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType()->isVariable());
         REQUIRE(qo->isValid());
         REQUIRE(clauseMatch);
         REQUIRE(vMatch);
@@ -107,8 +107,8 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
         bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::generic_modifies;
         bool vMatch = qo->getClauses().at(0).getLeftClauseVariable().getType() == ClauseVariable::wildcard;
-        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::NONE);
-        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType()->isNone());
+        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType()->isVariable());
         REQUIRE(qo->isValid());
         REQUIRE(clauseMatch);
         REQUIRE(vMatch);
@@ -132,7 +132,7 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isAssign());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().size() == 1);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() != nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isFullPattern());
@@ -146,7 +146,7 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
 
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isAssign());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().size() == 1);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() != nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isSubPattern());
@@ -159,12 +159,12 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isAssign());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().size() == 1);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() == nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isWildcard());
         REQUIRE(qo->getPatternClauses().at(0).getLHS().isSynonym());
-        REQUIRE(qo->getPatternClauses().at(0).getLHS().getDesignEntityType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getPatternClauses().at(0).getLHS().getDesignEntityType()->isVariable());
     }
     SECTION("If Pattern identifier condVar") {
         string s = "if ifs;\n"
@@ -173,7 +173,7 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::IF);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isIf());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().size() == 2);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() == nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isWildcard());
@@ -188,14 +188,14 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::IF);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isIf());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().size() == 2);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() == nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isWildcard());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(1).getMiniAST() == nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(1).isWildcard());
         REQUIRE(qo->getPatternClauses().at(0).getLHS().isSynonym());
-        REQUIRE(qo->getPatternClauses().at(0).getLHS().getDesignEntityType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getPatternClauses().at(0).getLHS().getDesignEntityType()->isVariable());
     }
     SECTION("If Pattern Wildcard condVar") {
         string s = "if ifs;\n"
@@ -204,7 +204,7 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::IF);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isIf());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().size() == 2);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() == nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isWildcard());
@@ -219,7 +219,7 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::WHILE);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isWhile());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().size() == 1);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() == nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isWildcard());
@@ -232,12 +232,12 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::WHILE);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isWhile());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().size() == 1);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() == nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isWildcard());
         REQUIRE(qo->getPatternClauses().at(0).getLHS().isSynonym());
-        REQUIRE(qo->getPatternClauses().at(0).getLHS().getDesignEntityType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getPatternClauses().at(0).getLHS().getDesignEntityType()->isVariable());
     }
     SECTION("While Pattern Wildcard condVar") {
         string s = "while w;\n"
@@ -246,7 +246,7 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::WHILE);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isWhile());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().size() == 1);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() == nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isWildcard());
@@ -259,23 +259,23 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
 
         REQUIRE(qo->isValid());
-        bool typeMatch = qo->getDeclarations().at(0).getType() == QueryDeclaration::VARIABLE;
+        bool typeMatch = qo->getDeclarations().at(0).getType()->isVariable();
         bool synMatch = qo->getDeclarations().at(0).getSynonym() == "v";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
-        typeMatch = qo->getDeclarations().at(1).getType() == QueryDeclaration::VARIABLE;
+        typeMatch = qo->getDeclarations().at(1).getType()->isVariable();
         synMatch = qo->getDeclarations().at(1).getSynonym() == "v1";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
-        typeMatch = qo->getDeclarations().at(2).getType() == QueryDeclaration::VARIABLE;
+        typeMatch = qo->getDeclarations().at(2).getType()->isVariable();
         synMatch = qo->getDeclarations().at(2).getSynonym() == "v2";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
-        typeMatch = qo->getDeclarations().at(3).getType() == QueryDeclaration::ASSIGN;
+        typeMatch = qo->getDeclarations().at(3).getType()->isAssign();
         synMatch = qo->getDeclarations().at(3).getSynonym() == "a";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
-        typeMatch = qo->getDeclarations().at(4).getType() == QueryDeclaration::ASSIGN;
+        typeMatch = qo->getDeclarations().at(4).getType()->isAssign();
         synMatch = qo->getDeclarations().at(4).getSynonym() == "a1";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
@@ -287,27 +287,27 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
 
         REQUIRE(qo->isValid());
-        bool typeMatch = qo->getDeclarations().at(0).getType() == QueryDeclaration::VARIABLE;
+        bool typeMatch = qo->getDeclarations().at(0).getType()->isVariable();
         bool synMatch = qo->getDeclarations().at(0).getSynonym() == "v";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
-        typeMatch = qo->getDeclarations().at(1).getType() == QueryDeclaration::VARIABLE;
+        typeMatch = qo->getDeclarations().at(1).getType()->isVariable();
         synMatch = qo->getDeclarations().at(1).getSynonym() == "v1";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
-        typeMatch = qo->getDeclarations().at(2).getType() == QueryDeclaration::VARIABLE;
+        typeMatch = qo->getDeclarations().at(2).getType()->isVariable();
         synMatch = qo->getDeclarations().at(2).getSynonym() == "v2";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
-        typeMatch = qo->getDeclarations().at(3).getType() == QueryDeclaration::ASSIGN;
+        typeMatch = qo->getDeclarations().at(3).getType()->isAssign();
         synMatch = qo->getDeclarations().at(3).getSynonym() == "a";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
-        typeMatch = qo->getDeclarations().at(4).getType() == QueryDeclaration::ASSIGN;
+        typeMatch = qo->getDeclarations().at(4).getType()->isAssign();
         synMatch = qo->getDeclarations().at(4).getSynonym() == "a1";
         REQUIRE(typeMatch);
         REQUIRE(synMatch);
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isAssign());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() != nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->getPatternClauses().at(0).getLHS().isWildCard());
@@ -319,12 +319,12 @@ TEST_CASE("QPS: Parser_VALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isAssign());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() != nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->getPatternClauses().at(0).getLHS().isWildCard());
-        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType()->isAssign());
+        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType()->isVariable());
     }
     SECTION("Whole shebang 2") {
         string s = "assign a; variable v;\n"
@@ -334,12 +334,12 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
 
         REQUIRE(qo->isValid());
-        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->getPatternClauses().at(0).getSynonym().getType()->isAssign());
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).getMiniAST() != nullptr);
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isFullPattern());
         REQUIRE(qo->getPatternClauses().at(0).getLHS().isWildCard());
-        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType() == QueryDeclaration::ASSIGN);
-        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType()->isAssign());
+        REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType()->isVariable());
     }
     SECTION("SelectTarget test") {
         string s = "variable v;\n"
@@ -347,7 +347,7 @@ TEST_CASE("QPS: Parser_VALID") {
 
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
-        bool typeMatch = qo->getDeclarations().at(0).getType() == QueryDeclaration::VARIABLE;
+        bool typeMatch = qo->getDeclarations().at(0).getType()->isVariable();
         bool synMatch = qo->getDeclarations().at(0).getSynonym() == "v";
         bool selectMatch = qo->getSelectables().at(0).getSynonymName() == "v";
         REQUIRE(qo->isValid());
@@ -518,21 +518,21 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getSuperClauses().at(0)->isFollowsT());
         REQUIRE(qo->getSuperClauses().at(0)->hasSynonyms());
         REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().size() == 2);
-        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getType() == QueryDeclaration::STMT);
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getType()->isStmt());
         REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getSynonym() == "s");
-        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(1).getType() == QueryDeclaration::STMT);
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(1).getType()->isStmt());
         REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(1).getSynonym() == "s1");
         // WithClause super clause
         REQUIRE(qo->getSuperClauses().at(1)->isWithClause());
         REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().size() == 1); // Only LHS gets registered
-        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getType() == QueryDeclaration::STMT);
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getType()->isStmt());
         REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getSynonym() == "s1");
         // PatternClause super clause
         REQUIRE(qo->getSuperClauses().at(2)->isPatternClause());
         REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().size() == 2);
-        REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().at(0).getType() == QueryDeclaration::WHILE);
+        REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().at(0).getType()->isWhile());
         REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().at(0).getSynonym() == "w");
-        REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().at(1).getType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().at(1).getType()->isVariable());
         REQUIRE(qo->getSuperClauses().at(2)->getSynonyms().at(1).getSynonym() == "v");
     }
     SECTION("Whole shebang 3") {
@@ -546,16 +546,16 @@ TEST_CASE("QPS: Parser_VALID") {
         // PatternClause super clause
         REQUIRE(qo->getSuperClauses().at(0)->isPatternClause());
         REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().size() == 1);
-        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getType()->isAssign());
         REQUIRE(qo->getSuperClauses().at(0)->getSynonyms().at(0).getSynonym() == "a");
         // QueryClause super clause
         REQUIRE(qo->getSuperClauses().at(1)->isSuchThatClause());
         REQUIRE(qo->getSuperClauses().at(1)->isUsesS());
         REQUIRE(qo->getSuperClauses().at(1)->hasSynonyms());
         REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().size() == 2);
-        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getType() == QueryDeclaration::ASSIGN);
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getType()->isAssign());
         REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(0).getSynonym() == "a");
-        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(1).getType() == QueryDeclaration::VARIABLE);
+        REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(1).getType()->isVariable());
         REQUIRE(qo->getSuperClauses().at(1)->getSynonyms().at(1).getSynonym() == "v");
     }
     SECTION("SuperClause wrapper hash test") {

@@ -1,48 +1,44 @@
 #include "QueryDeclaration.h"
 
+#include <utility>
+
 QueryDeclaration::QueryDeclaration() {
-    type = NONE;
+    type = new NoneEntities();
 }
 
-QueryDeclaration::QueryDeclaration(design_entity_type type, string &synonym) :
+QueryDeclaration::QueryDeclaration(Entities *type, string &synonym) :
     type(type), synonym(synonym) {}
 
-QueryDeclaration::design_entity_type QueryDeclaration::stringToType(string &s) {
+Entities* QueryDeclaration::stringToType(string &s) {
     if (s == "stmt")
-        return QueryDeclaration::STMT;
+        return new StmtEntities();
     if (s == "read")
-        return QueryDeclaration::READ;
+        return new ReadEntities();
     if (s == "print")
-        return QueryDeclaration::PRINT;
+        return new PrintEntities();
     if (s == "call")
-        return QueryDeclaration::CALL;
+        return new CallEntities();
     if (s == "while")
-        return QueryDeclaration::WHILE;
+        return new WhileEntities();
     if (s == "if")
-        return QueryDeclaration::IF;
+        return new IfEntities();
     if (s == "assign")
-        return QueryDeclaration::ASSIGN;
+        return new AssignEntities();
     if (s == "variable")
-        return QueryDeclaration::VARIABLE;
+        return new VariableEntities();
     if (s == "constant")
-        return QueryDeclaration::CONSTANT;
+        return new ConstantEntities();
     if (s == "procedure")
-        return QueryDeclaration::PROCEDURE;
+        return new ProcedureEntities();
     throw runtime_error("no query declaration for string " + s);
 }
 
-string QueryDeclaration::typeToString(QueryDeclaration::design_entity_type &d) {
-    if (d == QueryDeclaration::STMT) return "stmt";
-    if (d == QueryDeclaration::READ) return "read";
-    if (d == QueryDeclaration::PRINT) return "print";
-    if (d == QueryDeclaration::CALL) return "call";
-    if (d == QueryDeclaration::WHILE) return "while";
-    if (d == QueryDeclaration::IF) return "if";
-    if (d == QueryDeclaration::ASSIGN) return "assign";
-    if (d == QueryDeclaration::VARIABLE) return "variable";
-    if (d == QueryDeclaration::CONSTANT) return "constant";
-    if (d == QueryDeclaration::PROCEDURE) return "procedure";
-    throw runtime_error("no string representation for design entity");
+string QueryDeclaration::typeToString(Entities *d) {
+    if (d->isNone()) {
+        throw runtime_error("no string representation for design entity");
+    }
+
+    return d->toString();
 }
 
 string QueryDeclaration::toString() {
@@ -62,3 +58,6 @@ bool QueryDeclaration::equals(QueryDeclaration other) const {
     return true;
 }
 
+void QueryDeclaration::cleanUp() {
+    delete type;
+}
