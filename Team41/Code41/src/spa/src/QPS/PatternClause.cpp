@@ -50,7 +50,7 @@ string PatternClause::toString() const {
 
 int PatternClause::hash() const {
     int out = (int)std::hash<string>{}("pattern");
-    out ^= (int)std::hash<int>{}(synonym.getType());
+    out ^= (int)std::hash<int>{}(synonym.getType()->hashCode());
     out ^= (int)std::hash<int>{}(lhs.getType());
     for (int i = 0; i < (int)rhs.size(); i++) {
         out ^= (int)std::hash<int>{}(rhs.at(i).getType());
