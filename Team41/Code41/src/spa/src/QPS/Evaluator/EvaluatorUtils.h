@@ -22,31 +22,7 @@ public:
      * @param type Query Declaration type.
      * @return True if query declaration is a Statement type, else false.
      */
-    static bool isStmtType(QueryDeclaration::design_entity_type type);
-
-    /**
-     * Checks if a given query declaration is a Statement.
-     *
-     * @param type Query Declaration type.
-     * @return True if query declaration is a Statement, else false.
-     */
-    static bool isStmt(QueryDeclaration::design_entity_type type);
-
-    /**
-     * Checks if a given query declaration is a While statement type.
-     *
-     * @param type Query Declaration type.
-     * @return True if query declaration is a While statement type, else false.
-     */
-    static bool isWhile(QueryDeclaration::design_entity_type type);
-
-    /**
-     * Checks if a given query declaration is an If statement type.
-     *
-     * @param type Query Declaration type.
-     * @return True if query declaration is a If statement type, else false.
-     */
-    static bool isIf(QueryDeclaration::design_entity_type type);
+    static bool isStmtType(Entities *type);
 
     /**
      * Checks if a given query declaration is of a Modifies statement type.
@@ -54,7 +30,7 @@ public:
      * @param type Query Declaration type.
      * @return True if query declaration is a Modifies statement type, else false.
      */
-    static bool isModifiesStmtType(QueryDeclaration::design_entity_type type);
+    static bool isModifiesStmtType(Entities *type);
 
     /**
      * Checks if a given query declaration is of a Uses statement type.
@@ -62,63 +38,7 @@ public:
      * @param type Query Declaration type.
      * @return True if query declaration is a Uses statement type, else false.
      */
-    static bool isUsesStmtType(QueryDeclaration::design_entity_type type);
-
-    /**
-     * Checks if a given query declaration is of a Variable type.
-     *
-     * @param type Query Declaration type.
-     * @return True if query declaration is a Variable type, else false.
-     */
-    static bool isVariable(QueryDeclaration::design_entity_type type);
-
-    /**
-     * Checks if a given query declaration is of a Procedure type.
-     *
-     * @param type Query Declaration type.
-     * @return True if query declaration is a Procedure type, else false.
-     */
-    static bool isProcedure(QueryDeclaration::design_entity_type type);
-
-    /**
-     * Checks if a given query declaration is of a Constant type.
-     *
-     * @param type Query Declaration type.
-     * @return True if query declaration is a Constant type, else false.
-     */
-    static bool isConstant(QueryDeclaration::design_entity_type type);
-
-    /**
-     * Checks if a given query declaration is of a Print type.
-     *
-     * @param type Query Declaration type.
-     * @return True if query declaration is a Print type, else false.
-     */
-    static bool isPrint(QueryDeclaration::design_entity_type type);
-
-    /**
-     * Checks if a given query declaration is of an Assign type.
-     *
-     * @param type Query Declaration type.
-     * @return True if query declaration is an Assign type, else false.
-     */
-    static bool isAssign(QueryDeclaration::design_entity_type type);
-
-    /**
-     * Checks if a given query declaration is of a Read type.
-     *
-     * @param type Query Declaration type.
-     * @return True if query declaration is a Read type, else false.
-     */
-    static bool isRead(QueryDeclaration::design_entity_type type);
-
-    /**
-     * Checks if a given query declaration is of a Call type.
-     *
-     * @param type Query Declaration type.
-     * @return True if query declaration is a Call type, else false.
-     */
-    static bool isCall(QueryDeclaration::design_entity_type type);
+    static bool isUsesStmtType(Entities *type);
 
     /**
      * Checks if a given clause variable is of a variable synonym.
@@ -216,7 +136,7 @@ public:
      * @param declarations the list of declarations defined in the query
      * @return true if valid, false otherwise
      */
-    static bool validateDeclarations(vector<QueryDeclaration> declarations);
+    static bool validateDeclarations(vector<QueryDeclaration>& declarations);
 
     // for Follow, Follow*, Parent, Parent*
     class StmtUtils {
@@ -568,16 +488,16 @@ public:
 
     class PatternUtils {
     public:
-        static bool isWildCardWildCards(ClauseVariable variable, const vector<PatternVariable> &patternVariables,
-                                        QueryDeclaration::design_entity_type type);
+        static bool isWildCardWildCards(const ClauseVariable& variable, const vector<PatternVariable> &patternVariables,
+                                        Entities *type);
 
-        static bool isIdentifierWildCards(ClauseVariable variable, const vector<PatternVariable> &patternVariables,
-                                          QueryDeclaration::design_entity_type type);
+        static bool isIdentifierWildCards(const ClauseVariable& variable, const vector<PatternVariable> &patternVariables,
+                                          Entities *type);
 
-        static bool isValidSynonymWildCards(ClauseVariable variable, const vector<PatternVariable> &patternVariables,
-                                            QueryDeclaration::design_entity_type type);
+        static bool isValidSynonymWildCards(ClauseVariable &variable, const vector<PatternVariable> &patternVariables,
+                                            Entities *type);
 
         static bool isWildCards(const vector<PatternVariable> &patternVariables,
-                                QueryDeclaration::design_entity_type type);
+                                Entities *type);
     };
 };

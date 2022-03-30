@@ -60,23 +60,22 @@ bool WithEvaluator::isVarNameVar(WithVariable &variable) {
 
 bool WithEvaluator::isAttrRefValid(WithVariable &variable) {
     QueryDeclaration synonym = variable.getSynonym();
-    QueryDeclaration::design_entity_type type = synonym.getType();
+    Entities *type = synonym.getType();
 
     if (isValueVar(variable)) {
-        return EvaluatorUtils::isConstant(type);
+        return type->isConstant();
     }
 
     if (isProcVar(variable)) {
-        return EvaluatorUtils::isProcedure(type) || EvaluatorUtils::isCall(type);
+        return type->isProcedure() || type->isCall();
     }
 
     if (isVarNameVar(variable)) {
-        return EvaluatorUtils::isVariable(type) || EvaluatorUtils::isRead(type) || EvaluatorUtils::isPrint(type);
+        return type->isVariable() || type->isRead() || type->isPrint();
     }
 
-    return EvaluatorUtils::isStmt(type) || EvaluatorUtils::isRead(type) || EvaluatorUtils::isPrint(type)
-           || EvaluatorUtils::isCall(type) || EvaluatorUtils::isWhile(type) || EvaluatorUtils::isIf(type)
-           || EvaluatorUtils::isAssign(type);
+    return type->isStmt() || type->isRead() || type->isPrint() || type->isCall() || type->isWhile() || type->isIf()
+            || type->isAssign();
 }
 
 bool WithEvaluator::isIntegerInteger(WithVariable &left, WithVariable &right) {
@@ -253,86 +252,40 @@ Table *WithEvaluator::evaluateAttrRefAttrRef(WithVariable &left, WithVariable &r
     return buildSynonymSynonymTable(leftResults, rightResults, leftSynonym, rightSynonym, leftMapper, rightMapper, canSimplify);
 }
 
-unordered_set<string> WithEvaluator::getSpecificStatementType(QueryDeclaration::design_entity_type type) {
-    if (EvaluatorUtils::isStmt(type)) {
-        return pkb->getStatements();
+unordered_set<string> WithEvaluator::getSpecificStatementType(Entities *type) {
+    if (type->isProcedure() || type->isNone() || type->isVariable()) {
+        throw SemanticException("Wrong type passed into with");
     }
 
-    if (EvaluatorUtils::isCall(type)) {
-        return pkb->getCalls();
-    }
-
-    if (EvaluatorUtils::isWhile(type)) {
-        return pkb->getWhiles();
-    }
-
-    if (EvaluatorUtils::isIf(type)) {
-        return pkb->getIfs();
-    }
-
-    if (EvaluatorUtils::isAssign(type)) {
-        return pkb->getAssigns();
-    }
-
-    if (EvaluatorUtils::isRead(type)) {
-        return pkb->getReads();
-    }
-
-    if (EvaluatorUtils::isPrint(type)) {
-        return pkb->getPrints();
-    }
-
-    // The above are call stmt numbers but constant itself is a number so it is included in here
-    if (EvaluatorUtils::isConstant(type)) {
-        return pkb->getConstants();
-    }
-
-    string errorMessage = "You shouldnt be calling getSpecificStatementType with this type: " + to_string(type);
-    throw SemanticException(errorMessage);
+    EntitiesReader *reader = type->getReader();
+    return reader->getEntities(pkb);
 }
 
-unordered_set<string> WithEvaluator::getName(QueryDeclaration::design_entity_type type) {
-    if (EvaluatorUtils::isProcedure(type)) {
-        return pkb->getProcedures();
+unordered_set<string> WithEvaluator::getName(Entities *type) {
+    if (type->isAssign() || type->isConstant() || type->isIf() || type->isNone() || type->isStmt() || type->isWhile()) {
+        throw SemanticException("Wrong type passed into with");
     }
 
-    if (EvaluatorUtils::isVariable(type)) {
-        return pkb->getVariables();
-    }
-
-    if (EvaluatorUtils::isCall(type)) {
-        return pkb->getCalls();
-    }
-
-    if (EvaluatorUtils::isPrint(type)) {
-        return pkb->getPrints();
-    }
-
-    if (EvaluatorUtils::isRead(type)) {
-        return pkb->getReads();
-    }
-
-    string errorMessage = "You shouldnt be calling getName with this type: " + to_string(type);
-    throw SemanticException(errorMessage);
+    EntitiesReader *reader = type->getReader();
+    return reader->getEntities(pkb);
 }
 
-ValueMapping WithEvaluator::getMapper(QueryDeclaration::design_entity_type type) {
-    if (EvaluatorUtils::isVariable(type) || EvaluatorUtils::isProcedure(type)) {
+ValueMapping WithEvaluator::getMapper(Entities *type) {
+    if (type->isVariable() || type->isProcedure()) {
         return sameMapper;
     }
 
-    if (EvaluatorUtils::isCall(type)) {
+    if (type->isCall()) {
         return [](const string &stmtNum, PKBClient *pkbCli) { return pkbCli->getCallsProcNameAttr(stmtNum); };
     }
 
-    if (EvaluatorUtils::isPrint(type)) {
+    if (type->isPrint()) {
         return [](const string &stmtNum, PKBClient *pkbCli) { return pkbCli->getPrintVarNameAttr(stmtNum); };
     }
 
-    if (EvaluatorUtils::isRead(type)) {
+    if (type->isRead()) {
         return [](const string &stmtNum, PKBClient *pkbCli) { return pkbCli->getReadVarNameAttr(stmtNum); };
     }
 
-    string errorMessage = "You shouldnt be calling getMapper with this type: " + to_string(type);
-    throw SemanticException(errorMessage);
+    throw SemanticException("Wrong type passed into with");
 }

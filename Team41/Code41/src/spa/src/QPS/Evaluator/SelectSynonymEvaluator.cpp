@@ -1,11 +1,11 @@
 #include "SelectSynonymEvaluator.h"
 #include <stdexcept>
 
-Table *SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym) {
-    auto declarationType = selectSynonym.getType();
+Table *SelectSynonymEvaluator::evaluate(const QueryDeclaration& selectSynonym) {
     auto synonym = selectSynonym.getSynonym();
 
-    unordered_set<string> setOfResult = getResultViaType(declarationType, pkb);
+    EntitiesReader* reader = selectSynonym.getType()->getReader();
+    unordered_set<string> setOfResult = reader->getEntities(pkb);
     Header header({synonym});
     Table *resultTable = new PQLTable(header);
 
@@ -15,34 +15,6 @@ Table *SelectSynonymEvaluator::evaluate(const QueryDeclaration selectSynonym) {
     }
 
     return resultTable;
-}
-
-unordered_set<string>
-SelectSynonymEvaluator::getResultViaType(QueryDeclaration::design_entity_type type, PKBClient *pkb) {
-    switch (type) {
-        case QueryDeclaration::design_entity_type::STMT:
-            return pkb->getStatements();
-        case QueryDeclaration::design_entity_type::READ:
-            return pkb->getReads();
-        case QueryDeclaration::design_entity_type::PRINT:
-            return pkb->getPrints();
-        case QueryDeclaration::design_entity_type::CALL:
-            return pkb->getCalls();
-        case QueryDeclaration::design_entity_type::WHILE:
-            return pkb->getWhiles();
-        case QueryDeclaration::design_entity_type::IF:
-            return pkb->getIfs();
-        case QueryDeclaration::design_entity_type::ASSIGN:
-            return pkb->getAssigns();
-        case QueryDeclaration::design_entity_type::VARIABLE:
-            return pkb->getVariables();
-        case QueryDeclaration::design_entity_type::CONSTANT:
-            return pkb->getConstants();
-        case QueryDeclaration::design_entity_type::PROCEDURE:
-            return pkb->getProcedures();
-        default:
-            throw SemanticException("Invalid query provided for Select");
-    }
 }
 
 SelectSynonymEvaluator::SelectSynonymEvaluator(PKBClient *pkb) {

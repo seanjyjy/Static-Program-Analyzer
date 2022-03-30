@@ -139,15 +139,14 @@ Table *QueryEvaluator::evaluate(const QueryClause &clause) {
 
 Table *QueryEvaluator::evaluate(const PatternClause &clause) {
     auto type = clause.getSynonym().getType();
-    switch (type) {
-        case QueryDeclaration::design_entity_type::ASSIGN:
-            return AssignPatternEvaluator(pkb).evaluate(clause);
-        case QueryDeclaration::design_entity_type::IF:
-            return IfPatternEvaluator(pkb).evaluate(clause);
-        case QueryDeclaration::design_entity_type::WHILE:
-            return WhilePatternEvaluator(pkb).evaluate(clause);
-        default:
-            throw runtime_error("unknown pattern clause of type " + to_string(type));
+    if (type->isAssign()) {
+        return AssignPatternEvaluator(pkb).evaluate(clause);
+    } else if (type->isIf()) {
+        return IfPatternEvaluator(pkb).evaluate(clause);
+    } else if (type->isWhile()) {
+        return WhilePatternEvaluator(pkb).evaluate(clause);
+    } else {
+        throw runtime_error("unknown pattern clause type");
     }
 }
 
