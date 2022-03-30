@@ -12,7 +12,7 @@ Table *Evaluator::buildBooleanTable(bool booleanResult) {
     return new FalseTable();
 }
 
-Table *Evaluator::buildSingleSynonymTable(const string &result, ClauseVariable &synonym) {
+Table *Evaluator::buildSingleSynonymTable(const string &result, ClauseVariable &synonym, bool canSimplify) {
     if (result.empty()) {
         return new FalseTable();
     }
@@ -25,6 +25,7 @@ Table *Evaluator::buildSingleSynonymTable(const string &result, ClauseVariable &
     Table *table = new PQLTable(header);
 
     if (filters.find(result) != filters.end()) {
+        if (canSimplify) return new TrueTable();
         Row *row = new Row(column, result);
         table->addRow(row);
     }
@@ -32,16 +33,18 @@ Table *Evaluator::buildSingleSynonymTable(const string &result, ClauseVariable &
     return table;
 }
 
-Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration &patternSynonym) {
-    return buildSingleSynonymTable(results, patternSynonym.getSynonym(), patternSynonym.getType());
+Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, QueryDeclaration &patternSynonym,
+                                          bool canSimplify) {
+    return buildSingleSynonymTable(results, patternSynonym.getSynonym(), patternSynonym.getType(), canSimplify);
 }
 
-Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable &synonym) {
-    return buildSingleSynonymTable(results, synonym.getLabel(), synonym.getDesignEntityType());
+Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, ClauseVariable &synonym,
+                                          bool canSimplify) {
+    return buildSingleSynonymTable(results, synonym.getLabel(), synonym.getDesignEntityType(), canSimplify);
 }
 
 Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, const string &label,
-                                          Entities *type) {
+                                          Entities *type, bool canSimplify) {
 
     if (results.empty()) {
         return new FalseTable();
@@ -55,6 +58,7 @@ Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, 
 
     for (auto &child: results) {
         if (filters.find(child) != filters.end()) {
+            if (canSimplify) return new TrueTable();
             Row *row = new Row(label, child);
             table->addRow(row);
         }
@@ -63,7 +67,7 @@ Table *Evaluator::buildSingleSynonymTable(const unordered_set<string> &results, 
     return table;
 }
 
-Table *Evaluator::buildSingleSynonymTable(const vector<CFGNode *> &results, ClauseVariable &synonym) {
+Table *Evaluator::buildSingleSynonymTable(const vector<CFGNode *> &results, ClauseVariable &synonym, bool canSimplify) {
     if (results.empty()) {
         return new FalseTable();
     }
@@ -77,6 +81,7 @@ Table *Evaluator::buildSingleSynonymTable(const vector<CFGNode *> &results, Clau
 
     for (auto &child: results) {
         if (filters.find(child->getStmtNum()) != filters.end()) {
+            if (canSimplify) return new TrueTable();
             Row *row = new Row(column, child->getStmtNum());
             table->addRow(row);
         }
@@ -85,7 +90,7 @@ Table *Evaluator::buildSingleSynonymTable(const vector<CFGNode *> &results, Clau
     return table;
 }
 
-Table *Evaluator::buildSingleSynonymTable(const vector<string> &results, ClauseVariable &synonym) {
+Table *Evaluator::buildSingleSynonymTable(const vector<string> &results, ClauseVariable &synonym, bool canSimplify) {
     if (results.empty()) {
         return new FalseTable();
     }
@@ -99,6 +104,7 @@ Table *Evaluator::buildSingleSynonymTable(const vector<string> &results, ClauseV
 
     for (auto &statement: results) {
         if (filters.find(statement) != filters.end()) {
+            if (canSimplify) return new TrueTable();
             Row *row = new Row(column, statement);
             table->addRow(row);
         }
@@ -108,16 +114,20 @@ Table *Evaluator::buildSingleSynonymTable(const vector<string> &results, ClauseV
 }
 
 Table *Evaluator::buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
-                                           ClauseVariable &rightSynonym) {
+                                           ClauseVariable &rightSynonym, bool canSimplify) {
     if (results.empty()) {
         return new FalseTable();
     }
 
     if (leftSynonym.getLabel() == rightSynonym.getLabel()) {
+        if (canSimplify) {
+            return buildBooleanTable(!results.empty());
+        }
+
         return buildSameSynonymTable(results, leftSynonym);
     }
 
-    return buildDifferentSynonymTable(results, leftSynonym, rightSynonym);
+    return buildDifferentSynonymTable(results, leftSynonym, rightSynonym, canSimplify);
 }
 
 Table *Evaluator::buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &synonym) {
@@ -139,7 +149,7 @@ Table *Evaluator::buildSameSynonymTable(const vector<pair<string, string>> &resu
 }
 
 Table *Evaluator::buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
-                                             ClauseVariable &rightSynonym) {
+                                             ClauseVariable &rightSynonym, bool canSimplify) {
     string leftLabel = leftSynonym.getLabel();
     string rightLabel = rightSynonym.getLabel();
 
@@ -155,6 +165,7 @@ Table *Evaluator::buildDifferentSynonymTable(const vector<pair<string, string>> 
         bool isInLeftFilter = leftFilters.find(leftSyn) != leftFilters.end();
         bool isInRightFilter = rightFilters.find(rightSyn) != rightFilters.end();
         if (isInLeftFilter && isInRightFilter) {
+            if (canSimplify) return new TrueTable();
             Row *row = new Row();
             row->addEntry(leftLabel, leftSyn);
             row->addEntry(rightLabel, rightSyn);

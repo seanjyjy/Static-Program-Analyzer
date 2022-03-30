@@ -2,30 +2,30 @@
 
 ModifiesUsesPEvaluator::ModifiesUsesPEvaluator(PKBClient *pkb) : ProcEvaluator(pkb) {}
 
-Table *ModifiesUsesPEvaluator::evaluateClause(ClauseVariable &leftVariable, ClauseVariable &rightVariable) {
+Table *ModifiesUsesPEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
 
-    if (EvaluatorUtils::ProcUtils::isIdentifierIdentifier(&leftVariable, &rightVariable)) {
-        return evaluateIdentifierIdentifier(leftVariable, rightVariable);
+    if (EvaluatorUtils::ProcUtils::isIdentifierIdentifier(&left, &right)) {
+        return evaluateIdentifierIdentifier(left, right);
     }
 
-    if (EvaluatorUtils::ProcUtils::isValidIdentifierSynonym(&leftVariable, &rightVariable)) {
-        return evaluateIdentifierSynonym(leftVariable, rightVariable);
+    if (EvaluatorUtils::ProcUtils::isValidIdentifierSynonym(&left, &right)) {
+        return evaluateIdentifierSynonym(left, right, canSimplify);
     }
 
-    if (EvaluatorUtils::ProcUtils::isIdentifierWildCard(&leftVariable, &rightVariable)) {
-        return evaluateIdentifierWildCard(leftVariable);
+    if (EvaluatorUtils::ProcUtils::isIdentifierWildCard(&left, &right)) {
+        return evaluateIdentifierWildCard(left);
     }
 
-    if (EvaluatorUtils::ProcUtils::isValidSynonymIdentifier(&leftVariable, &rightVariable)) {
-        return evaluateSynonymIdentifier(leftVariable, rightVariable);
+    if (EvaluatorUtils::ProcUtils::isValidSynonymIdentifier(&left, &right)) {
+        return evaluateSynonymIdentifier(left, right, canSimplify);
     }
 
-    if (EvaluatorUtils::ProcUtils::isValidSynonymSynonym(&leftVariable, &rightVariable)) {
-        return evaluateSynonymSynonym(leftVariable, rightVariable);
+    if (EvaluatorUtils::ProcUtils::isValidSynonymSynonym(&left, &right)) {
+        return evaluateSynonymSynonym(left, right, canSimplify);
     }
 
-    if (EvaluatorUtils::ProcUtils::isValidSynonymWildCard(&leftVariable, &rightVariable)) {
-        return evaluateSynonymWildCard(leftVariable);
+    if (EvaluatorUtils::ProcUtils::isValidSynonymWildCard(&left, &right)) {
+        return evaluateSynonymWildCard(left, canSimplify);
     }
 
     throw SemanticException("Invalid query provided for ModifiesP or UsesP");

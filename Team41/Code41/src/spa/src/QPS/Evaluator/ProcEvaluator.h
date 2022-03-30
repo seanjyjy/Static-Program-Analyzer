@@ -8,15 +8,15 @@ public:
 
     Table *evaluateIdentifierIdentifier(const ClauseVariable &left, const ClauseVariable &right);
 
-    Table *evaluateIdentifierSynonym(const ClauseVariable &left, ClauseVariable &right);
+    Table *evaluateIdentifierSynonym(const ClauseVariable &left, ClauseVariable &right, bool canSimplify);
 
     Table *evaluateIdentifierWildCard(const ClauseVariable &left);
 
-    Table *evaluateSynonymIdentifier(ClauseVariable &left, const ClauseVariable &right);
+    Table *evaluateSynonymIdentifier(ClauseVariable &left, const ClauseVariable &right, bool canSimplify);
 
-    Table *evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right);
+    Table *evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify);
 
-    Table *evaluateSynonymWildCard(ClauseVariable &left);
+    Table *evaluateSynonymWildCard(ClauseVariable &left, bool canSimplify);
 
     Table *evaluateWildCardIdentifier(const ClauseVariable &right);
 

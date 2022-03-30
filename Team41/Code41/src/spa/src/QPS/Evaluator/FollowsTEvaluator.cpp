@@ -7,9 +7,9 @@ Table *FollowsTEvaluator::evaluateIntegerInteger(ClauseVariable &left, ClauseVar
     return buildBooleanTable(isFollows);
 }
 
-Table *FollowsTEvaluator::evaluateIntegerSynonym(ClauseVariable &left, ClauseVariable &right) {
+Table *FollowsTEvaluator::evaluateIntegerSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     unordered_set<string> followers = pkb->getAllStmtsAfter(left.getLabel());
-    return buildSingleSynonymTable(followers, right);
+    return buildSingleSynonymTable(followers, right, canSimplify);
 }
 
 Table *FollowsTEvaluator::evaluateIntegerWildCard(ClauseVariable &left) {
@@ -17,20 +17,20 @@ Table *FollowsTEvaluator::evaluateIntegerWildCard(ClauseVariable &left) {
     return buildBooleanTable(beforeStmts.find(left.getLabel()) != beforeStmts.end());
 }
 
-Table *FollowsTEvaluator::evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right) {
+Table *FollowsTEvaluator::evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     unordered_set<string> followedSet = pkb->getAllStmtsBefore(right.getLabel());
-    return buildSingleSynonymTable(followedSet, left);
+    return buildSingleSynonymTable(followedSet, left, canSimplify);
 }
 
-Table *FollowsTEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right) {
+Table *FollowsTEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     // returns stmt1 follows stmt2
     vector<pair<string, string>> listOfStmtToStmt = pkb->getAllFollowsT();
-    return buildSynonymSynonymTable(listOfStmtToStmt, left, right);
+    return buildSynonymSynonymTable(listOfStmtToStmt, left, right, canSimplify);
 }
 
-Table *FollowsTEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
+Table *FollowsTEvaluator::evaluateSynonymWildCard(ClauseVariable &left, bool canSimplify) {
     unordered_set<string> setOfStatements = pkb->getAllStmtsBeforeSomeStmt();
-    return buildSingleSynonymTable(setOfStatements, left);
+    return buildSingleSynonymTable(setOfStatements, left, canSimplify);
 }
 
 Table *FollowsTEvaluator::evaluateWildCardInteger(ClauseVariable &right) {
@@ -38,9 +38,9 @@ Table *FollowsTEvaluator::evaluateWildCardInteger(ClauseVariable &right) {
     return buildBooleanTable(afterStmts.find(right.getLabel()) != afterStmts.end());
 }
 
-Table *FollowsTEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {
+Table *FollowsTEvaluator::evaluateWildCardSynonym(ClauseVariable &right, bool canSimplify) {
     unordered_set<string> setOfStatements = pkb->getAllStmtsAfterSomeStmt();
-    return buildSingleSynonymTable(setOfStatements, right);
+    return buildSingleSynonymTable(setOfStatements, right, canSimplify);
 }
 
 Table *FollowsTEvaluator::evaluateWildCardWildCard() {

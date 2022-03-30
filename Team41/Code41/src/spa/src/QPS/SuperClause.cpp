@@ -172,3 +172,12 @@ bool SuperClause::isAffectsT() const {
     return type == SUCH_THAT
            && suchThatClause.getType() == QueryClause::affectsT;
 }
+
+void SuperClause::setSimplifiableClause(bool isSimplifiable) {
+    if (isWithClause())
+        withClause.setSimplified(isSimplifiable);
+    else if (isPatternClause())
+        patternClause.setSimplified(isSimplifiable);
+    else if (isSuchThatClause())
+        suchThatClause.setSimplified(isSimplifiable);
+}

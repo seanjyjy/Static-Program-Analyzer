@@ -2,17 +2,17 @@
 
 UsesSEvaluator::UsesSEvaluator(PKBClient *pkb) : ModifiesUsesSEvaluator(pkb) {}
 
-Table *UsesSEvaluator::evaluateClauseFurther(ClauseVariable &leftVariable, ClauseVariable &rightVariable) {
-    if (EvaluatorUtils::SUtils::isValidUsesSynonymIdentifier(&leftVariable, &rightVariable)) {
-        return evaluateSynonymIdentifier(leftVariable, rightVariable);
+Table *UsesSEvaluator::evaluateClauseFurther(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
+    if (EvaluatorUtils::SUtils::isValidUsesSynonymIdentifier(&left, &right)) {
+        return evaluateSynonymIdentifier(left, right, canSimplify);
     }
 
-    if (EvaluatorUtils::SUtils::isValidUsesSynonymSynonym(&leftVariable, &rightVariable)) {
-        return evaluateSynonymSynonym(leftVariable, rightVariable);
+    if (EvaluatorUtils::SUtils::isValidUsesSynonymSynonym(&left, &right)) {
+        return evaluateSynonymSynonym(left, right, canSimplify);
     }
 
-    if (EvaluatorUtils::SUtils::isValidUsesSynonymWildCard(&leftVariable, &rightVariable)) {
-        return evaluateSynonymWildCard(leftVariable);
+    if (EvaluatorUtils::SUtils::isValidUsesSynonymWildCard(&left, &right)) {
+        return evaluateSynonymWildCard(left, canSimplify);
     }
 
     throw SemanticException("Invalid query provided for UsesS");

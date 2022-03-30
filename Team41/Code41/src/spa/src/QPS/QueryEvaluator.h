@@ -84,7 +84,7 @@ public:
      * @param clause QueryClause.
      * @return A table that contains information based on the QueryClause provided.
      */
-    Table *evaluate(SuperClause *clause);
+    Table *evaluate(SuperClause *clause, bool canMorphClause);
 
     Table *evaluate(const QueryClause &clause);
 

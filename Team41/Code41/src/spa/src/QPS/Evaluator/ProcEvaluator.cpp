@@ -7,9 +7,9 @@ Table *ProcEvaluator::evaluateIdentifierIdentifier(const ClauseVariable &left, c
     return buildBooleanTable(isCallRelation);
 }
 
-Table *ProcEvaluator::evaluateIdentifierSynonym(const ClauseVariable &left, ClauseVariable &right) {
+Table *ProcEvaluator::evaluateIdentifierSynonym(const ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     unordered_set<string> procCalledBy = getIdentifierSynonymRelation(left.getLabel());
-    return buildSingleSynonymTable(procCalledBy, right);
+    return buildSingleSynonymTable(procCalledBy, right, canSimplify);
 }
 
 Table *ProcEvaluator::evaluateIdentifierWildCard(const ClauseVariable &left) {
@@ -17,19 +17,19 @@ Table *ProcEvaluator::evaluateIdentifierWildCard(const ClauseVariable &left) {
     return buildBooleanTable(hasCallRelation);
 }
 
-Table *ProcEvaluator::evaluateSynonymIdentifier(ClauseVariable &left, const ClauseVariable &right) {
+Table *ProcEvaluator::evaluateSynonymIdentifier(ClauseVariable &left, const ClauseVariable &right, bool canSimplify) {
     unordered_set<string> procCalling = getSynonymIdentifierRelation(right.getLabel());
-    return buildSingleSynonymTable(procCalling, left);
+    return buildSingleSynonymTable(procCalling, left, canSimplify);
 }
 
-Table *ProcEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right) {
+Table *ProcEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     vector<pair<string, string>> listOfProcToProc = getSynonymSynonymRelation();
-    return buildSynonymSynonymTable(listOfProcToProc, left, right);
+    return buildSynonymSynonymTable(listOfProcToProc, left, right, canSimplify);
 }
 
-Table *ProcEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
+Table *ProcEvaluator::evaluateSynonymWildCard(ClauseVariable &left, bool canSimplify) {
     unordered_set<string> listOfProcCalling = getSynonymWildCardRelation();
-    return buildSingleSynonymTable(listOfProcCalling, left);
+    return buildSingleSynonymTable(listOfProcCalling, left, canSimplify);
 }
 
 Table *ProcEvaluator::evaluateWildCardIdentifier(const ClauseVariable &right) {

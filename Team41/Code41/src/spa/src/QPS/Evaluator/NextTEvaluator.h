@@ -24,7 +24,7 @@ public:
      * @param right Clause variable.
      * @return A table that contains information based on the Next* relation between a statement line and a synonym.
      */
-    Table *evaluateIntegerSynonym(ClauseVariable &left, ClauseVariable &right) override;
+    Table *evaluateIntegerSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify) override;
 
     /**
      * Construct a table that captures the Next* relation between a statement line and a wildcard.
@@ -41,7 +41,7 @@ public:
      * @param right Clause variable.
      * @return A table that contains information based on the Next* relation between a synonym and a statement line.
      */
-    Table *evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right) override;
+    Table *evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right, bool canSimplify) override;
 
     /**
      * Construct a table that captures the Next* relation between two synonym.
@@ -50,7 +50,7 @@ public:
      * @param right Clause variable.
      * @return A table that contains information based on the Next* relation between two synonym.
      */
-    Table *evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right) override;
+    Table *evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify) override;
 
     /**
      * Construct a table that captures the Next* relation between a synonym and a wildcard.
@@ -58,7 +58,7 @@ public:
      * @param left Clause variable.
      * @return A table that contains information based on the Next* relation between a synonym and a wildcard.
      */
-    Table *evaluateSynonymWildCard(ClauseVariable &left) override;
+    Table *evaluateSynonymWildCard(ClauseVariable &left, bool canSimplify) override;
 
     /**
      * Construct a table that captures the Next* relation between a wildcard and a statement line.
@@ -74,7 +74,7 @@ public:
      * @param right Clause variable.
      * @return A table that contains information based on the Next* relation between a wildcard and a synonym.
      */
-    Table *evaluateWildCardSynonym(ClauseVariable &right) override;
+    Table *evaluateWildCardSynonym(ClauseVariable &right, bool canSimplify) override;
 
     /**
      * Construct a table that captures the Next* relation between two wildcard.

@@ -75,6 +75,4 @@ public:
     int hash() const;
 
     bool equals(QueryClause) const;
-
-    QueryClause generateSimplifiedSelf() const;
 };

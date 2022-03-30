@@ -42,6 +42,7 @@ public:
     bool operator==(const SuperClause &other) const {
         return this->equals(other);
     }
+    void setSimplifiableClause(bool isSimplifiable);
 private:
     enum clause_type {
         SUCH_THAT, WITH, PATTERN

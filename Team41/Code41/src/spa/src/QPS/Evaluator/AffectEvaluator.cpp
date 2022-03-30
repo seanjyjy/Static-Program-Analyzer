@@ -3,7 +3,7 @@
 AffectEvaluator::AffectEvaluator(PKBClient *pkb, AffectsKBAdapter *adapter) :
         GenericClauseEvaluator(pkb), affectsKBAdapter(adapter) {}
 
-Table *AffectEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &right) {
+Table *AffectEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     if (EvaluatorUtils::StmtUtils::isIntegerInteger(&left, &right)) {
         if (!EvaluatorUtils::isWithinLimit(left, right, pkb) || !isValidAssignAssign(left, right))
             return new FalseTable();
@@ -15,7 +15,7 @@ Table *AffectEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &rig
         if (!EvaluatorUtils::isWithinLimit(left, pkb) || !isValidAssignStmt(left) || !isValidAssignSyn(right))
             return new FalseTable();
 
-        return evaluateIntegerSynonym(left, right);
+        return evaluateIntegerSynonym(left, right, canSimplify);
     }
 
     if (EvaluatorUtils::StmtUtils::isIntegerWildCard(&left, &right)) {
@@ -29,21 +29,21 @@ Table *AffectEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &rig
         if (!EvaluatorUtils::isWithinLimit(right, pkb) || !isValidAssignStmt(right) || !isValidAssignSyn(left))
             return new FalseTable();
 
-        return evaluateSynonymInteger(left, right);
+        return evaluateSynonymInteger(left, right, canSimplify);
     }
 
     if (EvaluatorUtils::StmtUtils::isValidSynonymSynonym(&left, &right)) {
         if (!isValidAssignSynSyn(left, right))
             return new FalseTable();
 
-        return evaluateSynonymSynonym(left, right);
+        return evaluateSynonymSynonym(left, right, canSimplify);
     }
 
     if (EvaluatorUtils::StmtUtils::isValidSynonymWildCard(&left, &right)) {
         if (!isValidAssignSyn(left))
             return new FalseTable();
 
-        return evaluateSynonymWildCard(left);
+        return evaluateSynonymWildCard(left, canSimplify);
     }
 
     if (EvaluatorUtils::StmtUtils::isWildCardInteger(&left, &right)) {
@@ -57,7 +57,7 @@ Table *AffectEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &rig
         if (!isValidAssignSyn(right))
             return new FalseTable();
 
-        return evaluateWildCardSynonym(right);
+        return evaluateWildCardSynonym(right, canSimplify);
     }
 
     if (EvaluatorUtils::isWildCardWildCard(&left, &right)) {
@@ -94,9 +94,9 @@ Table *AffectEvaluator::evaluateIntegerInteger(const ClauseVariable &left, const
     return buildBooleanTable(affectResult);
 }
 
-Table *AffectEvaluator::evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable &right) {
+Table *AffectEvaluator::evaluateIntegerSynonym(const ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     unordered_set<string> affecteds = getIntegerSynonymRelation(left.getLabel());
-    return buildSingleSynonymTable(affecteds, right);
+    return buildSingleSynonymTable(affecteds, right, canSimplify);
 }
 
 Table *AffectEvaluator::evaluateIntegerWildCard(const ClauseVariable &left) {
@@ -104,19 +104,19 @@ Table *AffectEvaluator::evaluateIntegerWildCard(const ClauseVariable &left) {
     return buildBooleanTable(hasAffecteds);
 }
 
-Table *AffectEvaluator::evaluateSynonymInteger(ClauseVariable &left, const ClauseVariable &right) {
+Table *AffectEvaluator::evaluateSynonymInteger(ClauseVariable &left, const ClauseVariable &right, bool canSimplify) {
     unordered_set<string> affectings = getSynonymIntegerRelation(right.getLabel());
-    return buildSingleSynonymTable(affectings, left);
+    return buildSingleSynonymTable(affectings, left, canSimplify);
 }
 
-Table *AffectEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right) {
+Table *AffectEvaluator::evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     vector<pair<string, string>> affectingAffectedPairs = getSynonymSynonymRelation();
-    return buildSynonymSynonymTable(affectingAffectedPairs, left, right);
+    return buildSynonymSynonymTable(affectingAffectedPairs, left, right, canSimplify);
 }
 
-Table *AffectEvaluator::evaluateSynonymWildCard(ClauseVariable &left) {
+Table *AffectEvaluator::evaluateSynonymWildCard(ClauseVariable &left, bool canSimplify) {
     unordered_set<string> affectings = getSynonymWildCardRelation();
-    return buildSingleSynonymTable(affectings, left);
+    return buildSingleSynonymTable(affectings, left, canSimplify);
 }
 
 Table *AffectEvaluator::evaluateWildCardInteger(const ClauseVariable &right) {
@@ -124,9 +124,9 @@ Table *AffectEvaluator::evaluateWildCardInteger(const ClauseVariable &right) {
     return buildBooleanTable(hasAffectings);
 }
 
-Table *AffectEvaluator::evaluateWildCardSynonym(ClauseVariable &right) {
+Table *AffectEvaluator::evaluateWildCardSynonym(ClauseVariable &right, bool canSimplify) {
     unordered_set<string> affecteds = getWildCardSynonymRelation();
-    return buildSingleSynonymTable(affecteds, right);
+    return buildSingleSynonymTable(affecteds, right, canSimplify);
 }
 
 Table *AffectEvaluator::evaluateWildCardWildCard() {

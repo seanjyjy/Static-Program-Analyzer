@@ -34,8 +34,9 @@ Table *QueryEvaluator::evaluateClauses(Table *resultTable, QueryObject *queryObj
         Table* intermediateGroupTable = new TrueTable();
         for (int i = 0; i < groupSize; i++) {
             bool isGroupReducible = queryObject->currGroupCanSimplify();
+            bool isClauseReducible = isGroupReducible && groupSize == 1;
             SuperClause *clause = queryObject->popClause();
-            Table *intermediateTable = this->evaluate(clause);
+            Table *intermediateTable = this->evaluate(clause, isClauseReducible);
             Table *mergedTable = mergeTable(intermediateGroupTable, intermediateTable);
 
             if (mergedTable->isEmpty()) {
@@ -103,7 +104,9 @@ QueryResult QueryEvaluator::evaluateQuery(QueryObject *queryObject) {
     }
 }
 
-Table *QueryEvaluator::evaluate(SuperClause *clause) {
+Table *QueryEvaluator::evaluate(SuperClause *clause, bool canMorphClause) {
+    clause->setSimplifiableClause(canMorphClause);
+
     if (clause->isPatternClause()) {
         return evaluate(clause->getPatternClause());
     }
