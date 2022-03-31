@@ -49,19 +49,19 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
         SECTION("Integer Identifier Pair") {
             QueryClause queryClause1(QueryClause::modifiesS, integer1, identifierVar1);
             Table* table1 = ModifiesSEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::modifiesS, integer1, identifierVar2);
             Table* table2 = ModifiesSEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::modifiesS, integer2, identifierVar1);
             Table* table3 = ModifiesSEvaluator(pkbManager).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::FalseTable);
+            REQUIRE(table3->isFalseTable());
 
             QueryClause queryClause4(QueryClause::modifiesS, integer2, identifierVar2);
             Table* table4 = ModifiesSEvaluator(pkbManager).evaluate(queryClause4);
-            REQUIRE(table4->getType() == Table::TrueTable);
+            REQUIRE(table4->isTrueTable());
             delete table1;
             delete table2;
             delete table3;
@@ -85,15 +85,15 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
         SECTION("Integer WildCard Pair") {
             QueryClause queryClause1(QueryClause::modifiesS, integer1, wildcard);
             Table* table1 = ModifiesSEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::modifiesS, integer2, wildcard);
             Table* table2 = ModifiesSEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::modifiesS, integer3, wildcard);
             Table* table3 = ModifiesSEvaluator(pkbManager).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::FalseTable);
+            REQUIRE(table3->isFalseTable());
             delete table1;
             delete table2;
             delete table3;
@@ -153,19 +153,19 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
         SECTION("Identifier Identifier Pair") {
             QueryClause queryClause1(QueryClause::modifiesP, proc1, identifierVar1);
             Table* table1 = ModifiesPEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::modifiesP, proc1, identifierVar2);
             Table* table2 = ModifiesPEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::modifiesP, proc2, identifierVar1);
             Table* table3 = ModifiesPEvaluator(pkbManager).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::FalseTable);
+            REQUIRE(table3->isFalseTable());
 
             QueryClause queryClause4(QueryClause::modifiesP, proc2, identifierVar2);
             Table* table4 = ModifiesPEvaluator(pkbManager).evaluate(queryClause4);
-            REQUIRE(table4->getType() == Table::TrueTable);
+            REQUIRE(table4->isTrueTable());
             delete table1;
             delete table2;
             delete table3;
@@ -189,15 +189,15 @@ TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
         SECTION("Identifier WildCard Pair") {
             QueryClause queryClause1(QueryClause::modifiesP, proc1, wildcard);
             Table* table1 = ModifiesPEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::modifiesP, proc2, wildcard);
             Table* table2 = ModifiesPEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::modifiesP, proc3, wildcard);
             Table* table3 = ModifiesPEvaluator(pkbManager).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::FalseTable);
+            REQUIRE(table3->isFalseTable());
             delete table1;
             delete table2;
             delete table3;

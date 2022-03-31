@@ -12,6 +12,6 @@ Table *FalseTable::mergeJoin(Table *) {
     return this;
 }
 
-Table::TableType FalseTable::getType() {
-    return Table::FalseTable;
+bool FalseTable::isFalseTable() {
+    return true;
 }

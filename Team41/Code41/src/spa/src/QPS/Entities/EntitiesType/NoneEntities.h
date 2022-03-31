@@ -10,8 +10,6 @@ public:
 
     bool isNone() override;
 
-    EntitiesReader *getReader() override;
-
     string toString() override;
 
     int hashCode() override;

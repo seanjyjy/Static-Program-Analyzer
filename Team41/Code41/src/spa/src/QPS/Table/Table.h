@@ -13,10 +13,6 @@ using Iterator = std::vector<const Row *>::iterator;
 
 class Table {
 public:
-    enum TableType {
-        TrueTable, FalseTable, PQLTable
-    };
-
     /**
      * Checks if a table is empty.
      *
@@ -91,7 +87,8 @@ public:
      */
     virtual void sort(const vector<string> &commonHeader) = 0;
 
-    virtual TableType getType() = 0;
+    virtual bool isTrueTable();
+    virtual bool isFalseTable();
 
     virtual ~Table() = default;
 

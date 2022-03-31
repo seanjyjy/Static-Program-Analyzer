@@ -59,11 +59,11 @@ TEST_CASE("Evaluator: With evaluator") {
         SECTION("Integer Integer Pair") {
             WithClause withClause1({"1", WithVariable::INTEGER}, {"2", WithVariable::INTEGER});
             Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
-            REQUIRE(table1->getType() == Table::FalseTable);
+            REQUIRE(table1->isFalseTable());
 
             WithClause withClause2({"1", WithVariable::INTEGER}, {"1", WithVariable::INTEGER});
             Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             delete table1;
             delete table2;
@@ -95,11 +95,11 @@ TEST_CASE("Evaluator: With evaluator") {
         SECTION("Identifier Identifier Pair") {
             WithClause withClause1({"1", WithVariable::IDENT}, {"2", WithVariable::IDENT});
             Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
-            REQUIRE(table1->getType() == Table::FalseTable);
+            REQUIRE(table1->isFalseTable());
 
             WithClause withClause2({"1", WithVariable::IDENT}, {"1", WithVariable::IDENT});
             Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             delete table1;
             delete table2;

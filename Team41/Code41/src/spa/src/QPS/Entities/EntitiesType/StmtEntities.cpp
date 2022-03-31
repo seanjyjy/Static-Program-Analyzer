@@ -4,10 +4,6 @@ bool StmtEntities::isStmt() {
     return true;
 }
 
-EntitiesReader *StmtEntities::getReader() {
-    return reader;
-}
-
 string StmtEntities::toString() {
     return "stmt";
 }

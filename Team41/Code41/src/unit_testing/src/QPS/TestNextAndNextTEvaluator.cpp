@@ -49,19 +49,19 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::next, integer1, integer5);
             Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::next, integer3, integer1);
             Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::next, integer1, integer2);
             Table *table3 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             QueryClause queryClause4(QueryClause::next, integer1, integer3);
             Table *table4 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
-            REQUIRE(table4->getType() == Table::FalseTable);
+            REQUIRE(table4->isFalseTable());
 
             delete table1;
             delete table2;
@@ -89,7 +89,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
             QueryClause queryClause5(QueryClause::next, integer5, synonymStmt1);
             Table *table5 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
-            REQUIRE(table5->getType() == Table::FalseTable);
+            REQUIRE(table5->isFalseTable());
 
             delete table1;
             delete table2;
@@ -101,15 +101,15 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
         SECTION("Integer Wildcard pair") {
             QueryClause queryClause1(QueryClause::next, integer1, wildcard);
             Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::next, integer5, wildcard);
             Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::FalseTable);
+            REQUIRE(table2->isFalseTable());
 
             QueryClause queryClause3(QueryClause::next, integer3, wildcard);
             Table *table3 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             delete table1;
             delete table2;
@@ -190,23 +190,23 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
         SECTION("Wildcard Integer pair") {
             QueryClause queryClause1(QueryClause::next, wildcard, integer1);
             Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::next, wildcard, integer2);
             Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::next, wildcard, integer4);
             Table *table3 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             QueryClause queryClause4(QueryClause::next, wildcard, integer5);
             Table *table4 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
-            REQUIRE(table4->getType() == Table::TrueTable);
+            REQUIRE(table4->isTrueTable());
 
             QueryClause queryClause5(QueryClause::next, wildcard, integer5);
             Table *table5 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
-            REQUIRE(table5->getType() == Table::TrueTable);
+            REQUIRE(table5->isTrueTable());
 
             delete table1;
             delete table2;
@@ -242,7 +242,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
         SECTION("Wildcard Wildcard pair") {
             QueryClause queryClause1(QueryClause::next, wildcard, wildcard);
             Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
             delete table1;
         }
     }
@@ -251,23 +251,23 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::nextT, integer1, integer5);
             Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::nextT, integer3, integer1);
             Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::nextT, integer1, integer2);
             Table *table3 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             QueryClause queryClause4(QueryClause::nextT, integer1, integer3);
             Table *table4 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
-            REQUIRE(table4->getType() == Table::TrueTable);
+            REQUIRE(table4->isTrueTable());
 
             QueryClause queryClause5(QueryClause::nextT, integer5, integer1);
             Table *table5 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
-            REQUIRE(table5->getType() == Table::FalseTable);
+            REQUIRE(table5->isFalseTable());
 
             delete table1;
             delete table2;
@@ -279,7 +279,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
         SECTION("Integer Synonym pair") {
             QueryClause queryClause5(QueryClause::nextT, integer5, synonymStmt1);
             Table *table5 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
-            REQUIRE(table5->getType() == Table::FalseTable);
+            REQUIRE(table5->isFalseTable());
 
             QueryClause queryClause4(QueryClause::nextT, integer4, synonymStmt1);
             Table *table4 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
@@ -319,15 +319,15 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
         SECTION("Integer Wildcard pair") {
             QueryClause queryClause1(QueryClause::nextT, integer1, wildcard);
             Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::nextT, integer5, wildcard);
             Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::FalseTable);
+            REQUIRE(table2->isFalseTable());
 
             QueryClause queryClause3(QueryClause::nextT, integer3, wildcard);
             Table *table3 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             delete table1;
             delete table2;
@@ -433,23 +433,23 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
         SECTION("Wildcard Integer pair") {
             QueryClause queryClause1(QueryClause::nextT, wildcard, integer1);
             Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::nextT, wildcard, integer2);
             Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::nextT, wildcard, integer4);
             Table *table3 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             QueryClause queryClause4(QueryClause::nextT, wildcard, integer5);
             Table *table4 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
-            REQUIRE(table4->getType() == Table::TrueTable);
+            REQUIRE(table4->isTrueTable());
 
             QueryClause queryClause5(QueryClause::nextT, wildcard, integer5);
             Table *table5 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
-            REQUIRE(table5->getType() == Table::TrueTable);
+            REQUIRE(table5->isTrueTable());
 
             delete table1;
             delete table2;
@@ -485,7 +485,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
         SECTION("Wildcard Wildcard pair") {
             QueryClause queryClause1(QueryClause::nextT, wildcard, wildcard);
             Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
             delete table1;
         }
     }

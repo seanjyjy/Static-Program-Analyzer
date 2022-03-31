@@ -122,8 +122,6 @@ public:
      */
     void addRow(const Row *row) override;
 
-    TableType getType() override;
-
     /**
      * @see QPS/Table/Table.h
      */

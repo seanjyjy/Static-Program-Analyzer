@@ -4,10 +4,6 @@ bool ConstantEntities::isConstant() {
     return true;
 }
 
-EntitiesReader *ConstantEntities::getReader() {
-    return reader;
-}
-
 string ConstantEntities::toString() {
     return "constant";
 }

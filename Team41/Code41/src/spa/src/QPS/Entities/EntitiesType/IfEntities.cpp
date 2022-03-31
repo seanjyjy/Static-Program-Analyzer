@@ -4,10 +4,6 @@ bool IfEntities::isIf() {
     return true;
 }
 
-EntitiesReader *IfEntities::getReader() {
-    return reader;
-}
-
 string IfEntities::toString() {
     return "if";
 }

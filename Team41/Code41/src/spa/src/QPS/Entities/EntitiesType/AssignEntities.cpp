@@ -4,10 +4,6 @@ bool AssignEntities::isAssign() {
     return true;
 }
 
-EntitiesReader *AssignEntities::getReader() {
-    return reader;
-}
-
 string AssignEntities::toString() {
     return "assign";
 }

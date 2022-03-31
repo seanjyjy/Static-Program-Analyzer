@@ -11,8 +11,6 @@ public:
 
     bool isCall() override;
 
-    EntitiesReader *getReader() override;
-
     string toString() override;
 
     int hashCode() override;

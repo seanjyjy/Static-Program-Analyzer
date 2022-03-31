@@ -4,10 +4,6 @@ bool VariableEntities::isVariable() {
     return true;
 }
 
-EntitiesReader *VariableEntities::getReader() {
-    return reader;
-}
-
 string VariableEntities::toString() {
     return "variable";
 }

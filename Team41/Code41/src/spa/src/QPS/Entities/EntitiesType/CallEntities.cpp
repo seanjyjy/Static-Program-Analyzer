@@ -4,10 +4,6 @@ bool CallEntities::isCall() {
     return true;
 }
 
-EntitiesReader *CallEntities::getReader() {
-    return reader;
-}
-
 string CallEntities::toString() {
     return "call";
 }

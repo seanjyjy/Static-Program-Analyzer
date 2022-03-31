@@ -69,23 +69,23 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
         SECTION("Identifier Identifier Pair") {
             QueryClause queryClause1(QueryClause::calls, proc0, proc3);
             Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::FalseTable);
+            REQUIRE(table1->isFalseTable());
 
             QueryClause queryClause2(QueryClause::calls, proc0, proc1);
             Table* table2 = CallsEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::calls, proc2, proc5);
             Table* table3 = CallsEvaluator(pkbManager).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             QueryClause queryClause4(QueryClause::calls, proc5, proc4);
             Table* table4 = CallsEvaluator(pkbManager).evaluate(queryClause4);
-            REQUIRE(table4->getType() == Table::TrueTable);
+            REQUIRE(table4->isTrueTable());
 
             QueryClause queryClause5(QueryClause::calls, proc2, proc4);
             Table* table5 = CallsEvaluator(pkbManager).evaluate(queryClause5);
-            REQUIRE(table5->getType() == Table::FalseTable);
+            REQUIRE(table5->isFalseTable());
 
             delete table1;
             delete table2;
@@ -117,11 +117,11 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
         SECTION("Identifier WildCard Pair") {
             QueryClause queryClause1(QueryClause::calls, proc0, wildcard);
             Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::calls, proc4, wildcard);
             Table* table2 = CallsEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::FalseTable);
+            REQUIRE(table2->isFalseTable());
 
             delete table1;
             delete table2;
@@ -169,15 +169,15 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
         SECTION("WildCard Identifier Pair") {
             QueryClause queryClause1(QueryClause::calls, wildcard, proc0);
             Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::FalseTable);
+            REQUIRE(table1->isFalseTable());
 
             QueryClause queryClause2(QueryClause::calls, wildcard, proc3);
             Table* table2 = CallsEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::calls, wildcard, proc4);
             Table* table3 = CallsEvaluator(pkbManager).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             delete table1;
             delete table2;
@@ -196,7 +196,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
         SECTION("WildCard WildCard Pair") {
             QueryClause queryClause1(QueryClause::calls, wildcard, wildcard);
             Table* table1 = CallsEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             delete table1;
         }
@@ -217,27 +217,27 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
         SECTION("Identifier Identifier Pair") {
             QueryClause queryClause1(QueryClause::callsT, proc0, proc3);
             Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::callsT, proc0, proc1);
             Table* table2 = CallsTEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::callsT, proc2, proc5);
             Table* table3 = CallsTEvaluator(pkbManager).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             QueryClause queryClause4(QueryClause::callsT, proc5, proc4);
             Table* table4 = CallsTEvaluator(pkbManager).evaluate(queryClause4);
-            REQUIRE(table4->getType() == Table::TrueTable);
+            REQUIRE(table4->isTrueTable());
 
             QueryClause queryClause5(QueryClause::callsT, proc2, proc4);
             Table* table5 = CallsTEvaluator(pkbManager).evaluate(queryClause5);
-            REQUIRE(table5->getType() == Table::TrueTable);
+            REQUIRE(table5->isTrueTable());
 
             QueryClause queryClause6(QueryClause::callsT, proc4, proc3);
             Table* table6 = CallsTEvaluator(pkbManager).evaluate(queryClause6);
-            REQUIRE(table6->getType() == Table::FalseTable);
+            REQUIRE(table6->isFalseTable());
 
             delete table1;
             delete table2;
@@ -271,15 +271,15 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
         SECTION("Identifier WildCard Pair") {
             QueryClause queryClause1(QueryClause::callsT, proc0, wildcard);
             Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::callsT, proc3, wildcard);
             Table* table2 = CallsTEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::FalseTable);
+            REQUIRE(table2->isFalseTable());
 
             QueryClause queryClause3(QueryClause::callsT, proc2, wildcard);
             Table* table3 = CallsTEvaluator(pkbManager).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             delete table1;
             delete table2;
@@ -328,15 +328,15 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
         SECTION("WildCard Identifier Pair") {
             QueryClause queryClause1(QueryClause::callsT, wildcard, proc0);
             Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::FalseTable);
+            REQUIRE(table1->isFalseTable());
 
             QueryClause queryClause2(QueryClause::callsT, wildcard, proc3);
             Table* table2 = CallsTEvaluator(pkbManager).evaluate(queryClause2);
-            REQUIRE(table2->getType() == Table::TrueTable);
+            REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::callsT, wildcard, proc4);
             Table* table3 = CallsTEvaluator(pkbManager).evaluate(queryClause3);
-            REQUIRE(table3->getType() == Table::TrueTable);
+            REQUIRE(table3->isTrueTable());
 
             delete table1;
             delete table2;
@@ -355,7 +355,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
         SECTION("WildCard WildCard Pair") {
             QueryClause queryClause1(QueryClause::callsT, wildcard, wildcard);
             Table* table1 = CallsTEvaluator(pkbManager).evaluate(queryClause1);
-            REQUIRE(table1->getType() == Table::TrueTable);
+            REQUIRE(table1->isTrueTable());
 
             delete table1;
         }
