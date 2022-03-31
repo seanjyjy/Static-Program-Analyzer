@@ -278,25 +278,25 @@ assign a;
 Select BOOLEAN pattern a(_,_,_)
 
 5000
-57 - stmt syn pattern //Syntactic Error
+57 - stmt syn pattern //Semantic Error
 stmt pattern;
 Select BOOLEAN pattern pattern(_,_)
-
+FALSE
 5000
-58 - read syn pattern //Syntactic Error
+58 - read syn pattern //Semantic Error
 read pattern;
 Select BOOLEAN pattern pattern(_,_)
-
+FALSE
 5000
-59 - print syn pattern //Syntactic Error
+59 - print syn pattern //Semantic Error
 print pattern;
 Select BOOLEAN pattern pattern(_,_)
-
+FALSE
 5000
-60 - call syn pattern //Syntactic Error
+60 - call syn pattern //Semantic Error
 call pattern;
 Select BOOLEAN pattern pattern(_,_)
-
+FALSE
 5000
 61 - while syn pattern
 while pattern;
@@ -308,25 +308,25 @@ if pattern;
 Select BOOLEAN pattern pattern(_,_,_)
 TRUE
 5000
-621 - if syn pattern
+621 - if syn pattern //Syntactic Error
 if pattern;
 Select BOOLEAN pattern pattern(_,_)
 
 5000
-63 - var syn pattern
+63 - var syn pattern //Semantic Error
 variable pattern;
 Select BOOLEAN pattern pattern(_,_)
-
+FALSE
 5000
-64 - const syn pattern
+64 - const syn pattern //Semantic Error
 constant pattern;
 Select BOOLEAN pattern pattern(_,_)
-
+FALSE
 5000
-65 - procedure syn pattern
+65 - procedure syn pattern //Semantic Error
 procedure pattern;
 Select BOOLEAN pattern pattern(_,_)
-
+FALSE
 5000
 66 - assign syn wildcard pattern - tuple
 assign a; variable v;

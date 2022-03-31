@@ -604,9 +604,19 @@ TRUE
 Select BOOLEAN
 TRUE
 5000
-
 121 - Using undeclared synonym and invalid expression for pattern // Invalid Syntactic
 
 Select BOOLEAN pattern s ('x', _, _"invalid pattern"_)
 
 5000
+122 - undeclared pattern synonym
+
+Select BOOLEAN pattern s (_, _)
+FALSE
+5000
+122 - declared invalid pattern synonym
+stmt s;
+Select BOOLEAN pattern s (_, _)
+FALSE
+5000
+
