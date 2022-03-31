@@ -15,5 +15,5 @@ foreach(SIMPLE_SRC ${SIMPLE_TESTS})
     message(STATUS "Test ${TEST_NAME} source=${SIMPLE_SRC}, query=${PQL_QUERIES}")
     add_test("autotester-${TEST_NAME}" autotester ${SIMPLE_SRC} ${PQL_QUERIES} -)
     set_tests_properties("autotester-${TEST_NAME}" PROPERTIES
-            FAIL_REGULAR_EXPRESSION "Missing: ;Additional: ")
+            FAIL_REGULAR_EXPRESSION "Missing: ;Additional: ;TIMEOUT")
 endforeach()
