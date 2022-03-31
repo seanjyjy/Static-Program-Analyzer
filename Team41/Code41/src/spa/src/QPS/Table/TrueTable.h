@@ -14,6 +14,5 @@ public:
     // This is a stub method
     Table *mergeJoin(Table *intermediatePQLTable) override;
 
-    // This is a stub method
-    TableType getType() override;
+    bool isTrueTable() override;
 };

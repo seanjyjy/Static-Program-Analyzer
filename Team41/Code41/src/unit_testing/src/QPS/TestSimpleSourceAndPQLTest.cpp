@@ -21,7 +21,6 @@ TEST_CASE("Integration test for simple source and PQL") {
     string query = "variable v; assign a;\n"
                "Select v such that Uses(a, v)";
 
-    // TODO: change the query test once hardy is done
     QueryParser qp = QueryParser{query};
     QueryObject* queryObject = qp.parse();
     QueryEvaluator queryEvaluator(pkbManager);

@@ -14,7 +14,7 @@ Table *PQLTable::mergeJoin(Table *intermediatePQLTable) {
         throw runtime_error("PQLTable provided is null!");
     }
 
-    if (intermediatePQLTable->getType() == Table::TrueTable) {
+    if (intermediatePQLTable->isTrueTable()) {
         return this;
     }
 
@@ -232,10 +232,6 @@ unordered_set<string> PQLTable::getColumn(const string &columnName) {
     }
 
     return results;
-}
-
-Table::TableType PQLTable::getType() {
-    return Table::PQLTable;
 }
 
 unordered_set<string> PQLTable::getColumns(const vector<string> &columnNames) {

@@ -4,10 +4,6 @@ bool ProcedureEntities::isProcedure() {
     return true;
 }
 
-EntitiesReader *ProcedureEntities::getReader() {
-    return reader;
-}
-
 string ProcedureEntities::toString() {
     return "procedure";
 }

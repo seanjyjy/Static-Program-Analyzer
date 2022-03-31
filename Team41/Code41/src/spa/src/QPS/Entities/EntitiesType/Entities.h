@@ -40,7 +40,7 @@ public:
 
     virtual int hashCode() = 0;
 
-    virtual EntitiesReader *getReader() = 0;
+    EntitiesReader *getReader();
 
     friend class StmtEntities;
 
