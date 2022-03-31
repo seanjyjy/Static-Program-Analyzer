@@ -18,7 +18,7 @@ void NextTable::setCFGNode(CFGNode *node, const StmtToNodeMap &map) {
         if (!children.empty()) {
             this->allBeforeStmts.push_back(stmt);
         }
-        vector<CFGNode *> parents = cfgNode->getParent();
+        const vector<CFGNode *> &parents = cfgNode->getParent();
         if (!parents.empty()) {
             this->allAfterStmts.push_back(stmt);
         }
