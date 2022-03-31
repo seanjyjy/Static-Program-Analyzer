@@ -778,3 +778,13 @@ assign a;
 Select a such that Follows*(a, 54)
 1, 2, 29, 53
 5000
+157 - Follows(s, s) - false
+stmt s;
+Select BOOLEAN such that Follows(s, s)
+FALSE
+5000
+158 - Follows*(s, s) - false
+stmt s;
+Select BOOLEAN such that Follows*(s, s)
+FALSE
+5000
