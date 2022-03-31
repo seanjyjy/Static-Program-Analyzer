@@ -58,6 +58,8 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
     TableTestUtils::registerUsesModify(pkbManager, "q", "9", {"t"}, {});
     pkbManager->registerIfStmt("10");
     TableTestUtils::registerUsesModify(pkbManager, "q", "10", {"t", "y"}, {"x", "z", "z"});
+    pkbManager->registerParent("10", "11");
+    pkbManager->registerParent("10", "12");
     pkbManager->registerAssignStmt("11");
     TableTestUtils::registerUsesModify(pkbManager, "q", "11", {"t"}, {"x"});
     pkbManager->registerAssignStmt("12");
@@ -76,6 +78,7 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
     TableTestUtils::registerUsesModify(pkbManager, "p", "5", {"z"}, {"x", "y", "z"});
     pkbManager->registerWhileStmt("6");
     TableTestUtils::registerUsesModify(pkbManager, "p", "6", {"z"}, {"z"});
+    pkbManager->registerParent("6", "7");
     pkbManager->registerAssignStmt("7");
     TableTestUtils::registerUsesModify(pkbManager, "p", "7", {"z"}, {"z"});
 

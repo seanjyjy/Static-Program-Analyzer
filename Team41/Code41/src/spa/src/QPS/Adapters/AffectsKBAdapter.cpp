@@ -22,6 +22,11 @@ bool AffectsKBAdapter::isAffects(const string &stmtNum1, const string &stmtNum2)
         return false;
     }
 
+    string modifiedVar = *pkb->getModifiesByStmt(stmtNum1).begin();
+    if (!pkb->isUsesS(stmtNum2, modifiedVar)) {
+        return false;
+    }
+
     CFGNode *start = pkb->getCFGForStmt(stmtNum1);
     string variable = *pkb->getModifiesByStmt(stmtNum1).begin();
 
@@ -35,6 +40,10 @@ bool AffectsKBAdapter::isAffects(const string &stmtNum1, const string &stmtNum2)
 
 unordered_set<string> AffectsKBAdapter::getDirectAffectsBy(const string &stmtNum) {
     if (!hasAffectsGraph(stmtNum)) {
+        string modifiedVar = *pkb->getModifiesByStmt(stmtNum).begin();
+        if (pkb->getUsesSByVar(modifiedVar).empty()) {
+            return {};
+        }
         return bfsDown(pkb, stmtNum);
     }
 
@@ -208,7 +217,7 @@ bool AffectsKBAdapter::bfsBool(PKBClient *client, CFGNode *start, const string &
     bool canReach = false;
 
     CacheCallback shouldContinue = [&modifiedVar, &client](const string &next) {
-        return !client->isModifiesS(next, modifiedVar) || !isModifyStmt(client, next);
+        return !client->isModifiesS(next, modifiedVar) || !client->getChildStmtsOf(next).empty();
     };
 
     TerminateCheck canEnd = [&end, &canReach, &modifiedVar, &client](CFGNode *next) {
@@ -235,7 +244,7 @@ unordered_set<string> AffectsKBAdapter::bfsDown(PKBClient *client, const string&
             affected.insert(next);
 
         // check that affects is still maintained
-        return !client->isModifiesS(next, modifiedVar) || !isModifyStmt(client, next);
+        return !client->isModifiesS(next, modifiedVar) || !client->getChildStmtsOf(next).empty();
     };
 
     TerminateCheck canEnd = [&affected, &isAnyResult](CFGNode *) { return isAnyResult && !affected.empty(); };
@@ -256,7 +265,7 @@ unordered_set<string> AffectsKBAdapter::bfsUp(PKBClient *client, const string& s
             unordered_set<string> modifiedVarsInStmt = client->getModifiesByStmt(next);
 
             // if above is any of the 3 modify statement and is modifying the current affected var we dont need to explore
-            if (!isModifyStmt(client, next) || modifiedVarsInStmt.find(affectedVar) == modifiedVarsInStmt.end())
+            if (modifiedVarsInStmt.find(affectedVar) == modifiedVarsInStmt.end() || !isModifyStmt(client, next))
                 return true;
 
             if (client->isAssignStmt(next))
@@ -319,28 +328,38 @@ void AffectsKBAdapter::addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ) {
 
 void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
     queue<CFGNode *> mainQ;
-    unordered_set<string> mainVisited;
     queue<CFGNode *> queue;
-    unordered_set<string> visited;
 
     addAllStarting(start, mainQ);
 
     while (!mainQ.empty()) {
+        unordered_set<string> visited;
         CFGNode *affectingNode = mainQ.front();
         string affectingStmtNum = affectingNode->getStmtNum();
         const vector<CFGNode *> &nextChildren = pkb->getCFGForStmt(affectingStmtNum)->getChildren();
 
-        for (auto child: nextChildren)
-            queue.push(child);
-
         // mainQ only has assign stmt
         string modifiedVar = *pkb->getModifiesByStmt(affectingStmtNum).begin();
+
+        // terminate if no one uses it, checking is O(1)
+        if (pkb->getUsesSByVar(modifiedVar).empty()) {
+            mainQ.pop();
+            continue;
+        }
+
+        for (auto child: nextChildren)
+            queue.push(child);
 
         while (!queue.empty()) {
             CFGNode *curr = queue.front();
             string stmtNum = curr->getStmtNum();
             const vector<CFGNode *> &children = curr->getChildren();
             queue.pop();
+
+            if (visited.find(stmtNum) != visited.end())
+                continue;
+
+            visited.insert(stmtNum);
 
             // if current stmt uses this modifiedVar and is assign stmt
             if (pkb->isAssignStmt(stmtNum) && pkb->isUsesS(stmtNum, modifiedVar)) {
@@ -352,12 +371,7 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
                 affecteds.insert(stmtNum);
             }
 
-            if (visited.find(stmtNum) != visited.end())
-                continue;
-
-            visited.insert(stmtNum);
-
-            if (isModifyStmt(pkb, stmtNum) && pkb->isModifiesS(stmtNum, modifiedVar))
+            if (pkb->isModifiesS(stmtNum, modifiedVar) && pkb->getChildStmtsOf(stmtNum).empty())
                 continue;
 
             for (auto child: children)
@@ -365,6 +379,5 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
         }
 
         mainQ.pop();
-        visited.clear();
     }
 }
