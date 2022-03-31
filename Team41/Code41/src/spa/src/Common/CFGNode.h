@@ -21,7 +21,7 @@ public:
 
     string getStmtNum();
 
-    std::vector<CFGNode *> getChildren();
+    const std::vector<CFGNode *> &getChildren();
 
-    std::vector<CFGNode *> getParent();
+    const std::vector<CFGNode *> &getParent();
 };

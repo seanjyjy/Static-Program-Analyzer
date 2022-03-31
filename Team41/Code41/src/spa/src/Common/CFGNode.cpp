@@ -17,10 +17,10 @@ string CFGNode::getStmtNum() {
     return stmtNum;
 }
 
-std::vector<CFGNode *> CFGNode::getChildren() {
+const std::vector<CFGNode *> &CFGNode::getChildren() {
     return children;
 }
 
-std::vector<CFGNode *> CFGNode::getParent() {
+const std::vector<CFGNode *> &CFGNode::getParent() {
     return parent;
 }
