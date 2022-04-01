@@ -57,12 +57,13 @@ void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
     }
 }
 
-void ParentExtractor::extract() {
+bool ParentExtractor::extract() {
     const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) {
         list<string> lst;
         dfs(procNode, lst);
     }
+    return true;
 }
 
 unordered_map<string, list<string>> ParentExtractor::getParentMap() {

@@ -1,6 +1,5 @@
 #include "catch.hpp"
 
-#include "DesignExtractor/EntitiesExtractor.h"
 #include "DesignExtractor/PatternExtractor.h"
 #include "Common/AstBuilder.h"
 #include "TestExtractorUtils.h"

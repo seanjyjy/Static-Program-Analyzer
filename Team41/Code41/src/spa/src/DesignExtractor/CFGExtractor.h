@@ -54,7 +54,7 @@ public:
     /**
      * Builds CFG.
      */
-    void extract() override;
+    bool extract() override;
 
     /**
      * @return Root of CFG, whose inner TNode is nullptr and children are first stmts of each procedure

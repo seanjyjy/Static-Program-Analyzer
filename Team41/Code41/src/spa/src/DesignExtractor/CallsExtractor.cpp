@@ -84,14 +84,19 @@ void CallsExtractor::buildCallsT() {
     }
 }
 
-void CallsExtractor::extract() {
+bool CallsExtractor::extract() {
     const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) {
-        dfs(procNode, procNode->getTokenVal());
+        try {
+            dfs(procNode, procNode->getTokenVal());
+        } catch (SemanticException e) {
+            return false;
+        }
     }
     cycleCheck();
     revTopoSort();
     buildCallsT();
+    return true;
 }
 
 unordered_map<string, unordered_set<string>> CallsExtractor::getCallsMap() {

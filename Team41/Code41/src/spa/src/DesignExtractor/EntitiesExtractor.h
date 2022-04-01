@@ -41,8 +41,10 @@ public:
 
     /**
      * Records procedure names, statements, variable names and constants into respective sets/maps.
+     *
+     * @return True if extraction successful, False if Semantic Exception encountered
      */
-    void extract() override;
+    bool extract() override;
 
     /**
      * @return Map of TNode* of AST to statement numbers

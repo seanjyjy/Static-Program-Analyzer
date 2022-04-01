@@ -24,7 +24,7 @@ public:
     /**
      * Records all modifies relationship in procRelationMap and stmtRelationMap.
      */
-    void extract() override;
+    bool extract() override;
 
     unordered_map<string, unordered_set<string>> getProcModifiesMap();
 

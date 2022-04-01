@@ -35,8 +35,8 @@ void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
     }
 }
 
-void ModifiesExtractor::extract() {
-    VarRelationExtractor::extract();
+bool ModifiesExtractor::extract() {
+    return VarRelationExtractor::extract();
 }
 
 unordered_map<string, unordered_set<string>> ModifiesExtractor::getProcModifiesMap() {

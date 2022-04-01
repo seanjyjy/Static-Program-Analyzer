@@ -1,6 +1,5 @@
 #include "catch.hpp"
 
-#include "DesignExtractor/EntitiesExtractor.h"
 #include "DesignExtractor/CFGExtractor.h"
 #include "Common/AstBuilder.h"
 #include "Common/CFGBuilder.h"

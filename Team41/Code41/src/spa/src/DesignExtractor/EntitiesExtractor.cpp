@@ -41,10 +41,15 @@ void EntitiesExtractor::dfs(TNode *node, int &stmtNum) {
         dfs(child, stmtNum);
 }
 
-void EntitiesExtractor::extract() {
-    findProcedures();
+bool EntitiesExtractor::extract() {
+    try {
+        findProcedures();
+    } catch (SemanticException e) {
+        return false;
+    }
     int stmtNum = 0;
     dfs(ast, stmtNum);
+    return true;
 }
 
 unordered_map<TNode *, string> EntitiesExtractor::getNodeToStmtNumMap() {

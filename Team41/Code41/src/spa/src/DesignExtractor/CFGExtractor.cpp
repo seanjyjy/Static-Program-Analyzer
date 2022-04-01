@@ -92,7 +92,7 @@ void CFGExtractor::dfsLinkBack(TNode *curTNode, TNode *backTNode) {
     }
 }
 
-void CFGExtractor::extract() {
+bool CFGExtractor::extract() {
     stmtNumToNodeMap.insert({ROOT_INDEX, cfg});
     const vector<TNode *> &procTNodes = ast->getChildren();
     for (TNode *procNode: procTNodes) { // start dfs from stmtLst of each procedure
@@ -101,6 +101,7 @@ void CFGExtractor::extract() {
     for (TNode *procNode: procTNodes) {
         dfsLinkBack(procNode->getChildren()[0], nullptr); // {stmtLst, nullptr, root CFG}
     }
+    return true;
 }
 
 CFGNode *CFGExtractor::getCFG() {

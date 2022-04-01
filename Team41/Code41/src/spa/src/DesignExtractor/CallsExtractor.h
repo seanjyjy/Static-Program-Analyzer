@@ -69,8 +69,10 @@ public:
 
     /**
      * Records all calls and callsT relationship in callsMap and callsTMap.
+     *
+     * @return True if extraction successful, False if Semantic Exception encountered
      */
-    void extract() override;
+    bool extract() override;
 
     unordered_map<string, unordered_set<string>> getCallsMap();
 

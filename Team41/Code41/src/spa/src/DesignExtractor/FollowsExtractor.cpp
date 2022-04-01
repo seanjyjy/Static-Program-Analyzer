@@ -31,11 +31,12 @@ void FollowsExtractor::dfs(TNode *node) {
     }
 }
 
-void FollowsExtractor::extract() {
+bool FollowsExtractor::extract() {
     const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) {
         dfs(procNode);
     }
+    return true;
 }
 
 unordered_map<string, list<string>> FollowsExtractor::getFollowsTMap() {

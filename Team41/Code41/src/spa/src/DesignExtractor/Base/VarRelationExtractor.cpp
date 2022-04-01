@@ -67,7 +67,7 @@ void VarRelationExtractor::dfsCalls(TNode *node, unordered_set<string> &relation
     }
 }
 
-void VarRelationExtractor::extract() {
+bool VarRelationExtractor::extract() {
     const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) { // build stmt <relation> w/o calls
         unordered_set<string> st;
@@ -78,6 +78,7 @@ void VarRelationExtractor::extract() {
         unordered_set<string> st;
         dfsCalls(procNode, st);
     }
+    return true;
 }
 
 unordered_map<string, unordered_set<string>> VarRelationExtractor::getProcRelationMap() {

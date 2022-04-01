@@ -60,11 +60,12 @@ void PatternExtractor::dfsExpr(TNode *node, unordered_set<string> &varSet) {
     }
 }
 
-void PatternExtractor::extract() {
+bool PatternExtractor::extract() {
     const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) {
         dfs(procNode);
     }
+    return true;
 }
 
 unordered_map<string, pair<string, TNode *>> PatternExtractor::getAssignPatternMap() {
