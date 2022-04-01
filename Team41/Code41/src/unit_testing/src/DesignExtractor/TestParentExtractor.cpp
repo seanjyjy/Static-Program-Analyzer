@@ -3,7 +3,7 @@
 #include "DesignExtractor/EntitiesExtractor.h"
 #include "DesignExtractor/ParentExtractor.h"
 #include "Common/AstBuilder.h"
-#include "TestDesignExtractorUtils.h"
+#include "TestExtractorUtils.h"
 
 using namespace std;
 
@@ -13,8 +13,8 @@ using namespace std;
  */
 
 TEST_CASE("ParentExtractor: Assign") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("assign.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -24,8 +24,8 @@ TEST_CASE("ParentExtractor: Assign") {
 }
 
 TEST_CASE("ParentExtractor: Read") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("read.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -35,8 +35,8 @@ TEST_CASE("ParentExtractor: Read") {
 }
 
 TEST_CASE("ParentExtractor: Print") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("print.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -46,8 +46,8 @@ TEST_CASE("ParentExtractor: Print") {
 }
 
 TEST_CASE("ParentExtractor: While") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("while.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -73,8 +73,8 @@ TEST_CASE("ParentExtractor: While") {
 }
 
 TEST_CASE("ParentExtractor: If") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("if.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -103,8 +103,8 @@ TEST_CASE("ParentExtractor: If") {
 
 TEST_CASE("ParentExtractor: Non-nested") {
     // non_nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("non_nested.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -123,8 +123,8 @@ TEST_CASE("ParentExtractor: Non-nested") {
 
 TEST_CASE("ParentExtractor: Nested") {
     // nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("nested.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -144,8 +144,8 @@ TEST_CASE("ParentExtractor: Nested") {
 }
 
 TEST_CASE("ParentExtractor: n3iif") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iif.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3iif.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -169,8 +169,8 @@ TEST_CASE("ParentExtractor: n3iif") {
 }
 
 TEST_CASE("ParentExtractor: n3iwl") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iwl.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3iwl.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -194,8 +194,8 @@ TEST_CASE("ParentExtractor: n3iwl") {
 }
 
 TEST_CASE("ParentExtractor: n3wim") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wim.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3wim.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -221,8 +221,8 @@ TEST_CASE("ParentExtractor: n3wim") {
 }
 
 TEST_CASE("ParentExtractor: n3wwl") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3wwl.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 
@@ -244,8 +244,8 @@ TEST_CASE("ParentExtractor: n3wwl") {
 }
 
 TEST_CASE("ParentExtractor: multiproc1") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
 

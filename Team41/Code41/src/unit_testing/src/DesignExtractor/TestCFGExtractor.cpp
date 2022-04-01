@@ -5,7 +5,7 @@
 #include "Common/AstBuilder.h"
 #include "Common/CFGBuilder.h"
 #include "Common/CFGUtils.h"
-#include "TestDesignExtractorUtils.h"
+#include "TestExtractorUtils.h"
 
 using namespace std;
 
@@ -15,8 +15,8 @@ using namespace std;
  */
 
 TEST_CASE("CFGExtractor: Assign") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("assign.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -38,8 +38,8 @@ TEST_CASE("CFGExtractor: Assign") {
 }
 
 TEST_CASE("CFGExtractor: Read") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("read.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -56,8 +56,8 @@ TEST_CASE("CFGExtractor: Read") {
 }
 
 TEST_CASE("CFGExtractor: Print") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("print.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -74,8 +74,8 @@ TEST_CASE("CFGExtractor: Print") {
 }
 
 TEST_CASE("CFGExtractor: While") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("while.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -100,8 +100,8 @@ TEST_CASE("CFGExtractor: While") {
 }
 
 TEST_CASE("CFGExtractor: If") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("if.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -135,8 +135,8 @@ TEST_CASE("CFGExtractor: If") {
 
 TEST_CASE("CFGExtractor: Non-nested") {
     // non_nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("non_nested.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -161,8 +161,8 @@ TEST_CASE("CFGExtractor: Non-nested") {
 
 TEST_CASE("CFGExtractor: Nested") {
     // nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("nested.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -186,8 +186,8 @@ TEST_CASE("CFGExtractor: Nested") {
 }
 
 TEST_CASE("CFGExtractor: n3iif") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iif.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3iif.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -219,8 +219,8 @@ TEST_CASE("CFGExtractor: n3iif") {
 }
 
 TEST_CASE("CFGExtractor: n3iwl") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iwl.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3iwl.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -247,8 +247,8 @@ TEST_CASE("CFGExtractor: n3iwl") {
 }
 
 TEST_CASE("CFGExtractor: n3wim") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wim.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3wim.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -284,8 +284,8 @@ TEST_CASE("CFGExtractor: n3wim") {
 }
 
 TEST_CASE("CFGExtractor: n3wwl") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3wwl.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -308,8 +308,8 @@ TEST_CASE("CFGExtractor: n3wwl") {
 }
 
 TEST_CASE("CFGExtractor: multiproc1") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -346,8 +346,8 @@ TEST_CASE("CFGExtractor: multiproc1") {
 }
 
 TEST_CASE("CFGExtractor: multiproc2") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc2.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc2.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -385,8 +385,8 @@ TEST_CASE("CFGExtractor: multiproc2") {
 }
 
 TEST_CASE("CFGExtractor: multiproc3") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc3.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc3.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 
@@ -423,8 +423,8 @@ TEST_CASE("CFGExtractor: multiproc3") {
 }
 
 TEST_CASE("CFGExtractor: multiproc4") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc4.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc4.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     CFGExtractor cfge = CFGExtractor(ast, nodeToStmtNumMap);
     cfge.extract();
 

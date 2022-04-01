@@ -1,14 +1,16 @@
 #pragma once
 
-#include <iostream>
 #include <filesystem>
 #include <list>
+#include <stack>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "Common/FileReader.h"
 #include "Common/TreeUtils.h"
 #include "Common/TNodeType.h"
 
-class TestDesignExtractorUtils {
+class TestExtractorUtils {
 public:
     static string readFile(string folder, string filename) {
         filesystem::path cwd = filesystem::current_path();
