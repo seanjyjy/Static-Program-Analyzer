@@ -9,12 +9,13 @@ using namespace std;
 /**
  * Assign, Read, Print, While, If, Non-nested, Nested, n3iif, n3iwl, n3wim, n3wwl, multi-procedures
  * multiproc1
+ * Proc-same
  */
 
 TEST_CASE("EntitiesExtractor: Assign") {
     TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("assign.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 8);
@@ -35,7 +36,7 @@ TEST_CASE("EntitiesExtractor: Assign") {
 TEST_CASE("EntitiesExtractor: Read") {
     TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("read.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 3);
@@ -54,7 +55,7 @@ TEST_CASE("EntitiesExtractor: Read") {
 TEST_CASE("EntitiesExtractor: Print") {
     TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("print.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 3);
@@ -73,7 +74,7 @@ TEST_CASE("EntitiesExtractor: Print") {
 TEST_CASE("EntitiesExtractor: While") {
     TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("while.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 11);
@@ -94,7 +95,7 @@ TEST_CASE("EntitiesExtractor: While") {
 TEST_CASE("EntitiesExtractor: If") {
     TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("if.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 19);
@@ -117,7 +118,7 @@ TEST_CASE("EntitiesExtractor: Non-Nested") {
     // non_nested-simple.txt
     TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("non_nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 10);
@@ -138,7 +139,7 @@ TEST_CASE("EntitiesExtractor: Nested") {
     // nested-simple.txt
     TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("nested.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 10);
@@ -159,7 +160,7 @@ TEST_CASE("EntitiesExtractor: Nested") {
 TEST_CASE("EntitiesExtractor: n3iif") {
     TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3iif.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 18);
@@ -180,7 +181,7 @@ TEST_CASE("EntitiesExtractor: n3iif") {
 TEST_CASE("EntitiesExtractor: n3iwl") {
     TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3iwl.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 13);
@@ -202,7 +203,7 @@ TEST_CASE("EntitiesExtractor: n3iwl") {
 TEST_CASE("EntitiesExtractor: n3wim") {
     TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3wim.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 22);
@@ -222,7 +223,7 @@ TEST_CASE("EntitiesExtractor: n3wim") {
 TEST_CASE("EntitiesExtractor: n3wwl") {
     TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3wwl.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 9);
@@ -242,7 +243,7 @@ TEST_CASE("EntitiesExtractor: n3wwl") {
 TEST_CASE("EntitiesExtractor: multi-procedures") {
     TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("multi-procedures.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 6);
@@ -262,7 +263,7 @@ TEST_CASE("EntitiesExtractor: multiproc1") {
     // multiproc/multiproc1-simple.txt
     TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    REQUIRE(ee.extract());
 
     SECTION("Statement Nums") {
         REQUIRE(ee.getNodeToStmtNumMap().size() == 23);
@@ -281,5 +282,13 @@ TEST_CASE("EntitiesExtractor: multiproc1") {
         };
         REQUIRE(ee.getConstSet() == expectedConsts);
     }
+    delete ast;
+}
+
+TEST_CASE("EntitiesExtractor: Proc-same") {
+    // wrong/proc_same-simple.txt
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("wrong/proc_same.x")).build();
+    EntitiesExtractor ee = EntitiesExtractor(ast);
+    REQUIRE_FALSE(ee.extract());
     delete ast;
 }

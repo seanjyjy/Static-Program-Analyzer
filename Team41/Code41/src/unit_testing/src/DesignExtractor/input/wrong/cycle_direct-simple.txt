@@ -1,0 +1,17 @@
+procedure proc1 {
+	if (a > b) then {
+		call proc2;
+	} else {
+		call proc3;
+	}
+}
+
+procedure proc2 {
+    while (a > b) {
+		call proc1;
+    }
+}
+
+procedure proc3 {
+	read x;
+}

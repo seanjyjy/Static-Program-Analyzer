@@ -86,14 +86,14 @@ void CallsExtractor::buildCallsT() {
 
 bool CallsExtractor::extract() {
     const vector<TNode *> &procNodes = ast->getChildren();
-    for (TNode *procNode: procNodes) {
-        try {
+    try {
+        for (TNode *procNode: procNodes) {
             dfs(procNode, procNode->getTokenVal());
-        } catch (SemanticException e) {
-            return false;
         }
+        cycleCheck();
+    } catch (SemanticException e) {
+        return false;
     }
-    cycleCheck();
     revTopoSort();
     buildCallsT();
     return true;
