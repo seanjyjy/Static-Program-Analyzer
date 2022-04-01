@@ -40,8 +40,8 @@ void UsesExtractor::dfs(TNode *node, unordered_set<string> &usesSet) {
     }
 }
 
-void UsesExtractor::extract() {
-    VarRelationExtractor::extract();
+bool UsesExtractor::extract() {
+    return VarRelationExtractor::extract();
 }
 
 unordered_map<string, unordered_set<string>> UsesExtractor::getProcUsesMap() {

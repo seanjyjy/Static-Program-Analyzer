@@ -1,9 +1,8 @@
 #include "catch.hpp"
 
-#include "DesignExtractor/EntitiesExtractor.h"
 #include "DesignExtractor/ModifiesExtractor.h"
 #include "Common/AstBuilder.h"
-#include "TestDesignExtractorUtils.h"
+#include "TestExtractorUtils.h"
 
 using namespace std;
 
@@ -13,8 +12,8 @@ using namespace std;
  */
 
 TEST_CASE("ModifiesExtractor: Assign") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("assign.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -39,8 +38,8 @@ TEST_CASE("ModifiesExtractor: Assign") {
 }
 
 TEST_CASE("ModifiesExtractor: Read") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("read.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -60,8 +59,8 @@ TEST_CASE("ModifiesExtractor: Read") {
 }
 
 TEST_CASE("ModifiesExtractor: Print") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("print.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -73,8 +72,8 @@ TEST_CASE("ModifiesExtractor: Print") {
 }
 
 TEST_CASE("ModifiesExtractor: While") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("while.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -100,8 +99,8 @@ TEST_CASE("ModifiesExtractor: While") {
 }
 
 TEST_CASE("ModifiesExtractor: If") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("if.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -135,8 +134,8 @@ TEST_CASE("ModifiesExtractor: If") {
 
 TEST_CASE("ModifiesExtractor: Non-nested") {
     // non_nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("non_nested.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -162,8 +161,8 @@ TEST_CASE("ModifiesExtractor: Non-nested") {
 
 TEST_CASE("ModifiesExtractor: Nested") {
     // nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("nested.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -188,8 +187,8 @@ TEST_CASE("ModifiesExtractor: Nested") {
 }
 
 TEST_CASE("ModifiesExtractor: n3iif") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iif.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3iif.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -221,8 +220,8 @@ TEST_CASE("ModifiesExtractor: n3iif") {
 }
 
 TEST_CASE("ModifiesExtractor: n3iwl") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iwl.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3iwl.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -250,8 +249,8 @@ TEST_CASE("ModifiesExtractor: n3iwl") {
 }
 
 TEST_CASE("ModifiesExtractor: n3wim") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wim.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3wim.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -280,8 +279,8 @@ TEST_CASE("ModifiesExtractor: n3wim") {
 }
 
 TEST_CASE("ModifiesExtractor: n3wwl") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3wwl.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap;
     list<string> procCallOrder;
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
@@ -307,8 +306,8 @@ TEST_CASE("ModifiesExtractor: n3wwl") {
 }
 
 TEST_CASE("ModifiesExtractor: Call") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("call.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("call.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap = {
             {"p1", {"p2", "p4"}},
             {"p2", {"p3"}},
@@ -347,8 +346,8 @@ TEST_CASE("ModifiesExtractor: Call") {
 }
 
 TEST_CASE("ModifiesExtractor: multiproc1") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap = {
             {"n1iif", {"n0f"}},
             {"n0f",   {"n0m"}},
@@ -388,8 +387,8 @@ TEST_CASE("ModifiesExtractor: multiproc1") {
 }
 
 TEST_CASE("ModifiesExtractor: multiproc2") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc2.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc2.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap = {
             {"n1iif", {"n0f", "n0m"}},
             {"n0f",   {"n0l"}},
@@ -430,8 +429,8 @@ TEST_CASE("ModifiesExtractor: multiproc2") {
 }
 
 TEST_CASE("ModifiesExtractor: multiproc3") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc3.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc3.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap = {
             {"n1iif", {"n0f", "n0m", "n0l"}}
     };
@@ -469,8 +468,8 @@ TEST_CASE("ModifiesExtractor: multiproc3") {
 }
 
 TEST_CASE("ModifiesExtractor: multiproc4") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc4.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc4.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_map<string, unordered_set<string>> callsMap = {
             {"n1iif", {"n0f"}},
             {"n0m",   {"n0l"}}

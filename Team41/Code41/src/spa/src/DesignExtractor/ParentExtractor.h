@@ -40,7 +40,7 @@ public:
     /**
      * Records all parent and parentT relationship in parentMap and parentTMap.
      */
-    void extract() override;
+    bool extract() override;
 
     unordered_map<string, list<string>> getParentMap();
 

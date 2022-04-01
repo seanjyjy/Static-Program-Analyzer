@@ -15,5 +15,5 @@ public:
     /**
      * Extracts entities/relationships/etc.
      */
-    virtual void extract() = 0;
+    virtual bool extract() = 0;
 };

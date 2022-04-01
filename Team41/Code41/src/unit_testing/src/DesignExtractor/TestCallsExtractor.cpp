@@ -1,23 +1,23 @@
 #include "catch.hpp"
 
-#include "DesignExtractor/EntitiesExtractor.h"
 #include "DesignExtractor/CallsExtractor.h"
 #include "Common/AstBuilder.h"
-#include "TestDesignExtractorUtils.h"
+#include "TestExtractorUtils.h"
 
 using namespace std;
 
 /**
  * Call
  * multiproc1, multiproc2, multiproc3, multiproc4
+ * Cycle-direct, Cycle-indirect, Call-unknown
  */
 
 TEST_CASE("CallsExtractor: Call") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("call.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("call.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_set<string> procSet = {"p1", "p2", "p3", "p4", "p5", "p6"};
     CallsExtractor ce = CallsExtractor(ast, procSet);
-    ce.extract();
+    REQUIRE(ce.extract());
 
     unordered_map<string, unordered_set<string>> expectedCalls = {
             {"p1", {"p2", "p4"}},
@@ -33,16 +33,16 @@ TEST_CASE("CallsExtractor: Call") {
             {"p5", {"p6"}}
     };
     REQUIRE(ce.getCallsTMap() == expectedCallsT);
-    REQUIRE(TestDesignExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
+    REQUIRE(TestExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
     delete ast;
 }
 
 TEST_CASE("CallsExtractor: multiproc1") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_set<string> procSet = {"n1iif", "n0f", "n0m", "n0l"};
     CallsExtractor ce = CallsExtractor(ast, procSet);
-    ce.extract();
+    REQUIRE(ce.extract());
 
     unordered_map<string, unordered_set<string>> expectedCalls = {
             {"n1iif", {"n0f"}},
@@ -56,16 +56,16 @@ TEST_CASE("CallsExtractor: multiproc1") {
             {"n0m",   {"n0l"}}
     };
     REQUIRE(ce.getCallsTMap() == expectedCallsT);
-    REQUIRE(TestDesignExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
+    REQUIRE(TestExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
     delete ast;
 }
 
 TEST_CASE("CallsExtractor: multiproc2") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc2.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc2.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_set<string> procSet = {"n1iif", "n0f", "n0m", "n0l"};
     CallsExtractor ce = CallsExtractor(ast, procSet);
-    ce.extract();
+    REQUIRE(ce.extract());
 
     unordered_map<string, unordered_set<string>> expectedCalls = {
             {"n1iif", {"n0f", "n0m"}},
@@ -79,16 +79,16 @@ TEST_CASE("CallsExtractor: multiproc2") {
             {"n0m",   {"n0l"}}
     };
     REQUIRE(ce.getCallsTMap() == expectedCallsT);
-    REQUIRE(TestDesignExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
+    REQUIRE(TestExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
     delete ast;
 }
 
 TEST_CASE("CallsExtractor: multiproc3") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc3.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc3.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_set<string> procSet = {"n1iif", "n0f", "n0m", "n0l"};
     CallsExtractor ce = CallsExtractor(ast, procSet);
-    ce.extract();
+    REQUIRE(ce.extract());
 
     unordered_map<string, unordered_set<string>> expectedCalls = {
             {"n1iif", {"n0f", "n0m", "n0l"}}
@@ -98,16 +98,16 @@ TEST_CASE("CallsExtractor: multiproc3") {
             {"n1iif", {"n0f", "n0m", "n0l"}}
     };
     REQUIRE(ce.getCallsTMap() == expectedCallsT);
-    REQUIRE(TestDesignExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
+    REQUIRE(TestExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
     delete ast;
 }
 
 TEST_CASE("CallsExtractor: multiproc4") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc4.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc4.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     unordered_set<string> procSet = {"n1iif", "n0f", "n0m", "n0l"};
     CallsExtractor ce = CallsExtractor(ast, procSet);
-    ce.extract();
+    REQUIRE(ce.extract());
 
     unordered_map<string, unordered_set<string>> expectedCalls = {
             {"n1iif", {"n0f"}},
@@ -119,6 +119,33 @@ TEST_CASE("CallsExtractor: multiproc4") {
             {"n0m",   {"n0l"}}
     };
     REQUIRE(ce.getCallsTMap() == expectedCallsT);
-    REQUIRE(TestDesignExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
+    REQUIRE(TestExtractorUtils::checkCallsOrder(ce.getProcCallOrder(), expectedCalls));
+    delete ast;
+}
+
+TEST_CASE("CallsExtractor: Cycle-direct") {
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("wrong/cycle_direct.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_set<string> procSet = {"proc1", "proc2", "proc3"};
+    CallsExtractor ce = CallsExtractor(ast, procSet);
+    REQUIRE_FALSE(ce.extract());
+    delete ast;
+}
+
+TEST_CASE("CallsExtractor: Cycle-indirect") {
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("wrong/cycle_indirect.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_set<string> procSet = {"proc1", "proc2", "proc3"};
+    CallsExtractor ce = CallsExtractor(ast, procSet);
+    REQUIRE_FALSE(ce.extract());
+    delete ast;
+}
+
+TEST_CASE("CallsExtractor: Call-unknown") {
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("wrong/call_unknown.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
+    unordered_set<string> procSet = {"proc1", "proc2"};
+    CallsExtractor ce = CallsExtractor(ast, procSet);
+    REQUIRE_FALSE(ce.extract());
     delete ast;
 }

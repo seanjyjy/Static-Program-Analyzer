@@ -57,7 +57,7 @@ public:
     /**
      * Records all patterns.
      */
-    void extract() override;
+    bool extract() override;
 
     unordered_map<string, pair<string, TNode *>> getAssignPatternMap();
 

@@ -31,7 +31,7 @@ public:
     /**
      * Records all statements' followsT relationship in followsTMap.
      */
-    void extract() override;
+    bool extract() override;
 
     /**
      * For each mapping of statement S to list of statements L that followsT,

@@ -1,9 +1,8 @@
 #include "catch.hpp"
 
-#include "DesignExtractor/EntitiesExtractor.h"
 #include "DesignExtractor/FollowsExtractor.h"
 #include "Common/AstBuilder.h"
-#include "TestDesignExtractorUtils.h"
+#include "TestExtractorUtils.h"
 
 using namespace std;
 
@@ -13,8 +12,8 @@ using namespace std;
  */
 
 TEST_CASE("FollowsExtractor: Assign") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("assign.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("assign.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -32,8 +31,8 @@ TEST_CASE("FollowsExtractor: Assign") {
 }
 
 TEST_CASE("FollowsExtractor: Read") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("read.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("read.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -46,8 +45,8 @@ TEST_CASE("FollowsExtractor: Read") {
 }
 
 TEST_CASE("FollowsExtractor: Print") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("print.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("print.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -60,8 +59,8 @@ TEST_CASE("FollowsExtractor: Print") {
 }
 
 TEST_CASE("FollowsExtractor: While") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("while.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("while.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -76,8 +75,8 @@ TEST_CASE("FollowsExtractor: While") {
 }
 
 TEST_CASE("FollowsExtractor: If") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("if.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("if.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -93,8 +92,8 @@ TEST_CASE("FollowsExtractor: If") {
 
 TEST_CASE("FollowsExtractor: Non-nested") {
     // non_nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("non_nested.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("non_nested.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -112,8 +111,8 @@ TEST_CASE("FollowsExtractor: Non-nested") {
 
 TEST_CASE("FollowsExtractor: Nested") {
     // nested-simple.txt
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("nested.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("nested.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -129,8 +128,8 @@ TEST_CASE("FollowsExtractor: Nested") {
 }
 
 TEST_CASE("FollowsExtractor: n3iif") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iif.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3iif.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -148,8 +147,8 @@ TEST_CASE("FollowsExtractor: n3iif") {
 }
 
 TEST_CASE("FollowsExtractor: n3iwl") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3iwl.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3iwl.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -165,8 +164,8 @@ TEST_CASE("FollowsExtractor: n3iwl") {
 }
 
 TEST_CASE("FollowsExtractor: n3wim") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wim.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3wim.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -189,8 +188,8 @@ TEST_CASE("FollowsExtractor: n3wim") {
 }
 
 TEST_CASE("FollowsExtractor: n3wwl") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readSimpleProgram("n3wwl.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readSimpleProgram("n3wwl.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
@@ -205,8 +204,8 @@ TEST_CASE("FollowsExtractor: n3wwl") {
 }
 
 TEST_CASE("FollowsExtractor: multiproc1") {
-    TNode *ast = AstBuilder(TestDesignExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
-    unordered_map<TNode *, string> nodeToStmtNumMap = TestDesignExtractorUtils::makeNodeToStmtNumMap(ast);
+    TNode *ast = AstBuilder(TestExtractorUtils::readDeInput("multiproc/multiproc1.x")).build();
+    unordered_map<TNode *, string> nodeToStmtNumMap = TestExtractorUtils::makeNodeToStmtNumMap(ast);
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
 
