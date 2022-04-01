@@ -14,12 +14,14 @@ private:
     PKBClient *pkb;
     Cache *cache;
     bool isAffectsGraphBuilt = false;
+    unordered_set<string> cachedAssignStmts = {};
+    unordered_set<string> cachedParentStmts = {};
     unordered_map<string, CFGNode *> stmtNumToNodeMap;
     unordered_set<string> affectings;
     unordered_set<string> affecteds;
     vector<pair<string, string>> affectingAffectedPairs;
 
-    bool hasAffectsGraph(const string &stmt);
+    bool hasAffectsGraph(const string &stmt) const;
 
     bool hasAffectsGraph() const;
 
@@ -31,12 +33,13 @@ private:
 
     bool bfsBool(PKBClient *pkb, CFGNode *start, const string &modifiedVar, const string &end);
 
-    unordered_set<string> bfsDown(PKBClient *pkb, const string& stmtNum, bool isAnyResult = false);
+    unordered_set<string> bfsDown(PKBClient *pkb, const string &stmtNum, bool isAnyResult = false);
 
-    unordered_set<string> bfsUp(PKBClient *pkb, const string& stmtNum, bool isAnyResult = false);
+    unordered_set<string> bfsUp(PKBClient *pkb, const string &stmtNum, bool isAnyResult = false);
 
-    static bool isModifyStmt(PKBClient *client, const string &stmtNum);
+    const unordered_set<string> &getAllParentStmt();
 
+    const unordered_set<string> &getAllAssignStmt();
 public:
     explicit AffectsKBAdapter(PKBClient *pkb);
 
@@ -71,7 +74,4 @@ public:
     bool isAffectedBySomeStmt(const string &stmtNum);
 
     bool hasSomeAffectsAll();
-
-    unordered_set<string>
-    bfsDown(PKBClient *client, const string &stmtNum, const string &modifiedVar, bool isAnyResult);
 };
