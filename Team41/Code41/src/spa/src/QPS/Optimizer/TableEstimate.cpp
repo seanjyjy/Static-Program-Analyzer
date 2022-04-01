@@ -16,14 +16,14 @@ void TableEstimate::merge(const vector<QueryDeclaration> &sch) {
     estRows = estimateMergeCost(sch);
 
     // merge with new schema
-    unordered_set<QueryDeclaration, cvHasher, cvEquals> a(schema.begin(), schema.end());
+    unordered_set<QueryDeclaration, queryDeclarationHasher, queryDeclarationEquals> a(schema.begin(), schema.end());
     for (const QueryDeclaration &cv: sch) {
         if (a.find(cv) == a.end()) schema.push_back(cv);
     }
 }
 
 bool TableEstimate::hasCommonCol(const vector<QueryDeclaration> &sch) {
-    unordered_set<QueryDeclaration, cvHasher, cvEquals> a(schema.begin(), schema.end());
+    unordered_set<QueryDeclaration, queryDeclarationHasher, queryDeclarationEquals> a(schema.begin(), schema.end());
     for (const QueryDeclaration &cv: sch) {
         if (a.find(cv) != a.end()) return true;
     }

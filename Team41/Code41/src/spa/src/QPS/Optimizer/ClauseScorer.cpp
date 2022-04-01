@@ -19,11 +19,13 @@ long ClauseScorer::score(SuperClause *tc) {
 }
 
 // all with-clauses are treated the same, i.e assigned the same score
-long ClauseScorer::scoreWithCl(SuperClause *) {
+long ClauseScorer::scoreWithCl(SuperClause *cl) {
+    if (!cl->isWithClause()) throw runtime_error("attempting to use with-clause scoring for non-with-clause");
     return SCORE_WITH_CLAUSE;
 }
 
 long ClauseScorer::scoreSuchThatCl(SuperClause *tc) {
+    if (!tc->isSuchThatClause()) throw runtime_error("attempting to use suchthat-clause scoring for non-suchthat-clause");
     SuchThatType type = stClauseToType(tc);
     unordered_map<ClauseScorer::SuchThatType, long> ranks = getStRanks();
     long score = ranks[type];
@@ -31,7 +33,8 @@ long ClauseScorer::scoreSuchThatCl(SuperClause *tc) {
 }
 
 // all pattern-clauses are treated the same, i.e assigned the same score
-long ClauseScorer::scorePatternCl(SuperClause *) {
+long ClauseScorer::scorePatternCl(SuperClause *cl) {
+    if (!cl->isPatternClause()) throw runtime_error("attempting to use pattern-clause scoring for non-pattern-clause");
     return SCORE_PATTERN_CLAUSE;
 }
 
