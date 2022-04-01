@@ -118,77 +118,77 @@ assign a; variable v;
 Select a pattern a(v,_"29/(30+31)"_)
 37,43,44
 5000
-24 - Bracket matters - wrong bracket
+25 - Bracket matters - wrong bracket
 assign a; variable v;
 Select BOOLEAN pattern a(v,_"29/30+31"_)
 FALSE
 5000
-25 - AST lhs and rhs cannot swap - sub pattern
+26 - AST lhs and rhs cannot swap - sub pattern
 assign a; variable v;
 Select BOOLEAN pattern a(v,_"(30+31)/29"_)
 FALSE
 5000
-26 - AST lhs and rhs cannot swap - full pattern
+27 - AST lhs and rhs cannot swap - full pattern
 assign a; variable v;
 Select BOOLEAN pattern a(v,_"s1mp13P4773rn5 % 24"_)
 FALSE
 5000
-27 - RHS is not an expression //Syntactic error
+28 - RHS is not an expression //Syntactic error
 assign a; variable v;
 Select BOOLEAN pattern a(v,_"s1mp13P4773rn10 = (((31))) % s1mp13P4773rn11;"_)
 
 5000
-28 - Using partial expression as subpattern //Syntactic error
+29 - Using partial expression as subpattern //Syntactic error
 assign a;
 Select BOOLEAN pattern a(_,_"% s1mp13P4773rn7"_)
 
 5000
-29 - Using operator as subpattern //Syntactic error
+30 - Using operator as subpattern //Syntactic error
 assign a;
 Select BOOLEAN pattern a(_,_"%"_)
 
 5000
-30 - Using mismatching brackets in sub pattern //Syntactic error
+31 - Using mismatching brackets in sub pattern //Syntactic error
 assign a;
 Select BOOLEAN pattern a(_,_"((29/(30+31))"_)
 
 5000
-31 - Pattern a(_,c) //Syntactic error
+32 - Pattern a(_,c) //Syntactic error
 assign a; constant c;
 Select BOOLEAN pattern a(_,c)
 
 5000
-32 - Pattern a(s,_) //Semantic error
+33 - Pattern a(s,_) //Semantic error
 assign a; stmt s;
 Select BOOLEAN pattern a(s,_)
 FALSE
 5000
-33 - Pattern a(r,_) //Semantic error
+34 - Pattern a(r,_) //Semantic error
 assign a; read r;
 Select BOOLEAN pattern a(r,_)
 FALSE
 5000
-34 - Pattern a(pn,_) //Semantic error
+35 - Pattern a(pn,_) //Semantic error
 assign a; print pn;
 Select BOOLEAN pattern a(pn,_)
 FALSE
 5000
-35 - Pattern a(a1,_) //Semantic error
+36 - Pattern a(a1,_) //Semantic error
 assign a; assign a1;
 Select BOOLEAN pattern a(a1,_)
 FALSE
 5000
-36 - Pattern a(ifs,_) //Semantic error
+37 - Pattern a(ifs,_) //Semantic error
 assign a; if ifs;
 Select BOOLEAN pattern a(ifs,_)
 FALSE
 5000
-37 - Pattern a(w,_) //Semantic error
+38 - Pattern a(w,_) //Semantic error
 assign a; while w;
 Select BOOLEAN pattern a(w,_)
 FALSE
 5000
-38 - Pattern a(cl,_) //Semantic error
+39 - Pattern a(cl,_) //Semantic error
 assign a; call cl;
 Select BOOLEAN pattern a(cl,_)
 FALSE
@@ -308,132 +308,132 @@ if pattern;
 Select BOOLEAN pattern pattern(_,_,_)
 TRUE
 5000
-621 - if syn pattern //Syntactic Error
+63 - if syn pattern //Syntactic Error
 if pattern;
 Select BOOLEAN pattern pattern(_,_)
 
 5000
-63 - var syn pattern //Semantic Error
+64 - var syn pattern //Semantic Error
 variable pattern;
 Select BOOLEAN pattern pattern(_,_)
 FALSE
 5000
-64 - const syn pattern //Semantic Error
+65 - const syn pattern //Semantic Error
 constant pattern;
 Select BOOLEAN pattern pattern(_,_)
 FALSE
 5000
-65 - procedure syn pattern //Semantic Error
+66 - procedure syn pattern //Semantic Error
 procedure pattern;
 Select BOOLEAN pattern pattern(_,_)
 FALSE
 5000
-66 - assign syn wildcard pattern - tuple
+67 - assign syn wildcard pattern - tuple
 assign a; variable v;
 Select <a,v> pattern a(v,_)
 2 b0b, 4 B0B, 7 B0B, 10 b0b, 11 print, 13 print, 15 print, 16 print, 17 print, 20 Var1, 22 Var2, 23 Var1, 25 Var1, 26 Var1, 28 Var3, 29 Var1, 31 Var3, 33 Var3, 35 Var3, 37 s1mp13P4773rn11, 38 s1mp13P4773rn1, 39 s1mp13P4773rn2, 40 s1mp13P4773rn3, 41 s1mp13P4773rn4, 42 s1mp13P4773rn5, 43 s1mp13P4773rn6, 44 s1mp13P4773rn7, 45 s1mp13P4773rn8, 46 s1mp13P4773rn9, 47 s1mp13P4773rn10
 5000
-67 - assign syn full pattern - tuple
+68 - assign syn full pattern - tuple
 assign a; variable v;
 Select <a,v> pattern a(v,"(1024/1024) - Var1")
 20 Var1, 22 Var2
 5000
-68 - assign syn sub pattern - tuple
+69 - assign syn sub pattern - tuple
 assign a; variable v;
 Select <a,v> pattern a(v,_"21%23"_)
 13 print, 15 print, 16 print
 5000
-205 - Pattern ifs (v, _, _) - select ifs
+70 - Pattern ifs (v, _, _) - select ifs
 if ifs; variable v;
 Select ifs pattern ifs (v, _, _)
 3, 9, 18
 5000
-206 - Pattern ifs (v, _, _) - select v
+71 - Pattern ifs (v, _, _) - select v
 if ifs; variable v;
 Select v pattern ifs (v, _, _)
 B0B, print, b0b, Var2
 5000
-207 - Pattern ifs (_, _, _) - select v
+72 - Pattern ifs (_, _, _) - select v
 if ifs;
 Select ifs pattern ifs (_, _, _)
 3, 9, 18
 5000
-208 - Pattern ifs (B0B, _, _) - select v
+73 - Pattern ifs (B0B, _, _) - select v
 if ifs;
 Select ifs pattern ifs ("B0B", _, _)
 3, 9
 5000
-209 - Pattern ifs (_, _Var2 / 2048_, _) - select v
+74 - Pattern ifs (_, _Var2 / 2048_, _) - select v
 if ifs;
 Select BOOLEAN pattern ifs (_, _"Var2 / 2048"_, _)
 
 5000
-210 - Pattern ifs (_, _, _Var2 / 2048_) - select v
+75 - Pattern ifs (_, _, _Var2 / 2048_) - select v
 if ifs;
 Select BOOLEAN pattern ifs (_, _, _"Var2 / 2048"_)
 
 5000
-211 - Pattern ifs (v, _, _) - select tuple
+76 - Pattern ifs (v, _, _) - select tuple
 if ifs; variable v;
 Select <ifs, v> pattern ifs (v, _, _)
 3 B0B, 3 print, 9 B0B, 9 b0b, 18 Var2
 5000
-212 - Pattern ifs (_, _, B0B + 1024) - select v
+77 - Pattern ifs (_, _, B0B + 1024) - select v
 if ifs;
 Select BOOLEAN pattern ifs (_, _, "B0B + 1024")
 
 5000
-220 - Pattern w (v, _) - select w
+78 - Pattern w (v, _) - select w
 while w; variable v;
 Select w pattern w (v, _)
 1, 19, 27
 5000
-221 - Pattern w (v, _) - select v
+79 - Pattern w (v, _) - select v
 while w; variable v;
 Select v pattern w (v, _)
 B0B, b0b, Var1, Var2, Var3
 5000
-222 - Pattern w (_, _) - select w
+80 - Pattern w (_, _) - select w
 while w;
 Select w pattern w (_, _)
 1, 19, 27
 5000
-223 - Pattern w (Var3, _) - select w
+81 - Pattern w (Var3, _) - select w
 while w;
 Select w pattern w ("Var3", _)
 27
 5000
-224 - Pattern w (Var1, _) - select w
+82 - Pattern w (Var1, _) - select w
 while w;
 Select w pattern w ("Var1", _)
 19, 27
 5000
-225 - Pattern w (Var1, _x_)
+83 - Pattern w (Var1, _x_)
 while w;
 Select BOOLEAN pattern w ("Var1", _"Var1"_)
 
 5000
-226 - Pattern w (Var1, Var1)
+84 - Pattern w (Var1, Var1)
 while w;
 Select BOOLEAN pattern w ("Var1", "Var1")
 
 5000
-227 - Pattern w (v, _)
+85 - Pattern w (v, _)
 while w; variable v;
 Select <w, v> pattern w (v, _)
 1 B0B, 1 b0b, 19 Var1, 19 Var2, 27 Var1, 27 Var3
 5000
-228 - Pattern w (v, _, _) - syntactic error
+86 - Pattern w (v, _, _) - syntactic error
 while w; variable v
 Select BOOLEAN pattern w (v, _, _)
 
 5000
-229 - Pattern a (v, _) - overload subpattern - ideal
+87 - Pattern a (v, _) - overload subpattern - ideal
 assign BOOLEAN; variable v;
 Select BOOLEAN pattern BOOLEAN (v, _"(((24+25)*26)+27)-(28+(29/(30+31))) % s1mp13P4773rn1"_) and BOOLEAN (v, _"(28+(29/(30+31))) % s1mp13P4773rn1"_) and BOOLEAN (v, _"(((24+25)*26)+27)"_) and BOOLEAN (v, _"(28+(29/(30+31)))"_) and BOOLEAN (v, _"((24+25)*26)"_) and BOOLEAN (v, _"(29/(30+31))"_) and BOOLEAN (v, _"(24+25)"_) and BOOLEAN (v, _"(30+31)"_) and BOOLEAN (v, _"24"_) and BOOLEAN (v, _"31"_)
 37
 5000
-230 - Pattern a (v, _) - overload subpattern
+88 - Pattern a (v, _) - overload subpattern
 assign BOOLEAN; variable v;
 Select BOOLEAN pattern BOOLEAN (v, _"31"_) and BOOLEAN (v, _"24"_) and BOOLEAN (v, _"(30+31)"_) and BOOLEAN (v, _"(24+25)"_) and BOOLEAN (v, _"(29/(30+31))"_) and BOOLEAN (v, _"((24+25)*26)"_) and BOOLEAN (v, _"(28+(29/(30+31)))"_) and BOOLEAN (v, _"(((24+25)*26)+27)"_) and BOOLEAN (v, _"(28+(29/(30+31))) % s1mp13P4773rn1"_) and BOOLEAN (v, _"(((24+25)*26)+27)-(28+(29/(30+31))) % s1mp13P4773rn1"_)
 37

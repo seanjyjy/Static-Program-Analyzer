@@ -29,11 +29,10 @@ procedure Ass1gn0v3r104d {
             Var2 = 1024/1024 - Var1;
         }
         Var1 = 1024/2048 * (Var1 - Var2 / 2048) % 1024;
-        if (1024 == 1024) then {
+        while (1024 == 1024) {
             Var1 = 1024/2048 * ((Var1 - (Var2 / 2048))) % (1024);
-        } else {
             Var1 = (Var2 / ((1024)));
-            while (Var1 == Var2) {
+            while (Var1 == Var3) {
                 Var3 = Var2 / 1024 % 1024;
                 Var1 = (1024/2048 * (Var1 - Var2 / 2048) % 1024);
                 read Var1;
