@@ -14,15 +14,15 @@ void FollowsExtractor::dfs(TNode *node) {
     if (type == TNodeType::procedure) {
         dfs(node->getChildren()[0]); // only 1 child stmtLst
     } else if (type == TNodeType::ifStmt) {
-        vector<TNode *> ch = node->getChildren();
+        const vector<TNode *> &ch = node->getChildren();
         dfs(ch[1]); // 2nd and 3rd child are stmtLst
         dfs(ch[2]);
     } else if (type == TNodeType::whileStmt) {
         dfs(node->getChildren()[1]); // right child is stmtLst
     } else if (type == TNodeType::stmtLst) {
-        vector<TNode *> ch = node->getChildren();
+        const vector<TNode *> &ch = node->getChildren();
         list<string> followsLst;
-        for (int i = (int) ch.size() - 1; i >= 0; i--) {
+        for (int i = (int) ch.size() - 1; i >= 0; --i) {
             TNode *childNode = ch[i];
             dfs(childNode);
             mapFollows(childNode, followsLst);
@@ -32,7 +32,7 @@ void FollowsExtractor::dfs(TNode *node) {
 }
 
 void FollowsExtractor::extract() {
-    vector<TNode *> procNodes = ast->getChildren();
+    const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) {
         dfs(procNode);
     }

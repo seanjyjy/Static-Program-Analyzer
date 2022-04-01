@@ -35,7 +35,7 @@ public:
 
     TNode *getParent();
 
-    vector<TNode *> getChildren();
+    const vector<TNode *> &getChildren();
 
     string getTokenVal();
 

@@ -115,7 +115,6 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
 
     while (!mainQ.empty()) {
         CFGNode *curr = mainQ.front();
-        vector<CFGNode *> children = curr->getChildren();
         string currStmtNum = curr->getStmtNum();
 
         CacheCallback saveToCache = [currStmtNum, &cache](const string &next) {
@@ -145,7 +144,7 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
 CFGNode *AdaptersUtils::getStartingParentNode(CFGNode *rootCFG, const string &stmt) {
     int stmtNum = stoi(stmt);
 
-    vector<CFGNode *> children = rootCFG->getChildren();
+    const vector<CFGNode *> &children = rootCFG->getChildren();
 
     // Binary search for first element that is greater than stmt
     auto result = std::upper_bound(children.begin(), children.end(), stmtNum, [](int value, CFGNode *currNode) {

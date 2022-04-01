@@ -328,7 +328,7 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
     while (!mainQ.empty()) {
         CFGNode *affectingNode = mainQ.front();
         string affectingStmtNum = affectingNode->getStmtNum();
-        vector<CFGNode *> nextChildren = pkb->getCFGForStmt(affectingStmtNum)->getChildren();
+        const vector<CFGNode *> &nextChildren = pkb->getCFGForStmt(affectingStmtNum)->getChildren();
 
         for (auto child: nextChildren)
             queue.push(child);
@@ -339,7 +339,7 @@ void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
         while (!queue.empty()) {
             CFGNode *curr = queue.front();
             string stmtNum = curr->getStmtNum();
-            vector<CFGNode *> children = curr->getChildren();
+            const vector<CFGNode *> &children = curr->getChildren();
             queue.pop();
 
             // if current stmt uses this modifiedVar and is assign stmt

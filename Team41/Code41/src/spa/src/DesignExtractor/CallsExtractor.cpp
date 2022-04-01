@@ -16,13 +16,12 @@ void CallsExtractor::dfs(TNode *node, const string &proc) {
     if (type == TNodeType::procedure) {
         dfs(node->getChildren()[0], proc); // only 1 child stmtLst
     } else if (type == TNodeType::stmtLst) {
-        vector<TNode *> ch = node->getChildren();
-        for (TNode *child: ch)
+        for (TNode *child: node->getChildren())
             dfs(child, proc);
     } else if (type == TNodeType::whileStmt) {
         dfs(node->getChildren()[1], proc); // right child stmtLst
     } else if (type == TNodeType::ifStmt) {
-        vector<TNode *> ch = node->getChildren();
+        const vector<TNode *> &ch = node->getChildren();
         for (size_t i = 1; i <= 2; i++) // if stmt has stmtLst on 2nd and 3rd child
             dfs(ch[i], proc);
     } else if (type == TNodeType::callStmt) {
@@ -86,7 +85,7 @@ void CallsExtractor::buildCallsT() {
 }
 
 void CallsExtractor::extract() {
-    vector<TNode *> procNodes = ast->getChildren();
+    const vector<TNode *> &procNodes = ast->getChildren();
     for (TNode *procNode: procNodes) {
         dfs(procNode, procNode->getTokenVal());
     }

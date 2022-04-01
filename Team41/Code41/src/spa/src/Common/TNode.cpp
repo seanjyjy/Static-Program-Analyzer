@@ -27,7 +27,7 @@ TNode *TNode::getParent() {
     return parent;
 }
 
-vector<TNode *> TNode::getChildren() {
+const vector<TNode *> &TNode::getChildren() {
     return children;
 }
 

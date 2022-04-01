@@ -22,7 +22,7 @@ void CFGExtractor::addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode) {
 void CFGExtractor::dfsInitCFG(TNode *curTNode, CFGNode *curCFGNode, CFGNode *parentCFGNode) {
     TNodeType type = curTNode->getType();
     if (type == TNodeType::stmtLst) {
-        vector<TNode *> ch = curTNode->getChildren();
+        const vector<TNode *> &ch = curTNode->getChildren();
         CFGNode *childCFGNode = createCFGNode(ch[0]);
         if (parentCFGNode) // IF or WHILE CFGNode point to first stmt in container
             addCFGEdge(parentCFGNode, childCFGNode); // add forward CFG edge
@@ -42,7 +42,7 @@ void CFGExtractor::dfsInitCFG(TNode *curTNode, CFGNode *curCFGNode, CFGNode *par
             childCFGNode = neighbourCFGNode;
         }
     } else if (type == TNodeType::ifStmt) { // bfs down with {stmtLst, nullptr, curCFGNode}
-        vector<TNode *> ch = curTNode->getChildren();
+        const vector<TNode *> &ch = curTNode->getChildren();
         dfsInitCFG(ch[1], nullptr, curCFGNode); // stmtLst has no CFGNode
         dfsInitCFG(ch[2], nullptr, curCFGNode);
     } else if (type == TNodeType::whileStmt) { // bfs down with {stmtLst, nullptr, curCFGNode}
@@ -59,7 +59,7 @@ void CFGExtractor::addBackEdge(TNode *fromTNode, TNode *toTNode) {
 void CFGExtractor::dfsLinkBack(TNode *curTNode, TNode *backTNode) {
     TNodeType type = curTNode->getType();
     if (type == TNodeType::stmtLst) {
-        vector<TNode *> ch = curTNode->getChildren();
+        const vector<TNode *> &ch = curTNode->getChildren();
         int len = (int) ch.size();
         for (int i = 0; i < len - 1; ++i) {
             TNodeType childType = ch[i]->getType();
@@ -84,7 +84,7 @@ void CFGExtractor::dfsLinkBack(TNode *curTNode, TNode *backTNode) {
                 dfsLinkBack(lastChild, lastChild); // end of WHILE will link back to WHILE
         }
     } else if (type == TNodeType::ifStmt) {
-        vector<TNode *> ch = curTNode->getChildren();
+        const vector<TNode *> &ch = curTNode->getChildren();
         dfsLinkBack(ch[1], backTNode); // pass to stmtLst to handle
         dfsLinkBack(ch[2], backTNode);
     } else if (type == TNodeType::whileStmt) {
@@ -94,7 +94,7 @@ void CFGExtractor::dfsLinkBack(TNode *curTNode, TNode *backTNode) {
 
 void CFGExtractor::extract() {
     stmtNumToNodeMap.insert({ROOT_INDEX, cfg});
-    vector<TNode *> procTNodes = ast->getChildren();
+    const vector<TNode *> &procTNodes = ast->getChildren();
     for (TNode *procNode: procTNodes) { // start dfs from stmtLst of each procedure
         dfsInitCFG(procNode->getChildren()[0], nullptr, cfg); // {stmtLst, nullptr, root CFG}
     }

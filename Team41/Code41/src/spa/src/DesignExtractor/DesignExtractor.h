@@ -25,21 +25,21 @@ private:
     unordered_map<string, unordered_set<string>> callsMap; // mapping of proc to list of proc it directly calls
     list<string> procCallOrder; // list of procedures in reversed toposort order of calls graph
 
-    void extractEntities();
+    bool extractEntities();
 
-    void extractCalls();
+    bool extractCalls();
 
-    void extractModifies();
+    bool extractModifies();
 
-    void extractUses();
+    bool extractUses();
 
-    void extractFollows();
+    bool extractFollows();
 
-    void extractParent();
+    bool extractParent();
 
-    void extractPattern();
+    bool extractPattern();
 
-    void extractCFG();
+    bool extractCFG();
 
 public:
     DesignExtractor(TNode *ast, PKBManager *pkb);
@@ -47,7 +47,8 @@ public:
     /**
      * Extracts all entities (procedures, statements, variables and constants) and relationships
      * and stores them in the PKBManager sequentially.
-     * Supported relationships: Modifies, Uses, Follows(T) and Parent(T), Calls(T)
+     *
+     * @return True if extractions were successful, else False
      */
-    void extractDesign();
+    bool extractDesign();
 };

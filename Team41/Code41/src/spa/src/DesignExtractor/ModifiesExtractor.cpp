@@ -14,8 +14,7 @@ void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
         mapRelation(node, modifiesSet);
     } else if (type == TNodeType::stmtLst) {
         unordered_set<string> modifiesSetChild;
-        vector<TNode *> ch = node->getChildren();
-        for (TNode *child: ch) {
+        for (TNode *child: node->getChildren()) {
             dfs(child, modifiesSetChild);
             DesignExtractorUtils::combineSetsClear(modifiesSet, modifiesSetChild);
         }
@@ -27,8 +26,8 @@ void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
         mapRelation(node, modifiesSet);
     } else if (type == TNodeType::ifStmt) {
         unordered_set<string> modifiesSetChild;
-        vector<TNode *> ch = node->getChildren();
-        for (size_t i = 1; i <= 2; i++) { // if stmt has stmtLst on 2nd and 3rd child
+        const vector<TNode *> &ch = node->getChildren();
+        for (size_t i = 1; i <= 2; ++i) { // if stmt has stmtLst on 2nd and 3rd child
             dfs(ch[i], modifiesSetChild);
             DesignExtractorUtils::combineSetsClear(modifiesSet, modifiesSetChild);
         }

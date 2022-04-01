@@ -36,7 +36,12 @@ void TestWrapper::parse(std::string filename) {
     TNode* ast = p.parseProgram(fileContent);
     cout << "Parse complete" << endl;
     DesignExtractor designExtractor(ast, &pkbManager);
-    designExtractor.extractDesign();
+    bool isExtractionSuccess = designExtractor.extractDesign();
+    if (!isExtractionSuccess) { // exit entire program is there was problem with parsing or extracting
+        cout << "Error with source code, exiting program" << endl;
+        delete ast;
+        exit(0);
+    }
     cout << "Extraction complete" << endl;
 }
 

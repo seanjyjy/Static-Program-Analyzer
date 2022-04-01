@@ -1,13 +1,18 @@
 #include "DesignExtractor.h"
 #include "Common/TNodeType.h"
+#include <Exception/SemanticException.h>
 
 using namespace std;
 
 DesignExtractor::DesignExtractor(TNode *ast, PKBManager *pkb) : ast(ast), pkb(pkb) {}
 
-void DesignExtractor::extractEntities() {
+bool DesignExtractor::extractEntities() {
     EntitiesExtractor ee = EntitiesExtractor(ast);
-    ee.extract();
+    try {
+        ee.extract();
+    } catch (SemanticException e) {
+        return false;
+    }
     this->nodeToStmtNumMap = ee.getNodeToStmtNumMap();
     this->procSet = ee.getProcSet();
 
@@ -42,11 +47,16 @@ void DesignExtractor::extractEntities() {
         pkb->registerVariable(varName);
     for (const string &constVal: ee.getConstSet())
         pkb->registerConstant(constVal);
+    return true;
 }
 
-void DesignExtractor::extractCalls() {
+bool DesignExtractor::extractCalls() {
     CallsExtractor ce = CallsExtractor(ast, procSet);
-    ce.extract();
+    try {
+        ce.extract();
+    } catch (SemanticException e) {
+        return false;
+    }
     this->callsMap = ce.getCallsMap();
     this->procCallOrder = ce.getProcCallOrder();
     for (auto &[procParent, callsSet]: callsMap) {
@@ -57,9 +67,10 @@ void DesignExtractor::extractCalls() {
         for (const string &procChild: callsTSet)
             pkb->registerCallsT(procParent, procChild);
     }
+    return true;
 }
 
-void DesignExtractor::extractModifies() {
+bool DesignExtractor::extractModifies() {
     ModifiesExtractor me = ModifiesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     me.extract();
     for (auto &[procName, modifiesSet]: me.getProcModifiesMap()) {
@@ -70,9 +81,10 @@ void DesignExtractor::extractModifies() {
         for (const string &modifiedName: modifiesSet)
             pkb->registerModifiesS(stmtNum, modifiedName);
     }
+    return true;
 }
 
-void DesignExtractor::extractUses() {
+bool DesignExtractor::extractUses() {
     UsesExtractor ue = UsesExtractor(ast, nodeToStmtNumMap, callsMap, procCallOrder);
     ue.extract();
     for (auto &[procName, usesSet]: ue.getProcUsesMap()) {
@@ -83,9 +95,10 @@ void DesignExtractor::extractUses() {
         for (const string &usedName: usesSet)
             pkb->registerUsesS(stmtNum, usedName);
     }
+    return true;
 }
 
-void DesignExtractor::extractFollows() {
+bool DesignExtractor::extractFollows() {
     FollowsExtractor fe = FollowsExtractor(ast, nodeToStmtNumMap);
     fe.extract();
     for (auto &[followed, followsTLst]: fe.getFollowsTMap()) {
@@ -93,9 +106,10 @@ void DesignExtractor::extractFollows() {
         for (const string &follower: followsTLst)
             pkb->registerFollowsT(followed, follower);
     }
+    return true;
 }
 
-void DesignExtractor::extractParent() {
+bool DesignExtractor::extractParent() {
     ParentExtractor pe = ParentExtractor(ast, nodeToStmtNumMap);
     pe.extract();
     for (auto &[parent, parentLst]: pe.getParentMap()) {
@@ -106,9 +120,10 @@ void DesignExtractor::extractParent() {
         for (const string &child: parentTLst)
             pkb->registerParentT(parent, child);
     }
+    return true;
 }
 
-void DesignExtractor::extractPattern() {
+bool DesignExtractor::extractPattern() {
     PatternExtractor pe = PatternExtractor(ast, nodeToStmtNumMap);
     pe.extract();
     for (auto &[stmt, lhsRhsPair]: pe.getAssignPatternMap()) {
@@ -122,21 +137,25 @@ void DesignExtractor::extractPattern() {
         for (const string &var: varSet)
             pkb->registerWhilePattern(stmt, var);
     }
+    return true;
 }
 
-void DesignExtractor::extractCFG() {
+bool DesignExtractor::extractCFG() {
     CFGExtractor ce = CFGExtractor(ast, nodeToStmtNumMap);
     ce.extract();
     pkb->registerCFG(ce.getCFG(), ce.getStmtNumToNodeMap());
+    return true;
 }
 
-void DesignExtractor::extractDesign() {
-    extractEntities();
-    extractFollows();
-    extractParent();
-    extractCalls();
-    extractModifies();
-    extractUses();
-    extractPattern();
-    extractCFG();
+bool DesignExtractor::extractDesign() {
+    if (!ast) return false; // ast is nullptr
+    bool isSuccess = extractEntities()
+                     && extractFollows()
+                     && extractParent()
+                     && extractCalls()
+                     && extractModifies()
+                     && extractUses()
+                     && extractPattern()
+                     && extractCFG();
+    return isSuccess;
 }
