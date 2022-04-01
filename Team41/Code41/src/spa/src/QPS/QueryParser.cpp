@@ -399,10 +399,6 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
     throw runtime_error("Internal Error: Invalid clause type");
 }
 
-bool QueryParser::isValidPatternSynType(QueryDeclaration declared) {
-    return declared.type->isAssign() || declared.type->isWhile() || declared.type->isIf();
-}
-
 optional<QueryDeclaration> QueryParser::parsePatternSyn() {
     optional<string> patternSyn = lex->nextSynonym();
     if (patternSyn == nullopt) {
@@ -414,14 +410,8 @@ optional<QueryDeclaration> QueryParser::parsePatternSyn() {
         queryObject->setUseOfUndeclaredVariable(true);
         printf("Semantic Error: Use of undeclared pattern synonym <%s>\n", patternSyn->c_str());
         declared = {new NoneEntities(), patternSyn.value()};
-        return declared;
     }
-
-    if (isValidPatternSynType(declared.value())) {
-        return declared;
-    }
-    printf("Pattern synonym must be of type assign, while or if");
-    return nullopt;
+    return declared;
 }
 
 optional<string> QueryParser::parsePatternLHS() {
@@ -520,11 +510,8 @@ bool QueryParser::parsePatternClause() {
         pv = parseIfPatternParams();
     } else if (type->isWhile()) {
         pv = parseWhilePatternParams();
-    } else if (type->isNone()) {
-        pv = parseDummyPatternParams();
     } else {
-        printf("Invalid pattern synonym type\n");
-        return false;
+        pv = parseDummyPatternParams();
     }
     if (pv == nullopt) return false;
     lookForClauseGrammarSymbol(")", "Syntax Error: Expected ')' for end of pattern declaration.\n");

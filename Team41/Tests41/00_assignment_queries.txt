@@ -1,0 +1,75 @@
+1 - Select all constants
+constant c;
+Select c
+0, 1, 2, 4, 8
+5000
+2 - Test Follows
+stmt s;
+Select s such that Follows (8, s)
+
+5000
+3 - Test Follows*
+stmt s;
+Select s such that Follows* (s, 13)
+1, 2, 3, 4, 5, 6
+5000
+4 - Test Parent
+stmt s;
+Select s such that Parent (s, 12)
+8
+5000
+5 - Test Parent*
+assign a;
+Select a such that Parent*(_, a)
+7, 9, 10, 11, 16, 17
+5000
+6 - Test Modifies
+variable v;
+Select v such that Modifies (8, v)
+present, future, x, y
+5000
+7 - Test Uses
+variable v;
+Select v such that Uses(3, v)
+present, future, y, z
+5000
+8 - Test SubPattern
+assign a;
+Select a pattern a (_, _"present * future"_)
+17
+5000
+9 - Test SubPattern2
+assign a;
+Select a pattern a (_, _"x*y*z	"_)
+9, 13
+5000
+10 - Test SubPattern3
+assign a; variable v;
+Select v pattern a (v, _"y"_)
+present, future, y
+5000
+11 - Test Modifies
+read re;
+Select re such that Modifies (12, "x")
+19, 20
+5000
+12 - Test Uses and SubPattern
+assign a; variable v;
+Select a such that Uses (a, v) pattern a (v, _"x"_)
+10, 13
+5000
+13 - Test Uses and SubPattern2
+assign a; variable v, v1;
+Select a such that Uses (a, v) pattern a (v1, _"x"_)
+9, 10, 13
+5000
+14 - Test Uses and SubPattern3
+assign a, a1; variable v;
+Select v such that Uses (a, v) pattern a1 (v, _"x"_)
+present, future, x
+5000
+15 - Test Uses and SubPattern4
+assign a, a1; variable v, v1;
+Select v such that Uses (a, v) pattern a1 (v1, _"x"_)
+present, future, x, y, z
+5000

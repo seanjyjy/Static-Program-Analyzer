@@ -763,3 +763,13 @@ assign a;
 Select BOOLEAN such that Parent*(a, 20)
 FALSE
 5000
+154 - Parent(s, s) - false
+stmt s;
+Select BOOLEAN such that Parent(s, s)
+FALSE
+5000
+155 - Parent*(s, s) - false
+stmt s;
+Select BOOLEAN such that Parent*(s, s)
+FALSE
+5000

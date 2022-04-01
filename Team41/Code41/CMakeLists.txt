@@ -14,8 +14,10 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT MSVC)
-  set(CMAKE_CXX_FLAGS_DEBUG "-g")
-  set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+else()
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2")
 endif()
 
 if (MSVC)

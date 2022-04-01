@@ -122,8 +122,6 @@ private:
      */
     bool parsePatternClause();
 
-    bool isValidPatternSynType(QueryDeclaration declared);
-
     optional<QueryDeclaration> parsePatternSyn();
 
     optional<string> parsePatternLHS();

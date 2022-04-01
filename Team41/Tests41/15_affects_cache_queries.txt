@@ -1,0 +1,295 @@
+1 - Affects(int, int) - Affects(int, int) - same clause
+
+Select BOOLEAN such that Affects(2, 9) and Affects(2, 9)
+TRUE
+5000
+2 - Affects(int, int) - Affects(int, int) - Affects(int, int) - same clause
+
+Select BOOLEAN such that Affects(2, 9) and Affects(2, 9) and Affects(2, 9)
+TRUE
+5000
+3 - Affects(int, int) - Affects(int, int) - same proc - large proc
+
+Select BOOLEAN such that Affects(2, 9) and Affects(5, 25)
+TRUE
+5000
+4 - Affects(int, int) - Affects(int, int) - same proc - small proc
+
+Select BOOLEAN such that Affects(29, 30) and Affects(30, 29)
+TRUE
+5000
+5 - Affects(int, int) - Affects(int, int) - diff proc - large proc first
+
+Select BOOLEAN such that Affects(2, 9) and Affects(30, 29)
+TRUE
+5000
+6 - Affects(int, int) - Affects(int, int) - diff proc - large proc last
+
+Select BOOLEAN such that Affects(30, 29) and Affects(2, 9)
+TRUE
+5000
+7 - Affects(int, int) - Affects(int, int) - false query shd terminate fast
+assign a1, a2;
+Select BOOLEAN such that Affects(30, 30) and Affects(a1, a2)
+FALSE
+5000
+8 - Affects(int, int) - Affects(int, int) - false query shd come first
+assign a1, a2;
+Select BOOLEAN such that Affects(a1, a2) and Affects(30, 30)
+FALSE
+5000
+9 - Affects(int, syn) - Affects(int, syn) - no caching
+assign a1, a2;
+Select <a1,a2> such that Affects(30, a1) and Affects(2, a2)
+29 9
+5000
+10 - Affects(int, syn) - Affects(int, syn) - same relation
+assign a1, a2;
+Select <a1,a2> such that Affects(9, a2) and Affects(a1, 5)
+5 5, 5 21, 5 25, 9 5, 9 21, 9 25
+5000
+11 - Affects(int, syn) - Affects(int, syn) - same relation, syn
+assign a;
+Select a such that Affects(9, a) and Affects(a, 5)
+5
+5000
+12 - Affects(int, a) - Affects*(int, a)
+assign a;
+Select a such that Affects(25, a) and Affects*(5, a)
+8, 10
+5000
+13 - Affects(int, a) - Affects*(int, a) - no overlap
+assign a;
+Select a such that Affects(2, a) and Affects*(5, a)
+
+5000
+14 - Affects(s, s2) - Affects*(s, s2)
+stmt s, s2;
+Select <s, s2> such that Affects(s, s2) and Affects*(s, s2)
+10 10, 10 8, 2 9, 21 12, 21 15, 21 19, 21 22, 22 19, 25 10, 25 8, 29 30, 30 29, 40 41, 44 48, 5 21, 5 25, 5 5, 8 8, 9 21, 9 25, 9 5
+5000
+15 - Affects(s1, s2) - Affects(s2, s3)
+stmt s1, s2, s3;
+Select <s1, s3> such that Affects(s1, s2) and Affects(s2, s3)
+10 10,10 8,2 21,2 25,2 5,21 19,25 10,25 8,29 29,30 30,5 10,5 12,5 15,5 19,5 21,5 22,5 25,5 5,5 8,8 8,9 10,9 12,9 15,9 19,9 21,9 22,9 25,9 5,9 8
+5000
+16 - Affects(s1, s2) - Affects(s2, s3) - Affects(s3, s4)
+stmt s1, s2, s3, s4;
+Select <s1, s4> such that Affects(s1, s2) and Affects(s2, s3) and Affects(s3, s4)
+10 10,10 8,2 10,2 12,2 15,2 19,2 21,2 22,2 25,2 5,2 8,25 10,25 8,29 30,30 29,5 10,5 12,5 15,5 19,5 21,5 22,5 25,5 5,5 8,8 8,9 10,9 12,9 15,9 19,9 21,9 22,9 25,9 5,9 8
+5000
+17 - Affects(s, s2) - Affects*(s2, s)
+stmt s, s2;
+Select <s, s2> such that Affects(s, s2) and Affects*(s2, s)
+10 10,29 30,30 29,5 5,8 8
+5000
+18 - Affects*(s1, s2) - Affects*(s2, s3)
+stmt s1, s2, s3;
+Select <s1, s3> such that Affects*(s1, s2) and Affects*(s2, s3)
+10 10,10 8,2 10,2 12,2 15,2 19,2 21,2 22,2 25,2 5,2 8,21 19,25 10,25 8,29 29,29 30,30 29,30 30,5 10,5 12,5 15,5 19,5 21,5 22,5 25,5 5,5 8,8 8,9 10,9 12,9 15,9 19,9 21,9 22,9 25,9 5,9 8
+5000
+19 - Affects*(s1, s2) - Affects*(s2, s3) - Affects*(s2, s1)
+stmt s1, s2, s3;
+Select <s1, s3> such that Affects*(s1, s2) and Affects*(s2, s3) and Affects*(s2, s1)
+10 10,10 8,29 29,29 30,30 29,30 30,5 10,5 12,5 15,5 19,5 21,5 22,5 25,5 5,5 8,8 8
+5000
+20 - Affects*(a1, a2) - Affects*(a2, a3) - Affects*(a3, a4)
+assign s1, s2, s3, s4;
+Select <s1, s3> such that Affects*(s1, s2) and Affects*(s2, s3) and Affects*(s3, s4)
+10 10,10 8,2 10,2 21,2 22,2 25,2 5,2 8,25 10,25 8,29 29,29 30,30 29,30 30,5 10,5 21,5 22,5 25,5 5,5 8,8 8,9 10,9 21,9 22,9 25,9 5,9 8
+5000
+21 - Affects*(2, s) - Affects*(2, 25)
+stmt s;
+Select s such that Affects*(2, s) and Affects*(2, 25)
+5, 8, 9, 10, 12, 15, 19, 21, 22, 25
+5000
+22 - Affects*(2, s) - Affects*(9, s)
+stmt s;
+Select s such that Affects*(2, s) and Affects*(9, s)
+5, 25, 8, 10, 21, 12, 19, 15, 22
+5000
+23 - Affects*(2, s) - Affects*(9, s) - Affects*(10, s)
+stmt s;
+Select s such that Affects*(2, s) and Affects*(9, s) and Affects*(10, s)
+8, 10
+5000
+24 - Affects*(9, s) - Affects*(2, s)
+stmt s;
+Select s such that Affects*(9, s) and Affects*(2, s)
+5, 25, 8, 10, 21, 12, 19, 15, 22
+5000
+25 - Affects*(10, s) - Affects*(9, s) - Affects*(2, s)
+stmt s;
+Select s such that Affects*(10, s) and Affects*(9, s) and Affects*(2, s)
+8, 10
+5000
+26 - Affects*(s, 19) - Affects*(s, 22)
+stmt s;
+Select s such that Affects*(s, 19) and Affects*(s, 22)
+2, 5, 9, 21
+5000
+27 - Affects*(s, 19) - Affects*(s, 22) - Affects*(s, 21)
+stmt s;
+Select s such that Affects*(s, 19) and Affects*(s, 22) and Affects*(s, 21)
+2, 5, 9
+5000
+28 - Affects*(s, 22) - Affects*(s, 19)
+stmt s;
+Select s such that Affects*(s, 22) and Affects*(s, 19)
+2, 5, 9, 21
+5000
+29 - Affects*(s, 21) - Affects*(s, 22) - Affects*(s, 19)
+stmt s;
+Select s such that Affects*(s, 21) and Affects*(s, 22) and Affects*(s, 19)
+2, 5, 9
+5000
+30 - Affects*(s, 22) - Affects*(2, 22)
+stmt s;
+Select s such that Affects*(s, 22) and Affects*(2, 22)
+2, 5, 9, 21
+5000
+31 - Affects*(s, 22) - Affects*(40, 41)
+stmt s;
+Select s such that Affects*(s, 22) and Affects*(40, 41)
+2, 5, 9, 21
+5000
+32 - Affects*(2, s) - Affects*(s, 22)
+stmt s;
+Select s such that Affects*(2, s) and Affects*(s, 22)
+5, 9, 21
+5000
+33 - Affects*(2, s) - Affects*(s, 22) - Affects*(1, 22)
+stmt s, s1, s2;
+Select s such that Affects*(2, s) and Affects*(s, 22) and Affects*(2, 22)
+5, 9, 21
+5000
+34 - Affects*(s1, s2) - Affects*(2, s)
+stmt s, s1, s2;
+Select s such that Affects*(s1, s2) and Affects*(2, s)
+5, 8, 9, 10, 12, 15, 19, 21, 22, 25
+5000
+35 - Affects*(s1, s2) - Affects*(s, 22)
+stmt s, s1, s2;
+Select s such that Affects*(s1, s2) and Affects*(s, 22)
+2, 5, 9, 21
+5000
+36 - Affects*(s1, s2) - Affects*(2, 22)
+stmt s, s1, s2;
+Select BOOLEAN such that Affects*(s1, s2) and Affects*(2, 22)
+TRUE
+5000
+37 - Affects*(s1, s2) - Affects*(2, s) - Affects*(s, 22)
+stmt s, s1, s2;
+Select s such that Affects*(s1, s2) and Affects*(2, s) and Affects*(s, 22)
+5, 9, 21
+5000
+38 - Affects*(s1, s2) - Affects*(2, s) - Affects*(s, 22) - Affects*(2, 22)
+stmt s, s1, s2;
+Select s such that Affects*(s1, s2) and Affects*(2, s) and Affects*(s, 22) and Affects*(2, 22)
+5, 9, 21
+5000
+39 - Affects*(_, _) - Affects*(2, _) - Affects*(_, 22) - Affects*(2, 22)
+
+Select BOOLEAN such that Affects*(_, _) and Affects*(2, _) and Affects*(_, 22) and Affects*(2, 22)
+TRUE
+5000
+40 - Affects*(s1, s2) - Affects*(s3, _) - Affects*(_, s4) - Affects*(s5, s6) - unused
+stmt s1, s2, s3, s4, s5, s6;
+Select BOOLEAN such that Affects*(s1, s2) and Affects*(s3, _) and Affects*(_, s4) and Affects*(s5, s6)
+TRUE
+5000
+41 - Affects(8, s) - Affects(8, 8)
+stmt s;
+Select s such that Affects(8, s) and Affects(8, 8)
+8
+5000
+42 - Affects(8, s) - Affects(10, s)
+stmt s;
+Select s such that Affects(8, s) and Affects(10, s)
+8
+5000
+43 - Affects(8, s) - Affects(10, s) - Affects(25, s)
+stmt s;
+Select s such that Affects(8, s) and Affects(10, s) and Affects(25, s)
+8
+5000
+44 - Affects(10, s) - Affects(8, s)
+stmt s;
+Select s such that Affects(10, s) and Affects(8, s)
+8
+5000
+45 - Affects(25, s) - Affects(10, s) - Affects(8, s)
+stmt s;
+Select s such that Affects(25, s) and Affects(10, s) and Affects(8, s)
+8
+5000
+46 - Affects(s, 5) - Affects(s, 21)
+stmt s;
+Select s such that Affects(s, 5) and Affects(s, 21)
+5, 9
+5000
+47 - Affects(s, 5) - Affects(s, 21) - Affects(s, 25)
+stmt s;
+Select s such that Affects(s, 5) and Affects(s, 21) and Affects(s, 25)
+5, 9
+5000
+48 - Affects(s, 21) - Affects(s, 5)
+stmt s;
+Select s such that Affects(s, 21) and Affects(s, 5)
+5, 9
+5000
+49 - Affects(s, 25) - Affects(s, 21) - Affects(s, 5)
+stmt s;
+Select s such that Affects(s, 25) and Affects(s, 21) and Affects(s, 5)
+5, 9
+5000
+50 - Affects(s, 25) - Affects(5, 25)
+stmt s;
+Select s such that Affects(s, 25) and Affects(5, 25)
+5, 9
+5000
+51 - Affects(5, s) - Affects(s, 25)
+stmt s;
+Select s such that Affects(5, s) and Affects(s, 25)
+5
+5000
+52 - Affects(5, s) - Affects(s, 25) - Affects(5, 25)
+stmt s, s1, s2;
+Select s such that Affects(5, s) and Affects(s, 25) and Affects(5, 25)
+5
+5000
+53 - Affects(s1, s2) - Affects(5, s)
+stmt s, s1, s2;
+Select s such that Affects(s1, s2) and Affects(5, s)
+5, 21, 25
+5000
+54 - Affects(s1, s2) - Affects(s, 22)
+stmt s, s1, s2;
+Select s such that Affects(s1, s2) and Affects(s, 25)
+5, 9
+5000
+55 - Affects(s1, s2) - Affects(5, 25)
+stmt s, s1, s2;
+Select BOOLEAN such that Affects(s1, s2) and Affects(5, 25)
+TRUE
+5000
+56 - Affects(s1, s2) - Affects(5, s) - Affects(s, 25)
+stmt s, s1, s2;
+Select s such that Affects(s1, s2) and Affects(5, s) and Affects(s, 25)
+5
+5000
+57 - Affects(s1, s2) - Affects(5, s) - Affects(s, 25) - Affects(5, 25)
+stmt s, s1, s2;
+Select s such that Affects(s1, s2) and Affects(5, s) and Affects(s, 25) and Affects(5, 25)
+5
+5000
+58 - Affects(_, _) - Affects(5, _) - Affects(_, 25) - Affects(5, 25)
+
+Select BOOLEAN such that Affects(_, _) and Affects(5, _) and Affects(_, 25) and Affects(5, 25)
+TRUE
+5000
+59 - Affects(s1, s2) - Affects(s3, _) - Affects(_, s4) - Affects(s5, s6) - unused
+stmt s1, s2, s3, s4, s5, s6;
+Select BOOLEAN such that Affects(s1, s2) and Affects(s3, _) and Affects(_, s4) and Affects(s5, s6)
+TRUE
+5000

@@ -33,12 +33,12 @@ void AdaptersUtils::runBFS(bool isForward, const CacheCallback &cacheAndContinue
 
 void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache *cache, CFGNode *node) {
 
-    CacheCallback saveToCache = [start, &cache](const string &next) {
+    CacheCallback saveToCache = [&start, &cache](const string &next) {
         cache->registerBooleanMapping(start, next);
         return true;
     };
 
-    TerminateCheck canEnd = [start, end, &cache](CFGNode *next) {
+    TerminateCheck canEnd = [&start, &end, &cache](CFGNode *next) {
         string nextStmt = next->getStmtNum();
         if (cache->getBooleanMapping(nextStmt, end)) {
             cache->registerBooleanMapping(end, end);
@@ -59,7 +59,7 @@ void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache *ca
 }
 
 void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *node) {
-    CacheCallback saveToCache = [stmtNum, &cache](const string &next) {
+    CacheCallback saveToCache = [&stmtNum, &cache](const string &next) {
         unordered_set<string> forwardCache = cache->getForwardMapping(next);
         bool canUseCache = !forwardCache.empty() && stmtNum != next;
 
@@ -81,7 +81,7 @@ void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *nod
 }
 
 void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node) {
-    CacheCallback saveToCache = [stmtNum, &cache](const string &next) {
+    CacheCallback saveToCache = [&stmtNum, &cache](const string &next) {
         unordered_set<string> backwardCache = cache->getBackwardMapping(next);
         bool canUseCache = !backwardCache.empty() && stmtNum != next;
 
@@ -104,20 +104,28 @@ void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node)
 }
 
 void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
-    unordered_set<string> mainVisited;
+    unordered_set<CFGNode *> mainVisited;
     queue<CFGNode *> mainQ;
 
     // we cannot start with root its 0!
     for (auto &startProc: node->getChildren()) {
         mainQ.push(startProc);
-        mainVisited.insert(startProc->getStmtNum());
+        mainVisited.insert(startProc);
     }
 
     while (!mainQ.empty()) {
         CFGNode *curr = mainQ.front();
         string currStmtNum = curr->getStmtNum();
+        const vector<CFGNode *> &children = curr->getChildren();
 
-        CacheCallback saveToCache = [currStmtNum, &cache](const string &next) {
+        for (auto next: children) {
+            if (mainVisited.find(next) == mainVisited.end()) {
+                mainQ.push(next);
+                mainVisited.insert(next);
+            }
+        }
+
+        CacheCallback saveToCache = [&currStmtNum, &cache](const string &next) {
             cache->addAllMappingPair({currStmtNum, next});
             // Add forward Mapping
             cache->registerForwardMapping(currStmtNum, next);
@@ -127,12 +135,7 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
             return true;
         };
 
-        TerminateCheck canEnd = [&mainVisited, &mainQ](CFGNode *next) {
-            string nextStmtNum = next->getStmtNum();
-            if (mainVisited.find(nextStmtNum) == mainVisited.end()) {
-                mainQ.push(next);
-                mainVisited.insert(nextStmtNum);
-            }
+        TerminateCheck canEnd = [](CFGNode *) {
             return false;
         };
 

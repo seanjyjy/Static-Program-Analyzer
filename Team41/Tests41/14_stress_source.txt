@@ -1,0 +1,689 @@
+procedure Y {
+    M9D21 = 65;
+}
+procedure Ar {
+    read s;
+}
+procedure r {
+    lHN7 = P0 / 5;
+    D = h + Kde * (0) / 15 * (5 / 211 - n) / 0 - 2809 - p * 0;
+    while (Z < k) {
+        d2 = 3 + (d % 9 % W / 0 * F) / N % ((0 - 0 % W29 - B) / 0 % oXj) + 730;
+        n = mk;
+        if (h8 < 1) then {
+            bg = e;
+            call Y;
+            read na0Z2h;
+            if (3 >= f) then {
+                call Ar;
+                read e;
+                if ((0 != K) || (j != 0)) then {
+                    while ((!(0 - (O1 * 2 * y % 0 - a) % 0 * H1 >= 30 / w)) && ((0 > 0) && (k == E / 0))) {
+                        while ((0 > 0 / g * L) || (a1 == 0)) {
+                            print EK;
+                            read B2n0;
+                            Y = 15;
+                            if (7 == 0) then {
+                                if (0 != 7 - qE / 0 + 99) then {
+                                    j = K3921 / A9;
+                                    U = 1 + Vb + 3 % J * 1 - 73;
+                                } else {
+                                    while (GH + 9 < S1) {
+                                        i805r = 6 - 3 + 0 * 0;
+                                        S = g - S * Y / GKW * w;
+                                    }
+                                    X = 0 * 6 - (0 % 0 / 0 + F / 908 / (0));
+                                }
+                            } else {
+                                if (!(mmY8 >= 822)) then {
+                                    N = zB % U;
+                                    while (!(0 % p3y - 0 / c / G == a1 - 1 % M)) {
+                                        Yo = m;
+                                        if (rSQ != 0) then {
+                                            print Gv;
+                                            read tFT;
+                                        } else {
+                                            g349 = w;
+                                            Yh = 0;
+                                            Nk = 0;
+                                            read t9;
+                                        }
+                                    }
+                                    read c;
+                                    bZ = N * t / W3;
+                                    U = Z5kG * c;
+                                } else {
+                                    read c;
+                                }
+                                print X2;
+                                Y = f / gt % c6 % 0 / (O % A - x / 48 % g + y3 % 92 + lv) * R - ((0) * (S * t)) / H / o5T;
+                                n = xgi;
+                            }
+                            if (0 > 0) then {
+                                print R;
+                                h0 = (a * o) * L;
+                                rQ67 = ar - (CI0 % 0 % 41) * t / SJ * A;
+                                a = 0;
+                                print Q;
+                                p5Kh9 = (W) + (lLK64 - 446 - 19 + 0) - 9 * 3 + A6;
+                            } else {
+                                oA = L + Qy % 0;
+                                if ((0 >= p) || (W <= C * (0 - 9404535) + 9)) then {
+                                    if (((0 - U != T) && ((!((6 > U) || ((0 >= 0) && (0 != 0)))) && (0 != p))) && (Q / a - 0 / jW >= x)) then {
+                                        F = 0 % 0 - 0;
+                                        uf = g - c;
+                                        U = 0 + 0 * 0 - c * 77996 - 5;
+                                    } else {
+                                        o = I + Cn;
+                                    }
+                                    w6B = am;
+                                    O = U % I7bB + Jk8 % (1 / 0 - N3rb1124 % d);
+                                    if (682 - dk % (0) != u) then {
+                                        J = 0 % O - II % (0);
+                                        while (k <= m) {
+                                            L = 0;
+                                        }
+                                        if (!(!((0 <= 0) && (0 > 0)))) then {
+                                            call Ar;
+                                        } else {
+                                            t = 0;
+                                            read W9;
+                                            print T1;
+                                        }
+                                        ap5 = s % 97 % 0 / (0);
+                                        read w14;
+                                    } else {
+                                        UO = 0 + 0 / SYi2 / 98 + 33 / (0);
+                                        Rhzk = 0 - 9 + 0 + (0);
+                                    }
+                                    y0 = 7;
+                                } else {
+                                    read O;
+                                    uG2 = 30192 + Q;
+                                    u = dl79 % 0 - (J + i % v44) % (0 * 984) / 8;
+                                }
+                                u0 = h3 / 0 % (777 % O / 6 % 71933) - 0 + KuQ7II % BJ;
+                                c = (0 * (p - e / 0));
+                                oH8 = Z + v;
+                                print F2RE;
+                            }
+                        }
+                    }
+                } else {
+                    g1 = 0 / Z % 0;
+                }
+            } else {
+                s = F9 - 0 % 38 * T;
+                d = Y % (0) / 0;
+                S = (707) % T4W;
+                T = B64kY63;
+            }
+        } else {
+            By = J / (eK * 5 % 4 % (0) % (2491 - 48 / 0 + 2 % 7) * YK28 / (W % 0 + 0));
+            l = (L) * J;
+            m7 = (0 - 91 * 0 + 970 - u);
+            if (UD % a - RB5 < 0 % 0 % 4) then {
+                print V;
+                O = W + 9 % C / 416 + E;
+            } else {
+                while (((((!((0 < Uu) || (!(h <= Y)))) && (((0 == WZW) || (((4 * (44 / 90 * 7447 / cg8)) > mw) || (!(((0 > 0) && (!(J32 >= 0))) || ((!(354089 + x * 40607 >= 1)) || (((V > V) && (0 < U)) || ((yYN3009 - 6 + 292628141938 + 9 / p9X % F == 0) || (B4 % (B70) / o - Ih == S7E1)))))))) || ((m962d1E <= 0) && (l >= 0 - 3 % 0)))) && (Hd < 1)) && (RS4 <= 1)) || ((!(!(((2 > 60) || (qBc < b3)) || (298 * 2 >= zy)))) && (!((57 == m0) || (0 > hc3))))) {
+                    e = t % t;
+                    J = (0 / BMl - E);
+                    while (!(O - My % 0 >= 8)) {
+                        thGP = 0;
+                        if ((((65 == 0 / B4 / 0 / (RB4 * 0 % (Y + U0XME)) % 0 / 1) && (!(((ij6 > q) || ((0 % A == 83) && (!((T7975 < 0 + 0 + 782 * I - 9 * (0)) && (!((e != 720) || (!(!((0 >= 0) && (9 <= x)))))))))) || (k > 0)))) || (C <= 4 % 58 % ((0)) * ((E % 9 / q3) + r) + ((e - F - Z + F2 % 0 / P - T % s5C7I)))) && (2 < L9)) then {
+                            k = Y - A % (xv8WK - V2 * o / 0 * ((0) * 0) * 0) / h;
+                            print Z;
+                            while ((2497 / (5) % 17206) - ((0) % 0) / A6v >= g4) {
+                                RS = a / 0 - 21;
+                                print c5;
+                                LMB = H568 + 0 * (0 * N / 0 - P % (0)) / r % (0 * O / 0 / 42 - 0 * 9 - 0 / t * D / 0 * sPQO665vOMm6 * 45866484) % (194 * Gz5 - p + 4 * 0);
+                                print Wn;
+                                w8 = R % (0 - h * y12 + 0 - A0 + V % 0 * (0) % (z) + p / EQ1 + G);
+                                I1a = (3);
+                                U = 0 % z0 / 13 - 0 * 11 % o + 96 - 0;
+                            }
+                        } else {
+                            r9 = 0;
+                            G = x - 3;
+                            if (p + (P) == 40) then {
+                                while ((0 != 0) || ((0 * (1) < 0) && (A < (I % m3J)))) {
+                                    call Y;
+                                    in = 39 * (b + D) / 0 + (H / (0));
+                                }
+                            } else {
+                                print XGn;
+                                print A;
+                                print bm;
+                                while (0 != 0) {
+                                    Q0HB2 = (0 / zq) - (V3 + o0 * O);
+                                }
+                                G = p - (0 * a * X + DQ * 18 * (0) + M - J5) + 0 % Y / h;
+                                z0c6YjK = t / U % R + 2 % L5;
+                                if (0 / (R - 0 % 6286 + 2 * 7388184) / HDv < 0) then {
+                                    g = 78;
+                                    bv = 0 + p9CX30 % (0 * 0 - 0) - (0 % p) / 0 * pJ;
+                                    while (p >= W) {
+                                        H = p - c / z % eb8h * (0);
+                                        J = G48 - 0 % yQ9 / d7 / 0;
+                                        print A;
+                                        Q = 0 / O8 * 0 - (0);
+                                        while ((33 < w) && (0 <= q90)) {
+                                            call Y;
+                                        }
+                                        read th4;
+                                    }
+                                    print CI2K;
+                                    if (Bf * Br4 * yd7ij62 == 0) then {
+                                        sb = 86 % J6 + 0;
+                                        g = 0 % n + k * y - (0);
+                                    } else {
+                                        if (!((0 >= Abb) || (0 == 0))) then {
+                                            H = 0;
+                                            U102 = 0;
+                                            print Kch;
+                                            mE4 = 0;
+                                        } else {
+                                            F = Z;
+                                            read v3;
+                                        }
+                                        S = 0 - K + 0 / 0 % q - Is4;
+                                        Mj = 0 / B - zh2;
+                                        iA = (0);
+                                        print MD;
+                                    }
+                                } else {
+                                    t2 = 278 - My % 0 + 0;
+                                }
+                                read Y;
+                            }
+                            q = 0 / Gz;
+                            iOY0C = 1;
+                            l = 1;
+                        }
+                    }
+                }
+            }
+            M = 4 * 0 + ((1 / j) / 0 % 717989 / ((0)) * 0 - B3 * 0 / 7 * Ntl % i % 252) % 0 / y / 45 / t - 33 % ae % nJ;
+            M = 3 % X0;
+            YC7G4 = b9s / bMGZ0;
+            d8 = b6 / (j);
+            e = J7;
+            print m;
+            x = p5 + 0;
+            P = 0;
+        }
+    }
+    print m;
+}
+procedure x {
+    print F;
+    S9B9j = 3 % E923 / GB;
+    if (((7 != gB3) || (m >= (0 + YbOk * 0 + 4 % t % 0 % 3 / I - V))) || (!(ei == Z))) then {
+        j = nG08 % D;
+        print S;
+        print wC732;
+        oO = 0 + (P % 0 + (Pa * z) / ((m)) + p);
+    } else {
+        call r;
+    }
+    if (0 > N3) then {
+        E = 0 / 44 % 2 + 5 + I;
+    } else {
+        print M;
+    }
+}
+procedure VT {
+    F9 = 34 * nV1 + 6 / ea;
+    a = (b - 0) - 41931 - 0 / r206 / yq2Y % x - GlW - U / 635 % 43;
+    G674 = ((262) + (6 / 0 - 74 - Y) - (0 - w)) % 0 % i1;
+}
+procedure Aw {
+    while (f % 0 - (0 % T / 0 - (JC96) - 0 - 46702 % cj) * 0 >= C77 / (((0 / 0 / (0) + p - 0 + qp * ji8 + 0) + F - w + (f + 0 / t - v) * T * R) - (((0 % E / y26 / 0))) * (y + YHW3 % (pB5I - 76 + 0 % a / j % 83466) + ((li % L * 52)) + 9 + (0 / D) + 4898 - 0)) * 0 / 0 * (8 / (B1 + (4 * 24922 * m / 0)) % 36 / 358 * 0 % 4) * J25 / Iw - 3 + (0) % wHC1c % 0 / 0 % g % yrq) {
+        call Y;
+    }
+}
+procedure o {
+    if ((0 / 529 * 0 % (32) % 0 - 0) + N % C5s - 0 + M % 0 % b % (O1m * (0 / 0) * D + 0 / (4 / (k - k + (R - 0 % ((6 * 3))) - p / 0)) % 0) + V0 * ND2 < 614) then {
+        eQ = 0 * (e0 % (12) - 58);
+        print o89;
+        S = V;
+    } else {
+        while (90 >= 0) {
+            print G2n8;
+        }
+    }
+    if ((!(U <= H)) || ((0 <= M) || (5 == 0))) then {
+        while (x0D5N == w) {
+            N967 = (0);
+        }
+        t = (co88 * 20) - 0 / Oa;
+    } else {
+        read J65;
+        if (oI22c7H - 33 > c) then {
+            while ((!(3 > e - (((431)) % 12) / Yhu)) && ((64 % bl0 % (S1) / aDr == 502) || (A < 0))) {
+                I = (6 % ((0 * (0) * 17) / uQQ * 0)) * (k80 - 8) + w + (0 - (0) * (((0 - 968 - f) % 0) - RCGcD) % 0) * Q;
+            }
+        } else {
+            MCx = hy;
+        }
+    }
+    Y = S + a / R9 * p % W * 2 % k2 - M90017r / 39397885;
+    S3 = x;
+    h = E;
+    D9j5 = 9;
+}
+procedure y {
+    Kv2 = 0 / 0 / 0;
+    h = (0 * R + 31 / C);
+    JN = k34 / 19 % o / 361 + 0 - q - U1;
+    LY1 = ((81 * 5 % 855 % S0Z + (0 % (m9 * Fub63 * (0 + 2 + (j))) / 0) % H)) + x * 0;
+    T6 = P - h / X6;
+    while (((!((!(((59 / (343 - w9P8) * g0iI / b / s) == 0) && (2 == 2))) || (b < G / 0 - 496))) && (z4 < 0)) && (17 > 0)) {
+        read QI952Dh;
+        I = ((U9 + (Lw))) * 634 % 0;
+        S19g49 = 0;
+        while ((9 > z) && (15 > 0)) {
+            read x;
+        }
+        if ((((U8 == 0) && (v85 <= O)) && (!((W1 <= 0 / N % (M99) * 0 + XjV3J / io) || (s < K)))) && (!(29 >= 0))) then {
+            while (p != (0 % (586 % 0)) * (0 * 0) - 254 * 2 * 0 % NO / 4011 - b) {
+                print d;
+                while (0 != 0) {
+                    N = (n / 0);
+                    q = (j - tE / 0 * (fp9 / b0D846Qc * K * 6 + P - 4 + (4769 - 0 / s9 / (1) + 0)) % 411) * (286 - I - v73q) + (2332);
+                    v = j % Q / (Ql) * IY2k / (khR61rA * 8868 * I / A) % 9 / (u62 % LAp) - 0;
+                }
+                while (2 > (l3S9lD % l - 2)) {
+                    if (((E9 == R % (T0P) % th / 0 * RRyM - 5 % (f1 + (GP / 8 / CL)) % (16 / 83 * 0 * 0 * j5T) % WHlR * LR - ((h) + in2 % 0 + JJ5 + 0 / L) * 0) && (((!(BB != K4)) || (22 == 840 % (1 * v / 7232))) || (9 != 0))) || (0 * mIZ1 % D % K % OSm * Z == 0)) then {
+                        if (7816 == q) then {
+                            if (0 > x99 * 0) then {
+                                v3 = 392 + W;
+                                D = 0 / 1;
+                                while ((0 != rwy) || (!(0 != z))) {
+                                    print QE;
+                                    zl = l0 / T;
+                                    w = 0 - 0 + (E * 70 / W % K);
+                                }
+                                D = E;
+                            } else {
+                                call u;
+                            }
+                            w30 = e;
+                            L = f % (n / (0 - 50) * O5 * L % 3) - z / 3 - 0;
+                            print w;
+                            W = 14 - (d) + (J2 % yg - k % T2 / 8);
+                            call U;
+                        } else {
+                            O = 5 % M;
+                            print M;
+                            if (!(j7anG != 424)) then {
+                                while (!((((((!(F == BPZ)) || (16 == HGi)) || (T + Jq1PP < 0 % vO)) || ((0 != 0) && ((95 == 0) || (E < D8)))) && (q37 < 89)) && (((4 == p3b0) || ((!(0 < J)) || (0 / g5 != 0 * n))) && (L >= bvm)))) {
+                                    call M59;
+                                }
+                                d = b / d + p - 0 * (v * 0 / T % lDi);
+                            } else {
+                                print g7;
+                                if ((((G < K) && (0 + l / F + 0 % m + (0) < 0)) || (!((0 - 0 * 0 + 0 <= cJR) || ((0 * c < t7) && (5 != 0 % 2))))) && (!((0 + 0 * 8) > 7))) then {
+                                    q = P + F;
+                                } else {
+                                    g0 = 3148;
+                                    I6 = k / F0 - U * (0 + 0 / 0) % O3 - M;
+                                }
+                            }
+                            u = Z % (0 + 5) / 6;
+                            gX96 = 0;
+                        }
+                        DR = 2 + K4Qs5 / 0 % 5 / f;
+                    } else {
+                        if (0 > V) then {
+                            if (0 <= w * 0 - 5 * tSmIZZv9874) then {
+                                BE4 = (QlI3p - 0 % A % XN + OP9t * (0 + 0 * X + 0 % v)) - 6;
+                                print T;
+                            } else {
+                                b828 = H1X / (g * (1));
+                            }
+                        } else {
+                            Z = 968;
+                            while (tQ > (2) % 3 * E) {
+                                call IO;
+                            }
+                            call G0gm;
+                            m33 = 0;
+                        }
+                        read N;
+                        print v;
+                    }
+                }
+            }
+        } else {
+            YR = af2p / 0;
+        }
+        E = 0 + ((k3 - A0) / N3k8N * rc);
+    }
+    HU5559 = 9 / v % Q92 % (d - (mOl7 + (h * (Er0a5 / (X4 * X) - 4 * 8 % Zf0 * 0 + 3 + e) - k6T * 5) / l * c - kz / F / 2 * W4 * 0) - (Z4Kg * 0) * (v + (823 + 0 - 0 * 0) + 0 - p * qf % (z) % 916185) / f);
+    while (0 + (L0 / 0 + 0) > E) {
+        call NG;
+    }
+}
+procedure NG {
+    e = 3 + 4 % H4 - E + 58 / (0 / (hT4 - (S * (0))) * H0B % 6252) - Em + 0;
+    read Cl7;
+    call Ar;
+}
+procedure G0gm {
+    while (s != M6z) {
+        read G;
+    }
+}
+procedure IO {
+    q41 = 0 + (0 - Us) / 0;
+}
+procedure M59 {
+    read k6;
+}
+procedure U {
+    e = C;
+    print i;
+    R = ((S / u) - (M % ((d9 / 73794 * (q / xtZ)) / d) - 8593 * (8) * T + (Tu)) * 1 % f) + (0 / 61 + (0 % OT % (f * (P0F * dFP) / (0 % x3Q % 7913 / MM7k9 + 0 + u * IL + ((14) / 0) - 7 * 0 + V4 / q / 1 % U9) % a % 8 * 0 - 8 * O % 3 * 9855 + (0 * ((0)) / m * ZL * (d3) % 9 / 0 % y7 % 8 % u * 4) - b % e) % (0 % 0 % L6c4k) % b));
+    G = 0 / 1;
+    while (95 < k5) {
+        Bk = (9 + m + iA * D % 0 - rHMS / 0 * 0 + 35 + G / U * 9 % 3 / (((h + T43v) % P - (Jv03) - h % 0)) * 6 - (N) / X) + u * J + (X % 6 - 32 * e) / 60 + bv3 * p857;
+        if ((!(t >= 76899784238976)) && (p <= 0)) then {
+            while (h < 4) {
+                read lCS;
+                Z = o / 9;
+                call M59;
+                d = (41 / 0);
+                qbR = 0 - 0 + (Qc);
+                u9 = (T + 0 + 0 % P / (i % (pBI) % 0) / (9 * 0)) % Rm * 7 / u3B / O41 % 0;
+                F = (W4B5 * 4 * (7 / n)) % M9 * 44816;
+                while (9 == 8) {
+                    if (QC >= 0) then {
+                        K54y8Y = 47 * gZ17 + JsA4818 + (((0 % 3) / 0 - d - 5 / (0 / 0) % (5 / i + 35) - 5 + 35));
+                    } else {
+                        while (!(!(!(e1 == 0)))) {
+                            J = (T / f / 139) / M % 0 / (0) / k / R2;
+                            while (9 * 0 - (h) / (aB9 - 47) / 28 == C) {
+                                call IO;
+                                while ((O > W) && (!(77205 > D))) {
+                                    V9 = 0;
+                                    H3 = G084Z;
+                                }
+                                if (k9 <= 0) then {
+                                    while (0 != 3 - 0 / 88) {
+                                        C = 0 + 0 * i + 0 / i8 * 6 - G;
+                                        if (0 <= 0) then {
+                                            f = 0;
+                                            Y = M;
+                                            g = o;
+                                            read la;
+                                        } else {
+                                            Gg0 = C;
+                                            u = X;
+                                            call u;
+                                            read m;
+                                            H = 0;
+                                            print csK;
+                                            print q;
+                                            zB = 0;
+                                        }
+                                    }
+                                    O = (0 % Su % 0 - 0);
+                                } else {
+                                    u = (0 % xq6 * 0 / j);
+                                }
+                                Z = 5;
+                                W = (Q7 / 0 % m * h * 0);
+                            }
+                            j = E / 90 + 9 - C + 0 / 83 % (I % X % p * (x % c - A1 / (0) % u) * 3147) + (ap * y - m * B + 4);
+                        }
+                        if (((0 != x) || (A != T)) || ((0 % (P) / cy - 0 != X61p) && (29 != e16C1))) then {
+                            z4 = 0 / 0 % 7 / YJ8 / 0;
+                            PU = 0 - C64 + 5 % (Lkm / 3440246 % F4 / C2 - (3 / 0 - (0)) * 2) + 1;
+                        } else {
+                            print g53;
+                        }
+                        H = 5 * (0 * 8 + 575) - J - K % 0;
+                    }
+                }
+                print UD999;
+                R = 0 * y;
+            }
+            O8 = 9;
+            p = 0 % 0 * eU * m - 0;
+            moH = dy4 + (777 / 4) / 17 % 0 % k;
+        } else {
+            Of = (t) - S - n5np * j - 0 + 744523 / 0;
+            cH = ((d - o / Fco5));
+            r = 0 - cf7mM7;
+        }
+        Y = (k * (g) - p7 - 8) * ((e / 0 * 0 % Q7dE36 - 500 / (V % 0 * 3 * (U * 41 + 0 * 0 / s7) - ((rk8) / K)) / 0 * R % 7 + yW / QdG));
+        while (((DGy9 != 559) || (!((M4 * nR % C3n % vxA < 0) && (p + D * 8 - 0 - K % 25 - (0 * l * D - 50031244 * nS8) / 0 % 1 / f6q / 0 >= K7)))) || (NP7 != 2)) {
+            jQ = D / 2551;
+            y1 = (H40VN8) - 5 * (v * (0 % 0 * G % L * (b / (91) % m)) / P % (3 * g63 % ((T8)) - (7 * (0 / 116 / Q / C + 0 * (0 / e / r6 * m9 % y)))) * Mp6) / (t - z % VG) / 6 / 0 % (O75);
+            C4is = H1;
+            call u;
+            while (k76 == 0) {
+                vLl = C3;
+            }
+            print WD;
+            A4 = 0 + nx8;
+            G = dl6;
+            if (!(v % 0 - 613 * lL * s9 > GX)) then {
+                s = H7 + (KU) - 34 / 0;
+                h25tL = p;
+            } else {
+                while (((0) > 0) || (!(7 == 2302))) {
+                    if ((!((((0 % o > P5) || (P >= 0)) || (0 <= 0)) || (!(!(72 > cB9))))) && (!(!(((0 / S == 0) || ((OJ >= D - (0 + 6) + (0 * Ny8) - L - ((0) + (c / Jk)) + Z + Am) && ((!(3 > (N8 * p) * 77)) || ((!(34418 != rT74)) && (((!(n == Yq / k3Z * f)) && ((((((71 > r) || ((!((0 < 0) && (0 >= 0))) && (h > 67))) && ((R0 != 0) && ((56 > N) || (u == 15)))) || (0 == 0)) && ((7 <= L / N % J) && (w0 + U39 % A != 1308267796))) || (g2A3o6 >= 99))) || (((5) != 56) && (((Z1 % 1 % 89 <= 0) && (291 <= A)) || (9 < uo7)))))))) || (!((2 < 4) && ((!(0 < 9)) && (3 < 0)))))))) then {
+                        xd8L = (5) % 0;
+                        Rb = ((0 / 0 * (0)) + (7)) * Q;
+                        P = 0 / 988 * a;
+                        if (R > h) then {
+                            L = Z * 0;
+                        } else {
+                            T = 2 / uWP9;
+                            B7 = (t * qfx % 1 + 0) % c / D / Y3 * i8bt;
+                            read y;
+                            sM = (6 / f % 0 - s3kx5b);
+                            while ((!(7342 >= 4)) && (M3vb % 0 - (1) * (246) % 811 - (679 * P / M) < 9)) {
+                                print h;
+                            }
+                        }
+                    } else {
+                        read Re;
+                        oEq = m6V * VBZ2;
+                        read T;
+                    }
+                    Lxa = 0 * S;
+                    call Y;
+                    read W;
+                }
+                qU = laD;
+                d = cH8 - 0 % (G05 % 9587 / s2 * k) + (((j + mc % 374) + (0 * G) * (0 + 42 / 5 - 5 + L0 + (0 + 0 % 0 + 0 / Qpqm * 24) - W / 549 * 0 % 30 * 0 / (K) % 5) / (8 - m * 785) + 0)) * J * 0 + 0 - (60 * 7 * 0 % W58utKG) % E2 % ET0 * pdmW / (0 % ((m / 0) / P8 / 2) / q + 249 + d * 9 + (0) + 2 - 87) * 1 / 0;
+            }
+        }
+    }
+    if (17 >= 0) then {
+        o = Bc219h * Z;
+        print L;
+        v = (0) + v13h + 80 - 7 - S9 / (1 % O % Ot);
+        while (0 > voG) {
+            xSl = va;
+            o = 0;
+        }
+        ofN = (g);
+    } else {
+        X5SEf = c;
+        while ((F < P) || (!(l + 0 * 0 == a))) {
+            G = 33 - a + 538 * ((N4 / n73l6ZB7 % (XW) % 0 * 0 % 0 / ((D / (R) % r * ne2 / R7E)) * 98 * 0)) / (793 % 0) % w;
+        }
+        g = J7S * 0;
+        mh = b + P;
+        W4V = L;
+        print h;
+        while (o0 != zz) {
+            while ((6 >= d7) || (!(M <= dJ))) {
+                read S5oc;
+            }
+        }
+        s2t = 7 + C;
+        if ((!(((0 < 0 - (X1 * f / f1 / 0 * FFu % 0 * (60 - (u) % 1 % 6158 % (0 * 89 / h + 0 / eGFtQ % 0 % 1 / (aS)) % a) % 0 % 4) * (BA * (L / M46) * 0) * 6 * 9 + WsRX) && ((Z < 396 + D * 0 * ((C * (S1) / BV0 - 0)) % (((0) * 1 - T * a)) % 7 + ((K9p))) && (!(!(KG != 0))))) || (!((M + (0 * 29 + (P) + 37 - Ej + V * l0 * HKNl % 0) / (dX) - 0 / n == B - (((Z + 0) / 0 % (BG % (0)) - l8 - 0 - (0) / 0 % 0 / 0) - K * 6262 - k6) * S - 0 / 92 / 0) || (mMp < s77N))))) || ((w + L) + Z - (9 % 0 - 6 * ((2 / (F5 * (O % 0) + 11) / w7 + o) % 0 * Ts) / 0 + D42) < 34589)) then {
+            ki = J % 45;
+        } else {
+            r = o * Q9OL0;
+        }
+        print PK;
+        E = JFy % r / r7S;
+    }
+    read a1;
+    while ((((((t2J > 981) && (Ik9 == 0)) || (Q == (0) % c)) && (!(N == ((7) + k) % rhJQ8 - A * A))) || (5 + 24 % 0 != 0)) && (w2 < HH)) {
+        read r8;
+        while (!((mT8 <= 69) && (!(!(z0 + L >= E))))) {
+            h = z * 2 / P8 - CW5 * ((59)) / 1 * (((H) + 0 * B + 0) * c % (36) + 96) * (0 - 42 / n * 286 - 5541 + w / (4));
+            read yXZg;
+            p = (8 % (I % rZ2 * 0 / yq4Co - 39 - 0 / 0) / (6) * X + 10 * t0 * T6 % 0 / ((xM * 233) * v % (0 % (C03i * q) * (S + 0 * 5) - f % (0))) + 0 + (X % K % (((0 % 5 / o981) % 56) - 6 % ((P * R / 8) * 3)) * 15) * 0 % 378 + R + 0);
+            q = 3338;
+            q = J + 9;
+            while (0 >= ID4) {
+                read w;
+                k3 = 0 * iW6 / p - o + D1;
+                Z = s3;
+            }
+        }
+        c = l - v1 / 0 % G4 + y % 9;
+        t = m * (PL / 2 / 0);
+        while ((V <= 0 + U) || ((0 == C % 40 * nR + Q9o) && (P < 1 / i * K1V + K / 0 * (41105 * 9 * 632 - 1 % W) * (0 + 0 / y - IO6 / k % 347847446 % 0 * g3 % ((0)) % M % Xp + ((B / m67 % E / L * ((0))) / 8 / 0) - z) / 0 - 60 % 0 / ((0 / 0) % 4 / (Ez - 3 / F * 6 - 0 + 0 / 0 % X1 / 0 + oS % 92 - 0 - 0 * (V * 507 / I + 2 / 0 % r3 / 0) / pw - s5 + 0) % 0 - 0 / 8 % 0 - c * 0 % 0 / 0 / 7 % (0 / (0 + (0 * S) - x % 2 - (D + q - 0 * 5249)) * Tr7tX1F) + 4)))) {
+            call Ar;
+        }
+    }
+}
+procedure u {
+    H = w + 8 / pb97;
+}
+procedure VcqT68 {
+     Rh = LQ - (9 - 8 * (cC + 0 + 0 % (0 % 0 / V8 % (E4k - 8 * o % X49PQ1l38U * Z / (2 / 816 * W / 4)) / 547 + J * 0 * p * W1) % I) % (74 / 0) + q0) + 558031 * c;
+     if (bs > 291999 / (3 % Md / J)) then {
+         HfE = 0;
+         Fn = 0 - 72 % ((R * 5447)) * J;
+         print RH;
+     } else {
+         while (!((p9iK1 > X6) || (a * 0 % e != z7Q1034))) {
+             if (!(e <= q)) then {
+                 h = 60 / A;
+                 if (2552 < 95) then {
+                     print lK;
+                     V = P3bMh / 65 % (X) % (84) - EIt;
+                     read ad0;
+                 } else {
+                     call U;
+                 }
+                 read d;
+                 c2g = 0;
+             } else {
+                 while (Tc7 < yR) {
+                     print K;
+                 }
+                 if (0 <= h6C) then {
+                     while (apzw5 > 82) {
+                         H = PH7t44I * 0 / s + E1i2;
+                         read xgn83z;
+                         print lj;
+                         Io = (0) % B % (v65 / (6514 * R + 0 * (Pg % v78 - f % 1) + (45) % (U8 / 0 + y9T1l * 3)) + ((2104 * A7)) - 7);
+                         V = (((o) / A4));
+                     }
+                     while ((rk > 387) || ((d % c / ba + 0 >= S / 9529) || ((((!(Tp4B == 0 * O9)) || (0 == P2)) && ((((e) + (U / 0) * b40aK38 % 79 % K + b42 - vq == 0) && (dXwmkj1 >= U)) && (d0tC47 >= (W + 0) / 0 - 0 * f))) && (T >= g)))) {
+                         d = 0 / 0 - 0 / (0 / (0 - 0 * 0 / 7160 + 17) - t % (0 + G3b) % (347) / w / 0 - (59) * 0) / (Z0 + 2 + oY74 * b) * c % 0 % YXK;
+                         read V;
+                     }
+                 } else {
+                     call r;
+                 }
+             }
+             read N7X;
+             if (eW < 0) then {
+                 while ((O3m <= o) || (S > F7)) {
+                     call u;
+                     print z;
+                     o = A + 0 * I - 6 / (ZAAT) % 0 % (3) + w9;
+                 }
+                 if (1 >= 2) then {
+                     P = (0);
+                 } else {
+                     g = 67;
+                     o = 0 + u % C / m17P % y8;
+                     y594 = 0 / (S - (0 - P * 0) * (J - (0)) * J1F * Yg % (W8 / (0 * hy)) / 0 + 0 - (c) - 0);
+                     qA8 = (84 + R5O * 0 - 0 + 4) * Zm;
+                     e9 = 0 * m - (0) % (u / 0 * 6 % n63 / (k / (E6) / Ej % 0 * o * y46d)) * 0 / (w);
+                     call M59;
+                     r899 = (o - 0);
+                     call Aw;
+                     if (s3 != q) then {
+                         while (!(R * (0) <= 0)) {
+                             print h889H;
+                         }
+                         Vz = ((Y14xNfTC + ((0)))) * (W2 + 0) / 2 % 6;
+                         SQP = k1r;
+                         h6a = Y3 - 0;
+                         Q1i8 = 0 / 0 * T % (0 / p / 0 + ny % 0 % 4 * 5 - 0 % 491) / JMz4 / J5;
+                         eP54Q057M = 7 % 0;
+                     } else {
+                         fG = n;
+                     }
+                 }
+                 N = 905 / 0 / nf;
+                 a3 = t52 % KG035;
+                 c01g = e;
+             } else {
+                 call y;
+             }
+             call Y;
+             r = C + 0;
+             read ho5;
+             while ((0 != yG) || (v < S)) {
+                 if (!(T * 0 != 4045)) then {
+                     if (Dn8 == 0) then {
+                         read R;
+                     } else {
+                         print C;
+                         while (((u + A / 0 - 680 * 0 / (0) + 0 > 0) || (v1n != (0 * 0 + A0 + 0 % 0 % 82 % 0) / Gk % i * 6 + E % T)) || ((t >= 6) || (!((h6t >= 80) && (0 != 2))))) {
+                             H = 4 / j5;
+                             d = ((0 % q % 8) % (316328 + D1 - S % 0 * 0 * (0))) % 3 - (0 - Wc % j * 113) + ((0 * EH90) % 0 * X0) / 6 / 0 % yB;
+                             read x;
+                         }
+                         while (!(z66 > 4)) {
+                             print G;
+                         }
+                         D9o3 = 12;
+                         read y1;
+                         call r;
+                         v = (((W % yG6M2cb0) + 0 / b681 * 4) - 2 % X % 4) * 8;
+                         z = 0 / ((0) + 4 % k3 / (I + ev));
+                         read b;
+                         vJb = 0;
+                     }
+                 } else {
+                     pe = 14;
+                     T = (80 + 0 * 69 + q) + 6 * N92X;
+                 }
+                 Wm = k;
+             }
+         }
+         while (0 - (2 / N8) % (0 * u5b * 7) - 53 > 635) {
+             call x;
+             while (0 < g) {
+                 read O;
+             }
+             read l;
+             while (0 != 3) {
+                 E = (p8o) - NYA4;
+                 while (!(!(!((0 * (3 + (0 + 1)) > 0) && (v8I >= 4))))) {
+                     b = 3 * a;
+                     call r;
+                     call o;
+                     R8935 = 4 % 0 / m * R / g - T * ((((0)) - a % s + 8 + nq) + 0);
+                 }
+             }
+         }
+     }
+}

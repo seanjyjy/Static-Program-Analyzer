@@ -40,7 +40,8 @@ protected:
     Table *buildSynonymSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
                                     ClauseVariable &rightSynonym, bool canSimplify = false);
 
-    Table *buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &synonym);
+    Table *buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &synonym,
+                                 bool canSimplify);
 
     Table *buildDifferentSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &leftSynonym,
                                       ClauseVariable &rightSynonym, bool canSimplify);

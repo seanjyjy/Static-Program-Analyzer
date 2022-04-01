@@ -13,9 +13,9 @@ long long PKBAdapter::getRowCount(const QueryDeclaration &synonym) {
 }
 
 long long PKBAdapter::getRowCount(const vector<QueryDeclaration> &synonyms) {
-    long long rows = 0;
+    long long rows = 1;
     for (const QueryDeclaration &cv: synonyms) {
-        rows = (rows == 0) ? getRowCount(cv) : rows * getRowCount(cv);
+        rows = rows * getRowCount(cv);
     }
     return rows;
 }

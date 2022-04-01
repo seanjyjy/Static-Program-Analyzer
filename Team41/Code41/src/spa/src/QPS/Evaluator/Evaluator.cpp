@@ -120,17 +120,14 @@ Table *Evaluator::buildSynonymSynonymTable(const vector<pair<string, string>> &r
     }
 
     if (leftSynonym.getLabel() == rightSynonym.getLabel()) {
-        if (canSimplify) {
-            return buildBooleanTable(!results.empty());
-        }
-
-        return buildSameSynonymTable(results, leftSynonym);
+        return buildSameSynonymTable(results, leftSynonym, canSimplify);
     }
 
     return buildDifferentSynonymTable(results, leftSynonym, rightSynonym, canSimplify);
 }
 
-Table *Evaluator::buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &synonym) {
+Table *Evaluator::buildSameSynonymTable(const vector<pair<string, string>> &results, ClauseVariable &synonym,
+                                        bool canSimplify) {
     string label = synonym.getLabel();
     EntitiesReader *entityReader = synonym.getDesignEntityType()->getReader();
     unordered_set<string> filters = entityReader->getEntities(pkb);
@@ -140,6 +137,7 @@ Table *Evaluator::buildSameSynonymTable(const vector<pair<string, string>> &resu
 
     for (auto&[leftSyn, rightSyn]: results) {
         if (leftSyn == rightSyn && filters.find(leftSyn) != filters.end()) {
+            if (canSimplify) return new TrueTable();
             Row *row = new Row(label, leftSyn);
             table->addRow(row);
         }

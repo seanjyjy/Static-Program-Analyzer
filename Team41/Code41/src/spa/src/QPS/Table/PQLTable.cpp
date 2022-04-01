@@ -210,9 +210,7 @@ size_t PQLTable::size() {
 }
 
 // Constructor
-PQLTable::PQLTable(Header header) {
-    this->header = std::move(header);
-}
+PQLTable::PQLTable(Header header) : header(move(header)) {}
 
 vector<const Row *> PQLTable::getRows() {
     return this->rows;
