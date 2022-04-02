@@ -1,8 +1,8 @@
-# Adapters 
+# Adapters
 
-An Adapter class that facilitates as the logic center and provides an extra layer of abstraction to 
-shield the client side cache from other components beside the Query Evaluator. It acts as an intermediary to 
-communicate with PKB and Cache for the evaluators.
+An Adapter class that facilitates as the logic center and provides an extra layer of abstraction to shield the client
+side cache from other components beside the Query Evaluator. It acts as an intermediary to communicate with PKB and
+Cache for the evaluators.
 
 The adapters have a composition relationship between PKB and the Cache
 
@@ -19,13 +19,13 @@ Provides common algorithms such as Breadth-first-search algorithm that is used i
 
 #### AffectsKBAdapter
 
-Act as a logic center for affects query that communicates with PKB and Cache. Depending on the storage 
-status of either, it will run some algorithm to fetch the relevant data and storage into the cache.
+Act as a logic center for affects query that communicates with PKB and Cache. Depending on the storage status of either,
+it will run some algorithm to fetch the relevant data and storage into the cache.
 
 #### NextKBAdapter
 
-Act as a logic center for next query that communicates with PKB and Cache. Depending on the storage
-status of either, it will run some algorithm to fetch the relevant data and storage into the cache.
+Act as a logic center for next query that communicates with PKB and Cache. Depending on the storage status of either, it
+will run some algorithm to fetch the relevant data and storage into the cache.
 
 #### Example Usage
 

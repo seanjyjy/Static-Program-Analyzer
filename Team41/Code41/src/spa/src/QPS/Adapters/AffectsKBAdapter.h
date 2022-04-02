@@ -40,6 +40,7 @@ private:
     const unordered_set<string> &getAllParentStmt();
 
     const unordered_set<string> &getAllAssignStmt();
+
 public:
     explicit AffectsKBAdapter(PKBClient *pkb);
 
