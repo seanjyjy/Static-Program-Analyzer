@@ -7,10 +7,9 @@
 using namespace std;
 
 /**
- * Used for retrieving pattern information for SIMPLE source code.
+ * Used for retrieving control flow information for SIMPLE source code.
  *
- * This PKB facade class provides methods to
- * access the information stored in various relational pattern table.
+ * This PKB facade class provides methods to access the control flow graph and basic next relation
  */
 class PKBCFGClient {
 protected:
@@ -25,8 +24,16 @@ public:
 
     //=========================================== CFG =======================================================
 
+    /**
+     * Gets the CFG for a specific stmt number
+     *
+     * @return pointer to CFG, nullptr for invalid stmtNumber
+     */
     [[nodiscard]] CFGNode *getCFGForStmt(const string &stmtNum) const;
 
+    /**
+     * Gets the root CFG of the program
+     */
     [[nodiscard]] CFGNode *getRootCFG() const;
 
     //=========================================== Next ===================================================
@@ -34,17 +41,17 @@ public:
     /**
      * Checks if stmt2 can be executed immediately after stmt1
      */
-    bool isNext(string stmt1, string stmt2) const;
+    bool isNext(const string &stmt1, const string &stmt2) const;
 
     /**
      * Get the nodes that are executed directly after stmt
      */
-    [[nodiscard]] vector<CFGNode *> getNextNodes(string stmt) const;
+    [[nodiscard]] vector<CFGNode *> getNextNodes(const string &stmt) const;
 
     /**
      * Gets the nodes that are executed directly before stmt
      */
-    [[nodiscard]] vector<CFGNode *> getPrevNodes(string stmt) const;
+    [[nodiscard]] vector<CFGNode *> getPrevNodes(const string &stmt) const;
 
     /**
      * Gets stmts pair where stmt1 are executed directly after stmt2

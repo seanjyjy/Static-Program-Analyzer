@@ -42,7 +42,7 @@ public:
      * @param stmtNumber the target statement number in string
      * @return the statement type
      */
-    StmtType getStmtType(string stmtNumber);
+    StmtType getStmtType(const string &stmtNumber);
 
     /**
      * Gets the attribute associated with the stmt number
@@ -50,7 +50,7 @@ public:
      * @param stmtNumber the target statement number in string
      * @return the statement type
      */
-    string getStmtAttr(string stmtNumber);
+    string getStmtAttr(const string &stmtNumber);
 
     /**
      * Checks if the statement number match the specified type
@@ -59,7 +59,7 @@ public:
      * @param type the queried statement type
      * @return true if matches, false otherwise
      */
-    bool isStmtType(string stmtNumber, StmtType type);
+    bool isStmtType(const string &stmtNumber, StmtType type);
 
     /**
      * Set the statement and type into the table

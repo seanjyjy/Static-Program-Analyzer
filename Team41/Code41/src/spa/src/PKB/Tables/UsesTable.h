@@ -27,12 +27,12 @@ public:
      */
     void setVarUsedInStmt(const string &stmtNum, const string &varName);
 
-    unordered_set<string> getVarsUsedInStmt(string stmtNum);// Gets set of variables that is used by the statement
-    unordered_set<string> getStmtsUsingVar(string varName);// Gets set of statements that uses the variable
+    unordered_set<string> getVarsUsedInStmt(const string &stmtNum);// Gets variables that is used by the statement
+    unordered_set<string> getStmtsUsingVar(const string &varName);// Gets set of statements that uses the variable
     vector<pair<string, string>> getStmtsVarEntries();// Gets list of stmt-var pairs where stmt uses var
     unordered_set<string> getVarsUsedInSomeStmt();// Gets set of vars where the var is used in some stmt
     unordered_set<string> getStmtsUsingSomeVar();// Gets set of stmts where the stmt uses some var
-    bool isUsesS(string stmtNum, string varName);// Checks if the statement uses the variable
+    bool isUsesS(const string &stmtNum, const string &varName);// Checks if the statement uses the variable
 
     /**
      * Set procedure uses var relation in the table
@@ -42,10 +42,10 @@ public:
      */
     void setVarUsedInProc(const string &procName, const string &varName);
 
-    unordered_set<string> getVarsUsedInProc(string procName);// Gets set of variables that is used by the procedure
-    unordered_set<string> getProcsUsingVar(string varName);// Gets set of procedures that uses the variable
+    unordered_set<string> getVarsUsedInProc(const string &procName);// Gets variables that is used by the procedure
+    unordered_set<string> getProcsUsingVar(const string &varName);// Gets set of procedures that uses the variable
     vector<pair<string, string>> getProcVarEntries();// Gets list of proc-var pairs where procedure uses var
     unordered_set<string> getVarsUsedInSomeProc();// Gets set of vars where the var is used in some procedure
     unordered_set<string> getProcsUsingSomeVar();// Gets set of procedures where the procedure uses some var
-    bool isUsesP(string procName, string varName);// Checks if the procedure uses the variable
+    bool isUsesP(const string &procName, const string &varName);// Checks if the procedure uses the variable
 };

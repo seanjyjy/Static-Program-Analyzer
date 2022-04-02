@@ -29,7 +29,7 @@ public:
      * @param varName the variable in the condition block
      * @return the set of while statements that uses the varName in condition block
      */
-    unordered_set<string> getStmtFromVar(string varName);
+    unordered_set<string> getStmtFromVar(const string &varName);
 
     /**
      * Gets all whileStmt-variable pair

@@ -40,17 +40,17 @@ public:
     /**
      * Checks if proc1 calls proc2
      */
-    bool isCalls(string proc1, string proc2) const;
+    bool isCalls(const string &proc1, const string &proc2) const;
 
     /**
      * Gets list of procedures that calls proc
      */
-    unordered_set<string> getAllProcCalling(string procName) const;
+    unordered_set<string> getAllProcCalling(const string &procName) const;
 
     /**
      * Gets list of procedures that is called by proc
      */
-    unordered_set<string> getAllProcCalledBy(string procName) const;
+    unordered_set<string> getAllProcCalledBy(const string &procName) const;
 
     /**
      * Gets list of proc1-proc2 pair where proc1 calls proc2
@@ -60,17 +60,17 @@ public:
     /**
      * Checks if proc1 callsT proc2
      */
-    bool isCallsT(string proc1, string proc2) const;
+    bool isCallsT(const string &proc1, const string &proc2) const;
 
     /**
      * Gets list of procedures that callsT proc
      */
-    unordered_set<string> getAllProcCallingT(string procName) const;
+    unordered_set<string> getAllProcCallingT(const string &procName) const;
 
     /**
      * Gets list of procedures that is calledT by proc
      */
-    unordered_set<string> getAllProcCalledTBy(string procName) const;
+    unordered_set<string> getAllProcCalledTBy(const string &procName) const;
 
     /**
      * Gets list of proc1-proc2 pair where proc1 callsT proc2
@@ -92,17 +92,17 @@ public:
     /**
      * Checks if stmt1 follows stmt2
      */
-    bool isFollows(string stmt1, string stmt2) const;
+    bool isFollows(const string &stmt1, const string &stmt2) const;
 
     /**
      * Gets the stmt that follows the specified stmt
      */
-    string getStmtDirectlyAfter(string stmt) const;
+    string getStmtDirectlyAfter(const string &stmt) const;
 
     /**
      * Gets the stmt that are follows by the specified stmt
      */
-    string getStmtDirectlyBefore(string stmt) const;
+    string getStmtDirectlyBefore(const string &stmt) const;
 
     /**
      * Gets list of stmt1-stmt2 pair where stmt1 follows stmt2
@@ -112,17 +112,17 @@ public:
     /**
      * Checks if stmt1 followsT stmt2
      */
-    bool isFollowsT(string stmt1, string stmt2) const;
+    bool isFollowsT(const string &stmt1, const string &stmt2) const;
 
     /**
      * Gets list of stmts that followsT the specified stmt
      */
-    unordered_set<string> getAllStmtsAfter(string stmt) const;
+    unordered_set<string> getAllStmtsAfter(const string &stmt) const;
 
     /**
      * Gets list of stmts that is followedT by given stmt
      */
-    unordered_set<string> getAllStmtsBefore(string stmt) const;
+    unordered_set<string> getAllStmtsBefore(const string &stmt) const;
 
     /**
      * Gets list of stmt1-stmt2 pair where stmt1 followsT stmt2
@@ -144,17 +144,17 @@ public:
     /**
      * Checks if stmt1 is parent of stmt2
      */
-    bool isParent(string stmt1, string stmt2) const;
+    bool isParent(const string &stmt1, const string &stmt2) const;
 
     /**
      * Gets the stmts that are direct child of parentStmt
      */
-    unordered_set<string> getChildStmtsOf(string parentStmt) const;
+    unordered_set<string> getChildStmtsOf(const string &parentStmt) const;
 
     /**
      * Gets the stmt that is parent of childStmt
      */
-    string getParentOf(string childStmt) const;
+    string getParentOf(const string &childStmt) const;
 
     /**
      * Gets list of parent-child pair where stmt1 is parent of stmt2
@@ -164,17 +164,17 @@ public:
     /**
      * Checks if stmt1 is parentT of stmt2
      */
-    bool isParentT(string stmt1, string stmt2) const;
+    bool isParentT(const string &stmt1, const string &stmt2) const;
 
     /**
      * Gets the stmts that are descendants of parentStmt
      */
-    unordered_set<string> getDescendantStmtsOf(string parentStmt) const;
+    unordered_set<string> getDescendantStmtsOf(const string &parentStmt) const;
 
     /**
      * Gets the stmts that are ancestors of childStmt
      */
-    unordered_set<string> getAncestorStmtsOf(string childStmt) const;
+    unordered_set<string> getAncestorStmtsOf(const string &childStmt) const;
 
     /**
      * Gets list of parent-child pair where stmt1 is ancestor of stmt2
@@ -196,17 +196,17 @@ public:
     /**
      * Checks if specified statement uses specified variable
      */
-    bool isUsesS(string stmtNum, string varName) const;
+    bool isUsesS(const string &stmtNum, const string &varName) const;
 
     /**
      * Gets list of statements that uses specified variable
      */
-    unordered_set<string> getUsesSByVar(string varName) const;
+    unordered_set<string> getUsesSByVar(const string &varName) const;
 
     /**
      * Gets list of variables that is used by specified statement
      */
-    unordered_set<string> getUsesByStmt(string stmtNum) const;
+    unordered_set<string> getUsesByStmt(const string &stmtNum) const;
 
     /**
      * Gets list of stmt-var pair where stmt uses var
@@ -226,17 +226,17 @@ public:
     /**
      * Checks if specified procedure uses specified variable
      */
-    bool isUsesP(string procName, string varName) const;
+    bool isUsesP(const string &procName, const string &varName) const;
 
     /**
      * Gets list of procedures that uses specified variable
      */
-    unordered_set<string> getUsesPByVar(string varName) const;
+    unordered_set<string> getUsesPByVar(const string &varName) const;
 
     /**
      * Gets list of variables that is used by specified procedure
      */
-    unordered_set<string> getUsesByProc(string procName) const;
+    unordered_set<string> getUsesByProc(const string &procName) const;
 
     /**
      * Gets list of proc-var pair where stmt uses var
@@ -258,17 +258,17 @@ public:
     /**
      * Checks if specified statement modifies specified variable
      */
-    bool isModifiesS(string stmtNum, string varName) const;
+    bool isModifiesS(const string &stmtNum, const string &varName) const;
 
     /**
      * Gets list of statements that modifies specified variable
      */
-    unordered_set<string> getModifiesSByVar(string varName) const;
+    unordered_set<string> getModifiesSByVar(const string &varName) const;
 
     /**
      * Gets list of variables that is modified by statement
      */
-    unordered_set<string> getModifiesByStmt(string stmtNum) const;
+    unordered_set<string> getModifiesByStmt(const string &stmtNum) const;
 
     /**
      * Gets list of stmt-var pair where stmt modifies var
@@ -288,17 +288,17 @@ public:
     /**
      * Checks if specified procedure modifies specified variable
      */
-    bool isModifiesP(string procName, string varName) const;
+    bool isModifiesP(const string &procName, const string &varName) const;
 
     /**
      * Gets list of procedures that modifies specified variable
      */
-    unordered_set<string> getModifiesPByVar(string varName) const;
+    unordered_set<string> getModifiesPByVar(const string &varName) const;
 
     /**
      * Gets list of variables that is modified by procedure
      */
-    unordered_set<string> getModifiesByProc(string procName) const;
+    unordered_set<string> getModifiesByProc(const string &procName) const;
 
     /**
      * Gets list of proc-var pair where proc modifies var

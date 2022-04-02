@@ -39,15 +39,15 @@ public:
      */
     void setFollowsT(const string &before, const string &after);
 
-    string getStmtDirectlyAfter(string stmt); // Gets the stmt that is directly after by this stmt
-    string getStmtDirectlyBefore(string stmt); // Gets the stmt that is directly before this stmt
+    string getStmtDirectlyAfter(const string &stmt); // Gets the stmt that is directly after by this stmt
+    string getStmtDirectlyBefore(const string &stmt); // Gets the stmt that is directly before this stmt
     vector<pair<string, string>> getFollowEntries(); // Gets list of before-after pair
-    bool isFollows(string stmt1, string stmt2); // Checks if stmt1 comes directly before stmt2
+    bool isFollows(const string &stmt1, const string &stmt2); // Checks if stmt1 comes directly before stmt2
 
-    unordered_set<string> getStmtsAfter(string stmt); // Gets set of stmts that are after this stmt
-    unordered_set<string> getStmtsBefore(string stmt); // Gets set of stmts that are before this stmt
+    unordered_set<string> getStmtsAfter(const string &stmt); // Gets set of stmts that are after this stmt
+    unordered_set<string> getStmtsBefore(const string &stmt); // Gets set of stmts that are before this stmt
     vector<pair<string, string>> getFollowTEntries(); // Gets list of beforeT-afterT pair
-    bool isFollowsT(string stmt1, string stmt2); // Checks if stmt1 comes before stmt2
+    bool isFollowsT(const string &stmt1, const string &stmt2); // Checks if stmt1 comes before stmt2
 
     unordered_set<string> getStmtsAfterSomeStmt(); // Get set of stmts following some stmt
     unordered_set<string> getStmtsBeforeSomeStmt(); // Get set of stmts followed by some stmt

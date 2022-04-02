@@ -91,7 +91,7 @@ bool CallsExtractor::extract() {
             dfs(procNode, procNode->getTokenVal());
         }
         cycleCheck();
-    } catch (SemanticException e) {
+    } catch (const SemanticException&) {
         return false;
     }
     revTopoSort();

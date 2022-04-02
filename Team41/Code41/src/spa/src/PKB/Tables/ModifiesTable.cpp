@@ -8,12 +8,12 @@ void ModifiesTable::setVarModifiedInStmt(const string &stmtNum, const string &va
     modifyStmtRelation.addMapping(stmtNum, varName);
 }
 
-unordered_set<string> ModifiesTable::getVarsModifiedInStmt(string stmtNum) {
-    return modifyStmtRelation.getValuesFromKey(move(stmtNum));
+unordered_set<string> ModifiesTable::getVarsModifiedInStmt(const string &stmtNum) {
+    return modifyStmtRelation.getValuesFromKey(stmtNum);
 }
 
-unordered_set<string> ModifiesTable::getStmtsModifyingVar(string varName) {
-    return modifyStmtRelation.getKeysFromValue(move(varName));
+unordered_set<string> ModifiesTable::getStmtsModifyingVar(const string &varName) {
+    return modifyStmtRelation.getKeysFromValue(varName);
 }
 
 vector<pair<string, string>> ModifiesTable::getStmtsVarEntries() {
@@ -29,19 +29,19 @@ unordered_set<string> ModifiesTable::getStmtsModifyingSomeVar() {
 }
 
 bool ModifiesTable::isModifiesS(string stmtNum, string varName) {
-    return modifyStmtRelation.hasMapping(move(stmtNum), move(varName));
+    return modifyStmtRelation.hasMapping(stmtNum, varName);
 }
 
 void ModifiesTable::setVarModifiedInProc(const string &procName, const string &varName) {
     modifyProcRelation.addMapping(procName, varName);
 }
 
-unordered_set<string> ModifiesTable::getVarsModifiedInProc(string procName) {
-    return modifyProcRelation.getValuesFromKey(move(procName));
+unordered_set<string> ModifiesTable::getVarsModifiedInProc(const string &procName) {
+    return modifyProcRelation.getValuesFromKey(procName);
 }
 
-unordered_set<string> ModifiesTable::getProcsModifyingVar(string varName) {
-    return modifyProcRelation.getKeysFromValue(move(varName));
+unordered_set<string> ModifiesTable::getProcsModifyingVar(const string &varName) {
+    return modifyProcRelation.getKeysFromValue(varName);
 }
 
 vector<pair<string, string>> ModifiesTable::getProcVarEntries() {
@@ -56,6 +56,6 @@ unordered_set<string> ModifiesTable::getProcsModifyingSomeVar() {
     return modifyProcRelation.getKeys();
 }
 
-bool ModifiesTable::isModifiesP(string procName, string varName) {
-    return modifyProcRelation.hasMapping(move(procName), move(varName));
+bool ModifiesTable::isModifiesP(const string &procName, const string &varName) {
+    return modifyProcRelation.hasMapping(procName, varName);
 }

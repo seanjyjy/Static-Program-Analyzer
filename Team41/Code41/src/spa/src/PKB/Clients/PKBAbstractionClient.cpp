@@ -25,33 +25,37 @@ PKBAbstractionClient::~PKBAbstractionClient() {
 
 //======================================== Follows ==================================================
 
-bool PKBAbstractionClient::isFollows(string stmt1, string stmt2) const {
-    return followsTable->isFollows(move(stmt1), move(stmt2));
+bool PKBAbstractionClient::isFollows(const string &stmt1, const string &stmt2) const {
+    return followsTable->isFollows(stmt1, stmt2);
 }
 
-string PKBAbstractionClient::getStmtDirectlyAfter(string stmtNum) const {
-    return followsTable->getStmtDirectlyAfter(move(stmtNum));
+string PKBAbstractionClient::getStmtDirectlyAfter(const string &stmtNum) const {
+    return followsTable->getStmtDirectlyAfter(stmtNum);
 }
 
-string PKBAbstractionClient::getStmtDirectlyBefore(string stmtNum) const {
-    return followsTable->getStmtDirectlyBefore(move(stmtNum));
+string PKBAbstractionClient::getStmtDirectlyBefore(const string &stmtNum) const {
+    return followsTable->getStmtDirectlyBefore(stmtNum);
 }
 
-vector<pair<string, string>> PKBAbstractionClient::getAllFollows() const { return followsTable->getFollowEntries(); }
-
-bool PKBAbstractionClient::isFollowsT(string stmt1, string stmt2) const {
-    return followsTable->isFollowsT(move(stmt1), move(stmt2));
+vector<pair<string, string>> PKBAbstractionClient::getAllFollows() const {
+    return followsTable->getFollowEntries();
 }
 
-unordered_set<string> PKBAbstractionClient::getAllStmtsAfter(string stmtNum) const {
-    return followsTable->getStmtsAfter(move(stmtNum));
+bool PKBAbstractionClient::isFollowsT(const string &stmt1, const string &stmt2) const {
+    return followsTable->isFollowsT(stmt1, stmt2);
 }
 
-unordered_set<string> PKBAbstractionClient::getAllStmtsBefore(string stmtNum) const {
-    return followsTable->getStmtsBefore(move(stmtNum));
+unordered_set<string> PKBAbstractionClient::getAllStmtsAfter(const string &stmtNum) const {
+    return followsTable->getStmtsAfter(stmtNum);
 }
 
-vector<pair<string, string>> PKBAbstractionClient::getAllFollowsT() const { return followsTable->getFollowTEntries(); }
+unordered_set<string> PKBAbstractionClient::getAllStmtsBefore(const string &stmtNum) const {
+    return followsTable->getStmtsBefore(stmtNum);
+}
+
+vector<pair<string, string>> PKBAbstractionClient::getAllFollowsT() const {
+    return followsTable->getFollowTEntries();
+}
 
 unordered_set<string> PKBAbstractionClient::getAllStmtsAfterSomeStmt() const {
     return followsTable->getStmtsAfterSomeStmt();
@@ -63,31 +67,37 @@ unordered_set<string> PKBAbstractionClient::getAllStmtsBeforeSomeStmt() const {
 
 //======================================== Parent ==================================================
 
-bool PKBAbstractionClient::isParent(string stmt1, string stmt2) const {
-    return parentTable->isParent(move(stmt1), move(stmt2));
+bool PKBAbstractionClient::isParent(const string &stmt1, const string &stmt2) const {
+    return parentTable->isParent(stmt1, stmt2);
 }
 
-unordered_set<string> PKBAbstractionClient::getChildStmtsOf(string parentStmt) const {
-    return parentTable->getAllChildrenOf(move(parentStmt));
+unordered_set<string> PKBAbstractionClient::getChildStmtsOf(const string &parentStmt) const {
+    return parentTable->getAllChildrenOf(parentStmt);
 }
 
-string PKBAbstractionClient::getParentOf(string childStmt) const { return parentTable->getParentOf(move(childStmt)); }
-
-vector<pair<string, string>> PKBAbstractionClient::getAllParent() const { return parentTable->getParentEntries(); }
-
-bool PKBAbstractionClient::isParentT(string stmt1, string stmt2) const {
-    return parentTable->isParentT(move(stmt1), std::move(stmt2));
+string PKBAbstractionClient::getParentOf(const string &childStmt) const {
+    return parentTable->getParentOf(childStmt);
 }
 
-unordered_set<string> PKBAbstractionClient::getDescendantStmtsOf(string parentStmt) const {
-    return parentTable->getAllDescendantsOf(move(parentStmt));
+vector<pair<string, string>> PKBAbstractionClient::getAllParent() const {
+    return parentTable->getParentEntries();
 }
 
-unordered_set<string> PKBAbstractionClient::getAncestorStmtsOf(string childStmt) const {
-    return parentTable->getAllAncestorsOf(move(childStmt));
+bool PKBAbstractionClient::isParentT(const string &stmt1, const string &stmt2) const {
+    return parentTable->isParentT(stmt1, stmt2);
 }
 
-vector<pair<string, string>> PKBAbstractionClient::getAllParentT() const { return parentTable->getParentTEntries(); }
+unordered_set<string> PKBAbstractionClient::getDescendantStmtsOf(const string &parentStmt) const {
+    return parentTable->getAllDescendantsOf(parentStmt);
+}
+
+unordered_set<string> PKBAbstractionClient::getAncestorStmtsOf(const string &childStmt) const {
+    return parentTable->getAllAncestorsOf(childStmt);
+}
+
+vector<pair<string, string>> PKBAbstractionClient::getAllParentT() const {
+    return parentTable->getParentTEntries();
+}
 
 unordered_set<string> PKBAbstractionClient::getAllStmtsParentOfSomeStmt() const {
     return parentTable->getStmtsParentOfSomeStmt();
@@ -99,19 +109,21 @@ unordered_set<string> PKBAbstractionClient::getAllStmtsChildOfSomeStmt() const {
 
 //======================================== Uses ==================================================
 
-bool PKBAbstractionClient::isUsesS(string stmtNum, string varName) const {
-    return usesTable->isUsesS(move(stmtNum), move(varName));
+bool PKBAbstractionClient::isUsesS(const string &stmtNum, const string &varName) const {
+    return usesTable->isUsesS(stmtNum, varName);
 }
 
-unordered_set<string> PKBAbstractionClient::getUsesSByVar(string varName) const {
-    return usesTable->getStmtsUsingVar(move(varName));
+unordered_set<string> PKBAbstractionClient::getUsesSByVar(const string &varName) const {
+    return usesTable->getStmtsUsingVar(varName);
 }
 
-unordered_set<string> PKBAbstractionClient::getUsesByStmt(string stmtNum) const {
-    return usesTable->getVarsUsedInStmt(move(stmtNum));
+unordered_set<string> PKBAbstractionClient::getUsesByStmt(const string &stmtNum) const {
+    return usesTable->getVarsUsedInStmt(stmtNum);
 }
 
-vector<pair<string, string>> PKBAbstractionClient::getAllUsesS() const { return usesTable->getStmtsVarEntries(); }
+vector<pair<string, string>> PKBAbstractionClient::getAllUsesS() const {
+    return usesTable->getStmtsVarEntries();
+}
 
 unordered_set<string> PKBAbstractionClient::getAllStmtsUsingSomeVar() const {
     return usesTable->getStmtsUsingSomeVar();
@@ -121,19 +133,21 @@ unordered_set<string> PKBAbstractionClient::getAllVarUsedBySomeStmt() const {
     return usesTable->getVarsUsedInSomeStmt();
 }
 
-bool PKBAbstractionClient::isUsesP(string procName, string varName) const {
-    return usesTable->isUsesP(move(procName), move(varName));
+bool PKBAbstractionClient::isUsesP(const string &procName, const string &varName) const {
+    return usesTable->isUsesP(procName, varName);
 }
 
-unordered_set<string> PKBAbstractionClient::getUsesPByVar(string varName) const {
-    return usesTable->getProcsUsingVar(move(varName));
+unordered_set<string> PKBAbstractionClient::getUsesPByVar(const string &varName) const {
+    return usesTable->getProcsUsingVar(varName);
 }
 
-unordered_set<string> PKBAbstractionClient::getUsesByProc(string procName) const {
-    return usesTable->getVarsUsedInProc(move(procName));
+unordered_set<string> PKBAbstractionClient::getUsesByProc(const string &procName) const {
+    return usesTable->getVarsUsedInProc(procName);
 }
 
-vector<pair<string, string>> PKBAbstractionClient::getAllUsesP() const { return usesTable->getProcVarEntries(); }
+vector<pair<string, string>> PKBAbstractionClient::getAllUsesP() const {
+    return usesTable->getProcVarEntries();
+}
 
 unordered_set<string> PKBAbstractionClient::getAllProcsUsingSomeVar() const {
     return usesTable->getProcsUsingSomeVar();
@@ -145,16 +159,16 @@ unordered_set<string> PKBAbstractionClient::getAllVarUsedBySomeProc() const {
 
 //======================================== Modifies ==================================================
 
-bool PKBAbstractionClient::isModifiesS(string stmtNum, string varName) const {
-    return modifiesTable->isModifiesS(move(stmtNum), move(varName));
+bool PKBAbstractionClient::isModifiesS(const string &stmtNum, const string &varName) const {
+    return modifiesTable->isModifiesS(stmtNum, varName);
 }
 
-unordered_set<string> PKBAbstractionClient::getModifiesSByVar(string varName) const {
-    return modifiesTable->getStmtsModifyingVar(move(varName));
+unordered_set<string> PKBAbstractionClient::getModifiesSByVar(const string &varName) const {
+    return modifiesTable->getStmtsModifyingVar(varName);
 }
 
-unordered_set<string> PKBAbstractionClient::getModifiesByStmt(string stmtNum) const {
-    return modifiesTable->getVarsModifiedInStmt(move(stmtNum));
+unordered_set<string> PKBAbstractionClient::getModifiesByStmt(const string &stmtNum) const {
+    return modifiesTable->getVarsModifiedInStmt(stmtNum);
 }
 
 vector<pair<string, string>> PKBAbstractionClient::getAllModifiesS() const {
@@ -169,16 +183,16 @@ unordered_set<string> PKBAbstractionClient::getAllVarModifiedBySomeStmt() const 
     return modifiesTable->getVarsModifiedInSomeStmt();
 }
 
-bool PKBAbstractionClient::isModifiesP(string procName, string varName) const {
-    return modifiesTable->isModifiesP(move(procName), move(varName));
+bool PKBAbstractionClient::isModifiesP(const string &procName, const string &varName) const {
+    return modifiesTable->isModifiesP(procName, varName);
 }
 
-unordered_set<string> PKBAbstractionClient::getModifiesPByVar(string varName) const {
-    return modifiesTable->getProcsModifyingVar(move(varName));
+unordered_set<string> PKBAbstractionClient::getModifiesPByVar(const string &varName) const {
+    return modifiesTable->getProcsModifyingVar(varName);
 }
 
-unordered_set<string> PKBAbstractionClient::getModifiesByProc(string procName) const {
-    return modifiesTable->getVarsModifiedInProc(move(procName));
+unordered_set<string> PKBAbstractionClient::getModifiesByProc(const string &procName) const {
+    return modifiesTable->getVarsModifiedInProc(procName);
 }
 
 vector<pair<string, string>> PKBAbstractionClient::getAllModifiesP() const {
@@ -195,33 +209,37 @@ unordered_set<string> PKBAbstractionClient::getAllVarModifiedBySomeProc() const 
 
 //======================================== Calls ==================================================
 
-bool PKBAbstractionClient::isCalls(string proc1, string proc2) const {
-    return callsTable->isCalls(move(proc1), move(proc2));
+bool PKBAbstractionClient::isCalls(const string &proc1, const string &proc2) const {
+    return callsTable->isCalls(proc1, proc2);
 }
 
-unordered_set<string> PKBAbstractionClient::getAllProcCalling(string procName) const {
-    return callsTable->getProcsCalling(move(procName));
+unordered_set<string> PKBAbstractionClient::getAllProcCalling(const string &procName) const {
+    return callsTable->getProcsCalling(procName);
 }
 
-unordered_set<string> PKBAbstractionClient::getAllProcCalledBy(string procName) const {
-    return callsTable->getProcsCalledBy(move(procName));
+unordered_set<string> PKBAbstractionClient::getAllProcCalledBy(const string &procName) const {
+    return callsTable->getProcsCalledBy(procName);
 }
 
-vector<pair<string, string>> PKBAbstractionClient::getAllCalls() const { return callsTable->getCallsEntries(); }
-
-bool PKBAbstractionClient::isCallsT(string proc1, string proc2) const {
-    return callsTable->isCallsT(move(proc1), move(proc2));
+vector<pair<string, string>> PKBAbstractionClient::getAllCalls() const {
+    return callsTable->getCallsEntries();
 }
 
-unordered_set<string> PKBAbstractionClient::getAllProcCallingT(string procName) const {
-    return callsTable->getProcsCallingT(move(procName));
+bool PKBAbstractionClient::isCallsT(const string &proc1, const string &proc2) const {
+    return callsTable->isCallsT(proc1, proc2);
 }
 
-unordered_set<string> PKBAbstractionClient::getAllProcCalledTBy(string procName) const {
-    return callsTable->getProcsCalledTBy(move(procName));
+unordered_set<string> PKBAbstractionClient::getAllProcCallingT(const string &procName) const {
+    return callsTable->getProcsCallingT(procName);
 }
 
-vector<pair<string, string>> PKBAbstractionClient::getAllCallsT() const { return callsTable->getCallsTEntries(); }
+unordered_set<string> PKBAbstractionClient::getAllProcCalledTBy(const string &procName) const {
+    return callsTable->getProcsCalledTBy(procName);
+}
+
+vector<pair<string, string>> PKBAbstractionClient::getAllCallsT() const {
+    return callsTable->getCallsTEntries();
+}
 
 unordered_set<string> PKBAbstractionClient::getAllProcsCallingSomeProcs() const {
     return callsTable->getProcsCallingSomeProc();

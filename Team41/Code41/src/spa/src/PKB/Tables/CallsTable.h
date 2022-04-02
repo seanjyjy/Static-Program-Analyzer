@@ -40,15 +40,15 @@ public:
      */
     void setCallsT(const string &caller, const string &callee);
 
-    unordered_set<string> getProcsCalledBy(string caller); // Gets the proc that is called by this caller
-    unordered_set<string> getProcsCalling(string callee); // Gets the proc that calls this proc
+    unordered_set<string> getProcsCalledBy(const string &caller); // Gets the proc that is called by this caller
+    unordered_set<string> getProcsCalling(const string &callee); // Gets the proc that calls this proc
     vector<pair<string, string>> getCallsEntries(); // Gets list of caller-callee pair
-    bool isCalls(string caller, string callee); // Checks if the caller calls the called proc
+    bool isCalls(const string &caller, const string &callee); // Checks if the caller calls the called proc
 
-    unordered_set<string> getProcsCalledTBy(string caller); // Gets set of procs that are calledT by this caller
-    unordered_set<string> getProcsCallingT(string callee); // Gets set of procs that callsT this proc
+    unordered_set<string> getProcsCalledTBy(const string &caller); // Gets set of procs that are calledT by this caller
+    unordered_set<string> getProcsCallingT(const string &callee); // Gets set of procs that callsT this proc
     vector<pair<string, string>> getCallsTEntries(); // Gets list of ancestor-descendant pair
-    bool isCallsT(string caller, string callee); // Checks if the caller callsT the callee proc
+    bool isCallsT(const string &caller, const string &callee); // Checks if the caller callsT the callee proc
 
     unordered_set<string> getProcsCallingSomeProc(); // Get set of procs calling some proc
     unordered_set<string> getProcsCalledBySomeProc(); // Get set of procs called by some proc

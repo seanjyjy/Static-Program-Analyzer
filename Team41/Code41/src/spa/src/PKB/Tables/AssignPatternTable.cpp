@@ -17,10 +17,10 @@ unordered_set<string> AssignPatternTable::getAllStmtsFromFullPattern(TNode *patt
     return patternRelation.get(pattern).getKeys();
 }
 
-unordered_set<string> AssignPatternTable::getStmtFromFullPatternNVar(TNode *patternAST, string varName) {
+unordered_set<string> AssignPatternTable::getStmtFromFullPatternNVar(TNode *patternAST, const string &varName) {
     string pattern = TreeUtils::serialize(patternAST);
     if (!patternRelation.hasKey(pattern)) { return {}; }
-    return patternRelation.get(pattern).getKeysFromValue(move(varName));
+    return patternRelation.get(pattern).getKeysFromValue(varName);
 }
 
 vector<pair<string, string>> AssignPatternTable::getStmtNVarFromFullPattern(TNode *patternAST) {

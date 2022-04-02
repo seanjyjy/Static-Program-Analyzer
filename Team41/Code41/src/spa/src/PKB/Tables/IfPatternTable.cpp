@@ -8,8 +8,8 @@ void IfPatternTable::setPattern(const string &stmtNum, const string &predVariabl
     patternRelation.addMapping(stmtNum, predVariable);
 }
 
-unordered_set<string> IfPatternTable::getStmtFromVar(string varName) {
-    return patternRelation.getKeysFromValue(move(varName));
+unordered_set<string> IfPatternTable::getStmtFromVar(const string &varName) {
+    return patternRelation.getKeysFromValue(varName);
 }
 
 vector<pair<string, string>> IfPatternTable::getStmtNVar() {

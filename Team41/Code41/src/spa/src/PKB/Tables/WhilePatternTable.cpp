@@ -8,7 +8,7 @@ void WhilePatternTable::setPattern(const string &stmtNum, const string &predVari
     patternRelation.addMapping(stmtNum, predVariable);
 }
 
-unordered_set<string> WhilePatternTable::getStmtFromVar(string varName) {
+unordered_set<string> WhilePatternTable::getStmtFromVar(const string &varName) {
     return patternRelation.getKeysFromValue(varName);
 }
 

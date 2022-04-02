@@ -28,16 +28,16 @@ CFGNode *PKBCFGClient::getRootCFG() const {
 
 //=========================================== Next ===================================================
 
-bool PKBCFGClient::isNext(string stmt1, string stmt2) const {
-    return nextTable->isNext(move(stmt1), move(stmt2));
+bool PKBCFGClient::isNext(const string &stmt1, const string &stmt2) const {
+    return nextTable->isNext(stmt1, stmt2);
 }
 
-vector<CFGNode *> PKBCFGClient::getNextNodes(string stmt) const {
-    return nextTable->getNextNodes(move(stmt));
+vector<CFGNode *> PKBCFGClient::getNextNodes(const string &stmt) const {
+    return nextTable->getNextNodes(stmt);
 }
 
-vector<CFGNode *> PKBCFGClient::getPrevNodes(string stmt) const {
-    return nextTable->getPrevNodes(move(stmt));
+vector<CFGNode *> PKBCFGClient::getPrevNodes(const string &stmt) const {
+    return nextTable->getPrevNodes(stmt);
 }
 
 vector<pair<string, string>> PKBCFGClient::getAllNext() const {

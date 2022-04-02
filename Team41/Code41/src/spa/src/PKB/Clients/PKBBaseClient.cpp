@@ -28,17 +28,17 @@ unordered_set<string> PKBBaseClient::getPrints() const { return stmtTable->getAl
 
 unordered_set<string> PKBBaseClient::getCalls() const { return stmtTable->getAllStmtsByType(CALL); }
 
-bool PKBBaseClient::isAssignStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), ASSIGN); }
+bool PKBBaseClient::isAssignStmt(const string &stmtNum) const { return stmtTable->isStmtType(stmtNum, ASSIGN); }
 
-bool PKBBaseClient::isWhileStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), WHILE); }
+bool PKBBaseClient::isWhileStmt(const string &stmtNum) const { return stmtTable->isStmtType(stmtNum, WHILE); }
 
-bool PKBBaseClient::isIfStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), IF); }
+bool PKBBaseClient::isIfStmt(const string &stmtNum) const { return stmtTable->isStmtType(stmtNum, IF); }
 
-bool PKBBaseClient::isReadStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), READ); }
+bool PKBBaseClient::isReadStmt(const string &stmtNum) const { return stmtTable->isStmtType(stmtNum, READ); }
 
-bool PKBBaseClient::isPrintStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), PRINT); }
+bool PKBBaseClient::isPrintStmt(const string &stmtNum) const { return stmtTable->isStmtType(stmtNum, PRINT); }
 
-bool PKBBaseClient::isCallStmt(string stmtNum) const { return stmtTable->isStmtType(move(stmtNum), CALL); }
+bool PKBBaseClient::isCallStmt(const string &stmtNum) const { return stmtTable->isStmtType(stmtNum, CALL); }
 
 size_t PKBBaseClient::getStatementCount() const { return stmtTable->getStmtCount(); }
 
@@ -54,20 +54,20 @@ size_t PKBBaseClient::getPrintCount() const { return stmtTable->getStmtCount(PRI
 
 size_t PKBBaseClient::getCallCount() const { return stmtTable->getStmtCount(CALL); }
 
-string PKBBaseClient::getCallsProcNameAttr(string stmtNum) const {
-    return isCallStmt(stmtNum) ? stmtTable->getStmtAttr(move(stmtNum)) : "";
+string PKBBaseClient::getCallsProcNameAttr(const string &stmtNum) const {
+    return isCallStmt(stmtNum) ? stmtTable->getStmtAttr(stmtNum) : "";
 }
 
-string PKBBaseClient::getPrintVarNameAttr(string stmtNum) const {
-    return isPrintStmt(stmtNum) ? stmtTable->getStmtAttr(move(stmtNum)) : "";
+string PKBBaseClient::getPrintVarNameAttr(const string &stmtNum) const {
+    return isPrintStmt(stmtNum) ? stmtTable->getStmtAttr(stmtNum) : "";
 }
 
-string PKBBaseClient::getReadVarNameAttr(string stmtNum) const {
-    return isReadStmt(stmtNum) ? stmtTable->getStmtAttr(move(stmtNum)) : "";
+string PKBBaseClient::getReadVarNameAttr(const string &stmtNum) const {
+    return isReadStmt(stmtNum) ? stmtTable->getStmtAttr(stmtNum) : "";
 }
 
-bool PKBBaseClient::hasStmt(string stmtNum) const {
-    return stmtTable->getStmtType(move(stmtNum)) != StmtType::UNKNOWN_STMT;
+bool PKBBaseClient::hasStmt(const string &stmtNum) const {
+    return stmtTable->getStmtType(stmtNum) != StmtType::UNKNOWN_STMT;
 }
 
 //======================================== Entities ==================================================
@@ -80,11 +80,11 @@ unordered_set<string> PKBBaseClient::getProcedures() const { return entityTable-
 
 unordered_set<string> PKBBaseClient::getStatements() const { return stmtTable->getAllStmts(); }
 
-bool PKBBaseClient::isConstant(string constVal) const { return entityTable->isConstant(move(constVal)); }
+bool PKBBaseClient::isConstant(const string &constVal) const { return entityTable->isConstant(constVal); }
 
-bool PKBBaseClient::isProcedure(string procName) const { return entityTable->isProcedure(move(procName)); }
+bool PKBBaseClient::isProcedure(const string &procName) const { return entityTable->isProcedure(procName); }
 
-bool PKBBaseClient::isVariable(string varName) const { return entityTable->isVariable(move(varName)); }
+bool PKBBaseClient::isVariable(const string &varName) const { return entityTable->isVariable(varName); }
 
 size_t PKBBaseClient::getConstantCount() const { return entityTable->getEntityCount(CONST); }
 

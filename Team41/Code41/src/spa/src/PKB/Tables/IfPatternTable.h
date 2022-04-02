@@ -29,7 +29,7 @@ public:
      * @param varName the variable in the condition block
      * @return the set of if statements that uses the variable in condition
      */
-    unordered_set<string> getStmtFromVar(string varName);
+    unordered_set<string> getStmtFromVar(const string &varName);
 
     /**
      * Gets all ifStmt-variable pair
