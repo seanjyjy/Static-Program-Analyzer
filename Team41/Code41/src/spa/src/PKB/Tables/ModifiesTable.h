@@ -27,8 +27,9 @@ public:
      */
     void setVarModifiedInStmt(const string &stmtNum, const string &varName);
 
-    unordered_set<string> getVarsModifiedInStmt(string stmtNum); // Gets set of variables that is modified by statement
-    unordered_set<string> getStmtsModifyingVar(string varName); // Gets set of statements that modifies variable
+    unordered_set<string>
+    getVarsModifiedInStmt(const string &stmtNum); // Gets set of variables that is modified by statement
+    unordered_set<string> getStmtsModifyingVar(const string &varName); // Gets set of statements that modifies variable
     vector<pair<string, string>> getStmtsVarEntries(); // Gets list of stmt-var pair where stmt modifies var
     unordered_set<string> getVarsModifiedInSomeStmt(); // Gets set of var where var is modified by some stmt
     unordered_set<string> getStmtsModifyingSomeVar(); // Gets set of stmt where stmt modifies some var
@@ -42,11 +43,11 @@ public:
      */
     void setVarModifiedInProc(const string &procName, const string &varName);
 
-    unordered_set<string> getVarsModifiedInProc(string procName);// Gets set of variables that is modified by procedure
-    unordered_set<string> getProcsModifyingVar(string varName);// Gets set of procedures that modifies specified var
+    unordered_set<string> getVarsModifiedInProc(const string &procName);// Gets variables that are modified by procedure
+    unordered_set<string> getProcsModifyingVar(const string &varName);// Gets procedures that modify specified var
     vector<pair<string, string>> getProcVarEntries(); // Gets list of proc-var pair where proc modifies var
     unordered_set<string> getVarsModifiedInSomeProc(); // Gets set of var where var is modified by some proc
     unordered_set<string> getProcsModifyingSomeVar(); // Gets set of proc where proc modifies some var
-    bool isModifiesP(string procName, string varName);// Checks if procedure modifies variable
+    bool isModifiesP(const string &procName, const string &varName);// Checks if procedure modifies variable
 };
 

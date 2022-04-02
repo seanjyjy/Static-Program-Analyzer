@@ -8,18 +8,18 @@ using namespace std;
 StmtTable::StmtTable() : stmtMapping("StmtTable") {}
 
 unordered_set<string> StmtTable::getAllStmtsByType(StmtType type) {
-    return stmtMapping.getValuesFromKey(move(type));
+    return stmtMapping.getValuesFromKey(type);
 }
 
-StmtType StmtTable::getStmtType(const string & stmtNumber) {
+StmtType StmtTable::getStmtType(const string &stmtNumber) {
     return stmtMapping.getKeyFromValue(stmtNumber);
 }
 
-string StmtTable::getStmtAttr(const string & stmtNumber) {
+string StmtTable::getStmtAttr(const string &stmtNumber) {
     return attrMapping.find(stmtNumber) == attrMapping.end() ? "" : attrMapping[stmtNumber];
 }
 
-bool StmtTable::isStmtType(const string & stmtNumber, StmtType type) {
+bool StmtTable::isStmtType(const string &stmtNumber, StmtType type) {
     return stmtMapping.hasMapping(type, stmtNumber);
 }
 
@@ -32,7 +32,7 @@ void StmtTable::setStmtAttr(const string &stmtNum, const string &attr) {
 }
 
 size_t StmtTable::getStmtCount(StmtType type) {
-    return stmtMapping.size(move(type));
+    return stmtMapping.size(type);
 }
 
 size_t StmtTable::getStmtCount() {

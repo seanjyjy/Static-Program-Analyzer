@@ -19,36 +19,36 @@ void ParentTable::setParentT(const string &ancestorStmt, const string &descendan
     ancestorRelation.addMapping(ancestorStmt, descendantStmt);
 }
 
-unordered_set<string> ParentTable::getAllChildrenOf(string parentStmt) {
-    return parentRelation.getValuesFromKey(move(parentStmt));
+unordered_set<string> ParentTable::getAllChildrenOf(const string &parentStmt) {
+    return parentRelation.getValuesFromKey(parentStmt);
 }
 
-string ParentTable::getParentOf(string childStatement) {
-    return parentRelation.getKeyFromValue(move(childStatement));
+string ParentTable::getParentOf(const string &childStatement) {
+    return parentRelation.getKeyFromValue(childStatement);
 }
 
 vector<pair<string, string>> ParentTable::getParentEntries() {
     return parentRelation.getEntries();
 }
 
-bool ParentTable::isParent(string parentStmt, string childStmt) {
-    return parentRelation.hasMapping(move(parentStmt), move(childStmt));
+bool ParentTable::isParent(const string &parentStmt, const string &childStmt) {
+    return parentRelation.hasMapping(parentStmt, childStmt);
 }
 
-unordered_set<string> ParentTable::getAllDescendantsOf(string parentStmt) {
-    return ancestorRelation.getValuesFromKey(move(parentStmt));
+unordered_set<string> ParentTable::getAllDescendantsOf(const string &parentStmt) {
+    return ancestorRelation.getValuesFromKey(parentStmt);
 }
 
-unordered_set<string> ParentTable::getAllAncestorsOf(string childStmt) {
-    return ancestorRelation.getKeysFromValue(move(childStmt));
+unordered_set<string> ParentTable::getAllAncestorsOf(const string &childStmt) {
+    return ancestorRelation.getKeysFromValue(childStmt);
 }
 
 vector<pair<string, string>> ParentTable::getParentTEntries() {
     return ancestorRelation.getEntries();
 }
 
-bool ParentTable::isParentT(string parentStmt, string childStmt) {
-    return ancestorRelation.hasMapping(move(parentStmt), move(childStmt));
+bool ParentTable::isParentT(const string &parentStmt, const string &childStmt) {
+    return ancestorRelation.hasMapping(parentStmt, childStmt);
 }
 
 unordered_set<string> ParentTable::getStmtsParentOfSomeStmt() {

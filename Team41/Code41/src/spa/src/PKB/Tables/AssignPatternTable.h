@@ -43,7 +43,7 @@ public:
      * @param varName the LHS variable name
      * @return the set of assignment statements that matches the pattern and modifies the variable
      */
-    unordered_set<string> getStmtFromFullPatternNVar(TNode *patternAST, string varName);
+    unordered_set<string> getStmtFromFullPatternNVar(TNode *patternAST, const string &varName);
 
     /**
      * Get assignStmt-variable pair based on full pattern

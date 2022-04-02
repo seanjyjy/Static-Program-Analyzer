@@ -26,36 +26,36 @@ void CallsTable::setCallsT(const string &caller, const string &callee) {
     callsTRelation.addMapping(caller, callee);
 }
 
-unordered_set<string> CallsTable::getProcsCalledBy(string caller) {
-    return callsRelation.getValuesFromKey(move(caller));
+unordered_set<string> CallsTable::getProcsCalledBy(const string &caller) {
+    return callsRelation.getValuesFromKey(caller);
 }
 
-unordered_set<string> CallsTable::getProcsCalling(string callee) {
-    return callsRelation.getKeysFromValue(move(callee));
+unordered_set<string> CallsTable::getProcsCalling(const string &callee) {
+    return callsRelation.getKeysFromValue(callee);
 }
 
 vector<pair<string, string>> CallsTable::getCallsEntries() {
     return callsRelation.getEntries();
 }
 
-bool CallsTable::isCalls(string caller, string callee) {
-    return callsRelation.hasMapping(move(caller), move(callee));
+bool CallsTable::isCalls(const string &caller, const string &callee) {
+    return callsRelation.hasMapping(caller, callee);
 }
 
-unordered_set<string> CallsTable::getProcsCalledTBy(string caller) {
-    return callsTRelation.getValuesFromKey(move(caller));
+unordered_set<string> CallsTable::getProcsCalledTBy(const string &caller) {
+    return callsTRelation.getValuesFromKey(caller);
 }
 
-unordered_set<string> CallsTable::getProcsCallingT(string callee) {
-    return callsTRelation.getKeysFromValue(move(callee));
+unordered_set<string> CallsTable::getProcsCallingT(const string &callee) {
+    return callsTRelation.getKeysFromValue(callee);
 }
 
 vector<pair<string, string>> CallsTable::getCallsTEntries() {
     return callsTRelation.getEntries();
 }
 
-bool CallsTable::isCallsT(string caller, string callee) {
-    return callsTRelation.hasMapping(move(caller), move(callee));
+bool CallsTable::isCallsT(const string &caller, const string &callee) {
+    return callsTRelation.hasMapping(caller, callee);
 }
 
 unordered_set<string> CallsTable::getProcsCalledBySomeProc() {

@@ -25,8 +25,8 @@ unordered_set<string> PKBPatternClient::getAssignStmtFromPattern(TNode *patternA
     return assignPatternTable->getAllStmtsFromFullPattern(patternAST);
 }
 
-unordered_set<string> PKBPatternClient::getAssignStmtFromPatternNVar(TNode *patternAST, string varName) const {
-    return assignPatternTable->getStmtFromFullPatternNVar(patternAST, std::move(varName));
+unordered_set<string> PKBPatternClient::getAssignStmtFromPatternNVar(TNode *patternAST, const string &varName) const {
+    return assignPatternTable->getStmtFromFullPatternNVar(patternAST, varName);
 }
 
 vector<pair<string, string>> PKBPatternClient::getAssignStmtNVarFromPattern(TNode *patternAST) const {
@@ -48,8 +48,8 @@ vector<pair<string, string>> PKBPatternClient::getAssignStmtNVarFromSubpattern(T
 
 //======================================== If ==================================================
 
-unordered_set<string> PKBPatternClient::getIfStmtUsingVarCond(string varName) const {
-    return ifPatternTable->getStmtFromVar(std::move(varName));
+unordered_set<string> PKBPatternClient::getIfStmtUsingVarCond(const string &varName) const {
+    return ifPatternTable->getStmtFromVar(varName);
 }
 
 vector<pair<string, string>> PKBPatternClient::getIfStmtNVarPairs() const {
@@ -62,8 +62,8 @@ unordered_set<string> PKBPatternClient::getIfStmtUsingSomeVarCond() const {
 
 //======================================== While ==================================================
 
-unordered_set<string> PKBPatternClient::getWhileStmtUsingVarCond(string varName) const {
-    return whilePatternTable->getStmtFromVar(std::move(varName));
+unordered_set<string> PKBPatternClient::getWhileStmtUsingVarCond(const string &varName) const {
+    return whilePatternTable->getStmtFromVar(varName);
 }
 
 vector<pair<string, string>> PKBPatternClient::getWhileStmtNVarPairs() const {

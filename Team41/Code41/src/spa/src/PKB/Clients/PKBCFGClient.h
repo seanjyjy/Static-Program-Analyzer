@@ -41,17 +41,17 @@ public:
     /**
      * Checks if stmt2 can be executed immediately after stmt1
      */
-    bool isNext(string stmt1, string stmt2) const;
+    bool isNext(const string &stmt1, const string &stmt2) const;
 
     /**
      * Get the nodes that are executed directly after stmt
      */
-    [[nodiscard]] vector<CFGNode *> getNextNodes(string stmt) const;
+    [[nodiscard]] vector<CFGNode *> getNextNodes(const string &stmt) const;
 
     /**
      * Gets the nodes that are executed directly before stmt
      */
-    [[nodiscard]] vector<CFGNode *> getPrevNodes(string stmt) const;
+    [[nodiscard]] vector<CFGNode *> getPrevNodes(const string &stmt) const;
 
     /**
      * Gets stmts pair where stmt1 are executed directly after stmt2

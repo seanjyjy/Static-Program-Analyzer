@@ -39,7 +39,7 @@ public:
     /**
      * Gets list of assignStmt from pattern and varName
      */
-    unordered_set<string> getAssignStmtFromPatternNVar(TNode *patternAST, string varName) const;
+    unordered_set<string> getAssignStmtFromPatternNVar(TNode *patternAST, const string &varName) const;
 
     /**
      * Gets list of assignStmt-varName from pattern
@@ -66,7 +66,7 @@ public:
     /**
      * Gets list of ifStmt from condition variable
      */
-    unordered_set<string> getIfStmtUsingVarCond(string varName) const;
+    unordered_set<string> getIfStmtUsingVarCond(const string &varName) const;
 
     /**
      * Gets list of ifStmt-variable where ifStmt uses variable in condition
@@ -83,7 +83,7 @@ public:
     /**
      * Gets list of whileStmt from condition variable
      */
-    unordered_set<string> getWhileStmtUsingVarCond(string varName) const;
+    unordered_set<string> getWhileStmtUsingVarCond(const string &varName) const;
 
     /**
      * Gets list of whileStmt-variable where whileStmt uses variable in condition
