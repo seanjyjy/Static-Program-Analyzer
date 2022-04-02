@@ -42,7 +42,7 @@ void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
         const vector<TNode *> &ch = node->getChildren();
         for (size_t i = 1; i <= 2; ++i) { // ifStmt has stmtLst on 2nd and 3rd child
             dfs(ch[i], parentLstChild);
-            DesignExtractorUtils::combineListsClear(parentLst, parentLstChild);;
+            DesignExtractorUtils::combineListsClear(parentLst, parentLstChild);
         }
         mapParent(node);
         mapParentT(node, parentLst);
