@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Common/CFGNode.h"
+#include "Common/CFGUtils.h"
 #include "PKB/Tables/NextTable.h"
 
 using namespace std;

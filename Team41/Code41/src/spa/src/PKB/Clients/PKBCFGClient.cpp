@@ -11,6 +11,7 @@ PKBCFGClient::PKBCFGClient() {
 
 PKBCFGClient::~PKBCFGClient() {
     delete nextTable;
+    CFGUtils::deleteCFG(stmtToNodeMap);
 }
 
 //=========================================== CFG =======================================================
