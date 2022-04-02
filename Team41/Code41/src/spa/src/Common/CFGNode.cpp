@@ -5,6 +5,8 @@
 
 CFGNode::CFGNode(string stmtNum) : stmtNum(stmtNum) {}
 
+CFGNode::~CFGNode() = default;
+
 void CFGNode::addChild(CFGNode *node) {
     children.push_back(node);
 }
