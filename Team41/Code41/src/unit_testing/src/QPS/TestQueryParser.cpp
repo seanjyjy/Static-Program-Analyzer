@@ -611,6 +611,17 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getSuperClauses().at(0)->getSuchThatClause().getLeftClauseVariable().getLabel() == "0");
         REQUIRE(qo->getSuperClauses().at(0)->getSuchThatClause().getLeftClauseVariable().isInteger());
     }
+    SECTION("Differentiate integer and name") {
+        string s = "stmt s;\n"
+                   "Select BOOLEAN with s.stmt#=1and s.stmt# = s.stmt#";
+        QueryParser qp = QueryParser{s};
+        qo = qp.parse();
+        REQUIRE(qo->isValid());
+        REQUIRE_FALSE(qo->hasUseOfUndeclaredVariable());
+        REQUIRE(qo->getSuperClauses().at(0)->getWithClause().getLeft().getSynonym().getSynonym() == "s");
+        REQUIRE(qo->getSuperClauses().at(0)->getWithClause().getLeft().getAttr() == WithVariable::STMT_NUM);
+        REQUIRE(qo->getSuperClauses().at(0)->getWithClause().getRight().getInteger() == "1");
+    }
 
     delete qo;
 }

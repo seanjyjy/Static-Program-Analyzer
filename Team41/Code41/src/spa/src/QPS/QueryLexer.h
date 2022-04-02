@@ -79,6 +79,14 @@ public:
     string nextToken();
 
     /**
+     * Returns the next integer token parsed in the input.
+     * index is updated too.
+     *
+     * @return string representing the found token.
+     */
+    string nextInteger();
+
+    /**
      * Returns a declaration type expected in the next token.
      * index is updated too.
      *

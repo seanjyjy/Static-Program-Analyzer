@@ -1208,3 +1208,8 @@ print pn, pn2;
 Select BOOLEAN with pn.stmt# = pn2.varName
 FALSE
 5000
+243 - with clause no space between int and name
+stmt s;
+Select BOOLEAN with s.stmt#=1and s.stmt#=s.stmt#
+TRUE
+5000

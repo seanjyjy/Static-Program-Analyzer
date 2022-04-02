@@ -40,12 +40,34 @@ string QueryLexer::nextToken() {
         index++;
         return out;
     }
+    if (isdigit(curr)) {
+        return nextInteger();
+    }
     while (!isSpecialChar(curr)) {
         if (isSpecialChar(curr)) {
             break;
         } else {
             out.push_back(curr);
         }
+        index++;
+        if (index >= len) {
+            break;
+        }
+        curr = input.at(index);
+    }
+    return out;
+}
+
+string QueryLexer::nextInteger() {
+    int len = (int) input.length();
+    if (index >= len) {
+        return "";
+    }
+    string out = "";
+    char curr = input.at(index);
+
+    while (isdigit(curr)) {
+        out.push_back(curr);
         index++;
         if (index >= len) {
             break;
