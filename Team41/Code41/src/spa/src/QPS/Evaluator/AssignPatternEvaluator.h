@@ -19,6 +19,7 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @param patternSyn QueryDeclaration that contains the pattern synonym.
      * @param right Pattern variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the Pattern relation between a wildcard and a full pattern.
      */
     Table *evaluateWildCardFullPattern(QueryDeclaration &patternSyn, PatternVariable &right, bool canSimplify);
@@ -29,6 +30,7 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @param patternSyn QueryDeclaration that contains the pattern synonym.
      * @param right Pattern variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the Pattern relation between a wildcard and a sub pattern.
      */
     Table *evaluateWildCardSubPattern(QueryDeclaration &patternSyn, PatternVariable &right, bool canSimplify);
@@ -39,6 +41,7 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @param patternSyn QueryDeclaration that contains the pattern synonym.
      * @param right Pattern variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the Pattern relation between an identifier and a full pattern.
      */
     Table *evaluateIdentifierFullPattern(QueryDeclaration &patternSyn, const ClauseVariable &left,
@@ -50,6 +53,7 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @param patternSyn QueryDeclaration that contains the pattern synonym.
      * @param right Pattern variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the Pattern relation between an identifier and a sub pattern.
      */
     Table *
@@ -62,6 +66,7 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @param patternSyn QueryDeclaration that contains the pattern synonym.
      * @param right Pattern variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the Pattern relation between a synonym and a full pattern.
      */
     Table *evaluateSynonymFullPattern(QueryDeclaration &patternSyn, ClauseVariable &left, PatternVariable &right,
@@ -73,6 +78,7 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @param patternSyn QueryDeclaration that contains the pattern synonym.
      * @param right Pattern variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the Pattern relation between a synonym and a sub pattern.
      */
     Table *evaluateSynonymSubPattern(QueryDeclaration &patternSyn, ClauseVariable &left, PatternVariable &right,
@@ -84,6 +90,7 @@ public:
      * @param pkb A knowledge base based on the Source Program.
      * @param patternSyn QueryDeclaration that contains the pattern synonym.
      * @param right Pattern variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the Pattern relation between a synonym and a wildcard.
      */
     Table *evaluateSynonymWildCard(QueryDeclaration &patternSyn, ClauseVariable &left, bool canSimplify);
@@ -93,6 +100,7 @@ public:
      *
      * @param patternSyn QueryDeclaration that contains the pattern synonym.
      * @param leftVariable Pattern variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the Pattern relation between an identifier and a wildcard.
      */
     Table *evaluateIdentifierWildCard(QueryDeclaration &patternSynonym, ClauseVariable &leftVariable, bool canSimplify);

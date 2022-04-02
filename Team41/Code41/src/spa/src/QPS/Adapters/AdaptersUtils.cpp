@@ -1,7 +1,7 @@
 #include "AdaptersUtils.h"
 
-void AdaptersUtils::runBFS(bool isForward, const CacheCallback &cacheAndContinue, const TerminateCheck &canTerminate,
-                           CFGNode *startNode) {
+void AdaptersUtils::runBFS(bool isForward, CFGNode *startNode, const CacheCallback &cacheAndContinue,
+                           const TerminateCheck &canTerminate) {
 
     if (startNode == nullptr) return;
 
@@ -55,7 +55,7 @@ void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache *ca
         return hasNextT;
     };
 
-    runBFS(true, saveToCache, canEnd, node);
+    runBFS(true, node, saveToCache, canEnd);
 }
 
 void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *node) {
@@ -75,9 +75,7 @@ void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *nod
         return false;
     };
 
-    TerminateCheck canEnd = [](CFGNode *) { return false; };
-
-    runBFS(true, saveToCache, canEnd, node);
+    runBFS(true, node, saveToCache);
 }
 
 void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node) {
@@ -98,9 +96,7 @@ void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node)
         return false;
     };
 
-    TerminateCheck canEnd = [](CFGNode *) { return false; };
-
-    runBFS(false, saveToCache, canEnd, node);
+    runBFS(false, node, saveToCache);
 }
 
 void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
@@ -108,7 +104,8 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
     queue<CFGNode *> mainQ;
 
     // we cannot start with root its 0!
-    for (auto &startProc: node->getChildren()) {
+    const vector<CFGNode *> &procedures = node->getChildren();
+    for (auto &startProc: procedures) {
         mainQ.push(startProc);
         mainVisited.insert(startProc);
     }
@@ -135,11 +132,7 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
             return true;
         };
 
-        TerminateCheck canEnd = [](CFGNode *) {
-            return false;
-        };
-
-        runBFS(true, saveToCache, canEnd, curr);
+        runBFS(true, curr, saveToCache);
         mainQ.pop();
     }
 }
@@ -150,7 +143,7 @@ CFGNode *AdaptersUtils::getStartingParentNode(CFGNode *rootCFG, const string &st
     const vector<CFGNode *> &children = rootCFG->getChildren();
 
     // Binary search for first element that is greater than stmt
-    auto result = std::upper_bound(children.begin(), children.end(), stmtNum, [](int value, CFGNode *currNode) {
+    auto result = upper_bound(children.begin(), children.end(), stmtNum, [](int value, CFGNode *currNode) {
         return value < stoi(currNode->getStmtNum());
     });
 

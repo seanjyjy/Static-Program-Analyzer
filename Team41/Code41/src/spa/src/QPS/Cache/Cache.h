@@ -20,20 +20,44 @@ private:
     unordered_set<string> getMapping(Mapping map, const string &key);
 
 public:
-    void registerForwardMapping(const string &key, const string &value); // register key-value pair in forward mapping
+    /**
+     * Register key-value pair in forward mapping
+     */
+    void registerForwardMapping(const string &key, const string &value);
 
-    void registerBackwardMapping(const string &key, const string &value); // register key-value pair in backward mapping
+    /**
+     * Register key-value pair in backward mapping
+     */
+    void registerBackwardMapping(const string &key, const string &value);
 
-    void registerBooleanMapping(const string &key, const string &value); // register key-value pair in boolean mapping
+    /**
+     * Register key-value pair in boolean mapping
+     */
+    void registerBooleanMapping(const string &key, const string &value);
 
-    unordered_set<string> getForwardMapping(const string &key); // retrieves the forward mapping for certain key
+    /**
+     * Retrieves the forward mapping for certain key
+     */
+    unordered_set<string> getForwardMapping(const string &key);
 
-    unordered_set<string> getBackwardMapping(const string &key); // retrieves the backward mapping for certain key
+    /**
+     * Retrieves the backward mapping for certain key
+     */
+    unordered_set<string> getBackwardMapping(const string &key);
 
-    bool getBooleanMapping(const string &key, const string &value); // checks if key value pair exist in boolean mapping
+    /**
+     * Checks if key value pair exist in boolean mapping
+     */
+    bool getBooleanMapping(const string &key, const string &value);
 
-    vector<pair<string, string>> getAllMapping(); // retrieves all mapping
+    /**
+     * Retrieves all mapping
+     */
+    vector<pair<string, string>> getAllMapping();
 
-    void addAllMappingPair(const pair<string, string> &pair); // add a pair into the vector of mappings
+    /**
+     * Add a pair into the vector of mappings
+     */
+    void addAllMappingPair(const pair<string, string> &pair);
 };
 
