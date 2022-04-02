@@ -51,18 +51,18 @@ void TestOptimizerUtils::ensureOQOIsCorrect(string &query, PKBManager &pkbManage
 
     // extract clauses from original
     vector<SuperClause*> originalClauses(qo->getSuperClauses());
-    unordered_set<SuperClause> originalSet;
+    unordered_set<SuperClause*, PointedSuperClauseHash, PointedSuperClauseEq> originalSet;
     for (SuperClause *cl: originalClauses) {
-        originalSet.insert(*cl);
+        originalSet.insert(cl);
     }
 
     // extract clauses from optimized
     vector<SuperClause*> optimizedClauses;
-    unordered_set<SuperClause> optimizedSet;
+    unordered_set<SuperClause*, PointedSuperClauseHash, PointedSuperClauseEq> optimizedSet;
     while (!oqo.empty()) {
         SuperClause *cl = oqo.popClause();
         optimizedClauses.push_back(cl);
-        optimizedSet.insert(*cl);
+        optimizedSet.insert(cl);
     }
 
     // query optimizer should not duplicate clauses
@@ -71,8 +71,7 @@ void TestOptimizerUtils::ensureOQOIsCorrect(string &query, PKBManager &pkbManage
     // query optimizer should not add or remove new clauses
     REQUIRE(originalSet.size() == optimizedSet.size());
 
-    // TODO delete causing bugs in some places, ignore memory leaks for now
-//    delete qo;
+    delete qo;
 }
 
 void TestOptimizerUtils::print(vector<QueryDeclaration> arr) {
@@ -90,6 +89,7 @@ vector<vector<SuperClause *>> TestOptimizerUtils::prepareClauseGroups(string &s)
     for (SuperClause *cl: queryObject->getSuperClauses()) {
         g.registerClause(cl);
     }
+    queryObject->cleanUp();
     return g.split();
 }
 
@@ -193,9 +193,5 @@ void TestOptimizerUtils::testGroupandGroupsAbstractions(string &query) {
     REQUIRE(fg.empty());
     REQUIRE(sg.empty());
     REQUIRE(pg.empty());
-
-    // cleanup
-    for (ClauseGroup *cg: fifoGroups) delete (FifoGroup*) cg;
-    for (ClauseGroup *cg: sortedGroups) delete (SortedGroup*) cg;
-    for (ClauseGroup *cg: pkbAwareGroups) delete (PKBAwareGroup*) cg;
+    queryObject->cleanUp();
 }

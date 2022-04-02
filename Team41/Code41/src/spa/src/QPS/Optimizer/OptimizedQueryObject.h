@@ -32,6 +32,8 @@ public:
      */
     OptimizedQueryObject(QueryObject *qo, ClauseGroups *cg);
 
+    ~OptimizedQueryObject();
+
     SuperClause *popClause() override;
 
     size_t currGroupSize() override;

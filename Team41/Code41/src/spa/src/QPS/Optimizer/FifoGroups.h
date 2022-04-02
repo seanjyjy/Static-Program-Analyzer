@@ -20,6 +20,8 @@ public:
      */
     FifoGroups(vector<ClauseGroup*> groups);
 
+    ~FifoGroups() override;
+
     /**
      * Removes and returns the next clause in FIFO order from the current group.
      * @throws runtime_error if there are no more clauses to pop.

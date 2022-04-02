@@ -48,7 +48,7 @@ void QueryDeclaration::print() {
 }
 
 bool QueryDeclaration::equals(QueryDeclaration other) const {
-    if (type != other.getType())
+    if (type->hashCode() != other.getType()->hashCode())
         return false;
     if (synonym != other.getSynonym())
         return false;

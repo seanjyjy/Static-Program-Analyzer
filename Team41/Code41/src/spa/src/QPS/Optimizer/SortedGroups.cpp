@@ -6,6 +6,12 @@ SortedGroups::SortedGroups(vector<ClauseGroup*> groups) {
     it = sortedGroups.begin();
 }
 
+SortedGroups::~SortedGroups() {
+    for (auto grp: sortedGroups) {
+        delete grp;
+    }
+}
+
 SuperClause *SortedGroups::pop() {
     if (empty()) throw runtime_error("no more groups");
     return (*it)->pop();

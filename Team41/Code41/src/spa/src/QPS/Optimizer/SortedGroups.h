@@ -42,6 +42,8 @@ public:
      */
     SortedGroups(vector<ClauseGroup*> groups);
 
+    ~SortedGroups() override;
+
     SuperClause *pop() override;
 
     bool empty() override;

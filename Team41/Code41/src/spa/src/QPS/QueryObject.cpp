@@ -1,6 +1,4 @@
 #include "QueryObject.h"
-#include "QueryDeclaration.h"
-
 
 #include <utility>
 
@@ -76,14 +74,15 @@ vector<Selectable> QueryObject::getSelectables() {
     return selectTarget.getSelectable();
 }
 
-QueryObject::~QueryObject() {
-    for (PatternClause pList: patternClauses) {
-        for (PatternVariable p : pList.getRHS()){
-            p.cleanAST();
-        }
+void QueryObject::cleanUp() {
+    for (PatternClause pattern: patternClauses) {
+        pattern.cleanUp();
     }
     for (auto declaration : declarations) {
         declaration.cleanUp();
+    }
+    for (auto cl : superClauses) {
+        delete cl;
     }
 }
 

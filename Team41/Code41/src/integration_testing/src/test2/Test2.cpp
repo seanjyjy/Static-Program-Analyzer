@@ -33,6 +33,7 @@ TEST_CASE("Test 2") {
 
         unordered_set<string> answer{"i", "x", "y", "z"};
         REQUIRE(result == answer);
+        queryObject->cleanUp();
         delete queryObject;
     }
 }

@@ -64,7 +64,7 @@ void TestWrapper::evaluate(std::string query, std::list<std::string> &results) {
     // store the answers to the query in the results list (it is initially empty)
     // each result must be a string.
     std::copy(result.begin(), result.end(), std::back_inserter(results));
-    // TODO: TEMPORARY DONT DELETE!!!!
-    // delete queryObject;
+
+    delete queryObject;
     cout << "Done: " << query << endl;
 }

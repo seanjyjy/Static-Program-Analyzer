@@ -343,10 +343,9 @@ bool QueryParser::buildClause(string clauseStr, string left, string right) {
             rcv = ClauseVariable(rightType, r, determineDeclarationType(r));
         }
 
-        QueryClause *queryClause = new QueryClause(type, lcv, rcv);
-        queryObject->getClauses().push_back(*queryClause);
+        queryObject->getClauses().push_back({type, lcv, rcv});
 
-        SuperClause *super = new SuperClause(*queryClause);
+        SuperClause *super = new SuperClause({type, lcv, rcv});
         queryObject->getSuperClauses().push_back(super);
     } else {
         return false;
@@ -611,10 +610,9 @@ void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string l
         lcv = ClauseVariable(leftType, l, declarationType);
     }
 
-    PatternClause *pc = new PatternClause(patternSyn, lcv, rhs);
-    queryObject->getPatternClauses().push_back(*pc);
+    queryObject->getPatternClauses().push_back({patternSyn, lcv, rhs});
 
-    SuperClause *super = new SuperClause(*pc);
+    SuperClause *super = new SuperClause({patternSyn, lcv, rhs});
     queryObject->getSuperClauses().push_back(super);
 }
 
@@ -662,10 +660,9 @@ bool QueryParser::parseWithClause() {
     if (right == nullopt) {
         return false;
     }
-    WithClause* wc = new WithClause(left.value(), right.value());
-    queryObject->getWithClauses().push_back(*wc);
+    queryObject->getWithClauses().push_back({left.value(), right.value()});
 
-    SuperClause *super = new SuperClause(*wc);
+    SuperClause *super = new SuperClause({left.value(), right.value()});
     queryObject->getSuperClauses().push_back(super);
     return true;
 }
