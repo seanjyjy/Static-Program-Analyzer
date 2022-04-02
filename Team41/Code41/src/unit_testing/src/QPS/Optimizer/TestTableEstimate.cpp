@@ -16,12 +16,15 @@ TEST_CASE("Table Estimate") {
     PKBAdapter adapter(&pkbManager);
     TableEstimate tableEstimate(adapter);
 
+    StmtEntities stmtEntities;
+    VariableEntities variableEntities;
+
     // first merge - s3 v1
     string s11 = "s3";
     string s12 = "v1";
     vector<QueryDeclaration> first = {
-            {new StmtEntities(), s11},
-            {new VariableEntities(), s12},
+            {&stmtEntities, s11},
+            {&variableEntities, s12},
     };
 
     // verify post-merge state is correct
@@ -34,7 +37,7 @@ TEST_CASE("Table Estimate") {
     // second merge - s3 "x" - ignore constant
     string s21 = "s3";
     vector<QueryDeclaration> second = {
-            {new StmtEntities(), s21},
+            {&stmtEntities, s21},
     };
 
     // merge is constrained by the table with less rows
@@ -46,8 +49,8 @@ TEST_CASE("Table Estimate") {
     string s31 = "s1";
     string s32 = "s2";
     vector<QueryDeclaration> third = {
-            {new StmtEntities(), s31},
-            {new StmtEntities(), s32},
+            {&stmtEntities, s31},
+            {&stmtEntities, s32},
     };
 
     // merge is a cross-product, no common rows

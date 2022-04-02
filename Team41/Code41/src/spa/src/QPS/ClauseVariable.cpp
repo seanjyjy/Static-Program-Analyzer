@@ -49,7 +49,7 @@ bool ClauseVariable::equals(ClauseVariable other) const {
         return false;
     if (!qd.equals(other.getQueryDeclaration()))
         return false;
-    if (designEntityType != other.getDesignEntityType())
+    if (designEntityType->hashCode() != other.getDesignEntityType()->hashCode())
         return false;
     return true;
 }

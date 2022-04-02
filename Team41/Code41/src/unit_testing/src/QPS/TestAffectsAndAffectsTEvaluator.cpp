@@ -82,17 +82,22 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
     pkbManager->registerAssignStmt("7");
     TableTestUtils::registerUsesModify(pkbManager, "p", "7", {"z"}, {"z"});
 
+    StmtEntities stmtEntities;
+    AssignEntities assignEntities;
+    ConstantEntities constantEntities;
+    NoneEntities noneEntities;
+
     vector<ClauseVariable> integers;
     for (int i = 0; i <= 13; ++i) {
-        integers.push_back({ClauseVariable::variable_type::integer, std::to_string(i), new ConstantEntities()});
+        integers.push_back({ClauseVariable::variable_type::integer, std::to_string(i), &constantEntities});
     }
 
-    ClauseVariable synonymAssign1(ClauseVariable::variable_type::synonym, "a1", new AssignEntities());
-    ClauseVariable synonymAssign2(ClauseVariable::variable_type::synonym, "a2", new AssignEntities());
-    ClauseVariable synonymStmt1(ClauseVariable::variable_type::synonym, "s1", new StmtEntities());
-    ClauseVariable synonymStmt2(ClauseVariable::variable_type::synonym, "s2", new StmtEntities());
+    ClauseVariable synonymAssign1(ClauseVariable::variable_type::synonym, "a1", &assignEntities);
+    ClauseVariable synonymAssign2(ClauseVariable::variable_type::synonym, "a2", &assignEntities);
+    ClauseVariable synonymStmt1(ClauseVariable::variable_type::synonym, "s1", &stmtEntities);
+    ClauseVariable synonymStmt2(ClauseVariable::variable_type::synonym, "s2", &stmtEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", new NoneEntities());
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
 
     stack<QueryClause> clauses;
     stack<Table *> tables;
@@ -129,7 +134,8 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
 
             // invalid stmtNumber
             clauses.push({QueryClause::affects, integers[0], integers[1]});
-            REQUIRE(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top())->isFalseTable());
+            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            REQUIRE(tables.top()->isFalseTable());
         }
 
         SECTION("Integer Synonym pair") {
@@ -409,7 +415,8 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
 
             // invalid stmtNumber
             clauses.push({QueryClause::affectsT, integers[0], integers[13]});
-            REQUIRE(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top())->isFalseTable());
+            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            REQUIRE(tables.top()->isFalseTable());
         }
 
         SECTION("Integer Synonym pair") {

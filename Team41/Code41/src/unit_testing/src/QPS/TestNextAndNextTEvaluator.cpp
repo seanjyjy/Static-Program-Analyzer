@@ -31,19 +31,25 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
     pkbManager->registerPrintStmt(stmt[3], "v");
     pkbManager->registerAssignStmt(stmt[4]);
 
-    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", new ConstantEntities());
-    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", new ConstantEntities());
-    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", new ConstantEntities());
-    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", new ConstantEntities());
-    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", new ConstantEntities());
+    StmtEntities stmtEntities;
+    AssignEntities assignEntities;
+    ReadEntities readEntities;
+    ConstantEntities constantEntities;
+    NoneEntities noneEntities;
 
-    ClauseVariable synonymAssign1(ClauseVariable::variable_type::synonym, "a1", new AssignEntities());
-    ClauseVariable synonymAssign2(ClauseVariable::variable_type::synonym, "a2", new AssignEntities());
-    ClauseVariable synonymStmt1(ClauseVariable::variable_type::synonym, "s1", new StmtEntities());
-    ClauseVariable synonymStmt2(ClauseVariable::variable_type::synonym, "s2", new StmtEntities());
-    ClauseVariable synonymRead(ClauseVariable::variable_type::synonym, "r1", new ReadEntities());
+    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", &constantEntities);
+    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", &constantEntities);
+    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", &constantEntities);
+    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", &constantEntities);
+    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", &constantEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", new NoneEntities());
+    ClauseVariable synonymAssign1(ClauseVariable::variable_type::synonym, "a1", &assignEntities);
+    ClauseVariable synonymAssign2(ClauseVariable::variable_type::synonym, "a2", &assignEntities);
+    ClauseVariable synonymStmt1(ClauseVariable::variable_type::synonym, "s1", &stmtEntities);
+    ClauseVariable synonymStmt2(ClauseVariable::variable_type::synonym, "s2", &stmtEntities);
+    ClauseVariable synonymRead(ClauseVariable::variable_type::synonym, "r1", &readEntities);
+
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
 
     SECTION("Next Evaluator") {
         SECTION("Integer Integer pair") {

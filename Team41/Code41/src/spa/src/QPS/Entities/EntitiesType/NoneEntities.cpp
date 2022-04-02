@@ -17,3 +17,9 @@ NoneEntities::NoneEntities() : Entities(nullptr) {}
 NoneEntities::~NoneEntities() {
     delete reader;
 }
+
+NoneEntities* NoneEntities::getInstance()  {
+    // singleton instance in non-heap memory for automatic cleanUp
+    static NoneEntities instance;
+    return &instance;
+}

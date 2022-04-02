@@ -2,9 +2,7 @@
 
 #include <utility>
 
-QueryDeclaration::QueryDeclaration() {
-    type = new NoneEntities();
-}
+QueryDeclaration::QueryDeclaration() : type(NoneEntities::getInstance()) {}
 
 QueryDeclaration::QueryDeclaration(Entities *type, string &synonym) :
     type(type), synonym(synonym) {}
