@@ -43,8 +43,7 @@ public:
     void setVarModifiedInProc(const string &procName, const string &varName);
 
     unordered_set<string> getVarsModifiedInProc(string procName);// Gets set of variables that is modified by procedure
-    unordered_set<string>
-    getProcsModifyingVar(string varName);// Gets set of procedures that modifies specified variable
+    unordered_set<string> getProcsModifyingVar(string varName);// Gets set of procedures that modifies specified var
     vector<pair<string, string>> getProcVarEntries(); // Gets list of proc-var pair where proc modifies var
     unordered_set<string> getVarsModifiedInSomeProc(); // Gets set of var where var is modified by some proc
     unordered_set<string> getProcsModifyingSomeVar(); // Gets set of proc where proc modifies some var

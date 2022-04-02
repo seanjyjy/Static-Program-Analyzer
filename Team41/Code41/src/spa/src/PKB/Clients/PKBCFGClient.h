@@ -7,10 +7,9 @@
 using namespace std;
 
 /**
- * Used for retrieving pattern information for SIMPLE source code.
+ * Used for retrieving control flow information for SIMPLE source code.
  *
- * This PKB facade class provides methods to
- * access the information stored in various relational pattern table.
+ * This PKB facade class provides methods to access the control flow graph and basic next relation
  */
 class PKBCFGClient {
 protected:
@@ -25,8 +24,16 @@ public:
 
     //=========================================== CFG =======================================================
 
+    /**
+     * Gets the CFG for a specific stmt number
+     *
+     * @return pointer to CFG, nullptr for invalid stmtNumber
+     */
     [[nodiscard]] CFGNode *getCFGForStmt(const string &stmtNum) const;
 
+    /**
+     * Gets the root CFG of the program
+     */
     [[nodiscard]] CFGNode *getRootCFG() const;
 
     //=========================================== Next ===================================================

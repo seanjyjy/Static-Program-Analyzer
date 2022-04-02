@@ -106,29 +106,55 @@ public:
 
     /**
      * Registers to PKBManager that the specified stmt1 is parent of specified stmt2.
+     *
+     * @param parentStmt the parent statement
+     * @param childStmt the child statement
      */
     void registerParent(const string &parentStmt, const string &childStmt);
 
     /**
      * Registers to PKBManager that the specified stmt1 has ancestor-descendant relation with specified stmt2.
+     *
+     * @param parentStmt the parent statement
+     * @param childStmt the child statement
      */
     void registerParentT(const string &parentStmt, const string &childStmt);
 
     //=========================================== Uses ===================================================
 
-    void registerUsesS(const string &stmtNum,
-                       const string &varName);// Registers to PKBManager that the specified stmt uses specified var
+    /**
+     * Registers to PKBManager that the specified stmt uses the specified var
+     *
+     * @param stmtNum the stmt using the var
+     * @param varName the var being used
+     */
+    void registerUsesS(const string &stmtNum, const string &varName);
 
-    void registerUsesP(const string &procName,
-                       const string &varName);// Registers to PKBManager that the specified proc uses specified var
+    /**
+     * Registers to PKBManager that the specified proc uses specified var
+     *
+     * @param procName the proc using the var
+     * @param varName the var being used
+     */
+    void registerUsesP(const string &procName, const string &varName);
 
     //=========================================== Modifies ===================================================
 
-    void registerModifiesS(const string &stmtNum,
-                           const string &varName); // Registers to PKBManager that the stmt modifies specified var
+    /**
+     * Registers to PKBManager that the stmt modifies specified var
+     *
+     * @param procName the proc modifying the var
+     * @param varName the var being modified
+     */
+    void registerModifiesS(const string &stmtNum, const string &varName);
 
-    void registerModifiesP(const string &procName,
-                           const string &varName);// Registers to PKBManager that the proc modifies specified var
+    /**
+     * Registers to PKBManager that the proc modifies specified var
+     *
+     * @param procName the proc modifying the var
+     * @param varName the var being modified
+     */
+    void registerModifiesP(const string &procName, const string &varName);
 
     //=========================================== Pattern ===================================================
 
@@ -159,5 +185,11 @@ public:
 
     //=========================================== CFG ===================================================
 
+    /**
+     * Registers the CFG node in the PKBManager
+     *
+     * @param node the root CFGNode
+     * @param stmtToNodeMap the map of stmt number to CFGNode
+     */
     void registerCFG(CFGNode *node, const StmtToNodeMap &stmtToNodeMap);
 };

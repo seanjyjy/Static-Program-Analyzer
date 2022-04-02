@@ -38,14 +38,12 @@ public:
       */
     void setParentT(const string &parentStmt, const string &childStmt);
 
-    unordered_set<string>
-    getAllChildrenOf(string parentStmt);// Gets the set of stmts that are direct children of parentStmt
+    unordered_set<string> getAllChildrenOf(string parentStmt);// Gets the set of stmts that are direct child of parent
     string getParentOf(string childStatement); // Gets the stmt that is parent of childStmt
     vector<pair<string, string>> getParentEntries(); // Gets list of parent-child pair
     bool isParent(string parentStmt, string childStmt); // Checks if parentStmt is parent of childStmt
 
-    unordered_set<string>
-    getAllDescendantsOf(string parentStmt); // Gets the set of stmts that are descendants of parentStmt
+    unordered_set<string> getAllDescendantsOf(string parentStmt); // Gets the stmts that are descendants of parentStmt
     unordered_set<string> getAllAncestorsOf(string childStmt); // Gets the set of stmts that are ancestors of childStmt
     vector<pair<string, string>> getParentTEntries(); // Gets list of ancestor-descendant pair
     bool isParentT(string parentStmt, string childStmt); // Checks if childStmt is a descendant of parentStmt

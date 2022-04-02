@@ -33,17 +33,17 @@ void EntityTable::addVariable(const string &varName) {
     mapping.at(VAR).insert(varName);
 }
 
-bool EntityTable::isConstant(string constVal) {
+bool EntityTable::isConstant(const string &constVal) {
     unordered_set<string> consts = getConstants();
     return consts.find(move(constVal)) != consts.end();
 }
 
-bool EntityTable::isProcedure(string procName) {
+bool EntityTable::isProcedure(const string &procName) {
     unordered_set<string> procs = getProcedures();
     return procs.find(move(procName)) != procs.end();
 }
 
-bool EntityTable::isVariable(string varName) {
+bool EntityTable::isVariable(const string &varName) {
     unordered_set<string> vars = getVariables();
     return vars.find(move(varName)) != vars.end();
 }

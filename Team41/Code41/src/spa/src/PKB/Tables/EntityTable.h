@@ -58,17 +58,17 @@ public:
     /**
      * Checks if the constant value is in the entity table
      */
-    bool isConstant(string constVal);
+    bool isConstant(const string &constVal);
 
     /**
      * Checks if the procedure name is in the entity table
      */
-    bool isProcedure(string procName);
+    bool isProcedure(const string &procName);
 
     /**
      * Checks if the variable name is in the entity table
      */
-    bool isVariable(string varName);
+    bool isVariable(const string &varName);
 
     /**
      * Gets the count of entity based on type

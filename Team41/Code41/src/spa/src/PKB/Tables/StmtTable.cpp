@@ -11,16 +11,16 @@ unordered_set<string> StmtTable::getAllStmtsByType(StmtType type) {
     return stmtMapping.getValuesFromKey(move(type));
 }
 
-StmtType StmtTable::getStmtType(string stmtNumber) {
-    return stmtMapping.getKeyFromValue(move(stmtNumber));
+StmtType StmtTable::getStmtType(const string & stmtNumber) {
+    return stmtMapping.getKeyFromValue(stmtNumber);
 }
 
-string StmtTable::getStmtAttr(string stmtNumber) {
+string StmtTable::getStmtAttr(const string & stmtNumber) {
     return attrMapping.find(stmtNumber) == attrMapping.end() ? "" : attrMapping[stmtNumber];
 }
 
-bool StmtTable::isStmtType(string stmtNumber, StmtType type) {
-    return stmtMapping.hasMapping(type, move(stmtNumber));
+bool StmtTable::isStmtType(const string & stmtNumber, StmtType type) {
+    return stmtMapping.hasMapping(type, stmtNumber);
 }
 
 void StmtTable::setStmt(const string &stmtNum, StmtType type) {
