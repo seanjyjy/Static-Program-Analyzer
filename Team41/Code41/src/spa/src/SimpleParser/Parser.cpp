@@ -422,44 +422,74 @@ RelExpr *Parser::eatRelExpr() {
 
 Gt *Parser::eatGtExpr() {
     RelFactor *rf1 = eatRelFactor();
-    checkAndAdvance(TokenType::gt);
-    RelFactor *rf2 = eatRelFactor();
-    return new Gt(rf1, rf2);
+    try {
+        checkAndAdvance(TokenType::gt);
+        RelFactor *rf2 = eatRelFactor();
+        return new Gt(rf1, rf2);
+    } catch (SyntaxException &) {
+        delete rf1;
+        throw;
+    }
 }
 
 Ge *Parser::eatGeExpr() {
     RelFactor *rf1 = eatRelFactor();
-    checkAndAdvance(TokenType::ge);
-    RelFactor *rf2 = eatRelFactor();
-    return new Ge(rf1, rf2);
+    try {
+        checkAndAdvance(TokenType::ge);
+        RelFactor *rf2 = eatRelFactor();
+        return new Ge(rf1, rf2);
+    } catch (SyntaxException &) {
+        delete rf1;
+        throw;
+    }
 }
 
 Lt *Parser::eatLtExpr() {
     RelFactor *rf1 = eatRelFactor();
-    checkAndAdvance(TokenType::lt);
-    RelFactor *rf2 = eatRelFactor();
-    return new Lt(rf1, rf2);
+    try {
+        checkAndAdvance(TokenType::lt);
+        RelFactor *rf2 = eatRelFactor();
+        return new Lt(rf1, rf2);
+    } catch (SyntaxException &) {
+        delete rf1;
+        throw;
+    }
 }
 
 Le *Parser::eatLeExpr() {
     RelFactor *rf1 = eatRelFactor();
-    checkAndAdvance(TokenType::le);
-    RelFactor *rf2 = eatRelFactor();
-    return new Le(rf1, rf2);
+    try {
+        checkAndAdvance(TokenType::le);
+        RelFactor *rf2 = eatRelFactor();
+        return new Le(rf1, rf2);
+    } catch (SyntaxException &) {
+        delete rf1;
+        throw;
+    }
 }
 
 Eq *Parser::eatEqExpr() {
     RelFactor *rf1 = eatRelFactor();
-    checkAndAdvance(TokenType::eq);
-    RelFactor *rf2 = eatRelFactor();
-    return new Eq(rf1, rf2);
+    try {
+        checkAndAdvance(TokenType::eq);
+        RelFactor *rf2 = eatRelFactor();
+        return new Eq(rf1, rf2);
+    } catch (SyntaxException &) {
+        delete rf1;
+        throw;
+    }
 }
 
 Ne *Parser::eatNeExpr() {
     RelFactor *rf1 = eatRelFactor();
-    checkAndAdvance(TokenType::ne);
-    RelFactor *rf2 = eatRelFactor();
-    return new Ne(rf1, rf2);
+    try {
+        checkAndAdvance(TokenType::ne);
+        RelFactor *rf2 = eatRelFactor();
+        return new Ne(rf1, rf2);
+    } catch (SyntaxException &) {
+        delete rf1;
+        throw;
+    }
 }
 
 RelFactor *Parser::eatRelFactor() {
