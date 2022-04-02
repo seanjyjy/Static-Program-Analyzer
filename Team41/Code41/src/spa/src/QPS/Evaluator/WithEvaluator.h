@@ -3,7 +3,7 @@
 #include "Evaluator.h"
 #include <functional>
 
-// If required is a stmt, return back the stmt provided, else get its required mapping thru the function provided
+// If required is a stmt, return back the stmt provided, else get its required mapping through the function provided
 typedef std::function<string(const string &, PKBClient *pkb)> ValueMapping;
 
 class WithEvaluator : public Evaluator {
@@ -71,5 +71,11 @@ private:
 public:
     explicit WithEvaluator(PKBClient *pkb);
 
+    /**
+     * Constructs a table that contains the result based on With Clause relation
+     *
+     * @param clause A WithClause relation representing the clause provided in the query
+     * @return A result of the clause query in a table format.
+     */
     Table *evaluate(const WithClause &clause);
 };

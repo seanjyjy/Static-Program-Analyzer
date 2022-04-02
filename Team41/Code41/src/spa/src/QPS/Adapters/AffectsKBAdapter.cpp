@@ -236,7 +236,7 @@ bool AffectsKBAdapter::bfsBool(PKBClient *client, CFGNode *start, const string &
         return canReach;
     };
 
-    AdaptersUtils::runBFS(true, shouldContinue, canEnd, start);
+    AdaptersUtils::runBFS(true, start, shouldContinue, canEnd);
     return canReach;
 }
 
@@ -259,7 +259,7 @@ unordered_set<string> AffectsKBAdapter::bfsDown(PKBClient *client, const string 
 
     TerminateCheck canEnd = [&affected, &isAnyResult](CFGNode *) { return isAnyResult && !affected.empty(); };
 
-    AdaptersUtils::runBFS(true, shouldContinue, canEnd, start);
+    AdaptersUtils::runBFS(true, start, shouldContinue, canEnd);
     return affected;
 }
 
@@ -288,7 +288,7 @@ unordered_set<string> AffectsKBAdapter::bfsUp(PKBClient *client, const string &s
             return false;
         };
 
-        AdaptersUtils::runBFS(false, shouldContinue, canEnd, start);
+        AdaptersUtils::runBFS(false, start, shouldContinue, canEnd);
     }
     return affecting;
 }

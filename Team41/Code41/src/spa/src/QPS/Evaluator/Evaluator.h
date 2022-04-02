@@ -54,15 +54,6 @@ public:
 
     explicit Evaluator(PKBClient *pkb);
 
-    /**
-     * Based on the clause, it will determine which evaluator to use to retrieve information from the pkb
-     * to build the resultant table.
-     *
-     * @param clause A QueryClause that contains the clause type, and two clause variable.
-     * @param pkb A knowledge base based on the Source Program.
-     * @return A table that contains information based on the query that was executed.
-     */
-
     friend class GenericClauseEvaluator;
 
     friend class PatternEvaluator;
