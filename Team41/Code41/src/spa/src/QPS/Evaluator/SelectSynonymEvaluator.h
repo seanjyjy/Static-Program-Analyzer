@@ -18,7 +18,6 @@ public:
      * Depending on the select synonym in query declaration , get all values of that synonym from the pkb.
      *
      * @param selectSynonym A QueryDeclaration that contains the synonym to select from.
-     * @param pkb A knowledge base based on the Source Program.
      * @return A table depending on the select synonym.
      */
     Table *evaluate(const QueryDeclaration &selectSynonym);

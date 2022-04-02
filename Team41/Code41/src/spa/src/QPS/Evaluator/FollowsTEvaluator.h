@@ -20,6 +20,7 @@ public:
      *
      * @param left Clause variable.
      * @param right Clause variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the follow* relation between a statement line and a synonym.
      */
     Table *evaluateIntegerSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify) override;
@@ -37,6 +38,7 @@ public:
      *
      * @param left Clause variable.
      * @param right Clause variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the follow* relation between a statement line and a synonym.
      */
     Table *evaluateSynonymInteger(ClauseVariable &left, ClauseVariable &right, bool canSimplify) override;
@@ -46,6 +48,7 @@ public:
      *
      * @param left Clause variable.
      * @param right Clause variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the follow* relation between two synonym.
      */
     Table *evaluateSynonymSynonym(ClauseVariable &left, ClauseVariable &right, bool canSimplify) override;
@@ -54,6 +57,7 @@ public:
      * Construct a table that captures the follow* relation between a synonym and a wildcard.
      *
      * @param left Clause variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the follow* relation between a synonym and a wildcard.
      */
     Table *evaluateSynonymWildCard(ClauseVariable &left, bool canSimplify) override;
@@ -70,6 +74,7 @@ public:
      * Construct a table that captures the follow* relation between a wildcard and a synonym.
      *
      * @param right Clause variable.
+     * @param canSimplify A boolean representing if this clause can be converted into a boolean result.
      * @return A table that contains information based on the follow* relation between a wildcard and a synonym.
      */
     Table *evaluateWildCardSynonym(ClauseVariable &right, bool canSimplify) override;
