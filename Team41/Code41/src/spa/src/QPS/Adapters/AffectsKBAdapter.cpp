@@ -4,7 +4,10 @@ AffectsKBAdapter::AffectsKBAdapter(PKBClient *pkb) : pkb(pkb), cache(new Cache) 
     stmtNumToNodeMap.insert({ROOT_CFG, new CFGNode(ROOT_CFG)});
 }
 
-AffectsKBAdapter::~AffectsKBAdapter() { delete cache; }
+AffectsKBAdapter::~AffectsKBAdapter() {
+    delete cache;
+    CFGUtils::deleteCFG(stmtNumToNodeMap);
+}
 
 bool AffectsKBAdapter::isAffects(const string &stmtNum1, const string &stmtNum2) {
     CFGNode *root = pkb->getRootCFG();

@@ -6,6 +6,7 @@
 
 #include "PKB/PKBClient.h"
 #include "QPS/Cache/Cache.h"
+#include "Common/CFGUtils.h"
 #include "AdaptersUtils.h"
 
 class AffectsKBAdapter {
