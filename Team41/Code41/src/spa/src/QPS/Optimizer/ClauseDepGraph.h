@@ -10,6 +10,9 @@
 
 using namespace std;
 
+/**
+ * Represents a clause dependency graph. Used to group clauses with the same synonym dependencies.
+ */
 class ClauseDepGraph {
 private:
     // used to tell if a clause has been processed (added to a clause group)
@@ -20,9 +23,15 @@ private:
 
     // for grouping clauses by clause synonym dependencies
     int clauseId = 0;
+
+    // used to group synonyms of clauses with their string representation
     SimpleGraph<string> graph;
-    unordered_map<string, vector<TaggedSuperClause>> synonymToClauses; // maps synonyms to clauses with that synonym
-    unordered_map<int, bool> isCidProcessed; // stop clauses from being processed multiple times
+
+    // maps synonyms to clauses with that synonym
+    unordered_map<string, vector<TaggedSuperClause>> synonymToClauses;
+
+    // clause id -> is clause processed. prevents duplicate clauses in clause groups.
+    unordered_map<int, bool> isCidProcessed;
 
     // convenience method to get the next clauseId and update it
     int getCid();
@@ -32,7 +41,14 @@ private:
 public:
     ClauseDepGraph();
 
+    /**
+     * Register a clause for grouping. Each clause should only be registered once.
+     */
     void registerClause(SuperClause *cl);
 
+    /**
+     * Returns the grouping of clauses based on their synonym dependencies.
+     * Should be called only after all clauses to be grouped have been registered.
+     */
     vector<vector<SuperClause *>> split();
 };

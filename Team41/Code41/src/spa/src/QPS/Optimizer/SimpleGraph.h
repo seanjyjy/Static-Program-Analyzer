@@ -10,8 +10,11 @@ using namespace std;
 
 /**
  * Represents a graph that takes in a generic type as vertex label.
- * @tparam T the type of the vertex label (usually string/numeric types)
- * The code must be defined in the template class: https://stackoverflow.com/questions/5237055/c-generic-class-link-errors
+ * @tparam T the type of the vertex label (e.g string/primitive numeric types)
+ *
+ * Unrelated note:
+ * Code involving templates must be defined in the template class.
+ * https://stackoverflow.com/questions/5237055/c-generic-class-link-errors
  */
 template <typename T>
 class SimpleGraph {
@@ -22,13 +25,17 @@ private:
     set<pair<int, int>> seenEdges; // simple graphs can't have multi-edges
     unordered_map<int, vector<int>> adjList;
 
+    // returns a unique id. allows the graph to represent nodes with integers under the hood.
     int genNodeId() {
         return nodeId++;
     }
+
+    // checks if a node has already been added.
     bool hasNode(T node) {
         // if a node is in the graph, it definitely has a mapping
         return nameToNodeId.find(node) != nameToNodeId.end();
     }
+
     // performs dfs on each connected component, tagging each group with a unique tag. for connected cmpt generation.
     void dfs(int u, int tag, vector<int> &tags) {
         tags[u] = tag;
@@ -36,11 +43,12 @@ private:
             if (tags[v] == -1) dfs(v, tag, tags);
         }
     }
-
-
 public:
     SimpleGraph() = default;
 
+    /**
+     * Adds a vertex to the graph. Adding the same vertex multiple times will not affect the final result.
+     */
     void addVertex(T n1) {
         // don't add the same vertex more than one
         if (nameToNodeId.find(n1) != nameToNodeId.end()) return;
@@ -50,6 +58,10 @@ public:
         adjList[id] = vector<int>();
     }
 
+    /**
+     * Adds an undirected, unweighted edge between two vertices. Creates the vertex if a given vertex does not exist.
+     * Ensures that only one edge may exist between two nodes.
+     */
     void addUndirectedEdge(T n1, T n2) {
         if (!hasNode(n1)) addVertex(n1);
         if (!hasNode(n2)) addVertex(n2);
@@ -69,6 +81,9 @@ public:
         }
     }
 
+    /**
+     * Returns the disjoint components of the graph.
+     */
     vector<vector<T>> getDisjointComponents() {
         int V = (int) adjList.size();
         // find connected components with DFS
