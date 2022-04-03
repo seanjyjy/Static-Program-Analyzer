@@ -34,11 +34,11 @@ public:
 
     virtual bool isProcedure();
 
-    virtual bool isNone();
-
     virtual string toString() = 0;
 
     virtual int hashCode() = 0;
+
+    bool equals(Entities* other);
 
     EntitiesReader *getReader();
 
@@ -61,6 +61,4 @@ public:
     friend class ConstantEntities;
 
     friend class ProcedureEntities;
-
-    friend class NoneEntities;
 };

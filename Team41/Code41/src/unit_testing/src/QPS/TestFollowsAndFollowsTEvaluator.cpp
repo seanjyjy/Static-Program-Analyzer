@@ -28,7 +28,6 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
     AssignEntities assignEntities;
     ReadEntities readEntities;
     ConstantEntities constantEntities;
-    NoneEntities noneEntities;
 
     ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", &constantEntities);
     ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", &constantEntities);
@@ -40,7 +39,7 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
     ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", &assignEntities);
     ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", &readEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", nullptr);
 
     pkbManager->registerAssignStmt(stmt[0]);
     pkbManager->registerAssignStmt(stmt[1]);

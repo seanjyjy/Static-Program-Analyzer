@@ -17,7 +17,6 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
     ProcedureEntities procedureEntities;
     ConstantEntities constantEntities;
     VariableEntities variableEntities;
-    NoneEntities noneEntities;
 
     ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0], &constantEntities);
     ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1], &constantEntities);
@@ -35,7 +34,7 @@ TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
     ClauseVariable procSyn(ClauseVariable::variable_type::synonym, declaration[2], &procedureEntities);
     ClauseVariable readSyn(ClauseVariable::variable_type::synonym, declaration[3], &readEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", nullptr);
 
     pkbManager->registerVariable(vars[0]);
     pkbManager->registerVariable(vars[1]);

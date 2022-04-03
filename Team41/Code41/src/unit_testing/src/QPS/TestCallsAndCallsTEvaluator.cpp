@@ -14,7 +14,6 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
 
     ProcedureEntities procedureEntities;
     ConstantEntities constantEntities;
-    NoneEntities noneEntities;
 
     ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0], &constantEntities);
     ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1], &constantEntities);
@@ -29,7 +28,7 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
     ClauseVariable procSyn1(ClauseVariable::variable_type::synonym, synonyms[0], &procedureEntities);
     ClauseVariable procSyn2(ClauseVariable::variable_type::synonym, synonyms[1], &procedureEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", nullptr);
 
     // Register Calls
     /*

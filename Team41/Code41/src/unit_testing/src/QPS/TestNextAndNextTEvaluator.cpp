@@ -35,7 +35,6 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
     AssignEntities assignEntities;
     ReadEntities readEntities;
     ConstantEntities constantEntities;
-    NoneEntities noneEntities;
 
     ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", &constantEntities);
     ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", &constantEntities);
@@ -49,7 +48,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
     ClauseVariable synonymStmt2(ClauseVariable::variable_type::synonym, "s2", &stmtEntities);
     ClauseVariable synonymRead(ClauseVariable::variable_type::synonym, "r1", &readEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", nullptr);
 
     SECTION("Next Evaluator") {
         SECTION("Integer Integer pair") {
