@@ -34,6 +34,8 @@ TEST_CASE("CFGExtractor: Assign") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: Read") {
@@ -52,6 +54,8 @@ TEST_CASE("CFGExtractor: Read") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: Print") {
@@ -70,6 +74,8 @@ TEST_CASE("CFGExtractor: Print") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: While") {
@@ -96,6 +102,8 @@ TEST_CASE("CFGExtractor: While") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: If") {
@@ -130,6 +138,8 @@ TEST_CASE("CFGExtractor: If") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: Non-nested") {
@@ -156,6 +166,8 @@ TEST_CASE("CFGExtractor: Non-nested") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: Nested") {
@@ -182,6 +194,8 @@ TEST_CASE("CFGExtractor: Nested") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: n3iif") {
@@ -215,6 +229,8 @@ TEST_CASE("CFGExtractor: n3iif") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: n3iwl") {
@@ -243,6 +259,8 @@ TEST_CASE("CFGExtractor: n3iwl") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: n3wim") {
@@ -280,6 +298,8 @@ TEST_CASE("CFGExtractor: n3wim") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: n3wwl") {
@@ -304,6 +324,8 @@ TEST_CASE("CFGExtractor: n3wwl") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: multiproc1") {
@@ -342,6 +364,8 @@ TEST_CASE("CFGExtractor: multiproc1") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: multiproc2") {
@@ -381,6 +405,8 @@ TEST_CASE("CFGExtractor: multiproc2") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: multiproc3") {
@@ -419,6 +445,8 @@ TEST_CASE("CFGExtractor: multiproc3") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }
 
 TEST_CASE("CFGExtractor: multiproc4") {
@@ -456,4 +484,6 @@ TEST_CASE("CFGExtractor: multiproc4") {
 
     REQUIRE(CFGUtils::isEqual(cfge.getCFG(), cfgBuilder.getCFG()));
     delete ast;
+    CFGUtils::deleteCFG(cfge.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
 }

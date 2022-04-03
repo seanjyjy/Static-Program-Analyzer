@@ -2,6 +2,7 @@
 
 #include "PKB/Relations/ManyToMany.h"
 #include "Common/CFGNode.h"
+#include "Common/CFGUtils.h"
 #include <string>
 
 using namespace std;
@@ -21,6 +22,8 @@ private:
 
 public:
     NextTable();
+
+    ~NextTable();
 
     /**
      * Set CFG node and stmtToNodeMap

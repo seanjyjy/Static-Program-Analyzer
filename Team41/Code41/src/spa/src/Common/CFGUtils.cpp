@@ -52,6 +52,11 @@ bool CFGUtils::isEqual(CFGNode *n1, CFGNode *n2) {
     return true;
 }
 
+void CFGUtils::deleteCFG(const unordered_map<string, CFGNode *> &stmtNumToNodeMap) {
+    for (auto it = stmtNumToNodeMap.begin(); it != stmtNumToNodeMap.end(); ++it)
+        delete it->second;
+}
+
 void CFGUtils::printCFG(CFGNode *node) {
     unordered_set<CFGNode *> seen;
     queue<CFGNode *> bfsQ;

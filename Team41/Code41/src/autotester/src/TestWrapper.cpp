@@ -40,9 +40,9 @@ void TestWrapper::parse(std::string filename) {
     cout << "Parse complete" << endl;
     DesignExtractor designExtractor(ast, &pkbManager);
     bool isExtractionSuccess = designExtractor.extractDesign();
+    delete ast;
     if (!isExtractionSuccess) { // exit entire program is there was problem with parsing or extracting
         cout << "Error with source code, exiting program" << endl;
-        delete ast;
         exit(0);
     }
     cout << "Extraction complete" << endl;
