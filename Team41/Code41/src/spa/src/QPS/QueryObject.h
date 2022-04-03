@@ -60,7 +60,7 @@ public:
 
     // old
     QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, QueryDeclaration selectSynonym, bool isQueryValid);
-    virtual ~QueryObject();
+    virtual ~QueryObject() = default;
 
     /**
      * Returns the next unconsumed clause. Does not modify the actual underlying clause collection.
@@ -101,4 +101,9 @@ public:
      * Prints all clauses in the query object. Mainly for debugging purposes.
      */
     void printClauses();
+
+    /**
+     * Clean up all allocated heap memory
+     */
+    void cleanUp();
 };

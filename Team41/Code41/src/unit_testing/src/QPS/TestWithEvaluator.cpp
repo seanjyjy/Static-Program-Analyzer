@@ -1,3 +1,5 @@
+#include <stack>
+
 #include "catch.hpp"
 #include "PKB/PKBManager.h"
 #include "PKB/Tables/CallsTable.h"
@@ -17,14 +19,23 @@ TEST_CASE("Evaluator: With evaluator") {
     string CONST_SYN_LBL("const");
     string VAR_SYN_LBL("var");
 
-    QueryDeclaration stmtSyn(new StmtEntities(), STMT_SYN_LBL);
-    QueryDeclaration assignSyn(new AssignEntities(), ASSIGN_SYN_LBL);
-    QueryDeclaration readSyn(new ReadEntities(), READ_SYN_LBL);
-    QueryDeclaration printSyn(new PrintEntities(), PRINT_SYN_LBL);
-    QueryDeclaration callSyn(new CallEntities(), CALL_SYN_LBL);
-    QueryDeclaration procSyn(new ProcedureEntities(), PROC_SYN_LBL);
-    QueryDeclaration constSyn(new ConstantEntities(), CONST_SYN_LBL);
-    QueryDeclaration varSyn(new VariableEntities(), VAR_SYN_LBL);
+    StmtEntities stmtEntities;
+    AssignEntities assignEntities;
+    ReadEntities readEntities;
+    PrintEntities printEntities;
+    CallEntities callEntities;
+    ProcedureEntities procedureEntities;
+    ConstantEntities constantEntities;
+    VariableEntities variableEntities;
+
+    QueryDeclaration stmtSyn(&stmtEntities, STMT_SYN_LBL);
+    QueryDeclaration assignSyn(&assignEntities, ASSIGN_SYN_LBL);
+    QueryDeclaration readSyn(&readEntities, READ_SYN_LBL);
+    QueryDeclaration printSyn(&printEntities, PRINT_SYN_LBL);
+    QueryDeclaration callSyn(&callEntities, CALL_SYN_LBL);
+    QueryDeclaration procSyn(&procedureEntities, PROC_SYN_LBL);
+    QueryDeclaration constSyn(&constantEntities, CONST_SYN_LBL);
+    QueryDeclaration varSyn(&variableEntities, VAR_SYN_LBL);
 
     WithVariable stmtNoRef(WithVariable::attributeName::STMT_NUM, stmtSyn);
     WithVariable assignStmtNumRef(WithVariable::attributeName::STMT_NUM, assignSyn);
@@ -55,190 +66,178 @@ TEST_CASE("Evaluator: With evaluator") {
     pkbManager->registerCallStmt(stmt[3], proc[0]);
     pkbManager->registerPrintStmt(stmt[4], variable[0]);
 
+    stack<WithClause> clauses;
+    stack<Table *> tables;
+
     SECTION("Calls Evaluator") {
         SECTION("Integer Integer Pair") {
-            WithClause withClause1({"1", WithVariable::INTEGER}, {"2", WithVariable::INTEGER});
-            Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
-            REQUIRE(table1->isFalseTable());
+            clauses.push({{"1", WithVariable::INTEGER},
+                          {"2", WithVariable::INTEGER}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(tables.top()->isFalseTable());
 
-            WithClause withClause2({"1", WithVariable::INTEGER}, {"1", WithVariable::INTEGER});
-            Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
-            REQUIRE(table2->isTrueTable());
+            clauses.push({{"1", WithVariable::INTEGER},
+                          {"1", WithVariable::INTEGER}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(tables.top()->isTrueTable());
 
-            delete table1;
-            delete table2;
         }
 
         SECTION("Integer AttrRef Pair") {
-            WithClause withClause1({"1", WithVariable::INTEGER}, stmtNoRef);
-            Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
-            REQUIRE(TableTestUtils::checkTableMatches(table1, {stmtSyn.getSynonym()}, {{stmt[0]}}));
+            clauses.push({{"1", WithVariable::INTEGER}, stmtNoRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {stmtSyn.getSynonym()}, {{stmt[0]}}));
 
-            WithClause withClause2({"1", WithVariable::INTEGER}, assignStmtNumRef);
-            Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
-            REQUIRE(TableTestUtils::checkTableMatches(table2, {assignSyn.getSynonym()}, {{stmt[0]}}));
+            clauses.push({{"1", WithVariable::INTEGER}, assignStmtNumRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {assignSyn.getSynonym()}, {{stmt[0]}}));
 
-            WithClause withClause3({"0", WithVariable::INTEGER}, constValRef);
-            Table *table3 = WithEvaluator(pkbManager).evaluate(withClause3);
-            REQUIRE(TableTestUtils::checkTableMatches(table3, {constSyn.getSynonym()}, {{constants[0]}}));
+            clauses.push({{"0", WithVariable::INTEGER}, constValRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {constSyn.getSynonym()}, {{constants[0]}}));
 
-            WithClause withClause4({"99", WithVariable::INTEGER}, constValRef);
-            Table *table4 = WithEvaluator(pkbManager).evaluate(withClause4);
-            REQUIRE(table4->getRows().empty());
+            clauses.push({{"99", WithVariable::INTEGER}, constValRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(tables.top()->getRows().empty());
 
-            delete table1;
-            delete table2;
-            delete table3;
-            delete table4;
         }
 
         SECTION("Identifier Identifier Pair") {
-            WithClause withClause1({"1", WithVariable::IDENT}, {"2", WithVariable::IDENT});
-            Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
-            REQUIRE(table1->isFalseTable());
+            clauses.push({{"1", WithVariable::IDENT}, {"2", WithVariable::IDENT}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(tables.top()->isFalseTable());
 
-            WithClause withClause2({"1", WithVariable::IDENT}, {"1", WithVariable::IDENT});
-            Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
-            REQUIRE(table2->isTrueTable());
+            clauses.push({{"1", WithVariable::IDENT}, {"1", WithVariable::IDENT}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(tables.top()->isTrueTable());
 
-            delete table1;
-            delete table2;
         }
 
         SECTION("Identifier AttrRef Pair") {
-            WithClause withClause1({variable[0], WithVariable::IDENT}, readVarNameRef);
-            Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
-            REQUIRE(TableTestUtils::checkTableMatches(table1, {readSyn.getSynonym()}, {{stmt[1]}}));
+            clauses.push({{variable[0], WithVariable::IDENT}, readVarNameRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {readSyn.getSynonym()}, {{stmt[1]}}));
 
-            WithClause withClause2({variable[1], WithVariable::IDENT}, printVarNameRef);
-            Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
-            REQUIRE(TableTestUtils::checkTableMatches(table2, {printSyn.getSynonym()}, {{stmt[2]}}));
+            clauses.push({{variable[1], WithVariable::IDENT}, printVarNameRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {printSyn.getSynonym()}, {{stmt[2]}}));
 
-            WithClause withClause3({proc[0], WithVariable::IDENT}, callProcNameRef);
-            Table *table3 = WithEvaluator(pkbManager).evaluate(withClause3);
-            REQUIRE(TableTestUtils::checkTableMatches(table3, {callSyn.getSynonym()}, {{stmt[3]}}));
+            clauses.push({{proc[0], WithVariable::IDENT}, callProcNameRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {callSyn.getSynonym()}, {{stmt[3]}}));
 
-            WithClause withClause4({proc[1], WithVariable::IDENT}, procProcNameRef);
-            Table *table4 = WithEvaluator(pkbManager).evaluate(withClause4);
-            REQUIRE(TableTestUtils::checkTableMatches(table4, {procSyn.getSynonym()}, {{proc[1]}}));
+            clauses.push({{proc[1], WithVariable::IDENT}, procProcNameRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {procSyn.getSynonym()}, {{proc[1]}}));
 
-            WithClause withClause5({"unknown", WithVariable::IDENT}, procProcNameRef);
-            Table *table5 = WithEvaluator(pkbManager).evaluate(withClause5);
-            REQUIRE(table5->getRows().empty());
+            clauses.push({{"unknown", WithVariable::IDENT}, procProcNameRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(tables.top()->getRows().empty());
 
-            delete table1;
-            delete table2;
-            delete table3;
-            delete table4;
-            delete table5;
         }
 
         SECTION("AttrRef Integer Pair") {
-            WithClause withClause1(stmtNoRef, {"1", WithVariable::INTEGER});
-            Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
-            REQUIRE(TableTestUtils::checkTableMatches(table1, {stmtSyn.getSynonym()}, {{stmt[0]}}));
+            clauses.push({stmtNoRef, {"1", WithVariable::INTEGER}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {stmtSyn.getSynonym()}, {{stmt[0]}}));
 
-            WithClause withClause2(assignStmtNumRef, {"1", WithVariable::INTEGER});
-            Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
-            REQUIRE(TableTestUtils::checkTableMatches(table2, {assignSyn.getSynonym()}, {{stmt[0]}}));
+            clauses.push({assignStmtNumRef, {"1", WithVariable::INTEGER}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {assignSyn.getSynonym()}, {{stmt[0]}}));
 
-            WithClause withClause3(constValRef, {"0", WithVariable::INTEGER});
-            Table *table3 = WithEvaluator(pkbManager).evaluate(withClause3);
-            REQUIRE(TableTestUtils::checkTableMatches(table3, {constSyn.getSynonym()}, {{constants[0]}}));
+            clauses.push({constValRef, {"0", WithVariable::INTEGER}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {constSyn.getSynonym()}, {{constants[0]}}));
 
-            WithClause withClause4(constValRef, {"99", WithVariable::INTEGER});
-            Table *table4 = WithEvaluator(pkbManager).evaluate(withClause4);
-            REQUIRE(table4->getRows().empty());
+            clauses.push({constValRef, {"99", WithVariable::INTEGER}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(tables.top()->getRows().empty());
 
-            delete table1;
-            delete table2;
-            delete table3;
-            delete table4;
         }
 
         SECTION("AttrRef Identifier Pair") {
-            WithClause withClause1(readVarNameRef, {variable[0], WithVariable::IDENT});
-            Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
-            REQUIRE(TableTestUtils::checkTableMatches(table1, {readSyn.getSynonym()}, {{stmt[1]}}));
+            clauses.push({readVarNameRef, {variable[0], WithVariable::IDENT}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {readSyn.getSynonym()}, {{stmt[1]}}));
 
-            WithClause withClause2(printVarNameRef, {variable[1], WithVariable::IDENT});
-            Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
-            REQUIRE(TableTestUtils::checkTableMatches(table2, {printSyn.getSynonym()}, {{stmt[2]}}));
+            clauses.push({printVarNameRef, {variable[1], WithVariable::IDENT}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {printSyn.getSynonym()}, {{stmt[2]}}));
 
-            WithClause withClause3(callProcNameRef, {proc[0], WithVariable::IDENT});
-            Table *table3 = WithEvaluator(pkbManager).evaluate(withClause3);
-            REQUIRE(TableTestUtils::checkTableMatches(table3, {callSyn.getSynonym()}, {{stmt[3]}}));
+            clauses.push({callProcNameRef, {proc[0], WithVariable::IDENT}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {callSyn.getSynonym()}, {{stmt[3]}}));
 
-            WithClause withClause4(procProcNameRef, {proc[1], WithVariable::IDENT});
-            Table *table4 = WithEvaluator(pkbManager).evaluate(withClause4);
-            REQUIRE(TableTestUtils::checkTableMatches(table4, {procSyn.getSynonym()}, {{proc[1]}}));
+            clauses.push({procProcNameRef, {proc[1], WithVariable::IDENT}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {procSyn.getSynonym()}, {{proc[1]}}));
 
-            WithClause withClause5(procProcNameRef, {"unknown", WithVariable::IDENT});
-            Table *table5 = WithEvaluator(pkbManager).evaluate(withClause5);
-            REQUIRE(table5->getRows().empty());
+            clauses.push({procProcNameRef, {"unknown", WithVariable::IDENT}});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(tables.top()->getRows().empty());
 
-            delete table1;
-            delete table2;
-            delete table3;
-            delete table4;
-            delete table5;
         }
 
         SECTION("AttrRef AttrRef Pair") {
-            WithClause withClause1(readVarNameRef, printVarNameRef);
-            Table *table1 = WithEvaluator(pkbManager).evaluate(withClause1);
-            REQUIRE(TableTestUtils::checkTableMatches(table1,
+            clauses.push({readVarNameRef, printVarNameRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(),
                                                       {readSyn.getSynonym(), printSyn.getSynonym()},
                                                       {{stmt[1], stmt[4]}}));
 
-            WithClause withClause2(printVarNameRef, varVarNameRef);
-            Table *table2 = WithEvaluator(pkbManager).evaluate(withClause2);
-            REQUIRE(TableTestUtils::checkTableMatches(table2,
+            clauses.push({printVarNameRef, varVarNameRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(),
                                                       {printSyn.getSynonym(), varSyn.getSynonym()},
                                                       {{stmt[2], variable[1]}, {stmt[4], variable[0]}}));
 
-            WithClause withClause3(callProcNameRef, procProcNameRef);
-            Table *table3 = WithEvaluator(pkbManager).evaluate(withClause3);
-            REQUIRE(TableTestUtils::checkTableMatches(table3,
+            clauses.push({callProcNameRef, procProcNameRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(),
                                                       {callSyn.getSynonym(), procSyn.getSynonym()},
                                                       {{stmt[3], proc[0]}}));
 
-            WithClause withClause4(procProcNameRef, varVarNameRef);
-            Table *table4 = WithEvaluator(pkbManager).evaluate(withClause4);
-            REQUIRE(table4->getRows().empty());
+            clauses.push({procProcNameRef, varVarNameRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(tables.top()->getRows().empty());
 
-            WithClause withClause5(stmtNoRef, assignStmtNumRef);
-            Table *table5 = WithEvaluator(pkbManager).evaluate(withClause5);
-            REQUIRE(TableTestUtils::checkTableMatches(table5,
+            clauses.push({stmtNoRef, assignStmtNumRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(),
                                                       {stmtSyn.getSynonym(), assignSyn.getSynonym()},
                                                       {{stmt[0], stmt[0]}}));
 
-            WithClause withClause6(constValRef, stmtNoRef);
-            Table *table6 = WithEvaluator(pkbManager).evaluate(withClause6);
-            REQUIRE(TableTestUtils::checkTableMatches(table6,
+            clauses.push({constValRef, stmtNoRef});
+            tables.push(WithEvaluator(pkbManager).evaluate(clauses.top()));
+            REQUIRE(TableTestUtils::checkTableMatches(tables.top(),
                                                       {constSyn.getSynonym(), stmtSyn.getSynonym()},
                                                       {{constants[1], stmt[0]}, {constants[2], stmt[1]}}));
+
         }
 
         SECTION("Mismatch type") {
-            WithClause withClause1({"1", WithVariable::INTEGER}, {"2", WithVariable::IDENT});
-            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause1));
+            clauses.push({{"1", WithVariable::INTEGER}, {"2", WithVariable::IDENT}});
+            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(clauses.top()));
 
-            WithClause withClause2({"1", WithVariable::IDENT}, {"2", WithVariable::INTEGER});
-            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause2));
+            clauses.push({{"1", WithVariable::IDENT}, {"2", WithVariable::INTEGER}});
+            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(clauses.top()));
 
-            WithClause withClause3(readVarNameRef, {"2", WithVariable::INTEGER});
-            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause3));
+            clauses.push({readVarNameRef, {"2", WithVariable::INTEGER}});
+            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(clauses.top()));
 
-            WithClause withClause4({"1", WithVariable::INTEGER}, readVarNameRef);
-            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause4));
+            clauses.push({{"1", WithVariable::INTEGER}, readVarNameRef});
+            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(clauses.top()));
 
-            WithClause withClause5(constValRef, {"2", WithVariable::IDENT});
-            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause5));
+            clauses.push({constValRef, {"2", WithVariable::IDENT}});
+            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(clauses.top()));
 
-            WithClause withClause6({"1", WithVariable::IDENT}, constValRef);
-            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(withClause6));
+            clauses.push({{"1", WithVariable::IDENT}, constValRef});
+            REQUIRE_THROWS(WithEvaluator(pkbManager).evaluate(clauses.top()));
         }
+    }
+    while (!tables.empty()) {
+        delete tables.top();
+        tables.pop();
     }
     delete pkbManager;
 }

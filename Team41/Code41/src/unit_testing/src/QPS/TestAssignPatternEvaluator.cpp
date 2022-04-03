@@ -20,13 +20,16 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
                     "<minus><plus><var name=x></var><times><var name=x></var><var name=y></var></times></plus><const val=20></const></minus>"};
     string expr[] = {"x+y+z", "x+y", "2", "x+y*z-20"};
 
-    QueryDeclaration assignSyn(new AssignEntities(), ASSIGN_SYN_LBL);
-    ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL, new VariableEntities());
+    AssignEntities assignEntities;
+    VariableEntities variableEntities;
 
-    ClauseVariable identifierV1(ClauseVariable::identifier, vars[0], new VariableEntities());
-    ClauseVariable identifierV2(ClauseVariable::identifier, vars[1], new VariableEntities());
+    QueryDeclaration assignSyn(&assignEntities, ASSIGN_SYN_LBL);
+    ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL, &variableEntities);
 
-    ClauseVariable wildcard(ClauseVariable::wildcard, "_", new VariableEntities());
+    ClauseVariable identifierV1(ClauseVariable::identifier, vars[0], &variableEntities);
+    ClauseVariable identifierV2(ClauseVariable::identifier, vars[1], &variableEntities);
+
+    ClauseVariable wildcard(ClauseVariable::wildcard, "_", &variableEntities);
 
     TNode *node1 = TestAstBuilderUtils::parseXml(xml[0]);
     TNode *node2 = TestAstBuilderUtils::parseXml(xml[1]);
@@ -205,11 +208,14 @@ TEST_CASE("Evaluator: Assign pattern evaluator") {
     }
 
     SECTION("Semantically & Syntactically Invalid") {
-        ClauseVariable procSyn(ClauseVariable::synonym, "proc", new ProcedureEntities());
+        ReadEntities readEntities;
+        ProcedureEntities procedureEntities;
+
+        ClauseVariable procSyn(ClauseVariable::synonym, "proc", &procedureEntities);
         PatternClause patternClause1(assignSyn, procSyn, vector<PatternVariable>({patternFP1}));
         REQUIRE_THROWS(AssignPatternEvaluator(pkbManager).evaluate(patternClause1));
 
-        ClauseVariable readSyn(ClauseVariable::synonym, "proc", new ReadEntities());
+        ClauseVariable readSyn(ClauseVariable::synonym, "read", &readEntities);
         PatternClause patternClause2(assignSyn, readSyn, vector<PatternVariable>({patternFP1}));
         REQUIRE_THROWS(AssignPatternEvaluator(pkbManager).evaluate(patternClause2));
     }

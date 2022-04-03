@@ -32,3 +32,8 @@ bool OptimizedQueryObject::currGroupCanSimplify() {
 void OptimizedQueryObject::print() {
     clauseGroups->print();
 }
+
+OptimizedQueryObject::~OptimizedQueryObject() {
+    cleanUp();
+    delete clauseGroups;
+}

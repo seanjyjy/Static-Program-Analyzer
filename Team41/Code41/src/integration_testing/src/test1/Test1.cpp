@@ -35,6 +35,7 @@ TEST_CASE("Test 1") {
 
         unordered_set<string> answer{"3", "4", "11"};
         REQUIRE(result == answer);
+        queryObject->cleanUp();
         delete queryObject;
     }
 
@@ -50,6 +51,7 @@ TEST_CASE("Test 1") {
 
         unordered_set<string> answer{"7", "9"};
         REQUIRE(result == answer);
+        queryObject->cleanUp();
         delete queryObject;
     }
 
@@ -65,6 +67,7 @@ TEST_CASE("Test 1") {
 
         unordered_set<string> answer{"8", "9"};
         REQUIRE(result == answer);
+        queryObject->cleanUp();
         delete queryObject;
     }
 
@@ -80,6 +83,7 @@ TEST_CASE("Test 1") {
 
         unordered_set<string> answer{"y", "z"};
         REQUIRE(result == answer);
+        queryObject->cleanUp();
         delete queryObject;
     }
 }

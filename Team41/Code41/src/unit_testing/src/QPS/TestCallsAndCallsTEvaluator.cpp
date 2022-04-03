@@ -12,20 +12,24 @@ TEST_CASE("Evaluator: Calls and CallsT evaluator") {
     string lines[] = {"1", "2"}; // for invalid type of params
     string synonyms[] = { "proc1", "proc2", "proc3" };
 
-    ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0], new ConstantEntities());
-    ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1], new ConstantEntities());
+    ProcedureEntities procedureEntities;
+    ConstantEntities constantEntities;
+    NoneEntities noneEntities;
 
-    ClauseVariable proc0(ClauseVariable::variable_type::identifier, proc[0], new ProcedureEntities());
-    ClauseVariable proc1(ClauseVariable::variable_type::identifier, proc[1], new ProcedureEntities());
-    ClauseVariable proc2(ClauseVariable::variable_type::identifier, proc[2], new ProcedureEntities());
-    ClauseVariable proc3(ClauseVariable::variable_type::identifier, proc[3], new ProcedureEntities());
-    ClauseVariable proc4(ClauseVariable::variable_type::identifier, proc[4], new ProcedureEntities());
-    ClauseVariable proc5(ClauseVariable::variable_type::identifier, proc[5], new ProcedureEntities());
+    ClauseVariable integer1(ClauseVariable::variable_type::integer, lines[0], &constantEntities);
+    ClauseVariable integer2(ClauseVariable::variable_type::integer, lines[1], &constantEntities);
 
-    ClauseVariable procSyn1(ClauseVariable::variable_type::synonym, synonyms[0], new ProcedureEntities());
-    ClauseVariable procSyn2(ClauseVariable::variable_type::synonym, synonyms[1], new ProcedureEntities());
+    ClauseVariable proc0(ClauseVariable::variable_type::identifier, proc[0], &procedureEntities);
+    ClauseVariable proc1(ClauseVariable::variable_type::identifier, proc[1], &procedureEntities);
+    ClauseVariable proc2(ClauseVariable::variable_type::identifier, proc[2], &procedureEntities);
+    ClauseVariable proc3(ClauseVariable::variable_type::identifier, proc[3], &procedureEntities);
+    ClauseVariable proc4(ClauseVariable::variable_type::identifier, proc[4], &procedureEntities);
+    ClauseVariable proc5(ClauseVariable::variable_type::identifier, proc[5], &procedureEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", new NoneEntities());
+    ClauseVariable procSyn1(ClauseVariable::variable_type::synonym, synonyms[0], &procedureEntities);
+    ClauseVariable procSyn2(ClauseVariable::variable_type::synonym, synonyms[1], &procedureEntities);
+
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
 
     // Register Calls
     /*

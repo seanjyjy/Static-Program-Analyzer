@@ -33,6 +33,7 @@ TEST_CASE("Test 3") {
 
         unordered_set<string> answer{"count"};
         REQUIRE(result == answer);
+        queryObject->cleanUp();
         delete queryObject;
     }
 
@@ -48,6 +49,7 @@ TEST_CASE("Test 3") {
 
         unordered_set<string> answer{"cenX", "cenY"};
         REQUIRE(result == answer);
+        queryObject->cleanUp();
         delete queryObject;
     }
 
@@ -63,6 +65,7 @@ TEST_CASE("Test 3") {
 
         unordered_set<string> answer{"computeCentroid", "main", "readPoint"};
         REQUIRE(result == answer);
+        queryObject->cleanUp();
         delete queryObject;
     }
 }

@@ -295,6 +295,8 @@ TEST_CASE("Query Optimizer: autotester 00_assignment") {
                        "Select v such that Uses (a, v) pattern a1 (v1, _\"x\"_)";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
+
+    delete ast;
 }
 
 TEST_CASE("Query Optimizer: autotester 01_uses_modify") {
@@ -616,6 +618,8 @@ TEST_CASE("Query Optimizer: autotester 01_uses_modify") {
                        "Select <procedure, variable> such that Uses(procedure, variable)";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
+
+    delete ast;
 }
 
 TEST_CASE("Query Optimizer: autotester 05_uses_modify_pattern") {
@@ -899,6 +903,7 @@ TEST_CASE("Query Optimizer: autotester 05_uses_modify_pattern") {
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
 
+    delete ast;
 }
 
 TEST_CASE("Query Optimizer: autotester 09_assignment2") {
@@ -1009,6 +1014,7 @@ TEST_CASE("Query Optimizer: autotester 09_assignment2") {
                        "Select a1 such that Affects* (a, a1) pattern a (v, _) with v.varName = rd.varName";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
+    delete ast;
 }
 
 TEST_CASE("Query Optimizer: autotester 12_next_cache_queries") {
@@ -1195,6 +1201,7 @@ TEST_CASE("Query Optimizer: autotester 12_next_cache_queries") {
                        "Select s such that Next*(s1, s2) and Next*(1, s) and Next*(s, 26) and Next*(1, 26)";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
+    delete ast;
 }
 
 TEST_CASE("Query Optimizer: autotester 13_sample") {
@@ -1360,4 +1367,5 @@ TEST_CASE("Query Optimizer: autotester 13_sample") {
                        "Select c such that Next*(n1, n2) and Modifies(n1, v) and Uses(n2, v) and Modifies(c, v)";
         TestOptimizerUtils::ensureOQOIsCorrect(query, pkbManager);
     }
+    delete ast;
 }

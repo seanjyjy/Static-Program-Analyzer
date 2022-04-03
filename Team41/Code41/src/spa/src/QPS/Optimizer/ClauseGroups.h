@@ -8,6 +8,8 @@
  */
 class ClauseGroups {
 public:
+    virtual ~ClauseGroups() = default;
+
     /**
      * Returns the next clause to be consumed, but does not remove it from the groups abstraction.
      */

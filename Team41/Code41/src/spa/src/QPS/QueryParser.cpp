@@ -98,7 +98,7 @@ Entities* QueryParser::determineDeclarationType(string synonym) {
     optional<QueryDeclaration> qd = findMatchingDeclaration(synonym);
     if (qd == nullopt) {
         // not a declared synonym
-        return new NoneEntities();
+        return NoneEntities::getInstance();
     } else {
         return qd->type;
     }
@@ -133,7 +133,7 @@ bool QueryParser::parseSelectSingle() {
     if (!qd.has_value()) {
         queryObject->setUseOfUndeclaredVariable(true);
         printf("Semantic Error: Use of undeclared synonym <%s> for Select.\n", synonym->c_str());
-        qd = {new NoneEntities(), synonym.value()};
+        qd = {NoneEntities::getInstance(), synonym.value()};
     }
 
     ///// LEGACY CODE FROM ITER 1 (todo remove)
@@ -320,7 +320,7 @@ bool QueryParser::buildClause(string clauseStr, string left, string right) {
             if (qd.has_value()) {
                 lcv = ClauseVariable(leftType, l, qd.value());
             } else {
-                lcv = ClauseVariable(leftType, l, {new NoneEntities(), l});
+                lcv = ClauseVariable(leftType, l, {NoneEntities::getInstance(), l});
             }
         } else {
             lcv = ClauseVariable(leftType, l, determineDeclarationType(l));
@@ -337,16 +337,15 @@ bool QueryParser::buildClause(string clauseStr, string left, string right) {
             if (qd.has_value()) {
                 rcv = ClauseVariable(rightType, r, qd.value());
             } else {
-                rcv = ClauseVariable(rightType, r, {new NoneEntities(), r});
+                rcv = ClauseVariable(rightType, r, {NoneEntities::getInstance(), r});
             }
         } else {
             rcv = ClauseVariable(rightType, r, determineDeclarationType(r));
         }
 
-        QueryClause *queryClause = new QueryClause(type, lcv, rcv);
-        queryObject->getClauses().push_back(*queryClause);
+        queryObject->getClauses().push_back({type, lcv, rcv});
 
-        SuperClause *super = new SuperClause(*queryClause);
+        SuperClause *super = new SuperClause({type, lcv, rcv});
         queryObject->getSuperClauses().push_back(super);
     } else {
         return false;
@@ -409,7 +408,7 @@ optional<QueryDeclaration> QueryParser::parsePatternSyn() {
     if (declared == nullopt) {
         queryObject->setUseOfUndeclaredVariable(true);
         printf("Semantic Error: Use of undeclared pattern synonym <%s>\n", patternSyn->c_str());
-        declared = {new NoneEntities(), patternSyn.value()};
+        declared = {NoneEntities::getInstance(), patternSyn.value()};
     }
     return declared;
 }
@@ -604,17 +603,16 @@ void QueryParser::buildPatternClauseObject(QueryDeclaration patternSyn, string l
         if (qd.has_value()) {
             lcv = ClauseVariable(leftType, l, qd.value());
         } else {
-            lcv = ClauseVariable(leftType, l, {new NoneEntities(), l});
+            lcv = ClauseVariable(leftType, l, {NoneEntities::getInstance(), l});
         }
     } else {
         auto declarationType = determineDeclarationType(l);
         lcv = ClauseVariable(leftType, l, declarationType);
     }
 
-    PatternClause *pc = new PatternClause(patternSyn, lcv, rhs);
-    queryObject->getPatternClauses().push_back(*pc);
+    queryObject->getPatternClauses().push_back({patternSyn, lcv, rhs});
 
-    SuperClause *super = new SuperClause(*pc);
+    SuperClause *super = new SuperClause({patternSyn, lcv, rhs});
     queryObject->getSuperClauses().push_back(super);
 }
 
@@ -662,10 +660,9 @@ bool QueryParser::parseWithClause() {
     if (right == nullopt) {
         return false;
     }
-    WithClause* wc = new WithClause(left.value(), right.value());
-    queryObject->getWithClauses().push_back(*wc);
+    queryObject->getWithClauses().push_back({left.value(), right.value()});
 
-    SuperClause *super = new SuperClause(*wc);
+    SuperClause *super = new SuperClause({left.value(), right.value()});
     queryObject->getSuperClauses().push_back(super);
     return true;
 }
@@ -692,7 +689,7 @@ optional<WithVariable> QueryParser::parseWithRef() {
             queryObject->setUseOfUndeclaredVariable(true);
             printf("Semantic Error: Use of undeclared synonym <%s> for Select.\n", n.c_str());
 
-            syn = {new NoneEntities(), n};
+            syn = {NoneEntities::getInstance(), n};
         }
         if (lex->peekNextIsString(".") && lex->nextExpected(".")) {
             string attr = lex->nextToken();
@@ -739,7 +736,7 @@ QueryObject *QueryParser::parse() {
     vector<WithClause> withClauses;
     vector<SuperClause*> superClauses;
     string a = "";
-    QueryDeclaration s(new AssignEntities(), a);
+    QueryDeclaration s(nullptr, a);
     SelectTarget st(SelectTarget::BOOLEAN);
     queryObject = new QueryObject(declarations, clauses, patternClauses, withClauses, superClauses, s, st, true);
     lex = new QueryLexer(input);

@@ -25,17 +25,22 @@ TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
     pkbManager->registerFollowsT(stmt[0], stmt[5]); // 1 -> 6
     pkbManager->registerFollowsT(stmt[1], stmt[5]); // 2 -> 6
 
-    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", new ConstantEntities());
-    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", new ConstantEntities());
-    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", new ConstantEntities());
-    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", new ConstantEntities());
-    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", new ConstantEntities());
-    ClauseVariable integer6(ClauseVariable::variable_type::integer, "6", new ConstantEntities());
+    AssignEntities assignEntities;
+    ReadEntities readEntities;
+    ConstantEntities constantEntities;
+    NoneEntities noneEntities;
 
-    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", new AssignEntities());
-    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", new ReadEntities());
+    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", &constantEntities);
+    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", &constantEntities);
+    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", &constantEntities);
+    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", &constantEntities);
+    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", &constantEntities);
+    ClauseVariable integer6(ClauseVariable::variable_type::integer, "6", &constantEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", new NoneEntities());
+    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", &assignEntities);
+    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", &readEntities);
+
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
 
     pkbManager->registerAssignStmt(stmt[0]);
     pkbManager->registerAssignStmt(stmt[1]);

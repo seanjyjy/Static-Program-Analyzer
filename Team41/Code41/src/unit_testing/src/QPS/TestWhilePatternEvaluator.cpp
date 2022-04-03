@@ -13,12 +13,15 @@ TEST_CASE("Evaluator: While pattern evaluator") {
     string VAR_SYN_LBL = "v1";
     string vars[] = {"var0", "var1", "var2"};
 
-    QueryDeclaration whileSyn(new WhileEntities(), WHILE_SYN_LBL);
+    WhileEntities whileEntities;
+    VariableEntities varEntities;
 
-    ClauseVariable identifierV0(ClauseVariable::identifier, vars[0], new VariableEntities());
-    ClauseVariable identifierV1(ClauseVariable::identifier, vars[1], new VariableEntities());
-    ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL, new VariableEntities());
-    ClauseVariable wildcard(ClauseVariable::wildcard, "_", new VariableEntities());
+    QueryDeclaration whileSyn(&whileEntities, WHILE_SYN_LBL);
+
+    ClauseVariable identifierV0(ClauseVariable::identifier, vars[0], &varEntities);
+    ClauseVariable identifierV1(ClauseVariable::identifier, vars[1], &whileEntities);
+    ClauseVariable variableSyn(ClauseVariable::synonym, VAR_SYN_LBL, &varEntities);
+    ClauseVariable wildcard(ClauseVariable::wildcard, "_", &varEntities);
 
     PatternVariable patternWildCard(PatternVariable::wildcard, nullptr);
     PatternVariable patternFP(PatternVariable::fullpattern, nullptr);
@@ -85,11 +88,13 @@ TEST_CASE("Evaluator: While pattern evaluator") {
     }
 
     SECTION("Semantically & Syntactically Invalid") {
-        ClauseVariable procSyn(ClauseVariable::synonym, "proc", new ProcedureEntities());
+        ProcedureEntities procEntities;
+        ReadEntities readEntities;
+        ClauseVariable procSyn(ClauseVariable::synonym, "proc", &procEntities);
         PatternClause patternClause2(whileSyn, procSyn, vector<PatternVariable>({patternWildCard}));
         REQUIRE_THROWS(WhilePatternEvaluator(pkbManager).evaluate(patternClause2));
 
-        ClauseVariable readSyn(ClauseVariable::synonym, "read", new ReadEntities());
+        ClauseVariable readSyn(ClauseVariable::synonym, "read", &readEntities);
         PatternClause patternClause3(whileSyn, readSyn, vector<PatternVariable>({patternWildCard}));
         REQUIRE_THROWS(WhilePatternEvaluator(pkbManager).evaluate(patternClause3));
 

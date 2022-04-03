@@ -30,6 +30,8 @@ TEST_CASE("Query Optimizer: Simplifiable groups") {
     REQUIRE(oqo.isLastOfGroup() == true);
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.empty());
+
+    delete qo;
 }
 
 TEST_CASE("Query Optimizer: Simplifiable groups 2") {
@@ -55,6 +57,8 @@ TEST_CASE("Query Optimizer: Simplifiable groups 2") {
     REQUIRE(oqo.isLastOfGroup() == true);
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.empty());
+
+    delete qo;
 }
 
 TEST_CASE("Query Optimizer: Simplifiable groups 3") {
@@ -76,6 +80,8 @@ TEST_CASE("Query Optimizer: Simplifiable groups 3") {
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.empty());
+
+    delete qo;
 }
 
 // https://github.com/nus-cs3203/21s2-cp-spa-team-41/issues/287
@@ -118,6 +124,8 @@ TEST_CASE("QueryOptimizer: Simplifiable Groups sort order - select synonyms") {
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.empty());
+
+    delete qo;
 }
 
 TEST_CASE("QueryOptimizer: Simplifiable Groups sort order - select BOOLEAN") {
@@ -158,4 +166,6 @@ TEST_CASE("QueryOptimizer: Simplifiable Groups sort order - select BOOLEAN") {
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.empty());
+
+    delete qo;
 }

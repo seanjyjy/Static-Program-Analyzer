@@ -2,9 +2,7 @@
 
 #include <utility>
 
-QueryDeclaration::QueryDeclaration() {
-    type = new NoneEntities();
-}
+QueryDeclaration::QueryDeclaration() : type(NoneEntities::getInstance()) {}
 
 QueryDeclaration::QueryDeclaration(Entities *type, string &synonym) :
     type(type), synonym(synonym) {}
@@ -50,7 +48,7 @@ void QueryDeclaration::print() {
 }
 
 bool QueryDeclaration::equals(QueryDeclaration other) const {
-    if (type != other.getType())
+    if (type->hashCode() != other.getType()->hashCode())
         return false;
     if (synonym != other.getSynonym())
         return false;

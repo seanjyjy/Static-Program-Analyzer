@@ -19,3 +19,15 @@ public:
     static void print(vector<QueryDeclaration> arr);
     static void ensureOQOIsCorrect(string &query, PKBManager &pkbManager);
 };
+
+struct PointedSuperClauseHash {
+    size_t operator()(const SuperClause *cl) const {
+        return cl->hash();
+    }
+};
+
+struct PointedSuperClauseEq {
+    bool operator()(const SuperClause *lhs, const SuperClause *rhs) const {
+        return lhs->equals(*rhs);
+    }
+};

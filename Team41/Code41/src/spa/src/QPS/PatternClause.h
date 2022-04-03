@@ -60,4 +60,6 @@ public:
     string toString() const;
 
     int hash() const;
+
+    void cleanUp();
 };

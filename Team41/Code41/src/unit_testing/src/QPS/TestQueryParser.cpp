@@ -362,6 +362,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getSelectTarget().isBoolean());
         REQUIRE(qo->getClauses().at(0).getType() == QueryClause::nextT);
         REQUIRE(qo->isValid());
+        qo->cleanUp();
         delete qo;
 
         string s2 = "variable v;\n"
@@ -583,6 +584,8 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(1)));
         REQUIRE_FALSE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(2)));
         REQUIRE_FALSE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(3)));
+        qo->cleanUp();
+        delete qo;
 
         s = "stmt s, s1, s2; while w; variable v; assign a;\n"
             "Select s.stmt# with s1.stmt#=10 with s1.stmt#=420 with s1.stmt#=10";
@@ -590,6 +593,8 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->isValid());
         REQUIRE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(2)));
         REQUIRE_FALSE(qo->getSuperClauses().at(0)->equals(*qo->getSuperClauses().at(1)));
+        qo->cleanUp();
+        delete qo;
 
         s = "stmt s; if ifs; while w; variable v; assign a;\n"
             "Select s.stmt# pattern w (v, _) and w (v, _) and ifs (v, _, _)";
@@ -623,6 +628,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getSuperClauses().at(0)->getWithClause().getRight().getInteger() == "1");
     }
 
+    qo->cleanUp();
     delete qo;
 }
 
@@ -875,24 +881,34 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE_FALSE(qo->isValid());
+        qo->cleanUp();
+        delete qo;
 
         s = "stmt s, s1; Select <s1, s>;";
         qo = qp.parse();
         REQUIRE_FALSE(qo->isValid());
+        qo->cleanUp();
+        delete qo;
 
         s = "stmt s;\n"
             "Select BOOLEAN;";
         qo = qp.parse();
         REQUIRE_FALSE(qo->isValid());
+        qo->cleanUp();
+        delete qo;
 
         s = "stmt s, s1, s2; while w; variable v; Select s.stmt#;";
         qo = qp.parse();
         REQUIRE_FALSE(qo->isValid());
+        qo->cleanUp();
+        delete qo;
 
         s = "assign a; variable v;\n"
             "Select a pattern a (_, \"count + 1\") such that Uses(a, v);";
         qo = qp.parse();
         REQUIRE_FALSE(qo->isValid());
+        qo->cleanUp();
+        delete qo;
 
         s = "assign a; variable v;\n"
             "Select a pattern a (_, \"count + 1\");";
@@ -913,6 +929,8 @@ TEST_CASE("QPS: Parser_INVALID") {
         QueryParser qp = QueryParser{s};
         qo = qp.parse();
         REQUIRE_FALSE(qo->isValid());
+        qo->cleanUp();
+        delete qo;
 
         s = "stmt s, s1, s2; while w; variable v;\n"
                    "Select s.stmt# such that Follows* (s, s1) with s1.stmt#=069 pattern w (v, _) such that Follows*(s, s1) and Follows*(s1, s2)";
@@ -983,5 +1001,7 @@ TEST_CASE("QPS: Parser_INVALID") {
         REQUIRE_FALSE(qo->isValid());
         REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
+
+    qo->cleanUp();
     delete qo;
 }

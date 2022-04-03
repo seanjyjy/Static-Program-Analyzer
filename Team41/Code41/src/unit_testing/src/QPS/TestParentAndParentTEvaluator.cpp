@@ -9,6 +9,11 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
     string stmt[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     PKBManager* pkbManager = new PKBManager();
 
+    AssignEntities assignEntities;
+    ReadEntities readEntities;
+    ConstantEntities constantEntities;
+    NoneEntities noneEntities;
+
     /*
         1 x = 1;
         2 if (x == 1) then {
@@ -40,20 +45,20 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
     pkbManager->registerParentT(stmt[1], stmt[6]); // 2 <- 7
     pkbManager->registerParentT(stmt[1], stmt[7]); // 2 <- 8
 
-    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", new ConstantEntities());
-    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", new ConstantEntities());
-    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", new ConstantEntities());
-    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", new ConstantEntities());
-    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", new ConstantEntities());
-    ClauseVariable integer6(ClauseVariable::variable_type::integer, "6", new ConstantEntities());
-    ClauseVariable integer7(ClauseVariable::variable_type::integer, "7", new ConstantEntities());
-    ClauseVariable integer8(ClauseVariable::variable_type::integer, "8", new ConstantEntities());
-    ClauseVariable integer9(ClauseVariable::variable_type::integer, "9", new ConstantEntities());
+    ClauseVariable integer1(ClauseVariable::variable_type::integer, "1", &constantEntities);
+    ClauseVariable integer2(ClauseVariable::variable_type::integer, "2", &constantEntities);
+    ClauseVariable integer3(ClauseVariable::variable_type::integer, "3", &constantEntities);
+    ClauseVariable integer4(ClauseVariable::variable_type::integer, "4", &constantEntities);
+    ClauseVariable integer5(ClauseVariable::variable_type::integer, "5", &constantEntities);
+    ClauseVariable integer6(ClauseVariable::variable_type::integer, "6", &constantEntities);
+    ClauseVariable integer7(ClauseVariable::variable_type::integer, "7", &constantEntities);
+    ClauseVariable integer8(ClauseVariable::variable_type::integer, "8", &constantEntities);
+    ClauseVariable integer9(ClauseVariable::variable_type::integer, "9", &constantEntities);
 
-    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", new AssignEntities());
-    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", new ReadEntities());
+    ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", &assignEntities);
+    ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", &readEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", new NoneEntities());
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
 
     pkbManager->registerAssignStmt(stmt[0]);
     pkbManager->registerAssignStmt(stmt[1]);

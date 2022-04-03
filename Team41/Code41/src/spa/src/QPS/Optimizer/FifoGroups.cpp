@@ -7,6 +7,12 @@ FifoGroups::FifoGroups(vector<ClauseGroup *> initGroups) {
     it = groups.begin();
 }
 
+FifoGroups::~FifoGroups() {
+    for (auto grp: groups) {
+        delete grp;
+    }
+}
+
 SuperClause *FifoGroups::pop() {
     if (empty()) throw runtime_error("no more clauses to pop");
     return (*it)->pop();

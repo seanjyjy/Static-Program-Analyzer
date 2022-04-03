@@ -13,4 +13,6 @@ public:
     string toString() override;
 
     int hashCode() override;
+
+    static NoneEntities* getInstance();
 };

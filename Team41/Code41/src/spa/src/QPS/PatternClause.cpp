@@ -57,3 +57,9 @@ int PatternClause::hash() const {
     }
     return out;
 }
+
+void PatternClause::cleanUp() {
+    for (PatternVariable p : rhs){
+        p.cleanAST();
+    }
+}
