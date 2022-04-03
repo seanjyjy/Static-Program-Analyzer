@@ -2,7 +2,7 @@
 
 #include <utility>
 
-QueryDeclaration::QueryDeclaration() : type(NoneEntities::getInstance()) {}
+QueryDeclaration::QueryDeclaration() : type(nullptr) {}
 
 QueryDeclaration::QueryDeclaration(Entities *type, string &synonym) :
     type(type), synonym(synonym) {}
@@ -32,7 +32,7 @@ Entities* QueryDeclaration::stringToType(string &s) {
 }
 
 string QueryDeclaration::typeToString(Entities *d) {
-    if (d->isNone()) {
+    if (d == nullptr) {
         throw runtime_error("no string representation for design entity");
     }
 
@@ -48,7 +48,7 @@ void QueryDeclaration::print() {
 }
 
 bool QueryDeclaration::equals(QueryDeclaration other) const {
-    if (type->hashCode() != other.getType()->hashCode())
+    if (type == nullptr || !type->equals(other.getType()))
         return false;
     if (synonym != other.getSynonym())
         return false;

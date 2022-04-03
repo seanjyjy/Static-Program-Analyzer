@@ -85,7 +85,6 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
     StmtEntities stmtEntities;
     AssignEntities assignEntities;
     ConstantEntities constantEntities;
-    NoneEntities noneEntities;
 
     vector<ClauseVariable> integers;
     for (int i = 0; i <= 13; ++i) {
@@ -97,7 +96,7 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
     ClauseVariable synonymStmt1(ClauseVariable::variable_type::synonym, "s1", &stmtEntities);
     ClauseVariable synonymStmt2(ClauseVariable::variable_type::synonym, "s2", &stmtEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", nullptr);
 
     stack<QueryClause> clauses;
     stack<Table *> tables;

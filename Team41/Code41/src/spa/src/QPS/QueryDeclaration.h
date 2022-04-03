@@ -15,7 +15,6 @@
 #include "QPS/Entities/EntitiesType/VariableEntities.h"
 #include "QPS/Entities/EntitiesType/ConstantEntities.h"
 #include "QPS/Entities/EntitiesType/ProcedureEntities.h"
-#include "QPS/Entities/EntitiesType/NoneEntities.h"
 
 using namespace std;
 

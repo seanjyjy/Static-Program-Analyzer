@@ -255,7 +255,7 @@ Table *WithEvaluator::evaluateAttrRefAttrRef(WithVariable &left, WithVariable &r
 }
 
 unordered_set<string> WithEvaluator::getSpecificStatementType(Entities *type) {
-    if (type->isProcedure() || type->isNone() || type->isVariable()) {
+    if (type == nullptr || type->isProcedure() || type->isVariable()) {
         throw SemanticException("Wrong type passed into with");
     }
 
@@ -264,7 +264,7 @@ unordered_set<string> WithEvaluator::getSpecificStatementType(Entities *type) {
 }
 
 unordered_set<string> WithEvaluator::getName(Entities *type) {
-    if (type->isAssign() || type->isConstant() || type->isIf() || type->isNone() || type->isStmt() || type->isWhile()) {
+    if (type == nullptr || type->isAssign() || type->isConstant() || type->isIf() || type->isStmt() || type->isWhile()) {
         throw SemanticException("Wrong type passed into with");
     }
 

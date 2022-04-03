@@ -42,12 +42,12 @@ bool Entities::isProcedure() {
     return false;
 }
 
-bool Entities::isNone() {
-    return false;
-}
-
 EntitiesReader *Entities::getReader() {
     return reader;
+}
+
+bool Entities::equals(Entities *other) {
+    return other != nullptr && hashCode() == other->hashCode();
 }
 
 Entities::~Entities() = default;

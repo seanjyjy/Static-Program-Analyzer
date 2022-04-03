@@ -12,7 +12,6 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
     AssignEntities assignEntities;
     ReadEntities readEntities;
     ConstantEntities constantEntities;
-    NoneEntities noneEntities;
 
     /*
         1 x = 1;
@@ -58,7 +57,7 @@ TEST_CASE("Evaluator: Parent and ParentT evaluator") {
     ClauseVariable synonymS1(ClauseVariable::variable_type::synonym, "s1", &assignEntities);
     ClauseVariable synonymS2(ClauseVariable::variable_type::synonym, "s2", &readEntities);
 
-    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", &noneEntities);
+    ClauseVariable wildcard(ClauseVariable::variable_type::wildcard, "_", nullptr);
 
     pkbManager->registerAssignStmt(stmt[0]);
     pkbManager->registerAssignStmt(stmt[1]);

@@ -64,7 +64,7 @@ TEST_CASE("QPS: Parser_VALID") {
         bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::modifiesP;
         bool selectMatch = qo->getSelectables().at(0).getSynonym().synonym == "v";
 
-        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType()->isNone());
+        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType() == nullptr);
         REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType()->isVariable());
         REQUIRE(qo->isValid());
         REQUIRE(typeMatch);
@@ -107,7 +107,7 @@ TEST_CASE("QPS: Parser_VALID") {
         qo = qp.parse();
         bool clauseMatch = qo->getClauses().at(0).getType() == QueryClause::generic_modifies;
         bool vMatch = qo->getClauses().at(0).getLeftClauseVariable().getType() == ClauseVariable::wildcard;
-        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType()->isNone());
+        REQUIRE(qo->getClauses().at(0).getLeftClauseVariable().getDesignEntityType() == nullptr);
         REQUIRE(qo->getClauses().at(0).getRightClauseVariable().getDesignEntityType()->isVariable());
         REQUIRE(qo->isValid());
         REQUIRE(clauseMatch);
