@@ -61,6 +61,6 @@ TEST_CASE("CFGBuilder") {
 
     REQUIRE(CFGUtils::isEqual(cfgBuilder.getCFG(), cfgNodes[0]));
     REQUIRE(cfgBuilder.getStmtNumToNodeMap().size() == expectedMap.size());
-    // delete cfgBuilt;
-    // delete cfgNodes[0];
+    CFGUtils::deleteCFG(cfgBuilder.getStmtNumToNodeMap());
+    CFGUtils::deleteCFG(expectedMap);
 }
