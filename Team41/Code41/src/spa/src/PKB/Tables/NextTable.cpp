@@ -2,6 +2,10 @@
 
 NextTable::NextTable() = default;
 
+NextTable::~NextTable() {
+    CFGUtils::deleteCFG(stmtToNodeMap);
+}
+
 void NextTable::setCFGNode(CFGNode *node, const StmtToNodeMap &map) {
     this->rootCFG = node;
     this->stmtToNodeMap = map;
