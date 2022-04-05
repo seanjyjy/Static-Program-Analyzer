@@ -18,7 +18,6 @@ private:
     mutable TableEstimate table; // estimate of the table built as clauses are consumed
     long long clauseScoreSum = 0; // total score of the clause group; used for sorting
     mutable long long clausesPopped = 0; // used to check if all clauses have been consumed
-    bool isEssential = false; // optimization purposes
 public:
     /**
      * Creates a non-simplifiable group of clauses to consume that may access the PKB.
