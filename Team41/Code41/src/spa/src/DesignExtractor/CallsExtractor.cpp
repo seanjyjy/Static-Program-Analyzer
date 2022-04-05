@@ -1,4 +1,3 @@
-#include "Common/AstNode/TNodeType.h"
 #include "DesignExtractorUtils.h"
 #include "CallsExtractor.h"
 #include <Exception/SemanticException.h>

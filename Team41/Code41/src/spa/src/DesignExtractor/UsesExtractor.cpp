@@ -1,6 +1,5 @@
 #include "UsesExtractor.h"
 #include "DesignExtractorUtils.h"
-#include "Common/AstNode/TNodeType.h"
 
 UsesExtractor::UsesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,
                              unordered_map<string, unordered_set<string>> &callsMap, list<string> &procCallOrder) :

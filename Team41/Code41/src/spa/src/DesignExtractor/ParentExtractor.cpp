@@ -1,6 +1,5 @@
 #include "ParentExtractor.h"
 #include "DesignExtractorUtils.h"
-#include "Common/AstNode/TNodeType.h"
 
 ParentExtractor::ParentExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
         StmtNumExtractor(ast, nodeToStmtNumMap) {}
