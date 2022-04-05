@@ -17,7 +17,7 @@ private:
 public:
     TNode(TNodeType type, Token *val, vector<TNode *> children);
 
-    ~TNode();
+    virtual ~TNode();
 
     // appends a child to rightmost end of children.
     void addChild(TNode *child);

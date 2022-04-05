@@ -31,6 +31,7 @@
 #include "Common/AstNode/CondExpr.h"
 #include "Common/AstNode/RelExpr.h"
 #include "Common/AstNode/RelFactor.h"
+#include <algorithm>
 
 class AstUtils {
 public:
