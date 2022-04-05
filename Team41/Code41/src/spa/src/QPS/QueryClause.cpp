@@ -19,32 +19,10 @@ QueryClause::clause_type QueryClause::getType() const {
     return type;
 }
 
-string QueryClause::typeToString() const {
-    if (type == clause_type::follows) return "Follows";
-    if (type == clause_type::followsT) return "Follows*";
-    if (type == clause_type::parent) return "Parent";
-    if (type == clause_type::parentT) return "Parent*";
-    if (type == clause_type::usesS) return "UsesS";
-    if (type == clause_type::usesP) return "UsesP";
-    if (type == clause_type::modifiesS) return "ModifiesS";
-    if (type == clause_type::modifiesP) return "ModifiesP";
-    if (type == clause_type::calls) return "Calls";
-    if (type == clause_type::callsT) return "Calls*";
-    if (type == clause_type::next) return "Next";
-    if (type == clause_type::nextT) return "Next*";
-    if (type == clause_type::affects) return "Affects";
-    if (type == clause_type::affectsT) return "Affects*";
-    throw runtime_error("no valid string mapping for given clause type");
-}
-
 string QueryClause::toString() const {
     string lhs = getLeftClauseVariable().getLabel();
     string rhs = getRightClauseVariable().getLabel();
-    return typeToString() + "(" + lhs + "," + rhs + ")";
-}
-
-void QueryClause::print() {
-    cout << toString() << endl;
+    return "QueryClause(" + lhs + "," + rhs + ")";
 }
 
 //// For SuperClause
