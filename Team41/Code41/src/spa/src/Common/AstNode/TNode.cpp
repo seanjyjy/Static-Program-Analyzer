@@ -166,6 +166,14 @@ bool TNode::isMod() const {
     return false;
 }
 
+bool TNode::isArithmeticOp() const {
+    return false;
+}
+
+bool TNode::isCondExpr() const {
+    return false;
+}
+
 bool TNode::isVarName() const {
     return false;
 }

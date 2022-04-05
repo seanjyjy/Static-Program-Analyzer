@@ -59,7 +59,7 @@ public:
         while (!stk.empty()) {
             TNode *node = stk.top();
             stk.pop();
-            if (isStatement(node->getType()))
+            if (node->isStmt())
                 mp.insert({node, to_string(++stmtNum)});
             vector<TNode *> ch = node->getChildren();
             reverse(ch.begin(), ch.end()); // left to right dfs

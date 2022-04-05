@@ -10,4 +10,5 @@ public:
     Times(RelFactor *lhs, RelFactor *rhs);
     string toString() override;
     [[nodiscard]] bool isTimes() const override;
+    [[nodiscard]] bool isArithmeticOp() const;
 };

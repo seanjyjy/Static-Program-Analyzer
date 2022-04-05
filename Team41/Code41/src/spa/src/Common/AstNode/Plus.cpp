@@ -10,3 +10,7 @@ string Plus::toString() {
 bool Plus::isPlus() const {
     return true;
 }
+
+bool Plus::isArithmeticOp() const {
+    return true;
+}

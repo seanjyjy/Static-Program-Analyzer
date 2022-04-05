@@ -10,3 +10,7 @@ string Times::toString() {
 bool Times::isTimes() const {
     return true;
 }
+
+bool Times::isArithmeticOp() const {
+    return true;
+}

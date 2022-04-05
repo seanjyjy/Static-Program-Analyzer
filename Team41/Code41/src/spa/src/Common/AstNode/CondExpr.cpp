@@ -22,3 +22,7 @@ CondExpr::CondExpr(TNodeType type, vector<TNode *> children) : TNode(CondExpr::v
 string CondExpr::toString() {
     throw runtime_error("toString() not implemented for CondExpr");
 }
+
+bool CondExpr::isCondExpr() const {
+    return true;
+}

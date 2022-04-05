@@ -10,3 +10,7 @@ string Minus::toString() {
 bool Minus::isMinus() const {
     return true;
 }
+
+bool Minus::isArithmeticOp() const {
+    return true;
+}

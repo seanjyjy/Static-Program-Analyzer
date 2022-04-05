@@ -9,3 +9,7 @@ string Div::toString() {
 bool Div::isDiv() const {
     return true;
 }
+
+bool Div::isArithmeticOp() const {
+    return true;
+}

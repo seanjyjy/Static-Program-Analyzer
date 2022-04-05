@@ -20,32 +20,31 @@ void CFGExtractor::addCFGEdge(CFGNode *parentCFGNode, CFGNode *childCFGNode) {
 }
 
 void CFGExtractor::dfsInitCFG(TNode *curTNode, CFGNode *curCFGNode, CFGNode *parentCFGNode) {
-    TNodeType type = curTNode->getType();
-    if (type == TNodeType::stmtLst) {
+    if (curTNode->isStmtLst()) {
         const vector<TNode *> &ch = curTNode->getChildren();
         CFGNode *childCFGNode = createCFGNode(ch[0]);
         if (parentCFGNode) // IF or WHILE CFGNode point to first stmt in container
             addCFGEdge(parentCFGNode, childCFGNode); // add forward CFG edge
 
         for (size_t i = 0; i < ch.size(); ++i) {
-            TNodeType childType = ch[i]->getType();
+            TNode* child = ch[i];
             CFGNode *neighbourCFGNode = (i != ch.size() - 1) ? createCFGNode(ch[i + 1])
                                                              : nullptr; // last child has no neighbour
-            if (childType == TNodeType::ifStmt) {
+            if (child->isIf()) {
                 dfsInitCFG(ch[i], childCFGNode, nullptr);
             } else {
                 if (neighbourCFGNode)
                     addCFGEdge(childCFGNode, neighbourCFGNode);
-                if (childType == TNodeType::whileStmt)
+                if (child->isWhile())
                     dfsInitCFG(ch[i], childCFGNode, nullptr);
             }
             childCFGNode = neighbourCFGNode;
         }
-    } else if (type == TNodeType::ifStmt) { // bfs down with {stmtLst, nullptr, curCFGNode}
+    } else if (curTNode->isIf()) { // bfs down with {stmtLst, nullptr, curCFGNode}
         const vector<TNode *> &ch = curTNode->getChildren();
         dfsInitCFG(ch[1], nullptr, curCFGNode); // stmtLst has no CFGNode
         dfsInitCFG(ch[2], nullptr, curCFGNode);
-    } else if (type == TNodeType::whileStmt) { // bfs down with {stmtLst, nullptr, curCFGNode}
+    } else if (curTNode->isWhile()) { // bfs down with {stmtLst, nullptr, curCFGNode}
         dfsInitCFG(curTNode->getChildren()[1], nullptr, curCFGNode);
     }
 }
@@ -57,21 +56,19 @@ void CFGExtractor::addBackEdge(TNode *fromTNode, TNode *toTNode) {
 }
 
 void CFGExtractor::dfsLinkBack(TNode *curTNode, TNode *backTNode) {
-    TNodeType type = curTNode->getType();
-    if (type == TNodeType::stmtLst) {
+    if (curTNode->isStmtLst()) {
         const vector<TNode *> &ch = curTNode->getChildren();
         int len = (int) ch.size();
         for (int i = 0; i < len - 1; ++i) {
-            TNodeType childType = ch[i]->getType();
-            if (childType == TNodeType::ifStmt)
+            TNode* child = ch[i];
+            if (child->isIf())
                 dfsLinkBack(ch[i], ch[i + 1]); // end of IF will link to IF's neighbour node
-            else if (childType == TNodeType::whileStmt)
+            else if (child->isWhile())
                 dfsLinkBack(ch[i], ch[i]); // end of WHILE will link back to WHILE
         }
 
         TNode *lastChild = ch.back();
-        TNodeType lastType = lastChild->getType();
-        if (lastType == TNodeType::ifStmt) {
+        if (lastChild->isIf()) {
             if (backTNode)
                 dfsLinkBack(lastChild, backTNode); // end of this IF will link to backTNode
             else
@@ -80,14 +77,14 @@ void CFGExtractor::dfsLinkBack(TNode *curTNode, TNode *backTNode) {
         } else {
             if (backTNode)
                 addBackEdge(lastChild, backTNode); // other stmts link to backTNode
-            if (lastType == TNodeType::whileStmt)
+            if (lastChild->isWhile())
                 dfsLinkBack(lastChild, lastChild); // end of WHILE will link back to WHILE
         }
-    } else if (type == TNodeType::ifStmt) {
+    } else if (curTNode->isIf()) {
         const vector<TNode *> &ch = curTNode->getChildren();
         dfsLinkBack(ch[1], backTNode); // pass to stmtLst to handle
         dfsLinkBack(ch[2], backTNode);
-    } else if (type == TNodeType::whileStmt) {
+    } else if (curTNode->isWhile()) {
         dfsLinkBack(curTNode->getChildren()[1], backTNode); // pass to stmtLst to handle
     }
 }

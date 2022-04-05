@@ -10,3 +10,7 @@ string Mod::toString() {
 bool Mod::isMod() const {
     return true;
 }
+
+bool Mod::isArithmeticOp() const {
+    return true;
+}

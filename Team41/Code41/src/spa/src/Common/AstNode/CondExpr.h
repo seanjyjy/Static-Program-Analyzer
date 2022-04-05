@@ -19,4 +19,5 @@ private:
 public:
     CondExpr(TNodeType type, vector<TNode *> children);
     string toString() override;
+    [[nodiscard]] bool isCondExpr() const override;
 };
