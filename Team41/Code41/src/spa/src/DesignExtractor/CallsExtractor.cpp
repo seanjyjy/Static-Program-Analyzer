@@ -1,4 +1,3 @@
-#include "Common/TNodeType.h"
 #include "DesignExtractorUtils.h"
 #include "CallsExtractor.h"
 #include <Exception/SemanticException.h>
@@ -12,19 +11,18 @@ void CallsExtractor::mapCalls(const string &procCalled, const string &procCaller
 }
 
 void CallsExtractor::dfs(TNode *node, const string &proc) {
-    TNodeType type = node->getType();
-    if (type == TNodeType::procedure) {
+    if (node->isProcedure()) {
         dfs(node->getChildren()[0], proc); // only 1 child stmtLst
-    } else if (type == TNodeType::stmtLst) {
+    } else if (node->isStmtLst()) {
         for (TNode *child: node->getChildren())
             dfs(child, proc);
-    } else if (type == TNodeType::whileStmt) {
+    } else if (node->isWhile()) {
         dfs(node->getChildren()[1], proc); // right child stmtLst
-    } else if (type == TNodeType::ifStmt) {
+    } else if (node->isIf()) {
         const vector<TNode *> &ch = node->getChildren();
         for (size_t i = 1; i <= 2; i++) // if stmt has stmtLst on 2nd and 3rd child
             dfs(ch[i], proc);
-    } else if (type == TNodeType::callStmt) {
+    } else if (node->isCall()) {
         mapCalls(node->getChildren()[0]->getTokenVal(), proc); // 1 child of procName
     }
 }

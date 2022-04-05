@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "TestAstBuilderUtils.h"
 #include "Common/TreeUtils.h"
+#include "../AstNode/AstUtils.h"
 
 using namespace std;
 
@@ -11,8 +12,8 @@ TEST_CASE("AST Builder: print statement") {
         string xml = TestAstBuilderUtils::readFile("print", "1-xml.txt");
         // manually build actual AST
         Token *var = Token::makeName("x");
-        TNode *pn = TNode::makePrintStmt(
-                TNode::makeVarName(var));
+        TNode *pn = AstUtils::makePrintStmt(
+                AstUtils::makeVarName(var));
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);

@@ -1,5 +1,5 @@
 #include "PatternExtractor.h"
-#include "Common/TNodeType.h"
+#include "Common/AstNode/TNodeType.h"
 #include "DesignExtractorUtils.h"
 
 PatternExtractor::PatternExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
@@ -22,23 +22,22 @@ void PatternExtractor::mapWhilePattern(TNode *node, unordered_set<string> &varSe
 }
 
 void PatternExtractor::dfs(TNode *node) {
-    TNodeType type = node->getType();
-    if (type == TNodeType::procedure) {
+    if (node->isProcedure()) {
         dfs(node->getChildren()[0]); // only 1 child stmtLst
-    } else if (type == TNodeType::ifStmt) {
+    } else if (node->isIf()) {
         const vector<TNode *> &ch = node->getChildren();
         dfs(ch[1]); // 2nd and 3rd child are stmtLst
         dfs(ch[2]);
         unordered_set<string> vars;
         dfsExpr(ch[0], vars); // dfs on condition
         mapIfPattern(node, vars);
-    } else if (type == TNodeType::whileStmt) {
+    } else if (node->isWhile()) {
         const vector<TNode *> &ch = node->getChildren();
         dfs(ch[1]); // dfs on stmtLst
         unordered_set<string> vars;
         dfsExpr(ch[0], vars); // dfs on condition
         mapWhilePattern(node, vars);
-    } else if (type == TNodeType::stmtLst) {
+    } else if (node->isStmtLst()) {
         for (TNode *childNode: node->getChildren()) {
             dfs(childNode);
             if (childNode->getType() == TNodeType::assignStmt)
@@ -49,13 +48,12 @@ void PatternExtractor::dfs(TNode *node) {
 
 void PatternExtractor::dfsExpr(TNode *node, unordered_set<string> &varSet) {
     unordered_set<string> varSetChild;
-    TNodeType type = node->getType();
-    if (isCondExpr(type) || isOp(type)) {
+    if (node->isCondExpr() || node->isArithmeticOp()) {
         for (TNode *child: node->getChildren()) {
             dfsExpr(child, varSetChild);
             DesignExtractorUtils::combineSetsClear(varSet, varSetChild);
         }
-    } else if (type == TNodeType::varName) {
+    } else if (node->isVarName()) {
         varSet = {node->getTokenVal()};
     }
 }

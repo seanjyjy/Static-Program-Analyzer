@@ -26,6 +26,4 @@ public:
     // same functionality as operator[] for vectors
     Token &operator[](int idx);
 
-    // prints all tokens in the token list, for debugging purposes
-    void print();
 };

@@ -2,6 +2,7 @@
 #include "PKB/PKBManager.h"
 #include "Common/CFGBuilder.h"
 #include "../UnitTestUtility.h"
+#include "../Common/AstNode/AstUtils.h"
 
 using namespace std;
 
@@ -503,11 +504,11 @@ TEST_CASE("PKB: pattern abstraction") {
         Token *twoTok = Token::makeConst("2");
 
         // 1 + 2 * v0
-        TNode *varNode = TNode::makeVarName(varTok);
-        TNode *one = TNode::makeConstVal(oneTok);
-        TNode *two = TNode::makeConstVal(twoTok);
-        TNode *times = TNode::makeTimes(two, varNode);
-        TNode *plus = TNode::makePlus(one, times);
+        VarName *varNode = AstUtils::makeVarName(varTok);
+        ConstVal *one = AstUtils::makeConstVal(oneTok);
+        ConstVal *two = AstUtils::makeConstVal(twoTok);
+        Times *times = AstUtils::makeTimes(two, varNode);
+        Plus *plus = AstUtils::makePlus(one, times);
 
         SECTION("Pattern") {
             REQUIRE(sortAndCompareVectors(pkbManager.getAssignStmtNVarFromPattern(plus), EMPTY_SET_PAIR));
@@ -530,7 +531,7 @@ TEST_CASE("PKB: pattern abstraction") {
             // v0 = 1 + 2 * v0
             REQUIRE_NOTHROW(pkbManager.registerAssignPattern(stmt[0], vars[0], plus));
 
-            for (TNode *child: {one, two, times, plus, varNode}) {
+            for (TNode *child: vector<TNode*>{one, two, times, plus, varNode}) {
                 REQUIRE(sortAndCompareVectors(pkbManager.getAssignStmtNVarFromSubpattern(child),
                                               vector<pair<string, string>>({{stmt[0], vars[0]}})));
                 REQUIRE(pkbManager.getAssignStmtFromSubpattern(child) == unordered_set<string>({stmt[0]}));

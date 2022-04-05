@@ -39,23 +39,9 @@ public:
     ClauseVariable getRightClauseVariable() const;
 
     /**
-     * Converts the clause type enum into a human-readable string.
-     *
-     * @param c the valid clause type enum.
-     * @return a human-readable string representation.
-     * @throws runtime_error if the given clause type has no string mapping.
-     */
-    string typeToString() const;
-
-    /**
      * Returns a human-readable string representation of the query clause.
      */
     string toString() const;
-
-    /**
-     * Prints the query clause's type and clause variables in a human-readable form.
-     */
-    void print();
 
     /**
      * Constructor for the QueryClause class.

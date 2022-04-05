@@ -1,5 +1,5 @@
 #include "VarRelationExtractor.h"
-#include "Common/TNodeType.h"
+#include "Common/AstNode/TNodeType.h"
 #include "DesignExtractor/DesignExtractorUtils.h"
 
 VarRelationExtractor::VarRelationExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,
@@ -38,19 +38,18 @@ void VarRelationExtractor::buildProcRelationCalls() {
 }
 
 void VarRelationExtractor::dfsCalls(TNode *node, unordered_set<string> &relationSet) {
-    TNodeType type = node->getType();
-    if (type == TNodeType::procedure) {
+    if (node->isProcedure()) {
         dfsCalls(node->getChildren()[0], relationSet); // only 1 child stmtLst
-    } else if (type == TNodeType::stmtLst) {
+    } else if (node->isStmtLst()) {
         unordered_set<string> usesSetChild;
         for (TNode *child: node->getChildren()) {
             dfsCalls(child, usesSetChild);
             DesignExtractorUtils::combineSetsClear(relationSet, usesSetChild);
         }
-    } else if (type == TNodeType::whileStmt) {
+    } else if (node->isWhile()) {
         dfsCalls(node->getChildren()[1], relationSet); // right child stmtLst
         mapRelation(node, relationSet);
-    } else if (type == TNodeType::ifStmt) {
+    } else if (node->isIf()) {
         unordered_set<string> usesSetChild;
         const vector<TNode *> &ch = node->getChildren();
         for (size_t i = 1; i <= 2; i++) { // if stmt has stmtLst on 2nd and 3rd child
@@ -58,7 +57,7 @@ void VarRelationExtractor::dfsCalls(TNode *node, unordered_set<string> &relation
             DesignExtractorUtils::combineSetsClear(relationSet, usesSetChild);
         }
         mapRelation(node, relationSet);
-    } else if (type == TNodeType::callStmt) {
+    } else if (node->isCall()) {
         string procCalled = node->getChildren()[0]->getTokenVal();
         auto it = procRelationMap.find(procCalled);
         if (it != procRelationMap.end()) // procCalled <relation> some variables

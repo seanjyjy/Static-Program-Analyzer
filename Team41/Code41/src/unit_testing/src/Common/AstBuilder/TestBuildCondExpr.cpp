@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "TestAstBuilderUtils.h"
 #include "Common/TreeUtils.h"
+#include "../AstNode/AstUtils.h"
 
 using namespace std;
 
@@ -10,9 +11,9 @@ TEST_CASE("AST Builder: conditional expression") {
         string simple = TestAstBuilderUtils::readFile("condexpr", "1-simple.txt");
         string xml = TestAstBuilderUtils::readFile("condexpr", "1-xml.txt");
         // manually build actual AST
-        TNode *gt = TNode::makeGt(
-                TNode::makeConstVal(Token::makeConst("0")),
-                TNode::makeConstVal(Token::makeConst("0"))
+        TNode *gt = AstUtils::makeGt(
+                AstUtils::makeConstVal(Token::makeConst("0")),
+                AstUtils::makeConstVal(Token::makeConst("0"))
         );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
@@ -28,9 +29,9 @@ TEST_CASE("AST Builder: conditional expression") {
         string simple = TestAstBuilderUtils::readFile("condexpr", "2-simple.txt");
         string xml = TestAstBuilderUtils::readFile("condexpr", "2-xml.txt");
         // manually build actual AST
-        TNode *ge = TNode::makeGe(
-                TNode::makeConstVal(Token::makeConst("1")),
-                TNode::makeConstVal(Token::makeConst("1"))
+        TNode *ge = AstUtils::makeGe(
+                AstUtils::makeConstVal(Token::makeConst("1")),
+                AstUtils::makeConstVal(Token::makeConst("1"))
         );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
@@ -45,9 +46,9 @@ TEST_CASE("AST Builder: conditional expression") {
         string simple = TestAstBuilderUtils::readFile("condexpr", "3-simple.txt");
         string xml = TestAstBuilderUtils::readFile("condexpr", "3-xml.txt");
         // manually build actual AST
-        TNode *lt = TNode::makeLt(
-                TNode::makeConstVal(Token::makeConst("2")),
-                TNode::makeConstVal(Token::makeConst("2"))
+        TNode *lt = AstUtils::makeLt(
+                AstUtils::makeConstVal(Token::makeConst("2")),
+                AstUtils::makeConstVal(Token::makeConst("2"))
         );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
@@ -62,9 +63,9 @@ TEST_CASE("AST Builder: conditional expression") {
         string simple = TestAstBuilderUtils::readFile("condexpr", "4-simple.txt");
         string xml = TestAstBuilderUtils::readFile("condexpr", "4-xml.txt");
         // manually build actual AST
-        TNode *le = TNode::makeLe(
-                TNode::makeConstVal(Token::makeConst("3")),
-                TNode::makeConstVal(Token::makeConst("3"))
+        TNode *le = AstUtils::makeLe(
+                AstUtils::makeConstVal(Token::makeConst("3")),
+                AstUtils::makeConstVal(Token::makeConst("3"))
         );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
@@ -79,9 +80,9 @@ TEST_CASE("AST Builder: conditional expression") {
         string simple = TestAstBuilderUtils::readFile("condexpr", "5-simple.txt");
         string xml = TestAstBuilderUtils::readFile("condexpr", "5-xml.txt");
         // manually build actual AST
-        TNode *eq = TNode::makeEq(
-                TNode::makeConstVal(Token::makeConst("4")),
-                TNode::makeConstVal(Token::makeConst("4"))
+        TNode *eq = AstUtils::makeEq(
+                AstUtils::makeConstVal(Token::makeConst("4")),
+                AstUtils::makeConstVal(Token::makeConst("4"))
         );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
@@ -96,9 +97,9 @@ TEST_CASE("AST Builder: conditional expression") {
         string simple = TestAstBuilderUtils::readFile("condexpr", "6-simple.txt");
         string xml = TestAstBuilderUtils::readFile("condexpr", "6-xml.txt");
         // manually build actual AST
-        TNode *ne = TNode::makeNe(
-                TNode::makeConstVal(Token::makeConst("5")),
-                TNode::makeConstVal(Token::makeConst("5"))
+        TNode *ne = AstUtils::makeNe(
+                AstUtils::makeConstVal(Token::makeConst("5")),
+                AstUtils::makeConstVal(Token::makeConst("5"))
         );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
@@ -113,10 +114,10 @@ TEST_CASE("AST Builder: conditional expression") {
         string simple = TestAstBuilderUtils::readFile("condexpr", "7-simple.txt");
         string xml = TestAstBuilderUtils::readFile("condexpr", "7-xml.txt");
         // manually build actual AST
-        TNode *nt = TNode::makeNot(
-                TNode::makeEq(
-                        TNode::makeVarName(Token::makeName("a")),
-                        TNode::makeVarName(Token::makeName("a"))
+        TNode *nt = AstUtils::makeNot(
+                AstUtils::makeEq(
+                        AstUtils::makeVarName(Token::makeName("a")),
+                        AstUtils::makeVarName(Token::makeName("a"))
                 )
         );
         // parse and test
@@ -132,14 +133,14 @@ TEST_CASE("AST Builder: conditional expression") {
         string simple = TestAstBuilderUtils::readFile("condexpr", "8-simple.txt");
         string xml = TestAstBuilderUtils::readFile("condexpr", "8-xml.txt");
         // manually build actual AST
-        TNode *ad = TNode::makeAnd(
-                TNode::makeEq(
-                        TNode::makeVarName(Token::makeName("b")),
-                        TNode::makeVarName(Token::makeName("b"))
+        TNode *ad = AstUtils::makeAnd(
+                AstUtils::makeEq(
+                        AstUtils::makeVarName(Token::makeName("b")),
+                        AstUtils::makeVarName(Token::makeName("b"))
                 ),
-                TNode::makeEq(
-                        TNode::makeVarName(Token::makeName("c")),
-                        TNode::makeVarName(Token::makeName("c"))
+                AstUtils::makeEq(
+                        AstUtils::makeVarName(Token::makeName("c")),
+                        AstUtils::makeVarName(Token::makeName("c"))
                 )
         );
         // parse and test
@@ -155,14 +156,14 @@ TEST_CASE("AST Builder: conditional expression") {
         string simple = TestAstBuilderUtils::readFile("condexpr", "9-simple.txt");
         string xml = TestAstBuilderUtils::readFile("condexpr", "9-xml.txt");
         // manually build actual AST
-        TNode *o = TNode::makeOr(
-                TNode::makeEq(
-                        TNode::makeVarName(Token::makeName("d")),
-                        TNode::makeConstVal(Token::makeConst("11"))
+        TNode *o = AstUtils::makeOr(
+                AstUtils::makeEq(
+                        AstUtils::makeVarName(Token::makeName("d")),
+                        AstUtils::makeConstVal(Token::makeConst("11"))
                 ),
-                TNode::makeEq(
-                        TNode::makeVarName(Token::makeName("e")),
-                        TNode::makeConstVal(Token::makeConst("10"))
+                AstUtils::makeEq(
+                        AstUtils::makeVarName(Token::makeName("e")),
+                        AstUtils::makeConstVal(Token::makeConst("10"))
                 )
         );
         // parse and test
@@ -178,20 +179,20 @@ TEST_CASE("AST Builder: conditional expression") {
         string simple = TestAstBuilderUtils::readFile("condexpr", "10-simple.txt");
         string xml = TestAstBuilderUtils::readFile("condexpr", "10-xml.txt");
         // manually build actual AST
-        TNode *gt = TNode::makeGt(
-                TNode::makePlus(
-                        TNode::makeConstVal(Token::makeConst("1")),
-                        TNode::makeTimes(
-                                TNode::makeConstVal(Token::makeConst("2")),
-                                TNode::makeConstVal(Token::makeConst("3"))
+        TNode *gt = AstUtils::makeGt(
+                AstUtils::makePlus(
+                        AstUtils::makeConstVal(Token::makeConst("1")),
+                        AstUtils::makeTimes(
+                                AstUtils::makeConstVal(Token::makeConst("2")),
+                                AstUtils::makeConstVal(Token::makeConst("3"))
                         )
                 ),
-                TNode::makeMinus(
-                        TNode::makeDiv(
-                                TNode::makeConstVal(Token::makeConst("1")),
-                                TNode::makeConstVal(Token::makeConst("2"))
+                AstUtils::makeMinus(
+                        AstUtils::makeDiv(
+                                AstUtils::makeConstVal(Token::makeConst("1")),
+                                AstUtils::makeConstVal(Token::makeConst("2"))
                         ),
-                        TNode::makeConstVal(Token::makeConst("3"))
+                        AstUtils::makeConstVal(Token::makeConst("3"))
                 )
         );
         // parse and test

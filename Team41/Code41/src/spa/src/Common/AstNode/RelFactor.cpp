@@ -9,7 +9,7 @@ TNodeType RelFactor::verify(TNodeType type) {
         type != TNodeType::div &&
         type != TNodeType::mod &&
         type != TNodeType::dummy) { // dummy needed for building ast
-        throw runtime_error("invalid node type for relfactor " + TNode::typeToString(type));
+        throw runtime_error("invalid node type for RelFactor");
     }
     return type;
 }
@@ -55,4 +55,8 @@ void RelFactor::setRelParent(RelFactor *par) {
 
 RelFactor *RelFactor::getRelParent() {
     return parent;
+}
+
+string RelFactor::toString() {
+    throw runtime_error("toString() not implemented for RelFactor");
 }

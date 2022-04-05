@@ -17,3 +17,12 @@ TNodeType Stmt::verify(TNodeType type) {
 
 Stmt::Stmt(TNodeType type, vector<TNode *> children) : TNode(Stmt::verify(type), nullptr, move(children)) {
 }
+
+// only leaf nodes in the inheritance chain should implement toString()
+string Stmt::toString() {
+    throw runtime_error("toString() not implemented for Stmt");
+}
+
+bool Stmt::isStmt() const {
+    return true;
+}

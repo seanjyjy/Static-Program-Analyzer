@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "TestAstBuilderUtils.h"
 #include "Common/TreeUtils.h"
+#include "../AstNode/AstUtils.h"
 
 using namespace std;
 
@@ -13,16 +14,16 @@ TEST_CASE("AST Builder: program") {
         string simple = TestAstBuilderUtils::readFile("program", "1-simple.txt");
         string xml = TestAstBuilderUtils::readFile("program", "1-xml.txt");
         // manually build actual AST
-        TNode *prog = TNode::makeProgram({
-                                                 TNode::makeProcedure(
-                                                         Token::makeName("first"),
-                                                         TNode::makeStmtLst({TNode::makePrintStmt(
-                                                                 TNode::makeVarName(Token::makeName("x")))})
+        TNode *prog = AstUtils::makeProgram({
+                                                    AstUtils::makeProcedure(
+                                                            Token::makeName("first"),
+                                                            AstUtils::makeStmtLst({AstUtils::makePrintStmt(
+                                                                    AstUtils::makeVarName(Token::makeName("x")))})
                                                  ),
-                                                 TNode::makeProcedure(
-                                                         Token::makeName("second"),
-                                                         TNode::makeStmtLst({TNode::makePrintStmt(
-                                                                 TNode::makeVarName(Token::makeName("x")))})
+                                                    AstUtils::makeProcedure(
+                                                            Token::makeName("second"),
+                                                            AstUtils::makeStmtLst({AstUtils::makePrintStmt(
+                                                                    AstUtils::makeVarName(Token::makeName("x")))})
                                                  )
                                          });
         // parse and test

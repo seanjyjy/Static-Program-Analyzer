@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "TestAstBuilderUtils.h"
 #include "Common/TreeUtils.h"
+#include "../AstNode/AstUtils.h"
 
 using namespace std;
 
@@ -10,9 +11,9 @@ TEST_CASE("AST Builder: term") {
         string simple = TestAstBuilderUtils::readFile("term", "1-simple.txt");
         string xml = TestAstBuilderUtils::readFile("term", "1-xml.txt");
         // manually build actual AST
-        TNode *mult = TNode::makeTimes(
-                TNode::makeConstVal(Token::makeConst("2")),
-                TNode::makeVarName(Token::makeName("b"))
+        TNode *mult = AstUtils::makeTimes(
+                AstUtils::makeConstVal(Token::makeConst("2")),
+                AstUtils::makeVarName(Token::makeName("b"))
         );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
@@ -27,9 +28,9 @@ TEST_CASE("AST Builder: term") {
         string simple = TestAstBuilderUtils::readFile("term", "2-simple.txt");
         string xml = TestAstBuilderUtils::readFile("term", "2-xml.txt");
         // manually build actual AST
-        TNode *div = TNode::makeDiv(
-                TNode::makeVarName(Token::makeName("c")),
-                TNode::makeConstVal(Token::makeConst("3"))
+        TNode *div = AstUtils::makeDiv(
+                AstUtils::makeVarName(Token::makeName("c")),
+                AstUtils::makeConstVal(Token::makeConst("3"))
         );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
@@ -44,9 +45,9 @@ TEST_CASE("AST Builder: term") {
         string simple = TestAstBuilderUtils::readFile("term", "3-simple.txt");
         string xml = TestAstBuilderUtils::readFile("term", "3-xml.txt");
         // manually build actual AST
-        TNode *mod = TNode::makeMod(
-                TNode::makeConstVal(Token::makeConst("10")),
-                TNode::makeConstVal(Token::makeConst("10"))
+        TNode *mod = AstUtils::makeMod(
+                AstUtils::makeConstVal(Token::makeConst("10")),
+                AstUtils::makeConstVal(Token::makeConst("10"))
         );
         // parse and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);

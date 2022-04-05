@@ -202,116 +202,116 @@ TNode *XmlTag::convert() {
 }
 
 TNode *XmlTag::convertProgram() {
-    return TNode::makeProgram({});
+    return new Program({});
 }
 
 TNode *XmlTag::convertProcedure() {
     ensureKeys({"name"});
     string name = data["name"];
-    return TNode::makeProcedure(Token::makeName(name), nullptr);
+    return new Procedure(Token::makeName(name), nullptr);
 }
 
 TNode *XmlTag::convertStmtList() {
-    return TNode::makeStmtLst({});
+    return new StmtLst({});
 }
 
 TNode *XmlTag::convertRead() {
-    return TNode::makeReadStmt(nullptr);
+    return new Read(nullptr);
 }
 
 TNode *XmlTag::convertPrint() {
-    return TNode::makePrintStmt(nullptr);
+    return new Print(nullptr);
 }
 
 TNode *XmlTag::convertCall() {
-    return TNode::makeCallStmt(nullptr);
+    return new Call(nullptr);
 }
 
 TNode *XmlTag::convertWhile() {
-    return TNode::makeWhileStmt(nullptr, nullptr);
+    return new While(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertIf() {
-    return TNode::makeIfStmt(nullptr, nullptr, nullptr);
+    return new If(nullptr, nullptr, nullptr);
 }
 
 TNode *XmlTag::convertAssign() {
-    return TNode::makeAssignStmt(nullptr, nullptr);
+    return new Assign(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertNot() {
-    return TNode::makeNot(nullptr);
+    return new Not(nullptr);
 }
 
 TNode *XmlTag::convertAnd() {
-    return TNode::makeAnd(nullptr, nullptr);
+    return new And(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertOr() {
-    return TNode::makeOr(nullptr, nullptr);
+    return new Or(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertGt() {
-    return TNode::makeGt(nullptr, nullptr);
+    return new Gt(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertGe() {
-    return TNode::makeGe(nullptr, nullptr);
+    return new Ge(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertLt() {
-    return TNode::makeLt(nullptr, nullptr);
+    return new Lt(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertLe() {
-    return TNode::makeLe(nullptr, nullptr);
+    return new Le(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertEq() {
-    return TNode::makeEq(nullptr, nullptr);
+    return new Eq(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertNe() {
     // will be filled later
-    return TNode::makeNe(nullptr, nullptr);
+    return new Ne(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertVar() {
     ensureKeys({"name"});
     string name = data["name"];
-    return TNode::makeVarName(Token::makeName(name));
+    return new VarName(Token::makeName(name));
 }
 
 TNode *XmlTag::convertProcName() {
     ensureKeys({"name"});
     string name = data["name"];
-    return TNode::makeProcName(Token::makeName(name));
+    return new ProcName(Token::makeName(name));
 }
 
 TNode *XmlTag::convertConst() {
     ensureKeys({"val"});
     string val = data["val"];
-    return TNode::makeConstVal(Token::makeConst(val));
+    return new ConstVal(Token::makeConst(val));
 }
 
 TNode *XmlTag::convertPlus() {
-    return TNode::makePlus(nullptr, nullptr);
+    return new Plus(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertMinus() {
-    return TNode::makeMinus(nullptr, nullptr);
+    return new Minus(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertTimes() {
-    return TNode::makeTimes(nullptr, nullptr);
+    return new Times(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertDiv() {
-    return TNode::makeDiv(nullptr, nullptr);
+    return new Div(nullptr, nullptr);
 }
 
 TNode *XmlTag::convertMod() {
-    return TNode::makeMod(nullptr, nullptr);
+    return new Mod(nullptr, nullptr);
 }
 
 void XmlTag::ensureKeys(const vector<string> &keys) {

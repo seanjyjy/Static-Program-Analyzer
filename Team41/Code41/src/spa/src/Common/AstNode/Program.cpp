@@ -1,10 +1,8 @@
 #include "Program.h"
-#include "Common/TNodeType.h"
+#include "TNodeType.h"
 #include "Common/AstNode/Procedure.h"
 
 vector<TNode *> convert(const vector<Procedure *> &procedures) {
-    if (procedures.empty()) throw runtime_error("procedures must not be empty");
-
     vector<TNode *> ret;
     ret.reserve(procedures.size());
     for (Procedure *procedure: procedures) ret.push_back(static_cast<TNode *>(procedure));
@@ -12,4 +10,12 @@ vector<TNode *> convert(const vector<Procedure *> &procedures) {
 }
 
 Program::Program(const vector<Procedure *> &procedures) : TNode(TNodeType::program, nullptr, convert(procedures)) {
+}
+
+string Program::toString() {
+    return "program";
+}
+
+bool Program::isProgram() const {
+    return true;
 }

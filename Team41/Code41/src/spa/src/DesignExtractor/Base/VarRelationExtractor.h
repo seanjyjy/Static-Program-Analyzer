@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 #include "StmtNumExtractor.h"
 
 /**

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IfWhilePatternEvaluator.h"
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 #include "../PatternClause.h"
 
 class WhilePatternEvaluator : public IfWhilePatternEvaluator {

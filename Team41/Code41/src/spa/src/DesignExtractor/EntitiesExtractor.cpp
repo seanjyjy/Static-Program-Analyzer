@@ -1,4 +1,3 @@
-#include "Common/TNodeType.h"
 #include <DesignExtractor/EntitiesExtractor.h>
 #include <Exception/SemanticException.h>
 
@@ -17,21 +16,13 @@ void EntitiesExtractor::findProcedures() {
 }
 
 void EntitiesExtractor::recordEntity(TNode *node, int &stmtNum) {
-    TNodeType type = node->getType();
-    if (isStatement(type)) {
+    if (node->isStmt()) {
         stmtNum += 1;
         nodeToStmtNumMap.insert({node, to_string(stmtNum)});
-    } else {
-        switch (type) {
-            case TNodeType::varName:
-                varSet.insert(node->getTokenVal());
-                break;
-            case TNodeType::constValue:
-                constSet.insert(node->getTokenVal());
-                break;
-            default:
-                break;
-        }
+    } else if (node->isVarName()) {
+        varSet.insert(node->getTokenVal());
+    } else if (node->isConstVal()) {
+        constSet.insert(node->getTokenVal());
     }
 }
 

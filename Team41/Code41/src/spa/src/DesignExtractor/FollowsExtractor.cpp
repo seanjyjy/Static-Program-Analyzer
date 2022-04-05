@@ -1,5 +1,4 @@
 #include "FollowsExtractor.h"
-#include "Common/TNodeType.h"
 
 FollowsExtractor::FollowsExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
         StmtNumExtractor(ast, nodeToStmtNumMap) {}
@@ -10,16 +9,15 @@ void FollowsExtractor::mapFollows(TNode *node, list<string> &followsLst) {
 }
 
 void FollowsExtractor::dfs(TNode *node) {
-    TNodeType type = node->getType();
-    if (type == TNodeType::procedure) {
+    if (node->isProcedure()) {
         dfs(node->getChildren()[0]); // only 1 child stmtLst
-    } else if (type == TNodeType::ifStmt) {
+    } else if (node->isIf()) {
         const vector<TNode *> &ch = node->getChildren();
         dfs(ch[1]); // 2nd and 3rd child are stmtLst
         dfs(ch[2]);
-    } else if (type == TNodeType::whileStmt) {
+    } else if (node->isWhile()) {
         dfs(node->getChildren()[1]); // right child is stmtLst
-    } else if (type == TNodeType::stmtLst) {
+    } else if (node->isStmtLst()) {
         const vector<TNode *> &ch = node->getChildren();
         list<string> followsLst;
         for (int i = (int) ch.size() - 1; i >= 0; --i) {

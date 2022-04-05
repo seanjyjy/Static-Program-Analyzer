@@ -28,12 +28,6 @@ size_t Tokens::size() {
     return tokens.size();
 }
 
-void Tokens::print() {
-    for (const Token &t: tokens) {
-        cout << t.toString() << endl;
-    }
-}
-
 void Tokens::clear() {
     tokens.clear();
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 #include <string>
 
 using namespace std;

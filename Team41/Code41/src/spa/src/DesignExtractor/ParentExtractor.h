@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 #include "Base/StmtNumExtractor.h"
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 
 class ParentExtractor : public StmtNumExtractor {
 private:

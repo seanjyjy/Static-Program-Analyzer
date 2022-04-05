@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 #include "Base/BaseExtractor.h"
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 
 class EntitiesExtractor : public BaseExtractor {
 private:

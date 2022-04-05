@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 
 class TestParserUtils {
 private:

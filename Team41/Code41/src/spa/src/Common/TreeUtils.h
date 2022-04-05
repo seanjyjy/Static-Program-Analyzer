@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TNode.h"
+#include "Common/AstNode/TNode.h"
 
 class TreeUtils {
 public:

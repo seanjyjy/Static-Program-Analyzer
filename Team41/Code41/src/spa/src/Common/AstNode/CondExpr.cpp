@@ -17,3 +17,12 @@ TNodeType CondExpr::verify(TNodeType type) {
 
 CondExpr::CondExpr(TNodeType type, vector<TNode *> children) : TNode(CondExpr::verify(type), nullptr, move(children)) {
 }
+
+// only leaf nodes in the inheritance chain should override this; otherwise throw an error
+string CondExpr::toString() {
+    throw runtime_error("toString() not implemented for CondExpr");
+}
+
+bool CondExpr::isCondExpr() const {
+    return true;
+}

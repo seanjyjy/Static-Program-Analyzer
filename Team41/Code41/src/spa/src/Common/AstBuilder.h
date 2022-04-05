@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TNode.h"
+#include "Common/AstNode/TNode.h"
 #include "Common/AstNode/Program.h"
 #include "Common/AstNode/Procedure.h"
 #include "Common/AstNode/StmtLst.h"
@@ -24,6 +24,12 @@
 #include "Common/AstNode/Times.h"
 #include "Common/AstNode/Div.h"
 #include "Common/AstNode/Mod.h"
+#include "Common/AstNode/Not.h"
+#include "Common/AstNode/And.h"
+#include "Common/AstNode/Or.h"
+#include "Common/AstNode/CondExpr.h"
+#include "Common/AstNode/RelExpr.h"
+#include "Common/AstNode/RelFactor.h"
 #include <stack>
 #include <unordered_map>
 
