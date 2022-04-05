@@ -2,8 +2,8 @@
 
 QueryEvaluator::QueryEvaluator(PKBClient *pkb) {
     this->pkb = pkb;
-    this->nextKBAdapter = new NextKBAdapter(pkb);
-    this->affectsKBAdapter = new AffectsKBAdapter(pkb);
+    this->nextKBProxy = new NextKBProxy(pkb);
+    this->affectsKBProxy = new AffectsKBProxy(pkb);
 }
 
 Table *QueryEvaluator::mergeTable(Table *resultTable, Table *intermediateTable) {
@@ -141,13 +141,13 @@ Table *QueryEvaluator::evaluate(const QueryClause &clause) {
         case QueryClause::clause_type::callsT:
             return CallsTEvaluator(pkb).evaluate(clause);
         case QueryClause::clause_type::next:
-            return NextEvaluator(pkb, nextKBAdapter).evaluate(clause);
+            return NextEvaluator(pkb, nextKBProxy).evaluate(clause);
         case QueryClause::clause_type::nextT:
-            return NextTEvaluator(pkb, nextKBAdapter).evaluate(clause);
+            return NextTEvaluator(pkb, nextKBProxy).evaluate(clause);
         case QueryClause::clause_type::affects:
-            return AffectsEvaluator(pkb, affectsKBAdapter).evaluate(clause);
+            return AffectsEvaluator(pkb, affectsKBProxy).evaluate(clause);
         case QueryClause::clause_type::affectsT:
-            return AffectsTEvaluator(pkb, affectsKBAdapter).evaluate(clause);
+            return AffectsTEvaluator(pkb, affectsKBProxy).evaluate(clause);
         default:
             throw runtime_error("unknown clause of type " + to_string(clause.type));
     }
@@ -182,8 +182,8 @@ void QueryEvaluator::safeDeleteTable(Table *tableToDelete, Table *resultTable) {
 }
 
 QueryEvaluator::~QueryEvaluator() {
-    delete nextKBAdapter;
-    delete affectsKBAdapter;
+    delete nextKBProxy;
+    delete affectsKBProxy;
 }
 
 

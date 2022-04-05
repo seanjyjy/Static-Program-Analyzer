@@ -1,28 +1,28 @@
 #include "AffectsTEvaluator.h"
 
-AffectsTEvaluator::AffectsTEvaluator(PKBClient *pkb, AffectsKBAdapter *affectsKBAdapter)
-        : AffectEvaluator(pkb, affectsKBAdapter) {}
+AffectsTEvaluator::AffectsTEvaluator(PKBClient *pkb, AffectsKBProxy *affectsKBProxy)
+        : AffectEvaluator(pkb, affectsKBProxy) {}
 
 bool AffectsTEvaluator::getIntegerIntegerRelation(const string &left, const string &right) {
-    return affectsKBAdapter->isAffectsT(left, right);
+    return affectsKBProxy->isAffectsT(left, right);
 }
 
 unordered_set<string> AffectsTEvaluator::getIntegerSynonymRelation(const string &label) {
-    return affectsKBAdapter->getAffectsTBy(label);
+    return affectsKBProxy->getAffectsTBy(label);
 }
 
 unordered_set<string> AffectsTEvaluator::getSynonymIntegerRelation(const string &label) {
-    return affectsKBAdapter->getAffectingT(label);
+    return affectsKBProxy->getAffectingT(label);
 }
 
 vector<pair<string, string>> AffectsTEvaluator::getSynonymSynonymRelation() {
-    return affectsKBAdapter->getAffectsTAll();
+    return affectsKBProxy->getAffectsTAll();
 }
 
 unordered_set<string> AffectsTEvaluator::getSynonymWildCardRelation() {
-    return affectsKBAdapter->getAllStmtAffectingTOther();
+    return affectsKBProxy->getAllStmtAffectingTOther();
 }
 
 unordered_set<string> AffectsTEvaluator::getWildCardSynonymRelation() {
-    return affectsKBAdapter->getAllStmtAffectedTByOther();
+    return affectsKBProxy->getAllStmtAffectedTByOther();
 }

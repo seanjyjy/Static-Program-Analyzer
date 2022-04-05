@@ -6,10 +6,10 @@
 
 #include "PKB/PKBClient.h"
 #include "QPS/Cache/Cache.h"
+#include "ProxyUtils.h"
 #include "Common/CFGUtils.h"
-#include "AdaptersUtils.h"
 
-class AffectsKBAdapter {
+class AffectsKBProxy {
 private:
     const string ROOT_CFG = "0";
     PKBClient *pkb;
@@ -43,9 +43,9 @@ private:
     const unordered_set<string> &getAllAssignStmt();
 
 public:
-    explicit AffectsKBAdapter(PKBClient *pkb);
+    explicit AffectsKBProxy(PKBClient *pkb);
 
-    ~AffectsKBAdapter();
+    ~AffectsKBProxy();
 
     // ============================================= Affects ========================================================
 

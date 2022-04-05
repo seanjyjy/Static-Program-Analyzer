@@ -4,9 +4,9 @@
 
 class NextEvaluator : public StmtStmtEvaluator {
 private:
-    NextKBAdapter *nextKBAdapter;
+    NextKBProxy *nextKBProxy;
 public:
-    explicit NextEvaluator(PKBClient *pkb, NextKBAdapter *nextKBAdapter);
+    explicit NextEvaluator(PKBClient *pkb, NextKBProxy *nextKBProxy);
 
     /**
      * Construct a table that captures the Next relation between two statement line.

@@ -9,7 +9,7 @@
 TEST_CASE("Evaluator: Next and NextT evaluator") {
     string stmt[] = {"1", "2", "3", "4", "5"};
     PKBManager *pkbManager = new PKBManager();
-    NextKBAdapter *nextKbAdapter = new NextKBAdapter(pkbManager);
+    NextKBProxy *nextKBProxy = new NextKBProxy(pkbManager);
     unordered_map<string, vector<string>> stmtNextMap = {
             {"1", {"2", "5"}},
             {"2", {"3"}},
@@ -53,19 +53,19 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
     SECTION("Next Evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::next, integer1, integer5);
-            Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::next, integer3, integer1);
-            Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::next, integer1, integer2);
-            Table *table3 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(table3->isTrueTable());
 
             QueryClause queryClause4(QueryClause::next, integer1, integer3);
-            Table *table4 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
+            Table *table4 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause4);
             REQUIRE(table4->isFalseTable());
 
             delete table1;
@@ -76,24 +76,24 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Integer Synonym pair") {
             QueryClause queryClause1(QueryClause::next, integer1, synonymStmt1);
-            Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {synonymStmt1.getLabel()}, {{"2"}, {"5"}}));
 
             QueryClause queryClause2(QueryClause::next, integer2, synonymStmt1);
-            Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {synonymStmt1.getLabel()}, {{"3"}}));
 
             QueryClause queryClause3(QueryClause::next, integer3, synonymStmt1);
-            Table *table3 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"4"}}));
 
             QueryClause queryClause4(QueryClause::next, integer4, synonymStmt1);
-            Table *table4 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
+            Table *table4 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause4);
             REQUIRE(TableTestUtils::checkTableMatches(table4, {synonymStmt1.getLabel()}, {{"5"}}));
 
             QueryClause queryClause5(QueryClause::next, integer5, synonymStmt1);
-            Table *table5 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
+            Table *table5 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause5);
             REQUIRE(table5->isFalseTable());
 
             delete table1;
@@ -105,15 +105,15 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Integer Wildcard pair") {
             QueryClause queryClause1(QueryClause::next, integer1, wildcard);
-            Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::next, integer5, wildcard);
-            Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(table2->isFalseTable());
 
             QueryClause queryClause3(QueryClause::next, integer3, wildcard);
-            Table *table3 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(table3->isTrueTable());
 
             delete table1;
@@ -123,23 +123,23 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Synonym Integer pair") {
             QueryClause queryClause1(QueryClause::next, synonymStmt1, integer1);
-            Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {synonymStmt1.getLabel()}, {{"3"}}));
 
             QueryClause queryClause2(QueryClause::next, synonymAssign1, integer2);
-            Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {synonymAssign1.getLabel()}, {{"1"}}));
 
             QueryClause queryClause3(QueryClause::next, synonymRead, integer3);
-            Table *table3 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {synonymRead.getLabel()}, {{"2"}}));
 
             QueryClause queryClause4(QueryClause::next, synonymStmt1, integer4);
-            Table *table4 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
+            Table *table4 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause4);
             REQUIRE(TableTestUtils::checkTableMatches(table4, {synonymStmt1.getLabel()}, {{"3"}}));
 
             QueryClause queryClause5(QueryClause::next, synonymStmt1, integer5);
-            Table *table5 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
+            Table *table5 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause5);
             REQUIRE(TableTestUtils::checkTableMatches(table5, {synonymStmt1.getLabel()}, {{"4"},
                                                                                           {"1"}}));
             delete table1;
@@ -151,7 +151,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Synonym Synonym pair") {
             QueryClause queryClause1(QueryClause::next, synonymStmt1, synonymStmt2);
-            Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {synonymStmt1.getLabel(), synonymStmt2.getLabel()},
                                                       {{"1", "2"},
                                                        {"2", "3"},
@@ -161,7 +161,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
                                                        {"1", "5"}}));
 
             QueryClause queryClause2(QueryClause::next, synonymAssign1, synonymAssign2);
-            Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {synonymAssign1.getLabel(), synonymAssign2.getLabel()},
                                                       {{"3", "1"},
                                                        {"1", "5"}}));
@@ -172,19 +172,19 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Synonym Wildcard pair") {
             QueryClause queryClause1(QueryClause::next, synonymStmt1, wildcard);
-            Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"},
                                                                                           {"4"}}));
 
             QueryClause queryClause2(QueryClause::next, synonymAssign1, wildcard);
-            Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {synonymAssign1.getLabel()}, {{"1"},
                                                                                             {"3"}}));
 
             QueryClause queryClause3(QueryClause::next, synonymRead, wildcard);
-            Table *table3 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {synonymRead.getLabel()}, {{"2"}}));
 
             delete table1;
@@ -194,23 +194,23 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Wildcard Integer pair") {
             QueryClause queryClause1(QueryClause::next, wildcard, integer1);
-            Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::next, wildcard, integer2);
-            Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::next, wildcard, integer4);
-            Table *table3 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(table3->isTrueTable());
 
             QueryClause queryClause4(QueryClause::next, wildcard, integer5);
-            Table *table4 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
+            Table *table4 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause4);
             REQUIRE(table4->isTrueTable());
 
             QueryClause queryClause5(QueryClause::next, wildcard, integer5);
-            Table *table5 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
+            Table *table5 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause5);
             REQUIRE(table5->isTrueTable());
 
             delete table1;
@@ -222,7 +222,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Wildcard Synonym pair") {
             QueryClause queryClause1(QueryClause::next, wildcard, synonymStmt1);
-            Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"},
@@ -230,13 +230,13 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
                                                                                           {"5"}}));
 
             QueryClause queryClause2(QueryClause::next, wildcard, synonymAssign1);
-            Table *table2 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {synonymAssign1.getLabel()}, {{"1"},
                                                                                             {"3"},
                                                                                             {"5"}}));
 
             QueryClause queryClause3(QueryClause::next, wildcard, synonymRead);
-            Table *table3 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {synonymRead.getLabel()}, {{"2"}}));
 
             delete table1;
@@ -246,7 +246,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Wildcard Wildcard pair") {
             QueryClause queryClause1(QueryClause::next, wildcard, wildcard);
-            Table *table1 = NextEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(table1->isTrueTable());
             delete table1;
         }
@@ -255,23 +255,23 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
     SECTION("NextT Evaluator") {
         SECTION("Integer Integer pair") {
             QueryClause queryClause1(QueryClause::nextT, integer1, integer5);
-            Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::nextT, integer3, integer1);
-            Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::nextT, integer1, integer2);
-            Table *table3 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(table3->isTrueTable());
 
             QueryClause queryClause4(QueryClause::nextT, integer1, integer3);
-            Table *table4 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
+            Table *table4 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause4);
             REQUIRE(table4->isTrueTable());
 
             QueryClause queryClause5(QueryClause::nextT, integer5, integer1);
-            Table *table5 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
+            Table *table5 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause5);
             REQUIRE(table5->isFalseTable());
 
             delete table1;
@@ -283,15 +283,15 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Integer Synonym pair") {
             QueryClause queryClause5(QueryClause::nextT, integer5, synonymStmt1);
-            Table *table5 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
+            Table *table5 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause5);
             REQUIRE(table5->isFalseTable());
 
             QueryClause queryClause4(QueryClause::nextT, integer4, synonymStmt1);
-            Table *table4 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
+            Table *table4 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause4);
             REQUIRE(TableTestUtils::checkTableMatches(table4, {synonymStmt1.getLabel()}, {{"5"}}));
 
             QueryClause queryClause3(QueryClause::nextT, integer3, synonymStmt1);
-            Table *table3 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"},
@@ -299,7 +299,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
                                                                                           {"5"}}));
 
             QueryClause queryClause2(QueryClause::nextT, integer2, synonymStmt1);
-            Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"},
@@ -307,7 +307,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
                                                                                           {"5"}}));
 
             QueryClause queryClause1(QueryClause::nextT, integer1, synonymStmt1);
-            Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"},
@@ -323,15 +323,15 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Integer Wildcard pair") {
             QueryClause queryClause1(QueryClause::nextT, integer1, wildcard);
-            Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::nextT, integer5, wildcard);
-            Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(table2->isFalseTable());
 
             QueryClause queryClause3(QueryClause::nextT, integer3, wildcard);
-            Table *table3 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(table3->isTrueTable());
 
             delete table1;
@@ -341,31 +341,31 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Synonym Integer pair") {
             QueryClause queryClause1(QueryClause::nextT, synonymStmt1, integer1);
-            Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"}}));
 
             QueryClause queryClause2(QueryClause::nextT, synonymStmt1, integer2);
-            Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"}}));
 
             QueryClause queryClause3(QueryClause::nextT, synonymStmt1, integer3);
-            Table *table3 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"}}));
 
             QueryClause queryClause4(QueryClause::nextT, synonymStmt1, integer4);
-            Table *table4 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
+            Table *table4 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause4);
             REQUIRE(TableTestUtils::checkTableMatches(table4, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"}}));
 
             QueryClause queryClause5(QueryClause::nextT, synonymStmt1, integer5);
-            Table *table5 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
+            Table *table5 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause5);
             REQUIRE(TableTestUtils::checkTableMatches(table5, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"},
@@ -380,7 +380,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Synonym Synonym pair") {
             QueryClause queryClause1(QueryClause::nextT, synonymStmt1, synonymStmt2);
-            Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {synonymStmt1.getLabel(), synonymStmt2.getLabel()},
                                                       {{"1", "1"},
                                                        {"1", "2"},
@@ -400,7 +400,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
                                                        {"4", "5"}}));
 
             QueryClause queryClause2(QueryClause::nextT, synonymAssign1, synonymAssign2);
-            Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {synonymAssign1.getLabel(), synonymAssign2.getLabel()},
                                                       {{"1", "1"},
                                                        {"1", "3"},
@@ -415,19 +415,19 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Synonym Wildcard pair") {
             QueryClause queryClause1(QueryClause::nextT, synonymStmt1, wildcard);
-            Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"},
                                                                                           {"4"}}));
 
             QueryClause queryClause2(QueryClause::nextT, synonymAssign1, wildcard);
-            Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {synonymAssign1.getLabel()}, {{"1"},
                                                                                             {"3"}}));
 
             QueryClause queryClause3(QueryClause::nextT, synonymRead, wildcard);
-            Table *table3 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {synonymRead.getLabel()}, {{"2"}}));
 
             delete table1;
@@ -437,23 +437,23 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Wildcard Integer pair") {
             QueryClause queryClause1(QueryClause::nextT, wildcard, integer1);
-            Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(table1->isTrueTable());
 
             QueryClause queryClause2(QueryClause::nextT, wildcard, integer2);
-            Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(table2->isTrueTable());
 
             QueryClause queryClause3(QueryClause::nextT, wildcard, integer4);
-            Table *table3 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(table3->isTrueTable());
 
             QueryClause queryClause4(QueryClause::nextT, wildcard, integer5);
-            Table *table4 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause4);
+            Table *table4 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause4);
             REQUIRE(table4->isTrueTable());
 
             QueryClause queryClause5(QueryClause::nextT, wildcard, integer5);
-            Table *table5 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause5);
+            Table *table5 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause5);
             REQUIRE(table5->isTrueTable());
 
             delete table1;
@@ -465,7 +465,7 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Wildcard Synonym pair") {
             QueryClause queryClause1(QueryClause::nextT, wildcard, synonymStmt1);
-            Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(TableTestUtils::checkTableMatches(table1, {synonymStmt1.getLabel()}, {{"1"},
                                                                                           {"2"},
                                                                                           {"3"},
@@ -473,13 +473,13 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
                                                                                           {"5"}}));
 
             QueryClause queryClause2(QueryClause::nextT, wildcard, synonymAssign1);
-            Table *table2 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause2);
+            Table *table2 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause2);
             REQUIRE(TableTestUtils::checkTableMatches(table2, {synonymAssign1.getLabel()}, {{"1"},
                                                                                             {"3"},
                                                                                             {"5"}}));
 
             QueryClause queryClause3(QueryClause::nextT, wildcard, synonymRead);
-            Table *table3 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause3);
+            Table *table3 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause3);
             REQUIRE(TableTestUtils::checkTableMatches(table3, {synonymRead.getLabel()}, {{"2"}}));
 
             delete table1;
@@ -489,12 +489,12 @@ TEST_CASE("Evaluator: Next and NextT evaluator") {
 
         SECTION("Wildcard Wildcard pair") {
             QueryClause queryClause1(QueryClause::nextT, wildcard, wildcard);
-            Table *table1 = NextTEvaluator(pkbManager, nextKbAdapter).evaluate(queryClause1);
+            Table *table1 = NextTEvaluator(pkbManager, nextKBProxy).evaluate(queryClause1);
             REQUIRE(table1->isTrueTable());
             delete table1;
         }
     }
 
-    delete nextKbAdapter;
+    delete nextKBProxy;
     delete pkbManager;
 }

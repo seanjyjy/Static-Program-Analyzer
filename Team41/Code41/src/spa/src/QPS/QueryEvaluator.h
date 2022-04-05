@@ -34,15 +34,16 @@
 #include "QueryClause.h"
 #include "Selectable.h"
 
-#include "Adapters/NextKBAdapter.h"
+#include "QPS/Proxy/NextKBProxy.h"
+#include "QPS/Proxy/AffectsKBProxy.h"
 
 using namespace std;
 
 class QueryEvaluator {
 private:
     PKBClient *pkb;
-    NextKBAdapter *nextKBAdapter;
-    AffectsKBAdapter *affectsKBAdapter;
+    NextKBProxy *nextKBProxy;
+    AffectsKBProxy *affectsKBProxy;
 
     /**
      * Deletes a table after it is not being used.

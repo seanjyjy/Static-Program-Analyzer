@@ -1,7 +1,7 @@
 #include "AffectEvaluator.h"
 
-AffectEvaluator::AffectEvaluator(PKBClient *pkb, AffectsKBAdapter *adapter) :
-        GenericClauseEvaluator(pkb), affectsKBAdapter(adapter) {}
+AffectEvaluator::AffectEvaluator(PKBClient *pkb, AffectsKBProxy *proxy) :
+        GenericClauseEvaluator(pkb), affectsKBProxy(proxy) {}
 
 Table *AffectEvaluator::evaluateClause(ClauseVariable &left, ClauseVariable &right, bool canSimplify) {
     if (EvaluatorUtils::StmtUtils::isIntegerInteger(&left, &right)) {
@@ -135,13 +135,13 @@ Table *AffectEvaluator::evaluateWildCardWildCard() {
 }
 
 bool AffectEvaluator::getIntegerWildCardRelation(const string &label) {
-    return affectsKBAdapter->isAffectingSomeStmt(label);
+    return affectsKBProxy->isAffectingSomeStmt(label);
 }
 
 bool AffectEvaluator::getWildCardIntegerRelation(const string &label) {
-    return affectsKBAdapter->isAffectedBySomeStmt(label);
+    return affectsKBProxy->isAffectedBySomeStmt(label);
 }
 
 bool AffectEvaluator::getWildCardWildCardRelation() {
-    return affectsKBAdapter->hasSomeAffectsAll();
+    return affectsKBProxy->hasSomeAffectsAll();
 }

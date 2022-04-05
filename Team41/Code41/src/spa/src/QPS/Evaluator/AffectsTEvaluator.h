@@ -4,7 +4,7 @@
 
 class AffectsTEvaluator : public AffectEvaluator {
 public:
-    explicit AffectsTEvaluator(PKBClient *pkb, AffectsKBAdapter *affectsKBAdapter);
+    explicit AffectsTEvaluator(PKBClient *pkb, AffectsKBProxy *affectsKBProxy);
 
     /**
      * @param left A statement number.

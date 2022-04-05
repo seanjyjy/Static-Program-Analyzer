@@ -23,7 +23,7 @@ private:
     Table *evaluateWildCardWildCard();
 
 protected:
-    AffectsKBAdapter *affectsKBAdapter;
+    AffectsKBProxy *affectsKBProxy;
 
     bool isValidAssignAssign(ClauseVariable &left, ClauseVariable &right);
 
@@ -52,7 +52,7 @@ protected:
     bool getWildCardWildCardRelation();
 
 public:
-    explicit AffectEvaluator(PKBClient *pkb, AffectsKBAdapter *adapter);
+    explicit AffectEvaluator(PKBClient *pkb, AffectsKBProxy *proxy);
 
     Table *evaluateClause(ClauseVariable &left, ClauseVariable &right, bool canSimplify) override;
 
