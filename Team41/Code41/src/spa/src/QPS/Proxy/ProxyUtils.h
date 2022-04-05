@@ -13,7 +13,7 @@ typedef std::function<bool(CFGNode *)> TerminateCheck;
 /**
  * Utility class to provide common algorithms that are being used in Next and Affects
  */
-class AdaptersUtils {
+class ProxyUtils {
 private:
 public:
     /**

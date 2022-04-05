@@ -7,16 +7,16 @@
 #include "PKB/PKBClient.h"
 #include "QPS/Cache/Cache.h"
 #include "Common/CFGNode.h"
-#include "AdaptersUtils.h"
+#include "ProxyUtils.h"
 
-class NextKBAdapter {
+class NextKBProxy {
 private:
     PKBClient *pkb;
     Cache *cache;
 public:
-    explicit NextKBAdapter(PKBClient *pkb);
+    explicit NextKBProxy(PKBClient *pkb);
 
-    ~NextKBAdapter();
+    ~NextKBProxy();
 
     /**
      * Checks if stmt2 can be executed immediately after stmt1.

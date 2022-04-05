@@ -1,7 +1,7 @@
-#include "AdaptersUtils.h"
+#include "ProxyUtils.h"
 
-void AdaptersUtils::runBFS(bool isForward, CFGNode *startNode, const CacheCallback &cacheAndContinue,
-                           const TerminateCheck &canTerminate) {
+void ProxyUtils::runBFS(bool isForward, CFGNode *startNode, const CacheCallback &cacheAndContinue,
+                        const TerminateCheck &canTerminate) {
 
     if (startNode == nullptr) return;
 
@@ -31,7 +31,7 @@ void AdaptersUtils::runBFS(bool isForward, CFGNode *startNode, const CacheCallba
     }
 }
 
-void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache *cache, CFGNode *node) {
+void ProxyUtils::runBoolBFS(const string &start, const string &end, Cache *cache, CFGNode *node) {
 
     CacheCallback saveToCache = [&start, &cache](const string &next) {
         cache->registerBooleanMapping(start, next);
@@ -58,7 +58,7 @@ void AdaptersUtils::runBoolBFS(const string &start, const string &end, Cache *ca
     runBFS(true, node, saveToCache, canEnd);
 }
 
-void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *node) {
+void ProxyUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *node) {
     CacheCallback saveToCache = [&stmtNum, &cache](const string &next) {
         unordered_set<string> forwardCache = cache->getForwardMapping(next);
         bool canUseCache = !forwardCache.empty() && stmtNum != next;
@@ -78,7 +78,7 @@ void AdaptersUtils::runDownBFS(const string &stmtNum, Cache *cache, CFGNode *nod
     runBFS(true, node, saveToCache);
 }
 
-void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node) {
+void ProxyUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node) {
     CacheCallback saveToCache = [&stmtNum, &cache](const string &next) {
         unordered_set<string> backwardCache = cache->getBackwardMapping(next);
         bool canUseCache = !backwardCache.empty() && stmtNum != next;
@@ -99,7 +99,7 @@ void AdaptersUtils::runUpBFS(const string &stmtNum, Cache *cache, CFGNode *node)
     runBFS(false, node, saveToCache);
 }
 
-void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
+void ProxyUtils::fullBFS(Cache *cache, CFGNode *node) {
     unordered_set<CFGNode *> mainVisited;
     queue<CFGNode *> mainQ;
 
@@ -137,7 +137,7 @@ void AdaptersUtils::fullBFS(Cache *cache, CFGNode *node) {
     }
 }
 
-CFGNode *AdaptersUtils::getStartingParentNode(CFGNode *rootCFG, const string &stmt) {
+CFGNode *ProxyUtils::getStartingParentNode(CFGNode *rootCFG, const string &stmt) {
     int stmtNum = stoi(stmt);
 
     const vector<CFGNode *> &children = rootCFG->getChildren();

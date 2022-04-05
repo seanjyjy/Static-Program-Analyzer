@@ -1,18 +1,18 @@
-#include "AffectsKBAdapter.h"
+#include "AffectsKBProxy.h"
 
-AffectsKBAdapter::AffectsKBAdapter(PKBClient *pkb) : pkb(pkb), cache(new Cache) {
+AffectsKBProxy::AffectsKBProxy(PKBClient *pkb) : pkb(pkb), cache(new Cache) {
     stmtNumToNodeMap.insert({ROOT_CFG, new CFGNode(ROOT_CFG)});
 }
 
-AffectsKBAdapter::~AffectsKBAdapter() {
+AffectsKBProxy::~AffectsKBProxy() {
     delete cache;
     CFGUtils::deleteCFG(stmtNumToNodeMap);
 }
 
-bool AffectsKBAdapter::isAffects(const string &stmtNum1, const string &stmtNum2) {
+bool AffectsKBProxy::isAffects(const string &stmtNum1, const string &stmtNum2) {
     CFGNode *root = pkb->getRootCFG();
-    CFGNode *firstNode = AdaptersUtils::getStartingParentNode(root, stmtNum1);
-    CFGNode *secondNode = AdaptersUtils::getStartingParentNode(root, stmtNum2);
+    CFGNode *firstNode = ProxyUtils::getStartingParentNode(root, stmtNum1);
+    CFGNode *secondNode = ProxyUtils::getStartingParentNode(root, stmtNum2);
     if (firstNode == nullptr || firstNode != secondNode) {
         return false;
     }
@@ -41,7 +41,7 @@ bool AffectsKBAdapter::isAffects(const string &stmtNum1, const string &stmtNum2)
     return bfsBool(pkb, start, variable, stmtNum2);
 }
 
-unordered_set<string> AffectsKBAdapter::getDirectAffectsBy(const string &stmtNum) {
+unordered_set<string> AffectsKBProxy::getDirectAffectsBy(const string &stmtNum) {
     if (!hasAffectsGraph(stmtNum)) {
         string modifiedVar = *pkb->getModifiesByStmt(stmtNum).begin();
         if (pkb->getUsesSByVar(modifiedVar).empty()) {
@@ -57,7 +57,7 @@ unordered_set<string> AffectsKBAdapter::getDirectAffectsBy(const string &stmtNum
     return affected;
 }
 
-unordered_set<string> AffectsKBAdapter::getDirectAffecting(const string &stmtNum) {
+unordered_set<string> AffectsKBProxy::getDirectAffecting(const string &stmtNum) {
     if (!hasAffectsGraph(stmtNum)) {
         return bfsUp(pkb, stmtNum);
     }
@@ -69,21 +69,21 @@ unordered_set<string> AffectsKBAdapter::getDirectAffecting(const string &stmtNum
     return affecting;
 }
 
-unordered_set<string> AffectsKBAdapter::getAllStmtAffectingOther() {
+unordered_set<string> AffectsKBProxy::getAllStmtAffectingOther() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
     return affectings;
 }
 
-unordered_set<string> AffectsKBAdapter::getAllStmtAffectedByOther() {
+unordered_set<string> AffectsKBProxy::getAllStmtAffectedByOther() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
     return affecteds;
 }
 
-bool AffectsKBAdapter::isAffectingSomeStmt(const string &stmtNum) {
+bool AffectsKBProxy::isAffectingSomeStmt(const string &stmtNum) {
     if (hasAffectsGraph(stmtNum)) {
         CFGNode *node = stmtNumToNodeMap.at(stmtNum);
         return !node->getChildren().empty();
@@ -93,7 +93,7 @@ bool AffectsKBAdapter::isAffectingSomeStmt(const string &stmtNum) {
     return !affected.empty();
 }
 
-bool AffectsKBAdapter::isAffectedBySomeStmt(const string &stmtNum) {
+bool AffectsKBProxy::isAffectedBySomeStmt(const string &stmtNum) {
     if (hasAffectsGraph(stmtNum)) {
         CFGNode *node = stmtNumToNodeMap.at(stmtNum);
         return !node->getParent().empty();
@@ -103,7 +103,7 @@ bool AffectsKBAdapter::isAffectedBySomeStmt(const string &stmtNum) {
     return !affecting.empty();
 }
 
-bool AffectsKBAdapter::hasSomeAffectsAll() {
+bool AffectsKBProxy::hasSomeAffectsAll() {
     if (!affectingAffectedPairs.empty()) {
         return true;
     }
@@ -121,17 +121,17 @@ bool AffectsKBAdapter::hasSomeAffectsAll() {
     return false;
 }
 
-vector<pair<string, string>> AffectsKBAdapter::getDirectAffectsAll() {
+vector<pair<string, string>> AffectsKBProxy::getDirectAffectsAll() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
     return affectingAffectedPairs;
 }
 
-bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2) {
+bool AffectsKBProxy::isAffectsT(const string &stmtNum1, const string &stmtNum2) {
     CFGNode *root = pkb->getRootCFG();
-    CFGNode *firstCFGNode = AdaptersUtils::getStartingParentNode(root, stmtNum1);
-    CFGNode *secondCFGNode = AdaptersUtils::getStartingParentNode(root, stmtNum2);
+    CFGNode *firstCFGNode = ProxyUtils::getStartingParentNode(root, stmtNum1);
+    CFGNode *secondCFGNode = ProxyUtils::getStartingParentNode(root, stmtNum2);
     if (firstCFGNode == nullptr || firstCFGNode != secondCFGNode) {
         return false;
     }
@@ -150,61 +150,61 @@ bool AffectsKBAdapter::isAffectsT(const string &stmtNum1, const string &stmtNum2
 
     if (!cache->getBooleanMapping(stmtNum1, stmtNum2)) {
         CFGNode *startNode = stmtNumToNodeMap.at(stmtNum1);
-        AdaptersUtils::runBoolBFS(stmtNum1, stmtNum2, cache, startNode);
+        ProxyUtils::runBoolBFS(stmtNum1, stmtNum2, cache, startNode);
     }
 
     return cache->getBooleanMapping(stmtNum1, stmtNum2);
 }
 
-unordered_set<string> AffectsKBAdapter::getAffectsTBy(const string &stmtNum) {
+unordered_set<string> AffectsKBProxy::getAffectsTBy(const string &stmtNum) {
     if (!hasAffectsGraph(stmtNum)) {
-        CFGNode *firstNode = AdaptersUtils::getStartingParentNode(pkb->getRootCFG(), stmtNum);
+        CFGNode *firstNode = ProxyUtils::getStartingParentNode(pkb->getRootCFG(), stmtNum);
         buildAffectsGraphForProc(firstNode);
     }
 
     if (cache->getForwardMapping(stmtNum).empty()) {
         CFGNode *startNode = stmtNumToNodeMap.at(stmtNum);
-        AdaptersUtils::runDownBFS(stmtNum, cache, startNode);
+        ProxyUtils::runDownBFS(stmtNum, cache, startNode);
     }
 
     return cache->getForwardMapping(stmtNum);
 }
 
-unordered_set<string> AffectsKBAdapter::getAffectingT(const string &stmtNum) {
+unordered_set<string> AffectsKBProxy::getAffectingT(const string &stmtNum) {
     if (!hasAffectsGraph(stmtNum)) {
-        CFGNode *firstNode = AdaptersUtils::getStartingParentNode(pkb->getRootCFG(), stmtNum);
+        CFGNode *firstNode = ProxyUtils::getStartingParentNode(pkb->getRootCFG(), stmtNum);
         buildAffectsGraphForProc(firstNode);
     }
 
     if (cache->getBackwardMapping(stmtNum).empty()) {
         CFGNode *endNode = stmtNumToNodeMap.at(stmtNum);
-        AdaptersUtils::runUpBFS(stmtNum, cache, endNode);
+        ProxyUtils::runUpBFS(stmtNum, cache, endNode);
     }
 
     return cache->getBackwardMapping(stmtNum);
 }
 
-unordered_set<string> AffectsKBAdapter::getAllStmtAffectingTOther() {
+unordered_set<string> AffectsKBProxy::getAllStmtAffectingTOther() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
     return affectings;
 }
 
-unordered_set<string> AffectsKBAdapter::getAllStmtAffectedTByOther() {
+unordered_set<string> AffectsKBProxy::getAllStmtAffectedTByOther() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
     return affecteds;
 }
 
-vector<pair<string, string>> AffectsKBAdapter::getAffectsTAll() {
+vector<pair<string, string>> AffectsKBProxy::getAffectsTAll() {
     if (!hasAffectsGraph())
         buildAffectsGraph();
 
     if (cache->getAllMapping().empty()) {
         CFGNode *start = stmtNumToNodeMap.at(ROOT_CFG);
-        AdaptersUtils::fullBFS(cache, start);
+        ProxyUtils::fullBFS(cache, start);
     }
 
     return cache->getAllMapping();
@@ -212,19 +212,19 @@ vector<pair<string, string>> AffectsKBAdapter::getAffectsTAll() {
 
 //================================= Algo ==========================================
 
-const unordered_set<string> &AffectsKBAdapter::getAllParentStmt() {
+const unordered_set<string> &AffectsKBProxy::getAllParentStmt() {
     if (cachedParentStmts.empty())
         cachedParentStmts = pkb->getAllStmtsParentOfSomeStmt();
     return cachedParentStmts;
 }
 
-const unordered_set<string> &AffectsKBAdapter::getAllAssignStmt() {
+const unordered_set<string> &AffectsKBProxy::getAllAssignStmt() {
     if (cachedAssignStmts.empty())
         cachedAssignStmts = pkb->getAssigns();
     return cachedAssignStmts;
 }
 
-bool AffectsKBAdapter::bfsBool(PKBClient *client, CFGNode *start, const string &modifiedVar, const string &end) {
+bool AffectsKBProxy::bfsBool(PKBClient *client, CFGNode *start, const string &modifiedVar, const string &end) {
     bool canReach = false;
     unordered_set<string> parentStmts = getAllParentStmt();
     CacheCallback shouldContinue = [&modifiedVar, &client, &parentStmts](const string &next) {
@@ -239,11 +239,11 @@ bool AffectsKBAdapter::bfsBool(PKBClient *client, CFGNode *start, const string &
         return canReach;
     };
 
-    AdaptersUtils::runBFS(true, start, shouldContinue, canEnd);
+    ProxyUtils::runBFS(true, start, shouldContinue, canEnd);
     return canReach;
 }
 
-unordered_set<string> AffectsKBAdapter::bfsDown(PKBClient *client, const string &stmtNum, bool isAnyResult) {
+unordered_set<string> AffectsKBProxy::bfsDown(PKBClient *client, const string &stmtNum, bool isAnyResult) {
     unordered_set<string> affected;
     CFGNode *start = client->getCFGForStmt(stmtNum);
     // we are ensured that there is a modified var since this is an assignment statement
@@ -262,11 +262,11 @@ unordered_set<string> AffectsKBAdapter::bfsDown(PKBClient *client, const string 
 
     TerminateCheck canEnd = [&affected, &isAnyResult](CFGNode *) { return isAnyResult && !affected.empty(); };
 
-    AdaptersUtils::runBFS(true, start, shouldContinue, canEnd);
+    ProxyUtils::runBFS(true, start, shouldContinue, canEnd);
     return affected;
 }
 
-unordered_set<string> AffectsKBAdapter::bfsUp(PKBClient *client, const string &stmtNum, bool isAnyResult) {
+unordered_set<string> AffectsKBProxy::bfsUp(PKBClient *client, const string &stmtNum, bool isAnyResult) {
     unordered_set<string> affecting;
     CFGNode *start = pkb->getCFGForStmt(stmtNum);
     unordered_set<string> affectedVars = pkb->getUsesByStmt(stmtNum);
@@ -291,22 +291,22 @@ unordered_set<string> AffectsKBAdapter::bfsUp(PKBClient *client, const string &s
             return false;
         };
 
-        AdaptersUtils::runBFS(false, start, shouldContinue, canEnd);
+        ProxyUtils::runBFS(false, start, shouldContinue, canEnd);
     }
     return affecting;
 }
 
 //================================= Affects Graph ==========================================
 
-bool AffectsKBAdapter::hasAffectsGraph(const string &stmt) const {
+bool AffectsKBProxy::hasAffectsGraph(const string &stmt) const {
     return stmtNumToNodeMap.find(stmt) != stmtNumToNodeMap.end();
 }
 
-bool AffectsKBAdapter::hasAffectsGraph() const {
+bool AffectsKBProxy::hasAffectsGraph() const {
     return isAffectsGraphBuilt;
 }
 
-void AffectsKBAdapter::buildAffectsGraph() {
+void AffectsKBProxy::buildAffectsGraph() {
     CFGNode *root = pkb->getRootCFG();
 
     for (auto child: root->getChildren()) {
@@ -317,7 +317,7 @@ void AffectsKBAdapter::buildAffectsGraph() {
     isAffectsGraphBuilt = true;
 }
 
-void AffectsKBAdapter::addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ) {
+void AffectsKBProxy::addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ) {
     queue<CFGNode *> q;
     unordered_set<CFGNode *> visited;
     q.push(node);
@@ -345,7 +345,7 @@ void AffectsKBAdapter::addAllStarting(CFGNode *node, queue<CFGNode *> &mainQ) {
     }
 }
 
-void AffectsKBAdapter::buildAffectsGraphForProc(CFGNode *start) {
+void AffectsKBProxy::buildAffectsGraphForProc(CFGNode *start) {
     queue<CFGNode *> mainQ;
     queue<CFGNode *> queue;
     getAllParentStmt();

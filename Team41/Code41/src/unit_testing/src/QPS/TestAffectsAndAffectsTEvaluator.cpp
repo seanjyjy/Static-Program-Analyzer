@@ -10,7 +10,7 @@
 
 TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
     auto *pkbManager = new PKBManager();
-    auto *affectsKbAdapter = new AffectsKBAdapter(pkbManager);
+    auto *affectsKBProxy = new AffectsKBProxy(pkbManager);
 
     /**
      *    procedure p {
@@ -104,184 +104,184 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
     SECTION("Affects Evaluator") {
         SECTION("Integer Integer pair") {
             clauses.push({QueryClause::affects, integers[2], integers[3]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affects, integers[3], integers[5]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affects, integers[3], integers[7]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affects, integers[7], integers[7]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affects, integers[5], integers[7]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affects, integers[9], integers[13]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affects, integers[1], integers[5]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             // invalid stmtNumber
             clauses.push({QueryClause::affects, integers[0], integers[1]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
         }
 
         SECTION("Integer Synonym pair") {
 //             * 1.    x = 1;
             clauses.push({QueryClause::affects, integers[1], synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
 //             * 2.    y = 2;
             clauses.push({QueryClause::affects, integers[2], synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"3"}}));
 
 //             * 3.    z = y;
             clauses.push({QueryClause::affects, integers[3], synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"5"}}));
 
 //             * 5.    z = x + y + z;
             clauses.push({QueryClause::affects, integers[5], synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"7"}}));
 
 //             * 7.       z = z + 1; }}
             clauses.push({QueryClause::affects, integers[7], synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"7"}}));
 
 //             * 8.    x = 5;
             clauses.push({QueryClause::affects, integers[8], synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"11"},
                                                                                                 {"12"}}));
 
 //             * 9.    t = 4;
             clauses.push({QueryClause::affects, integers[9], synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"13"}}));
 
 //             * 11.        t = x + 1;
             clauses.push({QueryClause::affects, integers[11], synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"13"}}));
 
 //             * 12.       y = z + x; }
             clauses.push({QueryClause::affects, integers[12], synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
 //             * 13.  x = t + 1; }
             clauses.push({QueryClause::affects, integers[13], synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
         }
 
         SECTION("Integer Wildcard pair") {
 //             * 1.    x = 1;
             clauses.push({QueryClause::affects, integers[1], wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
 //             * 2.    y = 2;
             clauses.push({QueryClause::affects, integers[2], wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
 //             * 3.    z = y;
             clauses.push({QueryClause::affects, integers[3], wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
 //             * 5.    z = x + y + z;
             clauses.push({QueryClause::affects, integers[5], wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
 //             * 7.       z = z + 1; }}
             clauses.push({QueryClause::affects, integers[7], wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
 //             * 8.    x = 5;
             clauses.push({QueryClause::affects, integers[8], wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
 //             * 9.    t = 4;
             clauses.push({QueryClause::affects, integers[9], wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
 //             * 11.        t = x + 1;
             clauses.push({QueryClause::affects, integers[11], wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
 //             * 12.       y = z + x; }
             clauses.push({QueryClause::affects, integers[12], wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
 //             * 13.  x = t + 1; }
             clauses.push({QueryClause::affects, integers[13], wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
         }
 
         SECTION("Synonym Integer pair") {
             clauses.push({QueryClause::affects, synonymStmt1, integers[1]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affects, synonymStmt1, integers[2]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affects, synonymStmt1, integers[3]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"2"}}));
 
             clauses.push({QueryClause::affects, synonymStmt1, integers[5]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"3"}}));
 
             clauses.push({QueryClause::affects, synonymStmt1, integers[7]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"5"},
                                                                                                 {"7"}}));
 
             clauses.push({QueryClause::affects, synonymStmt1, integers[8]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affects, synonymStmt1, integers[9]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affects, synonymStmt1, integers[11]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"8"}}));
 
             clauses.push({QueryClause::affects, synonymStmt1, integers[12]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"8"}}));
 
             clauses.push({QueryClause::affects, synonymStmt1, integers[13]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"9"},
                                                                                                 {"11"}}));
         }
@@ -297,12 +297,12 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
                                          {"11", "13"}});
 
             clauses.push({QueryClause::affects, synonymStmt1, synonymStmt2});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel(), synonymStmt2.getLabel()},
                                                       rows));
 
             clauses.push({QueryClause::affects, synonymAssign1, synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(),
                                                       {synonymAssign1.getLabel(), synonymStmt1.getLabel()}, rows));
 
@@ -310,7 +310,7 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
 
         SECTION("Synonym Wildcard pair") {
             clauses.push({QueryClause::affects, synonymStmt1, wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"2"},
                                                                                                 {"3"},
                                                                                                 {"5"},
@@ -322,49 +322,49 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
 
         SECTION("Wildcard Integer pair") {
             clauses.push({QueryClause::affects, wildcard, integers[1]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affects, wildcard, integers[2]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affects, wildcard, integers[3]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affects, wildcard, integers[5]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affects, wildcard, integers[7]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affects, wildcard, integers[8]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affects, wildcard, integers[9]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affects, wildcard, integers[11]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affects, wildcard, integers[12]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affects, wildcard, integers[13]});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
         }
 
         SECTION("Wildcard Synonym pair") {
             clauses.push({QueryClause::affects, wildcard, synonymStmt1});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"3"},
                                                                                                 {"5"},
                                                                                                 {"7"},
@@ -376,7 +376,7 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
 
         SECTION("Wildcard Wildcard pair") {
             clauses.push({QueryClause::affects, wildcard, wildcard});
-            tables.push(AffectsEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
         }
@@ -385,191 +385,191 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
     SECTION("AffectsT Evaluator") {
         SECTION("Integer Integer pair") {
             clauses.push({QueryClause::affectsT, integers[2], integers[5]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, integers[3], integers[5]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, integers[3], integers[7]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, integers[7], integers[7]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, integers[8], integers[13]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, integers[9], integers[13]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, integers[1], integers[5]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             // invalid stmtNumber
             clauses.push({QueryClause::affectsT, integers[0], integers[13]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
         }
 
         SECTION("Integer Synonym pair") {
             // 1.    x = 1;
             clauses.push({QueryClause::affectsT, integers[1], synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             // 2.    y = 2;
             clauses.push({QueryClause::affectsT, integers[2], synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"3"},
                                                                                                 {"5"},
                                                                                                 {"7"}}));
 
             // 3.    z = y;
             clauses.push({QueryClause::affectsT, integers[3], synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"5"},
                                                                                                 {"7"}}));
 
             // 5.    z = x + y + z;
             clauses.push({QueryClause::affectsT, integers[5], synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"7"}}));
 
             // 7.       z = z + 1; }}
             clauses.push({QueryClause::affectsT, integers[7], synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"7"}}));
 
             // 8.    x = 5;
             clauses.push({QueryClause::affectsT, integers[8], synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"11"},
                                                                                                 {"12"},
                                                                                                 {"13"}}));
 
             // 9.    t = 4;
             clauses.push({QueryClause::affectsT, integers[9], synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"13"}}));
 
             // 11.        t = x + 1;
             clauses.push({QueryClause::affectsT, integers[11], synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"13"}}));
 
             // 12.       y = z + x; }
             clauses.push({QueryClause::affectsT, integers[12], synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             // 13.  x = t + 1; }
             clauses.push({QueryClause::affectsT, integers[13], synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
         }
 
         SECTION("Integer Wildcard pair") {
             // 1.    x = 1;
             clauses.push({QueryClause::affectsT, integers[1], wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             // 2.    y = 2;
             clauses.push({QueryClause::affectsT, integers[2], wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             // 3.    z = y;
             clauses.push({QueryClause::affectsT, integers[3], wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             // 5.    z = x + y + z;
             clauses.push({QueryClause::affectsT, integers[5], wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             // 7.       z = z + 1; }}
             clauses.push({QueryClause::affectsT, integers[7], wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             // 8.    x = 5;
             clauses.push({QueryClause::affectsT, integers[8], wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             // 9.    t = 4;
             clauses.push({QueryClause::affectsT, integers[9], wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             // 11.        t = x + 1;
             clauses.push({QueryClause::affectsT, integers[11], wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             // 12.       y = z + x; }
             clauses.push({QueryClause::affectsT, integers[12], wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             // 13.  x = t + 1; }
             clauses.push({QueryClause::affectsT, integers[13], wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
         }
 
         SECTION("Synonym Integer pair") {
             clauses.push({QueryClause::affectsT, synonymStmt1, integers[1]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affectsT, synonymStmt1, integers[2]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affectsT, synonymStmt1, integers[3]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"2"}}));
 
             clauses.push({QueryClause::affectsT, synonymStmt1, integers[5]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"2"},
                                                                                                 {"3"}}));
 
             clauses.push({QueryClause::affectsT, synonymStmt1, integers[7]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"2"},
                                                                                                 {"3"},
                                                                                                 {"5"},
                                                                                                 {"7"}}));
 
             clauses.push({QueryClause::affectsT, synonymStmt1, integers[8]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affectsT, synonymStmt1, integers[9]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affectsT, synonymStmt1, integers[11]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"8"}}));
 
             clauses.push({QueryClause::affectsT, synonymStmt1, integers[12]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"8"}}));
 
             clauses.push({QueryClause::affectsT, synonymStmt1, integers[13]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"8"},
                                                                                                 {"9"},
                                                                                                 {"11"}}));
@@ -590,19 +590,19 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
                                          {"11", "13"}});
 
             clauses.push({QueryClause::affectsT, synonymStmt1, synonymStmt2});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel(), synonymStmt2.getLabel()},
                                                       rows));
 
             clauses.push({QueryClause::affectsT, synonymAssign1, synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(),
                                                       {synonymAssign1.getLabel(), synonymStmt1.getLabel()}, rows));
         }
 
         SECTION("Synonym Wildcard pair") {
             clauses.push({QueryClause::affectsT, synonymStmt1, wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"2"},
                                                                                                 {"3"},
                                                                                                 {"5"},
@@ -614,49 +614,49 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
 
         SECTION("Wildcard Integer pair") {
             clauses.push({QueryClause::affectsT, wildcard, integers[1]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affectsT, wildcard, integers[2]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affectsT, wildcard, integers[3]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, wildcard, integers[5]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, wildcard, integers[7]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, wildcard, integers[8]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affectsT, wildcard, integers[9]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isFalseTable());
 
             clauses.push({QueryClause::affectsT, wildcard, integers[11]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, wildcard, integers[12]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
             clauses.push({QueryClause::affectsT, wildcard, integers[13]});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
         }
 
         SECTION("Wildcard Synonym pair") {
             clauses.push({QueryClause::affectsT, wildcard, synonymStmt1});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(TableTestUtils::checkTableMatches(tables.top(), {synonymStmt1.getLabel()}, {{"3"},
                                                                                                 {"5"},
                                                                                                 {"7"},
@@ -668,7 +668,7 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
 
         SECTION("Wildcard Wildcard pair") {
             clauses.push({QueryClause::affectsT, wildcard, wildcard});
-            tables.push(AffectsTEvaluator(pkbManager, affectsKbAdapter).evaluate(clauses.top()));
+            tables.push(AffectsTEvaluator(pkbManager, affectsKBProxy).evaluate(clauses.top()));
             REQUIRE(tables.top()->isTrueTable());
 
         }
@@ -678,6 +678,6 @@ TEST_CASE("Evaluator: Affects and AffectsT evaluator") {
         delete tables.top();
         tables.pop();
     }
-    delete affectsKbAdapter;
+    delete affectsKBProxy;
     delete pkbManager;
 }
