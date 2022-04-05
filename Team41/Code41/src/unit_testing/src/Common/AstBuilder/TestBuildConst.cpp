@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "TestAstBuilderUtils.h"
 #include "Common/TreeUtils.h"
+#include "../AstNode/AstUtils.h"
 
 using namespace std;
 
@@ -10,7 +11,7 @@ TEST_CASE("AST Builder: constant") {
         string xml = TestAstBuilderUtils::readFile("const", "1-xml.txt");
         // manually build ast
         Token *integer = Token::makeConst("0");
-        TNode *node = TNode::makeConstVal(integer);
+        TNode *node = AstUtils::makeConstVal(integer);
         // parse xml and test
         TNode *ast = TestAstBuilderUtils::parseXml(xml);
         REQUIRE(ast != nullptr);

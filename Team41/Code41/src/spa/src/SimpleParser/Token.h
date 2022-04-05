@@ -17,10 +17,10 @@ private:
     Token(TokenType type, string val);
 
 public:
-    // for testing purposes, initializes start/end pairs to rubbish values
+    // for ast builder/testing purposes, initializes start/end pairs to rubbish values
     static Token *makeName(string val);
 
-    // for testing purposes, initializes start/end pairs to rubbish values
+    // for ast builder/testing purposes, initializes start/end pairs to rubbish values
     static Token *makeConst(string val);
 
     Token();
@@ -39,12 +39,7 @@ public:
     // returns the end position in source file this token was tokenized
     [[nodiscard]] pair<int, int> getEnd() const;
 
-    // returns a human-readable representation of this token
-    [[nodiscard]] string toString() const;
-
     // returns a deep copy of the current token
     [[nodiscard]] Token *copy() const;
 
-    // returns a human-readable representation of the TokenType enum
-    static string typeToString(TokenType type);
 };

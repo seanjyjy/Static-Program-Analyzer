@@ -1,5 +1,5 @@
 #include "PatternExtractor.h"
-#include "Common/TNodeType.h"
+#include "Common/AstNode/TNodeType.h"
 #include "DesignExtractorUtils.h"
 
 PatternExtractor::PatternExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :

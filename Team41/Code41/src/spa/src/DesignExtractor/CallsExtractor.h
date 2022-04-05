@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 #include "Base/BaseExtractor.h"
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 
 class CallsExtractor : BaseExtractor {
 private:

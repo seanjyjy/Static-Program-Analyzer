@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 #include "SimpleParser/Tokenizer.h"
 #include "TestTokenizerUtils.h"
 #include "catch.hpp"

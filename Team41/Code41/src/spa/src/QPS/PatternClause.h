@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 #include "ClauseVariable.h"
 #include "QueryDeclaration.h"
 #include "PatternVariable.h"

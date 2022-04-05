@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Tokens.h"
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 #include "Common/AstNode/Program.h"
 #include "Common/AstNode/Procedure.h"
 #include "Common/AstNode/StmtLst.h"
@@ -474,8 +474,4 @@ public:
      */
     TNode *parseConst(const string &s);
 
-    /**
-     * Prints all tokens. For debugging purposes.
-     */
-    void printTokens();
 };

@@ -1,5 +1,5 @@
 #include "VarRelationExtractor.h"
-#include "Common/TNodeType.h"
+#include "Common/AstNode/TNodeType.h"
 #include "DesignExtractor/DesignExtractorUtils.h"
 
 VarRelationExtractor::VarRelationExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,

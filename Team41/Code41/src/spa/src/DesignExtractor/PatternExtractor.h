@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 #include "Base/StmtNumExtractor.h"
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 
 class PatternExtractor : public StmtNumExtractor {
 private:

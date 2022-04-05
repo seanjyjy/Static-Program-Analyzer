@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <unordered_set>
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 
 using namespace std;
 

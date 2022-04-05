@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "PKB/Tables/AssignPatternTable.h"
 #include "../UnitTestUtility.h"
+#include "../Common/AstNode/AstUtils.h"
 
 using namespace std;
 
@@ -20,18 +21,19 @@ TEST_CASE("PKB: AssignPatternTable") {
     Token *fourTok = Token::makeConst("4");
 
     // 1 + 2 * 3 - 1 / 3 + v0
-    TNode *varNode = TNode::makeVarName(varTok);
-    TNode *one = TNode::makeConstVal(oneTok);
-    TNode *one_copy = TNode::makeConstVal(oneTok_copy);
-    TNode *two = TNode::makeConstVal(twoTok);
-    TNode *three = TNode::makeConstVal(threeTok);
-    TNode *three_copy = TNode::makeConstVal(threeTok_copy);
-    TNode *four = TNode::makeConstVal(fourTok);
-    TNode *times = TNode::makeTimes(two, three);
-    TNode *divide = TNode::makeDiv(one, three_copy);
-    TNode *plus = TNode::makePlus(one_copy, times);
-    TNode *minus = TNode::makeMinus(plus, divide);
-    TNode *plusVar = TNode::makePlus(minus, varNode);
+    VarName *varNode = AstUtils::makeVarName(varTok);
+    ConstVal *one = AstUtils::makeConstVal(oneTok);
+    ConstVal *one_copy = AstUtils::makeConstVal(oneTok_copy);
+    ConstVal *two = AstUtils::makeConstVal(twoTok);
+    ConstVal *three = AstUtils::makeConstVal(threeTok);
+    ConstVal *three_copy = AstUtils::makeConstVal(threeTok_copy);
+    ConstVal *four = AstUtils::makeConstVal(fourTok);
+    Times *times = AstUtils::makeTimes(two, three);
+    Div *divide = AstUtils::makeDiv(one, three_copy);
+    Plus *plus = AstUtils::makePlus(one_copy, times);
+    Minus *minus = AstUtils::makeMinus(plus, divide);
+    TNode *plusVar = AstUtils::makePlus(minus, varNode);
+    AstUtils::printAst(plusVar);
 
     SECTION("FullPattern") {
         SECTION("Initial State") {
@@ -73,7 +75,7 @@ TEST_CASE("PKB: AssignPatternTable") {
             REQUIRE_NOTHROW(table.setPattern(stmt[0], vars[0], plusVar));
             SECTION("One unique pattern") {
                 REQUIRE_NOTHROW(table.setPattern(stmt[0], vars[0], plusVar));
-                for (TNode *child: {one, two, three, varNode, plusVar, minus, plus, divide, times}) {
+                for (TNode *child: vector<TNode*>{one, two, three, varNode, plusVar, minus, plus, divide, times}) {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
                                                   vector<pair<string, string>>({{stmt[0], vars[0]}})));
                     REQUIRE(table.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[0]}));
@@ -86,11 +88,11 @@ TEST_CASE("PKB: AssignPatternTable") {
                 // v0 = 1 + 2 * 3 - 1 / 3 + v0
                 REQUIRE_NOTHROW(table.setPattern(stmt[0], vars[0], plusVar));
                 // v1 = 2 * 3 - 1 / 3
-                TNode *timesMinusDivide = TNode::makeMinus(times, divide);
+                TNode *timesMinusDivide = AstUtils::makeMinus(times, divide);
                 REQUIRE_NOTHROW(table.setPattern(stmt[1], vars[1], timesMinusDivide));
 
                 // with both statements
-                for (TNode *child: {one, two, three, divide, times}) {
+                for (TNode *child: vector<TNode*>{one, two, three, divide, times}) {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
                                                   vector<pair<string, string>>({{stmt[0], vars[0]},
                                                                                 {stmt[1], vars[1]}})));
@@ -100,7 +102,7 @@ TEST_CASE("PKB: AssignPatternTable") {
                 }
 
                 // unique to stmt[0]
-                for (TNode *child: {varNode, plusVar, minus, plus}) {
+                for (TNode *child: vector<TNode*>{varNode, plusVar, minus, plus}) {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
                                                   vector<pair<string, string>>({{stmt[0], vars[0]}})));
                     REQUIRE(table.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[0]}));
@@ -109,7 +111,7 @@ TEST_CASE("PKB: AssignPatternTable") {
                 }
 
                 // unique to stmt[1]
-                for (TNode *child: {timesMinusDivide}) {
+                for (TNode *child: vector<TNode*>{timesMinusDivide}) {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
                                                   vector<pair<string, string>>({{stmt[1], vars[1]}})));
                     REQUIRE(table.getAllStmtsFromSubPattern(child) == unordered_set<string>({stmt[1]}));
@@ -118,9 +120,9 @@ TEST_CASE("PKB: AssignPatternTable") {
                 }
 
                 // v0 + 1 + 2 * 3 - 1 / 3
-                TNode *swappedOperands = TNode::makePlus(varNode, minus);
+                TNode *swappedOperands = AstUtils::makePlus(varNode, minus);
                 // unique to none
-                for (TNode *child: {four, swappedOperands}) {
+                for (TNode *child: vector<TNode*>{four, swappedOperands}) {
                     REQUIRE(sortAndCompareVectors(table.getStmtNVarFromSubPattern(child),
                                                   vector<pair<string, string>>()));
                     REQUIRE(table.getAllStmtsFromSubPattern(child).empty());

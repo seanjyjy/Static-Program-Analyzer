@@ -5,7 +5,7 @@
 #include <unordered_set>
 
 #include "Base/VarRelationExtractor.h"
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 
 class ModifiesExtractor : public VarRelationExtractor {
 private:

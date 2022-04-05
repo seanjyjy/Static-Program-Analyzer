@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "TNode.h"
+#include "Common/AstNode/TNode.h"
 
 class CFGNode {
 private:

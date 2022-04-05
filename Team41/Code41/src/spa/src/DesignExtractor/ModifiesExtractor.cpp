@@ -1,6 +1,6 @@
 #include "ModifiesExtractor.h"
 #include "DesignExtractorUtils.h"
-#include "Common/TNodeType.h"
+#include "Common/AstNode/TNodeType.h"
 
 ModifiesExtractor::ModifiesExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap,
                                      unordered_map<string, unordered_set<string>> &callsMap,

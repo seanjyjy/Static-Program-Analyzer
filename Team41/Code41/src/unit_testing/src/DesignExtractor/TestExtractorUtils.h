@@ -8,7 +8,7 @@
 
 #include "Common/FileReader.h"
 #include "Common/TreeUtils.h"
-#include "Common/TNodeType.h"
+#include "Common/AstNode/TNodeType.h"
 
 class TestExtractorUtils {
 public:

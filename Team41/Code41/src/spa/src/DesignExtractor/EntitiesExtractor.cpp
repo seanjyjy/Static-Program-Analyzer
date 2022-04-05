@@ -1,4 +1,4 @@
-#include "Common/TNodeType.h"
+#include "Common/AstNode/TNodeType.h"
 #include <DesignExtractor/EntitiesExtractor.h>
 #include <Exception/SemanticException.h>
 

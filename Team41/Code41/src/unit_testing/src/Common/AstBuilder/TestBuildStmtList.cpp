@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "TestAstBuilderUtils.h"
 #include "Common/TreeUtils.h"
+#include "../AstNode/AstUtils.h"
 #include <iostream>
 
 using namespace std;
@@ -20,27 +21,27 @@ TEST_CASE("AST Builder: statement list") {
         string simple = TestAstBuilderUtils::readFile("stmtlist", "1-simple.txt");
         string xml = TestAstBuilderUtils::readFile("stmtlist", "1-xml.txt");
         // manually build actual AST
-        TNode *procedure = TNode::makeProcedure(
+        TNode *procedure = AstUtils::makeProcedure(
                 Token::makeName("stmtlist"),
-                TNode::makeStmtLst({
-                                           TNode::makeReadStmt(TNode::makeVarName(Token::makeName("x"))),
-                                           TNode::makePrintStmt(TNode::makeVarName(Token::makeName("x"))),
-                                           TNode::makeCallStmt(TNode::makeProcName(Token::makeName("main"))),
-                                           TNode::makeAssignStmt(TNode::makeVarName(Token::makeName("x")),
-                                                                 TNode::makeConstVal(Token::makeConst("0"))),
-                                           TNode::makeWhileStmt(
-                                                   TNode::makeEq(TNode::makeConstVal(Token::makeConst("1")),
-                                                                 TNode::makeConstVal(Token::makeConst("1"))),
-                                                   TNode::makeStmtLst({TNode::makePrintStmt(
-                                                           TNode::makeVarName(Token::makeName("x")))})
+                AstUtils::makeStmtLst({
+                                           AstUtils::makeReadStmt(AstUtils::makeVarName(Token::makeName("x"))),
+                                           AstUtils::makePrintStmt(AstUtils::makeVarName(Token::makeName("x"))),
+                                           AstUtils::makeCallStmt(AstUtils::makeProcName(Token::makeName("main"))),
+                                           AstUtils::makeAssignStmt(AstUtils::makeVarName(Token::makeName("x")),
+                                                                 AstUtils::makeConstVal(Token::makeConst("0"))),
+                                           AstUtils::makeWhileStmt(
+                                                   AstUtils::makeEq(AstUtils::makeConstVal(Token::makeConst("1")),
+                                                                 AstUtils::makeConstVal(Token::makeConst("1"))),
+                                                   AstUtils::makeStmtLst({AstUtils::makePrintStmt(
+                                                           AstUtils::makeVarName(Token::makeName("x")))})
                                            ),
-                                           TNode::makeIfStmt(
-                                                   TNode::makeEq(TNode::makeConstVal(Token::makeConst("1")),
-                                                                 TNode::makeConstVal(Token::makeConst("1"))),
-                                                   TNode::makeStmtLst({TNode::makePrintStmt(
-                                                           TNode::makeVarName(Token::makeName("x")))}),
-                                                   TNode::makeStmtLst({TNode::makePrintStmt(
-                                                           TNode::makeVarName(Token::makeName("y")))})
+                                           AstUtils::makeIfStmt(
+                                                   AstUtils::makeEq(AstUtils::makeConstVal(Token::makeConst("1")),
+                                                                 AstUtils::makeConstVal(Token::makeConst("1"))),
+                                                   AstUtils::makeStmtLst({AstUtils::makePrintStmt(
+                                                           AstUtils::makeVarName(Token::makeName("x")))}),
+                                                   AstUtils::makeStmtLst({AstUtils::makePrintStmt(
+                                                           AstUtils::makeVarName(Token::makeName("y")))})
                                            )
                                    })
         );

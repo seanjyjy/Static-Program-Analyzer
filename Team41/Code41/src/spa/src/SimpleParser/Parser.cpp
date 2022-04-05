@@ -33,8 +33,6 @@ void Parser::backtrack(int to) {
 
 void Parser::expect(TokenType type) {
     if (currToken.getType() != type) {
-        string expectedType = Token::typeToString(type);
-        string gotType = Token::typeToString(currToken.getType());
         auto[startRow, startCol] = currToken.getStart();
         auto[endRow, endCol] = currToken.getEnd();
         if (startRow < errorStartRow || (startRow == errorStartRow && startCol < errorStartCol)) {
@@ -51,8 +49,6 @@ void Parser::expect(TokenType type) {
 
 void Parser::expect(TokenType type, const string &s) {
     if (currToken.getType() != type || currToken.getVal() != s) {
-        string expectedType = Token::typeToString(type);
-        string gotType = Token::typeToString(currToken.getType());
         auto[startRow, startCol] = currToken.getStart();
         auto[endRow, endCol] = currToken.getEnd();
         if (startRow < errorStartRow || (startRow == errorStartRow && startCol < errorStartCol)) {
@@ -848,10 +844,6 @@ TNode *Parser::parseName(const string &s) {
 TNode *Parser::parseConst(const string &s) {
     parseOption = Option::constant;
     return parse(s);
-}
-
-void Parser::printTokens() {
-    tokens.print();
 }
 
 VarName *Parser::eatVarName() {

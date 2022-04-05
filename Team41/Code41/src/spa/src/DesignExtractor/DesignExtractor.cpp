@@ -1,5 +1,5 @@
 #include "DesignExtractor.h"
-#include "Common/TNodeType.h"
+#include "Common/AstNode/TNodeType.h"
 #include <Exception/SemanticException.h>
 
 using namespace std;

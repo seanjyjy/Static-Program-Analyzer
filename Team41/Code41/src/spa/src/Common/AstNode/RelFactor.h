@@ -1,9 +1,14 @@
 #pragma once
 
-#include "Common/TNode.h"
-#include "Common/TNodeType.h"
+#include "TNode.h"
+#include "TNodeType.h"
 #include <stdexcept>
 
+/**
+ * Represents rel_factor -> var_name
+							| const_value
+							| expr
+ */
 class RelFactor : public TNode {
 private:
     static TNodeType verify(TNodeType type);
@@ -21,4 +26,6 @@ public:
     void setRelParent(RelFactor *par);
 
     RelFactor *getRelParent();
+
+    string toString() override;
 };

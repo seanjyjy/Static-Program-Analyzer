@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "CFGExtractor.h"
-#include "Common/TNodeType.h"
+#include "Common/AstNode/TNodeType.h"
 
 CFGExtractor::CFGExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
         StmtNumExtractor(ast, nodeToStmtNumMap) {}

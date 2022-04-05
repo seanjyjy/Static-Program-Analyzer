@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include <algorithm>
 
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 #include "PKB/PKBManager.h"
 #include "CallsExtractor.h"
 #include "EntitiesExtractor.h"

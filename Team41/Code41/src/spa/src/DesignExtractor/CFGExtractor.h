@@ -5,7 +5,7 @@
 
 #include "Base/StmtNumExtractor.h"
 #include "Common/CFGNode.h"
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 
 class CFGExtractor : public StmtNumExtractor {
 private:

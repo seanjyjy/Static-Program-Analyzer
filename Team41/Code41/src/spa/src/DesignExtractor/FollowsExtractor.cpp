@@ -1,5 +1,5 @@
 #include "FollowsExtractor.h"
-#include "Common/TNodeType.h"
+#include "Common/AstNode/TNodeType.h"
 
 FollowsExtractor::FollowsExtractor(TNode *ast, unordered_map<TNode *, string> &nodeToStmtNumMap) :
         StmtNumExtractor(ast, nodeToStmtNumMap) {}

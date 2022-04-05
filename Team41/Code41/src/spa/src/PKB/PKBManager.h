@@ -2,7 +2,7 @@
 
 #include <string>
 #include <unordered_set>
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 #include "PKBClient.h"
 
 using namespace std;

@@ -5,7 +5,7 @@
 #include "PKB/Clients/PKBAbstractionClient.h"
 #include "PKB/Clients/PKBPatternClient.h"
 #include "PKB/Clients/PKBCFGClient.h"
-#include "Common/TNode.h"
+#include "Common/AstNode/TNode.h"
 
 using namespace std;
 
