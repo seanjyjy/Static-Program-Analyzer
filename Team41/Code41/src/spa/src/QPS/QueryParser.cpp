@@ -86,7 +86,7 @@ bool QueryParser::lookForDeclarationComma() {
 
 optional<QueryDeclaration> QueryParser::findMatchingDeclaration(string synonym) {
     for (QueryDeclaration qd : queryObject->getDeclarations()) {
-        if (qd.synonym == synonym)
+        if (qd.getSynonym() == synonym)
             return qd;
     }
     return nullopt;
@@ -98,7 +98,7 @@ Entities* QueryParser::determineDeclarationType(string synonym) {
         // not a declared synonym
         return nullptr;
     } else {
-        return qd->type;
+        return qd->getType();
     }
 }
 
@@ -238,7 +238,7 @@ bool QueryParser::isDeclared(string synonym) {
 
 bool QueryParser::isDeclaredProcedure(string synonym) {
     optional<QueryDeclaration> posProc = findMatchingDeclaration(synonym);
-    return posProc.has_value() && posProc.value().type->isProcedure();
+    return posProc.has_value() && posProc.value().getType()->isProcedure();
 }
 
 optional<string> QueryParser::parseClauseType() {
@@ -498,7 +498,7 @@ bool QueryParser::parsePatternClause() {
         return false;
     }
     optional<vector<PatternVariable>> pv;
-    Entities *type = patternSyn->type;
+    Entities *type = patternSyn->getType();
     if (type == nullptr) {
         pv = parseDummyPatternParams();
     } else if (type->isAssign()) {

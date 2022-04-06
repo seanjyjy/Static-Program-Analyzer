@@ -196,7 +196,7 @@ vector<string> QueryEvaluator::getSynonyms(QueryObject *queryObject) {
 
     for (auto &selectable: queryObject->getSelectables()) {
         QueryDeclaration queryDeclaration = selectable.getSynonym();
-        string label = queryDeclaration.synonym;
+        string label = queryDeclaration.getSynonym();
 
         if (selectable.getType() == Selectable::ATTR_REF) {
             label.append(".").append(to_string(selectable.getAttr()));
