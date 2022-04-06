@@ -1,0 +1,45 @@
+procedure NextTest {
+    x = 1;
+    x = 2;
+    if (z == 2) then {
+        while (i != 0) {
+            x = x - 1;
+            print t;
+            if (x == 1) then {
+                while (y == 0) {
+                    read y;
+                    while (g == 0) {
+                        x = x + 1;
+                    }
+                    call x;
+                }
+            } else {
+               print y;
+               call x;
+               print t;
+               while (x == y) {
+                   t = t + 1;
+                   read t;
+                   call t;
+               }
+            }
+            x = x + 1;
+        }
+    } else {
+        x = x + 2;
+        while (x == z) {
+            read z;
+            read y;
+        }
+    }
+    x = x + 1;
+    y = y + 2;
+}
+
+procedure x {
+    x = x + 1;
+}
+
+procedure t {
+    t = t + 1;
+}
