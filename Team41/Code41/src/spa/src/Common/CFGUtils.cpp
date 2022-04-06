@@ -56,23 +56,3 @@ void CFGUtils::deleteCFG(const unordered_map<string, CFGNode *> &stmtNumToNodeMa
     for (auto it = stmtNumToNodeMap.begin(); it != stmtNumToNodeMap.end(); ++it)
         delete it->second;
 }
-
-void CFGUtils::printCFG(CFGNode *node) {
-    unordered_set<CFGNode *> seen;
-    queue<CFGNode *> bfsQ;
-    bfsQ.push(node);
-    seen.insert(node);
-    while (!bfsQ.empty()) {
-        node = bfsQ.front();
-        bfsQ.pop();
-        string stmtNum = node->getStmtNum();
-        cout << stmtNum << ": ";
-        for (CFGNode *child: node->getChildren()) {
-            cout << child->getStmtNum() << ", ";
-            if (seen.find(child) != seen.end()) continue;
-            bfsQ.push(child);
-            seen.insert(child);
-        }
-        cout << endl;
-    }
-}
