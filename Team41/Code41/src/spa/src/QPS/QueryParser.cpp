@@ -48,7 +48,6 @@ bool QueryParser::parseDeclarationsOfTypeString(string type) {
             printf("Syntax Error: Invalid synonym <%s>\n", lex->nextToken().c_str());
             return false;
         }
-        // Generate the QueryDeclaration object
         generateDeclarationObject(type, synonym->c_str());
         // Check if there's a comma to carry on same design-entity declaration
         if (lookForDeclarationComma()) continue;
@@ -669,7 +668,6 @@ bool QueryParser::parseWithClause() {
     return true;
 }
 
-// todo: build the with clause somehow
 optional<WithVariable> QueryParser::parseWithRef() {
     if (lex->peekNextIsString("\"")) {
         // '"' IDENT '"'
