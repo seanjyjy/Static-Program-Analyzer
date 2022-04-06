@@ -1,6 +1,6 @@
 #include "OptimizedQueryObject.h"
 
-OptimizedQueryObject::OptimizedQueryObject() : QueryObject({}, {}, {}, {}, false) {}
+OptimizedQueryObject::OptimizedQueryObject() : QueryObject({}, {}, {}, false) {}
 
 OptimizedQueryObject::OptimizedQueryObject(QueryObject *qo): QueryObject(*qo), clauseGroups(nullptr) {
 }

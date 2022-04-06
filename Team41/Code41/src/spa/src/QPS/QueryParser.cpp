@@ -733,7 +733,7 @@ QueryObject *QueryParser::parse() {
     string a = "";
     QueryDeclaration s(nullptr, a);
     SelectTarget st(SelectTarget::BOOLEAN);
-    queryObject = new QueryObject(declarations, clauses, patternClauses, withClauses, superClauses, s, st, true);
+    queryObject = new QueryObject(declarations, clauses, patternClauses, withClauses, superClauses, st, true);
     lex = new QueryLexer(input);
 
     if (!parseDeclarations()) {
