@@ -189,30 +189,6 @@ bool QueryParser::parseSelectTarget() {
 }
 
 bool QueryParser::isQueryClauseValid(string type, string left, string right) {
-    // Upholds the following
-    /*
-    Follows : 'Follows' '(' stmtRef ',' stmtRef ')'
-    FollowsT : 'Follows*' '(' stmtRef ',' stmtRef ')'
-
-    Parent : 'Parent' '(' stmtRef ',' stmtRef ')'
-    ParentT : 'Parent*' '(' stmtRef ',' stmtRef ')'
-
-    UsesS : 'Uses' '(' stmtRef ',' entRef ')'
-    UsesP : 'Uses' '(' entRef ',' entRef ')'
-
-    ModifiesS : 'Modifies' '(' stmtRef ',' entRef ')'
-    ModifiesP : 'Modifies' '(' entRef ',' entRef ')'
-
-    Calls : 'Calls' '(' entRef ',' entRef ')'
-    CallsT : 'Calls*' '(' entRef ',' entRef ')'
-
-    Next : 'Next' '(' stmtRef ',' stmtRef ')'
-    NextT : 'Next*' '(' stmtRef ',' stmtRef ')'
-
-    Affects : 'Affects' '(' stmtRef ',' stmtRef ')'
-    AffectsT : 'Affects*' '(' stmtRef ',' stmtRef ')'
-     */
-
     if (type == "Follows" || type == "Follows*" ||
         type == "Parent" || type == "Parent*" ||
         type == "Next" || type == "Next*" ||
@@ -243,14 +219,6 @@ bool QueryParser::isDeclaredProcedure(string synonym) {
 
 optional<string> QueryParser::parseClauseType() {
     optional<string> clause = lex->nextClause();
-    if (clause == nullopt) {
-        string cl_bad = lex->nextToken();
-        if (cl_bad.empty()) {
-            // Syntax Error: Clause expected after "such that"
-        } else {
-            // Syntax Error: Invalid clause
-        }
-    }
     return clause;
 }
 

@@ -495,7 +495,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getWithClauses().at(0).getLeft().getAttr() == WithVariable::STMT_NUM);
         REQUIRE(qo->getWithClauses().at(0).getRight().getType() == WithVariable::INTEGER);
         REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == "10");
-        REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
+        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == "10");
     }
     SECTION("superClause test") {
         string s = "stmt s, s1; while w; variable v;\n"
@@ -512,7 +512,7 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getWithClauses().at(0).getLeft().getAttr() == WithVariable::STMT_NUM);
         REQUIRE(qo->getWithClauses().at(0).getRight().getType() == WithVariable::INTEGER);
         REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == "10");
-        REQUIRE(qo->getWithClauses().at(0).getRight().getIntegerAsString() == "10");
+        REQUIRE(qo->getWithClauses().at(0).getRight().getInteger() == "10");
         ////
         // QueryClause super clause
         REQUIRE(qo->getSuperClauses().at(0)->isSuchThatClause());
