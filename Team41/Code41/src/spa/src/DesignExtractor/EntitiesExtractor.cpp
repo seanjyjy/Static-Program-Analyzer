@@ -35,7 +35,7 @@ void EntitiesExtractor::dfs(TNode *node, int &stmtNum) {
 bool EntitiesExtractor::extract() {
     try {
         findProcedures();
-    } catch (const SemanticException&) {
+    } catch (const SemanticException &) {
         return false;
     }
     int stmtNum = 0;
