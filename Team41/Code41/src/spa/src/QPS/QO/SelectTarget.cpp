@@ -11,7 +11,6 @@ bool SelectTarget::isTuple() const{
 }
 
 void SelectTarget::addSelectable(Selectable newSelectable) {
-    // todo: populate the vector<Selectable> tuple
     tuple.push_back(newSelectable);
 }
 
