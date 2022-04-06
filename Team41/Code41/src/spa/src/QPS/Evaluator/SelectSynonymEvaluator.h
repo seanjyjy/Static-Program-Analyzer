@@ -5,7 +5,7 @@
 #include "QPS/Table/TrueTable.h"
 #include "QPS/Table/PQLTable.h"
 #include "PKB/PKBClient.h"
-#include "QPS/QueryDeclaration.h"
+#include "QPS/QO/QueryDeclaration.h"
 #include "Exception/SemanticException.h"
 
 class SelectSynonymEvaluator {

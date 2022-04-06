@@ -1,10 +1,10 @@
 #pragma once
 
-#include "QPS/QueryObject.h"
+#include "QPS/QO/QueryObject.h"
 #include "QPS/Optimizer/TableEstimate.h"
 #include "QPS/Optimizer/PKBAdapter.h"
-#include "QPS/SuperClause.h"
-#include "QPS/Selectable.h"
+#include "QPS/QO/SuperClause.h"
+#include "QPS/QO/Selectable.h"
 #include "ClauseGroups.h"
 
 /**

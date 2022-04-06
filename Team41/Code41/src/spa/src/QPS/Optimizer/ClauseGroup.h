@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "QPS/SuperClause.h"
+#include "QPS/QO/SuperClause.h"
 
 /**
  * Represents an abstraction of a group of clauses that can be consumed.

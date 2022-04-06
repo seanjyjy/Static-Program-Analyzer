@@ -60,6 +60,12 @@ private:
      */
     bool isClauseKeyword(string w);
 
+    /**
+     * Checks if a given string is within the attribute keywords vector.
+     *
+     * @param w the string to be checked.
+     * @return boolean indicating if parameter is indeed in the vector.
+     */
     bool isValidAttribute(string w);
 
 public:
@@ -135,6 +141,12 @@ public:
      */
     optional<string> nextPatternExpression();
 
+    /**
+     * Returns an attribute in the next token.
+     * index is updated too.
+     *
+     * @return optional string representing either a found attribute or null.
+     */
     optional<string> nextAttribute();
 
     /**

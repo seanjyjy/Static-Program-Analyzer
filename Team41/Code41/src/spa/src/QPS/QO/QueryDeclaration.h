@@ -19,20 +19,26 @@
 using namespace std;
 
 class QueryDeclaration {
-public:
-    // todo: make private after all refactor
+private:
     // declaration type of the declaration instance
     Entities *type;
 
-    // todo: make private after all refactor
     // accompanying synonym of a declaration
     string synonym;
-
+public:
+    /**
+     * Getter for the type of the declaration.
+     *
+     * @return Entities* representing the type.
+     */
     Entities *getType() const;
 
+    /**
+     * Getter for the synonym of the declaration.
+     *
+     * @return string representing the synonym.
+     */
     string getSynonym() const;
-
-    QueryDeclaration();
 
     /**
      * Constructor for the QueryDeclaration class.
@@ -41,6 +47,7 @@ public:
      * @param synonym string accompanying the new declaration.
      */
     QueryDeclaration(Entities *type, string &synonym);
+    QueryDeclaration();
 
     /**
      * Converts a string representation of the declaration type
@@ -70,6 +77,11 @@ public:
      */
     void print();
 
+    /**
+     * Equivalence comparator for the QueryDeclaration class.
+     *
+     * @return boolean indicating if equivalent.
+     */
     bool equals(QueryDeclaration) const;
 
     void cleanUp();

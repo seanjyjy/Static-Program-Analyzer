@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Table/Table.h"
-#include "QueryObject.h"
+#include "QPS/QO/QueryObject.h"
 #include "PKB/PKBClient.h"
 
 #include <unordered_set>

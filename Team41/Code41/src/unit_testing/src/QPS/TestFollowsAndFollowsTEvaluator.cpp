@@ -3,7 +3,7 @@
 #include "PKB/Tables/FollowsTable.h"
 #include "QPS/Evaluator/FollowsEvaluator.h"
 #include "QPS/Evaluator/FollowsTEvaluator.h"
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/ClauseVariable.h"
 
 TEST_CASE("Evaluator: Follows and FollowsT evaluator") {
     string stmt[] = {"1", "2", "3", "4", "5", "6"};

@@ -5,7 +5,7 @@
 #include "ClauseVariable.h"
 #include "QueryDeclaration.h"
 #include "PatternVariable.h"
-#include "SimplifiableClause.h"
+#include "QPS/SimplifiableClause.h"
 
 class PatternClause : public SimplifiableClause {
 private:
@@ -51,14 +51,39 @@ public:
 
     PatternClause();
 
+    /**
+     * Checks if pattern clause has synonyms.
+     *
+     * @return boolean indicating if it has synonyms.
+     */
     bool hasSynonyms() const;
 
+    /**
+     * Getter for the synonyms in pattern clause.
+     *
+     * @return vector of QueryDeclarations
+     */
     vector<QueryDeclaration> getSynonyms() const;
 
+    /**
+     * Equivalence comparator for the PatternClause class.
+     *
+     * @return boolean indicating if equivalent.
+     */
     bool equals(PatternClause) const;
 
+    /**
+     * Gets a string representation of the pattern clause.
+     *
+     * @return string representation.
+     */
     string toString() const;
 
+    /**
+     * Hash function for the pattern clause.
+     *
+     * @return int for the hash.
+     */
     int hash() const;
 
     void cleanUp();

@@ -57,10 +57,10 @@ bool EvaluatorUtils::isWildCardWildCard(ClauseVariable *left, ClauseVariable *ri
 bool EvaluatorUtils::validateDeclarations(vector<QueryDeclaration> &declarations) {
     unordered_set<string> set;
     for (QueryDeclaration &declaration: declarations) {
-        if (set.find(declaration.synonym) != set.end()) {
+        if (set.find(declaration.getSynonym()) != set.end()) {
             return false;
         }
-        set.insert(declaration.synonym);
+        set.insert(declaration.getSynonym());
     }
     return true;
 }
@@ -213,31 +213,31 @@ bool EvaluatorUtils::AttrUtils::isValidSelectable(Selectable *target) {
 }
 
 bool EvaluatorUtils::AttrUtils::isProcProcNameAttr(Selectable *target) {
-    return target->getAttr() == Selectable::PROC_NAME && target->getSynonym().type->isProcedure();
+    return target->getAttr() == Selectable::PROC_NAME && target->getSynonym().getType()->isProcedure();
 }
 
 bool EvaluatorUtils::AttrUtils::isCallProcNameAttr(Selectable *target) {
-    return target->getAttr() == Selectable::PROC_NAME && target->getSynonym().type->isCall();
+    return target->getAttr() == Selectable::PROC_NAME && target->getSynonym().getType()->isCall();
 }
 
 bool EvaluatorUtils::AttrUtils::isReadVarNameAttr(Selectable *target) {
-    return target->getAttr() == Selectable::VAR_NAME && target->getSynonym().type->isRead();
+    return target->getAttr() == Selectable::VAR_NAME && target->getSynonym().getType()->isRead();
 }
 
 bool EvaluatorUtils::AttrUtils::isPrintVarNameAttr(Selectable *target) {
-    return target->getAttr() == Selectable::VAR_NAME && target->getSynonym().type->isPrint();
+    return target->getAttr() == Selectable::VAR_NAME && target->getSynonym().getType()->isPrint();
 }
 
 bool EvaluatorUtils::AttrUtils::isVarVarNameAttr(Selectable *target) {
-    return target->getAttr() == Selectable::VAR_NAME && target->getSynonym().type->isVariable();
+    return target->getAttr() == Selectable::VAR_NAME && target->getSynonym().getType()->isVariable();
 }
 
 bool EvaluatorUtils::AttrUtils::isConstantValueAttr(Selectable *target) {
-    return target->getAttr() == Selectable::VALUE && target->getSynonym().type->isConstant();
+    return target->getAttr() == Selectable::VALUE && target->getSynonym().getType()->isConstant();
 }
 
 bool EvaluatorUtils::AttrUtils::isStmtStmtNumAttr(Selectable *target) {
-    return target->getAttr() == Selectable::STMT_NUM && isStmtType(target->getSynonym().type);
+    return target->getAttr() == Selectable::STMT_NUM && isStmtType(target->getSynonym().getType());
 }
 
 bool EvaluatorUtils::AttrUtils::validateSelectTarget(SelectTarget *selection) {

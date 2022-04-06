@@ -1,8 +1,8 @@
 #pragma once
 
-#include "QPS/QueryObject.h"
+#include "QPS/QO/QueryObject.h"
 #include "QPS/Optimizer/PKBAdapter.h"
-#include "QPS/SuperClause.h"
+#include "QPS/QO/SuperClause.h"
 #include "ClauseDepGraph.h"
 #include "OptimizedQueryObject.h"
 #include "OptimizerUtils.h"

@@ -3,7 +3,7 @@
 #include "PKB/Tables/UsesTable.h"
 #include "QPS/Evaluator/UsesSEvaluator.h"
 #include "QPS/Evaluator/UsesPEvaluator.h"
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/ClauseVariable.h"
 
 TEST_CASE("Evaluator: UsesS and UsesP evaluator") {
     PKBManager* pkbManager = new PKBManager();

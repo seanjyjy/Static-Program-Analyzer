@@ -10,5 +10,5 @@ public:
     Div(RelFactor *lhs, RelFactor *rhs);
     string toString() override;
     [[nodiscard]] bool isDiv() const override;
-    [[nodiscard]] bool isArithmeticOp() const;
+    [[nodiscard]] bool isArithmeticOp() const override;
 };

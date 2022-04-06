@@ -53,7 +53,3 @@ bool ClauseVariable::equals(ClauseVariable other) const {
         return false;
     return true;
 }
-
-ClauseVariable ClauseVariable::convertWildCard() const {
-    return {wildcard, label, designEntityType};
-}

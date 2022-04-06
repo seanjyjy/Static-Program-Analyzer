@@ -2,15 +2,12 @@
 
 #include "QueryDeclaration.h"
 #include "ClauseVariable.h"
-#include "SimplifiableClause.h"
+#include "QPS/SimplifiableClause.h"
 #include <vector>
 
 using namespace std;
 
 class QueryClause : public SimplifiableClause {
-private:
-    // The LHS and RHS of a clause in PQL
-    ClauseVariable left, right;
 public:
     // enum representing possible clause types in PQL
     enum clause_type {
@@ -18,10 +15,11 @@ public:
         generic_uses, generic_modifies, none
     };
 
-    // todo: make private after all refactor
-    // clause type of the clause instance
-    clause_type type;
-
+    /**
+     * Getter for the clause type.
+     *
+     * @return clause_type representing the type.
+     */
     clause_type getType() const;
 
     /**
@@ -54,11 +52,38 @@ public:
 
     QueryClause();
 
+    /**
+     * Checks if Query clause has synonyms.
+     *
+     * @return boolean indicating if it has synonyms.
+     */
     bool hasSynonyms() const;
 
+    /**
+     * Getter for the synonyms in query clause.
+     *
+     * @return vector of QueryDeclarations
+     */
     vector<QueryDeclaration> getSynonyms() const;
 
+    /**
+     * Hash function for the query clause.
+     *
+     * @return int for the hash.
+     */
     int hash() const;
 
+    /**
+     * Equivalence comparator for the QueryClause class.
+     *
+     * @return boolean indicating if equivalent.
+     */
     bool equals(QueryClause) const;
+
+private:
+    // The LHS and RHS of a clause in PQL
+    ClauseVariable left, right;
+
+    // clause type of the clause instance
+    clause_type type;
 };

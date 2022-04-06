@@ -2,10 +2,6 @@
 
 WithVariable::WithVariable() {}
 
-//WithVariable::WithVariable(int integer): old_int(integer) {
-//    type = INTEGER;
-//}
-
 WithVariable::WithVariable(string i, withRefType t) {
     type = t;
     if (t == INTEGER) {
@@ -15,11 +11,6 @@ WithVariable::WithVariable(string i, withRefType t) {
         attr = NONE;
     }
 }
-
-//WithVariable::WithVariable(string ident): ident(ident) {
-//    type = IDENT;
-//    attr = NONE;
-//}
 
 WithVariable::WithVariable(attributeName attr, QueryDeclaration syn):
                            attr(attr), synonym(syn) {
@@ -46,11 +37,6 @@ string WithVariable::getInteger() const {
     return integer;
 }
 
-// todo: can remove after no more reliance on this
-string WithVariable::getIntegerAsString() const {
-    return integer;
-}
-
 bool WithVariable::isIdentifier() const {
     return type == IDENT;
 }
@@ -73,7 +59,7 @@ bool WithVariable::equals(WithVariable other) const {
     if (isAttrRef() && !synonym.equals(other.getSynonym()))
         return false;
 
-    if (isInteger() && integer != other.getIntegerAsString())
+    if (isInteger() && integer != other.getInteger())
         return false;
 
     if (isIdentifier() && ident != other.getIdent())
@@ -85,7 +71,7 @@ bool WithVariable::equals(WithVariable other) const {
 string WithVariable::toString() const {
     string out = "";
     if (isInteger())
-        out += "int: " + getIntegerAsString();
+        out += "int: " + getInteger();
     if (isIdentifier())
         out += "ident: " + getIdent();
     if (isAttrRef()) {

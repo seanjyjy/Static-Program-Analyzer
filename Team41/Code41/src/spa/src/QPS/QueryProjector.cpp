@@ -40,14 +40,14 @@ unordered_set<string> QueryProjector::getTupleResult() {
 
 string QueryProjector::getProjectionFromRow(const Row *row, Selectable *target) {
     QueryDeclaration declaration = target->getSynonym();
-    string rawData = row->getValueAtColumn(declaration.synonym);
+    string rawData = row->getValueAtColumn(declaration.getSynonym());
     if (target->getType() == target->SYNONYM) {
         return rawData;
     }
 
     optional<string> result = EvaluatorUtils::AttrUtils::getAttrFromSelectable(target, rawData, pkb);
     if (result == nullopt) {
-        throw SemanticException("Invalid attribute for declaration: " + declaration.synonym);
+        throw SemanticException("Invalid attribute for declaration: " + declaration.getSynonym());
     }
     return *result;
 }

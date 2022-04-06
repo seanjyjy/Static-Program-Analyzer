@@ -2,7 +2,7 @@
 #include "PKB/PKBManager.h"
 #include "PKB/Tables/WhilePatternTable.h"
 #include "QPS/Evaluator/WhilePatternEvaluator.h"
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/ClauseVariable.h"
 #include "./TableTestUtils.h"
 #include "../Common/AstBuilder/TestAstBuilderUtils.h"
 

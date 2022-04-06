@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PKB/PKBManager.h"
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/ClauseVariable.h"
 
 /**
  * Implementation of the Adapter design pattern over a PKB Manager.

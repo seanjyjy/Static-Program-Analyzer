@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QPS/SuperClause.h"
+#include "QPS/QO/SuperClause.h"
 #include "unordered_map"
 
 /**

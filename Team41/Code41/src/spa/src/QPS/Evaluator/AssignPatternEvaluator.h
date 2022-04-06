@@ -2,7 +2,7 @@
 
 #include "PatternEvaluator.h"
 #include "Common/AstNode/TNode.h"
-#include "../PatternClause.h"
+#include "QPS/QO/PatternClause.h"
 
 class AssignPatternEvaluator : public PatternEvaluator {
 public:

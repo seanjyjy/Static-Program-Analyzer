@@ -1,10 +1,10 @@
 #pragma once
 
-#include "QPS/QueryDeclaration.h"
-#include "QPS/ClauseVariable.h"
-#include "QPS/PatternVariable.h"
-#include "QPS/Selectable.h"
-#include "QPS/SelectTarget.h"
+#include "QPS/QO/QueryDeclaration.h"
+#include "QPS/QO/ClauseVariable.h"
+#include "QPS/QO/PatternVariable.h"
+#include "QPS/QO/Selectable.h"
+#include "QPS/QO/SelectTarget.h"
 #include "PKB/PKBClient.h"
 #include <optional>
 #include <algorithm>

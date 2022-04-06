@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ClauseGroup.h"
-#include "QPS/SuperClause.h"
+#include "QPS/QO/SuperClause.h"
 #include "ClauseScorer.h"
 #include <utility>
 #include <numeric>

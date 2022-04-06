@@ -61,22 +61,32 @@ public:
      */
     bool isInteger() const;
 
+    /**
+     * Gets the QueryDeclaration instance for the variable.
+     *
+     * @return QueryDeclaration instance.
+     */
     QueryDeclaration getQueryDeclaration() const;
 
     /**
-     * Constructor for the ClauseVariable class.
+     * Constructors for the ClauseVariable class.
      *
      * @param type of the new variable.
      * @param label for the name of the new variable.
      * @param designEntityType for the declaration type of the new variable.
+     * @param qd for the QueryDeclaration of the new variable.
      */
     ClauseVariable(variable_type type, string label, Entities *designEntityType);
     ClauseVariable(variable_type type, string label, QueryDeclaration qd);
     ClauseVariable();
 
+    /**
+     * Equivalence comparator for the ClauseVariable class.
+     *
+     * @return boolean indicating if equivalent.
+     */
     bool equals(ClauseVariable) const;
 
-    ClauseVariable convertWildCard() const;
 private:
     // variable type of the variable instance
     variable_type type;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "QPS/SuperClause.h"
-#include "QPS/Selectable.h"
+#include "QPS/QO/SuperClause.h"
+#include "QPS/QO/Selectable.h"
 
 /**
  * Utility class for miscellaneous functions used by the query optimizer.

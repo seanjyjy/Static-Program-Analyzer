@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QueryDeclaration.h"
+#include "QPS/QO/QueryDeclaration.h"
 #include <string>
 
 using namespace std;
@@ -15,8 +15,6 @@ public:
     };
 
     WithVariable();
-//    WithVariable(int);
-//    WithVariable(string);
     WithVariable(string, withRefType);
     WithVariable(attributeName, QueryDeclaration);
     withRefType getType() const;
@@ -24,7 +22,6 @@ public:
     QueryDeclaration getSynonym() const;
     string getIdent() const;
     string getInteger() const;
-    string getIntegerAsString() const;
 
     bool isIdentifier() const;
     bool isInteger() const;

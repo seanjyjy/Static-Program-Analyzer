@@ -7,7 +7,7 @@ Table *PatternEvaluator::evaluate(const PatternClause &clause) {
     ClauseVariable leftVariable = clause.getLHS();
     vector<PatternVariable> rightPatternVariables = clause.getRHS();
 
-    if (EvaluatorUtils::PatternUtils::isWildCardWildCards(leftVariable, rightPatternVariables, patternSynonym.type)) {
+    if (EvaluatorUtils::PatternUtils::isWildCardWildCards(leftVariable, rightPatternVariables, patternSynonym.getType())) {
         return evaluateWildCardWildCard(patternSynonym, clause.canSimplifyClause());
     }
 

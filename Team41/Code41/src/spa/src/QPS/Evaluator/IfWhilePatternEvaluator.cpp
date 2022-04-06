@@ -6,11 +6,11 @@ Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration &patternSynonym
                                                 vector<PatternVariable> &rightPatternVariables, bool canSimplify) {
 
     if (EvaluatorUtils::PatternUtils::isValidSynonymWildCards(leftVariable, rightPatternVariables,
-                                                              patternSynonym.type)) {
+                                                              patternSynonym.getType())) {
         return evaluateSynonymWildCard(patternSynonym, leftVariable, canSimplify);
     }
 
-    if (EvaluatorUtils::PatternUtils::isIdentifierWildCards(leftVariable, rightPatternVariables, patternSynonym.type)) {
+    if (EvaluatorUtils::PatternUtils::isIdentifierWildCards(leftVariable, rightPatternVariables, patternSynonym.getType())) {
         return evaluateIdentifierWildCard(patternSynonym, leftVariable, canSimplify);
     }
 

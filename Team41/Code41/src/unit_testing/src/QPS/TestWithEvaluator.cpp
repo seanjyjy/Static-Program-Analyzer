@@ -4,7 +4,7 @@
 #include "PKB/PKBManager.h"
 #include "PKB/Tables/CallsTable.h"
 #include "QPS/Evaluator/WithEvaluator.h"
-#include "QPS/WithVariable.h"
+#include "QPS/QO/WithVariable.h"
 #include "./TableTestUtils.h"
 
 TEST_CASE("Evaluator: With evaluator") {

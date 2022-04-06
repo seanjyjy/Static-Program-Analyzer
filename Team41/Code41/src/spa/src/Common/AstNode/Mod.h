@@ -10,5 +10,5 @@ public:
     Mod(RelFactor *lhs, RelFactor *rhs);
     string toString() override;
     [[nodiscard]] bool isMod() const override;
-    [[nodiscard]] bool isArithmeticOp() const;
+    [[nodiscard]] bool isArithmeticOp() const override;
 };

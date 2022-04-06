@@ -3,7 +3,7 @@
 #include "PKB/Tables/CallsTable.h"
 #include "QPS/Evaluator/CallsEvaluator.h"
 #include "QPS/Evaluator/CallsTEvaluator.h"
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/ClauseVariable.h"
 
 TEST_CASE("Evaluator: Calls and CallsT evaluator") {
     PKBManager* pkbManager = new PKBManager();

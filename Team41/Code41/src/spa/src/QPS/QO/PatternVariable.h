@@ -40,24 +40,39 @@ public:
     TNode *getMiniAST();
 
     /**
-     * Clean up method to delete AST
+     * Clean up method to delete AST.
      */
     void cleanAST();
 
     /**
      * Constructor for the PatternVariable class.
      *
-     * @param type of the new pattern variable
-     * @param miniAST representing the parsed SIMPLE code
+     * @param type of the new pattern variable.
+     * @param miniAST representing the parsed SIMPLE code.
      */
     PatternVariable(pattern_type type, TNode *miniAST, string expr);
 
     PatternVariable(pattern_type type, TNode *miniAST);
 
+    /**
+     * Equivalence comparator for the PatternVariable class.
+     *
+     * @return boolean indicating if equivalent.
+     */
     bool equals(PatternVariable) const;
 
+    /**
+     * Getter for the expression part of the variable.
+     *
+     * @return string for that expression.
+     */
     string getExpr() const;
 
+    /**
+     * Getter for the type part of the variable.
+     *
+     * @return pattern_type representation for the type.
+     */
     pattern_type getType() const;
 
 private:
