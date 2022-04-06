@@ -13,6 +13,7 @@ private:
 
 public:
     CFGNode(string stmtNum);
+
     ~CFGNode();
 
     void addChild(CFGNode *node);

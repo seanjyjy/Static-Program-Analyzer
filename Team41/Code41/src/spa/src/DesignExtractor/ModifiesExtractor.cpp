@@ -20,7 +20,7 @@ void ModifiesExtractor::dfs(TNode *node, unordered_set<string> &modifiesSet) {
         modifiesSet = {node->getChildren()[0]->getTokenVal()}; // left child varName
         mapRelation(node, modifiesSet);
     } else if (node->isWhile()) {
-        dfs(node->getChildren()[1], modifiesSet); // right child stmtLst
+        dfs(node->getChildren()[whileStmtLst], modifiesSet); // right child stmtLst
         mapRelation(node, modifiesSet);
     } else if (node->isIf()) {
         unordered_set<string> modifiesSetChild;

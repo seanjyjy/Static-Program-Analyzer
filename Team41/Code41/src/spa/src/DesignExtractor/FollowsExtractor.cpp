@@ -13,10 +13,10 @@ void FollowsExtractor::dfs(TNode *node) {
         dfs(node->getChildren()[0]); // only 1 child stmtLst
     } else if (node->isIf()) {
         const vector<TNode *> &ch = node->getChildren();
-        dfs(ch[1]); // 2nd and 3rd child are stmtLst
-        dfs(ch[2]);
+        dfs(ch[ifStmtLstFirst]); // 2nd and 3rd child are stmtLst
+        dfs(ch[ifStmtLstSecond]);
     } else if (node->isWhile()) {
-        dfs(node->getChildren()[1]); // right child is stmtLst
+        dfs(node->getChildren()[whileStmtLst]); // right child is stmtLst
     } else if (node->isStmtLst()) {
         const vector<TNode *> &ch = node->getChildren();
         list<string> followsLst;

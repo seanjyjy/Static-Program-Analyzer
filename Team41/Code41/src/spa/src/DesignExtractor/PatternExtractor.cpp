@@ -26,16 +26,16 @@ void PatternExtractor::dfs(TNode *node) {
         dfs(node->getChildren()[0]); // only 1 child stmtLst
     } else if (node->isIf()) {
         const vector<TNode *> &ch = node->getChildren();
-        dfs(ch[1]); // 2nd and 3rd child are stmtLst
-        dfs(ch[2]);
+        dfs(ch[ifStmtLstFirst]); // 2nd and 3rd child are stmtLst
+        dfs(ch[ifStmtLstSecond]);
         unordered_set<string> vars;
-        dfsExpr(ch[0], vars); // dfs on condition
+        dfsExpr(ch[condExpr], vars); // dfs on condition
         mapIfPattern(node, vars);
     } else if (node->isWhile()) {
         const vector<TNode *> &ch = node->getChildren();
-        dfs(ch[1]); // dfs on stmtLst
+        dfs(ch[whileStmtLst]); // dfs on stmtLst
         unordered_set<string> vars;
-        dfsExpr(ch[0], vars); // dfs on condition
+        dfsExpr(ch[condExpr], vars); // dfs on condition
         mapWhilePattern(node, vars);
     } else if (node->isStmtLst()) {
         for (TNode *childNode: node->getChildren()) {

@@ -14,7 +14,4 @@ public:
 
     // calls delete on each CFGNode pointer in the map
     static void deleteCFG(const unordered_map<string, CFGNode *> &stmtNumToNodeMap);
-
-    // print next relations for troubleshooting
-    static void printCFG(CFGNode *node);
 };

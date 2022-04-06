@@ -17,7 +17,7 @@ void CallsExtractor::dfs(TNode *node, const string &proc) {
         for (TNode *child: node->getChildren())
             dfs(child, proc);
     } else if (node->isWhile()) {
-        dfs(node->getChildren()[1], proc); // right child stmtLst
+        dfs(node->getChildren()[whileStmtLst], proc); // right child stmtLst
     } else if (node->isIf()) {
         const vector<TNode *> &ch = node->getChildren();
         for (size_t i = 1; i <= 2; i++) // if stmt has stmtLst on 2nd and 3rd child
@@ -89,7 +89,7 @@ bool CallsExtractor::extract() {
             dfs(procNode, procNode->getTokenVal());
         }
         cycleCheck();
-    } catch (const SemanticException&) {
+    } catch (const SemanticException &) {
         return false;
     }
     revTopoSort();
