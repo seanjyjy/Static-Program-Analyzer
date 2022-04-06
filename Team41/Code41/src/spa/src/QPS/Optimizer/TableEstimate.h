@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <string>
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/ClauseVariable.h"
 #include "QPS/Optimizer/PKBAdapter.h"
 
 using namespace std;

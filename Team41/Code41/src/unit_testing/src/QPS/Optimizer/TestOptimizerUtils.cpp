@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "TestOptimizerUtils.h"
 #include "QPS/Optimizer/OptimizedQueryObject.h"
-#include "QPS/QueryObject.h"
+#include "QPS/QO/QueryObject.h"
 #include "QPS/Optimizer/QueryOptimizer.h"
 #include "QPS/QueryParser.h"
 #include "QPS/Optimizer/SortedGroups.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QueryDeclaration.h"
+#include "QPS/QO/QueryDeclaration.h"
 
 class Selectable {
 public:

@@ -5,7 +5,7 @@
 #include "ClauseVariable.h"
 #include "QueryDeclaration.h"
 #include "PatternVariable.h"
-#include "SimplifiableClause.h"
+#include "QPS/SimplifiableClause.h"
 
 class PatternClause : public SimplifiableClause {
 private:

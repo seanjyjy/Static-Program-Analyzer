@@ -3,7 +3,7 @@
 #include "PKB/PKBManager.h"
 #include "QPS/Evaluator/NextEvaluator.h"
 #include "QPS/Evaluator/NextTEvaluator.h"
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/ClauseVariable.h"
 #include "./TableTestUtils.h"
 
 TEST_CASE("Evaluator: Next and NextT evaluator") {

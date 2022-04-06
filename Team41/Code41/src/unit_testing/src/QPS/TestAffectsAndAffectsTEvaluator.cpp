@@ -5,7 +5,7 @@
 #include "PKB/PKBManager.h"
 #include "QPS/Evaluator/AffectsEvaluator.h"
 #include "QPS/Evaluator/AffectsTEvaluator.h"
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/ClauseVariable.h"
 #include "./TableTestUtils.h"
 
 TEST_CASE("Evaluator: Affects and AffectsT evaluator") {

@@ -2,9 +2,9 @@
 
 #include <string>
 #include <vector>
-#include "QueryDeclaration.h"
-#include "QueryClause.h"
-#include "PatternClause.h"
+#include "QPS/QO/QueryDeclaration.h"
+#include "QPS/QO/QueryClause.h"
+#include "QPS/QO/PatternClause.h"
 #include "WithClause.h"
 #include "SelectTarget.h"
 #include "SuperClause.h"

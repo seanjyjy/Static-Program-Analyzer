@@ -1,7 +1,7 @@
 #pragma once
 
 #include "WithVariable.h"
-#include "SimplifiableClause.h"
+#include "QPS/SimplifiableClause.h"
 #include <vector>
 
 using namespace std;

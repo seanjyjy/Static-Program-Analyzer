@@ -2,10 +2,10 @@
 
 #include <vector>
 #include <unordered_set>
-#include "QueryDeclaration.h"
+#include "QPS/QO/QueryDeclaration.h"
 #include "WithClause.h"
-#include "QueryClause.h"
-#include "PatternClause.h"
+#include "QPS/QO/QueryClause.h"
+#include "QPS/QO/PatternClause.h"
 
 class SuperClause {
 public:

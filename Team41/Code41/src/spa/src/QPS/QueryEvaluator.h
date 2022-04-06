@@ -29,10 +29,10 @@
 
 #include "QueryProjector.h"
 #include "QueryResult.h"
-#include "QueryObject.h"
+#include "QPS/QO/QueryObject.h"
 #include "Optimizer/OptimizedQueryObject.h"
-#include "QueryClause.h"
-#include "Selectable.h"
+#include "QPS/QO/QueryClause.h"
+#include "QPS/QO/Selectable.h"
 
 #include "QPS/Proxy/NextKBProxy.h"
 #include "QPS/Proxy/AffectsKBProxy.h"

@@ -3,7 +3,7 @@
 #include "PKB/Tables/ModifiesTable.h"
 #include "QPS/Evaluator/ModifiesSEvaluator.h"
 #include "QPS/Evaluator/ModifiesPEvaluator.h"
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/ClauseVariable.h"
 
 TEST_CASE("Evaluator: ModifiesS and ModifiesP evaluator") {
     PKBManager* pkbManager = new PKBManager();

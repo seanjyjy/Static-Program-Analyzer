@@ -3,7 +3,7 @@
 #include "PKB/Tables/ParentTable.h"
 #include "QPS/Evaluator/ParentEvaluator.h"
 #include "QPS/Evaluator/ParentTEvaluator.h"
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/ClauseVariable.h"
 
 TEST_CASE("Evaluator: Parent and ParentT evaluator") {
     string stmt[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};

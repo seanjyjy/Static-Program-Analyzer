@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include "QPS/Optimizer/SimpleGraph.h"
-#include "QPS/SuperClause.h"
+#include "QPS/QO/SuperClause.h"
 #include "QPS/Optimizer/OptimizedQueryObject.h"
 #include "QPS/Optimizer/FifoGroup.h"
 

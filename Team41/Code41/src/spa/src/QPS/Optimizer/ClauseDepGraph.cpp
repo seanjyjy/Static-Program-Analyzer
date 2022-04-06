@@ -1,6 +1,6 @@
 #include "ClauseDepGraph.h"
-#include "QPS/SuperClause.h"
-#include "QPS/ClauseVariable.h"
+#include "QPS/QO/SuperClause.h"
+#include "QPS/QO/ClauseVariable.h"
 #include <stdexcept>
 
 using namespace std;

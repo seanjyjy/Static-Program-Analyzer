@@ -2,11 +2,11 @@
 
 #include <unordered_set>
 
-#include "QueryObject.h"
-#include "QueryDeclaration.h"
+#include "QPS/QO/QueryObject.h"
+#include "QPS/QO/QueryDeclaration.h"
 #include "QueryEvaluator.h"
 #include "QueryLexer.h"
-#include "SelectTarget.h"
+#include "QPS/QO/SelectTarget.h"
 #include "SimpleParser/Parser.h" // for pattern parse
 
 using namespace std;

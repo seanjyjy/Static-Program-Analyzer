@@ -3,10 +3,10 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include "QPS/QueryClause.h"
-#include "QPS/PatternClause.h"
+#include "QPS/QO/QueryClause.h"
+#include "QPS/QO/PatternClause.h"
 #include "QPS/Optimizer/SimpleGraph.h"
-#include "QPS/SuperClause.h"
+#include "QPS/QO/SuperClause.h"
 
 using namespace std;
 

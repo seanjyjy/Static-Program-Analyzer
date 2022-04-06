@@ -2,7 +2,7 @@
 
 #include "QueryDeclaration.h"
 #include "ClauseVariable.h"
-#include "SimplifiableClause.h"
+#include "QPS/SimplifiableClause.h"
 #include <vector>
 
 using namespace std;
