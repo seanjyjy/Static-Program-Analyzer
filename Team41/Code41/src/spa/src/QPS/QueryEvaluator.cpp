@@ -149,7 +149,7 @@ Table *QueryEvaluator::evaluate(const QueryClause &clause) {
         case QueryClause::clause_type::affectsT:
             return AffectsTEvaluator(pkb, affectsKBProxy).evaluate(clause);
         default:
-            throw runtime_error("unknown clause of type " + to_string(clause.type));
+            throw runtime_error("unknown clause of type " + to_string(clause.getType()));
     }
 }
 

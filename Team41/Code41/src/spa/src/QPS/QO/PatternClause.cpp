@@ -9,8 +9,6 @@ QueryDeclaration PatternClause::getSynonym() const { return synonym; }
 ClauseVariable PatternClause::getLHS() const { return lhs; }
 vector<PatternVariable> PatternClause::getRHS() const { return rhs; }
 
-//// For SuperClause
-
 vector<QueryDeclaration> PatternClause::getSynonyms() const {
     vector<QueryDeclaration> out;
     out.push_back(synonym);

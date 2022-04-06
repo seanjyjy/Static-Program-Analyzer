@@ -442,9 +442,9 @@ TEST_CASE("QPS: Parser_VALID") {
         REQUIRE(qo->getPatternClauses().at(0).getLHS().getLabel() == "x");
         REQUIRE(qo->getPatternClauses().at(0).getRHS().at(0).isWildcard());
         REQUIRE(qo->getPatternClauses().at(1).getSynonym().synonym == "a2");
-        REQUIRE(qo->getClauses().at(0).type == QueryClause::affects);
-        REQUIRE(qo->getClauses().at(1).type == QueryClause::parentT);
-        REQUIRE(qo->getClauses().at(2).type == QueryClause::parentT);
+        REQUIRE(qo->getClauses().at(0).getType() == QueryClause::affects);
+        REQUIRE(qo->getClauses().at(1).getType() == QueryClause::parentT);
+        REQUIRE(qo->getClauses().at(2).getType() == QueryClause::parentT);
         REQUIRE(qo->getClauses().at(2).getLeftClauseVariable().getLabel() == "w1");
         REQUIRE(qo->getClauses().at(2).getRightClauseVariable().getLabel() == "w2");
     }
@@ -983,7 +983,6 @@ TEST_CASE("QPS: Parser_INVALID") {
         REQUIRE(qo->hasUseOfUndeclaredVariable());
     }
     SECTION("If Pattern semantically NOT OK, syntactically OK") {
-        printf("<?\n");
         string s = "if ifs;\n"
                    "Select ifs pattern ifs (v, _, _)";
 
