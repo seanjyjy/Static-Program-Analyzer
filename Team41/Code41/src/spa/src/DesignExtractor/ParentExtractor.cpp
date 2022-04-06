@@ -13,7 +13,7 @@ void ParentExtractor::mapParent(TNode *node) {
                 parentLst.push_back(nodeToStmtNumMap.at(child));
         }
     } else { // TNodeType::whileStmt
-        const vector<TNode *> &ch = node->getChildren()[1]->getChildren();
+        const vector<TNode *> &ch = node->getChildren()[whileStmtLst]->getChildren();
         for (TNode *child: ch)
             parentLst.push_back(nodeToStmtNumMap.at(child));
     }
@@ -45,7 +45,7 @@ void ParentExtractor::dfs(TNode *node, list<string> &parentLst) {
         mapParentT(node, parentLst);
         parentLst.push_front(nodeToStmtNumMap.at(node));
     } else if (node->isWhile()) {
-        dfs(node->getChildren()[1], parentLst); // right child stmtLst
+        dfs(node->getChildren()[whileStmtLst], parentLst); // right child stmtLst
         mapParent(node);
         mapParentT(node, parentLst);
         parentLst.push_front(nodeToStmtNumMap.at(node));

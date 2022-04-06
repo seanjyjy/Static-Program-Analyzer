@@ -40,10 +40,10 @@ void CFGExtractor::dfsInitCFG(TNode *curTNode, CFGNode *curCFGNode, CFGNode *par
         }
     } else if (curTNode->isIf()) { // bfs down with {stmtLst, nullptr, curCFGNode}
         const vector<TNode *> &ch = curTNode->getChildren();
-        dfsInitCFG(ch[1], nullptr, curCFGNode); // stmtLst has no CFGNode
-        dfsInitCFG(ch[2], nullptr, curCFGNode);
+        dfsInitCFG(ch[ifStmtLstFirst], nullptr, curCFGNode); // stmtLst has no CFGNode
+        dfsInitCFG(ch[ifStmtLstSecond], nullptr, curCFGNode);
     } else if (curTNode->isWhile()) { // bfs down with {stmtLst, nullptr, curCFGNode}
-        dfsInitCFG(curTNode->getChildren()[1], nullptr, curCFGNode);
+        dfsInitCFG(curTNode->getChildren()[whileStmtLst], nullptr, curCFGNode);
     }
 }
 
@@ -80,10 +80,10 @@ void CFGExtractor::dfsLinkBack(TNode *curTNode, TNode *backTNode) {
         }
     } else if (curTNode->isIf()) {
         const vector<TNode *> &ch = curTNode->getChildren();
-        dfsLinkBack(ch[1], backTNode); // pass to stmtLst to handle
-        dfsLinkBack(ch[2], backTNode);
+        dfsLinkBack(ch[ifStmtLstFirst], backTNode); // pass to stmtLst to handle
+        dfsLinkBack(ch[ifStmtLstSecond], backTNode);
     } else if (curTNode->isWhile()) {
-        dfsLinkBack(curTNode->getChildren()[1], backTNode); // pass to stmtLst to handle
+        dfsLinkBack(curTNode->getChildren()[whileStmtLst], backTNode); // pass to stmtLst to handle
     }
 }
 
