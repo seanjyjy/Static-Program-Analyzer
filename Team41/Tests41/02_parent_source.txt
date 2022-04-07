@@ -110,9 +110,7 @@ procedure n3IwWwIwM {
 		call newProc;
 	}
 	d = 20 * 30;
-
 }
-
 procedure newProc {
     x = x + 1;
 }
