@@ -17,17 +17,17 @@ TEST_CASE("Query Optimizer: Simplifiable groups") {
     OptimizedQueryObject oqo = QueryOptimizer::create()
             .enableAllOptimizations(&pkbManager)
             .optimize(qo);
-    REQUIRE(oqo.currGroupCanSimplify() == true);
-    REQUIRE(oqo.isLastOfGroup() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
+    REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
-    REQUIRE(oqo.isLastOfGroup() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
+    REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
-    REQUIRE(oqo.isLastOfGroup() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
+    REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
-    REQUIRE(oqo.isLastOfGroup() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
+    REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.empty());
 
@@ -44,17 +44,17 @@ TEST_CASE("Query Optimizer: Simplifiable groups 2") {
     OptimizedQueryObject oqo = QueryOptimizer::create()
             .enableAllOptimizations(&pkbManager)
             .optimize(qo);
-    REQUIRE(oqo.currGroupCanSimplify() == true);
-    REQUIRE(oqo.isLastOfGroup() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
+    REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
-    REQUIRE(oqo.isLastOfGroup() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
+    REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
-    REQUIRE(oqo.isLastOfGroup() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
+    REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
-    REQUIRE(oqo.isLastOfGroup() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
+    REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.empty());
 
@@ -71,7 +71,7 @@ TEST_CASE("Query Optimizer: Simplifiable groups 3") {
     OptimizedQueryObject oqo = QueryOptimizer::create()
             .enableAllOptimizations(&pkbManager)
             .optimize(qo);
-    REQUIRE(oqo.currGroupCanSimplify() == false);
+    REQUIRE_FALSE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.currGroupSize() == 5);
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE_NOTHROW(oqo.popClause());
@@ -96,29 +96,29 @@ TEST_CASE("QueryOptimizer: Simplifiable Groups sort order - select synonyms") {
     OptimizedQueryObject oqo = QueryOptimizer::create()
             .enableAllOptimizations(&pkbManager)
             .optimize(qo);
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE(oqo.currGroupSize() == 1);
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE(oqo.currGroupSize() == 1);
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE(oqo.currGroupSize() == 1);
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.currGroupSize() == 2);
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.currGroupSize() == 2);
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == false);
+    REQUIRE_FALSE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.currGroupSize() == 2);
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.isLastOfGroup());
@@ -138,29 +138,29 @@ TEST_CASE("QueryOptimizer: Simplifiable Groups sort order - select BOOLEAN") {
     OptimizedQueryObject oqo = QueryOptimizer::create()
             .enableAllOptimizations(&pkbManager)
             .optimize(qo);
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE(oqo.currGroupSize() == 1);
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE(oqo.currGroupSize() == 1);
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE(oqo.currGroupSize() == 1);
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.currGroupSize() == 2);
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.currGroupSize() == 2);
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.isLastOfGroup());
     REQUIRE_NOTHROW(oqo.popClause());
-    REQUIRE(oqo.currGroupCanSimplify() == true);
+    REQUIRE(oqo.currGroupCanSimplify());
     REQUIRE(oqo.currGroupSize() == 2);
     REQUIRE_NOTHROW(oqo.popClause());
     REQUIRE(oqo.isLastOfGroup());

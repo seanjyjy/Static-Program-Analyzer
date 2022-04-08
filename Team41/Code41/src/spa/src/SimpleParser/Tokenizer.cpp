@@ -8,13 +8,11 @@
 #include <stdexcept>
 #include <iostream>
 
-// member initialization
 Tokenizer::Tokenizer(string s) : input(s), idx(0), row(0), col(0) {
     if (s.empty()) throw TokenizeException("input to tokenizer must be nonempty");
     currToken = s[0];
 }
 
-// private functions
 void Tokenizer::advance() {
     if (idx >= (int) input.size()) {
         currToken = EOF_CHAR;
