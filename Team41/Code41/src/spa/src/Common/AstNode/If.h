@@ -10,6 +10,8 @@
 class If : public Stmt {
 public:
     If(TNode *condExpr, StmtLst *ifStmtLst, StmtLst *elseStmtLst);
+
     string toString() override;
+
     [[nodiscard]] bool isIf() const override;
 };

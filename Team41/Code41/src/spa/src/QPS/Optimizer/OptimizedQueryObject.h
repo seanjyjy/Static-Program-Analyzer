@@ -17,11 +17,6 @@ private:
 
 public:
     /**
-     * Creates an empty Optimized Query Object, with an empty underlying Query Object.
-     */
-    OptimizedQueryObject();
-
-    /**
      * Creates an Optimized Query Object with no clauses to consume.
      * Mainly used when there was an error creating the OQO but there is a need to access the underlying query object.
      */

@@ -6,51 +6,51 @@ QueryObject::QueryObject(vector<QueryDeclaration> declarations,
                          vector<QueryClause> clauses,
                          vector<PatternClause> patternClauses,
                          vector<WithClause> withClauses,
-                         vector<SuperClause*> superClauses,
+                         vector<SuperClause *> superClauses,
                          SelectTarget selectTarget,
                          bool isQueryValid) :
-    withClauses(std::move(withClauses)),
-    superClauses(std::move(superClauses)),
-    useOfUndeclaredVariable(false),
-    declarations(std::move(declarations)),
-    clauses(std::move(clauses)),
-    patternClauses(std::move(patternClauses)),
-    selectTarget(std::move(selectTarget)),
-    isQueryValid(isQueryValid) {
-}
-
-QueryObject::QueryObject(vector<QueryDeclaration> declarations,
-                         vector<QueryClause> clauses,
-                         vector<PatternClause> patternClauses,
-                         bool isQueryValid) :
+        withClauses(std::move(withClauses)),
+        superClauses(std::move(superClauses)),
         useOfUndeclaredVariable(false),
         declarations(std::move(declarations)),
         clauses(std::move(clauses)),
         patternClauses(std::move(patternClauses)),
+        selectTarget(std::move(selectTarget)),
         isQueryValid(isQueryValid) {
 }
+//
+//QueryObject::QueryObject(vector<QueryDeclaration> declarations,
+//                         vector<QueryClause> clauses,
+//                         vector<PatternClause> patternClauses,
+//                         bool isQueryValid) :
+//        useOfUndeclaredVariable(false),
+//        declarations(std::move(declarations)),
+//        clauses(std::move(clauses)),
+//        patternClauses(std::move(patternClauses)),
+//        isQueryValid(isQueryValid) {
+//}
 
-vector<QueryDeclaration>& QueryObject::getDeclarations() {
+vector<QueryDeclaration> &QueryObject::getDeclarations() {
     return declarations;
 }
 
-vector<QueryClause>& QueryObject::getClauses() {
+vector<QueryClause> &QueryObject::getClauses() {
     return clauses;
 }
 
-vector<PatternClause>& QueryObject::getPatternClauses() {
+vector<PatternClause> &QueryObject::getPatternClauses() {
     return patternClauses;
 }
 
-vector<WithClause>& QueryObject::getWithClauses() {
+vector<WithClause> &QueryObject::getWithClauses() {
     return withClauses;
 }
 
-vector<SuperClause*>& QueryObject::getSuperClauses() {
+vector<SuperClause *> &QueryObject::getSuperClauses() {
     return superClauses;
 }
 
-SelectTarget& QueryObject::getSelectTarget() {
+SelectTarget &QueryObject::getSelectTarget() {
     return selectTarget;
 }
 
@@ -74,15 +74,15 @@ void QueryObject::cleanUp() {
     for (PatternClause pattern: patternClauses) {
         pattern.cleanUp();
     }
-    for (auto declaration : declarations) {
+    for (auto declaration: declarations) {
         declaration.cleanUp();
     }
-    for (auto cl : superClauses) {
+    for (auto cl: superClauses) {
         delete cl;
     }
 }
 
-Entities* QueryDeclaration::getType() const {
+Entities *QueryDeclaration::getType() const {
     return type;
 }
 
@@ -140,7 +140,7 @@ bool QueryObject::currGroupCanSimplify() {
 }
 
 bool QueryObject::isLastOfGroup() {
-    return currPtr == superClauses.size()-1;
+    return currPtr == superClauses.size() - 1;
 }
 
 bool QueryObject::empty() {

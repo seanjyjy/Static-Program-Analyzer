@@ -9,6 +9,8 @@
 class Ne : public RelExpr {
 public:
     Ne(RelFactor *lhs, RelFactor *rhs);
+
     string toString() override;
+
     [[nodiscard]] bool isNe() const override;
 };

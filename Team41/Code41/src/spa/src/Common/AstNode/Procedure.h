@@ -9,6 +9,8 @@
 class Procedure : public TNode {
 public:
     Procedure(Token *name, StmtLst *stmtLst);
+
     string toString() override;
+
     [[nodiscard]] bool isProcedure() const override;
 };

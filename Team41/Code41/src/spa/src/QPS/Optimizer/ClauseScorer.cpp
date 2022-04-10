@@ -25,7 +25,8 @@ long ClauseScorer::scoreWithCl(SuperClause *cl) {
 }
 
 long ClauseScorer::scoreSuchThatCl(SuperClause *tc) {
-    if (!tc->isSuchThatClause()) throw runtime_error("attempting to use suchthat-clause scoring for non-suchthat-clause");
+    if (!tc->isSuchThatClause())
+        throw runtime_error("attempting to use suchthat-clause scoring for non-suchthat-clause");
     SuchThatType type = stClauseToType(tc);
     unordered_map<ClauseScorer::SuchThatType, long> ranks = getStRanks();
     long score = ranks[type];

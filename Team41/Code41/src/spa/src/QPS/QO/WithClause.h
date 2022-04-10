@@ -11,6 +11,7 @@ private:
     WithVariable left, right;
 public:
     WithClause();
+
     WithClause(WithVariable, WithVariable);
 
     /**

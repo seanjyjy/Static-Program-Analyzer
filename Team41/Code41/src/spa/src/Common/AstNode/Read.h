@@ -10,6 +10,8 @@
 class Read : public Stmt {
 public:
     Read(VarName *var);
+
     string toString() override;
+
     [[nodiscard]] bool isRead() const override;
 };

@@ -9,6 +9,8 @@
 class Or : public CondExpr {
 public:
     Or(CondExpr *lhs, CondExpr *rhs);
+
     string toString() override;
+
     [[nodiscard]] bool isOr() const override;
 };

@@ -2,7 +2,7 @@
 
 ClauseGroup::ClauseGroup() = default;
 
-ClauseGroup::ClauseGroup(bool canSimplify): isSimplifiable(canSimplify) {
+ClauseGroup::ClauseGroup(bool canSimplify) : isSimplifiable(canSimplify) {
 }
 
 bool ClauseGroup::canSimplify() const {

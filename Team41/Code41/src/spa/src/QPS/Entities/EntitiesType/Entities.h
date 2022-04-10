@@ -38,7 +38,7 @@ public:
 
     virtual int hashCode() = 0;
 
-    bool equals(Entities* other);
+    bool equals(Entities *other);
 
     EntitiesReader *getReader();
 

@@ -10,6 +10,8 @@
 class Call : public Stmt {
 public:
     Call(ProcName *procedure);
+
     string toString() override;
+
     [[nodiscard]] bool isCall() const override;
 };

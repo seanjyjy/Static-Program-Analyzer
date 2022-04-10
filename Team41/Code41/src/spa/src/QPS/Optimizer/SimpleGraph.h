@@ -16,7 +16,7 @@ using namespace std;
  * Code involving templates must be defined in the template class.
  * https://stackoverflow.com/questions/5237055/c-generic-class-link-errors
  */
-template <typename T>
+template<typename T>
 class SimpleGraph {
 private:
     int nodeId = 0;
@@ -43,6 +43,7 @@ private:
             if (tags[v] == -1) dfs(v, tag, tags);
         }
     }
+
 public:
     SimpleGraph() = default;
 

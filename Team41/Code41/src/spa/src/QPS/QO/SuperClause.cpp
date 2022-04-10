@@ -2,27 +2,27 @@
 
 #include <utility>
 
-SuperClause::SuperClause(WithClause wc): withClause(std::move(wc)) {
+SuperClause::SuperClause(WithClause wc) : withClause(std::move(wc)) {
     type = WITH;
 }
 
-SuperClause::SuperClause(PatternClause pc): patternClause(std::move(pc)) {
+SuperClause::SuperClause(PatternClause pc) : patternClause(std::move(pc)) {
     type = PATTERN;
 }
 
-SuperClause::SuperClause(QueryClause qc): suchThatClause(std::move(qc)) {
+SuperClause::SuperClause(QueryClause qc) : suchThatClause(std::move(qc)) {
     type = SUCH_THAT;
 }
 
-const WithClause& SuperClause::getWithClause() const {
+const WithClause &SuperClause::getWithClause() const {
     return withClause;
 }
 
-const PatternClause& SuperClause::getPatternClause() const {
+const PatternClause &SuperClause::getPatternClause() const {
     return patternClause;
 }
 
-const QueryClause& SuperClause::getSuchThatClause() const {
+const QueryClause &SuperClause::getSuchThatClause() const {
     return suchThatClause;
 }
 
@@ -36,7 +36,7 @@ int SuperClause::hash() const {
     return 0;
 }
 
-bool SuperClause::equals(const SuperClause& other) const {
+bool SuperClause::equals(const SuperClause &other) const {
     if (isWithClause() && other.isWithClause())
         return withClause.equals(other.getWithClause());
     if (isPatternClause() && other.isPatternClause())
@@ -61,7 +61,7 @@ vector<QueryDeclaration> SuperClause::getSynonyms() const {
         return withClause.getSynonyms();
     if (isPatternClause())
         return patternClause.getSynonyms();
-    if(isSuchThatClause())
+    if (isSuchThatClause())
         return suchThatClause.getSynonyms();
     return {};
 }
@@ -91,7 +91,7 @@ bool SuperClause::isPatternClause() const {
 
 bool SuperClause::isFollows() const {
     return type == SUCH_THAT
-        && suchThatClause.getType() == QueryClause::follows;
+           && suchThatClause.getType() == QueryClause::follows;
 }
 
 bool SuperClause::isFollowsT() const {

@@ -76,6 +76,7 @@ private:
     ClauseDepGraph clauseDepGraph;
 
     QueryOptimizer();
+
 public:
 
     static QueryOptimizer create();

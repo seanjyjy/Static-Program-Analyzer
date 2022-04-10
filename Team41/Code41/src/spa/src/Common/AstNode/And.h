@@ -8,6 +8,8 @@
 class And : public CondExpr {
 public:
     And(CondExpr *lhsCondExpr, CondExpr *rhsCondExpr);
+
     string toString() override;
+
     [[nodiscard]] bool isAnd() const override;
 };

@@ -8,6 +8,8 @@
 class ProcName : public TNode {
 public:
     ProcName(Token *val);
+
     string toString() override;
+
     [[nodiscard]] bool isProcName() const override;
 };

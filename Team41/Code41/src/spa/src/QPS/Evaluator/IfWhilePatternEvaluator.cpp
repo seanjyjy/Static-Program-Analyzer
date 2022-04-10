@@ -10,7 +10,8 @@ Table *IfWhilePatternEvaluator::evaluateFurther(QueryDeclaration &patternSynonym
         return evaluateSynonymWildCard(patternSynonym, leftVariable, canSimplify);
     }
 
-    if (EvaluatorUtils::PatternUtils::isIdentifierWildCards(leftVariable, rightPatternVariables, patternSynonym.getType())) {
+    if (EvaluatorUtils::PatternUtils::isIdentifierWildCards(leftVariable, rightPatternVariables,
+                                                            patternSynonym.getType())) {
         return evaluateIdentifierWildCard(patternSynonym, leftVariable, canSimplify);
     }
 

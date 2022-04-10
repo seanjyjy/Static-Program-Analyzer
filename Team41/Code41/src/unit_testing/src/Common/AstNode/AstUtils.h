@@ -36,7 +36,7 @@
 class AstUtils {
 public:
     // convenience method to make a program node. Used for testing purposes (including ASTBuilder).
-    static Program *makeProgram(const vector<Procedure *>& procedures);
+    static Program *makeProgram(const vector<Procedure *> &procedures);
 
     // convenience method to make a procedure node. Used for testing purposes (including ASTBuilder).
     static Procedure *makeProcedure(Token *name, StmtLst *stmtLst);
@@ -113,5 +113,5 @@ public:
     // convenience method to make a constant node. Used for testing purposes (including ASTBuilder).
     static ConstVal *makeConstVal(Token *val);
 
-    static void printAst(TNode* ast);
+    static void printAst(TNode *ast);
 };

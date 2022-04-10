@@ -3,7 +3,7 @@
 #include <utility>
 
 QueryClause::QueryClause(clause_type type, ClauseVariable left, ClauseVariable right) :
-    left(std::move(left)), right(std::move(right)), type(type) {}
+        left(std::move(left)), right(std::move(right)), type(type) {}
 
 QueryClause::QueryClause() {}
 
@@ -41,10 +41,10 @@ bool QueryClause::hasSynonyms() const {
 }
 
 int QueryClause::hash() const {
-    int out = (int)std::hash<string>{}("suchthat");
-    out ^= (int)std::hash<int>{}(type);
-    out ^= (int)std::hash<int>{}(left.getType());
-    out ^= (int)std::hash<int>{}(right.getType());
+    int out = (int) std::hash<string>{}("suchthat");
+    out ^= (int) std::hash<int>{}(type);
+    out ^= (int) std::hash<int>{}(left.getType());
+    out ^= (int) std::hash<int>{}(right.getType());
     return out;
 }
 
@@ -52,5 +52,5 @@ bool QueryClause::equals(QueryClause other) const {
     if (type != other.getType())
         return false;
     return left.equals(other.getLeftClauseVariable())
-        && right.equals(other.getRightClauseVariable());
+           && right.equals(other.getRightClauseVariable());
 }

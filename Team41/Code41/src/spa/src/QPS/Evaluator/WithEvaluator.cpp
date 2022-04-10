@@ -264,7 +264,8 @@ unordered_set<string> WithEvaluator::getSpecificStatementType(Entities *type) {
 }
 
 unordered_set<string> WithEvaluator::getName(Entities *type) {
-    if (type == nullptr || type->isAssign() || type->isConstant() || type->isIf() || type->isStmt() || type->isWhile()) {
+    if (type == nullptr || type->isAssign() || type->isConstant() || type->isIf() || type->isStmt() ||
+        type->isWhile()) {
         throw SemanticException("Wrong type passed into with");
     }
 

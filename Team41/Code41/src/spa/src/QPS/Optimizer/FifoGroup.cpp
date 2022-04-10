@@ -2,11 +2,11 @@
 
 #include <utility>
 
-FifoGroup::FifoGroup(vector<SuperClause *> clauses): FifoGroup(move(clauses), true) {
+FifoGroup::FifoGroup(vector<SuperClause *> clauses) : FifoGroup(move(clauses), true) {
 }
 
-FifoGroup::FifoGroup(vector<SuperClause *> initClauses, bool canSimplify): ClauseGroup(canSimplify) {
-    clauses = vector<SuperClause*>(initClauses.begin(), initClauses.end());
+FifoGroup::FifoGroup(vector<SuperClause *> initClauses, bool canSimplify) : ClauseGroup(canSimplify) {
+    clauses = vector<SuperClause *>(initClauses.begin(), initClauses.end());
     idx = 0;
     clauseScoreSum = accumulate(clauses.begin(), clauses.end(), 0L, [](long currScore, SuperClause *a) {
         return ClauseScorer::score(a) + currScore;
@@ -27,7 +27,7 @@ bool FifoGroup::empty() const {
 }
 
 bool FifoGroup::isLast() const {
-    return idx == (int) clauses.size()-1;
+    return idx == (int) clauses.size() - 1;
 }
 
 size_t FifoGroup::score() const {

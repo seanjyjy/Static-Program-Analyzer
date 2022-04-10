@@ -5,7 +5,7 @@
 
 class UnitTestUtility {
 public:
-    template <class T>
+    template<class T>
     static bool sortAndCompareVectors(std::vector<T> a, std::vector<T> b);
 };
 

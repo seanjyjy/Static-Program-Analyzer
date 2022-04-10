@@ -50,7 +50,7 @@ vector<vector<SuperClause *>> ClauseDepGraph::split() {
         // convert each synonym into its list of clauses
         for (string &synonym: group) {
             // remove duplicate clauses
-            vector<SuperClause*> toInsert = getUnprocessedClauses(synonymToClauses[synonym]);
+            vector<SuperClause *> toInsert = getUnprocessedClauses(synonymToClauses[synonym]);
             clauseGroup.insert(clauseGroup.end(), toInsert.begin(), toInsert.end());
         }
         ret.push_back(clauseGroup);
@@ -64,7 +64,7 @@ int ClauseDepGraph::getCid() {
 }
 
 vector<SuperClause *> ClauseDepGraph::getUnprocessedClauses(vector<TaggedSuperClause> &clauses) {
-    vector<SuperClause*> ret;
+    vector<SuperClause *> ret;
     for (auto &[cl, clId]: clauses) {
         if (!isCidProcessed[clId]) {
             isCidProcessed[clId] = true;

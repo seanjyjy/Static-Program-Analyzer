@@ -10,6 +10,8 @@
 class Assign : public Stmt {
 public:
     Assign(VarName *var, TNode *expr);
+
     string toString() override;
+
     [[nodiscard]] bool isAssign() const override;
 };

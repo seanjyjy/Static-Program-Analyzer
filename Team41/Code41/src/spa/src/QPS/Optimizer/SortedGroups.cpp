@@ -1,7 +1,7 @@
 
 #include "SortedGroups.h"
 
-SortedGroups::SortedGroups(vector<ClauseGroup*> groups) {
+SortedGroups::SortedGroups(vector<ClauseGroup *> groups) {
     sortedGroups = multiset<ClauseGroup *, ClauseGroupComparator>(groups.begin(), groups.end());
     it = sortedGroups.begin();
 }

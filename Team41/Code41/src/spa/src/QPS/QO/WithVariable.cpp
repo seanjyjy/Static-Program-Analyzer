@@ -12,8 +12,8 @@ WithVariable::WithVariable(string i, withRefType t) {
     }
 }
 
-WithVariable::WithVariable(attributeName attr, QueryDeclaration syn):
-                           attr(attr), synonym(syn) {
+WithVariable::WithVariable(attributeName attr, QueryDeclaration syn) :
+        attr(attr), synonym(syn) {
     type = ATTR_REF;
 }
 

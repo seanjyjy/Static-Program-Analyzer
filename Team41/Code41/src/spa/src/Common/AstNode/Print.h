@@ -10,7 +10,9 @@
 class Print : public Stmt {
 public:
     Print(VarName *var);
+
     string toString() override;
+
     [[nodiscard]] bool isPrint() const override;
 };
 

@@ -2,7 +2,7 @@
 
 WithClause::WithClause() {}
 
-WithClause::WithClause(WithVariable left, WithVariable right): left(std::move(left)), right(std::move(right)){}
+WithClause::WithClause(WithVariable left, WithVariable right) : left(std::move(left)), right(std::move(right)) {}
 
 WithVariable WithClause::getLeft() const {
     return left;
@@ -26,31 +26,31 @@ bool WithClause::hasSynonyms() const {
 }
 
 int WithClause::hash() const {
-    int out = (int)std::hash<string>{}("with")
-        ^ (int)std::hash<int>{} (left.getType())
-        ^ (int)std::hash<int>{} (right.getType());
+    int out = (int) std::hash<string>{}("with")
+              ^ (int) std::hash<int>{}(left.getType())
+              ^ (int) std::hash<int>{}(right.getType());
 
     if (left.isIdentifier())
-        out ^= (int)std::hash<string>{} (left.getIdent());
+        out ^= (int) std::hash<string>{}(left.getIdent());
     if (right.isIdentifier())
-        out ^= (int)std::hash<string>{} (right.getIdent());
+        out ^= (int) std::hash<string>{}(right.getIdent());
 
     if (left.isInteger())
-        out ^= (int)std::hash<string>{} (left.getInteger());
+        out ^= (int) std::hash<string>{}(left.getInteger());
     if (right.isInteger())
-        out ^= (int)std::hash<string>{} (right.getInteger());
+        out ^= (int) std::hash<string>{}(right.getInteger());
 
     if (left.isAttrRef())
-        out ^= (int)std::hash<int>{} (left.getAttr());
+        out ^= (int) std::hash<int>{}(left.getAttr());
     if (right.isAttrRef())
-        out ^= (int)std::hash<int>{} (right.getAttr());
+        out ^= (int) std::hash<int>{}(right.getAttr());
 
     return out;
 }
 
 bool WithClause::equals(WithClause other) const {
     return left.equals(other.getLeft())
-        && right.equals(other.getRight());
+           && right.equals(other.getRight());
 }
 
 string WithClause::toString() const {

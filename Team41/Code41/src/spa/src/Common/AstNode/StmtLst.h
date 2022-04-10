@@ -10,6 +10,8 @@
 class StmtLst : public TNode {
 public:
     StmtLst(const vector<Stmt *> &stmts);
+
     string toString() override;
+
     [[nodiscard]] bool isStmtLst() const override;
 };

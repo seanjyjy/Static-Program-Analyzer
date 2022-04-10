@@ -8,7 +8,10 @@
 class Plus : public RelFactor {
 public:
     Plus(RelFactor *lhs, RelFactor *rhs);
+
     string toString() override;
+
     [[nodiscard]] bool isPlus() const override;
+
     [[nodiscard]] bool isArithmeticOp() const override;
 };

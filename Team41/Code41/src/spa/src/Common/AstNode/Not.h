@@ -9,6 +9,8 @@
 class Not : public CondExpr {
 public:
     Not(CondExpr *expr);
+
     string toString() override;
+
     [[nodiscard]] bool isNot() const override;
 };

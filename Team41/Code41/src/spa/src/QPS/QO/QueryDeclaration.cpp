@@ -5,9 +5,9 @@
 QueryDeclaration::QueryDeclaration() : type(nullptr) {}
 
 QueryDeclaration::QueryDeclaration(Entities *type, string &synonym) :
-    type(type), synonym(synonym) {}
+        type(type), synonym(synonym) {}
 
-Entities* QueryDeclaration::stringToType(string &s) {
+Entities *QueryDeclaration::stringToType(string &s) {
     if (s == "stmt")
         return new StmtEntities();
     if (s == "read")

@@ -327,7 +327,7 @@ private:
      * @param synonym string to verify.
      * @return QueryDeclaration::design_entity_type of the synonym (assuming validly declared).
      */
-    Entities* determineDeclarationType(string synonym);
+    Entities *determineDeclarationType(string synonym);
 
     /**
      * Gets the system representation of a declared synonym.

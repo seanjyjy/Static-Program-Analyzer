@@ -31,7 +31,7 @@ Table *QueryEvaluator::evaluateClauses(Table *resultTable, QueryObject *queryObj
     while (!queryObject->empty()) {
         int groupSize = (int) queryObject->currGroupSize();
 
-        Table* intermediateGroupTable = new TrueTable();
+        Table *intermediateGroupTable = new TrueTable();
         for (int i = 0; i < groupSize; i++) {
             bool isGroupReducible = queryObject->currGroupCanSimplify();
             bool isClauseReducible = isGroupReducible && groupSize == 1;
