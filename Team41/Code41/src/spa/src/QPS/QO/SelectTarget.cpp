@@ -6,7 +6,7 @@ bool SelectTarget::isBoolean() const {
     return type == BOOLEAN;
 }
 
-bool SelectTarget::isTuple() const{
+bool SelectTarget::isTuple() const {
     return type == TUPLE;
 }
 

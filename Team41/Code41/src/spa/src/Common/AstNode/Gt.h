@@ -9,6 +9,8 @@
 class Gt : public RelExpr {
 public:
     Gt(RelFactor *lhs, RelFactor *rhs);
+
     string toString() override;
+
     [[nodiscard]] bool isGt() const override;
 };

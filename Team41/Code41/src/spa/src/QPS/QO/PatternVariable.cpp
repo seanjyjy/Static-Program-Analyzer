@@ -30,7 +30,8 @@ bool PatternVariable::equals(PatternVariable other) const {
     return expr == other.getExpr();
 }
 
-PatternVariable::PatternVariable(pattern_type type, TNode *miniAST, string expr) : miniAST(miniAST), type(type), expr(expr) {}
+PatternVariable::PatternVariable(pattern_type type, TNode *miniAST, string expr) : miniAST(miniAST), type(type),
+                                                                                   expr(expr) {}
 
 PatternVariable::PatternVariable(pattern_type type, TNode *miniAST) : miniAST(miniAST), type(type), expr("") {}
 

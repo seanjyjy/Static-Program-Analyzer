@@ -2,13 +2,13 @@
 #include "stack"
 #include <iostream>
 
-Program *AstUtils::makeProgram(const vector<Procedure *>& procedures) {
+Program *AstUtils::makeProgram(const vector<Procedure *> &procedures) {
     return new Program(procedures);
 }
 
 Procedure *AstUtils::makeProcedure(Token *name, StmtLst *stmtLst) { return new Procedure(name, stmtLst); }
 
-StmtLst *AstUtils::makeStmtLst(const vector<Stmt *>& stmts) { return new StmtLst(stmts); }
+StmtLst *AstUtils::makeStmtLst(const vector<Stmt *> &stmts) { return new StmtLst(stmts); }
 
 Read *AstUtils::makeReadStmt(VarName *var) { return new Read(var); }
 

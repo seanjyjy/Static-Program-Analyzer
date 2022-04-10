@@ -16,7 +16,7 @@ using namespace std;
 class ClauseDepGraph {
 private:
     // used to tell if a clause has been processed (added to a clause group)
-    using TaggedSuperClause = pair<SuperClause*, int>;
+    using TaggedSuperClause = pair<SuperClause *, int>;
 
     // used to identify the group of clauses with no synonyms
     const string NO_SYNONYM = "_NO_SYNONYMS";
@@ -37,7 +37,8 @@ private:
     int getCid();
 
     // convenience method to retrieve only unprocessed clauses
-    vector<SuperClause*> getUnprocessedClauses(vector<TaggedSuperClause> &clauses);
+    vector<SuperClause *> getUnprocessedClauses(vector<TaggedSuperClause> &clauses);
+
 public:
     ClauseDepGraph();
 

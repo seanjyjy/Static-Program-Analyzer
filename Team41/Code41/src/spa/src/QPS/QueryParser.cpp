@@ -29,7 +29,7 @@ bool QueryParser::parseDeclarations() {
             // Syntax Error: Invalid declaration type
             return false;
         }
-        if (!parseDeclarationsOfTypeString(type->c_str())){
+        if (!parseDeclarationsOfTypeString(type->c_str())) {
             return false;
         }
     };
@@ -61,7 +61,7 @@ bool QueryParser::parseDeclarationsOfTypeString(string type) {
 }
 
 void QueryParser::generateDeclarationObject(string type, string synonym) {
-    Entities* t = QueryDeclaration::stringToType(type);
+    Entities *t = QueryDeclaration::stringToType(type);
     QueryDeclaration qd(t, synonym);
     queryObject->getDeclarations().push_back(qd);
 }
@@ -85,14 +85,14 @@ bool QueryParser::lookForDeclarationComma() {
 }
 
 optional<QueryDeclaration> QueryParser::findMatchingDeclaration(string synonym) {
-    for (QueryDeclaration qd : queryObject->getDeclarations()) {
+    for (QueryDeclaration qd: queryObject->getDeclarations()) {
         if (qd.getSynonym() == synonym)
             return qd;
     }
     return nullopt;
 }
 
-Entities* QueryParser::determineDeclarationType(string synonym) {
+Entities *QueryParser::determineDeclarationType(string synonym) {
     optional<QueryDeclaration> qd = findMatchingDeclaration(synonym);
     if (qd == nullopt) {
         // not a declared synonym
@@ -108,7 +108,7 @@ bool QueryParser::parseSelectTuple() {
         return false;
     }
 
-    while(lex->peekNextIsString(",")) {
+    while (lex->peekNextIsString(",")) {
         lookForClauseGrammarSymbol(",", "Syntax Error: Expected ',' for tuple delimiting\n");
         if (!parseSelectSingle()) {
             return false;
@@ -192,7 +192,7 @@ bool QueryParser::isQueryClauseValid(string type, string left, string right) {
     if (type == "Follows" || type == "Follows*" ||
         type == "Parent" || type == "Parent*" ||
         type == "Next" || type == "Next*" ||
-        type == "Affects" || type == "Affects*" ) {
+        type == "Affects" || type == "Affects*") {
         return lex->isStmtRef(left) && lex->isStmtRef(right);
     }
 
@@ -202,7 +202,7 @@ bool QueryParser::isQueryClauseValid(string type, string left, string right) {
 
     if (type == "Uses" || type == "Modifies") {
         return (lex->isStmtRef(left) && lex->isEntRef(right)) ||
-                (lex->isEntRef(left) && lex->isEntRef(right));
+               (lex->isEntRef(left) && lex->isEntRef(right));
     }
     return false;
 }
@@ -353,11 +353,14 @@ QueryClause::clause_type QueryParser::determineClauseType(string type, string le
     if (type == "Affects*")
         return QueryClause::affectsT;
     if (type == "Uses" && lex->isStmtRef(left) && lex->isEntRef(right))
-        return lex->isWildCard(left) ? QueryClause::generic_uses : isDeclaredProcedure(left) ? QueryClause::usesP : QueryClause::usesS;
+        return lex->isWildCard(left) ? QueryClause::generic_uses : isDeclaredProcedure(left) ? QueryClause::usesP
+                                                                                             : QueryClause::usesS;
     if (type == "Uses" && lex->isEntRef(left) && lex->isEntRef(right))
         return QueryClause::usesP;
     if (type == "Modifies" && lex->isStmtRef(left) && lex->isEntRef(right))
-        return lex->isWildCard(left) ? QueryClause::generic_modifies : isDeclaredProcedure(left) ? QueryClause::modifiesP : QueryClause::modifiesS;
+        return lex->isWildCard(left) ? QueryClause::generic_modifies : isDeclaredProcedure(left)
+                                                                       ? QueryClause::modifiesP
+                                                                       : QueryClause::modifiesS;
     if (type == "Modifies" && lex->isEntRef(left) && lex->isEntRef(right))
         return QueryClause::modifiesP;
     throw runtime_error("Internal Error: Invalid clause type");
@@ -697,7 +700,7 @@ QueryObject *QueryParser::parse() {
     vector<QueryClause> clauses;
     vector<PatternClause> patternClauses;
     vector<WithClause> withClauses;
-    vector<SuperClause*> superClauses;
+    vector<SuperClause *> superClauses;
     string a = "";
     QueryDeclaration s(nullptr, a);
     SelectTarget st(SelectTarget::BOOLEAN);

@@ -6,8 +6,8 @@
  */
 vector<SuperClause *> OptimizerUtils::removeDuplicates(const vector<SuperClause *> &clauses) {
     unordered_set<SuperClause> seen;
-    vector<SuperClause*> ret;
-    for (SuperClause* cl: clauses) {
+    vector<SuperClause *> ret;
+    for (SuperClause *cl: clauses) {
         if (seen.find(*cl) == seen.end()) {
             ret.push_back(cl);
             seen.insert(*cl);
@@ -33,7 +33,7 @@ bool OptimizerUtils::hasSynonymOverlap(const vector<QueryDeclaration> &qds, cons
 
     for (const QueryDeclaration &qd: qds) synonyms.insert(qd.getSynonym());
 
-    for (SuperClause* cl: clauses) {
+    for (SuperClause *cl: clauses) {
         for (const QueryDeclaration &syn: cl->getSynonyms()) {
             if (synonyms.find(syn.getSynonym()) != synonyms.end()) {
                 return true;

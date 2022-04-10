@@ -24,7 +24,7 @@ OptimizedQueryObject QueryOptimizer::optimize(QueryObject *qo) {
     }
 
     // step 2: Add clause groups
-    vector < ClauseGroup * > groups;
+    vector<ClauseGroup *> groups;
     vector<QueryDeclaration> selectables(qo->getSelectablesAsQDs());
     for (vector<SuperClause *> &clauses: clauseGroups) {
         bool canSimplify = false;

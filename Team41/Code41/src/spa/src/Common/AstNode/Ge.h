@@ -9,6 +9,8 @@
 class Ge : public RelExpr {
 public:
     Ge(RelFactor *lhs, RelFactor *rhs);
+
     string toString() override;
+
     [[nodiscard]] bool isGe() const override;
 };

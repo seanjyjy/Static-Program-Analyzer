@@ -13,12 +13,13 @@ private:
 
     // maintains the invariant that the object always points to the next non-empty group, or groups.end() otherwise.
     void ensureInvariant();
+
 public:
     /**
      * Creates a group of clause groups to be consumed in FIFO order.
      * @param groups the clause groups in the same order they will be consumed.
      */
-    FifoGroups(vector<ClauseGroup*> groups);
+    FifoGroups(vector<ClauseGroup *> groups);
 
     ~FifoGroups() override;
 

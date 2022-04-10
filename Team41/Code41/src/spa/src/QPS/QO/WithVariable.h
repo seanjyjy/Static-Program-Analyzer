@@ -15,20 +15,31 @@ public:
     };
 
     WithVariable();
+
     WithVariable(string, withRefType);
+
     WithVariable(attributeName, QueryDeclaration);
+
     withRefType getType() const;
+
     attributeName getAttr() const;
+
     QueryDeclaration getSynonym() const;
+
     string getIdent() const;
+
     string getInteger() const;
 
     bool isIdentifier() const;
+
     bool isInteger() const;
+
     bool isAttrRef() const;
 
     bool equals(WithVariable) const;
+
     string toString() const;
+
 private:
     withRefType type;
     attributeName attr;

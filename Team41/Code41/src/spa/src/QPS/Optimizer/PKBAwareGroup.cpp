@@ -3,12 +3,14 @@
 #include <limits>
 #include <utility>
 
-PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter): PKBAwareGroup(move(initClauses), pkbAdapter, true) {
+PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter) : PKBAwareGroup(
+        move(initClauses), pkbAdapter, true) {
 }
 
-PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter, bool canSimplify): ClauseGroup(canSimplify) {
+PKBAwareGroup::PKBAwareGroup(vector<SuperClause *> initClauses, PKBAdapter pkbAdapter, bool canSimplify) : ClauseGroup(
+        canSimplify) {
     table = TableEstimate(pkbAdapter);
-    clauses = vector<SuperClause*>(initClauses.begin(), initClauses.end());
+    clauses = vector<SuperClause *>(initClauses.begin(), initClauses.end());
     isClauseUsed.assign(initClauses.size(), false);
     clauseScoreSum = accumulate(clauses.begin(), clauses.end(), 0L, [](long currScore, SuperClause *a) {
         return ClauseScorer::score(a) + currScore;
@@ -47,7 +49,7 @@ bool PKBAwareGroup::empty() const {
 }
 
 bool PKBAwareGroup::isLast() const {
-    return clausesPopped == (long long) clauses.size()-1;
+    return clausesPopped == (long long) clauses.size() - 1;
 }
 
 size_t PKBAwareGroup::score() const {

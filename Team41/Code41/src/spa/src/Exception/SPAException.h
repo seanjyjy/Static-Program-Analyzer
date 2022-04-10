@@ -10,6 +10,7 @@ protected:
     string errorMessage;
 public:
     using exception::what;
+
     virtual string what() = 0;
 
     explicit SPAException(string errorMessage);

@@ -6,7 +6,9 @@ PatternClause::PatternClause(QueryDeclaration synonym, ClauseVariable lhs, vecto
 PatternClause::PatternClause() {}
 
 QueryDeclaration PatternClause::getSynonym() const { return synonym; }
+
 ClauseVariable PatternClause::getLHS() const { return lhs; }
+
 vector<PatternVariable> PatternClause::getRHS() const { return rhs; }
 
 vector<QueryDeclaration> PatternClause::getSynonyms() const {
@@ -29,7 +31,7 @@ bool PatternClause::equals(PatternClause other) const {
         return false;
     // Compare right variable(s)
     vector<PatternVariable> otherRight = other.getRHS();
-    for (int i = 0; i < (int)rhs.size(); i++) {
+    for (int i = 0; i < (int) rhs.size(); i++) {
         if (!rhs.at(i).equals(otherRight.at(i)))
             return false;
     }
@@ -47,17 +49,17 @@ string PatternClause::toString() const {
 }
 
 int PatternClause::hash() const {
-    int out = (int)std::hash<string>{}("pattern");
-    out ^= (int)std::hash<int>{}(synonym.getType()->hashCode());
-    out ^= (int)std::hash<int>{}(lhs.getType());
-    for (int i = 0; i < (int)rhs.size(); i++) {
-        out ^= (int)std::hash<int>{}(rhs.at(i).getType());
+    int out = (int) std::hash<string>{}("pattern");
+    out ^= (int) std::hash<int>{}(synonym.getType()->hashCode());
+    out ^= (int) std::hash<int>{}(lhs.getType());
+    for (int i = 0; i < (int) rhs.size(); i++) {
+        out ^= (int) std::hash<int>{}(rhs.at(i).getType());
     }
     return out;
 }
 
 void PatternClause::cleanUp() {
-    for (PatternVariable p : rhs){
+    for (PatternVariable p: rhs) {
         p.cleanAST();
     }
 }

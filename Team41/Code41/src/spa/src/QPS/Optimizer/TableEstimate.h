@@ -41,6 +41,7 @@ private:
 
     // returns true if the given schema has overlapping synonyms with the current schema
     bool hasCommonCol(const vector<QueryDeclaration> &sch);
+
 public:
     // do NOT use this in business logic - only meant for default class member initialization
     TableEstimate();

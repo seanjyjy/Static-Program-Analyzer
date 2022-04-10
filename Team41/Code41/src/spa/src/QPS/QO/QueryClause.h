@@ -11,8 +11,23 @@ class QueryClause : public SimplifiableClause {
 public:
     // enum representing possible clause types in PQL
     enum clause_type {
-        follows, followsT, parent, parentT, usesS, usesP, modifiesS, modifiesP, calls, callsT, next, nextT, affects, affectsT,
-        generic_uses, generic_modifies, none
+        follows,
+        followsT,
+        parent,
+        parentT,
+        usesS,
+        usesP,
+        modifiesS,
+        modifiesP,
+        calls,
+        callsT,
+        next,
+        nextT,
+        affects,
+        affectsT,
+        generic_uses,
+        generic_modifies,
+        none
     };
 
     /**

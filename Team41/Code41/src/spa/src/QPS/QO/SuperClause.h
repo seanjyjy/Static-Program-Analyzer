@@ -10,7 +10,9 @@
 class SuperClause {
 public:
     SuperClause(WithClause);
+
     SuperClause(PatternClause);
+
     SuperClause(QueryClause);
 
     /**
@@ -18,28 +20,28 @@ public:
      *
      * @return WithClause reference representing the with clause.
      */
-    const WithClause& getWithClause() const;
+    const WithClause &getWithClause() const;
 
     /**
      * Getter for the pattern clause.
      *
      * @return PatternClause reference representing the pattern clause.
      */
-    const PatternClause& getPatternClause() const;
+    const PatternClause &getPatternClause() const;
 
     /**
      * Getter for the such that clause.
      *
      * @return QueryClause reference representing the such that clause.
      */
-    const QueryClause& getSuchThatClause() const;
+    const QueryClause &getSuchThatClause() const;
 
     /**
      * Equivalence comparator for the SuperClause class.
      *
      * @return boolean indicating if equivalent.
      */
-    bool equals(const SuperClause&) const;
+    bool equals(const SuperClause &) const;
 
     /**
      * Hash function for the super clause.
@@ -75,29 +77,49 @@ public:
      * @return boolean indicating the clause is of the corresponding type.
      */
     bool isWithClause() const;
+
     bool isSuchThatClause() const;
+
     bool isPatternClause() const;
+
     bool isFollows() const;
+
     bool isFollowsT() const;
+
     bool isParent() const;
+
     bool isParentT() const;
+
     bool isUsesS() const;
+
     bool isUsesP() const;
+
     bool isUses() const;
+
     bool isModifiesS() const;
+
     bool isModifiesP() const;
+
     bool isModifies() const;
+
     bool isCalls() const;
+
     bool isCallsT() const;
+
     bool isNext() const;
+
     bool isNextT() const;
+
     bool isAffects() const;
+
     bool isAffectsT() const;
 
     bool operator==(const SuperClause &other) const {
         return this->equals(other);
     }
+
     void setSimplifiableClause(bool isSimplifiable);
+
 private:
     enum clause_type {
         SUCH_THAT, WITH, PATTERN
@@ -112,7 +134,7 @@ private:
 namespace std {
     template<>
     struct hash<SuperClause> {
-        std::size_t operator()(SuperClause const& g) const noexcept {
+        std::size_t operator()(SuperClause const &g) const noexcept {
             return g.hash();
         }
     };

@@ -31,7 +31,7 @@ public:
      *
      * @return QueryDeclaration::design_entity_type representing the declaration type.
      */
-    Entities* getDesignEntityType() const;
+    Entities *getDesignEntityType() const;
 
     /**
      * Checks if the variable is an identifier.
@@ -77,7 +77,9 @@ public:
      * @param qd for the QueryDeclaration of the new variable.
      */
     ClauseVariable(variable_type type, string label, Entities *designEntityType);
+
     ClauseVariable(variable_type type, string label, QueryDeclaration qd);
+
     ClauseVariable();
 
     /**

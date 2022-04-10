@@ -9,6 +9,8 @@
 class Lt : public RelExpr {
 public:
     Lt(RelFactor *lhs, RelFactor *rhs);
+
     string toString() override;
+
     [[nodiscard]] bool isLt() const override;
 };

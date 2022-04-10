@@ -47,6 +47,7 @@ public:
      * @param synonym string accompanying the new declaration.
      */
     QueryDeclaration(Entities *type, string &synonym);
+
     QueryDeclaration();
 
     /**
@@ -56,7 +57,7 @@ public:
      * @param s string representing the declaration type.
      * @return design_entity_type corresponding to the declaration.
      */
-    static Entities* stringToType(string &s);
+    static Entities *stringToType(string &s);
 
     /**
      * Converts the enum design entity type into a human-readable string representation.

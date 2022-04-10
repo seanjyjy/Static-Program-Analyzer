@@ -11,7 +11,7 @@ public:
     /**
      * Returns true if any synonym in the given query declarations is found in the given clauses, false otherwise.
      */
-    static bool hasSynonymOverlap(const vector<QueryDeclaration> &qds, const vector<SuperClause*> &clauses);
+    static bool hasSynonymOverlap(const vector<QueryDeclaration> &qds, const vector<SuperClause *> &clauses);
 
     /**
      * Removes duplicate clauses. Is stable - does not reorder clauses.
@@ -21,5 +21,5 @@ public:
     /**
      * Prints a representation of the given groups of clauses. Mainly for debugging.
      */
-    static void print(vector<vector<SuperClause*>> &clauses);
+    static void print(vector<vector<SuperClause *>> &clauses);
 };

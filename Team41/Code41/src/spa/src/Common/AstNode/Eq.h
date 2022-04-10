@@ -9,6 +9,8 @@
 class Eq : public RelExpr {
 public:
     Eq(RelFactor *lhs, RelFactor *rhs);
+
     string toString() override;
+
     [[nodiscard]] bool isEq() const override;
 };

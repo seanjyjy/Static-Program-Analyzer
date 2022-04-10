@@ -16,8 +16,11 @@ using namespace std;
 class CondExpr : public TNode {
 private:
     static TNodeType verify(TNodeType type);
+
 public:
     CondExpr(TNodeType type, vector<TNode *> children);
+
     string toString() override;
+
     [[nodiscard]] bool isCondExpr() const override;
 };

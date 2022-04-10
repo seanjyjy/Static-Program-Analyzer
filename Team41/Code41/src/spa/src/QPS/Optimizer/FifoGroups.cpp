@@ -3,7 +3,7 @@
 #include <utility>
 
 FifoGroups::FifoGroups(vector<ClauseGroup *> initGroups) {
-    groups = vector<ClauseGroup*>(move(initGroups));
+    groups = vector<ClauseGroup *>(move(initGroups));
     it = groups.begin();
 }
 

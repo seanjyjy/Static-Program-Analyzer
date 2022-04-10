@@ -35,12 +35,13 @@ private:
 
     // maintains the invariant that the object always points to the next non-empty group, or groups.end() otherwise.
     void ensureInvariant();
+
 public:
     /**
      * Creates a group of clause groups, sorted by clause score.
      * @param groups the clause groups, in any order (they will be sorted on initialization).
      */
-    SortedGroups(vector<ClauseGroup*> groups);
+    SortedGroups(vector<ClauseGroup *> groups);
 
     ~SortedGroups() override;
 

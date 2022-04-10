@@ -14,7 +14,7 @@ using namespace std;
 class QueryObject {
 private:
     vector<WithClause> withClauses;
-    vector<SuperClause*> superClauses;
+    vector<SuperClause *> superClauses;
     bool useOfUndeclaredVariable;
     vector<QueryDeclaration> declarations; // collection of declarations in the query
     vector<QueryClause> clauses; // collection of clauses made during the query
@@ -29,42 +29,42 @@ public:
      *
      * @return vector of QueryDeclarations.
      */
-    vector<QueryDeclaration>& getDeclarations();
+    vector<QueryDeclaration> &getDeclarations();
 
     /**
      * Getter for the such that clauses of the query.
      *
      * @return vector of QueryClauses.
      */
-    vector<QueryClause>& getClauses();
+    vector<QueryClause> &getClauses();
 
     /**
      * Getter for the pattern clauses of the query.
      *
      * @return vector of PatternClauses.
      */
-    vector<PatternClause>& getPatternClauses();
+    vector<PatternClause> &getPatternClauses();
 
     /**
      * Getter for the with clauses of the query.
      *
      * @return vector of WithClauses.
      */
-    vector<WithClause>& getWithClauses();
+    vector<WithClause> &getWithClauses();
 
     /**
      * Getter for the super clauses of the query.
      *
      * @return vector of SuperClauses.
      */
-    vector<SuperClause*>& getSuperClauses();
+    vector<SuperClause *> &getSuperClauses();
 
     /**
      * Getter for the Select Target of the query.
      *
      * @return SelectTarget object reference.
      */
-    SelectTarget& getSelectTarget();
+    SelectTarget &getSelectTarget();
 
     /**
      * Checks if the query uses undeclared variables.
@@ -125,10 +125,10 @@ public:
      * @param selectSynonym synonym to select for the query.
      * @param isQueryValid query's validity.
      */
-    QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, vector<WithClause> withClauses, vector<SuperClause*> superClauses, SelectTarget selectTarget, bool isQueryValid);
+    QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses,
+                vector<PatternClause> patternClauses, vector<WithClause> withClauses,
+                vector<SuperClause *> superClauses, SelectTarget selectTarget, bool isQueryValid);
 
-    // old
-    QueryObject(vector<QueryDeclaration> declarations, vector<QueryClause> clauses, vector<PatternClause> patternClauses, bool isQueryValid);
     virtual ~QueryObject() = default;
 
     /**

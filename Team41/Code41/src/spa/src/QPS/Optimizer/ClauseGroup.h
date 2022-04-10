@@ -12,6 +12,7 @@ private:
     bool isSimplifiable = false; // for optimization purposes
 public:
     ClauseGroup();
+
     virtual ~ClauseGroup() = default;
 
     /**

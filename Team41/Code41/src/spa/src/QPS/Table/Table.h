@@ -88,6 +88,7 @@ public:
     virtual void sort(const vector<string> &commonHeader) = 0;
 
     virtual bool isTrueTable();
+
     virtual bool isFalseTable();
 
     virtual ~Table() = default;
