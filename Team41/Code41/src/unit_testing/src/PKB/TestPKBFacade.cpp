@@ -599,11 +599,6 @@ TEST_CASE("PKB: next abstraction") {
 
         pkbManager.registerCFG(rootNode, stmtToCFG);
 
-        // ┌─────────┐
-        // V         │
-        // 1 -> 2 -> 3 -> 4 -> 5
-        // │                   ^
-        // └───────────────────┘
         REQUIRE(pkbManager.isNext("1", "2"));
         REQUIRE(pkbManager.isNext("1", "5"));
         REQUIRE(pkbManager.isNext("3", "1"));
