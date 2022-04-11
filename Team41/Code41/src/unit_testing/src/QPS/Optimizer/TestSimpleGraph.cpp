@@ -4,17 +4,6 @@
 
 using namespace std;
 
-/*
-            6
-    ┌────2
-    │    │
-    1    │   3
-    │    │   │
-    │    │   │
-    4────┘   │
-             │
-         5───┘
- */
 TEST_CASE("Simple Graph: general graph") {
     SimpleGraph<string> g = TestOptimizerUtils::genStringGraph(1, 6, {{1, 2},
                                                                       {1, 4},
@@ -28,15 +17,6 @@ TEST_CASE("Simple Graph: general graph") {
     REQUIRE(cmpts[2].size() == 3);
 }
 
-/*
-1        2        3 ──────4
-│
-│
-│
-│
-│
-5        6        7       8
- */
 TEST_CASE("Simple Graph: sparse graph") {
     SimpleGraph<string> g = TestOptimizerUtils::genStringGraph(1, 8, {{1, 5},
                                                                       {3, 4}});
@@ -64,14 +44,6 @@ TEST_CASE("Simple Graph: complete graph") {
     REQUIRE(cmpts[0].size() == 8);
 }
 
-/*
-    ┌──1──┐
-    │     │
-┌───2─┐   3
-│     │
-│     │
-4     5     6    7
- */
 TEST_CASE("Simple Graph: tree") {
     SimpleGraph<string> g = TestOptimizerUtils::genStringGraph(1, 7, {{1, 2},
                                                               {1, 3},
@@ -85,12 +57,6 @@ TEST_CASE("Simple Graph: tree") {
     REQUIRE(cmpts[2].size() == 5);
 }
 
-/*
-1───2
-│
-│
-3   4
- */
 TEST_CASE("Simple Graph: should disregard duplicate nodes") {
     SimpleGraph<string> g;
     vector<string> vertices = {"1", "1", "2", "3", "4", "2", "2"};
@@ -104,17 +70,6 @@ TEST_CASE("Simple Graph: should disregard duplicate nodes") {
     REQUIRE(cmpts[1].size() == 3);
 }
 
-/*
-            6
-    ┌────2
-    │    │
-    1    │   3
-    │    │   │
-    │    │   │
-    4────┘   │
-             │
-         5───┘
- */
 TEST_CASE("Simple Graph: should disregard duplicate edges") {
     SimpleGraph<string> g;
     vector<string> vertices = {"1", "2", "3", "4", "5", "6"};
